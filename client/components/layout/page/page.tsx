@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import type { HeaderPosition } from '@/lib/types'
 import './page.css'
 
 type PageProps = {
@@ -8,7 +9,7 @@ type PageProps = {
   /** Optional footer component */
   footer?: React.ReactNode
   /** Header positioning behavior */
-  headerPosition?: 'static' | 'sticky' | 'fixed'
+  headerPosition?: HeaderPosition
   className?: string
 }
 

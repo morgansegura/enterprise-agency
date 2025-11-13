@@ -1,6 +1,9 @@
+@reference "tailwindcss";
 
-  @reference "tailwindcss";
+.heading-block {
+  @apply relative;
+}
 
-  .heading-block {
-    @apply relative;
-  }
+.heading-block-subtitle {
+  @apply mt-2;
+}

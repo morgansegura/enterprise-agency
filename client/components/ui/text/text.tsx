@@ -1,18 +1,19 @@
 import { cn } from '@/lib/utils'
+import type { TextElement, TextSize, FontWeight, TextAlign, TextVariant } from '@/lib/types'
 import './text.css'
 
 type TextProps = {
   children?: React.ReactNode
   /** The HTML tag to render */
-  as?: 'p' | 'span' | 'div'
+  as?: TextElement
   /** Text size */
-  size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl'
+  size?: TextSize
   /** Font weight */
-  weight?: 'normal' | 'medium' | 'semibold' | 'bold'
+  weight?: FontWeight
   /** Text alignment */
-  align?: 'left' | 'center' | 'right' | 'justify'
+  align?: TextAlign
   /** Text variant/style */
-  variant?: 'default' | 'muted' | 'lead' | 'subtle'
+  variant?: TextVariant
   className?: string
 }
 

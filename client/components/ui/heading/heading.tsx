@@ -1,18 +1,19 @@
 import { cn } from '@/lib/utils'
+import type { HeadingLevel, HeadingSize, FontWeight, TextAlign, HeadingVariant } from '@/lib/types'
 import './heading.css'
 
 type HeadingProps = {
   children?: React.ReactNode
   /** The HTML tag to render (h1-h6) - semantic level */
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  as?: HeadingLevel
   /** Visual size - can differ from semantic level */
-  size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+  size?: HeadingSize
   /** Font weight */
-  weight?: 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold'
+  weight?: FontWeight
   /** Text alignment */
-  align?: 'left' | 'center' | 'right'
+  align?: TextAlign
   /** Text color variant */
-  variant?: 'default' | 'primary' | 'muted'
+  variant?: HeadingVariant
   className?: string
 }
 

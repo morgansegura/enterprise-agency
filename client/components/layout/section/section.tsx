@@ -1,18 +1,19 @@
 import { cn } from '@/lib/utils'
+import type { ContainerElement, Spacing, BackgroundVariant, Width, TextAlign } from '@/lib/types'
 import './section.css'
 
 type SectionProps = {
   children?: React.ReactNode
   /** The HTML tag to render */
-  as?: 'section' | 'div' | 'article' | 'aside' | 'main'
+  as?: ContainerElement
   /** Vertical spacing (padding top/bottom) */
-  spacing?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  spacing?: Spacing
   /** Background style */
-  background?: 'none' | 'white' | 'gray' | 'dark' | 'primary' | 'secondary'
+  background?: BackgroundVariant
   /** Max width constraint */
-  width?: 'narrow' | 'wide' | 'full'
+  width?: Width
   /** Content alignment */
-  align?: 'left' | 'center' | 'right'
+  align?: Exclude<TextAlign, 'justify'>
   className?: string
 }
 
