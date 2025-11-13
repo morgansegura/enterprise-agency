@@ -1,30 +1,36 @@
-import { cn } from '@/lib/utils'
-import type { ContainerElement, Spacing, BackgroundVariant, Width, TextAlign } from '@/lib/types'
-import './section.css'
+import { cn } from "@/lib/utils";
+import type {
+  ContainerElement,
+  Spacing,
+  BackgroundVariant,
+  Width,
+  TextAlign,
+} from "@/lib/types";
+import "./section.css";
 
 type SectionProps = {
-  children?: React.ReactNode
+  children?: React.ReactNode;
   /** The HTML tag to render */
-  as?: ContainerElement
+  as?: ContainerElement;
   /** Vertical spacing (padding top/bottom) */
-  spacing?: Spacing
+  spacing?: Spacing;
   /** Background style */
-  background?: BackgroundVariant
+  background?: BackgroundVariant;
   /** Max width constraint */
-  width?: Width
+  width?: Width;
   /** Content alignment */
-  align?: Exclude<TextAlign, 'justify'>
-  className?: string
-}
+  align?: Exclude<TextAlign, "justify">;
+  className?: string;
+};
 
 export function Section({
   children,
-  as: Component = 'section',
-  spacing = 'md',
-  background = 'none',
-  width = 'wide',
-  align = 'left',
-  className
+  as: Component = "section",
+  spacing = "md",
+  background = "none",
+  width = "wide",
+  align = "left",
+  className,
 }: SectionProps) {
   return (
     <Component
@@ -36,5 +42,5 @@ export function Section({
     >
       {children}
     </Component>
-  )
+  );
 }

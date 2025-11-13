@@ -89,7 +89,7 @@ export interface DefaultSEOConfig {
  */
 export function generateMetadata(
   config: SEOConfig,
-  defaultConfig?: DefaultSEOConfig
+  defaultConfig?: DefaultSEOConfig,
 ): Metadata {
   const {
     title,
@@ -117,17 +117,16 @@ export function generateMetadata(
     : title;
 
   // Construct full URL if base URL is provided
-  const fullUrl = url && defaultConfig?.siteUrl
-    ? `${defaultConfig.siteUrl}${url}`
-    : url;
+  const fullUrl =
+    url && defaultConfig?.siteUrl ? `${defaultConfig.siteUrl}${url}` : url;
 
   // Process images to include full URLs
   const processedImages = images.map((img) => ({
     url: img.url.startsWith("http")
       ? img.url
       : defaultConfig?.siteUrl
-      ? `${defaultConfig.siteUrl}${img.url}`
-      : img.url,
+        ? `${defaultConfig.siteUrl}${img.url}`
+        : img.url,
     width: img.width,
     height: img.height,
     alt: img.alt || title,
@@ -163,7 +162,10 @@ export function generateMetadata(
       card: twitter?.card || "summary_large_image",
       title: fullTitle,
       description,
-      images: processedImages.length > 0 ? processedImages.map(img => img.url) : undefined,
+      images:
+        processedImages.length > 0
+          ? processedImages.map((img) => img.url)
+          : undefined,
       site: twitter?.site,
       creator: twitter?.creator,
     },

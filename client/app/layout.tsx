@@ -19,10 +19,12 @@ export const metadata: Metadata = {
     default: "MH Bible Baptist Church",
     template: "%s | MH Bible Baptist Church",
   },
-  description: "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
+  description:
+    "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
   openGraph: {
     title: "MH Bible Baptist Church",
-    description: "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
+    description:
+      "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
     url: "https://mhbiblebaptist.org",
     siteName: "MH Bible Baptist Church",
     images: [
@@ -39,7 +41,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "MH Bible Baptist Church",
-    description: "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
+    description:
+      "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
     images: ["https://mhbiblebaptist.org/og-image.jpg"],
   },
 };

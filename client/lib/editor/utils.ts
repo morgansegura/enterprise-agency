@@ -2,14 +2,14 @@
  * Utilities for converting between TipTap JSON and our Block format
  */
 
-import type { Block, TipTapJSON, TipTapNode } from './types'
-import type { HeadingLevel } from '@/lib/types'
+import type { Block, TipTapJSON, TipTapNode } from "./types";
+import type { HeadingLevel } from "@/lib/types";
 
 /**
  * Generate a unique key for blocks
  */
 export function generateBlockKey(): string {
-  return `block_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  return `block_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
 /**
@@ -17,92 +17,96 @@ export function generateBlockKey(): string {
  */
 function extractText(nodes: TipTapNode[] = []): string {
   return nodes
-    .map(node => {
-      if (node.text) return node.text
-      if (node.content) return extractText(node.content)
-      return ''
+    .map((node) => {
+      if (node.text) return node.text;
+      if (node.content) return extractText(node.content);
+      return "";
     })
-    .join('')
+    .join("");
 }
 
 /**
  * Convert TipTap JSON to our Block format
  */
 export function tiptapToBlocks(json: TipTapJSON): Block[] {
-  if (!json.content) return []
+  if (!json.content) return [];
 
   return json.content
-    .map(node => tiptapNodeToBlock(node))
-    .filter((block): block is Block => block !== null)
+    .map((node) => tiptapNodeToBlock(node))
+    .filter((block): block is Block => block !== null);
 }
 
 /**
  * Convert a single TipTap node to a Block
  */
 function tiptapNodeToBlock(node: TipTapNode): Block | null {
-  const key = generateBlockKey()
+  const key = generateBlockKey();
 
   switch (node.type) {
-    case 'heading': {
-      const level = node.attrs?.level || 2
-      const text = extractText(node.content)
+    case "heading": {
+      const level = (node.attrs?.level as number) || 2;
+      const text = extractText(node.content);
 
       return {
         _key: key,
-        _type: 'heading-block',
+        _type: "heading-block",
         data: {
           title: text,
           level: `h${level}` as HeadingLevel,
           size: levelToSize(level),
-          align: 'left'
-        }
-      }
+          align: "left",
+        },
+      };
     }
 
-    case 'paragraph': {
-      const text = extractText(node.content)
+    case "paragraph": {
+      const text = extractText(node.content);
 
       return {
         _key: key,
-        _type: 'text-block',
+        _type: "text-block",
         data: {
           content: text,
-          size: 'base',
-          align: 'left'
-        }
-      }
+          size: "base",
+          align: "left",
+        },
+      };
     }
 
-    case 'image': {
+    case "image": {
       return {
         _key: key,
-        _type: 'image-block',
+        _type: "image-block",
         data: {
-          url: node.attrs?.src || '',
-          alt: node.attrs?.alt || '',
+          url: node.attrs?.src || "",
+          alt: node.attrs?.alt || "",
           width: node.attrs?.width,
-          height: node.attrs?.height
-        }
-      }
+          height: node.attrs?.height,
+        },
+      };
     }
 
     // Add more block type conversions here
 
     default:
-      console.warn(`Unknown TipTap node type: ${node.type}`)
-      return null
+      console.warn(`Unknown TipTap node type: ${node.type}`);
+      return null;
   }
 }
 
 /**
  * Convert heading level to size
  */
-function levelToSize(level: number): 'xl' | '2xl' | '3xl' | '4xl' {
+function levelToSize(level: number): "xl" | "2xl" | "3xl" | "4xl" {
   switch (level) {
-    case 1: return '4xl'
-    case 2: return '3xl'
-    case 3: return '2xl'
-    default: return 'xl'
+    case 1:
+      return "4xl";
+    case 2:
+      return "3xl";
+    case 3:
+      return "2xl";
+    default:
+      return "xl";
   }
 }
 
@@ -111,11 +115,11 @@ function levelToSize(level: number): 'xl' | '2xl' | '3xl' | '4xl' {
  */
 export function blocksToTiptap(blocks: Block[]): TipTapJSON {
   return {
-    type: 'doc',
+    type: "doc",
     content: blocks
-      .map(block => blockToTiptapNode(block))
-      .filter((node): node is TipTapNode => node !== null)
-  }
+      .map((block) => blockToTiptapNode(block))
+      .filter((node): node is TipTapNode => node !== null),
+  };
 }
 
 /**
@@ -123,44 +127,48 @@ export function blocksToTiptap(blocks: Block[]): TipTapJSON {
  */
 function blockToTiptapNode(block: Block): TipTapNode | null {
   switch (block._type) {
-    case 'heading-block': {
-      const { title, level } = block.data
-      const headingLevel = level ? parseInt(level.replace('h', '')) : 2
+    case "heading-block": {
+      const title = block.data.title as string;
+      const level = block.data.level as string | undefined;
+      const headingLevel = level ? parseInt(level.replace("h", "")) : 2;
 
       return {
-        type: 'heading',
+        type: "heading",
         attrs: { level: headingLevel },
-        content: [{ type: 'text', text: title }]
-      }
+        content: [{ type: "text", text: title }],
+      };
     }
 
-    case 'text-block': {
-      const { content } = block.data
+    case "text-block": {
+      const content = block.data.content as string;
 
       return {
-        type: 'paragraph',
-        content: [{ type: 'text', text: content }]
-      }
+        type: "paragraph",
+        content: [{ type: "text", text: content }],
+      };
     }
 
-    case 'image-block': {
-      const { url, alt, width, height } = block.data
+    case "image-block": {
+      const url = block.data.url as string;
+      const alt = block.data.alt as string | undefined;
+      const width = block.data.width as number | undefined;
+      const height = block.data.height as number | undefined;
 
       return {
-        type: 'image',
+        type: "image",
         attrs: {
           src: url,
-          alt: alt || '',
+          alt: alt || "",
           width,
-          height
-        }
-      }
+          height,
+        },
+      };
     }
 
     // Add more block type conversions here
 
     default:
-      console.warn(`Unknown block type: ${block._type}`)
-      return null
+      console.warn(`Unknown block type: ${block._type}`);
+      return null;
   }
 }

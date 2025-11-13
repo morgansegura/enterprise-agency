@@ -1,1 +1,1 @@
-export { HeadingBlock } from './heading-block'
+export { HeadingBlock, type HeadingBlockData } from "./heading-block";

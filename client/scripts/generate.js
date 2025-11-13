@@ -1,46 +1,47 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-require-imports */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // ANSI color codes for terminal output
 const colors = {
-  reset: '\x1b[0m',
-  bright: '\x1b[1m',
-  green: '\x1b[32m',
-  blue: '\x1b[34m',
-  red: '\x1b[31m',
-  yellow: '\x1b[33m',
+  reset: "\x1b[0m",
+  bright: "\x1b[1m",
+  green: "\x1b[32m",
+  blue: "\x1b[34m",
+  red: "\x1b[31m",
+  yellow: "\x1b[33m",
 };
 
-function log(message, color = 'reset') {
+function log(message, color = "reset") {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
 function toPascalCase(str) {
   return str
     .split(/[-_\s]/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join('');
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join("");
 }
 
 function toKebabCase(str) {
   return str
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
-    .replace(/[\s_]+/g, '-')
+    .replace(/([a-z])([A-Z])/g, "$1-$2")
+    .replace(/[\s_]+/g, "-")
     .toLowerCase();
 }
 
 function createDirectory(dirPath) {
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
-    log(`✓ Created directory: ${dirPath}`, 'green');
+    log(`✓ Created directory: ${dirPath}`, "green");
   }
 }
 
 function writeFile(filePath, content) {
   fs.writeFileSync(filePath, content);
-  log(`✓ Created file: ${filePath}`, 'green');
+  log(`✓ Created file: ${filePath}`, "green");
 }
 
 // Component template
@@ -84,8 +85,8 @@ function generateComponentIndexTemplate(componentName) {
 function generatePageTemplate(pageName, route) {
   const title = pageName
     .split(/[-_\s]/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 
   return `import type { Metadata } from "next";
 
@@ -136,14 +137,22 @@ export default function ${toPascalCase(pageName)}Page() {
 
 // Generate component
 function generateComponent(componentPath) {
-  const parts = componentPath.split('/');
+  const parts = componentPath.split("/");
   const componentName = toPascalCase(parts[parts.length - 1]);
-  const componentDir = path.join(process.cwd(), 'components', ...parts.slice(0, -1), toKebabCase(parts[parts.length - 1]));
+  const componentDir = path.join(
+    process.cwd(),
+    "components",
+    ...parts.slice(0, -1),
+    toKebabCase(parts[parts.length - 1]),
+  );
 
   createDirectory(componentDir);
 
   // Create component file
-  const componentFile = path.join(componentDir, `${toKebabCase(componentName)}.tsx`);
+  const componentFile = path.join(
+    componentDir,
+    `${toKebabCase(componentName)}.tsx`,
+  );
   writeFile(componentFile, generateComponentTemplate(componentName));
 
   // Create CSS file
@@ -151,28 +160,37 @@ function generateComponent(componentPath) {
   writeFile(cssFile, generateComponentCSSTemplate(componentName));
 
   // Create index file
-  const indexFile = path.join(componentDir, 'index.ts');
+  const indexFile = path.join(componentDir, "index.ts");
   writeFile(indexFile, generateComponentIndexTemplate(componentName));
 
-  log(`\n${colors.bright}${colors.green}✓ Component "${componentName}" created successfully!${colors.reset}`, 'bright');
-  log(`\nImport with: import { ${componentName} } from '@/components/${parts.join('/')}'\n`, 'blue');
+  log(
+    `\n${colors.bright}${colors.green}✓ Component "${componentName}" created successfully!${colors.reset}`,
+    "bright",
+  );
+  log(
+    `\nImport with: import { ${componentName} } from '@/components/${parts.join("/")}'\n`,
+    "blue",
+  );
 }
 
 // Generate page
 function generatePage(pagePath) {
-  const route = '/' + pagePath.replace(/\\/g, '/');
-  const pageName = pagePath.split('/').pop();
-  const pageDir = path.join(process.cwd(), 'app', pagePath);
+  const route = "/" + pagePath.replace(/\\/g, "/");
+  const pageName = pagePath.split("/").pop();
+  const pageDir = path.join(process.cwd(), "app", pagePath);
 
   createDirectory(pageDir);
 
   // Create page file
-  const pageFile = path.join(pageDir, 'page.tsx');
+  const pageFile = path.join(pageDir, "page.tsx");
   writeFile(pageFile, generatePageTemplate(pageName, route));
 
-  log(`\n${colors.bright}${colors.green}✓ Page created successfully!${colors.reset}`, 'bright');
-  log(`\nRoute: ${route}`, 'blue');
-  log(`File: app/${pagePath}/page.tsx\n`, 'blue');
+  log(
+    `\n${colors.bright}${colors.green}✓ Page created successfully!${colors.reset}`,
+    "bright",
+  );
+  log(`\nRoute: ${route}`, "blue");
+  log(`File: app/${pagePath}/page.tsx\n`, "blue");
 }
 
 // Main function
@@ -180,36 +198,36 @@ function main() {
   const args = process.argv.slice(2);
 
   if (args.length < 2) {
-    log('Usage:', 'yellow');
-    log('  npm run generate component <path/to/component-name>', 'blue');
-    log('  npm run generate page <route/name>', 'blue');
-    log('\nExamples:', 'yellow');
-    log('  npm run generate component ui/button', 'blue');
-    log('  npm run generate component layout/header/nav-menu', 'blue');
-    log('  npm run generate page contact', 'blue');
-    log('  npm run generate page ministries/youth', 'blue');
+    log("Usage:", "yellow");
+    log("  npm run generate component <path/to/component-name>", "blue");
+    log("  npm run generate page <route/name>", "blue");
+    log("\nExamples:", "yellow");
+    log("  npm run generate component ui/button", "blue");
+    log("  npm run generate component layout/header/nav-menu", "blue");
+    log("  npm run generate page contact", "blue");
+    log("  npm run generate page ministries/youth", "blue");
     process.exit(1);
   }
 
   const [type, ...pathParts] = args;
-  const itemPath = pathParts.join(' ').trim();
+  const itemPath = pathParts.join(" ").trim();
 
   if (!itemPath) {
-    log('Error: Please provide a name/path', 'red');
+    log("Error: Please provide a name/path", "red");
     process.exit(1);
   }
 
   switch (type.toLowerCase()) {
-    case 'component':
-    case 'c':
+    case "component":
+    case "c":
       generateComponent(itemPath);
       break;
-    case 'page':
-    case 'p':
+    case "page":
+    case "p":
       generatePage(itemPath);
       break;
     default:
-      log(`Error: Unknown type "${type}". Use "component" or "page"`, 'red');
+      log(`Error: Unknown type "${type}". Use "component" or "page"`, "red");
       process.exit(1);
   }
 }

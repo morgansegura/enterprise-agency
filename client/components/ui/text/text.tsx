@@ -1,30 +1,36 @@
-import { cn } from '@/lib/utils'
-import type { TextElement, TextSize, FontWeight, TextAlign, TextVariant } from '@/lib/types'
-import './text.css'
+import { cn } from "@/lib/utils";
+import type {
+  TextElement,
+  TextSize,
+  FontWeight,
+  TextAlign,
+  TextVariant,
+} from "@/lib/types";
+import "./text.css";
 
 type TextProps = {
-  children?: React.ReactNode
+  children?: React.ReactNode;
   /** The HTML tag to render */
-  as?: TextElement
+  as?: TextElement;
   /** Text size */
-  size?: TextSize
+  size?: TextSize;
   /** Font weight */
-  weight?: FontWeight
+  weight?: FontWeight;
   /** Text alignment */
-  align?: TextAlign
+  align?: TextAlign;
   /** Text variant/style */
-  variant?: TextVariant
-  className?: string
-}
+  variant?: TextVariant;
+  className?: string;
+};
 
 export function Text({
   children,
-  as: Component = 'p',
-  size = 'base',
-  weight = 'normal',
-  align = 'left',
-  variant = 'default',
-  className
+  as: Component = "p",
+  size = "base",
+  weight = "normal",
+  align = "left",
+  variant = "default",
+  className,
 }: TextProps) {
   return (
     <Component
@@ -36,5 +42,5 @@ export function Text({
     >
       {children}
     </Component>
-  )
+  );
 }

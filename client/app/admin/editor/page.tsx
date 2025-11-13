@@ -1,36 +1,37 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { BlockEditor } from '@/components/editor'
-import type { Block } from '@/lib/editor/types'
+import { useState } from "react";
+import { BlockEditor } from "@/components/editor";
+import type { Block } from "@/lib/editor/types";
 
 export default function EditorTestPage() {
   const [blocks, setBlocks] = useState<Block[]>([
     {
-      _key: 'initial_1',
-      _type: 'heading-block',
+      _key: "initial_1",
+      _type: "heading-block",
       data: {
-        title: 'Welcome to the Block Editor',
-        level: 'h1',
-        size: '4xl',
-        align: 'center'
-      }
+        title: "Welcome to the Block Editor",
+        level: "h1",
+        size: "4xl",
+        align: "center",
+      },
     },
     {
-      _key: 'initial_2',
-      _type: 'text-block',
+      _key: "initial_2",
+      _type: "text-block",
       data: {
-        content: 'Start editing by clicking here. You can format text, add headings, and more.',
-        size: 'lg',
-        align: 'left'
-      }
-    }
-  ])
+        content:
+          "Start editing by clicking here. You can format text, add headings, and more.",
+        size: "lg",
+        align: "left",
+      },
+    },
+  ]);
 
   const handleChange = (newBlocks: Block[]) => {
-    console.log('Content changed:', newBlocks)
-    setBlocks(newBlocks)
-  }
+    console.log("Content changed:", newBlocks);
+    setBlocks(newBlocks);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -106,5 +107,5 @@ export default function EditorTestPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

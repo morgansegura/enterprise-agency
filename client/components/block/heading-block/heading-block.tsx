@@ -1,8 +1,14 @@
-import { cn } from '@/lib/utils'
-import { Heading } from '@/components/ui/heading'
-import { Text } from '@/components/ui/text'
-import type { HeadingLevel, HeadingSize, TextAlign, HeadingVariant, TextSize } from '@/lib/types'
-import './heading-block.css'
+import { cn } from "@/lib/utils";
+import { Heading } from "@/components/ui/heading";
+import { Text } from "@/components/ui/text";
+import type {
+  HeadingLevel,
+  HeadingSize,
+  TextAlign,
+  HeadingVariant,
+  TextSize,
+} from "@/lib/types";
+import "./heading-block.css";
 
 /**
  * Data structure for HeadingBlock
@@ -10,21 +16,21 @@ import './heading-block.css'
  */
 export type HeadingBlockData = {
   /** Main heading text */
-  title: string
+  title: string;
   /** Optional subtitle/description */
-  subtitle?: string
+  subtitle?: string;
   /** Semantic HTML level (h1-h6) */
-  level?: HeadingLevel
+  level?: HeadingLevel;
   /** Visual size of heading */
-  size?: HeadingSize
+  size?: HeadingSize;
   /** Text alignment */
-  align?: TextAlign
+  align?: TextAlign;
   /** Heading color variant */
-  variant?: HeadingVariant
+  variant?: HeadingVariant;
   /** Subtitle size */
-  subtitleSize?: TextSize
-  className?: string
-}
+  subtitleSize?: TextSize;
+  className?: string;
+};
 
 /**
  * HeadingBlock - A block component for page headings
@@ -33,21 +39,16 @@ export type HeadingBlockData = {
 export function HeadingBlock({
   title,
   subtitle,
-  level = 'h2',
-  size = '2xl',
-  align = 'left',
-  variant = 'default',
-  subtitleSize = 'lg',
-  className
+  level = "h2",
+  size = "2xl",
+  align = "left",
+  variant = "default",
+  subtitleSize = "lg",
+  className,
 }: HeadingBlockData) {
   return (
     <div className={cn("heading-block", className)} data-align={align}>
-      <Heading
-        as={level}
-        size={size}
-        align={align}
-        variant={variant}
-      >
+      <Heading as={level} size={size} align={align} variant={variant}>
         {title}
       </Heading>
 
@@ -62,5 +63,5 @@ export function HeadingBlock({
         </Text>
       )}
     </div>
-  )
+  );
 }

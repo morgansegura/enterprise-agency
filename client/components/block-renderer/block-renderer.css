@@ -1,0 +1,14 @@
+@reference "tailwindcss";
+
+.block-renderer {
+  @apply flex flex-col;
+}
+
+/* Gap between blocks */
+.block-renderer[data-gap="none"] { @apply gap-0; }
+.block-renderer[data-gap="xs"] { @apply gap-2; }
+.block-renderer[data-gap="sm"] { @apply gap-4; }
+.block-renderer[data-gap="md"] { @apply gap-6; }
+.block-renderer[data-gap="lg"] { @apply gap-8; }
+.block-renderer[data-gap="xl"] { @apply gap-12; }
+.block-renderer[data-gap="2xl"] { @apply gap-16; }
