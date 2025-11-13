@@ -1,0 +1,10 @@
+@reference "tailwindcss";
+
+.text-block {
+  @apply relative mb-4;
+}
+
+/* Preserve line breaks */
+.text-block .text {
+  @apply whitespace-pre-line;
+}
