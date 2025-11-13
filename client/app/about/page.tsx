@@ -1,35 +1,35 @@
 import type { Metadata } from "next";
-import { generateMetadata } from "@/lib/seo";
-import { defaultSEO } from "@/lib/site-config";
 
 /**
  * Example: Custom metadata for the About page
- * This demonstrates how to use the SEO utilities for individual pages
+ * Testing with simple metadata object
  */
-export const metadata: Metadata = generateMetadata(
-  {
-    title: "About Us",
-    description:
-      "Learn about MH Bible Baptist Church, our mission, beliefs, and the community we serve. Discover our commitment to faith, fellowship, and the Gospel.",
-    url: "/about",
-    keywords: [
-      "About MH Bible Baptist Church",
-      "Church Mission",
-      "Baptist Beliefs",
-      "Church History",
-      "Faith Community",
-    ],
+export const metadata: Metadata = {
+  title: "About Us | MH Bible Baptist Church",
+  description: "Learn about MH Bible Baptist Church, our mission, beliefs, and the community we serve.",
+  openGraph: {
+    title: "About Us | MH Bible Baptist Church",
+    description: "Learn about MH Bible Baptist Church, our mission, beliefs, and the community we serve.",
+    url: "https://mhbiblebaptist.org/about",
+    siteName: "MH Bible Baptist Church",
     images: [
       {
-        url: "/images/about-og.jpg", // Custom image for this page
+        url: "https://mhbiblebaptist.org/images/about-og.jpg",
         width: 1200,
         height: 630,
         alt: "About MH Bible Baptist Church",
       },
     ],
+    locale: "en_US",
+    type: "website",
   },
-  defaultSEO
-);
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | MH Bible Baptist Church",
+    description: "Learn about MH Bible Baptist Church, our mission, beliefs, and the community we serve.",
+    images: ["https://mhbiblebaptist.org/images/about-og.jpg"],
+  },
+};
 
 export default function AboutPage() {
   return (

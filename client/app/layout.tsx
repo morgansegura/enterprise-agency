@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { generateMetadata } from "@/lib/seo";
-import { defaultSEO, churchInfo } from "@/lib/site-config";
+import { churchInfo } from "@/lib/site-config";
 import { generateChurchSchema } from "@/lib/seo";
 
 const geistSans = Geist({
@@ -15,14 +14,35 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = generateMetadata(
-  {
-    title: defaultSEO.defaultTitle,
-    description: defaultSEO.description,
-    keywords: defaultSEO.keywords,
+export const metadata: Metadata = {
+  title: {
+    default: "MH Bible Baptist Church",
+    template: "%s | MH Bible Baptist Church",
   },
-  defaultSEO
-);
+  description: "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
+  openGraph: {
+    title: "MH Bible Baptist Church",
+    description: "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
+    url: "https://mhbiblebaptist.org",
+    siteName: "MH Bible Baptist Church",
+    images: [
+      {
+        url: "https://mhbiblebaptist.org/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "MH Bible Baptist Church",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MH Bible Baptist Church",
+    description: "Welcome to MH Bible Baptist Church. Join us for worship, Bible study, and fellowship.",
+    images: ["https://mhbiblebaptist.org/og-image.jpg"],
+  },
+};
 
 export default function RootLayout({
   children,
