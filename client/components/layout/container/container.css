@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+.container {
+  @apply relative;
+
+  &[data-width="full"] {
+    @apply w-full
+  }
+
+  &[data-width="narrow"] {
+    @apply max-w-5xl w-full mx-auto;
+  }
+  
+  &[data-width="wide"] {
+    @apply max-w-7xl w-full mx-auto;
+
+  }
+
+  &[data-spacing="sm"] {
+    @apply px-4 2xl:px-none;
+  }
+
+  &[data-spacing="md"] {
+    @apply px-6 lg:px-8 2xl:px-none;
+  }
+  
+  &[data-spacing="lg"] {
+    @apply px-8 lg:px-12 2xl:px-none;
+
+  }
+}

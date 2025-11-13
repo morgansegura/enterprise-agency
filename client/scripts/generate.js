@@ -65,9 +65,12 @@ export function ${componentName}({ children, className }: ${componentName}Props)
 
 // Component CSS template
 function generateComponentCSSTemplate(componentName) {
-  return `.${toKebabCase(componentName)} {
-  /* Add your styles here */
-}
+  return `
+  @reference "tailwindcss";
+
+  .${toKebabCase(componentName)} {
+    @apply relative;
+  }
 `;
 }
 

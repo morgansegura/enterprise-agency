@@ -1,0 +1,6 @@
+
+  @reference "tailwindcss";
+
+  .heading-block {
+    @apply relative;
+  }

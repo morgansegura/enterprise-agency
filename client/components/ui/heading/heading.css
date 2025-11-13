@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+.heading {
+  @apply relative leading-tight;
+}
+
+/* Sizes */
+.heading[data-size="xs"] { @apply text-xs; }
+.heading[data-size="sm"] { @apply text-sm; }
+.heading[data-size="base"] { @apply text-base; }
+.heading[data-size="lg"] { @apply text-lg; }
+.heading[data-size="xl"] { @apply text-xl; }
+.heading[data-size="2xl"] { @apply text-2xl; }
+.heading[data-size="3xl"] { @apply text-3xl; }
+.heading[data-size="4xl"] { @apply text-4xl; }
+
+/* Weight */
+.heading[data-weight="normal"] { @apply font-normal; }
+.heading[data-weight="medium"] { @apply font-medium; }
+.heading[data-weight="semibold"] { @apply font-semibold; }
+.heading[data-weight="bold"] { @apply font-bold; }
+.heading[data-weight="extrabold"] { @apply font-extrabold; }
+
+/* Alignment */
+.heading[data-align="left"] { @apply text-left; }
+.heading[data-align="center"] { @apply text-center; }
+.heading[data-align="right"] { @apply text-right; }
+
+/* Variants */
+.heading[data-variant="default"] { @apply text-gray-900; }
+.heading[data-variant="primary"] { @apply text-blue-600; }
+.heading[data-variant="muted"] { @apply text-gray-600; }

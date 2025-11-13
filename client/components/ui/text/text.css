@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+.text {
+  @apply relative leading-relaxed;
+}
+
+/* Sizes */
+.text[data-size="xs"] { @apply text-xs; }
+.text[data-size="sm"] { @apply text-sm; }
+.text[data-size="base"] { @apply text-base; }
+.text[data-size="lg"] { @apply text-lg; }
+.text[data-size="xl"] { @apply text-xl; }
+.text[data-size="2xl"] { @apply text-2xl; }
+
+/* Weight */
+.text[data-weight="normal"] { @apply font-normal; }
+.text[data-weight="medium"] { @apply font-medium; }
+.text[data-weight="semibold"] { @apply font-semibold; }
+.text[data-weight="bold"] { @apply font-bold; }
+
+/* Alignment */
+.text[data-align="left"] { @apply text-left; }
+.text[data-align="center"] { @apply text-center; }
+.text[data-align="right"] { @apply text-right; }
+.text[data-align="justify"] { @apply text-justify; }
+
+/* Variants */
+.text[data-variant="default"] { @apply text-gray-900; }
+.text[data-variant="muted"] { @apply text-gray-600; }
+.text[data-variant="lead"] { @apply text-xl font-light leading-relaxed text-gray-700; }
+.text[data-variant="subtle"] { @apply text-gray-500; }
