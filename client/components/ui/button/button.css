@@ -1,0 +1,99 @@
+@reference "tailwindcss";
+
+[data-slot="button"] {
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium;
+  @apply transition-all outline-none shrink-0;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+  @apply focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px];
+  @apply aria-invalid:ring-destructive/20 aria-invalid:border-destructive;
+  
+  /* SVG styling */
+  & svg {
+    @apply pointer-events-none shrink-0;
+  }
+  
+  & svg:not([class*='size-']) {
+    @apply size-4;
+  }
+}
+
+/* Dark mode aria-invalid */
+.dark [data-slot="button"][aria-invalid] {
+  @apply ring-destructive/40;
+}
+
+/* Variants */
+[data-slot="button"][data-variant="default"] {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90;
+}
+
+[data-slot="button"][data-variant="destructive"] {
+  @apply bg-destructive text-white hover:bg-destructive/90;
+  @apply focus-visible:ring-destructive/20;
+}
+
+.dark [data-slot="button"][data-variant="destructive"] {
+  @apply bg-destructive/60 focus-visible:ring-destructive/40;
+}
+
+[data-slot="button"][data-variant="outline"] {
+  @apply border bg-background shadow-xs;
+  @apply hover:bg-accent hover:text-accent-foreground;
+}
+
+.dark [data-slot="button"][data-variant="outline"] {
+  @apply bg-input/30 border-input hover:bg-input/50;
+}
+
+[data-slot="button"][data-variant="secondary"] {
+  @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+}
+
+[data-slot="button"][data-variant="ghost"] {
+  @apply hover:bg-accent hover:text-accent-foreground;
+}
+
+.dark [data-slot="button"][data-variant="ghost"] {
+  @apply hover:bg-accent/50;
+}
+
+[data-slot="button"][data-variant="link"] {
+  @apply text-primary underline-offset-4 hover:underline;
+}
+
+/* Sizes */
+[data-slot="button"][data-size="default"] {
+  @apply h-9 px-4 py-2;
+  
+  &:has(> svg) {
+    @apply px-3;
+  }
+}
+
+[data-slot="button"][data-size="sm"] {
+  @apply h-8 rounded-md gap-1.5 px-3;
+  
+  &:has(> svg) {
+    @apply px-2.5;
+  }
+}
+
+[data-slot="button"][data-size="lg"] {
+  @apply h-10 rounded-md px-6;
+  
+  &:has(> svg) {
+    @apply px-4;
+  }
+}
+
+[data-slot="button"][data-size="icon"] {
+  @apply size-9;
+}
+
+[data-slot="button"][data-size="icon-sm"] {
+  @apply size-8;
+}
+
+[data-slot="button"][data-size="icon-lg"] {
+  @apply size-10;
+}
