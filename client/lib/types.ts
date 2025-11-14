@@ -74,3 +74,32 @@ export type BaseComponentProps = {
   className?: string;
   children?: React.ReactNode;
 };
+
+// ========================================
+// Theme System
+// ========================================
+
+/** Section pattern options */
+export type SectionPattern = "none" | "dots" | "grid" | "lines";
+
+/** Theme preferences for church-specific customization */
+export type ThemePreferences = {
+  /** Default border radius size (references Tailwind scale) */
+  defaultRadius: "sm" | "md" | "lg" | "xl" | "2xl";
+  /** Default shadow size (references Tailwind scale) */
+  defaultShadow: "none" | "sm" | "md" | "lg" | "xl" | "2xl";
+  /** Header style preference */
+  headerStyle: "minimal" | "bold";
+};
+
+/** Complete theme configuration */
+export type ThemeConfig = {
+  /** Font family variables (reference CSS custom properties) */
+  fonts: {
+    heading: string;
+    body: string;
+    mono: string;
+  };
+  /** Church-specific design preferences */
+  preferences: ThemePreferences;
+};

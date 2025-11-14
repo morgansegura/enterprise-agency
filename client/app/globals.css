@@ -43,6 +43,16 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Semantic spacing for sections and blocks */
+  --spacing-section-sm: theme('spacing.16');
+  --spacing-section-md: theme('spacing.24');
+  --spacing-section-lg: theme('spacing.32');
+  --spacing-section-xl: theme('spacing.40');
+  --spacing-block-sm: theme('spacing.4');
+  --spacing-block-md: theme('spacing.6');
+  --spacing-block-lg: theme('spacing.8');
+  --spacing-container: theme('spacing.8');
 }
 
 :root {

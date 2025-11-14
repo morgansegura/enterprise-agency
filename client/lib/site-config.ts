@@ -1,4 +1,5 @@
 import { DefaultSEOConfig } from "./seo";
+import type { ThemeConfig } from "./types";
 
 /**
  * Default site-wide SEO configuration for MH Bible Baptist Church
@@ -68,4 +69,23 @@ export const churchInfo = {
     // "https://www.youtube.com/@mhbiblebaptist",
     // "https://twitter.com/mhbiblebaptist",
   ],
+};
+
+/**
+ * Theme configuration
+ * Defines church-specific design preferences
+ * Most design tokens (spacing, shadows, etc.) are defined in globals.css using Tailwind
+ */
+export const theme: ThemeConfig = {
+  fonts: {
+    heading: "var(--font-sans)",
+    body: "var(--font-sans)",
+    mono: "var(--font-mono)",
+  },
+
+  preferences: {
+    defaultRadius: "lg",
+    defaultShadow: "md",
+    headerStyle: "minimal",
+  },
 };
