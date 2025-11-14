@@ -26,6 +26,38 @@
   font-size: var(--text-size-xl);
 }
 
+.text[data-size="2xl"] {
+  font-size: var(--text-size-2xl);
+}
+
+.text[data-size="3xl"] {
+  font-size: var(--text-size-3xl);
+}
+
+.text[data-size="4xl"] {
+  font-size: var(--text-size-4xl);
+}
+
+.text[data-size="5xl"] {
+  font-size: var(--text-size-5xl);
+}
+
+.text[data-size="6xl"] {
+  font-size: var(--text-size-6xl);
+}
+
+.text[data-size="7xl"] {
+  font-size: var(--text-size-7xl);
+}
+
+.text[data-size="8xl"] {
+  font-size: var(--text-size-8xl);
+}
+
+.text[data-size="9xl"] {
+  font-size: var(--text-size-9xl);
+}
+
 /* Weight - using typography tokens */
 .text[data-weight="normal"] {
   font-weight: var(--font-weight-normal);

@@ -59,7 +59,7 @@ export const homePageMock = {
                 text: "Join us for worship and fellowship every Sunday",
                 level: "h2" as const,
                 wieght: "bold",
-                size: "3xl" as const,
+                size: "2xl" as const,
                 align: "center" as const,
                 variant: "default" as const,
               },

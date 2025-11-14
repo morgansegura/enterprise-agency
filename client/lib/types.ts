@@ -10,11 +10,24 @@
 /** Text alignment options */
 export type TextAlign = "left" | "center" | "right" | "justify";
 
-/** Text size options */
-export type TextSize = "xs" | "sm" | "base" | "lg" | "xl" | "2xl";
+/** Text size options - complete Tailwind scale */
+export type TextSize =
+  | "xs"
+  | "sm"
+  | "base"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "6xl"
+  | "7xl"
+  | "8xl"
+  | "9xl";
 
-/** Heading size options (includes larger sizes) */
-export type HeadingSize = TextSize | "3xl" | "4xl";
+/** Heading size options - same as TextSize for consistency */
+export type HeadingSize = TextSize;
 
 /** Font weight options */
 export type FontWeight =

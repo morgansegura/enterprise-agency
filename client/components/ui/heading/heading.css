@@ -7,6 +7,10 @@
 }
 
 /* Sizes - using typography tokens (responsive) */
+.heading[data-size="xs"] {
+  font-size: var(--heading-size-xs);
+}
+
 .heading[data-size="sm"] {
   font-size: var(--heading-size-sm);
 }
@@ -33,6 +37,26 @@
 
 .heading[data-size="4xl"] {
   font-size: var(--heading-size-4xl);
+}
+
+.heading[data-size="5xl"] {
+  font-size: var(--heading-size-5xl);
+}
+
+.heading[data-size="6xl"] {
+  font-size: var(--heading-size-6xl);
+}
+
+.heading[data-size="7xl"] {
+  font-size: var(--heading-size-7xl);
+}
+
+.heading[data-size="8xl"] {
+  font-size: var(--heading-size-8xl);
+}
+
+.heading[data-size="9xl"] {
+  font-size: var(--heading-size-9xl);
 }
 
 /* Weight - using typography tokens */

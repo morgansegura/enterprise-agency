@@ -44,7 +44,20 @@ export type JustifyContent =
 export type HeadingBlockData = {
   text: string;
   level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  size?: "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
+  size?:
+    | "xs"
+    | "sm"
+    | "base"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "6xl"
+    | "7xl"
+    | "8xl"
+    | "9xl";
   align?: "left" | "center" | "right";
   weight?: "normal" | "medium" | "semibold" | "bold" | "extrabold";
   variant?: "default" | "primary" | "muted";
@@ -53,7 +66,20 @@ export type HeadingBlockData = {
 /** Text block data */
 export type TextBlockData = {
   content: string;
-  size?: "sm" | "base" | "lg";
+  size?:
+    | "xs"
+    | "sm"
+    | "base"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "6xl"
+    | "7xl"
+    | "8xl"
+    | "9xl";
   align?: "left" | "center" | "right" | "justify";
   variant?: "default" | "muted" | "lead" | "subtle";
 };

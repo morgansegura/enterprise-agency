@@ -11,7 +11,7 @@
 
 :root {
   /* ===== LAYER 1: PRIMITIVE FONT SIZE TOKENS ===== */
-  /* Base sizes - map to Tailwind scale by default */
+  /* Complete Tailwind scale - xs through 9xl */
   /* Override these per client to change base sizes */
   --font-xs: theme(fontSize.xs);
   --font-sm: theme(fontSize.sm);
@@ -24,10 +24,13 @@
   --font-5xl: theme(fontSize.5xl);
   --font-6xl: theme(fontSize.6xl);
   --font-7xl: theme(fontSize.7xl);
+  --font-8xl: theme(fontSize.8xl);
+  --font-9xl: theme(fontSize.9xl);
 
   /* ===== LAYER 2: SCALING RATE TOKENS ===== */
   /* Viewport-based scaling rates */
   /* Override these per client to change how aggressively fonts scale */
+  --scale-xs: 0.25vw;
   --scale-sm: 0.4vw;
   --scale-base: 0.5vw;
   --scale-lg: 0.75vw;
@@ -35,9 +38,15 @@
   --scale-2xl: 1.5vw;
   --scale-3xl: 2vw;
   --scale-4xl: 2.5vw;
+  --scale-5xl: 3vw;
+  --scale-6xl: 3.5vw;
+  --scale-7xl: 4vw;
+  --scale-8xl: 4.5vw;
+  --scale-9xl: 5vw;
 
   /* ===== LAYER 3: FLUID HEADING SIZES ===== */
   /* Using clamp() with primitive tokens for smooth responsive scaling */
+  --heading-size-xs: clamp(var(--font-xs), calc(var(--font-xs) + var(--scale-xs)), var(--font-sm));
   --heading-size-sm: clamp(var(--font-sm), calc(var(--font-sm) + var(--scale-sm)), var(--font-base));
   --heading-size-base: clamp(var(--font-base), calc(var(--font-base) + var(--scale-base)), var(--font-lg));
   --heading-size-lg: clamp(var(--font-lg), calc(var(--font-lg) + var(--scale-lg)), var(--font-xl));
@@ -45,15 +54,27 @@
   --heading-size-2xl: clamp(var(--font-2xl), calc(var(--font-2xl) + var(--scale-2xl)), var(--font-3xl));
   --heading-size-3xl: clamp(var(--font-3xl), calc(var(--font-3xl) + var(--scale-3xl)), var(--font-5xl));
   --heading-size-4xl: clamp(var(--font-4xl), calc(var(--font-4xl) + var(--scale-4xl)), var(--font-7xl));
+  --heading-size-5xl: clamp(var(--font-5xl), calc(var(--font-5xl) + var(--scale-5xl)), var(--font-7xl));
+  --heading-size-6xl: clamp(var(--font-6xl), calc(var(--font-6xl) + var(--scale-6xl)), var(--font-8xl));
+  --heading-size-7xl: clamp(var(--font-7xl), calc(var(--font-7xl) + var(--scale-7xl)), var(--font-9xl));
+  --heading-size-8xl: clamp(var(--font-8xl), calc(var(--font-8xl) + var(--scale-8xl)), var(--font-9xl));
+  --heading-size-9xl: clamp(var(--font-9xl), calc(var(--font-9xl) + var(--scale-9xl)), var(--font-9xl));
 
   /* ===== LAYER 3: FLUID TEXT SIZES ===== */
-  /* Static sizes - no scaling needed for small text */
-  --text-size-xs: var(--font-xs);
-  --text-size-sm: var(--font-sm);
-  --text-size-base: var(--font-base);
-  /* Fluid sizes for larger body text */
+  /* Complete scale - all sizes available for body text */
+  --text-size-xs: clamp(var(--font-xs), calc(var(--font-xs) + var(--scale-xs)), var(--font-sm));
+  --text-size-sm: clamp(var(--font-sm), calc(var(--font-sm) + var(--scale-sm)), var(--font-base));
+  --text-size-base: clamp(var(--font-base), calc(var(--font-base) + var(--scale-base)), var(--font-lg));
   --text-size-lg: clamp(var(--font-lg), calc(var(--font-lg) + var(--scale-lg)), var(--font-xl));
   --text-size-xl: clamp(var(--font-xl), calc(var(--font-xl) + var(--scale-xl)), var(--font-2xl));
+  --text-size-2xl: clamp(var(--font-2xl), calc(var(--font-2xl) + var(--scale-2xl)), var(--font-3xl));
+  --text-size-3xl: clamp(var(--font-3xl), calc(var(--font-3xl) + var(--scale-3xl)), var(--font-4xl));
+  --text-size-4xl: clamp(var(--font-4xl), calc(var(--font-4xl) + var(--scale-4xl)), var(--font-5xl));
+  --text-size-5xl: clamp(var(--font-5xl), calc(var(--font-5xl) + var(--scale-5xl)), var(--font-6xl));
+  --text-size-6xl: clamp(var(--font-6xl), calc(var(--font-6xl) + var(--scale-6xl)), var(--font-7xl));
+  --text-size-7xl: clamp(var(--font-7xl), calc(var(--font-7xl) + var(--scale-7xl)), var(--font-8xl));
+  --text-size-8xl: clamp(var(--font-8xl), calc(var(--font-8xl) + var(--scale-8xl)), var(--font-9xl));
+  --text-size-9xl: clamp(var(--font-9xl), calc(var(--font-9xl) + var(--scale-9xl)), var(--font-9xl));
 
   /* ===== FONT WEIGHTS ===== */
   --font-weight-normal: theme(fontWeight.normal);
