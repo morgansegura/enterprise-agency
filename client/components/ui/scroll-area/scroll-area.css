@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+[data-slot="scroll-area"] {
+  @apply relative;
+}
+
+[data-slot="scroll-area-viewport"] {
+  @apply focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1;
+}
+
+[data-slot="scroll-area-scrollbar"] {
+  @apply flex touch-none p-px transition-colors select-none;
+}
+
+[data-slot="scroll-area-scrollbar"][data-orientation="vertical"] {
+  @apply h-full w-2.5 border-l border-l-transparent;
+}
+
+[data-slot="scroll-area-scrollbar"][data-orientation="horizontal"] {
+  @apply h-2.5 flex-col border-t border-t-transparent;
+}
+
+[data-slot="scroll-area-thumb"] {
+  @apply bg-border relative flex-1 rounded-full;
+}

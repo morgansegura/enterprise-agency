@@ -1,0 +1,53 @@
+@reference "tailwindcss";
+
+[data-slot="pagination"] {
+  @apply mx-auto flex w-full justify-center;
+}
+
+[data-slot="pagination-content"] {
+  @apply flex flex-row items-center gap-1;
+}
+
+[data-slot="pagination-link"] {
+  @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+}
+
+[data-slot="pagination-link"][data-active="false"] {
+  @apply hover:bg-accent hover:text-accent-foreground;
+}
+
+[data-slot="pagination-link"][data-active="true"] {
+  @apply border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground;
+}
+
+[data-slot="pagination-link"][data-size="default"] {
+  @apply h-9 px-4 py-2;
+}
+
+[data-slot="pagination-link"][data-size="icon"] {
+  @apply size-9;
+}
+
+[data-slot="pagination-previous"] {
+  @apply gap-1 px-2.5 sm:pl-2.5;
+}
+
+[data-slot="pagination-previous"] > span {
+  @apply hidden sm:block;
+}
+
+[data-slot="pagination-next"] {
+  @apply gap-1 px-2.5 sm:pr-2.5;
+}
+
+[data-slot="pagination-next"] > span {
+  @apply hidden sm:block;
+}
+
+[data-slot="pagination-ellipsis"] {
+  @apply flex size-9 items-center justify-center;
+}
+
+[data-slot="pagination-ellipsis"] > svg {
+  @apply size-4;
+}

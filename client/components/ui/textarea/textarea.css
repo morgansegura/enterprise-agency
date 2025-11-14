@@ -1,0 +1,22 @@
+@reference "tailwindcss";
+
+[data-slot="textarea"] {
+  @apply flex w-full min-h-16 rounded-md px-3 py-2 text-base shadow-xs;
+  @apply border border-input bg-transparent;
+  @apply field-sizing-content;
+  @apply outline-none;
+  @apply transition-[color,box-shadow];
+  @apply placeholder:text-muted-foreground;
+  @apply focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px];
+  @apply aria-invalid:ring-destructive/20 aria-invalid:border-destructive;
+  @apply disabled:cursor-not-allowed disabled:opacity-50;
+  @apply md:text-sm;
+}
+
+.dark [data-slot="textarea"] {
+  @apply bg-input/30;
+}
+
+.dark [data-slot="textarea"][aria-invalid] {
+  @apply ring-destructive/40;
+}

@@ -1,0 +1,39 @@
+@reference "tailwindcss";
+
+[data-slot="tabs"] {
+  @apply flex flex-col gap-2;
+}
+
+[data-slot="tabs-list"] {
+  @apply inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px];
+  @apply bg-muted text-muted-foreground;
+}
+
+[data-slot="tabs-trigger"] {
+  @apply inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5;
+  @apply rounded-md px-2 py-1 text-sm font-medium whitespace-nowrap;
+  @apply border border-transparent;
+  @apply text-foreground;
+  @apply transition-[color,box-shadow];
+  @apply focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-ring focus-visible:outline-1;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+  @apply data-[state=active]:bg-background data-[state=active]:shadow-sm;
+  
+  /* SVG styling */
+  & svg {
+    @apply pointer-events-none shrink-0;
+  }
+  
+  & svg:not([class*='size-']) {
+    @apply size-4;
+  }
+}
+
+.dark [data-slot="tabs-trigger"] {
+  @apply text-muted-foreground;
+  @apply data-[state=active]:text-foreground data-[state=active]:border-input data-[state=active]:bg-input/30;
+}
+
+[data-slot="tabs-content"] {
+  @apply flex-1 outline-none;
+}

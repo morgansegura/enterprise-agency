@@ -1,0 +1,7 @@
+@reference "tailwindcss";
+
+[data-slot="separator"] {
+  @apply bg-border shrink-0;
+  @apply data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full;
+  @apply data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px;
+}

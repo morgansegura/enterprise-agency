@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+[data-slot="progress"] {
+  @apply bg-primary/20 relative h-2 w-full overflow-hidden rounded-full;
+}
+
+[data-slot="progress-indicator"] {
+  @apply bg-primary h-full w-full flex-1 transition-all;
+}

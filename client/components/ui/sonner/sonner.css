@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+/* Sonner toast customization */
+.toaster {
+  /* Additional toast customization can go here */
+}
+
+/* Toast icons */
+.toaster svg {
+  @apply size-4;
+}
+
+.toaster svg.animate-spin {
+  @apply animate-spin;
+}

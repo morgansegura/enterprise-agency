@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+[data-slot="form-item"] {
+  @apply grid gap-2;
+}
+
+[data-slot="form-label"][data-error="true"] {
+  @apply text-destructive;
+}
+
+[data-slot="form-description"] {
+  @apply text-muted-foreground text-sm;
+}
+
+[data-slot="form-message"] {
+  @apply text-destructive text-sm;
+}
