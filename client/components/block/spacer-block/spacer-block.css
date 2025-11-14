@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+[data-slot="spacer-block"][data-height="xs"] {
+  @apply h-2;
+}
+
+[data-slot="spacer-block"][data-height="sm"] {
+  @apply h-4;
+}
+
+[data-slot="spacer-block"][data-height="md"] {
+  @apply h-8;
+}
+
+[data-slot="spacer-block"][data-height="lg"] {
+  @apply h-16;
+}
+
+[data-slot="spacer-block"][data-height="xl"] {
+  @apply h-24;
+}
+
+[data-slot="spacer-block"][data-height="2xl"] {
+  @apply h-32;
+}

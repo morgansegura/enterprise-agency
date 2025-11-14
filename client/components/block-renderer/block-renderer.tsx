@@ -7,6 +7,18 @@ import { TextBlock } from "@/components/block/text-block";
 import { ImageBlock } from "@/components/block/image-block";
 import { ButtonBlock } from "@/components/block/button-block";
 import { CardBlock } from "@/components/block/card-block";
+import { VideoBlock } from "@/components/block/video-block";
+import { AudioBlock } from "@/components/block/audio-block";
+import { ListBlock } from "@/components/block/list-block";
+import { QuoteBlock } from "@/components/block/quote-block";
+import { AccordionBlock } from "@/components/block/accordion-block";
+import { TabsBlock } from "@/components/block/tabs-block";
+import { DividerBlock } from "@/components/block/divider-block";
+import { SpacerBlock } from "@/components/block/spacer-block";
+import { EmbedBlock } from "@/components/block/embed-block";
+import { IconBlock } from "@/components/block/icon-block";
+import { StatsBlock } from "@/components/block/stats-block";
+import { MapBlock } from "@/components/block/map-block";
 
 // Container blocks
 import { GridBlock } from "@/components/block/grid-block";
@@ -79,6 +91,42 @@ function renderBlock(block: RootBlock): React.ReactNode {
 
     case "card-block":
       return <CardBlock key={block._key} data={block.data} />;
+
+    case "video-block":
+      return <VideoBlock key={block._key} data={block.data} />;
+
+    case "audio-block":
+      return <AudioBlock key={block._key} data={block.data} />;
+
+    case "list-block":
+      return <ListBlock key={block._key} data={block.data} />;
+
+    case "quote-block":
+      return <QuoteBlock key={block._key} data={block.data} />;
+
+    case "accordion-block":
+      return <AccordionBlock key={block._key} data={block.data} />;
+
+    case "tabs-block":
+      return <TabsBlock key={block._key} data={block.data} />;
+
+    case "divider-block":
+      return <DividerBlock key={block._key} data={block.data} />;
+
+    case "spacer-block":
+      return <SpacerBlock key={block._key} data={block.data} />;
+
+    case "embed-block":
+      return <EmbedBlock key={block._key} data={block.data} />;
+
+    case "icon-block":
+      return <IconBlock key={block._key} data={block.data} />;
+
+    case "stats-block":
+      return <StatsBlock key={block._key} data={block.data} />;
+
+    case "map-block":
+      return <MapBlock key={block._key} data={block.data} />;
 
     default:
       // Exhaustive check - TypeScript will error if we miss a block type

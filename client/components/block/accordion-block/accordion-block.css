@@ -1,0 +1,30 @@
+@reference "tailwindcss";
+
+[data-slot="accordion-block"] {
+  @apply w-full space-y-2;
+}
+
+[data-slot="accordion-block"][data-variant="bordered"] {
+  @apply border border-(--border) rounded-lg divide-y divide-(--border);
+}
+
+[data-slot="accordion-block"][data-variant="separated"] {
+  @apply space-y-3;
+}
+
+[data-slot="accordion-block-item"] {
+  @apply border border-(--border) rounded-lg overflow-hidden;
+}
+
+[data-slot="accordion-block"][data-variant="default"]
+  [data-slot="accordion-block-item"] {
+  @apply border-0 border-b last:border-b-0 rounded-none;
+}
+
+[data-slot="accordion-block-trigger"] {
+  @apply w-full px-4 py-3 text-left font-medium text-(--foreground) cursor-pointer hover:bg-(--muted)/50 transition-colors;
+}
+
+[data-slot="accordion-block-content"] {
+  @apply px-4 py-3 text-(--muted-foreground);
+}

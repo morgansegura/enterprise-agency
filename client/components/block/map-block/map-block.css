@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+[data-slot="map-block"] {
+  @apply w-full overflow-hidden rounded-lg border border-(--border);
+}
+
+[data-slot="map-block-iframe"] {
+  @apply w-full border-0;
+}
+
+[data-slot="map-block-error"] {
+  @apply flex items-center justify-center p-8 text-center text-(--muted-foreground) bg-(--muted) rounded-lg;
+}

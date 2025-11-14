@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+[data-slot="audio-block"] {
+  @apply w-full;
+}
+
+[data-slot="audio-block-meta"] {
+  @apply mb-3 flex flex-col gap-1;
+}
+
+[data-slot="audio-block-title"] {
+  @apply text-base font-medium text-(--foreground);
+}
+
+[data-slot="audio-block-artist"] {
+  @apply text-sm text-(--muted-foreground);
+}
+
+[data-slot="audio-block-player"] {
+  @apply w-full;
+}

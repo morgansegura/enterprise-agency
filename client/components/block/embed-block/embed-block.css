@@ -1,0 +1,29 @@
+@reference "tailwindcss";
+
+[data-slot="embed-block"] {
+  @apply w-full;
+}
+
+[data-slot="embed-block-wrapper"] {
+  @apply relative w-full overflow-hidden rounded-lg bg-(--muted);
+}
+
+[data-slot="embed-block-wrapper"][data-aspect-ratio="16:9"] {
+  @apply aspect-video;
+}
+
+[data-slot="embed-block-wrapper"][data-aspect-ratio="4:3"] {
+  @apply aspect-[4/3];
+}
+
+[data-slot="embed-block-wrapper"][data-aspect-ratio="1:1"] {
+  @apply aspect-square;
+}
+
+[data-slot="embed-block-wrapper"][data-aspect-ratio="auto"] {
+  @apply aspect-auto;
+}
+
+[data-slot="embed-block-iframe"] {
+  @apply absolute inset-0 h-full w-full border-0;
+}

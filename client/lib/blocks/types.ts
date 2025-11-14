@@ -92,6 +92,119 @@ export type CardBlockData = {
   variant?: "default" | "elevated" | "outlined";
 };
 
+/** Video block data */
+export type VideoBlockData = {
+  url: string; // YouTube/Vimeo URL or video file path
+  provider?: "youtube" | "vimeo" | "native"; // Auto-detected if not provided
+  aspectRatio?: "16:9" | "4:3" | "1:1" | "21:9";
+  autoplay?: boolean;
+  controls?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  caption?: string;
+};
+
+/** Audio block data */
+export type AudioBlockData = {
+  url: string; // Audio file URL
+  title?: string;
+  artist?: string;
+  controls?: boolean;
+  autoplay?: boolean;
+  loop?: boolean;
+};
+
+/** List block data */
+export type ListBlockData = {
+  items: string[];
+  ordered?: boolean;
+  style?: "default" | "disc" | "circle" | "square" | "decimal" | "none";
+  spacing?: "tight" | "normal" | "relaxed";
+};
+
+/** Quote block data */
+export type QuoteBlockData = {
+  quote: string;
+  author?: string;
+  role?: string;
+  avatar?: ImageBlockData;
+  variant?: "default" | "bordered" | "card";
+};
+
+/** Accordion block data */
+export type AccordionBlockData = {
+  items: {
+    title: string;
+    content: string;
+    defaultOpen?: boolean;
+  }[];
+  allowMultiple?: boolean;
+  variant?: "default" | "bordered" | "separated";
+};
+
+/** Tabs block data */
+export type TabsBlockData = {
+  tabs: {
+    label: string;
+    content: string;
+  }[];
+  defaultTab?: number;
+  variant?: "default" | "pills" | "underline";
+};
+
+/** Divider block data */
+export type DividerBlockData = {
+  style?: "solid" | "dashed" | "dotted";
+  weight?: "thin" | "normal" | "thick";
+  spacing?: "sm" | "md" | "lg";
+  variant?: "default" | "gradient";
+};
+
+/** Spacer block data */
+export type SpacerBlockData = {
+  height?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+};
+
+/** Embed block data */
+export type EmbedBlockData = {
+  url: string;
+  title?: string;
+  aspectRatio?: "16:9" | "4:3" | "1:1" | "auto";
+  height?: number;
+};
+
+/** Icon block data */
+export type IconBlockData = {
+  icon: string; // Icon name or SVG path
+  size?: "sm" | "md" | "lg" | "xl";
+  color?: string;
+  text?: string;
+  position?: "top" | "left" | "right" | "bottom";
+};
+
+/** Stats block data */
+export type StatsBlockData = {
+  value: string | number;
+  label: string;
+  description?: string;
+  icon?: string;
+  trend?: {
+    value: string;
+    direction: "up" | "down";
+  };
+  variant?: "default" | "card" | "minimal";
+};
+
+/** Map block data */
+export type MapBlockData = {
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  zoom?: number;
+  height?: number;
+  provider?: "google" | "openstreetmap";
+};
+
 // ========================================
 // Container Block Data Types
 // ========================================
@@ -132,7 +245,19 @@ export type ContentBlock =
   | { _type: "text-block"; _key: string; data: TextBlockData }
   | { _type: "image-block"; _key: string; data: ImageBlockData }
   | { _type: "button-block"; _key: string; data: ButtonBlockData }
-  | { _type: "card-block"; _key: string; data: CardBlockData };
+  | { _type: "card-block"; _key: string; data: CardBlockData }
+  | { _type: "video-block"; _key: string; data: VideoBlockData }
+  | { _type: "audio-block"; _key: string; data: AudioBlockData }
+  | { _type: "list-block"; _key: string; data: ListBlockData }
+  | { _type: "quote-block"; _key: string; data: QuoteBlockData }
+  | { _type: "accordion-block"; _key: string; data: AccordionBlockData }
+  | { _type: "tabs-block"; _key: string; data: TabsBlockData }
+  | { _type: "divider-block"; _key: string; data: DividerBlockData }
+  | { _type: "spacer-block"; _key: string; data: SpacerBlockData }
+  | { _type: "embed-block"; _key: string; data: EmbedBlockData }
+  | { _type: "icon-block"; _key: string; data: IconBlockData }
+  | { _type: "stats-block"; _key: string; data: StatsBlockData }
+  | { _type: "map-block"; _key: string; data: MapBlockData };
 
 /**
  * Level 3 - Shallow Container Blocks
