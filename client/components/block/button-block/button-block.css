@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+
+[data-slot="button-block"] {
+  /* Inherits all styling from Button UI component */
+  /* Additional block-specific styles can be added here */
+}

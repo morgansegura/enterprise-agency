@@ -1,39 +1,26 @@
-import { cn } from "@/lib/utils";
-import { Text } from "@/components/ui/text";
-import type { TextSize, TextAlign } from "@/lib/types";
+import type { TextBlockData } from "@/lib/blocks";
 import "./text-block.css";
 
-/**
- * Data structure for TextBlock
- */
-export type TextBlockData = {
-  /** Text content */
-  content: string;
-  /** Text size */
-  size?: TextSize;
-  /** Text alignment */
-  align?: TextAlign;
-  /** Text variant */
-  variant?: "default" | "muted" | "lead" | "subtle";
-  className?: string;
+type TextBlockProps = {
+  data: TextBlockData;
 };
 
 /**
- * TextBlock - A block component for text content
- * Composed of Text UI component
+ * TextBlock - Renders paragraph text with formatting options
+ * Content block (leaf node) - cannot have children
+ * Supports rich text/markdown through content prop
  */
-export function TextBlock({
-  content,
-  size = "base",
-  align = "left",
-  variant = "default",
-  className,
-}: TextBlockData) {
+export function TextBlock({ data }: TextBlockProps) {
+  const { content, size = "base", align = "left", variant = "default" } = data;
+
   return (
-    <div className={cn("text-block", className)} data-align={align}>
-      <Text size={size} align={align} variant={variant}>
-        {content}
-      </Text>
-    </div>
+    <p
+      data-slot="text-block"
+      data-size={size}
+      data-align={align}
+      data-variant={variant}
+    >
+      {content}
+    </p>
   );
 }

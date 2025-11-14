@@ -4,8 +4,8 @@
   @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium;
   @apply transition-all outline-none shrink-0;
   @apply disabled:pointer-events-none disabled:opacity-50;
-  @apply focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px];
-  @apply aria-invalid:ring-destructive/20 aria-invalid:border-destructive;
+  @apply focus-visible:border-(--ring) focus-visible:ring-(--ring)/50 focus-visible:ring-[3px];
+  @apply aria-invalid:ring-(--destructive)/20 aria-invalid:border-(--destructive);
   
   /* SVG styling */
   & svg {
@@ -19,46 +19,47 @@
 
 /* Dark mode aria-invalid */
 .dark [data-slot="button"][aria-invalid] {
-  @apply ring-destructive/40;
+  @apply ring-(--destructive)/40;
 }
 
 /* Variants */
 [data-slot="button"][data-variant="default"] {
-  @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  /* @tw suggestCanonicalClasses: off */
+  @apply bg-(--primary) text-(--primary-foreground) hover:bg-(--primary)/90;
 }
 
 [data-slot="button"][data-variant="destructive"] {
-  @apply bg-destructive text-white hover:bg-destructive/90;
-  @apply focus-visible:ring-destructive/20;
+  @apply bg-(--destructive) text-white hover:bg-(--destructive)/90;
+  @apply focus-visible:ring-(--destructive)/20;
 }
 
 .dark [data-slot="button"][data-variant="destructive"] {
-  @apply bg-destructive/60 focus-visible:ring-destructive/40;
+  @apply bg-(--destructive)/60 focus-visible:ring-(--destructive)/40;
 }
 
 [data-slot="button"][data-variant="outline"] {
-  @apply border bg-background shadow-xs;
-  @apply hover:bg-accent hover:text-accent-foreground;
+  @apply border bg-(--background) shadow-xs;
+  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
 }
 
 .dark [data-slot="button"][data-variant="outline"] {
-  @apply bg-input/30 border-input hover:bg-input/50;
+  @apply bg-(--input)/30 border-(--input) hover:bg-(--input)/50;
 }
 
 [data-slot="button"][data-variant="secondary"] {
-  @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  @apply bg-(--secondary) text-(--secondary-foreground) hover:bg-(--secondary)/80;
 }
 
 [data-slot="button"][data-variant="ghost"] {
-  @apply hover:bg-accent hover:text-accent-foreground;
+  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
 }
 
 .dark [data-slot="button"][data-variant="ghost"] {
-  @apply hover:bg-accent/50;
+  @apply hover:bg-(--accent)/50;
 }
 
 [data-slot="button"][data-variant="link"] {
-  @apply text-primary underline-offset-4 hover:underline;
+  @apply text-(--primary) underline-offset-4 hover:underline;
 }
 
 /* Sizes */

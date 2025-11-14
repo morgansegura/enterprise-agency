@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 [data-slot="card"] {
-  @apply relative flex flex-col gap-6 rounded-xl border bg-card text-card-foreground py-6 shadow-sm;
+  @apply relative flex flex-col gap-6 rounded-xl border bg-(--card) text-(--card-foreground) py-6 shadow-sm;
 }
 
 [data-slot="card-header"] {
@@ -24,7 +24,7 @@
 }
 
 [data-slot="card-description"] {
-  @apply text-muted-foreground text-sm;
+  @apply text-(--muted-foreground) text-sm;
 }
 
 [data-slot="card-action"] {

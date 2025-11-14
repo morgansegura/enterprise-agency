@@ -30,7 +30,6 @@ export const homePageMock = {
       spacing: "xl" as const,
       width: "wide" as const,
       align: "center" as const,
-      gap: "lg" as const,
       blocks: [
         {
           _key: "block_hero_1",
@@ -63,7 +62,6 @@ export const homePageMock = {
       spacing: "lg" as const,
       width: "wide" as const,
       align: "center" as const,
-      gap: "md" as const,
       blocks: [
         {
           _key: "block_services_heading",

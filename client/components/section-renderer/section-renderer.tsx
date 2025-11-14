@@ -1,7 +1,7 @@
 import { Section } from "@/components/layout/section";
 import { BlockRenderer } from "@/components/block-renderer/block-renderer";
 import type { BackgroundVariant, Spacing, Width, TextAlign } from "@/lib/types";
-import type { TypedBlock } from "@/components/block-renderer/block-renderer";
+import type { RootBlock } from "@/lib/blocks";
 
 /**
  * Section data structure
@@ -19,9 +19,7 @@ export type TypedSection = {
   /** Content alignment */
   align?: Exclude<TextAlign, "justify">;
   /** Blocks to render inside this section */
-  blocks: TypedBlock[];
-  /** Optional gap between blocks */
-  gap?: Spacing;
+  blocks: RootBlock[];
 };
 
 /**
@@ -60,7 +58,7 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
           width={section.width}
           align={section.align}
         >
-          <BlockRenderer blocks={section.blocks} gap={section.gap} />
+          <BlockRenderer blocks={section.blocks} />
         </Section>
       ))}
     </div>

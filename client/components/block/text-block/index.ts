@@ -1,1 +1,1 @@
-export { TextBlock, type TextBlockData } from "./text-block";
+export { TextBlock } from "./text-block";

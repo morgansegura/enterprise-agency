@@ -1,0 +1,71 @@
+@reference "tailwindcss";
+
+[data-slot="card-block"] {
+  @apply overflow-hidden;
+}
+
+/* Variant styles */
+[data-slot="card-block"][data-variant="default"] {
+  /* Inherits card default styles */
+}
+
+[data-slot="card-block"][data-variant="elevated"] {
+  @apply shadow-lg;
+}
+
+[data-slot="card-block"][data-variant="outlined"] {
+  @apply border-2;
+}
+
+/* Image positioning */
+[data-slot="card-block-image-top"] {
+  @apply w-full overflow-hidden;
+}
+
+[data-slot="card-block-image-top"] img {
+  @apply w-full h-auto object-cover;
+}
+
+[data-slot="card-block-image-background"] {
+  @apply absolute inset-0 z-0;
+}
+
+[data-slot="card-block-image-background"] img {
+  @apply w-full h-full object-cover;
+}
+
+[data-slot="card-block-overlay"] {
+  @apply absolute inset-0 bg-black/50 z-10;
+}
+
+[data-slot="card-block-content-wrapper"] {
+  @apply relative;
+}
+
+[data-slot="card-block-content-wrapper"][data-image-position="background"] {
+  @apply z-20;
+}
+
+[data-slot="card-block-content-wrapper"][data-image-position="background"] * {
+  @apply text-white;
+}
+
+[data-slot="card-block-content-wrapper"][data-image-position="left"] {
+  @apply flex flex-row gap-4;
+}
+
+[data-slot="card-block-image-left"] {
+  @apply flex-shrink-0 overflow-hidden rounded-lg;
+}
+
+[data-slot="card-block-image-left"] img {
+  @apply w-full h-full object-cover;
+}
+
+[data-slot="card-block-text"] {
+  @apply flex-1;
+}
+
+[data-slot="card-block-actions"] {
+  @apply flex flex-wrap gap-2;
+}

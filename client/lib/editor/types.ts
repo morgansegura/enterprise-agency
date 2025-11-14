@@ -2,7 +2,7 @@
  * Editor types for TipTap integration
  */
 
-import type { HeadingBlockData } from "@/components/block/heading-block/heading-block";
+import type { HeadingBlockData } from "@/lib/blocks";
 
 // Base block structure
 export type Block = {

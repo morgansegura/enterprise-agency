@@ -1,0 +1,55 @@
+@reference "tailwindcss";
+
+[data-slot="stack-block"] {
+  @apply flex flex-col;
+}
+
+/* Gap sizes */
+[data-slot="stack-block"][data-gap="none"] {
+  @apply gap-0;
+}
+
+[data-slot="stack-block"][data-gap="xs"] {
+  @apply gap-2;
+}
+
+[data-slot="stack-block"][data-gap="sm"] {
+  @apply gap-[var(--spacing-block-sm)];
+}
+
+[data-slot="stack-block"][data-gap="md"] {
+  @apply gap-[var(--spacing-block-md)];
+}
+
+[data-slot="stack-block"][data-gap="lg"] {
+  @apply gap-[var(--spacing-block-lg)];
+}
+
+[data-slot="stack-block"][data-gap="xl"] {
+  @apply gap-[var(--spacing-container)];
+}
+
+[data-slot="stack-block"][data-gap="2xl"] {
+  @apply gap-12;
+}
+
+/* Align items */
+[data-slot="stack-block"][data-align="start"] {
+  @apply items-start;
+}
+
+[data-slot="stack-block"][data-align="center"] {
+  @apply items-center;
+}
+
+[data-slot="stack-block"][data-align="end"] {
+  @apply items-end;
+}
+
+[data-slot="stack-block"][data-align="stretch"] {
+  @apply items-stretch;
+}
+
+[data-slot="stack-block"][data-align="baseline"] {
+  @apply items-baseline;
+}

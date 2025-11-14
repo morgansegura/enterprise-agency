@@ -1,93 +1,96 @@
-import {
-  HeadingBlock,
-  type HeadingBlockData,
-} from "@/components/block/heading-block";
-import { TextBlock, type TextBlockData } from "@/components/block/text-block";
-import { cn } from "@/lib/utils";
-import type { Spacing } from "@/lib/types";
-import "./block-renderer.css";
+import type { RootBlock } from "@/lib/blocks";
+import { isContainerBlock } from "@/lib/blocks";
+
+// Content blocks
+import { HeadingBlock } from "@/components/block/heading-block";
+import { TextBlock } from "@/components/block/text-block";
+import { ImageBlock } from "@/components/block/image-block";
+import { ButtonBlock } from "@/components/block/button-block";
+import { CardBlock } from "@/components/block/card-block";
+
+// Container blocks
+import { GridBlock } from "@/components/block/grid-block";
+import { FlexBlock } from "@/components/block/flex-block";
+import { StackBlock } from "@/components/block/stack-block";
 
 /**
- * Map of block types to their data shapes
- * This ensures type safety when rendering blocks
- */
-type BlockDataMap = {
-  "heading-block": HeadingBlockData;
-  "text-block": TextBlockData;
-  // Add more as you create blocks
-  // 'image-block': ImageBlockData
-};
-
-/**
- * Discriminated union of all block types
- * TypeScript will narrow this automatically based on _type
- */
-export type TypedBlock = {
-  [K in keyof BlockDataMap]: {
-    _type: K;
-    _key: string;
-    data: BlockDataMap[K];
-  };
-}[keyof BlockDataMap];
-
-/**
- * BlockRenderer - Renders an array of blocks
+ * BlockRenderer - Renders an array of blocks recursively
  *
  * This component takes block data and renders the appropriate
- * block component for each one. It's the bridge between data
- * and visual components.
+ * block component for each one. Container blocks recursively
+ * render their children through this same component.
  */
 type BlockRendererProps = {
-  blocks: TypedBlock[];
-  /** Gap between blocks */
-  gap?: Spacing;
-  className?: string;
+  blocks: RootBlock[];
 };
 
 /**
- * Render a single block with proper type narrowing
+ * Render a single block with proper type narrowing and recursive handling
  */
-function renderBlock(block: TypedBlock) {
-  // TypeScript narrows the type based on _type
+function renderBlock(block: RootBlock): React.ReactNode {
+  // Container blocks - handle recursively
+  if (isContainerBlock(block)) {
+    switch (block._type) {
+      case "grid-block":
+        return (
+          <GridBlock
+            key={block._key}
+            data={block.data}
+            blocks={block.blocks}
+            renderBlock={renderBlock}
+          />
+        );
+
+      case "flex-block":
+        return (
+          <FlexBlock
+            key={block._key}
+            data={block.data}
+            blocks={block.blocks}
+            renderBlock={renderBlock}
+          />
+        );
+
+      case "stack-block":
+        return (
+          <StackBlock
+            key={block._key}
+            data={block.data}
+            blocks={block.blocks}
+            renderBlock={renderBlock}
+          />
+        );
+    }
+  }
+
+  // Content blocks - leaf nodes
   switch (block._type) {
     case "heading-block":
-      // block.data is HeadingBlockData here
-      return <HeadingBlock key={block._key} {...block.data} />;
+      return <HeadingBlock key={block._key} data={block.data} />;
 
     case "text-block":
-      // block.data is TextBlockData here
-      return <TextBlock key={block._key} {...block.data} />;
+      return <TextBlock key={block._key} data={block.data} />;
 
-    // Add more cases as you create blocks
-    // case 'image-block':
-    //   return <ImageBlock key={block._key} {...block.data} />
+    case "image-block":
+      return <ImageBlock key={block._key} data={block.data} />;
+
+    case "button-block":
+      return <ButtonBlock key={block._key} data={block.data} />;
+
+    case "card-block":
+      return <CardBlock key={block._key} data={block.data} />;
 
     default:
-      // This will cause a TypeScript error if we forget to handle a block type
-      // Exhaustive check - if we reach here, TypeScript knows all cases are handled
+      // Exhaustive check - TypeScript will error if we miss a block type
       block satisfies never;
       return null;
   }
 }
 
-export function BlockRenderer({
-  blocks,
-  gap = "md",
-  className,
-}: BlockRendererProps) {
+export function BlockRenderer({ blocks }: BlockRendererProps) {
   if (!blocks || blocks.length === 0) {
-    return (
-      <div className={className}>
-        <p className="text-gray-500 text-center py-8">
-          No content yet. Add some blocks to get started!
-        </p>
-      </div>
-    );
+    return null;
   }
 
-  return (
-    <div className={cn("block-renderer", className)} data-gap={gap}>
-      {blocks.map(renderBlock)}
-    </div>
-  );
+  return <>{blocks.map(renderBlock)}</>;
 }

@@ -1,9 +1,68 @@
 @reference "tailwindcss";
 
-.heading-block {
-  @apply relative;
+[data-slot="heading-block"] {
+  @apply font-(--heading);
 }
 
-.heading-block-subtitle {
-  @apply mt-2;
+/* Size variants */
+[data-slot="heading-block"][data-size="sm"] {
+  @apply text-sm;
+}
+
+[data-slot="heading-block"][data-size="base"] {
+  @apply text-base;
+}
+
+[data-slot="heading-block"][data-size="lg"] {
+  @apply text-lg;
+}
+
+[data-slot="heading-block"][data-size="xl"] {
+  @apply text-xl;
+}
+
+[data-slot="heading-block"][data-size="2xl"] {
+  @apply text-2xl;
+}
+
+[data-slot="heading-block"][data-size="3xl"] {
+  @apply text-3xl;
+}
+
+[data-slot="heading-block"][data-size="4xl"] {
+  @apply text-4xl;
+}
+
+/* Alignment */
+[data-slot="heading-block"][data-align="left"] {
+  @apply text-left;
+}
+
+[data-slot="heading-block"][data-align="center"] {
+  @apply text-center;
+}
+
+[data-slot="heading-block"][data-align="right"] {
+  @apply text-right;
+}
+
+/* Weight */
+[data-slot="heading-block"][data-weight="normal"] {
+  @apply font-normal;
+}
+
+[data-slot="heading-block"][data-weight="medium"] {
+  @apply font-medium;
+}
+
+[data-slot="heading-block"][data-weight="semibold"] {
+  @apply font-semibold;
+}
+
+[data-slot="heading-block"][data-weight="bold"] {
+  @apply font-bold;
+}
+
+[data-slot="heading-block"][data-weight="extrabold"] {
+  @apply font-black;
 }

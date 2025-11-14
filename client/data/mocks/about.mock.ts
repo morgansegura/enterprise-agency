@@ -27,7 +27,6 @@ export const aboutPageMock = {
       spacing: "xl" as const,
       width: "narrow" as const,
       align: "left" as const,
-      gap: "lg" as const,
       blocks: [
         {
           _key: "block_about_heading",
