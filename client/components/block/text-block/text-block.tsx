@@ -1,26 +1,21 @@
 import type { TextBlockData } from "@/lib/blocks";
-import "./text-block.css";
+import { Text } from "@/components/ui/text";
 
 type TextBlockProps = {
   data: TextBlockData;
 };
 
 /**
- * TextBlock - Renders paragraph text with formatting options
+ * TextBlock - Data adapter for Text UI component
  * Content block (leaf node) - cannot have children
- * Supports rich text/markdown through content prop
+ * Wraps ui/Text component with CMS data
  */
 export function TextBlock({ data }: TextBlockProps) {
   const { content, size = "base", align = "left", variant = "default" } = data;
 
   return (
-    <p
-      data-slot="text-block"
-      data-size={size}
-      data-align={align}
-      data-variant={variant}
-    >
+    <Text as="p" size={size} align={align} variant={variant}>
       {content}
-    </p>
+    </Text>
   );
 }

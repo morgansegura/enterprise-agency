@@ -21,6 +21,7 @@ import { StatsBlock } from "@/components/block/stats-block";
 import { MapBlock } from "@/components/block/map-block";
 
 // Container blocks
+import { ContainerBlock } from "@/components/block/container-block";
 import { GridBlock } from "@/components/block/grid-block";
 import { FlexBlock } from "@/components/block/flex-block";
 import { StackBlock } from "@/components/block/stack-block";
@@ -43,6 +44,16 @@ function renderBlock(block: RootBlock): React.ReactNode {
   // Container blocks - handle recursively
   if (isContainerBlock(block)) {
     switch (block._type) {
+      case "container-block":
+        return (
+          <ContainerBlock
+            key={block._key}
+            data={block.data}
+            blocks={block.blocks}
+            renderBlock={renderBlock}
+          />
+        );
+
       case "grid-block":
         return (
           <GridBlock

@@ -26,7 +26,7 @@ export function StatsBlock({ data }: StatsBlockProps) {
         <div data-slot="stats-block-label">{label}</div>
         {description ? (
           <div data-slot="stats-block-description">{description}</div>
-        ):null}
+        ) : null}
         {trend ? (
           <div
             data-slot="stats-block-trend"
@@ -38,7 +38,7 @@ export function StatsBlock({ data }: StatsBlockProps) {
             </span>
             {trend.value}
           </div>
-        ): null}
+        ) : null}
       </div>
     </div>
   );

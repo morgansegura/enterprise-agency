@@ -47,6 +47,7 @@ export type HeadingBlockData = {
   size?: "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
   align?: "left" | "center" | "right";
   weight?: "normal" | "medium" | "semibold" | "bold" | "extrabold";
+  variant?: "default" | "primary" | "muted";
 };
 
 /** Text block data */
@@ -232,6 +233,12 @@ export type StackLayoutData = {
   align?: AlignItems;
 };
 
+/** Container layout configuration (width constraints without layout logic) */
+export type ContainerLayoutData = {
+  width?: "narrow" | "wide" | "full";
+  spacing?: Spacing;
+};
+
 // ========================================
 // Nesting Levels
 // ========================================
@@ -265,6 +272,12 @@ export type ContentBlock =
  */
 export type ShallowContainerBlock =
   | {
+      _type: "container-block";
+      _key: string;
+      data: ContainerLayoutData;
+      blocks: ContentBlock[];
+    }
+  | {
       _type: "grid-block";
       _key: string;
       data: GridLayoutData;
@@ -288,6 +301,12 @@ export type ShallowContainerBlock =
  * Can contain ContentBlocks OR ShallowContainerBlocks (two levels of nesting)
  */
 export type DeepContainerBlock =
+  | {
+      _type: "container-block";
+      _key: string;
+      data: ContainerLayoutData;
+      blocks: (ContentBlock | ShallowContainerBlock)[];
+    }
   | {
       _type: "grid-block";
       _key: string;

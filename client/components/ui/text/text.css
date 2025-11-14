@@ -1,31 +1,81 @@
 @reference "tailwindcss";
 
 .text {
-  @apply relative leading-relaxed;
+  @apply relative;
+  line-height: var(--line-height-relaxed);
 }
 
-/* Sizes */
-.text[data-size="xs"] { @apply text-xs; }
-.text[data-size="sm"] { @apply text-sm; }
-.text[data-size="base"] { @apply text-base; }
-.text[data-size="lg"] { @apply text-lg; }
-.text[data-size="xl"] { @apply text-xl; }
-.text[data-size="2xl"] { @apply text-2xl; }
+/* Sizes - using typography tokens (responsive) */
+.text[data-size="xs"] {
+  font-size: var(--text-size-xs);
+}
 
-/* Weight */
-.text[data-weight="normal"] { @apply font-normal; }
-.text[data-weight="medium"] { @apply font-medium; }
-.text[data-weight="semibold"] { @apply font-semibold; }
-.text[data-weight="bold"] { @apply font-bold; }
+.text[data-size="sm"] {
+  font-size: var(--text-size-sm);
+}
+
+.text[data-size="base"] {
+  font-size: var(--text-size-base);
+}
+
+.text[data-size="lg"] {
+  font-size: var(--text-size-lg);
+}
+
+.text[data-size="xl"] {
+  font-size: var(--text-size-xl);
+}
+
+/* Weight - using typography tokens */
+.text[data-weight="normal"] {
+  font-weight: var(--font-weight-normal);
+}
+
+.text[data-weight="medium"] {
+  font-weight: var(--font-weight-medium);
+}
+
+.text[data-weight="semibold"] {
+  font-weight: var(--font-weight-semibold);
+}
+
+.text[data-weight="bold"] {
+  font-weight: var(--font-weight-bold);
+}
 
 /* Alignment */
-.text[data-align="left"] { @apply text-left; }
-.text[data-align="center"] { @apply text-center; }
-.text[data-align="right"] { @apply text-right; }
-.text[data-align="justify"] { @apply text-justify; }
+.text[data-align="left"] {
+  @apply text-left;
+}
 
-/* Variants */
-.text[data-variant="default"] { @apply text-gray-900; }
-.text[data-variant="muted"] { @apply text-gray-600; }
-.text[data-variant="lead"] { @apply text-xl font-light leading-relaxed text-gray-700; }
-.text[data-variant="subtle"] { @apply text-gray-500; }
+.text[data-align="center"] {
+  @apply text-center;
+}
+
+.text[data-align="right"] {
+  @apply text-right;
+}
+
+.text[data-align="justify"] {
+  @apply text-justify;
+}
+
+/* Variants - using theme color tokens */
+.text[data-variant="default"] {
+  @apply text-(--foreground);
+}
+
+.text[data-variant="muted"] {
+  @apply text-(--muted-foreground);
+}
+
+.text[data-variant="lead"] {
+  font-size: var(--text-size-xl);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  @apply text-(--muted-foreground);
+}
+
+.text[data-variant="subtle"] {
+  @apply text-(--muted-foreground);
+}

@@ -1,28 +1,34 @@
 import type { HeadingBlockData } from "@/lib/blocks";
-import "./heading-block.css";
+import { Heading } from "@/components/ui/heading";
 
 type HeadingBlockProps = {
   data: HeadingBlockData;
 };
 
 /**
- * HeadingBlock - Renders text headings with semantic HTML levels
+ * HeadingBlock - Data adapter for Heading UI component
  * Content block (leaf node) - cannot have children
+ * Wraps ui/Heading component with CMS data
  */
 export function HeadingBlock({ data }: HeadingBlockProps) {
-  const { text, level = "h2", size, align = "left", weight } = data;
-
-  const HeadingTag = level;
+  const {
+    text,
+    level = "h2",
+    size,
+    align = "left",
+    weight,
+    variant = "default",
+  } = data;
 
   return (
-    <HeadingTag
-      data-slot="heading-block"
-      data-level={level}
-      data-size={size}
-      data-align={align}
-      data-weight={weight}
+    <Heading
+      as={level}
+      size={size}
+      align={align}
+      weight={weight}
+      variant={variant}
     >
       {text}
-    </HeadingTag>
+    </Heading>
   );
 }

@@ -32,26 +32,49 @@ export const homePageMock = {
       align: "center" as const,
       blocks: [
         {
-          _key: "block_hero_1",
-          _type: "heading-block" as const,
+          _key: "container_hero",
+          _type: "container-block" as const, // ← Container block
           data: {
-            title: "Welcome to MH Bible Baptist Church",
-            subtitle: "Join us for worship and fellowship every Sunday",
-            level: "h1" as const,
-            size: "4xl" as const,
-            align: "center" as const,
-            variant: "default" as const,
+            width: "narrow" as const, // ← Narrow content
+            spacing: "md" as const,
           },
-        },
-        {
-          _key: "block_intro_1",
-          _type: "text-block" as const,
-          data: {
-            content:
-              "We are a community of believers dedicated to worshiping God, studying His Word, and serving our neighbors in love. Whether you're a long-time Christian or just beginning to explore faith, you're welcome here.",
-            size: "lg" as const,
-            align: "center" as const,
-          },
+          blocks: [
+            // ← Content inside narrow container
+            {
+              _key: "block_heading_1",
+              _type: "heading-block" as const,
+              data: {
+                text: "Welcome to MH Bible Baptist Church",
+                level: "h1" as const,
+                wieght: "bold",
+                size: "4xl" as const,
+                align: "center" as const,
+                variant: "default" as const,
+              },
+            },
+            {
+              _key: "block_heading_2",
+              _type: "heading-block" as const,
+              data: {
+                text: "Join us for worship and fellowship every Sunday",
+                level: "h2" as const,
+                wieght: "bold",
+                size: "3xl" as const,
+                align: "center" as const,
+                variant: "default" as const,
+              },
+            },
+            {
+              _key: "block_intro_1",
+              _type: "text-block" as const,
+              data: {
+                content:
+                  "We are a community of believers dedicated to worshiping God...",
+                size: "lg" as const,
+                align: "center" as const,
+              },
+            },
+          ],
         },
       ],
     },
