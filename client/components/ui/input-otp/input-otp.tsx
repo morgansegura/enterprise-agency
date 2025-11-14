@@ -45,11 +45,11 @@ function InputOTPSlot({
       {...props}
     >
       {char}
-      {hasFakeCaret && (
+      {hasFakeCaret ? (
         <div className="input-otp-caret-container">
           <div className="input-otp-caret" />
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

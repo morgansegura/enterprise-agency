@@ -21,12 +21,12 @@ export function AudioBlock({ data }: AudioBlockProps) {
 
   return (
     <figure data-slot="audio-block">
-      {(title || artist) && (
+      {title || artist ? (
         <div data-slot="audio-block-meta">
-          {title && <div data-slot="audio-block-title">{title}</div>}
-          {artist && <div data-slot="audio-block-artist">{artist}</div>}
+          {title ? <div data-slot="audio-block-title">{title}</div> : null}
+          {artist ? <div data-slot="audio-block-artist">{artist}</div> : null}
         </div>
-      )}
+      ) : null}
       <audio
         data-slot="audio-block-player"
         src={url}

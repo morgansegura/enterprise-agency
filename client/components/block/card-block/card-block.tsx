@@ -34,7 +34,7 @@ export function CardBlock({ data }: CardBlockProps) {
       data-variant={variant}
       data-image-position={imagePosition}
     >
-      {image && imagePosition === "top" && (
+      {image && imagePosition === "top" ? (
         <div data-slot="card-block-image-top">
           <Image
             src={image.url}
@@ -44,9 +44,9 @@ export function CardBlock({ data }: CardBlockProps) {
             data-object-fit={image.objectFit || "cover"}
           />
         </div>
-      )}
+      ) : null}
 
-      {image && imagePosition === "background" && (
+      {image && imagePosition === "background" ? (
         <div data-slot="card-block-image-background">
           <Image
             src={image.url}
@@ -56,13 +56,13 @@ export function CardBlock({ data }: CardBlockProps) {
           />
           <div data-slot="card-block-overlay" />
         </div>
-      )}
+      ) : null}
 
       <div
         data-slot="card-block-content-wrapper"
         data-image-position={imagePosition}
       >
-        {image && imagePosition === "left" && (
+        {image && imagePosition === "left" ? (
           <div data-slot="card-block-image-left">
             <Image
               src={image.url}
@@ -72,23 +72,25 @@ export function CardBlock({ data }: CardBlockProps) {
               data-object-fit={image.objectFit || "cover"}
             />
           </div>
-        )}
+        ) : null}
 
         <div data-slot="card-block-text">
-          {(title || description) && (
+          {title || description ? (
             <CardHeader>
-              {title && <CardTitle>{title}</CardTitle>}
-              {description && <CardDescription>{description}</CardDescription>}
+              {title ? <CardTitle>{title}</CardTitle> : null}
+              {description ? (
+                <CardDescription>{description}</CardDescription>
+              ) : null}
             </CardHeader>
-          )}
+          ) : null}
 
-          {actions && actions.length > 0 && (
+          {actions && actions.length > 0 ? (
             <CardFooter data-slot="card-block-actions">
               {actions.map((action, index) => (
                 <ButtonBlock key={index} data={action} />
               ))}
             </CardFooter>
-          )}
+          ) : null}
         </div>
       </div>
     </Card>

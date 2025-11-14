@@ -22,7 +22,7 @@ export function IconBlock({ data }: IconBlockProps) {
       <span data-slot="icon-block-icon" aria-hidden="true">
         {icon}
       </span>
-      {text && <span data-slot="icon-block-text">{text}</span>}
+      {text ? <span data-slot="icon-block-text">{text}</span> : null}
     </div>
   );
 }

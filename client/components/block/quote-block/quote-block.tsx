@@ -16,9 +16,9 @@ export function QuoteBlock({ data }: QuoteBlockProps) {
   return (
     <blockquote data-slot="quote-block" data-variant={variant}>
       <p data-slot="quote-block-text">{quote}</p>
-      {(author || avatar) && (
+      {author || avatar ? (
         <footer data-slot="quote-block-footer">
-          {avatar && (
+          {avatar ? (
             <Image
               data-slot="quote-block-avatar"
               src={avatar.url}
@@ -26,13 +26,15 @@ export function QuoteBlock({ data }: QuoteBlockProps) {
               width={avatar.width || 48}
               height={avatar.height || 48}
             />
-          )}
+          ) : null}
           <div data-slot="quote-block-citation">
-            {author && <cite data-slot="quote-block-author">{author}</cite>}
-            {role && <span data-slot="quote-block-role">{role}</span>}
+            {author ? (
+              <cite data-slot="quote-block-author">{author}</cite>
+            ) : null}
+            {role ? <span data-slot="quote-block-role">{role}</span> : null}
           </div>
         </footer>
-      )}
+      ) : null}
     </blockquote>
   );
 }

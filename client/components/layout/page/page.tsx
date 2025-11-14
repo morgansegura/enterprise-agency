@@ -22,15 +22,15 @@ export function Page({
 }: PageProps) {
   return (
     <div className={cn("page", className)}>
-      {header && (
+      {header ? (
         <header className="page-header" data-position={headerPosition}>
           {header}
         </header>
-      )}
+      ) : null}
 
       <main className="page-main">{children}</main>
 
-      {footer && <footer className="page-footer">{footer}</footer>}
+      {footer ? <footer className="page-footer">{footer}</footer> : null}
     </div>
   );
 }

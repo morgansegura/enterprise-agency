@@ -44,9 +44,9 @@ export function VideoBlock({ data }: VideoBlockProps) {
           />
         )}
       </div>
-      {caption && (
+      {caption ? (
         <figcaption data-slot="video-block-caption">{caption}</figcaption>
-      )}
+      ) : null}
     </figure>
   );
 }

@@ -24,9 +24,9 @@ export function ImageBlock({ data }: ImageBlockProps) {
           data-slot="image-block-image"
         />
       </div>
-      {caption && (
+      {caption ? (
         <figcaption data-slot="image-block-caption">{caption}</figcaption>
-      )}
+      ) : null}
     </figure>
   );
 }
