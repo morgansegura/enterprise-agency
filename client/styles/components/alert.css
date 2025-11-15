@@ -1,0 +1,49 @@
+/**
+ * Alert Component Color Tokens
+ * Alert/notification/banner theming
+ *
+ * Override these per client for custom alert appearance
+ */
+
+:root {
+  /* Alert variants - light mode */
+  --alert-default: var(--card);
+  --alert-default-foreground: var(--card-foreground);
+  --alert-default-border: var(--border);
+
+  --alert-destructive: oklch(0.98 0.01 25);
+  --alert-destructive-foreground: var(--destructive);
+  --alert-destructive-border: var(--destructive);
+}
+
+/* Alert variants - dark mode */
+.dark {
+  --alert-default: var(--card);
+  --alert-default-foreground: var(--card-foreground);
+  --alert-default-border: var(--border);
+
+  --alert-destructive: oklch(0.2 0.05 25);
+  --alert-destructive-foreground: var(--destructive);
+  --alert-destructive-border: var(--destructive);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Status-colored alerts
+  --alert-success: oklch(0.98 0.01 145);
+  --alert-success-foreground: oklch(0.4 0.15 145);
+  --alert-success-border: oklch(0.6 0.15 145);
+
+  Example 2: High contrast destructive alert
+  --alert-destructive: var(--destructive);
+  --alert-destructive-foreground: var(--neutral-0);
+
+  Example 3: Subtle alert
+  --alert-default: var(--muted);
+  --alert-default-foreground: var(--muted-foreground);
+
+  Example 4: Info alert
+  --alert-info: oklch(0.98 0.01 235);
+  --alert-info-foreground: oklch(0.4 0.15 235);
+  --alert-info-border: oklch(0.6 0.15 235);
+*/

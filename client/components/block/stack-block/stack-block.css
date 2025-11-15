@@ -4,33 +4,33 @@
   @apply flex flex-col;
 }
 
-/* Gap sizes */
+/* Gap sizes - using fluid spacing tokens */
 [data-slot="stack-block"][data-gap="none"] {
-  @apply gap-0;
+  gap: 0;
 }
 
 [data-slot="stack-block"][data-gap="xs"] {
-  @apply gap-2;
+  gap: var(--space-2);
 }
 
 [data-slot="stack-block"][data-gap="sm"] {
-  @apply gap-[var(--spacing-block-sm)];
+  gap: var(--spacing-block-sm);
 }
 
 [data-slot="stack-block"][data-gap="md"] {
-  @apply gap-[var(--spacing-block-md)];
+  gap: var(--spacing-block-md);
 }
 
 [data-slot="stack-block"][data-gap="lg"] {
-  @apply gap-[var(--spacing-block-lg)];
+  gap: var(--spacing-block-lg);
 }
 
 [data-slot="stack-block"][data-gap="xl"] {
-  @apply gap-[var(--spacing-container)];
+  gap: var(--spacing-container);
 }
 
 [data-slot="stack-block"][data-gap="2xl"] {
-  @apply gap-12;
+  gap: var(--spacing-section-sm);
 }
 
 /* Align items */

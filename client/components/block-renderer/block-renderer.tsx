@@ -4,6 +4,7 @@ import { isContainerBlock } from "@/lib/blocks";
 // Content blocks
 import { HeadingBlock } from "@/components/block/heading-block";
 import { TextBlock } from "@/components/block/text-block";
+import { RichTextBlock } from "@/components/block/rich-text-block";
 import { ImageBlock } from "@/components/block/image-block";
 import { ButtonBlock } from "@/components/block/button-block";
 import { CardBlock } from "@/components/block/card-block";
@@ -93,6 +94,9 @@ function renderBlock(block: RootBlock): React.ReactNode {
 
     case "text-block":
       return <TextBlock key={block._key} data={block.data} />;
+
+    case "rich-text-block":
+      return <RichTextBlock key={block._key} data={block.data} />;
 
     case "image-block":
       return <ImageBlock key={block._key} data={block.data} />;

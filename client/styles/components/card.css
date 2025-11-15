@@ -1,0 +1,35 @@
+/**
+ * Card Component Color Tokens
+ * Elevated surface/container theming
+ *
+ * Override these per client for custom card appearance
+ */
+
+:root {
+  /* Card - light mode */
+  --card: var(--neutral-0);
+  --card-foreground: var(--neutral-950);
+}
+
+/* Card - dark mode */
+.dark {
+  --card: var(--neutral-900);
+  --card-foreground: var(--brand-primary-50);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Subtle elevated card
+  --card: var(--neutral-50);
+
+  Example 2: Brand-colored cards
+  --card: var(--brand-primary-50);
+  --card-foreground: var(--brand-primary-900);
+
+  Example 3: High contrast card
+  --card: var(--brand-primary-500);
+  --card-foreground: var(--brand-primary-50);
+
+  Example 4: Transparent card with border
+  --card: transparent;
+*/

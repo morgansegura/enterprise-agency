@@ -30,33 +30,34 @@
   /* ===== LAYER 2: SCALING RATE TOKENS ===== */
   /* Viewport-based scaling rates */
   /* Override these per client to change how aggressively fonts scale */
-  --scale-xs: 0.25vw;
-  --scale-sm: 0.4vw;
-  --scale-base: 0.5vw;
-  --scale-lg: 0.75vw;
-  --scale-xl: 1vw;
-  --scale-2xl: 1.5vw;
-  --scale-3xl: 2vw;
-  --scale-4xl: 2.5vw;
-  --scale-5xl: 3vw;
-  --scale-6xl: 3.5vw;
-  --scale-7xl: 4vw;
-  --scale-8xl: 4.5vw;
-  --scale-9xl: 5vw;
+  --scale-xs: 0.15vw;
+  --scale-sm: 0.25vw;
+  --scale-base: 0.35vw;
+  --scale-lg: 0.5vw;
+  --scale-xl: 0.75vw;
+  --scale-2xl: 1vw;
+  --scale-3xl: 1.25vw;
+  --scale-4xl: 1.5vw;
+  --scale-5xl: 2vw;
+  --scale-6xl: 2.25vw;
+  --scale-7xl: 2.5vw;
+  --scale-8xl: 3vw;
+  --scale-9xl: 3.5vw;
 
   /* ===== LAYER 3: FLUID HEADING SIZES ===== */
   /* Using clamp() with primitive tokens for smooth responsive scaling */
+  /* Conservative max sizes for better readability on large screens */
   --heading-size-xs: clamp(var(--font-xs), calc(var(--font-xs) + var(--scale-xs)), var(--font-sm));
   --heading-size-sm: clamp(var(--font-sm), calc(var(--font-sm) + var(--scale-sm)), var(--font-base));
   --heading-size-base: clamp(var(--font-base), calc(var(--font-base) + var(--scale-base)), var(--font-lg));
   --heading-size-lg: clamp(var(--font-lg), calc(var(--font-lg) + var(--scale-lg)), var(--font-xl));
   --heading-size-xl: clamp(var(--font-xl), calc(var(--font-xl) + var(--scale-xl)), var(--font-2xl));
   --heading-size-2xl: clamp(var(--font-2xl), calc(var(--font-2xl) + var(--scale-2xl)), var(--font-3xl));
-  --heading-size-3xl: clamp(var(--font-3xl), calc(var(--font-3xl) + var(--scale-3xl)), var(--font-5xl));
-  --heading-size-4xl: clamp(var(--font-4xl), calc(var(--font-4xl) + var(--scale-4xl)), var(--font-7xl));
-  --heading-size-5xl: clamp(var(--font-5xl), calc(var(--font-5xl) + var(--scale-5xl)), var(--font-7xl));
-  --heading-size-6xl: clamp(var(--font-6xl), calc(var(--font-6xl) + var(--scale-6xl)), var(--font-8xl));
-  --heading-size-7xl: clamp(var(--font-7xl), calc(var(--font-7xl) + var(--scale-7xl)), var(--font-9xl));
+  --heading-size-3xl: clamp(var(--font-3xl), calc(var(--font-3xl) + var(--scale-3xl)), var(--font-4xl));
+  --heading-size-4xl: clamp(var(--font-4xl), calc(var(--font-4xl) + var(--scale-4xl)), var(--font-5xl));
+  --heading-size-5xl: clamp(var(--font-5xl), calc(var(--font-5xl) + var(--scale-5xl)), var(--font-6xl));
+  --heading-size-6xl: clamp(var(--font-6xl), calc(var(--font-6xl) + var(--scale-6xl)), var(--font-7xl));
+  --heading-size-7xl: clamp(var(--font-7xl), calc(var(--font-7xl) + var(--scale-7xl)), var(--font-8xl));
   --heading-size-8xl: clamp(var(--font-8xl), calc(var(--font-8xl) + var(--scale-8xl)), var(--font-9xl));
   --heading-size-9xl: clamp(var(--font-9xl), calc(var(--font-9xl) + var(--scale-9xl)), var(--font-9xl));
 

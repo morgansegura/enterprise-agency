@@ -1,7 +1,8 @@
 @reference "tailwindcss";
 
 .heading {
-  @apply relative font-(--heading);
+  @apply relative;
+  font-family: var(--font-heading);
   line-height: var(--line-height-tight);
   max-width: clamp(20ch, 50vw + 10ch, 75ch);
 }
@@ -90,7 +91,7 @@
 }
 
 .heading[data-align="center"] {
-  @apply text-center;
+  @apply text-center mx-auto;
 }
 
 .heading[data-align="right"] {

@@ -1,0 +1,28 @@
+/**
+ * Button Component Color Tokens
+ * Button variant theming including destructive actions
+ *
+ * Override these per client for custom button appearance
+ */
+
+:root {
+  /* Destructive button - light mode */
+  --destructive: var(--status-destructive-light);
+}
+
+/* Destructive button - dark mode */
+.dark {
+  --destructive: var(--status-destructive-dark);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Softer destructive color
+  --destructive: oklch(0.6 0.2 25);
+
+  Example 2: High contrast destructive
+  --destructive: oklch(0.5 0.3 20);
+
+  Example 3: Brand-specific error color
+  --destructive: var(--brand-error);
+*/

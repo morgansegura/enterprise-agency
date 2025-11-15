@@ -1,0 +1,73 @@
+/**
+ * Chart Color Design Tokens
+ * Data visualization color system with light/dark mode support
+ *
+ * Layer 1: Primitive chart colors (OKLCH values)
+ * Layer 2: Semantic chart mappings (light mode)
+ * Layer 3: Semantic chart mappings (dark mode)
+ *
+ * Override per client for custom data visualization palettes
+ */
+
+:root {
+  /* ===== LAYER 1: PRIMITIVE CHART COLORS ===== */
+  /* Light mode palette - optimized for white backgrounds */
+  --chart-red-light: oklch(0.646 0.222 41.116);
+  --chart-cyan-light: oklch(0.6 0.118 184.704);
+  --chart-blue-light: oklch(0.398 0.07 227.392);
+  --chart-yellow-light: oklch(0.828 0.189 84.429);
+  --chart-orange-light: oklch(0.769 0.188 70.08);
+
+  /* Dark mode palette - optimized for dark backgrounds */
+  --chart-purple-dark: oklch(0.488 0.243 264.376);
+  --chart-green-dark: oklch(0.696 0.17 162.48);
+  --chart-orange-dark: oklch(0.769 0.188 70.08);
+  --chart-pink-dark: oklch(0.627 0.265 303.9);
+  --chart-red-dark: oklch(0.645 0.246 16.439);
+
+  /* ===== LAYER 2: SEMANTIC CHART MAPPINGS (LIGHT MODE) ===== */
+  /* Default 5-color chart palette for light mode */
+  --chart-1: var(--chart-red-light);
+  --chart-2: var(--chart-cyan-light);
+  --chart-3: var(--chart-blue-light);
+  --chart-4: var(--chart-yellow-light);
+  --chart-5: var(--chart-orange-light);
+}
+
+/* ===== LAYER 3: DARK MODE SEMANTIC MAPPINGS ===== */
+.dark {
+  /* Dark mode chart palette */
+  --chart-1: var(--chart-purple-dark);
+  --chart-2: var(--chart-green-dark);
+  --chart-3: var(--chart-orange-dark);
+  --chart-4: var(--chart-pink-dark);
+  --chart-5: var(--chart-red-dark);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Custom brand-aligned chart colors
+  --chart-red-light: oklch(0.65 0.25 25); // Brand red
+  --chart-blue-light: oklch(0.5 0.2 240); // Brand blue
+
+  Example 2: Accessibility-focused high-contrast palette
+  --chart-red-light: oklch(0.55 0.3 25);
+  --chart-blue-light: oklch(0.35 0.15 240);
+
+  Example 3: Monochromatic data viz (single brand color scale)
+  --chart-1: oklch(0.7 0.15 220);
+  --chart-2: oklch(0.6 0.15 220);
+  --chart-3: oklch(0.5 0.15 220);
+  --chart-4: oklch(0.4 0.15 220);
+  --chart-5: oklch(0.3 0.15 220);
+
+  Example 4: Extended palette for more data series
+  --chart-6: oklch(0.6 0.2 140); // Add 6th color
+  --chart-7: oklch(0.65 0.22 300); // Add 7th color
+
+  Example 5: Status/category-specific colors
+  --chart-success: oklch(0.65 0.18 145);
+  --chart-warning: oklch(0.75 0.19 85);
+  --chart-error: oklch(0.62 0.24 25);
+  --chart-info: oklch(0.55 0.18 235);
+*/

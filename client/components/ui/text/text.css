@@ -2,6 +2,7 @@
 
 .text {
   @apply relative;
+  font-family: var(--font-body);
   line-height: var(--line-height-relaxed);
 }
 

@@ -84,6 +84,12 @@ export type TextBlockData = {
   variant?: "default" | "muted" | "lead" | "subtle";
 };
 
+/** Rich text block data (TipTap HTML output) */
+export type RichTextBlockData = {
+  html: string;
+  align?: "left" | "center" | "right" | "justify";
+};
+
 /** Image block data */
 export type ImageBlockData = {
   url: string;
@@ -276,6 +282,7 @@ export type ContainerLayoutData = {
 export type ContentBlock =
   | { _type: "heading-block"; _key: string; data: HeadingBlockData }
   | { _type: "text-block"; _key: string; data: TextBlockData }
+  | { _type: "rich-text-block"; _key: string; data: RichTextBlockData }
   | { _type: "image-block"; _key: string; data: ImageBlockData }
   | { _type: "button-block"; _key: string; data: ButtonBlockData }
   | { _type: "card-block"; _key: string; data: CardBlockData }
