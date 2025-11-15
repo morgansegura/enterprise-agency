@@ -54,7 +54,7 @@ export const headerConfigMock: HeaderConfig = {
   mobile: {
     breakpoint: "lg",
     type: "drawer",
-    drawerSide: "left",
+    drawerSide: "right",
     menuId: "primary",
   },
 

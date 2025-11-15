@@ -19,7 +19,7 @@
 
 /* Main content - takes remaining space */
 .page-main {
-  @apply flex-1;
+  @apply flex-1 relative z-0;
 }
 
 /* Add top padding when header is fixed */

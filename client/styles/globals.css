@@ -3,6 +3,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Import animations */
+@import "./tokens/animations.css";
+
 /* Import design tokens first - establish the foundation */
 @import "./tokens/colors.css";
 @import "./tokens/fonts.css";

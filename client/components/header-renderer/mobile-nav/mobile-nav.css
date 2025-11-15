@@ -1,0 +1,73 @@
+@reference "tailwindcss";
+
+/**
+ * Mobile Navigation Styles
+ * Vertical navigation for mobile drawer
+ */
+
+.mobile-nav-content {
+  @apply w-[280px] sm:w-[350px];
+}
+
+.mobile-nav-title {
+  @apply text-lg font-semibold;
+}
+
+.mobile-nav {
+  @apply mt-8;
+}
+
+.mobile-nav-list {
+  @apply flex flex-col gap-1;
+}
+
+.mobile-nav-item {
+  @apply list-none;
+}
+
+.mobile-nav-link {
+  @apply flex items-center justify-between w-full px-4 py-3 text-base font-medium rounded-md transition-colors;
+  @apply text-(--foreground) hover:bg-(--accent) hover:text-(--accent-foreground);
+}
+
+.mobile-nav-link[data-active="true"] {
+  @apply bg-(--accent) text-(--primary);
+}
+
+.mobile-nav-chevron {
+  @apply transition-transform text-sm text-(--muted-foreground);
+}
+
+.mobile-nav-chevron[data-expanded="true"] {
+  @apply rotate-180;
+}
+
+.mobile-nav-badge {
+  @apply ml-2 px-2 py-0.5 text-xs rounded-full;
+}
+
+.mobile-nav-badge[data-variant="new"] {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+
+.mobile-nav-badge[data-variant="hot"] {
+  @apply bg-(--destructive) text-white;
+}
+
+.mobile-nav-badge[data-variant="sale"] {
+  @apply bg-green-600 text-white;
+}
+
+/* Submenu */
+.mobile-nav-submenu {
+  @apply flex flex-col gap-1 mt-1 ml-4 pl-4 border-l-2 border-(--border);
+}
+
+.mobile-nav-submenu-item {
+  @apply list-none;
+}
+
+.mobile-nav-submenu-link {
+  @apply block px-4 py-2 text-sm rounded-md transition-colors;
+  @apply text-(--muted-foreground) hover:bg-(--accent) hover:text-(--accent-foreground);
+}
