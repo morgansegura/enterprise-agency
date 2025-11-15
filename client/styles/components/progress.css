@@ -1,0 +1,35 @@
+/**
+ * Progress Component Tokens
+ * Progress bar theming
+ *
+ * Override these per client for custom progress appearance
+ */
+
+:root {
+  /* Progress structural tokens */
+  --progress-height: var(--space-2);
+  --progress-border-radius: var(--radius-full);
+
+  /* Progress color tokens */
+  --progress-bg: var(--primary);
+  --progress-bg-opacity: 0.2;
+  --progress-indicator-bg: var(--primary);
+}
+
+.dark {
+  --progress-bg: var(--primary);
+  --progress-indicator-bg: var(--primary);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Thicker progress bar
+  --progress-height: var(--space-3);
+
+  Example 2: Square progress bar
+  --progress-border-radius: var(--radius-sm);
+
+  Example 3: Custom colors
+  --progress-bg: var(--muted);
+  --progress-indicator-bg: var(--brand-primary-500);
+*/

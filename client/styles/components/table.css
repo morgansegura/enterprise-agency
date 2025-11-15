@@ -6,6 +6,16 @@
  */
 
 :root {
+  /* Table structural tokens */
+  --table-font-size: var(--text-size-sm);
+  --table-head-height: var(--space-10);
+  --table-head-padding-inline: var(--space-2);
+  --table-head-font-weight: var(--font-weight-medium);
+  --table-cell-padding: var(--space-2);
+  --table-caption-margin-top: var(--space-4);
+  --table-caption-font-size: var(--text-size-sm);
+  --table-checkbox-translate-y: 2px;
+
   /* Table - light mode */
   --table-header: var(--muted);
   --table-header-foreground: var(--muted-foreground);

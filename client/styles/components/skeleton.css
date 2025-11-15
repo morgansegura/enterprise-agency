@@ -1,0 +1,30 @@
+/**
+ * Skeleton Component Tokens
+ * Loading placeholder theming
+ *
+ * Override these per client for custom skeleton appearance
+ */
+
+:root {
+  /* Skeleton structural tokens */
+  --skeleton-border-radius: var(--radius-md);
+
+  /* Skeleton color tokens */
+  --skeleton-bg: var(--accent);
+}
+
+.dark {
+  --skeleton-bg: var(--accent);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: More rounded skeletons
+  --skeleton-border-radius: var(--radius-lg);
+
+  Example 2: Custom color
+  --skeleton-bg: var(--muted);
+
+  Example 3: No border radius
+  --skeleton-border-radius: 0;
+*/

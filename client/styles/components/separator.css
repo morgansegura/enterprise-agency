@@ -1,0 +1,32 @@
+/**
+ * Separator Component Tokens
+ * Visual divider theming
+ *
+ * Override these per client for custom separator appearance
+ */
+
+:root {
+  /* Separator structural tokens */
+  --separator-horizontal-height: 1px;
+  --separator-vertical-width: 1px;
+
+  /* Separator color tokens */
+  --separator-bg: var(--border);
+}
+
+.dark {
+  --separator-bg: var(--border);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Thicker separator
+  --separator-horizontal-height: 2px;
+  --separator-vertical-width: 2px;
+
+  Example 2: Custom color
+  --separator-bg: var(--muted);
+
+  Example 3: Subtle separator
+  --separator-bg: oklch(0 0 0 / 0.05);
+*/

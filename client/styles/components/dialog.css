@@ -1,0 +1,58 @@
+/**
+ * Dialog Component Tokens
+ * Modal overlay and content theming
+ *
+ * Override these per client for custom dialog appearance
+ */
+
+:root {
+  /* Dialog structural tokens */
+  --dialog-content-border-radius: var(--radius-lg);
+  --dialog-content-padding: var(--space-6);
+  --dialog-content-gap: var(--space-4);
+  --dialog-content-max-width: 32rem; /* sm:max-w-lg */
+  --dialog-content-shadow: var(--shadow-lg);
+
+  --dialog-header-gap: var(--space-2);
+  --dialog-footer-gap: var(--space-2);
+
+  --dialog-close-top: var(--space-4);
+  --dialog-close-right: var(--space-4);
+  --dialog-close-border-radius: var(--radius-xs);
+  --dialog-close-icon-size: var(--space-4);
+  --dialog-close-focus-ring-width: 2px;
+  --dialog-close-focus-ring-offset: 2px;
+
+  --dialog-title-font-size: var(--text-size-lg);
+  --dialog-title-font-weight: var(--font-weight-semibold);
+
+  --dialog-description-font-size: var(--text-size-sm);
+
+  /* Dialog color tokens */
+  --dialog-overlay-bg: oklch(0 0 0 / 0.5);
+  --dialog-content-bg: var(--background);
+  --dialog-content-border: var(--border);
+}
+
+.dark {
+  --dialog-overlay-bg: oklch(0 0 0 / 0.5);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger dialog spacing
+  --dialog-content-padding: var(--space-8);
+  --dialog-content-gap: var(--space-6);
+
+  Example 2: Wider dialog
+  --dialog-content-max-width: 42rem;
+
+  Example 3: Custom overlay opacity
+  --dialog-overlay-bg: oklch(0 0 0 / 0.8);
+
+  Example 4: Rounded corners
+  --dialog-content-border-radius: var(--radius-xl);
+
+  Example 5: Different shadow
+  --dialog-content-shadow: var(--shadow-xl);
+*/

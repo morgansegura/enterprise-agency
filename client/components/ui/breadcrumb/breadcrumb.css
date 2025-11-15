@@ -1,11 +1,18 @@
 @reference "tailwindcss";
 
 [data-slot="breadcrumb-list"] {
-  @apply text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5;
+  @apply text-muted-foreground flex flex-wrap items-center break-words;
+  gap: var(--breadcrumb-gap);
+  font-size: var(--breadcrumb-font-size);
+
+  @media (min-width: theme(screens.sm)) {
+    gap: var(--breadcrumb-gap-sm);
+  }
 }
 
 [data-slot="breadcrumb-item"] {
-  @apply inline-flex items-center gap-1.5;
+  @apply inline-flex items-center;
+  gap: var(--breadcrumb-gap);
 }
 
 [data-slot="breadcrumb-link"] {
@@ -17,9 +24,14 @@
 }
 
 [data-slot="breadcrumb-separator"] {
-  @apply [&>svg]:size-3.5;
+  & > svg {
+    width: var(--breadcrumb-separator-icon-size);
+    height: var(--breadcrumb-separator-icon-size);
+  }
 }
 
 [data-slot="breadcrumb-ellipsis"] {
-  @apply flex size-9 items-center justify-center;
+  @apply flex items-center justify-center;
+  width: var(--breadcrumb-ellipsis-size);
+  height: var(--breadcrumb-ellipsis-size);
 }

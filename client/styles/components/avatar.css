@@ -1,0 +1,34 @@
+/**
+ * Avatar Component Tokens
+ * User profile image/fallback theming
+ *
+ * Override these per client for custom avatar appearance
+ */
+
+:root {
+  /* Avatar structural tokens */
+  --avatar-size: var(--space-8);
+  --avatar-border-radius: var(--radius-full);
+
+  /* Avatar color tokens */
+  --avatar-fallback-bg: var(--muted);
+  --avatar-fallback-foreground: var(--muted-foreground);
+}
+
+.dark {
+  --avatar-fallback-bg: var(--muted);
+  --avatar-fallback-foreground: var(--muted-foreground);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger avatars
+  --avatar-size: var(--space-12);
+
+  Example 2: Square avatars
+  --avatar-border-radius: var(--radius-md);
+
+  Example 3: Custom fallback color
+  --avatar-fallback-bg: var(--primary);
+  --avatar-fallback-foreground: var(--primary-foreground);
+*/

@@ -28,7 +28,7 @@ export const homePageMock = {
       _type: "section" as const,
       background: "gray" as const,
       spacing: "xl" as const,
-      width: "wide" as const,
+      width: "full" as const,
       align: "center" as const,
       blocks: [
         {

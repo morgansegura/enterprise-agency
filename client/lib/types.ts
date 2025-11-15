@@ -57,7 +57,7 @@ export type Spacing = "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 export type Width = "narrow" | "wide" | "full";
 
 /** Header positioning behavior */
-export type HeaderPosition = "static" | "sticky" | "fixed";
+export type HeaderPosition = "static" | "sticky" | "fixed" | "absolute";
 
 // ========================================
 // Visual Styling

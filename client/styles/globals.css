@@ -12,17 +12,35 @@
 @import "./tokens/typography.css";
 
 /* Import component-specific tokens - build on the foundation */
+@import "./components/accordion.css";
 @import "./components/alert.css";
+@import "./components/alert-dialog.css";
+@import "./components/avatar.css";
 @import "./components/badge.css";
+@import "./components/breadcrumb.css";
 @import "./components/button.css";
 @import "./components/card.css";
 @import "./components/charts.css";
+@import "./components/checkbox.css";
+@import "./components/dialog.css";
+@import "./components/hover-card.css";
 @import "./components/input.css";
+@import "./components/label.css";
+@import "./components/pagination.css";
 @import "./components/popover.css";
+@import "./components/progress.css";
+@import "./components/radio-group.css";
 @import "./components/rich-text.css";
+@import "./components/scroll-area.css";
 @import "./components/section.css";
+@import "./components/select.css";
+@import "./components/separator.css";
 @import "./components/sidebar.css";
+@import "./components/skeleton.css";
+@import "./components/slider.css";
+@import "./components/switch.css";
 @import "./components/table.css";
+@import "./components/tabs.css";
 @import "./components/tooltip.css";
 
 @theme inline {

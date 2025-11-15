@@ -1,0 +1,39 @@
+/**
+ * Radio Group Component Tokens
+ * Form radio group theming
+ *
+ * Override these per client for custom radio group appearance
+ */
+
+:root {
+  /* Radio group structural tokens */
+  --radio-group-gap: var(--space-3);
+  --radio-item-size: var(--space-4);
+  --radio-item-border-radius: var(--radius-full);
+  --radio-indicator-icon-size: var(--space-2);
+  --radio-focus-ring-width: 3px;
+
+  /* Radio group color tokens */
+  --radio-item-border: var(--input);
+  --radio-item-bg: transparent;
+  --radio-checked-color: var(--primary);
+  --radio-shadow: var(--shadow-xs);
+}
+
+.dark {
+  --radio-item-bg: var(--input);
+  --radio-item-bg-opacity: 0.3;
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger radio buttons
+  --radio-item-size: var(--space-5);
+  --radio-indicator-icon-size: var(--space-2\.5);
+
+  Example 2: More spacing
+  --radio-group-gap: var(--space-4);
+
+  Example 3: Custom colors
+  --radio-checked-color: var(--brand-primary-500);
+*/

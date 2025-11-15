@@ -1,0 +1,80 @@
+/**
+ * Select Component Tokens
+ * Dropdown select theming
+ *
+ * Override these per client for custom select appearance
+ */
+
+:root {
+  /* Select trigger tokens */
+  --select-trigger-gap: var(--space-2);
+  --select-trigger-border-radius: var(--radius-md);
+  --select-trigger-padding-inline: var(--space-3);
+  --select-trigger-padding-block: var(--space-2);
+  --select-trigger-font-size: var(--text-size-sm);
+  --select-trigger-height: var(--space-9);
+  --select-trigger-height-sm: var(--space-8);
+  --select-trigger-icon-size: var(--space-4);
+  --select-trigger-shadow: var(--shadow-xs);
+  --select-trigger-focus-ring-width: 3px;
+
+  /* Select content tokens */
+  --select-content-border-radius: var(--radius-md);
+  --select-content-min-width: 8rem;
+  --select-content-shadow: var(--shadow-md);
+
+  /* Select viewport tokens */
+  --select-viewport-padding: var(--space-1);
+  --select-viewport-scroll-margin: var(--space-1);
+
+  /* Select label tokens */
+  --select-label-padding-inline: var(--space-2);
+  --select-label-padding-block: var(--space-1\.5);
+  --select-label-font-size: var(--text-size-xs);
+
+  /* Select item tokens */
+  --select-item-gap: var(--space-2);
+  --select-item-border-radius: var(--radius-sm);
+  --select-item-padding-inline-start: var(--space-2);
+  --select-item-padding-inline-end: var(--space-8);
+  --select-item-padding-block: var(--space-1\.5);
+  --select-item-font-size: var(--text-size-sm);
+  --select-item-icon-size: var(--space-4);
+
+  /* Select separator tokens */
+  --select-separator-height: 1px;
+  --select-separator-margin-block: var(--space-1);
+  --select-separator-margin-inline: calc(var(--space-1) * -1);
+
+  /* Select scroll button tokens */
+  --select-scroll-button-padding-block: var(--space-1);
+
+  /* Select color tokens */
+  --select-trigger-bg: transparent;
+  --select-trigger-border: var(--input);
+  --select-content-bg: var(--popover);
+  --select-content-foreground: var(--popover-foreground);
+  --select-label-foreground: var(--muted-foreground);
+  --select-separator-bg: var(--border);
+}
+
+.dark {
+  --select-trigger-bg: var(--input);
+  --select-trigger-bg-opacity: 0.3;
+  --select-trigger-hover-bg-opacity: 0.5;
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger select
+  --select-trigger-height: var(--space-10);
+  --select-trigger-padding-inline: var(--space-4);
+
+  Example 2: More rounded
+  --select-content-border-radius: var(--radius-lg);
+  --select-item-border-radius: var(--radius-md);
+
+  Example 3: Denser items
+  --select-item-padding-block: var(--space-1);
+  --select-item-font-size: var(--text-size-xs);
+*/

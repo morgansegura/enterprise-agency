@@ -5,11 +5,17 @@
 }
 
 [data-slot="pagination-content"] {
-  @apply flex flex-row items-center gap-1;
+  @apply flex flex-row items-center;
+  gap: var(--pagination-content-gap);
 }
 
 [data-slot="pagination-link"] {
-  @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+
+  /* Design token values */
+  border-radius: var(--pagination-link-border-radius);
+  font-size: var(--pagination-link-font-size);
+  font-weight: var(--pagination-link-font-weight);
 }
 
 [data-slot="pagination-link"][data-active="false"] {
@@ -17,19 +23,28 @@
 }
 
 [data-slot="pagination-link"][data-active="true"] {
-  @apply border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground;
+  @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  box-shadow: var(--pagination-link-active-shadow);
 }
 
 [data-slot="pagination-link"][data-size="default"] {
-  @apply h-9 px-4 py-2;
+  height: var(--pagination-link-height);
+  padding-inline: var(--pagination-link-padding-inline);
+  padding-block: var(--pagination-link-padding-block);
 }
 
 [data-slot="pagination-link"][data-size="icon"] {
-  @apply size-9;
+  width: var(--pagination-link-icon-size);
+  height: var(--pagination-link-icon-size);
 }
 
 [data-slot="pagination-previous"] {
-  @apply gap-1 px-2.5 sm:pl-2.5;
+  gap: var(--pagination-previous-gap);
+  padding-inline: var(--pagination-previous-padding-inline);
+
+  @media (min-width: theme(screens.sm)) {
+    padding-inline-start: var(--pagination-previous-padding-inline);
+  }
 }
 
 [data-slot="pagination-previous"] > span {
@@ -37,7 +52,12 @@
 }
 
 [data-slot="pagination-next"] {
-  @apply gap-1 px-2.5 sm:pr-2.5;
+  gap: var(--pagination-next-gap);
+  padding-inline: var(--pagination-next-padding-inline);
+
+  @media (min-width: theme(screens.sm)) {
+    padding-inline-end: var(--pagination-next-padding-inline);
+  }
 }
 
 [data-slot="pagination-next"] > span {
@@ -45,9 +65,12 @@
 }
 
 [data-slot="pagination-ellipsis"] {
-  @apply flex size-9 items-center justify-center;
+  @apply flex items-center justify-center;
+  width: var(--pagination-ellipsis-size);
+  height: var(--pagination-ellipsis-size);
 }
 
 [data-slot="pagination-ellipsis"] > svg {
-  @apply size-4;
+  width: var(--pagination-ellipsis-icon-size);
+  height: var(--pagination-ellipsis-icon-size);
 }

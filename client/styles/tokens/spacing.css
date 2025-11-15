@@ -12,18 +12,28 @@
 :root {
   /* ===== LAYER 1: PRIMITIVE SPACING VALUES ===== */
   /* Base spacing scale from Tailwind - override per client */
-  --space-2: theme("spacing.2"); /* 0.5rem / 8px */
-  --space-4: theme("spacing.4"); /* 1rem / 16px */
-  --space-6: theme("spacing.6"); /* 1.5rem / 24px */
-  --space-8: theme("spacing.8"); /* 2rem / 32px */
-  --space-12: theme("spacing.12"); /* 3rem / 48px */
-  --space-16: theme("spacing.16"); /* 4rem / 64px */
-  --space-20: theme("spacing.20"); /* 5rem / 80px */
-  --space-24: theme("spacing.24"); /* 6rem / 96px */
-  --space-32: theme("spacing.32"); /* 8rem / 128px */
-  --space-40: theme("spacing.40"); /* 10rem / 160px */
-  --space-48: theme("spacing.48"); /* 12rem / 192px */
-  --space-64: theme("spacing.64"); /* 16rem / 256px */
+  --space-0\.5: 0.125rem; /* 2px */
+  --space-1: 0.25rem; /* 4px */
+  --space-1\.5: 0.375rem; /* 6px */
+  --space-2: 0.5rem; /* 8px */
+  --space-2\.5: 0.625rem; /* 10px */
+  --space-3: 0.75rem; /* 12px */
+  --space-3\.5: 0.875rem; /* 14px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-7: 1.75rem; /* 28px */
+  --space-8: 2rem; /* 32px */
+  --space-9: 2.25rem; /* 36px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+  --space-20: 5rem; /* 80px */
+  --space-24: 6rem; /* 96px */
+  --space-32: 8rem; /* 128px */
+  --space-40: 10rem; /* 160px */
+  --space-48: 12rem; /* 192px */
+  --space-64: 16rem; /* 256px */
 
   /* ===== LAYER 2: SPACING GROWTH RATES ===== */
   /* Viewport-based scaling rates - override to control spacing fluidity */

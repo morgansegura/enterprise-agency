@@ -1,0 +1,44 @@
+/**
+ * Slider Component Tokens
+ * Range slider theming
+ *
+ * Override these per client for custom slider appearance
+ */
+
+:root {
+  /* Slider structural tokens */
+  --slider-track-height: var(--space-1\.5);
+  --slider-track-width: var(--space-1\.5);
+  --slider-track-border-radius: var(--radius-full);
+  --slider-thumb-size: var(--space-4);
+  --slider-thumb-border-radius: var(--radius-full);
+  --slider-thumb-ring-width: 4px;
+  --slider-vertical-min-height: 11rem; /* min-h-44 */
+
+  /* Slider color tokens */
+  --slider-track-bg: var(--muted);
+  --slider-range-bg: var(--primary);
+  --slider-thumb-bg: white;
+  --slider-thumb-border: var(--primary);
+  --slider-thumb-shadow: var(--shadow-sm);
+}
+
+.dark {
+  --slider-track-bg: var(--muted);
+  --slider-range-bg: var(--primary);
+  --slider-thumb-bg: white;
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Thicker slider
+  --slider-track-height: var(--space-2);
+  --slider-thumb-size: var(--space-5);
+
+  Example 2: Square thumb
+  --slider-thumb-border-radius: var(--radius-sm);
+
+  Example 3: Custom colors
+  --slider-range-bg: var(--brand-primary-500);
+  --slider-thumb-border: var(--brand-primary-600);
+*/

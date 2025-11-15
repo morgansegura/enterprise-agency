@@ -1,13 +1,19 @@
 @reference "tailwindcss";
 
 [data-slot="card"] {
-  @apply relative flex flex-col gap-6 rounded-xl border bg-(--card) text-(--card-foreground) py-6 shadow-sm;
+  @apply relative flex flex-col border bg-(--card) text-(--card-foreground);
+  gap: var(--space-6);
+  border-radius: var(--radius-xl);
+  padding-block: var(--space-6);
+  box-shadow: var(--shadow-sm);
 }
 
 [data-slot="card-header"] {
-  @apply grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6;
+  @apply grid auto-rows-min grid-rows-[auto_auto] items-start;
   @apply @container/card-header;
-  
+  gap: var(--space-2);
+  padding-inline: var(--space-6);
+
   /* When card-action exists */
   &:has([data-slot="card-action"]) {
     @apply grid-cols-[1fr_auto];
@@ -16,15 +22,17 @@
 
 /* Card header inside a bordered card */
 .border-b [data-slot="card-header"] {
-  @apply pb-6;
+  padding-block-end: var(--space-6);
 }
 
 [data-slot="card-title"] {
-  @apply leading-none font-semibold;
+  @apply leading-none;
+  font-weight: var(--font-weight-semibold);
 }
 
 [data-slot="card-description"] {
-  @apply text-(--muted-foreground) text-sm;
+  @apply text-(--muted-foreground);
+  font-size: var(--text-size-sm);
 }
 
 [data-slot="card-action"] {
@@ -32,14 +40,15 @@
 }
 
 [data-slot="card-content"] {
-  @apply px-6;
+  padding-inline: var(--space-6);
 }
 
 [data-slot="card-footer"] {
-  @apply flex items-center px-6;
+  @apply flex items-center;
+  padding-inline: var(--space-6);
 }
 
 /* Card footer inside a bordered card */
 .border-t [data-slot="card-footer"] {
-  @apply pt-6;
+  padding-block-start: var(--space-6);
 }
