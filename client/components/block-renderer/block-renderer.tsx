@@ -20,6 +20,7 @@ import { EmbedBlock } from "@/components/block/embed-block";
 import { IconBlock } from "@/components/block/icon-block";
 import { StatsBlock } from "@/components/block/stats-block";
 import { MapBlock } from "@/components/block/map-block";
+import { LogoBlock } from "@/components/block/logo-block";
 
 // Container blocks
 import { ContainerBlock } from "@/components/block/container-block";
@@ -142,6 +143,9 @@ function renderBlock(block: RootBlock): React.ReactNode {
 
     case "map-block":
       return <MapBlock key={block._key} data={block.data} />;
+
+    case "logo-block":
+      return <LogoBlock key={block._key} block={block} />;
 
     default:
       // Exhaustive check - TypeScript will error if we miss a block type

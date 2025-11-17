@@ -30,7 +30,11 @@ export default function Home() {
     <Page
       header={
         headerConfig ? (
-          <HeaderRenderer config={headerConfig} menu={headerMenu} />
+          <HeaderRenderer
+            config={headerConfig}
+            menu={headerMenu}
+            logos={siteConfig.logos}
+          />
         ) : undefined
       }
       footer={

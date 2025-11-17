@@ -6,7 +6,7 @@
  */
 
 .mobile-nav-content {
-  @apply w-[280px] sm:w-[350px];
+  width: var(--mobile-nav-width);
 }
 
 .mobile-nav-title {
@@ -18,7 +18,8 @@
 }
 
 .mobile-nav-list {
-  @apply flex flex-col gap-1;
+  @apply flex flex-col;
+  gap: var(--mobile-nav-item-gap);
 }
 
 .mobile-nav-item {
@@ -26,12 +27,22 @@
 }
 
 .mobile-nav-link {
-  @apply flex items-center justify-between w-full px-4 py-3 text-base font-medium rounded-md transition-colors;
-  @apply text-(--foreground) hover:bg-(--accent) hover:text-(--accent-foreground);
+  @apply flex items-center justify-between w-full text-base font-medium;
+  padding: var(--mobile-nav-item-padding-y) var(--mobile-nav-item-padding-x);
+  border-radius: var(--mobile-nav-item-border-radius);
+  color: var(--mobile-nav-item-color);
+  background: transparent;
+  transition: all var(--footer-nav-link-transition-duration) var(--footer-nav-link-transition-timing);
+}
+
+.mobile-nav-link:hover {
+  color: var(--mobile-nav-item-hover-color);
+  background: var(--mobile-nav-item-hover-bg);
 }
 
 .mobile-nav-link[data-active="true"] {
-  @apply bg-(--accent) text-(--primary);
+  color: var(--mobile-nav-item-active-color);
+  background: var(--mobile-nav-item-active-bg);
 }
 
 .mobile-nav-chevron {
@@ -60,7 +71,11 @@
 
 /* Submenu */
 .mobile-nav-submenu {
-  @apply flex flex-col gap-1 mt-1 ml-4 pl-4 border-l-2 border-(--border);
+  @apply flex flex-col mt-1;
+  gap: var(--mobile-nav-item-gap);
+  margin-left: var(--mobile-nav-submenu-indent);
+  padding-left: var(--mobile-nav-submenu-indent);
+  border-left: 2px solid var(--mobile-nav-submenu-border-color);
 }
 
 .mobile-nav-submenu-item {
@@ -68,6 +83,14 @@
 }
 
 .mobile-nav-submenu-link {
-  @apply block px-4 py-2 text-sm rounded-md transition-colors;
-  @apply text-(--muted-foreground) hover:bg-(--accent) hover:text-(--accent-foreground);
+  @apply block text-sm;
+  padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
+  border-radius: var(--mobile-nav-item-border-radius);
+  color: var(--dropdown-item-color);
+  transition: all var(--footer-nav-link-transition-duration) var(--footer-nav-link-transition-timing);
+}
+
+.mobile-nav-submenu-link:hover {
+  color: var(--dropdown-item-hover-color);
+  background: var(--dropdown-item-hover-bg);
 }

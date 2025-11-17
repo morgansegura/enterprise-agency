@@ -2,8 +2,9 @@
 
 import type { HeaderConfig } from "@/lib/headers/types";
 import type { Menu } from "@/lib/menus/types";
+import type { LogoConfig } from "@/lib/logos/types";
+import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { MobileNav } from "./mobile-nav";
@@ -12,6 +13,7 @@ import "./header-renderer.css";
 type HeaderRendererProps = {
   config: HeaderConfig;
   menu?: Menu | null; // Menu data for navigation
+  logos?: Record<string, LogoConfig>; // Logo registry
   className?: string;
 };
 
@@ -29,6 +31,7 @@ type HeaderRendererProps = {
 export function HeaderRenderer({
   config,
   menu,
+  logos = {},
   className,
 }: HeaderRendererProps) {
   const { template, behavior, logo, navigation, actions, mobile, styling } =
@@ -37,7 +40,7 @@ export function HeaderRenderer({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [scrollDirection, setScrollDirection] = useState<"up" | "down" | null>(
-    null
+    null,
   );
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -90,18 +93,11 @@ export function HeaderRenderer({
     >
       <div className="header-container">
         {/* Logo */}
-        <div className="header-logo">
-          <Link href={logo.link}>
-            <Image
-              src={logo.src}
-              alt={logo.alt}
-              width={logo.width}
-              height={logo.height}
-              className="header-logo-image"
-              priority
-            />
-          </Link>
-        </div>
+        {logo && logos[logo] && (
+          <div className="header-logo">
+            <Logo config={logos[logo]} size="md" />
+          </div>
+        )}
 
         {/* Navigation - Desktop */}
         {menu && (

@@ -14,15 +14,7 @@ export const headerConfigMock: HeaderConfig = {
     transparent: false,
   },
 
-  logo: {
-    src: "/logo.png",
-    srcDark: "/logo-dark.png",
-    alt: "MH Bible Baptist Church",
-    width: 180,
-    height: 60,
-    link: "/",
-    position: "left",
-  },
+  logo: "primary", // Reference to logo in logos registry
 
   navigation: {
     menuId: "primary",

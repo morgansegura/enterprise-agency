@@ -38,15 +38,11 @@ export type HeaderBehavior = {
   showShadowOnScroll?: boolean;
 };
 
-export type LogoConfig = {
-  src: string;
-  srcDark?: string; // Dark mode logo
-  alt: string;
-  width: number;
-  height: number;
-  link: string;
-  position?: "left" | "center" | "right"; // Within its slot
-};
+/**
+ * Logo reference in header
+ * Can be a string ID (references logos registry) or null (no logo)
+ */
+export type HeaderLogoConfig = string | null;
 
 export type SearchConfig = {
   placeholder?: string;
@@ -102,7 +98,7 @@ export type HeaderStylingConfig = {
 export type HeaderConfig = {
   template: HeaderTemplate;
   behavior: HeaderBehavior;
-  logo: LogoConfig;
+  logo: HeaderLogoConfig;
   navigation: NavigationConfig;
   actions?: HeaderActionsConfig;
   mobile: MobileHeaderConfig;
@@ -110,7 +106,7 @@ export type HeaderConfig = {
 };
 
 export type HeaderBlock =
-  | { type: "logo"; data: LogoConfig }
+  | { type: "logo"; data: HeaderLogoConfig }
   | { type: "navigation"; data: NavigationConfig }
   | { type: "actions"; data: HeaderActionsConfig }
   | { type: "search"; data: SearchConfig }

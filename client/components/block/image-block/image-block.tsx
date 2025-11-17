@@ -13,7 +13,7 @@ type ImageBlockProps = {
 export function ImageBlock({ data }: ImageBlockProps) {
   const { url, alt = "", caption, width, height, objectFit = "cover" } = data;
 
-  return (
+  return url && alt ? (
     <figure data-slot="image-block">
       <div data-slot="image-block-wrapper" data-object-fit={objectFit}>
         <Image
@@ -28,5 +28,5 @@ export function ImageBlock({ data }: ImageBlockProps) {
         <figcaption data-slot="image-block-caption">{caption}</figcaption>
       ) : null}
     </figure>
-  );
+  ) : null;
 }

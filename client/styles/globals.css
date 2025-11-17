@@ -13,6 +13,7 @@
 @import "./tokens/shadows.css";
 @import "./tokens/spacing.css";
 @import "./tokens/typography.css";
+@import "./tokens/navigation.css";
 
 /* Import component-specific tokens - build on the foundation */
 @import "./components/accordion.css";

@@ -1,0 +1,48 @@
+@reference "tailwindcss";
+
+/**
+ * Logo Component Styles
+ */
+
+.logo {
+  @apply inline-flex items-center justify-center;
+}
+
+.logo-link {
+  @apply inline-flex;
+}
+
+/* Size variants */
+.logo[data-size="xs"] {
+  @apply max-w-[80px] max-h-[30px];
+}
+
+.logo[data-size="sm"] {
+  @apply max-w-[120px] max-h-[40px];
+}
+
+.logo[data-size="md"] {
+  @apply max-w-[180px] max-h-[60px];
+}
+
+.logo[data-size="lg"] {
+  @apply max-w-[240px] max-h-[80px];
+}
+
+.logo[data-size="xl"] {
+  @apply max-w-[320px] max-h-[100px];
+}
+
+/* Image logos */
+.logo-image {
+  @apply h-auto object-contain;
+}
+
+/* SVG logos */
+.logo-svg {
+  @apply flex items-center justify-center;
+}
+
+.logo-svg svg {
+  @apply w-full h-full;
+}

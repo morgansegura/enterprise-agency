@@ -2,7 +2,7 @@ import type { TypedSection } from "@/components/section-renderer";
 
 /**
  * Mock data for the home page
- * This simulates what would come from the API
+ * Comprehensive test of all components and layouts
  */
 export const homePageMock = {
   id: "page_home",
@@ -21,90 +21,496 @@ export const homePageMock = {
     ogImage: "/og-home.jpg",
   },
 
-  // Content sections (sections contain blocks)
+  // Content sections
   sections: [
+    // Hero Section
     {
       _key: "section_hero",
       _type: "section" as const,
-      background: "gray" as const,
-      spacing: "xl" as const,
+      background: "primary" as const,
+      spacing: "2xl" as const,
       width: "full" as const,
       align: "center" as const,
       blocks: [
         {
-          _key: "container_hero",
-          _type: "container-block" as const, // ← Container block
+          _key: "hero-stack",
+          _type: "stack-block" as const,
           data: {
-            width: "narrow" as const, // ← Narrow content
-            spacing: "md" as const,
+            gap: "lg" as const,
+            align: "center" as const,
           },
           blocks: [
-            // ← Content inside narrow container
             {
-              _key: "block_heading_1",
+              _key: "hero-heading",
               _type: "heading-block" as const,
               data: {
                 text: "Welcome to MH Bible Baptist Church",
                 level: "h1" as const,
-                wieght: "bold",
-                size: "4xl" as const,
+                size: "6xl" as const,
                 align: "center" as const,
-                variant: "default" as const,
+                weight: "bold" as const,
               },
             },
             {
-              _key: "block_heading_2",
-              _type: "heading-block" as const,
-              data: {
-                text: "Join us for worship and fellowship every Sunday",
-                level: "h2" as const,
-                wieght: "bold",
-                size: "2xl" as const,
-                align: "center" as const,
-                variant: "default" as const,
-              },
-            },
-            {
-              _key: "block_intro_1",
+              _key: "hero-text",
               _type: "text-block" as const,
               data: {
-                content:
-                  "We are a community of believers dedicated to worshiping God...",
-                size: "lg" as const,
+                content: "A community of faith, worship, and service. Join us this Sunday!",
+                size: "xl" as const,
                 align: "center" as const,
+                variant: "lead" as const,
+              },
+            },
+            {
+              _key: "hero-buttons",
+              _type: "flex-block" as const,
+              data: {
+                gap: "md" as const,
+                justify: "center" as const,
+                wrap: true,
+              },
+              blocks: [
+                {
+                  _key: "hero-btn-1",
+                  _type: "button-block" as const,
+                  data: {
+                    text: "Plan Your Visit",
+                    url: "/visit",
+                    variant: "default" as const,
+                    size: "lg" as const,
+                  },
+                },
+                {
+                  _key: "hero-btn-2",
+                  _type: "button-block" as const,
+                  data: {
+                    text: "Watch Online",
+                    url: "/watch",
+                    variant: "outline" as const,
+                    size: "lg" as const,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+
+    // Service Times Section
+    {
+      _key: "section_service_times",
+      _type: "section" as const,
+      background: "white" as const,
+      spacing: "xl" as const,
+      width: "wide" as const,
+      align: "center" as const,
+      blocks: [
+        {
+          _key: "service-times-stack",
+          _type: "stack-block" as const,
+          data: {
+            gap: "lg" as const,
+          },
+          blocks: [
+            {
+              _key: "service-times-heading",
+              _type: "heading-block" as const,
+              data: {
+                text: "Service Times",
+                level: "h2" as const,
+                size: "4xl" as const,
+                align: "center" as const,
+                weight: "bold" as const,
+              },
+            },
+            {
+              _key: "service-times-stats",
+              _type: "stats-block" as const,
+              data: {
+                stats: [
+                  {
+                    label: "Sunday Worship",
+                    value: "10:00 AM",
+                    description: "Join us for worship and the Word",
+                  },
+                  {
+                    label: "Wednesday Bible Study",
+                    value: "7:00 PM",
+                    description: "Midweek growth and fellowship",
+                  },
+                  {
+                    label: "Sunday School",
+                    value: "9:00 AM",
+                    description: "All ages welcome",
+                  },
+                ],
+                columns: 3,
               },
             },
           ],
         },
       ],
     },
+
+    // Welcome Section
     {
-      _key: "section_services",
+      _key: "section_welcome",
       _type: "section" as const,
-      background: "white" as const,
-      spacing: "lg" as const,
+      background: "gray" as const,
+      spacing: "xl" as const,
       width: "wide" as const,
       align: "center" as const,
       blocks: [
         {
-          _key: "block_services_heading",
-          _type: "heading-block" as const,
+          _key: "welcome-grid",
+          _type: "grid-block" as const,
           data: {
-            title: "Service Times",
-            level: "h2" as const,
-            size: "2xl" as const,
+            columns: {
+              mobile: 1,
+              tablet: 2,
+              desktop: 2,
+            },
+            gap: "xl" as const,
+            align: "center" as const,
+          },
+          blocks: [
+            {
+              _key: "welcome-image",
+              _type: "image-block" as const,
+              data: {
+                url: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=800",
+                alt: "Church interior with people worshiping",
+                width: 800,
+                height: 600,
+                objectFit: "cover" as const,
+                rounded: true,
+              },
+            },
+            {
+              _key: "welcome-content",
+              _type: "stack-block" as const,
+              data: {
+                gap: "md" as const,
+              },
+              blocks: [
+                {
+                  _key: "welcome-heading",
+                  _type: "heading-block" as const,
+                  data: {
+                    text: "Welcome Home",
+                    level: "h2" as const,
+                    size: "4xl" as const,
+                    weight: "bold" as const,
+                  },
+                },
+                {
+                  _key: "welcome-text-1",
+                  _type: "text-block" as const,
+                  data: {
+                    content:
+                      "At MH Bible Baptist Church, we believe in the power of community, the truth of God's Word, and the transforming love of Jesus Christ.",
+                    size: "lg" as const,
+                  },
+                },
+                {
+                  _key: "welcome-text-2",
+                  _type: "text-block" as const,
+                  data: {
+                    content:
+                      "Whether you're new to faith or have been walking with God for years, you'll find a warm welcome here. We're a family that loves God and loves people.",
+                    size: "lg" as const,
+                  },
+                },
+                {
+                  _key: "welcome-btn",
+                  _type: "button-block" as const,
+                  data: {
+                    text: "Learn More About Us",
+                    url: "/about",
+                    variant: "default" as const,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+
+    // Ministries Section
+    {
+      _key: "section_ministries",
+      _type: "section" as const,
+      background: "white" as const,
+      spacing: "xl" as const,
+      width: "wide" as const,
+      align: "center" as const,
+      blocks: [
+        {
+          _key: "ministries-stack",
+          _type: "stack-block" as const,
+          data: {
+            gap: "xl" as const,
+          },
+          blocks: [
+            {
+              _key: "ministries-heading",
+              _type: "heading-block" as const,
+              data: {
+                text: "Our Ministries",
+                level: "h2" as const,
+                size: "4xl" as const,
+                align: "center" as const,
+                weight: "bold" as const,
+              },
+            },
+            {
+              _key: "ministries-grid",
+              _type: "grid-block" as const,
+              data: {
+                columns: {
+                  mobile: 1,
+                  tablet: 2,
+                  desktop: 3,
+                },
+                gap: "lg" as const,
+              },
+              blocks: [
+                {
+                  _key: "ministry-card-1",
+                  _type: "card-block" as const,
+                  data: {
+                    title: "Youth Ministry",
+                    description:
+                      "Building strong foundations in faith for the next generation. Weekly meetings, events, and service projects.",
+                    image: {
+                      url: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=400",
+                      alt: "Youth group",
+                    },
+                    link: {
+                      text: "Learn More",
+                      url: "/ministries/youth",
+                    },
+                  },
+                },
+                {
+                  _key: "ministry-card-2",
+                  _type: "card-block" as const,
+                  data: {
+                    title: "Women's Ministry",
+                    description:
+                      "Fellowship, Bible study, and encouragement for women of all ages. Monthly gatherings and small groups.",
+                    image: {
+                      url: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400",
+                      alt: "Women's Bible study",
+                    },
+                    link: {
+                      text: "Learn More",
+                      url: "/ministries/women",
+                    },
+                  },
+                },
+                {
+                  _key: "ministry-card-3",
+                  _type: "card-block" as const,
+                  data: {
+                    title: "Community Outreach",
+                    description:
+                      "Serving our neighbors and sharing God's love through action. Food bank, home repairs, and community events.",
+                    image: {
+                      url: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400",
+                      alt: "Community service",
+                    },
+                    link: {
+                      text: "Learn More",
+                      url: "/ministries/outreach",
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+
+    // Quote Section
+    {
+      _key: "section_verse",
+      _type: "section" as const,
+      background: "gray" as const,
+      spacing: "xl" as const,
+      width: "narrow" as const,
+      align: "center" as const,
+      blocks: [
+        {
+          _key: "verse-quote",
+          _type: "quote-block" as const,
+          data: {
+            quote:
+              "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+            author: "John 3:16",
+            size: "lg" as const,
             align: "center" as const,
           },
         },
+      ],
+    },
+
+    // Events Section
+    {
+      _key: "section_events",
+      _type: "section" as const,
+      background: "white" as const,
+      spacing: "xl" as const,
+      width: "wide" as const,
+      align: "center" as const,
+      blocks: [
         {
-          _key: "block_services_text",
-          _type: "text-block" as const,
+          _key: "events-stack",
+          _type: "stack-block" as const,
           data: {
-            content:
-              "Sunday Morning Worship: 10:00 AM\nSunday Evening Service: 6:00 PM\nWednesday Bible Study: 7:00 PM",
-            size: "base" as const,
+            gap: "lg" as const,
+          },
+          blocks: [
+            {
+              _key: "events-heading",
+              _type: "heading-block" as const,
+              data: {
+                text: "Upcoming Events",
+                level: "h2" as const,
+                size: "4xl" as const,
+                align: "center" as const,
+                weight: "bold" as const,
+              },
+            },
+            {
+              _key: "events-grid",
+              _type: "grid-block" as const,
+              data: {
+                columns: {
+                  mobile: 1,
+                  tablet: 2,
+                  desktop: 2,
+                },
+                gap: "lg" as const,
+              },
+              blocks: [
+                {
+                  _key: "event-card-1",
+                  _type: "card-block" as const,
+                  data: {
+                    title: "Easter Sunday Service",
+                    description:
+                      "Join us for a special celebration of the resurrection. Service begins at 10:00 AM followed by fellowship lunch.",
+                    badge: "This Sunday",
+                    link: {
+                      text: "Get Details",
+                      url: "/events/easter",
+                    },
+                  },
+                },
+                {
+                  _key: "event-card-2",
+                  _type: "card-block" as const,
+                  data: {
+                    title: "Community BBQ",
+                    description:
+                      "Free community meal and fun activities for the whole family. Everyone welcome!",
+                    badge: "Next Week",
+                    link: {
+                      text: "RSVP Now",
+                      url: "/events/bbq",
+                    },
+                  },
+                },
+              ],
+            },
+            {
+              _key: "events-btn",
+              _type: "button-block" as const,
+              data: {
+                text: "View All Events",
+                url: "/events",
+                variant: "outline" as const,
+              },
+            },
+          ],
+        },
+      ],
+    },
+
+    // CTA Section
+    {
+      _key: "section_cta",
+      _type: "section" as const,
+      background: "primary" as const,
+      spacing: "2xl" as const,
+      width: "full" as const,
+      align: "center" as const,
+      blocks: [
+        {
+          _key: "cta-stack",
+          _type: "stack-block" as const,
+          data: {
+            gap: "lg" as const,
             align: "center" as const,
           },
+          blocks: [
+            {
+              _key: "cta-heading",
+              _type: "heading-block" as const,
+              data: {
+                text: "Ready to Visit?",
+                level: "h2" as const,
+                size: "5xl" as const,
+                align: "center" as const,
+                weight: "bold" as const,
+              },
+            },
+            {
+              _key: "cta-text",
+              _type: "text-block" as const,
+              data: {
+                content:
+                  "We'd love to meet you! Plan your first visit or get in touch with any questions.",
+                size: "xl" as const,
+                align: "center" as const,
+              },
+            },
+            {
+              _key: "cta-buttons",
+              _type: "flex-block" as const,
+              data: {
+                gap: "md" as const,
+                justify: "center" as const,
+                wrap: true,
+              },
+              blocks: [
+                {
+                  _key: "cta-btn-1",
+                  _type: "button-block" as const,
+                  data: {
+                    text: "Plan Your Visit",
+                    url: "/visit",
+                    variant: "default" as const,
+                    size: "lg" as const,
+                  },
+                },
+                {
+                  _key: "cta-btn-2",
+                  _type: "button-block" as const,
+                  data: {
+                    text: "Contact Us",
+                    url: "/contact",
+                    variant: "outline" as const,
+                    size: "lg" as const,
+                  },
+                },
+              ],
+            },
+          ],
         },
       ],
     },

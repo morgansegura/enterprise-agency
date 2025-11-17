@@ -297,7 +297,15 @@ export type ContentBlock =
   | { _type: "embed-block"; _key: string; data: EmbedBlockData }
   | { _type: "icon-block"; _key: string; data: IconBlockData }
   | { _type: "stats-block"; _key: string; data: StatsBlockData }
-  | { _type: "map-block"; _key: string; data: MapBlockData };
+  | { _type: "map-block"; _key: string; data: MapBlockData }
+  | {
+      _type: "logo-block";
+      _key: string;
+      logo: string;
+      size?: string;
+      alignment?: string;
+      clickable?: boolean;
+    };
 
 /**
  * Level 3 - Shallow Container Blocks

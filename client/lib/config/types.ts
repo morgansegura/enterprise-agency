@@ -13,6 +13,7 @@
 import type { HeaderConfig } from "../headers/types";
 import type { FooterConfig } from "../footers/types";
 import type { Menu } from "../menus/types";
+import type { LogoConfig } from "../logos/types";
 import type { ThemeConfig } from "../types";
 
 /**
@@ -94,6 +95,9 @@ export type SiteConfig = {
   /** Named menu configurations */
   menus: Record<string, Menu>;
 
+  /** Named logo configurations */
+  logos: Record<string, LogoConfig>;
+
   /** Routing configuration */
   routing: RoutingConfig;
 
@@ -105,7 +109,7 @@ export type SiteConfig = {
     siteName: string;
     tagline?: string;
     description?: string;
-    logo?: string;
+    logo?: string; // Reference to logo ID
     favicon?: string;
   };
 };

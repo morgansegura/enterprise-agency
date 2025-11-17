@@ -8,6 +8,7 @@
 import type { SiteConfig } from "@/lib/config/types";
 import { headerConfigMock, primaryMenuMock } from "./header.mock";
 import { footerConfigMock } from "./footer.mock";
+import { primaryLogoMock, iconLogoMock, imageLogoMock } from "./logos.mock";
 import { theme } from "@/lib/site-config";
 
 /**
@@ -45,6 +46,16 @@ export const siteConfigMock: SiteConfig = {
     // Future: Add more menus as needed
     // blog: blogMenuMock,
     // footer: footerMenuMock,
+  },
+
+  // Named logo configurations
+  logos: {
+    primary: primaryLogoMock,
+    icon: iconLogoMock,
+    image: imageLogoMock,
+    // Future: Add more logos as needed
+    // wordmark: wordmarkLogoMock,
+    // footer: footerLogoMock,
   },
 
   // Routing configuration
