@@ -25,45 +25,49 @@ This is a **multi-tenant NestJS API** with modular feature design:
 
 ## Core Modules
 
-### CRM & Project Management
+### Admin Management
 
-- **Leads** - Lead intake, scoring, pipeline management
-- **Projects** - Client projects with agency phases (discovery → design → dev → launch)
-- **Tasks** - Asana-style task management with sections
-- **Activities** - Timeline of all interactions (calls, notes, status changes)
+- **Users** - Create, invite, and manage agency team and client users
+- **Features** - Enable/disable features per tenant with granular control
+- **Projects** - Assign team members to client projects with role-based permissions
+- **Audit Logs** - Track all administrative actions for compliance
+- **Roles** - Owner, Admin, Developer, Designer, Content Manager
+
+### Authentication & Authorization
+
+- **Auth** - JWT-based authentication with custom password hashing
+- **Guards** - Role-based access control (RBAC) with @Roles() and @SuperAdmin() decorators
+- **Multi-level Permissions** - Agency roles + tenant-specific permissions
 
 ### Client Management
 
-- **Tenants** - Client businesses
-- **Users** - Agency team and client users
-- **Customer Portals** - White-labeled portals for clients
+- **Tenants** - Client businesses with feature gating and usage stats
+- **Site Config** - Header, footer, menus, and logos configuration
+- **Project Assignments** - Agency team assignments to client projects
 
-### Content & Commerce
+### Content Management
 
-- **Pages/Posts** - Client website content
-- **Products/Orders** - E-commerce features
+- **Pages** - Multi-section pages with block-based content (4-level max nesting)
+- **Posts** - Blog posts and articles
 - **Assets** - File storage and management
 
-### Finance
+### Integrations & Monitoring
 
-- **Invoices** - Client billing
-- **Subscriptions** - Recurring payments
-- **Stripe Integration** - Payment processing
-
-### Integrations (Planned)
-
-- **Webflow/Framer** - Site building integration
-- **SendGrid/Resend** - Email automation
-- **Cal.com** - Meeting scheduling
-- **DocuSign/HelloSign** - Contract signing
+- **Webhooks** - Event-driven integrations
+- **Health Checks** - System health monitoring
+- **Audit Logging** - Enterprise-grade activity tracking
 
 ## Key Features
 
 - **Multi-tenant**: Each tenant (client) has isolated data
-- **Clerk Auth**: Enterprise authentication with RBAC
-- **Prisma ORM**: Type-safe database access
-- **Sentry Monitoring**: Error tracking and performance monitoring
-- **Webhook Support**: Receive events from external services
+- **Enterprise Admin**: Complete user, feature, and project management
+- **Role-Based Access Control**: Agency roles (Owner/Admin/Developer/Designer) with guard-based authorization
+- **Feature Gating**: Per-tenant feature flags for controlled access
+- **JWT Authentication**: Custom auth with bcrypt password hashing
+- **Audit Logging**: Track all administrative actions
+- **Prisma ORM**: Type-safe database access with PostgreSQL
+- **Custom Logger**: Development-friendly logging with production JSON output
+- **Block Validation**: Type-safe content blocks with nesting validation
 
 ## Getting Started
 
@@ -109,11 +113,25 @@ pnpm test:e2e         # Run E2E tests
 │   ├── main.ts                    # Application entry point
 │   ├── app.module.ts              # Root module
 │   ├── common/                    # Shared utilities
-│   │   ├── decorators/            # Custom decorators (@TenantId)
-│   │   ├── guards/                # Guards (TenantGuard)
-│   │   └── middleware/            # Middleware (TenantMiddleware)
+│   │   ├── decorators/            # Custom decorators (@TenantId, @Roles, @SuperAdmin)
+│   │   ├── guards/                # Guards (RolesGuard, JwtAuthGuard)
+│   │   ├── middleware/            # Middleware (TenantMiddleware)
+│   │   ├── logger/                # Custom logging service
+│   │   └── services/              # Shared services (PrismaService)
 │   └── modules/                   # Feature modules
-│       └── health/                # Health check module
+│       ├── admin/                 # Admin management (users, features, projects)
+│       ├── auth/                  # Authentication (JWT)
+│       ├── tenants/               # Tenant management
+│       ├── users/                 # User operations
+│       ├── pages/                 # Page content with blocks
+│       ├── posts/                 # Blog posts
+│       ├── assets/                # File management
+│       ├── site-config/           # Header/footer/menus/logos config
+│       ├── webhooks/              # Webhook handlers
+│       └── health/                # Health checks
+├── prisma/
+│   ├── schema.prisma              # Database schema
+│   └── seed.ts                    # Database seeding
 ├── test/                          # E2E tests
 ├── nest-cli.json                  # NestJS CLI config
 ├── tsconfig.json                  # TypeScript config

@@ -4,7 +4,7 @@ import { SiteConfigDto, UpdateHeaderConfigDto, UpdateFooterConfigDto, UpdateMenu
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { TenantId } from '../../common/decorators/tenant.decorator'
 
-@Controller('api/tenants/:tenantId/config')
+@Controller('tenants/:tenantId/config')
 @UseGuards(JwtAuthGuard)
 export class SiteConfigController {
   constructor(private readonly siteConfigService: SiteConfigService) {}

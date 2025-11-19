@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+.not-found-layout {
+  @apply relative;
+}
+
+.not-found-container {
+  @apply w-full max-w-7xl mx-auto px-4;
+}

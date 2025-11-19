@@ -1,6 +1,7 @@
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { TenantMiddleware } from './common/middleware/tenant.middleware'
+import { LoggerModule } from './common/logger'
 import { HealthModule } from './modules/health/health.module'
 import { WebhooksModule } from './modules/webhooks/webhooks.module'
 import { UsersModule } from './modules/users/users.module'
@@ -10,6 +11,7 @@ import { PostsModule } from './modules/posts/posts.module'
 import { AssetsModule } from './modules/assets/assets.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { SiteConfigModule } from './modules/site-config/site-config.module'
+import { AdminModule } from './modules/admin/admin.module'
 
 @Module({
   imports: [
@@ -18,9 +20,13 @@ import { SiteConfigModule } from './modules/site-config/site-config.module'
       isGlobal: true,
       envFilePath: '.env',
     }),
+    // Logger
+    LoggerModule,
     // Core modules
     HealthModule,
     AuthModule,
+    // Admin management
+    AdminModule,
     // Content modules
     PagesModule,
     PostsModule,
