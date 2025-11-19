@@ -1,55 +1,109 @@
-import { getToken } from './auth'
+import { ApiError, AuthError } from './errors'
+import { logger } from './logger'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
-const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION || 'v1'
+
+interface ApiErrorResponse {
+  message?: string
+  statusCode?: number
+  error?: string
+  code?: string
+}
 
 export class ApiClient {
-  private baseUrl: string
+  private readonly baseUrl: string
+  private readonly authBaseUrl: string
 
   constructor() {
-    this.baseUrl = `${API_URL}/api/${API_VERSION}`
+    this.baseUrl = `${API_URL}/api/v1`
+    this.authBaseUrl = `${API_URL}/api/auth`
   }
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    useAuthBase = false
   ): Promise<T> {
-    const token = getToken()
-
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       ...options.headers,
     }
 
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
+    const baseUrl = useAuthBase ? this.authBaseUrl : this.baseUrl
+    const url = `${baseUrl}${endpoint}`
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+        credentials: 'include', // Include cookies for authentication
+      })
+
+      if (!response.ok) {
+        await this.handleErrorResponse(response)
+      }
+
+      // Handle empty responses
+      const contentType = response.headers.get('content-type')
+      if (contentType && contentType.includes('application/json')) {
+        return response.json() as Promise<T>
+      }
+
+      return {} as T
+    } catch (error) {
+      logger.error('API request failed', error as Error, { url, method: options.method })
+      throw error
+    }
+  }
+
+  private async handleErrorResponse(response: Response): Promise<never> {
+    let errorData: ApiErrorResponse = {}
+
+    try {
+      errorData = (await response.json()) as ApiErrorResponse
+    } catch {
+      // Response body is not JSON
     }
 
-    const response = await fetch(`${this.baseUrl}${endpoint}`, {
-      ...options,
-      headers,
-    })
+    const message = errorData.message || errorData.error || `API Error: ${response.status}`
 
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}))
-      throw new Error(error.message || `API Error: ${response.status}`)
+    // Handle auth-specific errors
+    if (response.status === 401) {
+      throw new AuthError(message, 'UNAUTHORIZED')
     }
 
-    return response.json()
+    if (response.status === 403) {
+      throw new AuthError(message, 'FORBIDDEN')
+    }
+
+    // General API error
+    throw new ApiError(
+      message,
+      response.status,
+      errorData.code,
+      errorData as Record<string, unknown>
+    )
   }
 
   async get<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, { method: 'GET' })
   }
 
-  async post<T>(endpoint: string, data?: any): Promise<T> {
+  async post<T, D = Record<string, unknown>>(endpoint: string, data?: D): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     })
   }
 
-  async put<T>(endpoint: string, data?: any): Promise<T> {
+  async patch<T, D = Record<string, unknown>>(endpoint: string, data?: D): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PATCH',
+      body: data ? JSON.stringify(data) : undefined,
+    })
+  }
+
+  async put<T, D = Record<string, unknown>>(endpoint: string, data?: D): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: data ? JSON.stringify(data) : undefined,
@@ -58,6 +112,22 @@ export class ApiClient {
 
   async delete<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, { method: 'DELETE' })
+  }
+
+  // Auth-specific methods (use auth base URL)
+  async authPost<T, D = Record<string, unknown>>(endpoint: string, data?: D): Promise<T> {
+    return this.request<T>(
+      endpoint,
+      {
+        method: 'POST',
+        body: data ? JSON.stringify(data) : undefined,
+      },
+      true // Use auth base URL
+    )
+  }
+
+  async authGet<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET' }, true)
   }
 }
 

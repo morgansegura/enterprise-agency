@@ -1,32 +1,60 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { login } from "@/lib/auth";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useState, FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
+import { login } from '@/lib/auth'
+import { AuthError, getErrorMessage } from '@/lib/errors'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { logger } from '@/lib/logger'
 
+/**
+ * Login Page
+ *
+ * Enterprise practices:
+ * - HTTP-only cookie-based authentication
+ * - Strict error typing
+ * - Form validation
+ * - Loading states
+ * - Proper error handling
+ */
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
 
     try {
-      await login(email, password);
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Login failed");
+      logger.log('Login attempt', { email })
+      await login(email, password)
+      logger.log('Login successful, redirecting to dashboard')
+      router.push('/dashboard')
+    } catch (err) {
+      const message = getErrorMessage(err)
+
+      if (err instanceof AuthError) {
+        if (err.code === 'INVALID_CREDENTIALS') {
+          setError('Invalid email or password')
+        } else if (err.code === 'UNAUTHORIZED') {
+          setError('Access denied')
+        } else {
+          setError(message)
+        }
+      } else {
+        setError('An unexpected error occurred. Please try again.')
+      }
+
+      logger.error('Login failed', err as Error, { email })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
