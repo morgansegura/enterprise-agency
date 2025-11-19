@@ -1,0 +1,10 @@
+packages:
+  # Frontend applications
+  - 'client'
+  - 'builder'
+
+  # Backend API
+  - 'api'
+
+  # Future: Shared packages (if needed)
+  # - 'packages/*'
