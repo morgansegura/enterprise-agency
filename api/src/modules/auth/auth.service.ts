@@ -157,13 +157,17 @@ export class AuthService {
    * Refresh access token using refresh token
    */
   async refreshTokens(refreshToken: string) {
+    const jwtSecret = this.config.get("JWT_SECRET");
+
+    if (!jwtSecret) {
+      throw new Error("JWT_SECRET is not configured");
+    }
+
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(
         refreshToken,
         {
-          secret:
-            this.config.get("JWT_SECRET") ||
-            "your-super-secret-jwt-key-change-this-in-production",
+          secret: jwtSecret,
         },
       );
 
@@ -408,9 +412,11 @@ export class AuthService {
       tokenVersion: user.tokenVersion, // Include tokenVersion for revocation
     };
 
-    const jwtSecret =
-      this.config.get("JWT_SECRET") ||
-      "your-super-secret-jwt-key-change-this-in-production";
+    const jwtSecret = this.config.get("JWT_SECRET");
+
+    if (!jwtSecret) {
+      throw new Error("JWT_SECRET is not configured");
+    }
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
