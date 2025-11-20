@@ -1,36 +1,45 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
-import { PassportStrategy } from '@nestjs/passport'
-import { ExtractJwt, Strategy } from 'passport-jwt'
-import { ConfigService } from '@nestjs/config'
-import { PrismaService } from '@/common/services/prisma.service'
-import type { Request } from 'express'
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { ConfigService } from "@nestjs/config";
+import { PrismaService } from "@/common/services/prisma.service";
+import type { Request } from "express";
 
 export interface JwtPayload {
-  sub: string // user ID
-  email: string
-  iat?: number
-  exp?: number
+  sub: string; // user ID
+  email: string;
+  tokenVersion: number; // For token revocation
+  iat?: number;
+  exp?: number;
 }
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private config: ConfigService,
-    private prisma: PrismaService
+    private prisma: PrismaService,
   ) {
+    const jwtSecret = config.get("JWT_SECRET");
+
+    // SECURITY: Fail fast if JWT_SECRET is not configured
+    if (!jwtSecret) {
+      throw new Error(
+        "JWT_SECRET environment variable is required. Generate one with: openssl rand -base64 64",
+      );
+    }
+
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         // Extract from cookie (primary method for browser clients)
         (request: Request) => {
-          return request?.cookies?.accessToken
+          return request?.cookies?.accessToken;
         },
         // Fallback to Authorization header (for API clients)
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: false,
-      secretOrKey:
-        config.get('JWT_SECRET') || 'your-super-secret-jwt-key-change-this-in-production',
-    })
+      secretOrKey: jwtSecret,
+    });
   }
 
   async validate(payload: JwtPayload) {
@@ -44,14 +53,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
           },
         },
       },
-    })
+    });
 
     if (!user) {
-      throw new UnauthorizedException('User not found')
+      throw new UnauthorizedException("User not found");
     }
 
     if (!user.emailVerified) {
-      throw new UnauthorizedException('Email not verified')
+      throw new UnauthorizedException("Email not verified");
+    }
+
+    // SECURITY: Check token version (for token revocation)
+    if (user.tokenVersion !== payload.tokenVersion) {
+      throw new UnauthorizedException("Token has been revoked");
     }
 
     // Return user object that will be attached to request.user
@@ -68,6 +82,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         role: tu.role,
         permissions: tu.permissions,
       })),
-    }
+    };
   }
 }

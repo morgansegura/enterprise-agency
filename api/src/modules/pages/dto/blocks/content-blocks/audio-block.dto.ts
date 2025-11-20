@@ -1,36 +1,36 @@
-import { IsString, IsOptional, IsBoolean } from 'class-validator'
+import { IsString, IsOptional, IsBoolean } from "class-validator";
 
 export class AudioBlockDataDto {
   @IsString()
-  src: string
+  src: string;
 
   @IsOptional()
   @IsString()
-  title?: string
+  title?: string;
 
   @IsOptional()
   @IsString()
-  artist?: string
+  artist?: string;
 
   @IsOptional()
   @IsBoolean()
-  controls?: boolean
+  controls?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  autoplay?: boolean
+  autoplay?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  loop?: boolean
+  loop?: boolean;
 }
 
 export class AudioBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'audio-block'
+  _type: "audio-block";
 
-  data: AudioBlockDataDto
+  data: AudioBlockDataDto;
 }

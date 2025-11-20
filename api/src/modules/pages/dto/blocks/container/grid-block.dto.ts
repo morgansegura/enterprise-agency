@@ -1,49 +1,58 @@
-import { IsString, IsEnum, IsOptional, IsArray, IsObject, ValidateNested } from 'class-validator'
-import { Type } from 'class-transformer'
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsArray,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
+import { ContentBlockDto } from "../content-block.dto";
 
 export class GridColumnsDto {
   @IsOptional()
   @IsEnum([1, 2, 3, 4, 5, 6])
-  mobile?: number
+  mobile?: number;
 
   @IsOptional()
   @IsEnum([1, 2, 3, 4, 5, 6])
-  tablet?: number
+  tablet?: number;
 
   @IsOptional()
   @IsEnum([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
-  desktop?: number
+  desktop?: number;
 }
 
 export class GridBlockDataDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => GridColumnsDto)
-  columns?: GridColumnsDto
+  columns?: GridColumnsDto;
 
   @IsOptional()
-  @IsEnum(['xs', 'sm', 'md', 'lg', 'xl', '2xl'])
-  gap?: string
+  @IsEnum(["xs", "sm", "md", "lg", "xl", "2xl"])
+  gap?: string;
 
   @IsOptional()
-  @IsEnum(['start', 'center', 'end', 'stretch'])
-  align?: string
+  @IsEnum(["start", "center", "end", "stretch"])
+  align?: string;
 
   @IsOptional()
-  @IsEnum(['start', 'center', 'end', 'between', 'around', 'evenly'])
-  justify?: string
+  @IsEnum(["start", "center", "end", "between", "around", "evenly"])
+  justify?: string;
 }
 
 export class GridBlockDto {
-  @IsEnum(['grid-block'])
-  _type: 'grid-block'
+  @IsEnum(["grid-block"])
+  _type: "grid-block";
 
   @IsString()
-  _key: string
+  _key: string;
 
   @IsOptional()
-  data?: GridBlockDataDto
+  data?: GridBlockDataDto;
 
   @IsArray()
-  blocks: any[] // Will be typed with ContentBlock union
+  @ValidateNested({ each: true })
+  @Type(() => ContentBlockDto)
+  blocks: ContentBlockDto[];
 }

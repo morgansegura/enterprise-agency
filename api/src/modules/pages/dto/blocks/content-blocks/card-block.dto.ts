@@ -2,74 +2,73 @@ import {
   IsString,
   IsEnum,
   IsOptional,
-  IsObject,
   IsBoolean,
   ValidateNested,
-} from 'class-validator'
-import { Type } from 'class-transformer'
+} from "class-validator";
+import { Type } from "class-transformer";
 
 export class CardImageDto {
   @IsString()
-  src: string
+  src: string;
 
   @IsString()
-  alt: string
+  alt: string;
 
   @IsOptional()
   @IsString()
-  aspectRatio?: string
+  aspectRatio?: string;
 }
 
 export class CardLinkDto {
   @IsString()
-  href: string
+  href: string;
 
   @IsOptional()
   @IsString()
-  text?: string
+  text?: string;
 
   @IsOptional()
   @IsBoolean()
-  openInNewTab?: boolean
+  openInNewTab?: boolean;
 }
 
 export class CardBlockDataDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => CardImageDto)
-  image?: CardImageDto
+  image?: CardImageDto;
 
   @IsString()
-  title: string
-
-  @IsOptional()
-  @IsString()
-  description?: string
+  title: string;
 
   @IsOptional()
   @IsString()
-  footer?: string
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  footer?: string;
 
   @IsOptional()
   @ValidateNested()
   @Type(() => CardLinkDto)
-  link?: CardLinkDto
+  link?: CardLinkDto;
 
   @IsOptional()
-  @IsEnum(['default', 'bordered', 'elevated'])
-  variant?: 'default' | 'bordered' | 'elevated'
+  @IsEnum(["default", "bordered", "elevated"])
+  variant?: "default" | "bordered" | "elevated";
 
   @IsOptional()
-  @IsEnum(['none', 'sm', 'md', 'lg'])
-  padding?: 'none' | 'sm' | 'md' | 'lg'
+  @IsEnum(["none", "sm", "md", "lg"])
+  padding?: "none" | "sm" | "md" | "lg";
 }
 
 export class CardBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'card-block'
+  _type: "card-block";
 
-  data: CardBlockDataDto
+  data: CardBlockDataDto;
 }

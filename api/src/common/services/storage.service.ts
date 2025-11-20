@@ -1,24 +1,24 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable } from "@nestjs/common";
 import {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
-} from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import * as fs from 'fs'
-import * as path from 'path'
-import * as crypto from 'crypto'
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import * as fs from "fs";
+import * as path from "path";
+import * as crypto from "crypto";
 
 export interface UploadResult {
-  key: string
-  url: string
-  size: number
+  key: string;
+  url: string;
+  size: number;
 }
 
 export interface StorageOptions {
-  generatePublicUrl?: boolean
-  expiresIn?: number // For presigned URLs
+  generatePublicUrl?: boolean;
+  expiresIn?: number; // For presigned URLs
 }
 
 /**
@@ -39,23 +39,26 @@ export interface StorageOptions {
  */
 @Injectable()
 export class StorageService {
-  private s3Client: S3Client | null = null
-  private provider: 'local' | 'r2' | 's3'
-  private bucketName: string
-  private publicUrl: string
-  private uploadDir = path.join(process.cwd(), 'uploads')
+  private s3Client: S3Client | null = null;
+  private provider: "local" | "r2" | "s3";
+  private bucketName: string;
+  private publicUrl: string;
+  private uploadDir = path.join(process.cwd(), "uploads");
 
   constructor() {
-    this.provider = (process.env.STORAGE_PROVIDER as 'local' | 'r2' | 's3') || 'local'
-    this.bucketName = process.env.R2_BUCKET_NAME || process.env.S3_BUCKET_NAME || 'assets'
-    this.publicUrl = process.env.R2_PUBLIC_URL || process.env.S3_PUBLIC_URL || ''
+    this.provider =
+      (process.env.STORAGE_PROVIDER as "local" | "r2" | "s3") || "local";
+    this.bucketName =
+      process.env.R2_BUCKET_NAME || process.env.S3_BUCKET_NAME || "assets";
+    this.publicUrl =
+      process.env.R2_PUBLIC_URL || process.env.S3_PUBLIC_URL || "";
 
-    if (this.provider === 'r2') {
-      this.initializeR2()
-    } else if (this.provider === 's3') {
-      this.initializeS3()
+    if (this.provider === "r2") {
+      this.initializeR2();
+    } else if (this.provider === "s3") {
+      this.initializeS3();
     } else {
-      this.ensureLocalUploadDir()
+      this.ensureLocalUploadDir();
     }
   }
 
@@ -63,36 +66,39 @@ export class StorageService {
    * Initialize Cloudflare R2 client
    */
   private initializeR2() {
-    const accountId = process.env.R2_ACCOUNT_ID
-    const accessKeyId = process.env.R2_ACCESS_KEY_ID
-    const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
+    const accountId = process.env.R2_ACCOUNT_ID;
+    const accessKeyId = process.env.R2_ACCESS_KEY_ID;
+    const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
 
     if (!accountId || !accessKeyId || !secretAccessKey) {
       throw new Error(
-        'R2 credentials not configured. Check R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY'
-      )
+        "R2 credentials not configured. Check R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY",
+      );
     }
 
     this.s3Client = new S3Client({
-      region: 'auto',
+      region: "auto",
       endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
       credentials: {
         accessKeyId,
         secretAccessKey,
       },
-    })
+    });
   }
 
   /**
    * Initialize AWS S3 client
    */
   private initializeS3() {
-    const accessKeyId = process.env.AWS_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID
-    const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY
-    const region = process.env.AWS_REGION || process.env.S3_REGION || 'us-east-1'
+    const accessKeyId =
+      process.env.AWS_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY_ID;
+    const secretAccessKey =
+      process.env.AWS_SECRET_ACCESS_KEY || process.env.S3_SECRET_ACCESS_KEY;
+    const region =
+      process.env.AWS_REGION || process.env.S3_REGION || "us-east-1";
 
     if (!accessKeyId || !secretAccessKey) {
-      throw new Error('S3 credentials not configured')
+      throw new Error("S3 credentials not configured");
     }
 
     this.s3Client = new S3Client({
@@ -101,7 +107,7 @@ export class StorageService {
         accessKeyId,
         secretAccessKey,
       },
-    })
+    });
   }
 
   /**
@@ -109,23 +115,27 @@ export class StorageService {
    */
   private ensureLocalUploadDir() {
     if (!fs.existsSync(this.uploadDir)) {
-      fs.mkdirSync(this.uploadDir, { recursive: true })
+      fs.mkdirSync(this.uploadDir, { recursive: true });
     }
   }
 
   /**
    * Generate unique file key with tenant isolation
    */
-  generateFileKey(tenantId: string, originalName: string, prefix?: string): string {
-    const ext = path.extname(originalName)
-    const uniqueId = crypto.randomUUID()
-    const fileName = `${uniqueId}${ext}`
+  generateFileKey(
+    tenantId: string,
+    originalName: string,
+    prefix?: string,
+  ): string {
+    const ext = path.extname(originalName);
+    const uniqueId = crypto.randomUUID();
+    const fileName = `${uniqueId}${ext}`;
 
     if (prefix) {
-      return `${tenantId}/${prefix}/${fileName}`
+      return `${tenantId}/${prefix}/${fileName}`;
     }
 
-    return `${tenantId}/${fileName}`
+    return `${tenantId}/${fileName}`;
   }
 
   /**
@@ -135,12 +145,12 @@ export class StorageService {
     buffer: Buffer,
     key: string,
     contentType: string,
-    options?: StorageOptions
+    options?: StorageOptions,
   ): Promise<UploadResult> {
-    if (this.provider === 'local') {
-      return this.uploadLocal(buffer, key, contentType, options)
+    if (this.provider === "local") {
+      return this.uploadLocal(buffer, key, contentType, options);
     } else {
-      return this.uploadCloud(buffer, key, contentType, options)
+      return this.uploadCloud(buffer, key, contentType, options);
     }
   }
 
@@ -151,28 +161,28 @@ export class StorageService {
     buffer: Buffer,
     key: string,
     _contentType: string,
-    _options?: StorageOptions
+    _options?: StorageOptions,
   ): Promise<UploadResult> {
-    this.ensureLocalUploadDir()
+    this.ensureLocalUploadDir();
 
-    const filePath = path.join(this.uploadDir, key)
-    const dirPath = path.dirname(filePath)
+    const filePath = path.join(this.uploadDir, key);
+    const dirPath = path.dirname(filePath);
 
     // Create directories if they don't exist
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true })
+      fs.mkdirSync(dirPath, { recursive: true });
     }
 
-    await fs.promises.writeFile(filePath, buffer)
+    await fs.promises.writeFile(filePath, buffer);
 
-    const baseUrl = process.env.API_URL || 'http://localhost:4000'
-    const url = `${baseUrl}/uploads/${key}`
+    const baseUrl = process.env.API_URL || "http://localhost:4000";
+    const url = `${baseUrl}/uploads/${key}`;
 
     return {
       key,
       url,
       size: buffer.length,
-    }
+    };
   }
 
   /**
@@ -182,10 +192,10 @@ export class StorageService {
     buffer: Buffer,
     key: string,
     contentType: string,
-    options?: StorageOptions
+    options?: StorageOptions,
   ): Promise<UploadResult> {
     if (!this.s3Client) {
-      throw new Error('Cloud storage client not initialized')
+      throw new Error("Cloud storage client not initialized");
     }
 
     const command = new PutObjectCommand({
@@ -194,47 +204,47 @@ export class StorageService {
       Body: buffer,
       ContentType: contentType,
       // Cache control for performance
-      CacheControl: 'public, max-age=31536000', // 1 year
-    })
+      CacheControl: "public, max-age=31536000", // 1 year
+    });
 
-    await this.s3Client.send(command)
+    await this.s3Client.send(command);
 
     // Generate public URL
-    let url: string
+    let url: string;
 
     if (this.publicUrl) {
       // Use custom domain if configured
-      url = `${this.publicUrl}/${key}`
+      url = `${this.publicUrl}/${key}`;
     } else if (options?.generatePublicUrl === false) {
       // Generate presigned URL
       const getCommand = new GetObjectCommand({
         Bucket: this.bucketName,
         Key: key,
-      })
+      });
       url = await getSignedUrl(this.s3Client, getCommand, {
         expiresIn: options?.expiresIn || 3600,
-      })
+      });
     } else {
       // Default: R2 public bucket URL
-      const accountId = process.env.R2_ACCOUNT_ID
-      url = `https://pub-${accountId}.r2.dev/${key}`
+      const accountId = process.env.R2_ACCOUNT_ID;
+      url = `https://pub-${accountId}.r2.dev/${key}`;
     }
 
     return {
       key,
       url,
       size: buffer.length,
-    }
+    };
   }
 
   /**
    * Delete file from storage
    */
   async delete(key: string): Promise<void> {
-    if (this.provider === 'local') {
-      return this.deleteLocal(key)
+    if (this.provider === "local") {
+      return this.deleteLocal(key);
     } else {
-      return this.deleteCloud(key)
+      return this.deleteCloud(key);
     }
   }
 
@@ -242,9 +252,9 @@ export class StorageService {
    * Delete from local filesystem
    */
   private async deleteLocal(key: string): Promise<void> {
-    const filePath = path.join(this.uploadDir, key)
+    const filePath = path.join(this.uploadDir, key);
     if (fs.existsSync(filePath)) {
-      await fs.promises.unlink(filePath)
+      await fs.promises.unlink(filePath);
     }
   }
 
@@ -253,82 +263,87 @@ export class StorageService {
    */
   private async deleteCloud(key: string): Promise<void> {
     if (!this.s3Client) {
-      throw new Error('Cloud storage client not initialized')
+      throw new Error("Cloud storage client not initialized");
     }
 
     const command = new DeleteObjectCommand({
       Bucket: this.bucketName,
       Key: key,
-    })
+    });
 
-    await this.s3Client.send(command)
+    await this.s3Client.send(command);
   }
 
   /**
    * Get public URL for a file
    */
   getPublicUrl(key: string): string {
-    if (this.provider === 'local') {
-      const baseUrl = process.env.API_URL || 'http://localhost:4000'
-      return `${baseUrl}/uploads/${key}`
+    if (this.provider === "local") {
+      const baseUrl = process.env.API_URL || "http://localhost:4000";
+      return `${baseUrl}/uploads/${key}`;
     }
 
     if (this.publicUrl) {
-      return `${this.publicUrl}/${key}`
+      return `${this.publicUrl}/${key}`;
     }
 
     // Default R2 public URL
-    const accountId = process.env.R2_ACCOUNT_ID
-    return `https://pub-${accountId}.r2.dev/${key}`
+    const accountId = process.env.R2_ACCOUNT_ID;
+    return `https://pub-${accountId}.r2.dev/${key}`;
   }
 
   /**
    * Generate presigned URL for temporary access
    */
-  async getPresignedUrl(key: string, expiresIn: number = 3600): Promise<string> {
-    if (this.provider === 'local') {
+  async getPresignedUrl(
+    key: string,
+    expiresIn: number = 3600,
+  ): Promise<string> {
+    if (this.provider === "local") {
       // Local files are always accessible
-      return this.getPublicUrl(key)
+      return this.getPublicUrl(key);
     }
 
     if (!this.s3Client) {
-      throw new Error('Cloud storage client not initialized')
+      throw new Error("Cloud storage client not initialized");
     }
 
     const command = new GetObjectCommand({
       Bucket: this.bucketName,
       Key: key,
-    })
+    });
 
-    return getSignedUrl(this.s3Client, command, { expiresIn })
+    return getSignedUrl(this.s3Client, command, { expiresIn });
   }
 
   /**
    * Get MIME type from file extension
    */
   getMimeType(fileName: string): string {
-    const ext = path.extname(fileName).toLowerCase()
+    const ext = path.extname(fileName).toLowerCase();
     const mimeTypes: Record<string, string> = {
-      '.jpg': 'image/jpeg',
-      '.jpeg': 'image/jpeg',
-      '.png': 'image/png',
-      '.gif': 'image/gif',
-      '.webp': 'image/webp',
-      '.avif': 'image/avif',
-      '.svg': 'image/svg+xml',
-      '.pdf': 'application/pdf',
-      '.doc': 'application/msword',
-      '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      '.xls': 'application/vnd.ms-excel',
-      '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      '.csv': 'text/csv',
-      '.txt': 'text/plain',
-      '.zip': 'application/zip',
-      '.mp4': 'video/mp4',
-      '.webm': 'video/webm',
-      '.mp3': 'audio/mpeg',
-    }
-    return mimeTypes[ext] || 'application/octet-stream'
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+      ".png": "image/png",
+      ".gif": "image/gif",
+      ".webp": "image/webp",
+      ".avif": "image/avif",
+      ".svg": "image/svg+xml",
+      ".pdf": "application/pdf",
+      ".doc": "application/msword",
+      ".docx":
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ".xls": "application/vnd.ms-excel",
+      ".xlsx":
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ".csv": "text/csv",
+      ".txt": "text/plain",
+      ".zip": "application/zip",
+      ".mp4": "video/mp4",
+      ".webm": "video/webm",
+      ".mp3": "audio/mpeg",
+    };
+    return mimeTypes[ext] || "application/octet-stream";
   }
 
   /**
@@ -338,25 +353,25 @@ export class StorageService {
     if (!allowedTypes) {
       // Default allowed types for media library
       allowedTypes = [
-        'image/jpeg',
-        'image/png',
-        'image/gif',
-        'image/webp',
-        'image/avif',
-        'image/svg+xml',
-        'application/pdf',
-        'video/mp4',
-        'video/webm',
-      ]
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+        "image/avif",
+        "image/svg+xml",
+        "application/pdf",
+        "video/mp4",
+        "video/webm",
+      ];
     }
-    return allowedTypes.includes(mimeType)
+    return allowedTypes.includes(mimeType);
   }
 
   /**
    * Validate file size
    */
   isValidFileSize(size: number, maxSizeMB: number = 10): boolean {
-    const maxSizeBytes = maxSizeMB * 1024 * 1024
-    return size <= maxSizeBytes
+    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+    return size <= maxSizeBytes;
   }
 }

@@ -4,21 +4,26 @@ import {
   UnauthorizedException,
   BadRequestException,
   NotFoundException,
-} from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
-import { ConfigService } from '@nestjs/config'
-import { PrismaService } from '@/common/services/prisma.service'
-import { EmailService } from '@/common/services/email.service'
-import * as bcrypt from 'bcrypt'
-import * as crypto from 'crypto'
-import { RegisterDto, LoginDto, ForgotPasswordDto, ResetPasswordDto } from './dto'
-import { JwtPayload } from './strategies/jwt.strategy'
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
+import { PrismaService } from "@/common/services/prisma.service";
+import { EmailService } from "@/common/services/email.service";
+import * as bcrypt from "bcrypt";
+import * as crypto from "crypto";
+import {
+  RegisterDto,
+  LoginDto,
+  ForgotPasswordDto,
+  ResetPasswordDto,
+} from "./dto";
+import { JwtPayload } from "./strategies/jwt.strategy";
 
-const SALT_ROUNDS = 12
-const ACCESS_TOKEN_EXPIRES_IN = '15m'
-const REFRESH_TOKEN_EXPIRES_IN = '7d'
-const PASSWORD_RESET_TOKEN_EXPIRES_IN = 60 * 60 * 1000 // 1 hour
-const EMAIL_VERIFICATION_TOKEN_EXPIRES_IN = 24 * 60 * 60 * 1000 // 24 hours
+const SALT_ROUNDS = 12;
+const ACCESS_TOKEN_EXPIRES_IN = "15m";
+const REFRESH_TOKEN_EXPIRES_IN = "7d";
+const PASSWORD_RESET_TOKEN_EXPIRES_IN = 60 * 60 * 1000; // 1 hour
+const EMAIL_VERIFICATION_TOKEN_EXPIRES_IN = 24 * 60 * 60 * 1000; // 24 hours
 
 @Injectable()
 export class AuthService {
@@ -26,7 +31,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private config: ConfigService,
-    private emailService: EmailService
+    private emailService: EmailService,
   ) {}
 
   /**
@@ -36,18 +41,20 @@ export class AuthService {
     // Check if user already exists
     const existingUser = await this.prisma.user.findUnique({
       where: { email: dto.email.toLowerCase() },
-    })
+    });
 
     if (existingUser) {
-      throw new ConflictException('Email already in use')
+      throw new ConflictException("Email already in use");
     }
 
     // Hash password
-    const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS)
+    const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
 
     // Generate email verification token
-    const verificationToken = this.generateSecureToken()
-    const verificationTokenExpires = new Date(Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN)
+    const verificationToken = this.generateSecureToken();
+    const verificationTokenExpires = new Date(
+      Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+    );
 
     // Create user
     const user = await this.prisma.user.create({
@@ -60,16 +67,20 @@ export class AuthService {
         verificationToken,
         verificationTokenExpires,
       },
-    })
+    });
 
     // Send verification email
-    await this.emailService.sendVerificationEmail(user.email, verificationToken)
+    await this.emailService.sendVerificationEmail(
+      user.email,
+      verificationToken,
+    );
 
     return {
-      message: 'Registration successful. Please check your email to verify your account.',
+      message:
+        "Registration successful. Please check your email to verify your account.",
       userId: user.id,
       email: user.email,
-    }
+    };
   }
 
   /**
@@ -86,32 +97,37 @@ export class AuthService {
           },
         },
       },
-    })
+    });
 
     if (!user || !user.passwordHash) {
-      throw new UnauthorizedException('Invalid credentials')
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     // Verify password
-    const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash)
+    const isPasswordValid = await bcrypt.compare(
+      dto.password,
+      user.passwordHash,
+    );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials')
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     // Check if email is verified
     if (!user.emailVerified) {
-      throw new UnauthorizedException('Please verify your email before logging in')
+      throw new UnauthorizedException(
+        "Please verify your email before logging in",
+      );
     }
 
     // Update last login
     await this.prisma.user.update({
       where: { id: user.id },
       data: { lastLoginAt: new Date() },
-    })
+    });
 
     // Generate tokens
-    const tokens = await this.generateTokens(user.id, user.email)
+    const tokens = await this.generateTokens(user.id, user.email);
 
     return {
       tokens,
@@ -120,14 +136,21 @@ export class AuthService {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        isSuperAdmin: user.isSuperAdmin,
+        agencyRole: user.agencyRole,
+        emailVerified: user.emailVerified,
+        status: user.status,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
         tenants: user.tenantUsers.map((tu) => ({
           id: tu.tenant.id,
           slug: tu.tenant.slug,
           businessName: tu.tenant.businessName,
           role: tu.role,
+          permissions: tu.permissions,
         })),
       },
-    }
+    };
   }
 
   /**
@@ -135,24 +158,28 @@ export class AuthService {
    */
   async refreshTokens(refreshToken: string) {
     try {
-      const payload = await this.jwtService.verifyAsync<JwtPayload>(refreshToken, {
-        secret:
-          this.config.get('JWT_SECRET') || 'your-super-secret-jwt-key-change-this-in-production',
-      })
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(
+        refreshToken,
+        {
+          secret:
+            this.config.get("JWT_SECRET") ||
+            "your-super-secret-jwt-key-change-this-in-production",
+        },
+      );
 
       // Verify user still exists
       const user = await this.prisma.user.findUnique({
         where: { id: payload.sub },
-      })
+      });
 
       if (!user) {
-        throw new UnauthorizedException('Invalid refresh token')
+        throw new UnauthorizedException("Invalid refresh token");
       }
 
       // Generate new tokens
-      return this.generateTokens(user.id, user.email)
+      return this.generateTokens(user.id, user.email);
     } catch (error) {
-      throw new UnauthorizedException('Invalid or expired refresh token')
+      throw new UnauthorizedException("Invalid or expired refresh token");
     }
   }
 
@@ -167,10 +194,10 @@ export class AuthService {
           gt: new Date(),
         },
       },
-    })
+    });
 
     if (!user) {
-      throw new BadRequestException('Invalid or expired verification token')
+      throw new BadRequestException("Invalid or expired verification token");
     }
 
     // Update user as verified
@@ -181,11 +208,11 @@ export class AuthService {
         verificationToken: null,
         verificationTokenExpires: null,
       },
-    })
+    });
 
     return {
-      message: 'Email verified successfully. You can now log in.',
-    }
+      message: "Email verified successfully. You can now log in.",
+    };
   }
 
   /**
@@ -194,22 +221,25 @@ export class AuthService {
   async resendVerificationEmail(email: string) {
     const user = await this.prisma.user.findUnique({
       where: { email: email.toLowerCase() },
-    })
+    });
 
     if (!user) {
       // Don't reveal if user exists
       return {
-        message: 'If an account exists with this email, a verification email has been sent.',
-      }
+        message:
+          "If an account exists with this email, a verification email has been sent.",
+      };
     }
 
     if (user.emailVerified) {
-      throw new BadRequestException('Email is already verified')
+      throw new BadRequestException("Email is already verified");
     }
 
     // Generate new verification token
-    const verificationToken = this.generateSecureToken()
-    const verificationTokenExpires = new Date(Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN)
+    const verificationToken = this.generateSecureToken();
+    const verificationTokenExpires = new Date(
+      Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+    );
 
     await this.prisma.user.update({
       where: { id: user.id },
@@ -217,12 +247,15 @@ export class AuthService {
         verificationToken,
         verificationTokenExpires,
       },
-    })
+    });
 
     // Send verification email
-    await this.emailService.sendVerificationEmail(user.email, verificationToken)
+    await this.emailService.sendVerificationEmail(
+      user.email,
+      verificationToken,
+    );
 
-    return { message: 'Verification email sent. Please check your inbox.' }
+    return { message: "Verification email sent. Please check your inbox." };
   }
 
   /**
@@ -231,18 +264,21 @@ export class AuthService {
   async forgotPassword(dto: ForgotPasswordDto) {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email.toLowerCase() },
-    })
+    });
 
     // Don't reveal if user exists
     if (!user) {
       return {
-        message: 'If an account exists with this email, a password reset link has been sent.',
-      }
+        message:
+          "If an account exists with this email, a password reset link has been sent.",
+      };
     }
 
     // Generate password reset token
-    const resetToken = this.generateSecureToken()
-    const resetTokenExpires = new Date(Date.now() + PASSWORD_RESET_TOKEN_EXPIRES_IN)
+    const resetToken = this.generateSecureToken();
+    const resetTokenExpires = new Date(
+      Date.now() + PASSWORD_RESET_TOKEN_EXPIRES_IN,
+    );
 
     await this.prisma.user.update({
       where: { id: user.id },
@@ -250,12 +286,12 @@ export class AuthService {
         resetToken,
         resetTokenExpires,
       },
-    })
+    });
 
     // Send password reset email
-    await this.emailService.sendPasswordResetEmail(user.email, resetToken)
+    await this.emailService.sendPasswordResetEmail(user.email, resetToken);
 
-    return { message: 'Password reset email sent. Please check your inbox.' }
+    return { message: "Password reset email sent. Please check your inbox." };
   }
 
   /**
@@ -269,14 +305,14 @@ export class AuthService {
           gt: new Date(),
         },
       },
-    })
+    });
 
     if (!user) {
-      throw new BadRequestException('Invalid or expired reset token')
+      throw new BadRequestException("Invalid or expired reset token");
     }
 
     // Hash new password
-    const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS)
+    const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
 
     // Update password and clear reset token
     await this.prisma.user.update({
@@ -286,19 +322,29 @@ export class AuthService {
         resetToken: null,
         resetTokenExpires: null,
       },
-    })
+    });
 
-    return { message: 'Password reset successfully. You can now log in with your new password.' }
+    return {
+      message:
+        "Password reset successfully. You can now log in with your new password.",
+    };
   }
 
   /**
-   * Logout (client should delete tokens, but we could add token blacklist here)
+   * Logout - Revokes all tokens by incrementing tokenVersion
    */
-  async logout(_userId: string) {
-    // TODO: Add token to blacklist if implementing token revocation
-    // For now, client-side token deletion is sufficient
+  async logout(userId: string) {
+    // SECURITY: Increment tokenVersion to invalidate all existing tokens
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        tokenVersion: {
+          increment: 1,
+        },
+      },
+    });
 
-    return { message: 'Logged out successfully' }
+    return { message: "Logged out successfully" };
   }
 
   /**
@@ -314,10 +360,10 @@ export class AuthService {
           },
         },
       },
-    })
+    });
 
     if (!user) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException("User not found");
     }
 
     return {
@@ -325,8 +371,12 @@ export class AuthService {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
+      isSuperAdmin: user.isSuperAdmin,
+      agencyRole: user.agencyRole,
       emailVerified: user.emailVerified,
-      createdAt: user.createdAt,
+      status: user.status,
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString(),
       tenants: user.tenantUsers.map((tu) => ({
         id: tu.tenant.id,
         slug: tu.tenant.slug,
@@ -334,7 +384,7 @@ export class AuthService {
         role: tu.role,
         permissions: tu.permissions,
       })),
-    }
+    };
   }
 
   /**
@@ -342,13 +392,25 @@ export class AuthService {
    */
 
   private async generateTokens(userId: string, email: string) {
+    // Fetch user's current tokenVersion
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { tokenVersion: true },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException("User not found");
+    }
+
     const payload: JwtPayload = {
       sub: userId,
       email,
-    }
+      tokenVersion: user.tokenVersion, // Include tokenVersion for revocation
+    };
 
     const jwtSecret =
-      this.config.get('JWT_SECRET') || 'your-super-secret-jwt-key-change-this-in-production'
+      this.config.get("JWT_SECRET") ||
+      "your-super-secret-jwt-key-change-this-in-production";
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
@@ -359,16 +421,16 @@ export class AuthService {
         secret: jwtSecret,
         expiresIn: REFRESH_TOKEN_EXPIRES_IN,
       }),
-    ])
+    ]);
 
     return {
       accessToken,
       refreshToken,
       expiresIn: 900, // 15 minutes in seconds
-    }
+    };
   }
 
   private generateSecureToken(): string {
-    return crypto.randomBytes(32).toString('hex')
+    return crypto.randomBytes(32).toString("hex");
   }
 }

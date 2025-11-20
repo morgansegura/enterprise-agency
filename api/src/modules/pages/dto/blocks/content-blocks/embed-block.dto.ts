@@ -1,24 +1,24 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator'
+import { IsString, IsEnum, IsOptional } from "class-validator";
 
 export class EmbedBlockDataDto {
   @IsString()
-  html: string // iframe HTML
+  html: string; // iframe HTML
 
   @IsOptional()
-  @IsEnum(['16/9', '4/3', '1/1', 'auto'])
-  aspectRatio?: '16/9' | '4/3' | '1/1' | 'auto'
+  @IsEnum(["16/9", "4/3", "1/1", "auto"])
+  aspectRatio?: "16/9" | "4/3" | "1/1" | "auto";
 
   @IsOptional()
   @IsString()
-  caption?: string
+  caption?: string;
 }
 
 export class EmbedBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'embed-block'
+  _type: "embed-block";
 
-  data: EmbedBlockDataDto
+  data: EmbedBlockDataDto;
 }

@@ -14,6 +14,13 @@ export interface User {
   status: string
   createdAt: string
   updatedAt: string
+  tenants?: Array<{
+    id: string
+    slug: string
+    businessName: string
+    role: string
+    permissions?: Record<string, unknown>
+  }>
 }
 
 interface LoginResponse {
@@ -31,6 +38,23 @@ interface RegisterData {
   password: string
   firstName: string
   lastName: string
+}
+
+interface ForgotPasswordData {
+  email: string
+}
+
+interface ResetPasswordData {
+  token: string
+  password: string
+}
+
+interface VerifyEmailResponse {
+  message: string
+}
+
+interface ForgotPasswordResponse {
+  message: string
 }
 
 /**
@@ -168,5 +192,94 @@ export async function initializeAuth(): Promise<void> {
   } catch (error) {
     logger.error('Auth initialization failed', error as Error)
     useAuthStore.getState().setLoading(false)
+  }
+}
+
+/**
+ * Forgot password - Request password reset email
+ * Sends reset token to user's email
+ */
+export async function forgotPassword(email: string): Promise<string> {
+  try {
+    logger.log('Forgot password request', { email })
+
+    const data: ForgotPasswordData = { email }
+    const response = await apiClient.authPost<ForgotPasswordResponse, ForgotPasswordData>(
+      '/forgot-password',
+      data
+    )
+
+    logger.log('Password reset email sent', { email })
+    return response.message
+  } catch (error) {
+    const message = getErrorMessage(error)
+    logger.error('Forgot password failed', error as Error, { email })
+    throw new AuthError(message, 'UNAUTHORIZED')
+  }
+}
+
+/**
+ * Reset password with token
+ * Updates user password using reset token from email
+ */
+export async function resetPassword(token: string, password: string): Promise<string> {
+  try {
+    logger.log('Reset password attempt', { token: token.substring(0, 10) + '...' })
+
+    const data: ResetPasswordData = { token, password }
+    const response = await apiClient.authPost<ForgotPasswordResponse, ResetPasswordData>(
+      '/reset-password',
+      data
+    )
+
+    logger.log('Password reset successful')
+    return response.message
+  } catch (error) {
+    const message = getErrorMessage(error)
+    logger.error('Password reset failed', error as Error)
+    throw new AuthError(message, 'INVALID_CREDENTIALS')
+  }
+}
+
+/**
+ * Verify email with token
+ * Confirms user email address using verification token
+ */
+export async function verifyEmail(token: string): Promise<string> {
+  try {
+    logger.log('Email verification attempt', { token: token.substring(0, 10) + '...' })
+
+    const response = await apiClient.authGet<VerifyEmailResponse>(
+      `/verify-email?token=${encodeURIComponent(token)}`
+    )
+
+    logger.log('Email verified successfully')
+    return response.message
+  } catch (error) {
+    const message = getErrorMessage(error)
+    logger.error('Email verification failed', error as Error)
+    throw new AuthError(message, 'INVALID_CREDENTIALS')
+  }
+}
+
+/**
+ * Resend verification email
+ * Sends a new verification email to the user
+ */
+export async function resendVerificationEmail(email: string): Promise<string> {
+  try {
+    logger.log('Resend verification email', { email })
+
+    const response = await apiClient.authPost<VerifyEmailResponse, { email: string }>(
+      '/resend-verification',
+      { email }
+    )
+
+    logger.log('Verification email sent', { email })
+    return response.message
+  } catch (error) {
+    const message = getErrorMessage(error)
+    logger.error('Resend verification failed', error as Error, { email })
+    throw new AuthError(message, 'UNAUTHORIZED')
   }
 }

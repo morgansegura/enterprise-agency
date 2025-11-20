@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from '@/common/services/prisma.service'
-import { AuditLogService } from './audit-log.service'
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "@/common/services/prisma.service";
+import { AuditLogService } from "./audit-log.service";
 
 @Injectable()
 export class AdminTenantsService {
   constructor(
     private prisma: PrismaService,
-    private auditLog: AuditLogService
+    private auditLog: AuditLogService,
   ) {}
 
   async getTenantStats(tenantId: string) {
@@ -15,19 +15,19 @@ export class AdminTenantsService {
       this.prisma.post.count({ where: { tenantId } }),
       this.prisma.asset.count({ where: { tenantId } }),
       this.prisma.tenantUser.count({ where: { tenantId } }),
-    ])
+    ]);
 
     return {
       pages: pageCount,
       posts: postCount,
       assets: assetCount,
       users: userCount,
-    }
+    };
   }
 
   async getTenantActivity(tenantId: string, days = 30) {
-    const since = new Date()
-    since.setDate(since.getDate() - days)
+    const since = new Date();
+    since.setDate(since.getDate() - days);
 
     const [recentPages, recentPosts] = await Promise.all([
       this.prisma.page.findMany({
@@ -35,7 +35,7 @@ export class AdminTenantsService {
           tenantId,
           createdAt: { gte: since },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
         take: 10,
         select: {
           id: true,
@@ -50,7 +50,7 @@ export class AdminTenantsService {
           tenantId,
           createdAt: { gte: since },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
         take: 10,
         select: {
           id: true,
@@ -60,12 +60,12 @@ export class AdminTenantsService {
           updatedAt: true,
         },
       }),
-    ])
+    ]);
 
     return {
       recentPages,
       recentPosts,
-    }
+    };
   }
 
   async getAllTenantsWithStats() {
@@ -80,9 +80,9 @@ export class AdminTenantsService {
           },
         },
       },
-      orderBy: { createdAt: 'desc' },
-    })
+      orderBy: { createdAt: "desc" },
+    });
 
-    return tenants
+    return tenants;
   }
 }

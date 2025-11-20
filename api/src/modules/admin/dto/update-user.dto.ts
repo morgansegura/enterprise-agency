@@ -1,41 +1,41 @@
-import { IsOptional, IsString, IsBoolean, IsEnum } from 'class-validator'
+import { IsOptional, IsString, IsBoolean, IsEnum } from "class-validator";
 
 export enum UserStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  SUSPENDED = 'suspended',
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+  SUSPENDED = "suspended",
 }
 
 export enum AgencyRole {
-  OWNER = 'owner',
-  ADMIN = 'admin',
-  DEVELOPER = 'developer',
-  DESIGNER = 'designer',
-  CONTENT_MANAGER = 'content_manager',
+  OWNER = "owner",
+  ADMIN = "admin",
+  DEVELOPER = "developer",
+  DESIGNER = "designer",
+  CONTENT_MANAGER = "content_manager",
 }
 
 export class UpdateUserDto {
   @IsOptional()
   @IsString()
-  firstName?: string
+  firstName?: string;
 
   @IsOptional()
   @IsString()
-  lastName?: string
+  lastName?: string;
 
   @IsOptional()
   @IsString()
-  phone?: string
+  phone?: string;
 
   @IsOptional()
   @IsBoolean()
-  isSuperAdmin?: boolean
+  isSuperAdmin?: boolean;
 
   @IsOptional()
   @IsEnum(AgencyRole)
-  agencyRole?: AgencyRole
+  agencyRole?: AgencyRole;
 
   @IsOptional()
   @IsEnum(UserStatus)
-  status?: UserStatus
+  status?: UserStatus;
 }

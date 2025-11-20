@@ -1,39 +1,46 @@
-import { IsString, IsArray, IsEnum, IsOptional, IsNumber, ValidateNested } from 'class-validator'
-import { Type } from 'class-transformer'
+import {
+  IsString,
+  IsArray,
+  IsEnum,
+  IsOptional,
+  IsNumber,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
 
 export class TabItemDto {
   @IsString()
-  label: string
+  label: string;
 
   @IsString()
-  content: string
+  content: string;
 
   @IsOptional()
   @IsString()
-  icon?: string
+  icon?: string;
 }
 
 export class TabsBlockDataDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => TabItemDto)
-  tabs: TabItemDto[]
+  tabs: TabItemDto[];
 
   @IsOptional()
   @IsNumber()
-  defaultTab?: number // Index of default active tab
+  defaultTab?: number; // Index of default active tab
 
   @IsOptional()
-  @IsEnum(['default', 'pills', 'underline'])
-  variant?: 'default' | 'pills' | 'underline'
+  @IsEnum(["default", "pills", "underline"])
+  variant?: "default" | "pills" | "underline";
 }
 
 export class TabsBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'tabs-block'
+  _type: "tabs-block";
 
-  data: TabsBlockDataDto
+  data: TabsBlockDataDto;
 }

@@ -4,63 +4,62 @@ import {
   IsOptional,
   IsNumber,
   IsBoolean,
-  IsObject,
   ValidateNested,
-} from 'class-validator'
-import { Type } from 'class-transformer'
+} from "class-validator";
+import { Type } from "class-transformer";
 
 export class ImageLinkDto {
   @IsString()
-  href: string
+  href: string;
 
   @IsOptional()
   @IsBoolean()
-  openInNewTab?: boolean
+  openInNewTab?: boolean;
 }
 
 export class ImageBlockDataDto {
   @IsString()
-  src: string // URL or asset ID
+  src: string; // URL or asset ID
 
   @IsString()
-  alt: string
+  alt: string;
 
   @IsOptional()
   @IsNumber()
-  width?: number
+  width?: number;
 
   @IsOptional()
   @IsNumber()
-  height?: number
+  height?: number;
 
   @IsOptional()
-  @IsEnum(['16/9', '4/3', '1/1', '3/2', 'auto'])
-  aspectRatio?: '16/9' | '4/3' | '1/1' | '3/2' | 'auto'
+  @IsEnum(["16/9", "4/3", "1/1", "3/2", "auto"])
+  aspectRatio?: "16/9" | "4/3" | "1/1" | "3/2" | "auto";
 
   @IsOptional()
-  @IsEnum(['cover', 'contain', 'fill', 'none'])
-  objectFit?: 'cover' | 'contain' | 'fill' | 'none'
+  @IsEnum(["cover", "contain", "fill", "none"])
+  objectFit?: "cover" | "contain" | "fill" | "none";
 
   @IsOptional()
   @IsBoolean()
-  rounded?: boolean
+  rounded?: boolean;
 
   @IsOptional()
   @IsString()
-  caption?: string
+  caption?: string;
 
   @IsOptional()
   @ValidateNested()
   @Type(() => ImageLinkDto)
-  link?: ImageLinkDto
+  link?: ImageLinkDto;
 }
 
 export class ImageBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'image-block'
+  _type: "image-block";
 
-  data: ImageBlockDataDto
+  data: ImageBlockDataDto;
 }

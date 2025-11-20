@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import * as React from 'react'
+import * as React from "react";
 import {
   Building2,
   LayoutDashboard,
@@ -9,7 +9,7 @@ import {
   Image,
   Users,
   Settings,
-} from 'lucide-react'
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -22,53 +22,57 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from '@/components/ui/sidebar'
-import { NavLink } from '../../ui/nav-link'
+} from "@/components/ui/sidebar";
+import { NavLink } from "@/components/ui/nav-link";
 
 interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
-    email: string
-    firstName: string
-    lastName: string
-    isSuperAdmin: boolean
-  }
-  onLogout: () => void
+    email: string;
+    firstName: string;
+    lastName: string;
+    isSuperAdmin: boolean;
+  };
+  onLogout: () => void;
 }
 
 const menuItems = [
   {
-    title: 'Dashboard',
-    url: '/dashboard',
+    title: "Dashboard",
+    url: "/dashboard",
     icon: LayoutDashboard,
   },
   {
-    title: 'Clients',
-    url: '/dashboard/tenants',
+    title: "Clients",
+    url: "/dashboard/tenants",
     icon: Globe,
   },
   {
-    title: 'Pages',
-    url: '/dashboard/pages',
+    title: "Pages",
+    url: "/dashboard/pages",
     icon: FileText,
   },
   {
-    title: 'Assets',
-    url: '/dashboard/assets',
+    title: "Assets",
+    url: "/dashboard/assets",
     icon: Image,
   },
   {
-    title: 'Users',
-    url: '/dashboard/users',
+    title: "Users",
+    url: "/dashboard/users",
     icon: Users,
   },
   {
-    title: 'Settings',
-    url: '/dashboard/settings',
+    title: "Settings",
+    url: "/dashboard/settings",
     icon: Settings,
   },
-]
+];
 
-export function DashboardSidebar({ user, onLogout, ...props }: DashboardSidebarProps) {
+export function DashboardSidebar({
+  user,
+  onLogout,
+  ...props
+}: DashboardSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -125,5 +129,5 @@ export function DashboardSidebar({ user, onLogout, ...props }: DashboardSidebarP
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { PrismaService } from '@/common/services/prisma.service'
-import { UpdateUserDto } from './dto/update-user.dto'
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "@/common/services/prisma.service";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -16,13 +16,13 @@ export class UsersService {
           },
         },
       },
-    })
+    });
 
     if (!user) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException("User not found");
     }
 
-    return user
+    return user;
   }
 
   async findById(id: string) {
@@ -35,13 +35,13 @@ export class UsersService {
           },
         },
       },
-    })
+    });
 
     if (!user) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException("User not found");
     }
 
-    return user
+    return user;
   }
 
   async update(clerkUserId: string, updateData: UpdateUserDto) {
@@ -55,9 +55,9 @@ export class UsersService {
           },
         },
       },
-    })
+    });
 
-    return user
+    return user;
   }
 
   async getUsersForTenant(tenantId: string) {
@@ -66,13 +66,13 @@ export class UsersService {
       include: {
         user: true,
       },
-    })
+    });
 
     return tenantUsers.map((tu) => ({
       ...tu.user,
       role: tu.role,
       permissions: tu.permissions,
       lastActiveAt: tu.lastActiveAt,
-    }))
+    }));
   }
 }

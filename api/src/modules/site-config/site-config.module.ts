@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common'
-import { SiteConfigController } from './site-config.controller'
-import { SiteConfigService } from './site-config.service'
-import { PrismaService } from '../../common/services/prisma.service'
+import { Module } from "@nestjs/common";
+import { SiteConfigController } from "./site-config.controller";
+import { SiteConfigService } from "./site-config.service";
+import { PrismaService } from "../../common/services/prisma.service";
 
 @Module({
   controllers: [SiteConfigController],

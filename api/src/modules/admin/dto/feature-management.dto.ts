@@ -1,26 +1,26 @@
-import { IsString, IsBoolean, IsObject, IsOptional } from 'class-validator'
+import { IsString, IsBoolean, IsObject, IsOptional } from "class-validator";
 
 export class UpdateFeaturesDto {
   @IsObject()
-  enabledFeatures: Record<string, boolean>
+  enabledFeatures: Record<string, boolean>;
 }
 
 export class ToggleFeatureDto {
   @IsString()
-  featureKey: string
+  featureKey: string;
 
   @IsBoolean()
-  enabled: boolean
+  enabled: boolean;
 }
 
 export class FeaturePresetDto {
   @IsString()
-  name: string
+  name: string;
 
   @IsString()
   @IsOptional()
-  description?: string
+  description?: string;
 
   @IsObject()
-  features: Record<string, boolean>
+  features: Record<string, boolean>;
 }

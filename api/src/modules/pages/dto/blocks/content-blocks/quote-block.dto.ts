@@ -1,36 +1,36 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator'
+import { IsString, IsEnum, IsOptional } from "class-validator";
 
 export class QuoteBlockDataDto {
   @IsString()
-  text: string
+  text: string;
 
   @IsOptional()
   @IsString()
-  author?: string
+  author?: string;
 
   @IsOptional()
   @IsString()
-  title?: string // Author's title/role
+  title?: string; // Author's title/role
 
   @IsOptional()
-  @IsEnum(['sm', 'md', 'lg'])
-  size?: 'sm' | 'md' | 'lg'
+  @IsEnum(["sm", "md", "lg"])
+  size?: "sm" | "md" | "lg";
 
   @IsOptional()
-  @IsEnum(['left', 'center', 'right'])
-  align?: 'left' | 'center' | 'right'
+  @IsEnum(["left", "center", "right"])
+  align?: "left" | "center" | "right";
 
   @IsOptional()
-  @IsEnum(['default', 'bordered', 'highlighted'])
-  variant?: 'default' | 'bordered' | 'highlighted'
+  @IsEnum(["default", "bordered", "highlighted"])
+  variant?: "default" | "bordered" | "highlighted";
 }
 
 export class QuoteBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'quote-block'
+  _type: "quote-block";
 
-  data: QuoteBlockDataDto
+  data: QuoteBlockDataDto;
 }

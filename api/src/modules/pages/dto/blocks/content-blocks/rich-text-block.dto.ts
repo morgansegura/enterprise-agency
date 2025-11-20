@@ -1,24 +1,24 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator'
+import { IsString, IsEnum, IsOptional } from "class-validator";
 
 export class RichTextBlockDataDto {
   @IsString()
-  html: string // HTML content
+  html: string; // HTML content
 
   @IsOptional()
-  @IsEnum(['xs', 'sm', 'md', 'lg', 'xl'])
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  @IsEnum(["xs", "sm", "md", "lg", "xl"])
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
 
   @IsOptional()
-  @IsEnum(['left', 'center', 'right', 'justify'])
-  align?: 'left' | 'center' | 'right' | 'justify'
+  @IsEnum(["left", "center", "right", "justify"])
+  align?: "left" | "center" | "right" | "justify";
 }
 
 export class RichTextBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'rich-text-block'
+  _type: "rich-text-block";
 
-  data: RichTextBlockDataDto
+  data: RichTextBlockDataDto;
 }

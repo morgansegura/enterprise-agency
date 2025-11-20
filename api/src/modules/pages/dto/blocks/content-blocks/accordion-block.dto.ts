@@ -1,39 +1,46 @@
-import { IsString, IsArray, IsEnum, IsOptional, IsBoolean, ValidateNested } from 'class-validator'
-import { Type } from 'class-transformer'
+import {
+  IsString,
+  IsArray,
+  IsEnum,
+  IsOptional,
+  IsBoolean,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
 
 export class AccordionItemDto {
   @IsString()
-  title: string
+  title: string;
 
   @IsString()
-  content: string
+  content: string;
 
   @IsOptional()
   @IsBoolean()
-  defaultOpen?: boolean
+  defaultOpen?: boolean;
 }
 
 export class AccordionBlockDataDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => AccordionItemDto)
-  items: AccordionItemDto[]
+  items: AccordionItemDto[];
 
   @IsOptional()
   @IsBoolean()
-  allowMultiple?: boolean // Allow multiple open at once
+  allowMultiple?: boolean; // Allow multiple open at once
 
   @IsOptional()
-  @IsEnum(['default', 'bordered', 'separated'])
-  variant?: 'default' | 'bordered' | 'separated'
+  @IsEnum(["default", "bordered", "separated"])
+  variant?: "default" | "bordered" | "separated";
 }
 
 export class AccordionBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'accordion-block'
+  _type: "accordion-block";
 
-  data: AccordionBlockDataDto
+  data: AccordionBlockDataDto;
 }

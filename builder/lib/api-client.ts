@@ -16,7 +16,7 @@ export class ApiClient {
 
   constructor() {
     this.baseUrl = `${API_URL}/api/v1`
-    this.authBaseUrl = `${API_URL}/api/auth`
+    this.authBaseUrl = `${API_URL}/api/v1/auth`
   }
 
   private async request<T>(
@@ -89,14 +89,14 @@ export class ApiClient {
     return this.request<T>(endpoint, { method: 'GET' })
   }
 
-  async post<T, D = Record<string, unknown>>(endpoint: string, data?: D): Promise<T> {
+  async post<T, D = unknown>(endpoint: string, data?: D): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     })
   }
 
-  async patch<T, D = Record<string, unknown>>(endpoint: string, data?: D): Promise<T> {
+  async patch<T, D = unknown>(endpoint: string, data?: D): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PATCH',
       body: data ? JSON.stringify(data) : undefined,

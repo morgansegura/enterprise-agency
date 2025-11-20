@@ -1,32 +1,32 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator'
+import { IsString, IsEnum, IsOptional } from "class-validator";
 
 export class IconBlockDataDto {
   @IsString()
-  icon: string // Icon name
+  icon: string; // Icon name
 
   @IsOptional()
-  @IsEnum(['sm', 'md', 'lg', 'xl', '2xl'])
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  @IsEnum(["sm", "md", "lg", "xl", "2xl"])
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
 
   @IsOptional()
-  @IsEnum(['default', 'primary', 'secondary', 'muted'])
-  color?: 'default' | 'primary' | 'secondary' | 'muted'
+  @IsEnum(["default", "primary", "secondary", "muted"])
+  color?: "default" | "primary" | "secondary" | "muted";
 
   @IsOptional()
   @IsString()
-  label?: string
+  label?: string;
 
   @IsOptional()
-  @IsEnum(['left', 'center', 'right'])
-  align?: 'left' | 'center' | 'right'
+  @IsEnum(["left", "center", "right"])
+  align?: "left" | "center" | "right";
 }
 
 export class IconBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'icon-block'
+  _type: "icon-block";
 
-  data: IconBlockDataDto
+  data: IconBlockDataDto;
 }

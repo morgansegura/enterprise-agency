@@ -1,35 +1,45 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator'
+import { IsString, IsEnum, IsOptional } from "class-validator";
 
 export class HeadingBlockDataDto {
   @IsString()
-  text: string
+  text: string;
 
-  @IsEnum(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
-  level: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-
-  @IsOptional()
-  @IsEnum(['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'])
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl'
+  @IsEnum(["h1", "h2", "h3", "h4", "h5", "h6"])
+  level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
   @IsOptional()
-  @IsEnum(['left', 'center', 'right'])
-  align?: 'left' | 'center' | 'right'
+  @IsEnum(["xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"])
+  size?:
+    | "xs"
+    | "sm"
+    | "md"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "6xl";
 
   @IsOptional()
-  @IsEnum(['normal', 'medium', 'semibold', 'bold'])
-  weight?: 'normal' | 'medium' | 'semibold' | 'bold'
+  @IsEnum(["left", "center", "right"])
+  align?: "left" | "center" | "right";
 
   @IsOptional()
-  @IsEnum(['default', 'primary', 'secondary', 'muted'])
-  color?: 'default' | 'primary' | 'secondary' | 'muted'
+  @IsEnum(["normal", "medium", "semibold", "bold"])
+  weight?: "normal" | "medium" | "semibold" | "bold";
+
+  @IsOptional()
+  @IsEnum(["default", "primary", "secondary", "muted"])
+  color?: "default" | "primary" | "secondary" | "muted";
 }
 
 export class HeadingBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'heading-block'
+  _type: "heading-block";
 
-  data: HeadingBlockDataDto
+  data: HeadingBlockDataDto;
 }

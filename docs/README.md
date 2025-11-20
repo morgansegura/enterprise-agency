@@ -8,83 +8,105 @@ This platform is designed to serve multiple churches with a shared backend and c
 
 ## 📚 Documentation Index
 
-### [Client (Next.js Frontend)](./client/)
+### 🎯 Getting Started
+- **[Architecture Overview](./architecture.md)** - System architecture and core concepts
+- **[Monorepo Strategy](./MONOREPO_STRATEGY.md)** - How to manage multiple client deployments
+- **[Public API Guide](./PUBLIC_API.md)** - Public endpoints for client frontends
+- **[Security Recommendations](./SECURITY_RECOMMENDATIONS.md)** - Security best practices & fixes
+- **[Testing Permissions](./testing-permissions.md)** - RBAC and permission testing guide
+
+### [Client (Next.js Frontends)](./client/)
 - [Component System](./client/components.md)
 - [Block Architecture](./client/blocks.md)
 - [Data Model](./client/data-model.md)
 - [SEO System](./client/seo-usage.md)
 - [Code Generator](./client/generator.md)
 
+### [Builder (Admin Panel)](./builder/)
+- [Architecture](./builder/architecture.md)
+- [README](./builder/README.md)
+
 ### [API (NestJS Backend)](./api/)
-*Coming soon - Backend will be built after frontend data model is perfected*
 - [Architecture](./api/architecture.md)
-- [API Endpoints](./api/endpoints.md)
-- [Database Schema](./api/database.md)
-- [Multi-Tenancy](./api/multi-tenancy.md)
+- [Block Types](./api/block-types.md)
+- [README](./api/README.md)
 
 ### [App (Mobile)](./app/)
 *Coming soon - Mobile apps will consume the same API*
-- [Setup Guide](./app/setup.md)
-- [Architecture](./app/architecture.md)
+- [README](./app/README.md)
 
 ---
 
 ## 🏗️ Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────┐
-│                  Frontend Layer                  │
-├─────────────────────────────────────────────────┤
-│  Next.js (Web)          React Native (Mobile)   │
-│  - Block Renderer       - Block Renderer        │
-│  - UI Components        - Native Components     │
-│  - SEO System          - Deep Linking           │
-└─────────────────┬───────────────────────────────┘
-                  │
-                  │ REST/GraphQL API
-                  │
-┌─────────────────▼───────────────────────────────┐
-│                 Backend Layer                    │
-├─────────────────────────────────────────────────┤
-│  NestJS API                                     │
-│  - Multi-tenant                                 │
-│  - Block Management                             │
-│  - Media Management                             │
-│  - User Authentication                          │
-└─────────────────┬───────────────────────────────┘
-                  │
-                  │
-┌─────────────────▼───────────────────────────────┐
-│               Database Layer                     │
-├─────────────────────────────────────────────────┤
-│  PostgreSQL (Drizzle ORM)                       │
-│  - Tenants                                      │
-│  - Pages & Blocks                               │
-│  - Media Library                                │
-│  - Users & Permissions                          │
-└─────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                     WEBFUNNEL PLATFORM                            │
+├──────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│  Builder (4001)           API (4000)          Clients (4002+)    │
+│  ┌──────────────┐       ┌──────────┐       ┌────────────────┐  │
+│  │ Admin Panel  │◄──────┤ NestJS   │◄──────┤ Client Sites   │  │
+│  │              │       │  API     │       │                │  │
+│  │ - Auth       │       │          │       │ - Public API   │  │
+│  │ - CRUD Pages │       │ Auth API │       │ - No Auth      │  │
+│  │ - Manage     │       │ Public API│       │ - Published    │  │
+│  │   Users      │       └────┬─────┘       │   Content      │  │
+│  └──────────────┘            │             └────────────────┘  │
+│                               │                                 │
+│                        ┌──────▼──────┐                         │
+│                        │ PostgreSQL  │                         │
+│                        │  (Prisma)   │                         │
+│                        │             │                         │
+│                        │ - Tenants   │                         │
+│                        │ - Pages     │                         │
+│                        │ - Users     │                         │
+│                        │ - RBAC      │                         │
+│                        └─────────────┘                         │
+└──────────────────────────────────────────────────────────────────┘
 ```
+
+### Key Concepts
+
+- **Builder:** Single admin panel at `builder.webfunnel.com` for agency + clients
+- **API:** Multi-tenant backend with authenticated + public endpoints
+- **Clients:** Individual deployments per client (not cookie-cutter)
+- **Monorepo:** Shared packages for components, isolated customizations
 
 ---
 
-## 🎯 Current Phase: Frontend with Mock Data
+## 🎯 Current Phase: Backend Integration & Security
 
-**Strategy:** Build the frontend first with mock data, perfect the data model and UX, then build the backend to match.
+**Status:** Backend API and Builder are functional, need security hardening and public API
 
-**Benefits:**
-- ✅ Rapid iteration on UX
-- ✅ Perfect the data model before backend constraints
-- ✅ Design the API you wish you had
-- ✅ Frontend and backend can be developed in parallel later
+**Current State:**
+- ✅ NestJS API with multi-tenant architecture
+- ✅ Builder admin panel with authentication
+- ✅ Enterprise RBAC (agency + tenant roles)
+- ✅ HTTP-only cookie JWT auth
+- ⏳ Public API for client frontends (in progress)
+- ⏳ Security hardening (token revocation, rate limiting)
+
+**Next Steps:**
+- Implement public API endpoints
+- Fix critical security issues (P0)
+- Setup monorepo for client deployments
+- Deploy to staging environment
 
 ---
 
 ## 🚀 Quick Links
 
-- **Getting Started:** See [client/README.md](./client/)
-- **Component Library:** See [client/components.md](./client/components.md)
-- **Block System:** See [client/blocks.md](./client/blocks.md)
-- **Data Model:** See [client/data-model.md](./client/data-model.md)
+### For Developers
+- **[Architecture](./architecture.md)** - Understand the system design
+- **[Monorepo Strategy](./MONOREPO_STRATEGY.md)** - Managing multiple client deployments
+- **[Security Guide](./SECURITY_RECOMMENDATIONS.md)** - Critical fixes before production
+- **[Public API](./PUBLIC_API.md)** - Client frontend integration
+
+### For Testing
+- **[Testing Permissions](./testing-permissions.md)** - Test RBAC and feature gates
+- **[API Documentation](./api/README.md)** - Backend endpoints reference
+- **[Builder Guide](./builder/README.md)** - Admin panel usage
 
 ---
 
@@ -97,12 +119,12 @@ This platform is designed to serve multiple churches with a shared backend and c
 - **State:** React Server Components + Client Components
 - **Data:** Mock JSON (transitioning to API)
 
-### Backend (Future)
-- **Framework:** NestJS
-- **Database:** PostgreSQL with Drizzle ORM
-- **Auth:** Clerk or custom JWT
-- **Storage:** S3/Cloudflare R2
-- **Cache:** Redis
+### Backend (Active)
+- **Framework:** NestJS 10.x
+- **Database:** PostgreSQL 16.x with Prisma ORM
+- **Auth:** Custom JWT with HTTP-only cookies
+- **Storage:** Local (transitioning to S3/Cloudflare R2)
+- **Cache:** Planned (Redis)
 
 ### Mobile (Future)
 - **Framework:** React Native (Expo)
@@ -141,38 +163,46 @@ Page Layout (structural)
 
 ## 🔄 Development Phases
 
-### ✅ Phase 1: Foundation (Current)
-- [x] Next.js setup
+### ✅ Phase 1: Foundation (Completed)
+- [x] Next.js client template
 - [x] Component system (Heading, Text, Section, Page)
 - [x] Global types
 - [x] SEO system
-- [x] Code generator
-- [x] Block architecture (HeadingBlock)
+- [x] Block architecture
 
-### 🔨 Phase 2: Mock Data & Perfection (In Progress)
-- [ ] Mock data structure
-- [ ] Block renderer
-- [ ] Data model types
-- [ ] Multiple block types
-- [ ] Admin UI mockup
-- [ ] Perfect the UX
+### ✅ Phase 2: Backend Development (Completed)
+- [x] NestJS API setup
+- [x] Database schema with Prisma
+- [x] Multi-tenant architecture
+- [x] Authentication (JWT + HTTP-only cookies)
+- [x] Enterprise RBAC (agency + tenant roles)
+- [x] Pages, Posts, Assets modules
+- [x] Site configuration module
 
-### 📋 Phase 3: Backend Development
-- [ ] NestJS setup
-- [ ] Database schema
-- [ ] Multi-tenancy
-- [ ] API endpoints
-- [ ] Authentication
-- [ ] Media uploads
+### ✅ Phase 3: Builder (Completed)
+- [x] Admin panel setup
+- [x] Authentication flow
+- [x] User management
+- [x] Protected routes
 
-### 🔗 Phase 4: Integration
-- [ ] Connect frontend to real API
-- [ ] Remove mock data
-- [ ] Admin CMS UI
-- [ ] Deploy backend
-- [ ] Deploy frontend
+### 🔨 Phase 4: Integration & Security (Current)
+- [ ] Implement public API endpoints
+- [ ] Fix critical security issues (P0)
+- [ ] Setup monorepo for client deployments
+- [ ] Connect client template to public API
+- [ ] Implement rate limiting
+- [ ] Add security headers
+- [ ] Token revocation mechanism
 
-### 📱 Phase 5: Mobile
+### 📋 Phase 5: Production Ready (Next)
+- [ ] Deploy to staging environment
+- [ ] Security penetration testing
+- [ ] Performance optimization
+- [ ] Setup monitoring & logging
+- [ ] Deploy first client site
+- [ ] Production launch
+
+### 📱 Phase 6: Mobile (Future)
 - [ ] React Native setup
 - [ ] Mobile block renderer
 - [ ] Native components

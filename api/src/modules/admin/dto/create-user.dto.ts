@@ -1,57 +1,64 @@
-import { IsEmail, IsString, IsOptional, IsBoolean, IsEnum, MinLength } from 'class-validator'
+import {
+  IsEmail,
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsEnum,
+  MinLength,
+} from "class-validator";
 
 export enum AgencyRole {
-  OWNER = 'owner',
-  ADMIN = 'admin',
-  DEVELOPER = 'developer',
-  DESIGNER = 'designer',
-  CONTENT_MANAGER = 'content_manager',
+  OWNER = "owner",
+  ADMIN = "admin",
+  DEVELOPER = "developer",
+  DESIGNER = "designer",
+  CONTENT_MANAGER = "content_manager",
 }
 
 export class CreateUserDto {
   @IsEmail()
-  email: string
+  email: string;
 
   @IsString()
   @MinLength(2)
-  firstName: string
+  firstName: string;
 
   @IsString()
   @MinLength(2)
-  lastName: string
+  lastName: string;
 
   @IsString()
   @MinLength(8)
-  password: string
+  password: string;
 
   @IsBoolean()
   @IsOptional()
-  isSuperAdmin?: boolean
+  isSuperAdmin?: boolean;
 
   @IsEnum(AgencyRole)
   @IsOptional()
-  agencyRole?: AgencyRole
+  agencyRole?: AgencyRole;
 
   @IsOptional()
   @IsString()
-  phone?: string
+  phone?: string;
 }
 
 export class InviteUserDto {
   @IsEmail()
-  email: string
+  email: string;
 
   @IsString()
-  firstName: string
+  firstName: string;
 
   @IsString()
-  lastName: string
+  lastName: string;
 
   @IsEnum(AgencyRole)
   @IsOptional()
-  agencyRole?: AgencyRole
+  agencyRole?: AgencyRole;
 
   @IsBoolean()
   @IsOptional()
-  isSuperAdmin?: boolean
+  isSuperAdmin?: boolean;
 }

@@ -1,40 +1,46 @@
-import { IsString, IsEnum, IsOptional, IsBoolean, IsUrl } from 'class-validator'
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsBoolean,
+  IsUrl,
+} from "class-validator";
 
 export class VideoBlockDataDto {
   @IsUrl()
-  url: string // YouTube/Vimeo/direct
+  url: string; // YouTube/Vimeo/direct
 
   @IsOptional()
-  @IsEnum(['youtube', 'vimeo', 'direct'])
-  provider?: 'youtube' | 'vimeo' | 'direct'
+  @IsEnum(["youtube", "vimeo", "direct"])
+  provider?: "youtube" | "vimeo" | "direct";
 
   @IsOptional()
-  @IsEnum(['16/9', '4/3', '1/1', '21/9'])
-  aspectRatio?: '16/9' | '4/3' | '1/1' | '21/9'
-
-  @IsOptional()
-  @IsBoolean()
-  autoplay?: boolean
+  @IsEnum(["16/9", "4/3", "1/1", "21/9"])
+  aspectRatio?: "16/9" | "4/3" | "1/1" | "21/9";
 
   @IsOptional()
   @IsBoolean()
-  muted?: boolean
+  autoplay?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  controls?: boolean
+  muted?: boolean;
 
   @IsOptional()
   @IsBoolean()
-  loop?: boolean
+  controls?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  loop?: boolean;
 }
 
 export class VideoBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'video-block'
+  _type: "video-block";
 
-  data: VideoBlockDataDto
+  data: VideoBlockDataDto;
 }

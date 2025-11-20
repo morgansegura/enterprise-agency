@@ -1,16 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { PrismaService } from '@/common/services/prisma.service'
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "@/common/services/prisma.service";
 import {
   CreateProjectAssignmentDto,
   UpdateProjectAssignmentDto,
-} from '../dto/project-assignment.dto'
-import { AuditLogService, AuditAction } from './audit-log.service'
+} from "../dto/project-assignment.dto";
+import { AuditLogService, AuditAction } from "./audit-log.service";
 
 @Injectable()
 export class AdminProjectsService {
   constructor(
     private prisma: PrismaService,
-    private auditLog: AuditLogService
+    private auditLog: AuditLogService,
   ) {}
 
   async getProjectAssignments(tenantId?: string, userId?: string) {
@@ -36,8 +36,8 @@ export class AdminProjectsService {
           },
         },
       },
-      orderBy: { createdAt: 'desc' },
-    })
+      orderBy: { createdAt: "desc" },
+    });
   }
 
   async getAssignment(id: string) {
@@ -47,30 +47,30 @@ export class AdminProjectsService {
         user: true,
         tenant: true,
       },
-    })
+    });
 
     if (!assignment) {
-      throw new NotFoundException('Assignment not found')
+      throw new NotFoundException("Assignment not found");
     }
 
-    return assignment
+    return assignment;
   }
 
   async createAssignment(data: CreateProjectAssignmentDto, createdBy: string) {
     // Check if user exists
     const user = await this.prisma.user.findUnique({
       where: { id: data.userId },
-    })
+    });
     if (!user) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException("User not found");
     }
 
     // Check if tenant exists
     const tenant = await this.prisma.tenant.findUnique({
       where: { id: data.tenantId },
-    })
+    });
     if (!tenant) {
-      throw new NotFoundException('Tenant not found')
+      throw new NotFoundException("Tenant not found");
     }
 
     const assignment = await this.prisma.projectAssignment.create({
@@ -79,35 +79,35 @@ export class AdminProjectsService {
         tenantId: data.tenantId,
         role: data.role,
         permissions: data.permissions || {},
-        status: data.status || 'active',
+        status: data.status || "active",
       },
       include: {
         user: true,
         tenant: true,
       },
-    })
+    });
 
     await this.auditLog.log({
       action: AuditAction.PROJECT_ASSIGNED,
       performedBy: createdBy,
-      targetType: 'project',
+      targetType: "project",
       targetId: assignment.id,
       metadata: {
         userId: data.userId,
         tenantId: data.tenantId,
         role: data.role,
       },
-    })
+    });
 
-    return assignment
+    return assignment;
   }
 
   async updateAssignment(
     id: string,
     data: UpdateProjectAssignmentDto,
-    updatedBy: string
+    updatedBy: string,
   ) {
-    await this.getAssignment(id)
+    await this.getAssignment(id);
 
     const updated = await this.prisma.projectAssignment.update({
       where: { id },
@@ -120,37 +120,37 @@ export class AdminProjectsService {
         user: true,
         tenant: true,
       },
-    })
+    });
 
     await this.auditLog.log({
       action: AuditAction.PERMISSION_CHANGED,
       performedBy: updatedBy,
-      targetType: 'project',
+      targetType: "project",
       targetId: id,
       metadata: { changes: data },
-    })
+    });
 
-    return updated
+    return updated;
   }
 
   async deleteAssignment(id: string, deletedBy: string) {
-    const assignment = await this.getAssignment(id)
+    const assignment = await this.getAssignment(id);
 
     await this.prisma.projectAssignment.delete({
       where: { id },
-    })
+    });
 
     await this.auditLog.log({
       action: AuditAction.PROJECT_UNASSIGNED,
       performedBy: deletedBy,
-      targetType: 'project',
+      targetType: "project",
       targetId: id,
       metadata: {
         userId: assignment.userId,
         tenantId: assignment.tenantId,
       },
-    })
+    });
 
-    return { success: true }
+    return { success: true };
   }
 }

@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 .dashboard-header {
   @apply mb-8;
 }

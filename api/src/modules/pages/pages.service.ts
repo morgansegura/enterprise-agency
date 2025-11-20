@@ -1,12 +1,17 @@
-import { Injectable, NotFoundException, ConflictException, Logger } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { PrismaService } from '@/common/services/prisma.service'
-import { CreatePageDto } from './dto/create-page.dto'
-import { UpdatePageDto } from './dto/update-page.dto'
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  Logger,
+} from "@nestjs/common";
+import { Prisma } from "@prisma/client";
+import { PrismaService } from "@/common/services/prisma.service";
+import { CreatePageDto } from "./dto/create-page.dto";
+import { UpdatePageDto } from "./dto/update-page.dto";
 
 @Injectable()
 export class PagesService {
-  private readonly logger = new Logger(PagesService.name)
+  private readonly logger = new Logger(PagesService.name);
 
   constructor(private prisma: PrismaService) {}
 
@@ -19,10 +24,10 @@ export class PagesService {
           slug: createData.slug,
         },
       },
-    })
+    });
 
     if (existing) {
-      throw new ConflictException('Slug already exists for this tenant')
+      throw new ConflictException("Slug already exists for this tenant");
     }
 
     // Build content structure for sections and serialize to plain JSON
@@ -33,9 +38,9 @@ export class PagesService {
       performance: createData.performance || {
         lazyLoadImages: true,
         preloadCritical: true,
-        cacheStrategy: 'static',
+        cacheStrategy: "static",
       },
-    }
+    };
 
     const page = await this.prisma.page.create({
       data: {
@@ -43,12 +48,14 @@ export class PagesService {
         authorId: userId,
         slug: createData.slug,
         title: createData.title,
-        content: JSON.parse(JSON.stringify(contentData)) as Prisma.InputJsonValue,
+        content: JSON.parse(
+          JSON.stringify(contentData),
+        ) as Prisma.InputJsonValue,
         metaTitle: createData.seo?.metaTitle || createData.title,
         metaDescription: createData.seo?.metaDescription,
-        status: createData.status || 'draft',
-        template: createData.template || 'default',
-        publishedAt: createData.status === 'published' ? new Date() : null,
+        status: createData.status || "draft",
+        template: createData.template || "default",
+        publishedAt: createData.status === "published" ? new Date() : null,
       },
       include: {
         author: {
@@ -60,35 +67,35 @@ export class PagesService {
           },
         },
       },
-    })
+    });
 
-    this.logger.log(`Page created: ${page.slug} by user ${userId}`)
-    return page
+    this.logger.log(`Page created: ${page.slug} by user ${userId}`);
+    return page;
   }
 
   async findAll(
     tenantId: string,
     filters?: {
-      status?: string
-      template?: string
-      search?: string
-    }
+      status?: string;
+      template?: string;
+      search?: string;
+    },
   ) {
-    const where: Record<string, unknown> = { tenantId }
+    const where: Record<string, unknown> = { tenantId };
 
     if (filters?.status) {
-      where.status = filters.status
+      where.status = filters.status;
     }
 
     if (filters?.template) {
-      where.template = filters.template
+      where.template = filters.template;
     }
 
     if (filters?.search) {
       where.OR = [
-        { title: { contains: filters.search, mode: 'insensitive' } },
-        { slug: { contains: filters.search, mode: 'insensitive' } },
-      ]
+        { title: { contains: filters.search, mode: "insensitive" } },
+        { slug: { contains: filters.search, mode: "insensitive" } },
+      ];
     }
 
     const pages = await this.prisma.page.findMany({
@@ -104,11 +111,11 @@ export class PagesService {
         },
       },
       orderBy: {
-        updatedAt: 'desc',
+        updatedAt: "desc",
       },
-    })
+    });
 
-    return pages
+    return pages;
   }
 
   async findOne(tenantId: string, id: string) {
@@ -127,13 +134,13 @@ export class PagesService {
           },
         },
       },
-    })
+    });
 
     if (!page) {
-      throw new NotFoundException('Page not found')
+      throw new NotFoundException("Page not found");
     }
 
-    return page
+    return page;
   }
 
   async findBySlug(tenantId: string, slug: string) {
@@ -154,22 +161,22 @@ export class PagesService {
           },
         },
       },
-    })
+    });
 
     if (!page) {
-      throw new NotFoundException('Page not found')
+      throw new NotFoundException("Page not found");
     }
 
-    return page
+    return page;
   }
 
   async update(tenantId: string, id: string, updateData: UpdatePageDto) {
     // Verify page belongs to tenant
-    await this.findOne(tenantId, id)
+    await this.findOne(tenantId, id);
 
     // If slug is being updated, check it's not taken
     if (updateData.slug) {
-      const existing = await this.findOne(tenantId, id)
+      const existing = await this.findOne(tenantId, id);
 
       if (updateData.slug !== existing.slug) {
         const slugTaken = await this.prisma.page.findUnique({
@@ -179,51 +186,64 @@ export class PagesService {
               slug: updateData.slug,
             },
           },
-        })
+        });
 
         if (slugTaken) {
-          throw new ConflictException('Slug already exists for this tenant')
+          throw new ConflictException("Slug already exists for this tenant");
         }
       }
     }
 
     // Build updated content structure
-    const updateDataWithTimestamps: Record<string, unknown> = { ...updateData }
+    const updateDataWithTimestamps: Record<string, unknown> = { ...updateData };
 
-    if (updateData.sections || updateData.seo || updateData.accessibility || updateData.performance) {
-      const existing = await this.findOne(tenantId, id)
-      const existingContent = (existing.content || {}) as Record<string, unknown>
+    if (
+      updateData.sections ||
+      updateData.seo ||
+      updateData.accessibility ||
+      updateData.performance
+    ) {
+      const existing = await this.findOne(tenantId, id);
+      const existingContent = (existing.content || {}) as Record<
+        string,
+        unknown
+      >;
 
       // Serialize to plain JSON objects
       const contentData = {
         sections: updateData.sections || existingContent.sections || [],
         seo: updateData.seo || existingContent.seo || {},
-        accessibility: updateData.accessibility || existingContent.accessibility || {},
-        performance: updateData.performance || existingContent.performance || {},
-      }
+        accessibility:
+          updateData.accessibility || existingContent.accessibility || {},
+        performance:
+          updateData.performance || existingContent.performance || {},
+      };
 
       updateDataWithTimestamps.content = JSON.parse(
-        JSON.stringify(contentData)
-      ) as Prisma.InputJsonValue
+        JSON.stringify(contentData),
+      ) as Prisma.InputJsonValue;
 
-      delete updateDataWithTimestamps.sections
-      delete updateDataWithTimestamps.seo
-      delete updateDataWithTimestamps.accessibility
-      delete updateDataWithTimestamps.performance
+      delete updateDataWithTimestamps.sections;
+      delete updateDataWithTimestamps.seo;
+      delete updateDataWithTimestamps.accessibility;
+      delete updateDataWithTimestamps.performance;
     }
 
     // Set publishedAt timestamp if status is being updated to published
-    if (updateData.status === 'published' && !updateDataWithTimestamps.publishedAt) {
-      updateDataWithTimestamps.publishedAt = new Date()
+    if (
+      updateData.status === "published" &&
+      !updateDataWithTimestamps.publishedAt
+    ) {
+      updateDataWithTimestamps.publishedAt = new Date();
     }
 
     // Update metaTitle from SEO if provided
     if (updateData.seo?.metaTitle) {
-      updateDataWithTimestamps.metaTitle = updateData.seo.metaTitle
+      updateDataWithTimestamps.metaTitle = updateData.seo.metaTitle;
     }
 
     if (updateData.seo?.metaDescription) {
-      updateDataWithTimestamps.metaDescription = updateData.seo.metaDescription
+      updateDataWithTimestamps.metaDescription = updateData.seo.metaDescription;
     }
 
     const page = await this.prisma.page.update({
@@ -239,54 +259,54 @@ export class PagesService {
           },
         },
       },
-    })
+    });
 
-    this.logger.log(`Page updated: ${page.slug}`)
-    return page
+    this.logger.log(`Page updated: ${page.slug}`);
+    return page;
   }
 
   async remove(tenantId: string, id: string) {
     // Verify page belongs to tenant
-    await this.findOne(tenantId, id)
+    await this.findOne(tenantId, id);
 
     await this.prisma.page.delete({
       where: { id },
-    })
+    });
 
-    this.logger.log(`Page deleted: ${id}`)
-    return { success: true, id }
+    this.logger.log(`Page deleted: ${id}`);
+    return { success: true, id };
   }
 
   async publish(tenantId: string, id: string) {
     const page = await this.update(tenantId, id, {
-      status: 'published',
-    })
+      status: "published",
+    });
 
-    this.logger.log(`Page published: ${page.slug}`)
-    return page
+    this.logger.log(`Page published: ${page.slug}`);
+    return page;
   }
 
   async unpublish(tenantId: string, id: string) {
     const page = await this.update(tenantId, id, {
-      status: 'draft',
-    })
+      status: "draft",
+    });
 
-    this.logger.log(`Page unpublished: ${page.slug}`)
-    return page
+    this.logger.log(`Page unpublished: ${page.slug}`);
+    return page;
   }
 
   async duplicate(tenantId: string, userId: string, id: string) {
-    const original = await this.findOne(tenantId, id)
+    const original = await this.findOne(tenantId, id);
 
     // Generate unique slug
-    let newSlug = `${original.slug}-copy`
-    let counter = 1
+    let newSlug = `${original.slug}-copy`;
+    let counter = 1;
     while (true) {
       try {
-        await this.findBySlug(tenantId, newSlug)
-        newSlug = `${original.slug}-copy-${counter++}`
+        await this.findBySlug(tenantId, newSlug);
+        newSlug = `${original.slug}-copy-${counter++}`;
       } catch {
-        break
+        break;
       }
     }
 
@@ -297,11 +317,13 @@ export class PagesService {
         slug: newSlug,
         title: `${original.title} (Copy)`,
         content: original.content
-          ? (JSON.parse(JSON.stringify(original.content)) as Prisma.InputJsonValue)
+          ? (JSON.parse(
+              JSON.stringify(original.content),
+            ) as Prisma.InputJsonValue)
           : undefined,
         metaTitle: original.metaTitle,
         metaDescription: original.metaDescription,
-        status: 'draft',
+        status: "draft",
         template: original.template,
       },
       include: {
@@ -314,9 +336,9 @@ export class PagesService {
           },
         },
       },
-    })
+    });
 
-    this.logger.log(`Page duplicated: ${original.slug} -> ${duplicated.slug}`)
-    return duplicated
+    this.logger.log(`Page duplicated: ${original.slug} -> ${duplicated.slug}`);
+    return duplicated;
   }
 }

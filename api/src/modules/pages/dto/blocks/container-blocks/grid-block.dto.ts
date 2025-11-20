@@ -1,47 +1,57 @@
-import { IsString, IsEnum, IsOptional, IsNumber, IsObject, IsArray, ValidateNested } from 'class-validator'
-import { Type } from 'class-transformer'
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsNumber,
+  IsArray,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
+import { ContentBlockDto } from "../content-block.dto";
 
 export class GridColumnsDto {
   @IsOptional()
   @IsNumber()
-  mobile?: number // 1-12
+  mobile?: number; // 1-12
 
   @IsOptional()
   @IsNumber()
-  tablet?: number // 1-12
+  tablet?: number; // 1-12
 
   @IsOptional()
   @IsNumber()
-  desktop?: number // 1-12
+  desktop?: number; // 1-12
 }
 
 export class GridBlockDataDto {
   @ValidateNested()
   @Type(() => GridColumnsDto)
-  columns: GridColumnsDto
+  columns: GridColumnsDto;
 
   @IsOptional()
-  @IsEnum(['none', 'xs', 'sm', 'md', 'lg', 'xl'])
-  gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  @IsEnum(["none", "xs", "sm", "md", "lg", "xl"])
+  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
 
   @IsOptional()
-  @IsEnum(['start', 'center', 'end', 'stretch'])
-  align?: 'start' | 'center' | 'end' | 'stretch'
+  @IsEnum(["start", "center", "end", "stretch"])
+  align?: "start" | "center" | "end" | "stretch";
 
   @IsOptional()
-  @IsEnum(['start', 'center', 'end', 'space-between', 'space-around'])
-  justify?: 'start' | 'center' | 'end' | 'space-between' | 'space-around'
+  @IsEnum(["start", "center", "end", "space-between", "space-around"])
+  justify?: "start" | "center" | "end" | "space-between" | "space-around";
 }
 
 export class GridBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'grid-block'
+  _type: "grid-block";
 
-  data: GridBlockDataDto
+  data: GridBlockDataDto;
 
   @IsArray()
-  blocks: any[] // Will be validated as Block[] in discriminated union
+  @ValidateNested({ each: true })
+  @Type(() => ContentBlockDto)
+  blocks: ContentBlockDto[];
 }

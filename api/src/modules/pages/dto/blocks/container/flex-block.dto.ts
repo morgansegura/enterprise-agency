@@ -1,37 +1,48 @@
-import { IsString, IsEnum, IsOptional, IsArray, IsBoolean } from 'class-validator'
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsArray,
+  IsBoolean,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
+import { ContentBlockDto } from "../content-block.dto";
 
 export class FlexBlockDataDto {
   @IsOptional()
-  @IsEnum(['row', 'column', 'row-reverse', 'column-reverse'])
-  direction?: string
+  @IsEnum(["row", "column", "row-reverse", "column-reverse"])
+  direction?: string;
 
   @IsOptional()
   @IsBoolean()
-  wrap?: boolean
+  wrap?: boolean;
 
   @IsOptional()
-  @IsEnum(['xs', 'sm', 'md', 'lg', 'xl', '2xl'])
-  gap?: string
+  @IsEnum(["xs", "sm", "md", "lg", "xl", "2xl"])
+  gap?: string;
 
   @IsOptional()
-  @IsEnum(['start', 'center', 'end', 'between', 'around', 'evenly'])
-  justify?: string
+  @IsEnum(["start", "center", "end", "between", "around", "evenly"])
+  justify?: string;
 
   @IsOptional()
-  @IsEnum(['start', 'center', 'end', 'stretch', 'baseline'])
-  align?: string
+  @IsEnum(["start", "center", "end", "stretch", "baseline"])
+  align?: string;
 }
 
 export class FlexBlockDto {
-  @IsEnum(['flex-block'])
-  _type: 'flex-block'
+  @IsEnum(["flex-block"])
+  _type: "flex-block";
 
   @IsString()
-  _key: string
+  _key: string;
 
   @IsOptional()
-  data?: FlexBlockDataDto
+  data?: FlexBlockDataDto;
 
   @IsArray()
-  blocks: any[] // Will be typed with ContentBlock union
+  @ValidateNested({ each: true })
+  @Type(() => ContentBlockDto)
+  blocks: ContentBlockDto[];
 }

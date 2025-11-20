@@ -1,48 +1,55 @@
-import { IsString, IsOptional, IsIn, MaxLength, IsArray, IsUUID } from 'class-validator'
+import {
+  IsString,
+  IsOptional,
+  IsIn,
+  MaxLength,
+  IsArray,
+  IsUUID,
+} from "class-validator";
 
 export class CreatePostDto {
   @IsString()
   @MaxLength(255)
-  slug: string
+  slug: string;
 
   @IsString()
   @MaxLength(255)
-  title: string
+  title: string;
 
   @IsOptional()
   @IsString()
-  excerpt?: string
+  excerpt?: string;
 
   @IsOptional()
   @IsString()
-  content?: string
+  content?: string;
 
   @IsOptional()
   @IsUUID()
-  featuredImageId?: string
+  featuredImageId?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(100)
-  category?: string
+  category?: string;
 
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  tags?: string[]
+  tags?: string[];
 
   @IsOptional()
   @IsString()
   @MaxLength(60)
-  metaTitle?: string
+  metaTitle?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(160)
-  metaDescription?: string
+  metaDescription?: string;
 
   @IsOptional()
   @IsString()
-  @IsIn(['draft', 'published', 'scheduled', 'archived'])
-  status?: string
+  @IsIn(["draft", "published", "scheduled", "archived"])
+  status?: string;
 }

@@ -6,63 +6,63 @@ import {
   IsObject,
   IsArray,
   ValidateNested,
-} from 'class-validator'
-import { Type } from 'class-transformer'
-import { SectionDto } from './blocks/section.dto'
-import { MaxNestingDepth } from './blocks/validators/nesting-level.validator'
-import { UniqueBlockKeys } from './blocks/validators/unique-keys.validator'
+} from "class-validator";
+import { Type } from "class-transformer";
+import { SectionDto } from "./blocks/section.dto";
+import { MaxNestingDepth } from "./blocks/validators/nesting-level.validator";
+import { UniqueBlockKeys } from "./blocks/validators/unique-keys.validator";
 
 export class PageSeoDto {
   @IsOptional()
   @IsString()
   @MaxLength(60)
-  metaTitle?: string
+  metaTitle?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(160)
-  metaDescription?: string
+  metaDescription?: string;
 
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  keywords?: string[]
+  keywords?: string[];
 
   @IsOptional()
   @IsString()
-  canonicalUrl?: string
+  canonicalUrl?: string;
 
   @IsOptional()
   @IsObject()
   openGraph?: {
-    title?: string
-    description?: string
-    image?: string
-    type?: string
-  }
+    title?: string;
+    description?: string;
+    image?: string;
+    type?: string;
+  };
 
   @IsOptional()
   @IsObject()
   twitter?: {
-    card?: string
-    title?: string
-    description?: string
-    image?: string
-  }
+    card?: string;
+    title?: string;
+    description?: string;
+    image?: string;
+  };
 
   @IsOptional()
   @IsObject()
-  structuredData?: Record<string, unknown> // JSON-LD schema.org markup
+  structuredData?: Record<string, unknown>; // JSON-LD schema.org markup
 }
 
 export class CreatePageDto {
   @IsString()
   @MaxLength(255)
-  slug: string
+  slug: string;
 
   @IsString()
   @MaxLength(255)
-  title: string
+  title: string;
 
   @IsOptional()
   @IsArray()
@@ -70,37 +70,37 @@ export class CreatePageDto {
   @Type(() => SectionDto)
   @MaxNestingDepth()
   @UniqueBlockKeys()
-  sections?: SectionDto[]
+  sections?: SectionDto[];
 
   @IsOptional()
   @ValidateNested()
   @Type(() => PageSeoDto)
-  seo?: PageSeoDto
+  seo?: PageSeoDto;
 
   @IsOptional()
   @IsString()
-  @IsIn(['draft', 'published', 'scheduled', 'archived'])
-  status?: string
+  @IsIn(["draft", "published", "scheduled", "archived"])
+  status?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(50)
-  template?: string
+  template?: string;
 
   @IsOptional()
   @IsObject()
   accessibility?: {
-    skipToContent?: boolean
-    ariaLandmarks?: boolean
-    focusManagement?: boolean
-    keyboardNav?: boolean
-  }
+    skipToContent?: boolean;
+    ariaLandmarks?: boolean;
+    focusManagement?: boolean;
+    keyboardNav?: boolean;
+  };
 
   @IsOptional()
   @IsObject()
   performance?: {
-    lazyLoadImages?: boolean
-    preloadCritical?: boolean
-    cacheStrategy?: 'static' | 'dynamic' | 'hybrid'
-  }
+    lazyLoadImages?: boolean;
+    preloadCritical?: boolean;
+    cacheStrategy?: "static" | "dynamic" | "hybrid";
+  };
 }

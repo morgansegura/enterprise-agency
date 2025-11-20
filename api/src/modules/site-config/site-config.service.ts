@@ -1,6 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { PrismaService } from '../../common/services/prisma.service'
-import { SiteConfigDto, UpdateHeaderConfigDto, UpdateFooterConfigDto, UpdateMenusConfigDto, UpdateLogosConfigDto } from './dto/site-config.dto'
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
+import { PrismaService } from "../../common/services/prisma.service";
+import {
+  SiteConfigDto,
+  UpdateHeaderConfigDto,
+  UpdateFooterConfigDto,
+  UpdateMenusConfigDto,
+  UpdateLogosConfigDto,
+} from "./dto/site-config.dto";
+import { HeaderConfigDto } from "./dto/header-config.dto";
+import { FooterConfigDto } from "./dto/footer-config.dto";
+import { MenusConfigDto } from "./dto/menus-config.dto";
+import { LogosConfigDto } from "./dto/logos-config.dto";
 
 @Injectable()
 export class SiteConfigService {
@@ -18,31 +29,34 @@ export class SiteConfigService {
         menusConfig: true,
         logosConfig: true,
       },
-    })
+    });
 
     if (!tenant) {
-      throw new NotFoundException(`Tenant with ID ${tenantId} not found`)
+      throw new NotFoundException(`Tenant with ID ${tenantId} not found`);
     }
 
     return {
-      headerConfig: tenant.headerConfig as any,
-      footerConfig: tenant.footerConfig as any,
-      menusConfig: tenant.menusConfig as any,
-      logosConfig: tenant.logosConfig as any,
-    }
+      headerConfig: tenant.headerConfig as unknown as HeaderConfigDto,
+      footerConfig: tenant.footerConfig as unknown as FooterConfigDto,
+      menusConfig: tenant.menusConfig as unknown as MenusConfigDto,
+      logosConfig: tenant.logosConfig as unknown as LogosConfigDto,
+    };
   }
 
   /**
    * Update entire site configuration
    */
-  async updateSiteConfig(tenantId: string, data: SiteConfigDto): Promise<SiteConfigDto> {
+  async updateSiteConfig(
+    tenantId: string,
+    data: SiteConfigDto,
+  ): Promise<SiteConfigDto> {
     const tenant = await this.prisma.tenant.update({
       where: { id: tenantId },
       data: {
-        headerConfig: data.headerConfig as any,
-        footerConfig: data.footerConfig as any,
-        menusConfig: data.menusConfig as any,
-        logosConfig: data.logosConfig as any,
+        headerConfig: data.headerConfig as unknown as Prisma.InputJsonValue,
+        footerConfig: data.footerConfig as unknown as Prisma.InputJsonValue,
+        menusConfig: data.menusConfig as unknown as Prisma.InputJsonValue,
+        logosConfig: data.logosConfig as unknown as Prisma.InputJsonValue,
       },
       select: {
         headerConfig: true,
@@ -50,14 +64,14 @@ export class SiteConfigService {
         menusConfig: true,
         logosConfig: true,
       },
-    })
+    });
 
     return {
-      headerConfig: tenant.headerConfig as any,
-      footerConfig: tenant.footerConfig as any,
-      menusConfig: tenant.menusConfig as any,
-      logosConfig: tenant.logosConfig as any,
-    }
+      headerConfig: tenant.headerConfig as unknown as HeaderConfigDto,
+      footerConfig: tenant.footerConfig as unknown as FooterConfigDto,
+      menusConfig: tenant.menusConfig as unknown as MenusConfigDto,
+      logosConfig: tenant.logosConfig as unknown as LogosConfigDto,
+    };
   }
 
   /**
@@ -67,13 +81,13 @@ export class SiteConfigService {
     const tenant = await this.prisma.tenant.findUnique({
       where: { id: tenantId },
       select: { headerConfig: true },
-    })
+    });
 
     if (!tenant) {
-      throw new NotFoundException(`Tenant with ID ${tenantId} not found`)
+      throw new NotFoundException(`Tenant with ID ${tenantId} not found`);
     }
 
-    return tenant.headerConfig
+    return tenant.headerConfig;
   }
 
   /**
@@ -82,11 +96,11 @@ export class SiteConfigService {
   async updateHeaderConfig(tenantId: string, data: UpdateHeaderConfigDto) {
     const tenant = await this.prisma.tenant.update({
       where: { id: tenantId },
-      data: { headerConfig: data as any },
+      data: { headerConfig: data as unknown as Prisma.InputJsonValue },
       select: { headerConfig: true },
-    })
+    });
 
-    return tenant.headerConfig
+    return tenant.headerConfig as unknown as HeaderConfigDto;
   }
 
   /**
@@ -96,13 +110,13 @@ export class SiteConfigService {
     const tenant = await this.prisma.tenant.findUnique({
       where: { id: tenantId },
       select: { footerConfig: true },
-    })
+    });
 
     if (!tenant) {
-      throw new NotFoundException(`Tenant with ID ${tenantId} not found`)
+      throw new NotFoundException(`Tenant with ID ${tenantId} not found`);
     }
 
-    return tenant.footerConfig
+    return tenant.footerConfig;
   }
 
   /**
@@ -111,11 +125,11 @@ export class SiteConfigService {
   async updateFooterConfig(tenantId: string, data: UpdateFooterConfigDto) {
     const tenant = await this.prisma.tenant.update({
       where: { id: tenantId },
-      data: { footerConfig: data as any },
+      data: { footerConfig: data as unknown as Prisma.InputJsonValue },
       select: { footerConfig: true },
-    })
+    });
 
-    return tenant.footerConfig
+    return tenant.footerConfig as unknown as FooterConfigDto;
   }
 
   /**
@@ -125,13 +139,13 @@ export class SiteConfigService {
     const tenant = await this.prisma.tenant.findUnique({
       where: { id: tenantId },
       select: { menusConfig: true },
-    })
+    });
 
     if (!tenant) {
-      throw new NotFoundException(`Tenant with ID ${tenantId} not found`)
+      throw new NotFoundException(`Tenant with ID ${tenantId} not found`);
     }
 
-    return tenant.menusConfig
+    return tenant.menusConfig;
   }
 
   /**
@@ -140,11 +154,11 @@ export class SiteConfigService {
   async updateMenusConfig(tenantId: string, data: UpdateMenusConfigDto) {
     const tenant = await this.prisma.tenant.update({
       where: { id: tenantId },
-      data: { menusConfig: data as any },
+      data: { menusConfig: data as unknown as Prisma.InputJsonValue },
       select: { menusConfig: true },
-    })
+    });
 
-    return tenant.menusConfig
+    return tenant.menusConfig as unknown as MenusConfigDto;
   }
 
   /**
@@ -154,13 +168,13 @@ export class SiteConfigService {
     const tenant = await this.prisma.tenant.findUnique({
       where: { id: tenantId },
       select: { logosConfig: true },
-    })
+    });
 
     if (!tenant) {
-      throw new NotFoundException(`Tenant with ID ${tenantId} not found`)
+      throw new NotFoundException(`Tenant with ID ${tenantId} not found`);
     }
 
-    return tenant.logosConfig
+    return tenant.logosConfig;
   }
 
   /**
@@ -169,10 +183,10 @@ export class SiteConfigService {
   async updateLogosConfig(tenantId: string, data: UpdateLogosConfigDto) {
     const tenant = await this.prisma.tenant.update({
       where: { id: tenantId },
-      data: { logosConfig: data as any },
+      data: { logosConfig: data as unknown as Prisma.InputJsonValue },
       select: { logosConfig: true },
-    })
+    });
 
-    return tenant.logosConfig
+    return tenant.logosConfig as unknown as LogosConfigDto;
   }
 }

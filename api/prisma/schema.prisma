@@ -126,8 +126,9 @@ model User {
   status String @default("active") @db.VarChar(20)
 
   // Security
-  lastLoginAt DateTime? @map("last_login_at")
-  lastLoginIp String?   @map("last_login_ip")
+  lastLoginAt  DateTime? @map("last_login_at")
+  lastLoginIp  String?   @map("last_login_ip")
+  tokenVersion Int       @default(0) @map("token_version") // For token revocation
 
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")

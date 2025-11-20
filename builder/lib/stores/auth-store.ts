@@ -8,6 +8,17 @@ interface User {
   lastName: string
   isSuperAdmin: boolean
   agencyRole: string | null
+  emailVerified: boolean
+  status: string
+  createdAt: string
+  updatedAt: string
+  tenants?: Array<{
+    id: string
+    slug: string
+    businessName: string
+    role: string
+    permissions?: Record<string, unknown>
+  }>
 }
 
 interface AuthState {

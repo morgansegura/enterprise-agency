@@ -1,43 +1,49 @@
-import { IsString, IsEnum, IsOptional, IsBoolean, IsUrl } from 'class-validator'
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsBoolean,
+  IsUrl,
+} from "class-validator";
 
 export class ButtonBlockDataDto {
   @IsString()
-  text: string
+  text: string;
 
   @IsUrl()
-  href: string
+  href: string;
 
   @IsOptional()
-  @IsEnum(['primary', 'secondary', 'outline', 'ghost', 'link'])
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'link'
+  @IsEnum(["primary", "secondary", "outline", "ghost", "link"])
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "link";
 
   @IsOptional()
-  @IsEnum(['sm', 'md', 'lg'])
-  size?: 'sm' | 'md' | 'lg'
+  @IsEnum(["sm", "md", "lg"])
+  size?: "sm" | "md" | "lg";
 
   @IsOptional()
   @IsBoolean()
-  fullWidth?: boolean
+  fullWidth?: boolean;
 
   @IsOptional()
   @IsString()
-  icon?: string // Icon name
+  icon?: string; // Icon name
 
   @IsOptional()
-  @IsEnum(['left', 'right'])
-  iconPosition?: 'left' | 'right'
+  @IsEnum(["left", "right"])
+  iconPosition?: "left" | "right";
 
   @IsOptional()
   @IsBoolean()
-  openInNewTab?: boolean
+  openInNewTab?: boolean;
 }
 
 export class ButtonBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'button-block'
+  _type: "button-block";
 
-  data: ButtonBlockDataDto
+  data: ButtonBlockDataDto;
 }

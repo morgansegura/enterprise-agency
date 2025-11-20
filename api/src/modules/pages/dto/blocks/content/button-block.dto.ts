@@ -1,36 +1,36 @@
-import { IsString, IsEnum, IsOptional, IsBoolean } from 'class-validator'
+import { IsString, IsEnum, IsOptional, IsBoolean } from "class-validator";
 
 export class ButtonBlockDataDto {
   @IsString()
-  text: string
+  text: string;
 
   @IsString()
-  href: string
+  href: string;
 
   @IsOptional()
-  @IsEnum(['default', 'primary', 'secondary', 'outline', 'ghost', 'link'])
-  variant?: string
+  @IsEnum(["default", "primary", "secondary", "outline", "ghost", "link"])
+  variant?: string;
 
   @IsOptional()
-  @IsEnum(['sm', 'md', 'lg'])
-  size?: string
-
-  @IsOptional()
-  @IsBoolean()
-  fullWidth?: boolean
+  @IsEnum(["sm", "md", "lg"])
+  size?: string;
 
   @IsOptional()
   @IsBoolean()
-  external?: boolean
+  fullWidth?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  external?: boolean;
 }
 
 export class ButtonBlockDto {
-  @IsEnum(['button-block'])
-  _type: 'button-block'
+  @IsEnum(["button-block"])
+  _type: "button-block";
 
   @IsString()
-  _key: string
+  _key: string;
 
   @IsOptional()
-  data: ButtonBlockDataDto
+  data: ButtonBlockDataDto;
 }

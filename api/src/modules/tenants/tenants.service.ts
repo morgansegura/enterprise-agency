@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { PrismaService } from '@/common/services/prisma.service'
-import { CreateTenantDto } from './dto/create-tenant.dto'
-import { UpdateTenantDto } from './dto/update-tenant.dto'
-import { CreateDomainDto } from './dto/create-domain.dto'
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from "@nestjs/common";
+import { Prisma } from "@prisma/client";
+import { PrismaService } from "@/common/services/prisma.service";
+import { CreateTenantDto } from "./dto/create-tenant.dto";
+import { UpdateTenantDto } from "./dto/update-tenant.dto";
+import { CreateDomainDto } from "./dto/create-domain.dto";
 
 @Injectable()
 export class TenantsService {
@@ -34,21 +38,21 @@ export class TenantsService {
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
-    })
+    });
 
-    return tenants
+    return tenants;
   }
 
   async create(createData: CreateTenantDto, creatorUserId: string) {
     // Check if slug is already taken
     const existing = await this.prisma.tenant.findUnique({
       where: { slug: createData.slug },
-    })
+    });
 
     if (existing) {
-      throw new ConflictException('Tenant slug already exists')
+      throw new ConflictException("Tenant slug already exists");
     }
 
     // Create tenant with creator as owner
@@ -59,13 +63,14 @@ export class TenantsService {
         businessType: createData.businessType,
         contactEmail: createData.contactEmail,
         contactPhone: createData.contactPhone,
-        enabledFeatures: (createData.enabledFeatures || {}) as Prisma.InputJsonValue,
+        enabledFeatures: (createData.enabledFeatures ||
+          {}) as Prisma.InputJsonValue,
         themeConfig: (createData.themeConfig || {}) as Prisma.InputJsonValue,
         planLimits: (createData.planLimits || {}) as Prisma.InputJsonValue,
         tenantUsers: {
           create: {
             userId: creatorUserId,
-            role: 'owner',
+            role: "owner",
             permissions: {
               pages: { view: true, create: true, edit: true, delete: true },
               posts: { view: true, create: true, edit: true, delete: true },
@@ -79,9 +84,9 @@ export class TenantsService {
         tenantUsers: true,
         domains: true,
       },
-    })
+    });
 
-    return tenant
+    return tenant;
   }
 
   async findById(id: string) {
@@ -95,13 +100,13 @@ export class TenantsService {
           },
         },
       },
-    })
+    });
 
     if (!tenant) {
-      throw new NotFoundException('Tenant not found')
+      throw new NotFoundException("Tenant not found");
     }
 
-    return tenant
+    return tenant;
   }
 
   async findBySlug(slug: string) {
@@ -110,31 +115,38 @@ export class TenantsService {
       include: {
         domains: true,
       },
-    })
+    });
 
     if (!tenant) {
-      throw new NotFoundException('Tenant not found')
+      throw new NotFoundException("Tenant not found");
     }
 
-    return tenant
+    return tenant;
   }
 
   async update(id: string, updateData: UpdateTenantDto) {
-    const updateFields: Record<string, unknown> = {}
+    const updateFields: Record<string, unknown> = {};
 
-    if (updateData.businessName !== undefined) updateFields.businessName = updateData.businessName
-    if (updateData.businessType !== undefined) updateFields.businessType = updateData.businessType
-    if (updateData.contactEmail !== undefined) updateFields.contactEmail = updateData.contactEmail
-    if (updateData.contactPhone !== undefined) updateFields.contactPhone = updateData.contactPhone
-    if (updateData.logoUrl !== undefined) updateFields.logoUrl = updateData.logoUrl
+    if (updateData.businessName !== undefined)
+      updateFields.businessName = updateData.businessName;
+    if (updateData.businessType !== undefined)
+      updateFields.businessType = updateData.businessType;
+    if (updateData.contactEmail !== undefined)
+      updateFields.contactEmail = updateData.contactEmail;
+    if (updateData.contactPhone !== undefined)
+      updateFields.contactPhone = updateData.contactPhone;
+    if (updateData.logoUrl !== undefined)
+      updateFields.logoUrl = updateData.logoUrl;
     if (updateData.metaDescription !== undefined)
-      updateFields.metaDescription = updateData.metaDescription
+      updateFields.metaDescription = updateData.metaDescription;
     if (updateData.enabledFeatures !== undefined)
-      updateFields.enabledFeatures = updateData.enabledFeatures as Prisma.InputJsonValue
+      updateFields.enabledFeatures =
+        updateData.enabledFeatures as Prisma.InputJsonValue;
     if (updateData.themeConfig !== undefined)
-      updateFields.themeConfig = updateData.themeConfig as Prisma.InputJsonValue
+      updateFields.themeConfig =
+        updateData.themeConfig as Prisma.InputJsonValue;
     if (updateData.planLimits !== undefined)
-      updateFields.planLimits = updateData.planLimits as Prisma.InputJsonValue
+      updateFields.planLimits = updateData.planLimits as Prisma.InputJsonValue;
 
     const tenant = await this.prisma.tenant.update({
       where: { id },
@@ -142,19 +154,19 @@ export class TenantsService {
       include: {
         domains: true,
       },
-    })
+    });
 
-    return tenant
+    return tenant;
   }
 
   async addDomain(tenantId: string, domainData: CreateDomainDto) {
     // Check if domain already exists
     const existing = await this.prisma.tenantDomain.findUnique({
       where: { domain: domainData.domain },
-    })
+    });
 
     if (existing) {
-      throw new ConflictException('Domain already exists')
+      throw new ConflictException("Domain already exists");
     }
 
     const domain = await this.prisma.tenantDomain.create({
@@ -162,9 +174,9 @@ export class TenantsService {
         ...domainData,
         tenantId,
       },
-    })
+    });
 
-    return domain
+    return domain;
   }
 
   async removeDomain(tenantId: string, domainId: string) {
@@ -173,16 +185,16 @@ export class TenantsService {
         id: domainId,
         tenantId,
       },
-    })
+    });
 
     if (!domain) {
-      throw new NotFoundException('Domain not found')
+      throw new NotFoundException("Domain not found");
     }
 
     await this.prisma.tenantDomain.delete({
       where: { id: domainId },
-    })
+    });
 
-    return { success: true }
+    return { success: true };
   }
 }

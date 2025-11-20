@@ -1,28 +1,39 @@
-import { IsString, IsEnum, IsOptional, IsBoolean, IsArray } from 'class-validator'
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsBoolean,
+  IsArray,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
+import { ContentBlockDto } from "../content-block.dto";
 
 export class ContainerBlockDataDto {
   @IsOptional()
-  @IsEnum(['sm', 'md', 'lg', 'xl', '2xl', 'full'])
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
+  @IsEnum(["sm", "md", "lg", "xl", "2xl", "full"])
+  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 
   @IsOptional()
-  @IsEnum(['none', 'sm', 'md', 'lg'])
-  padding?: 'none' | 'sm' | 'md' | 'lg'
+  @IsEnum(["none", "sm", "md", "lg"])
+  padding?: "none" | "sm" | "md" | "lg";
 
   @IsOptional()
   @IsBoolean()
-  center?: boolean
+  center?: boolean;
 }
 
 export class ContainerBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'container-block'
+  _type: "container-block";
 
-  data: ContainerBlockDataDto
+  data: ContainerBlockDataDto;
 
   @IsArray()
-  blocks: any[] // Will be validated as Block[] in discriminated union
+  @ValidateNested({ each: true })
+  @Type(() => ContentBlockDto)
+  blocks: ContentBlockDto[];
 }

@@ -1,56 +1,55 @@
-import { IsString, IsEnum, IsOptional, IsObject, ValidateNested } from 'class-validator'
-import { Type } from 'class-transformer'
+import { IsString, IsEnum, IsOptional, IsObject } from "class-validator";
 
 export class SvgLogoDto {
-  @IsEnum(['svg'])
-  type: 'svg'
+  @IsEnum(["svg"])
+  type: "svg";
 
   @IsString()
-  svg: string
-
-  @IsOptional()
-  @IsString()
-  width?: string
+  svg: string;
 
   @IsOptional()
   @IsString()
-  height?: string
+  width?: string;
+
+  @IsOptional()
+  @IsString()
+  height?: string;
 }
 
 export class ImageLogoDto {
-  @IsEnum(['image'])
-  type: 'image'
+  @IsEnum(["image"])
+  type: "image";
 
   @IsString()
-  src: string
+  src: string;
 
   @IsString()
-  alt: string
-
-  @IsOptional()
-  @IsString()
-  width?: string
+  alt: string;
 
   @IsOptional()
   @IsString()
-  height?: string
+  width?: string;
+
+  @IsOptional()
+  @IsString()
+  height?: string;
 }
 
 export class TextLogoDto {
-  @IsEnum(['text'])
-  type: 'text'
+  @IsEnum(["text"])
+  type: "text";
 
   @IsString()
-  text: string
+  text: string;
 
   @IsOptional()
   @IsString()
-  tagline?: string
+  tagline?: string;
 }
 
-export type LogoDto = SvgLogoDto | ImageLogoDto | TextLogoDto
+export type LogoDto = SvgLogoDto | ImageLogoDto | TextLogoDto;
 
 export class LogosConfigDto {
   @IsObject()
-  logos: Record<string, LogoDto>
+  logos: Record<string, LogoDto>;
 }

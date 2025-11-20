@@ -3,20 +3,20 @@ declare namespace Express {
   interface Request {
     // From AuthGuard
     user?: {
-      id: string
-      sessionId: string
-    }
+      id: string;
+      sessionId: string;
+    };
 
     // From TenantMiddleware
-    tenantId?: string
+    tenantId?: string;
 
     // From TenantMemberGuard
     tenantUser?: {
-      id: string
-      tenantId: string
-      userId: string
-      role: string
-      permissions: Record<string, unknown>
-    }
+      id: string;
+      tenantId: string;
+      userId: string;
+      role: string;
+      permissions: Record<string, unknown>;
+    };
   }
 }

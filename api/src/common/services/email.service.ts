@@ -1,35 +1,36 @@
-import { Injectable, Logger } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import * as nodemailer from 'nodemailer'
-import type { Transporter } from 'nodemailer'
+import { Injectable, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import * as nodemailer from "nodemailer";
+import type { Transporter } from "nodemailer";
 
 @Injectable()
 export class EmailService {
-  private transporter: Transporter
-  private readonly logger = new Logger(EmailService.name)
-  private readonly fromEmail: string
-  private readonly fromName: string
-  private readonly enabled: boolean
+  private transporter: Transporter;
+  private readonly logger = new Logger(EmailService.name);
+  private readonly fromEmail: string;
+  private readonly fromName: string;
+  private readonly enabled: boolean;
 
   constructor(private config: ConfigService) {
-    this.fromEmail = this.config.get('SMTP_FROM_EMAIL') || 'noreply@example.com'
-    this.fromName = this.config.get('SMTP_FROM_NAME') || 'Web & Funnel'
-    this.enabled = this.config.get('ENABLE_EMAIL_NOTIFICATIONS') === 'true'
+    this.fromEmail =
+      this.config.get("SMTP_FROM_EMAIL") || "noreply@example.com";
+    this.fromName = this.config.get("SMTP_FROM_NAME") || "Web & Funnel";
+    this.enabled = this.config.get("ENABLE_EMAIL_NOTIFICATIONS") === "true";
 
     if (this.enabled) {
       this.transporter = nodemailer.createTransport({
-        host: this.config.get('SMTP_HOST'),
-        port: parseInt(this.config.get('SMTP_PORT') || '587'),
-        secure: this.config.get('SMTP_SECURE') === 'true',
+        host: this.config.get("SMTP_HOST"),
+        port: parseInt(this.config.get("SMTP_PORT") || "587"),
+        secure: this.config.get("SMTP_SECURE") === "true",
         auth: {
-          user: this.config.get('SMTP_USER'),
-          pass: this.config.get('SMTP_PASS'),
+          user: this.config.get("SMTP_USER"),
+          pass: this.config.get("SMTP_PASS"),
         },
-      })
+      });
 
-      this.logger.log('Email service initialized')
+      this.logger.log("Email service initialized");
     } else {
-      this.logger.warn('Email notifications are disabled')
+      this.logger.warn("Email notifications are disabled");
     }
   }
 
@@ -38,17 +39,19 @@ export class EmailService {
    */
   async sendVerificationEmail(to: string, token: string): Promise<void> {
     if (!this.enabled) {
-      this.logger.warn(`Email disabled - Would send verification email to ${to}`)
-      return
+      this.logger.warn(
+        `Email disabled - Would send verification email to ${to}`,
+      );
+      return;
     }
 
-    const verificationUrl = `${this.config.get('ADMIN_URL')}/verify-email?token=${token}`
+    const verificationUrl = `${this.config.get("ADMIN_URL")}/verify-email?token=${token}`;
 
     try {
       await this.transporter.sendMail({
         from: `"${this.fromName}" <${this.fromEmail}>`,
         to,
-        subject: 'Verify Your Email Address',
+        subject: "Verify Your Email Address",
         html: `
           <!DOCTYPE html>
           <html>
@@ -82,12 +85,12 @@ export class EmailService {
             </body>
           </html>
         `,
-      })
+      });
 
-      this.logger.log(`Verification email sent to ${to}`)
+      this.logger.log(`Verification email sent to ${to}`);
     } catch (error) {
-      this.logger.error(`Failed to send verification email to ${to}`, error)
-      throw new Error('Failed to send verification email')
+      this.logger.error(`Failed to send verification email to ${to}`, error);
+      throw new Error("Failed to send verification email");
     }
   }
 
@@ -96,17 +99,19 @@ export class EmailService {
    */
   async sendPasswordResetEmail(to: string, token: string): Promise<void> {
     if (!this.enabled) {
-      this.logger.warn(`Email disabled - Would send password reset email to ${to}`)
-      return
+      this.logger.warn(
+        `Email disabled - Would send password reset email to ${to}`,
+      );
+      return;
     }
 
-    const resetUrl = `${this.config.get('ADMIN_URL')}/reset-password?token=${token}`
+    const resetUrl = `${this.config.get("ADMIN_URL")}/reset-password?token=${token}`;
 
     try {
       await this.transporter.sendMail({
         from: `"${this.fromName}" <${this.fromEmail}>`,
         to,
-        subject: 'Reset Your Password',
+        subject: "Reset Your Password",
         html: `
           <!DOCTYPE html>
           <html>
@@ -140,12 +145,12 @@ export class EmailService {
             </body>
           </html>
         `,
-      })
+      });
 
-      this.logger.log(`Password reset email sent to ${to}`)
+      this.logger.log(`Password reset email sent to ${to}`);
     } catch (error) {
-      this.logger.error(`Failed to send password reset email to ${to}`, error)
-      throw new Error('Failed to send password reset email')
+      this.logger.error(`Failed to send password reset email to ${to}`, error);
+      throw new Error("Failed to send password reset email");
     }
   }
 
@@ -154,17 +159,17 @@ export class EmailService {
    */
   async testConnection(): Promise<boolean> {
     if (!this.enabled) {
-      this.logger.warn('Email is disabled, cannot test connection')
-      return false
+      this.logger.warn("Email is disabled, cannot test connection");
+      return false;
     }
 
     try {
-      await this.transporter.verify()
-      this.logger.log('Email connection test successful')
-      return true
+      await this.transporter.verify();
+      this.logger.log("Email connection test successful");
+      return true;
     } catch (error) {
-      this.logger.error('Email connection test failed', error)
-      return false
+      this.logger.error("Email connection test failed", error);
+      return false;
     }
   }
 }

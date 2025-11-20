@@ -1,40 +1,40 @@
-import { IsString, IsEnum, IsOptional, IsNumber } from 'class-validator'
+import { IsString, IsEnum, IsOptional, IsNumber } from "class-validator";
 
 export class ImageBlockDataDto {
   @IsString()
-  src: string
+  src: string;
 
   @IsString()
-  alt: string
+  alt: string;
 
   @IsOptional()
   @IsString()
-  caption?: string
+  caption?: string;
 
   @IsOptional()
   @IsNumber()
-  width?: number
+  width?: number;
 
   @IsOptional()
   @IsNumber()
-  height?: number
+  height?: number;
 
   @IsOptional()
-  @IsEnum(['cover', 'contain', 'fill', 'none', 'scale-down'])
-  objectFit?: string
+  @IsEnum(["cover", "contain", "fill", "none", "scale-down"])
+  objectFit?: string;
 
   @IsOptional()
-  @IsEnum(['eager', 'lazy'])
-  loading?: string
+  @IsEnum(["eager", "lazy"])
+  loading?: string;
 }
 
 export class ImageBlockDto {
-  @IsEnum(['image-block'])
-  _type: 'image-block'
+  @IsEnum(["image-block"])
+  _type: "image-block";
 
   @IsString()
-  _key: string
+  _key: string;
 
   @IsOptional()
-  data: ImageBlockDataDto
+  data: ImageBlockDataDto;
 }

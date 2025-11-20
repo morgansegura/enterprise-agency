@@ -1,39 +1,39 @@
-import { IsString, IsOptional, IsEmail, IsObject } from 'class-validator'
+import { IsString, IsOptional, IsEmail, IsObject } from "class-validator";
 
 export class UpdateTenantDto {
   @IsOptional()
   @IsString()
-  businessName?: string
+  businessName?: string;
 
   @IsOptional()
   @IsString()
-  businessType?: string
+  businessType?: string;
 
   @IsOptional()
   @IsEmail()
-  contactEmail?: string
+  contactEmail?: string;
 
   @IsOptional()
   @IsString()
-  contactPhone?: string
+  contactPhone?: string;
 
   @IsOptional()
   @IsString()
-  logoUrl?: string
+  logoUrl?: string;
 
   @IsOptional()
   @IsString()
-  metaDescription?: string
+  metaDescription?: string;
 
   @IsOptional()
   @IsObject()
-  enabledFeatures?: Record<string, boolean>
+  enabledFeatures?: Record<string, boolean>;
 
   @IsOptional()
   @IsObject()
-  themeConfig?: Record<string, unknown>
+  themeConfig?: Record<string, unknown>;
 
   @IsOptional()
   @IsObject()
-  planLimits?: Record<string, unknown>
+  planLimits?: Record<string, unknown>;
 }

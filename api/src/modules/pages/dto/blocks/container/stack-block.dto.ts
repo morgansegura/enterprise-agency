@@ -1,25 +1,35 @@
-import { IsString, IsEnum, IsOptional, IsArray } from 'class-validator'
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsArray,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
+import { ContentBlockDto } from "../content-block.dto";
 
 export class StackBlockDataDto {
   @IsOptional()
-  @IsEnum(['xs', 'sm', 'md', 'lg', 'xl', '2xl'])
-  gap?: string
+  @IsEnum(["xs", "sm", "md", "lg", "xl", "2xl"])
+  gap?: string;
 
   @IsOptional()
-  @IsEnum(['left', 'center', 'right', 'stretch'])
-  align?: string
+  @IsEnum(["left", "center", "right", "stretch"])
+  align?: string;
 }
 
 export class StackBlockDto {
-  @IsEnum(['stack-block'])
-  _type: 'stack-block'
+  @IsEnum(["stack-block"])
+  _type: "stack-block";
 
   @IsString()
-  _key: string
+  _key: string;
 
   @IsOptional()
-  data?: StackBlockDataDto
+  data?: StackBlockDataDto;
 
   @IsArray()
-  blocks: any[] // Will be typed with ContentBlock union
+  @ValidateNested({ each: true })
+  @Type(() => ContentBlockDto)
+  blocks: ContentBlockDto[];
 }
