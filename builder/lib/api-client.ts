@@ -22,7 +22,8 @@ export class ApiClient {
   private async request<T>(
     endpoint: string,
     options: RequestInit = {},
-    useAuthBase = false
+    useAuthBase = false,
+    retryCount = 0
   ): Promise<T> {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -40,6 +41,14 @@ export class ApiClient {
       })
 
       if (!response.ok) {
+        // Try to refresh token on 401 and retry once
+        if (response.status === 401 && retryCount === 0 && !endpoint.includes('/refresh')) {
+          const refreshed = await this.refreshTokenIfNeeded()
+          if (refreshed) {
+            return this.request<T>(endpoint, options, useAuthBase, retryCount + 1)
+          }
+        }
+
         await this.handleErrorResponse(response)
       }
 
@@ -55,6 +64,9 @@ export class ApiClient {
       throw error
     }
   }
+
+  private isRefreshing = false
+  private refreshPromise: Promise<boolean> | null = null
 
   private async handleErrorResponse(response: Response): Promise<never> {
     let errorData: ApiErrorResponse = {}
@@ -83,6 +95,30 @@ export class ApiClient {
       errorData.code,
       errorData as Record<string, unknown>
     )
+  }
+
+  async refreshTokenIfNeeded(): Promise<boolean> {
+    if (this.isRefreshing) {
+      return this.refreshPromise!
+    }
+
+    this.isRefreshing = true
+    this.refreshPromise = (async () => {
+      try {
+        await fetch(`${this.authBaseUrl}/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+        })
+        return true
+      } catch {
+        return false
+      } finally {
+        this.isRefreshing = false
+        this.refreshPromise = null
+      }
+    })()
+
+    return this.refreshPromise
   }
 
   async get<T>(endpoint: string): Promise<T> {

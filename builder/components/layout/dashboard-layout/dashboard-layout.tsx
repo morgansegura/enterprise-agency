@@ -10,8 +10,44 @@ import {
 } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
 import { Separator } from "@/components/ui/separator";
+import { ThemeSwitcher } from "@/components/layout/dashboard-header/theme-switcher";
+import { ProfileDropdown } from "@/components/layout/dashboard-header/profile-dropdown";
 
 import "./dashboard-layout.css";
+
+function DashboardContent({
+  user,
+  onLogout,
+  children
+}: {
+  user: User;
+  onLogout: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <DashboardSidebar user={user} onLogout={onLogout} />
+      <SidebarInset>
+        <header className="dashboard-layout-header">
+          <div className="dashboard-layout-header-left">
+            <SidebarTrigger className="dashboard-layout-header-trigger" />
+            <Separator
+              orientation="vertical"
+              className="dashboard-layout-header-separator"
+            />
+          </div>
+          <div className="dashboard-layout-header-right">
+            <ThemeSwitcher />
+            <ProfileDropdown user={user} onLogout={onLogout} />
+          </div>
+        </header>
+        <div className="dashboard-layout-main">
+          {children}
+        </div>
+      </SidebarInset>
+    </>
+  );
+}
 
 export default function DashboardLayout({
   children,
@@ -54,17 +90,9 @@ export default function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <DashboardSidebar user={user} onLogout={handleLogout} />
-      <SidebarInset>
-        <header className="dashboard-layout-header">
-          <SidebarTrigger className="dashboard-layout-header-trigger" />
-          <Separator
-            orientation="vertical"
-            className="dashboard-layout-header-separator"
-          />
-        </header>
-        <main className="dashboard-layout-main">{children}</main>
-      </SidebarInset>
+      <DashboardContent user={user} onLogout={handleLogout}>
+        {children}
+      </DashboardContent>
     </SidebarProvider>
   );
 }

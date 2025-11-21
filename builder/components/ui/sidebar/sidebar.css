@@ -1,0 +1,608 @@
+@reference "tailwindcss";
+
+/* Sidebar Provider Wrapper */
+[data-slot="sidebar-provider-wrapper"] {
+  @apply flex min-h-svh w-full;
+}
+
+[data-slot="sidebar-provider-wrapper"]:has([data-variant="inset"]) {
+  @apply bg-(--sidebar);
+}
+
+/* Sidebar - Non-collapsible */
+[data-slot="sidebar-non-collapsible"] {
+  @apply flex h-full w-[--sidebar-width] flex-col;
+  @apply bg-(--sidebar) text-(--sidebar-foreground);
+}
+
+/* Sidebar - Mobile Sheet Content */
+[data-sidebar="sidebar"][data-mobile="true"] {
+  @apply w-[--sidebar-width] p-0;
+  @apply bg-(--sidebar) text-(--sidebar-foreground);
+}
+
+[data-sidebar="sidebar"][data-mobile="true"] > button {
+  @apply hidden;
+}
+
+.sidebar-mobile-inner {
+  @apply flex h-full w-full flex-col;
+}
+
+/* Sidebar - Desktop Wrapper */
+[data-slot="sidebar-desktop-wrapper"] {
+  @apply hidden text-(--sidebar-foreground);
+}
+
+@media (min-width: 768px) {
+  [data-slot="sidebar-desktop-wrapper"] {
+    @apply block;
+  }
+}
+
+/* Sidebar - Spacer (handles the gap) */
+[data-slot="sidebar-spacer"] {
+  @apply relative bg-transparent transition-(--sidebar-width) duration-200 ease-linear w-(--sidebar-width);
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-state="collapsed"][data-collapsible="offcanvas"]
+  [data-slot="sidebar-spacer"] {
+  @apply w-0;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="right"]
+  [data-slot="sidebar-spacer"] {
+  @apply rotate-180;
+}
+
+/* Spacer width adjustments for icon mode */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"][data-variant="floating"]
+  [data-slot="sidebar-spacer"],
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"][data-variant="inset"]
+  [data-slot="sidebar-spacer"] {
+  @apply w-[calc(var(--sidebar-width-icon)+1rem)];
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]:not(
+    [data-variant="floating"]
+  ):not([data-variant="inset"])
+  [data-slot="sidebar-spacer"] {
+  @apply w-(--sidebar-width-icon);
+}
+
+/* Sidebar - Fixed Container */
+[data-slot="sidebar-fixed-container"] {
+  @apply fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-transform duration-300 ease-out md:flex;
+}
+
+/* Base positioning - applies to all states */
+[data-slot="sidebar-desktop-wrapper"][data-side="left"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply left-0;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="right"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply right-0;
+}
+
+/* Left side - expanded (visible) */
+[data-slot="sidebar-desktop-wrapper"][data-side="left"][data-state="expanded"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply translate-x-0;
+}
+
+/* Left side - collapsed with offcanvas (slide off) */
+[data-slot="sidebar-desktop-wrapper"][data-side="left"][data-state="collapsed"][data-collapsible="offcanvas"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply -translate-x-full;
+}
+
+/* Right side - expanded (visible) */
+[data-slot="sidebar-desktop-wrapper"][data-side="right"][data-state="expanded"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply translate-x-0;
+}
+
+/* Right side - collapsed with offcanvas (slide off) */
+[data-slot="sidebar-desktop-wrapper"][data-side="right"][data-state="collapsed"][data-collapsible="offcanvas"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply translate-x-full;
+}
+
+/* Floating/Inset variant padding and width */
+[data-slot="sidebar-desktop-wrapper"][data-variant="floating"]
+  [data-slot="sidebar-fixed-container"],
+[data-slot="sidebar-desktop-wrapper"][data-variant="inset"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply p-2;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-variant="floating"][data-collapsible="icon"]
+  [data-slot="sidebar-fixed-container"],
+[data-slot="sidebar-desktop-wrapper"][data-variant="inset"][data-collapsible="icon"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply w-[calc(var(--sidebar-width-icon)+1rem+2px)];
+}
+
+/* Non-floating/inset borders and width for icon mode */
+[data-slot="sidebar-desktop-wrapper"]:not([data-variant="floating"]):not(
+    [data-variant="inset"]
+  )[data-collapsible="icon"]
+  [data-slot="sidebar-fixed-container"] {
+  @apply w-[--sidebar-width-icon];
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="left"]:not(
+    [data-variant="floating"]
+  ):not([data-variant="inset"])
+  [data-slot="sidebar-fixed-container"] {
+  @apply border-r;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="right"]:not(
+    [data-variant="floating"]
+  ):not([data-variant="inset"])
+  [data-slot="sidebar-fixed-container"] {
+  @apply border-l;
+}
+
+/* Sidebar Inner */
+[data-sidebar="sidebar"] {
+  @apply flex h-full w-full flex-col bg-(--sidebar);
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-variant="floating"]
+  [data-sidebar="sidebar"] {
+  @apply rounded-lg border border-(--sidebar-border) shadow;
+}
+
+/* Sidebar Trigger */
+[data-sidebar="trigger"] {
+  @apply h-7 w-7;
+}
+
+/* Sidebar Rail */
+[data-sidebar="rail"] {
+  @apply absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear;
+  @apply after:absolute after:inset-y-0 after:left-1/2 after:w-0.5;
+}
+
+@media (min-width: 640px) {
+  [data-sidebar="rail"] {
+    @apply flex;
+  }
+}
+
+[data-sidebar="rail"]:hover::after {
+  @apply bg-(--sidebar-border);
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="left"] [data-sidebar="rail"] {
+  @apply -right-4;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="right"] [data-sidebar="rail"] {
+  @apply left-0;
+}
+
+/* Rail cursors based on side */
+[data-slot="sidebar-desktop-wrapper"][data-side="left"] [data-sidebar="rail"] {
+  @apply cursor-w-resize;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="right"] [data-sidebar="rail"] {
+  @apply cursor-e-resize;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="left"][data-state="collapsed"]
+  [data-sidebar="rail"] {
+  @apply cursor-e-resize;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="right"][data-state="collapsed"]
+  [data-sidebar="rail"] {
+  @apply cursor-w-resize;
+}
+
+/* Offcanvas rail adjustments */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="offcanvas"]
+  [data-sidebar="rail"] {
+  @apply translate-x-0;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="offcanvas"]
+  [data-sidebar="rail"]::after {
+  @apply left-full;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="offcanvas"]
+  [data-sidebar="rail"]:hover {
+  @apply bg-(--sidebar);
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="left"][data-collapsible="offcanvas"]
+  [data-sidebar="rail"] {
+  @apply -right-2;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-side="right"][data-collapsible="offcanvas"]
+  [data-sidebar="rail"] {
+  @apply -left-2;
+}
+
+/* Sidebar Inset */
+[data-slot="sidebar-inset"] {
+  @apply relative flex flex-1 flex-col bg-(--background);
+}
+
+@media (min-width: 768px) {
+  [data-slot="sidebar-inset"] {
+    @apply min-h-svh;
+  }
+
+  .peer[data-variant="inset"] ~ [data-slot="sidebar-inset"] {
+    @apply m-2 ml-0 rounded-xl shadow;
+  }
+
+  .peer[data-variant="inset"][data-state="collapsed"]
+    ~ [data-slot="sidebar-inset"] {
+    @apply ml-2;
+  }
+}
+
+/* Sidebar Input */
+[data-sidebar="input"] {
+  @apply h-8 w-full shadow-none bg-(--background);
+}
+
+[data-sidebar="input"]:focus-visible {
+  @apply ring-2 ring-(--sidebar-ring);
+}
+
+/* Sidebar Header */
+[data-sidebar="header"] {
+  @apply flex flex-col gap-2 p-2;
+}
+
+/* Sidebar Footer */
+[data-sidebar="footer"] {
+  @apply flex flex-col gap-2 p-2;
+}
+
+/* Sidebar Separator */
+[data-sidebar="separator"] {
+  @apply mx-2 w-auto bg-(--sidebar-border);
+}
+
+/* Sidebar Content */
+[data-sidebar="content"] {
+  @apply flex min-h-0 flex-1 flex-col gap-2 overflow-auto;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="content"] {
+  @apply overflow-hidden;
+}
+
+/* Sidebar Group */
+[data-sidebar="group"] {
+  @apply relative flex w-full min-w-0 flex-col p-2;
+}
+
+/* Sidebar Group Label */
+[data-sidebar="group-label"] {
+  @apply flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium text-(--sidebar-foreground)/70 outline-none transition-[margin,opacity] duration-200 ease-linear;
+}
+
+[data-sidebar="group-label"]:focus-visible {
+  @apply ring-2 ring-(--sidebar-ring);
+}
+
+[data-sidebar="group-label"] > svg {
+  @apply size-4 shrink-0;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="group-label"] {
+  @apply -mt-8 opacity-0;
+}
+
+/* Sidebar Group Action */
+[data-sidebar="group-action"] {
+  @apply absolute right-3 top-3.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-(--sidebar-foreground) outline-none transition-transform;
+}
+
+[data-sidebar="group-action"]:hover {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="group-action"]:focus-visible {
+  @apply ring-2 ring-(--sidebar-ring);
+}
+
+[data-sidebar="group-action"] > svg {
+  @apply size-4 shrink-0;
+}
+
+[data-sidebar="group-action"]::after {
+  @apply absolute -inset-2;
+}
+
+@media (min-width: 768px) {
+  [data-sidebar="group-action"]::after {
+    @apply hidden;
+  }
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="group-action"] {
+  @apply hidden;
+}
+
+/* Sidebar Group Content */
+[data-sidebar="group-content"] {
+  @apply w-full text-sm;
+}
+
+/* Sidebar Menu */
+[data-sidebar="menu"] {
+  @apply flex w-full min-w-0 flex-col gap-1;
+}
+
+/* Sidebar Menu Item */
+[data-sidebar="menu-item"] {
+  @apply relative;
+}
+
+/* Sidebar Menu Button */
+[data-sidebar="menu-button"] {
+  @apply flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none transition-[width,height,padding];
+}
+
+[data-sidebar="menu-button"]:hover {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-button"]:focus-visible {
+  @apply ring-2 ring-(--sidebar-ring);
+}
+
+[data-sidebar="menu-button"]:active {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-button"]:disabled {
+  @apply pointer-events-none opacity-50;
+}
+
+[data-sidebar="menu-button"][aria-disabled="true"] {
+  @apply pointer-events-none opacity-50;
+}
+
+[data-sidebar="menu-item"]:has([data-sidebar="menu-action"])
+  [data-sidebar="menu-button"] {
+  @apply pr-8;
+}
+
+[data-sidebar="menu-button"][data-active="true"] {
+  @apply font-medium bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-button"][data-state="open"]:hover {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="menu-button"] {
+  @apply size-8 p-2;
+}
+
+[data-sidebar="menu-button"] > span:last-child {
+  @apply truncate;
+}
+
+[data-sidebar="menu-button"] > svg {
+  @apply size-4 shrink-0;
+}
+
+/* Menu Button Variants */
+[data-sidebar="menu-button"][data-variant="default"]:hover {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-button"][data-variant="outline"] {
+  @apply bg-(--background) shadow-[0_0_0_1px_hsl(var(--sidebar-border))];
+}
+
+[data-sidebar="menu-button"][data-variant="outline"]:hover {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground) shadow-[0_0_0_1px_hsl(var(--sidebar-accent))];
+}
+
+/* Menu Button Sizes */
+[data-sidebar="menu-button"][data-size="default"] {
+  @apply h-8 text-sm;
+}
+
+[data-sidebar="menu-button"][data-size="sm"] {
+  @apply h-7 text-xs;
+}
+
+[data-sidebar="menu-button"][data-size="lg"] {
+  @apply h-12 text-sm;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="menu-button"][data-size="lg"] {
+  @apply p-0;
+}
+
+/* Sidebar Menu Action */
+[data-sidebar="menu-action"] {
+  @apply absolute right-1 top-1.5 flex aspect-square w-5 items-center justify-center rounded-md p-0 text-(--sidebar-foreground) outline-none transition-transform;
+}
+
+[data-sidebar="menu-action"]:hover {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-action"]:focus-visible {
+  @apply ring-2 ring-(--sidebar-ring);
+}
+
+[data-sidebar="menu-button"]:hover ~ [data-sidebar="menu-action"] {
+  @apply text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-action"] > svg {
+  @apply size-4 shrink-0;
+}
+
+[data-sidebar="menu-action"]::after {
+  @apply absolute -inset-2;
+}
+
+@media (min-width: 768px) {
+  [data-sidebar="menu-action"]::after {
+    @apply hidden;
+  }
+}
+
+[data-sidebar="menu-button"][data-size="sm"] ~ [data-sidebar="menu-action"] {
+  @apply top-1;
+}
+
+[data-sidebar="menu-button"][data-size="default"]
+  ~ [data-sidebar="menu-action"] {
+  @apply top-1.5;
+}
+
+[data-sidebar="menu-button"][data-size="lg"] ~ [data-sidebar="menu-action"] {
+  @apply top-2.5;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="menu-action"] {
+  @apply hidden;
+}
+
+[data-sidebar="menu-action"][data-show-on-hover="true"] {
+  @apply md:opacity-0;
+}
+
+[data-sidebar="menu-item"]:focus-within
+  [data-sidebar="menu-action"][data-show-on-hover="true"],
+[data-sidebar="menu-item"]:hover
+  [data-sidebar="menu-action"][data-show-on-hover="true"] {
+  @apply opacity-100;
+}
+
+[data-sidebar="menu-action"][data-show-on-hover="true"][data-state="open"] {
+  @apply opacity-100;
+}
+
+[data-sidebar="menu-button"][data-active="true"]
+  ~ [data-sidebar="menu-action"][data-show-on-hover="true"] {
+  @apply text-(--sidebar-accent-foreground);
+}
+
+/* Sidebar Menu Badge */
+[data-sidebar="menu-badge"] {
+  @apply pointer-events-none absolute right-1 flex h-5 min-w-5 select-none items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums text-(--sidebar-foreground);
+}
+
+[data-sidebar="menu-button"]:hover ~ [data-sidebar="menu-badge"],
+[data-sidebar="menu-button"][data-active="true"] ~ [data-sidebar="menu-badge"] {
+  @apply text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-button"][data-size="sm"] ~ [data-sidebar="menu-badge"] {
+  @apply top-1;
+}
+
+[data-sidebar="menu-button"][data-size="default"]
+  ~ [data-sidebar="menu-badge"] {
+  @apply top-1.5;
+}
+
+[data-sidebar="menu-button"][data-size="lg"] ~ [data-sidebar="menu-badge"] {
+  @apply top-2.5;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="menu-badge"] {
+  @apply hidden;
+}
+
+/* Sidebar Menu Skeleton */
+[data-sidebar="menu-skeleton"] {
+  @apply flex h-8 items-center gap-2 rounded-md px-2;
+}
+
+[data-sidebar="menu-skeleton-icon"] {
+  @apply size-4 rounded-md;
+}
+
+[data-sidebar="menu-skeleton-text"] {
+  @apply h-4 max-w-[--skeleton-width] flex-1;
+}
+
+/* Sidebar Menu Sub */
+[data-sidebar="menu-sub"] {
+  @apply mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-(--sidebar-border) px-2.5 py-0.5;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="menu-sub"] {
+  @apply hidden;
+}
+
+/* Sidebar Menu Sub Button */
+[data-sidebar="menu-sub-button"] {
+  @apply flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-(--sidebar-foreground) outline-none transition-[background-color,color];
+}
+
+[data-sidebar="menu-sub-button"]:hover {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-sub-button"]:focus-visible {
+  @apply ring-2 ring-(--sidebar-ring);
+}
+
+[data-sidebar="menu-sub-button"]:active {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-sub-button"]:disabled {
+  @apply pointer-events-none opacity-50;
+}
+
+[data-sidebar="menu-sub-button"][aria-disabled="true"] {
+  @apply pointer-events-none opacity-50;
+}
+
+[data-sidebar="menu-sub-button"] > span:last-child {
+  @apply truncate;
+}
+
+[data-sidebar="menu-sub-button"] > svg {
+  @apply size-4 shrink-0 text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-sub-button"][data-active="true"] {
+  @apply bg-(--sidebar-accent) text-(--sidebar-accent-foreground);
+}
+
+[data-sidebar="menu-sub-button"][data-size="sm"] {
+  @apply text-xs;
+}
+
+[data-sidebar="menu-sub-button"][data-size="md"] {
+  @apply text-sm;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  [data-sidebar="menu-sub-button"] {
+  @apply hidden;
+}

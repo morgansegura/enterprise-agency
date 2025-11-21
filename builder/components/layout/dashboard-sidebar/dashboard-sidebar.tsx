@@ -2,13 +2,10 @@
 
 import * as React from "react";
 import {
-  Building2,
-  LayoutDashboard,
-  Globe,
-  FileText,
-  Image,
-  Users,
-  Settings,
+  Pyramid,
+  CircleGaugeIcon,
+  PanelsTopLeftIcon,
+  GlobeLockIcon,
 } from "lucide-react";
 
 import {
@@ -16,6 +13,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
@@ -24,6 +22,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/ui/nav-link";
+
+import "./dashboard-sidebar.css";
 
 interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
@@ -35,36 +35,24 @@ interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
   onLogout: () => void;
 }
 
-const menuItems = [
+const mainMenuItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
-    icon: LayoutDashboard,
+    icon: CircleGaugeIcon,
+  },
+];
+
+const adminMenuItems = [
+  {
+    title: "Manage Clients",
+    url: "/dashboard/clients",
+    icon: PanelsTopLeftIcon,
   },
   {
-    title: "Clients",
-    url: "/dashboard/tenants",
-    icon: Globe,
-  },
-  {
-    title: "Pages",
-    url: "/dashboard/pages",
-    icon: FileText,
-  },
-  {
-    title: "Assets",
-    url: "/dashboard/assets",
-    icon: Image,
-  },
-  {
-    title: "Users",
+    title: "Manage Users",
     url: "/dashboard/users",
-    icon: Users,
-  },
-  {
-    title: "Settings",
-    url: "/dashboard/settings",
-    icon: Settings,
+    icon: GlobeLockIcon,
   },
 ];
 
@@ -74,29 +62,30 @@ export function DashboardSidebar({
   ...props
 }: DashboardSidebarProps) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="/dashboard">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Building2 className="size-4" />
+                <div className="sidebar-header-icon">
+                  <Pyramid />
                 </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Web & Funnel</span>
-                  <span className="truncate text-xs">Admin</span>
+                <div className="sidebar-header-text">
+                  <span className="sidebar-header-title">Web & Funnel</span>
+                  <span className="sidebar-header-subtitle">Builder</span>
                 </div>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
+              {mainMenuItems.map((item) => (
                 <NavLink
                   key={item.url}
                   href={item.url}
@@ -107,21 +96,36 @@ export function DashboardSidebar({
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {user.isSuperAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Administration</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {adminMenuItems.map((item) => (
+                  <NavLink
+                    key={item.url}
+                    href={item.url}
+                    icon={<item.icon />}
+                    title={item.title}
+                  />
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
+
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="grid flex-1 text-left text-sm leading-tight px-2 py-1.5">
-              <span className="truncate font-semibold">
+            <div className="sidebar-footer-user">
+              <span className="sidebar-footer-user-name">
                 {user.firstName} {user.lastName}
               </span>
-              <span className="truncate text-xs text-sidebar-foreground/70">
-                {user.email}
-              </span>
+              <span className="sidebar-footer-user-email">{user.email}</span>
               {user.isSuperAdmin && (
-                <span className="inline-block px-2 py-0.5 mt-1 text-xs font-medium rounded bg-sidebar-accent text-sidebar-accent-foreground w-fit">
-                  Super Admin
-                </span>
+                <span className="sidebar-footer-user-badge">Super Admin</span>
               )}
             </div>
           </SidebarMenuItem>

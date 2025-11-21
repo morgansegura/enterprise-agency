@@ -1,40 +1,30 @@
 import { Skeleton } from '@/components/ui/skeleton'
+import "./login-skeleton.css";
 
-/**
- * Login Form Skeleton Loader
- * Mimics the structure of the login form while auth initializes
- */
 export function LoginSkeleton() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        {/* Header */}
-        <div>
-          <Skeleton className="h-9 w-3/4 mx-auto mb-2" />
-          <Skeleton className="h-4 w-2/3 mx-auto" />
+    <div className="login-skeleton-container">
+      <div className="login-skeleton-card">
+        <div className="login-skeleton-header">
+          <Skeleton className="login-skeleton-title" />
+          <Skeleton className="login-skeleton-subtitle" />
         </div>
 
-        {/* Form */}
-        <div className="mt-8 space-y-6">
-          {/* Email field */}
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-10 w-full" />
+        <div className="login-skeleton-form">
+          <div className="login-skeleton-field">
+            <Skeleton className="login-skeleton-label" />
+            <Skeleton className="login-skeleton-input" />
           </div>
 
-          {/* Password field */}
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-10 w-full" />
+          <div className="login-skeleton-field">
+            <Skeleton className="login-skeleton-label-short" />
+            <Skeleton className="login-skeleton-input" />
           </div>
 
-          {/* Submit button */}
-          <div className="space-y-4">
-            <Skeleton className="h-10 w-full" />
-
-            {/* Forgot password link */}
-            <div className="flex justify-center">
-              <Skeleton className="h-4 w-32" />
+          <div className="login-skeleton-actions">
+            <Skeleton className="login-skeleton-button" />
+            <div className="login-skeleton-link-container">
+              <Skeleton className="login-skeleton-link" />
             </div>
           </div>
         </div>

@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+.layout-heading {
+  @apply mb-6;
+}
+
+.layout-heading-title {
+  @apply text-3xl font-bold tracking-tight;
+}
+
+.layout-heading-description {
+  @apply mt-2 text-sm text-(--muted-foreground);
+}

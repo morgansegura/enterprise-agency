@@ -1,3 +1,5 @@
+import "./auth-layout.css";
+
 type AuthLayoutProps = {
   children: React.ReactNode;
 }

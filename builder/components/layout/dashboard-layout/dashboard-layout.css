@@ -9,7 +9,15 @@
 }
 
 .dashboard-layout-header {
-  @apply flex h-16 shrink-0 items-center gap-2 border-b px-4;
+  @apply flex h-16 shrink-0 items-center justify-between border-b px-4 bg-(--color-background);
+}
+
+.dashboard-layout-header-left {
+  @apply flex items-center gap-2;
+}
+
+.dashboard-layout-header-right {
+  @apply flex items-center gap-2;
 }
 
 .dashboard-layout-header-trigger {
@@ -21,5 +29,5 @@
 }
 
 .dashboard-layout-main {
-  @apply flex flex-1 flex-col gap-4 p-4 pt-0;
+  @apply flex flex-1 flex-col gap-4 p-4;
 }

@@ -14,6 +14,7 @@ import { AssetsModule } from "./modules/assets/assets.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { SiteConfigModule } from "./modules/site-config/site-config.module";
 import { AdminModule } from "./modules/admin/admin.module";
+import { PublicApiModule } from "./modules/public-api/public-api.module";
 
 @Module({
   imports: [
@@ -34,6 +35,8 @@ import { AdminModule } from "./modules/admin/admin.module";
     // Core modules
     HealthModule,
     AuthModule,
+    // Public API (unauthenticated)
+    PublicApiModule,
     // Admin management
     AdminModule,
     // Content modules
@@ -57,10 +60,10 @@ import { AdminModule } from "./modules/admin/admin.module";
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // Apply tenant middleware to all routes except health check and webhooks
+    // Apply tenant middleware to all routes except health, webhooks, and public API
     consumer
       .apply(TenantMiddleware)
-      .exclude("api/health(.*)", "api/webhooks(.*)")
+      .exclude("api/health(.*)", "api/webhooks(.*)", "api/v1/public(.*)")
       .forRoutes("*");
   }
 }

@@ -1,0 +1,78 @@
+@reference "tailwindcss";
+
+/* Table Wrapper */
+[data-slot="table-wrapper"] {
+  @apply relative w-full overflow-auto;
+}
+
+/* Table */
+[data-slot="table"] {
+  @apply w-full caption-bottom text-sm border;
+}
+
+/* Table Header */
+[data-slot="table-header"] {
+  /* @apply; */
+}
+
+[data-slot="table-header"] tr {
+  @apply border-b;
+}
+
+/* Table Body */
+[data-slot="table-body"] {
+  /* @apply; */
+}
+
+[data-slot="table-body"] tr:last-child {
+  @apply border-0;
+}
+
+/* Table Footer */
+[data-slot="table-footer"] {
+  @apply border-t bg-(--muted)/50 font-medium;
+}
+
+[data-slot="table-footer"] > tr:last-child {
+  @apply border-b-0;
+}
+
+/* Table Row */
+[data-slot="table-row"] {
+  @apply border-b transition-colors hover:bg-(--muted)/50;
+}
+
+[data-slot="table-row"][data-state="selected"] {
+  @apply bg-(--muted);
+}
+
+/* Table Head */
+[data-slot="table-head"] {
+  @apply h-10 px-2 text-left align-middle font-medium text-(--muted-foreground);
+}
+
+[data-slot="table-head"]:has([role="checkbox"]) {
+  @apply pr-0;
+}
+
+[data-slot="table-head"] > [role="checkbox"] {
+  @apply translate-y-0.5;
+}
+
+/* Table Cell */
+[data-slot="table-cell"] {
+  @apply p-2 align-middle;
+}
+
+[data-slot="table-cell"]:has([role="checkbox"]) {
+  @apply pr-0;
+}
+
+[data-slot="table-cell"] > [role="checkbox"] {
+  @apply translate-y-0.5;
+}
+
+/* Table Caption */
+[data-slot="table-caption"] {
+  @apply mt-4 text-sm text-(--muted-foreground);
+}

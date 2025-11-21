@@ -1,0 +1,65 @@
+@reference "tailwindcss";
+
+.dashboard-home {
+  @apply space-y-6;
+}
+
+.dashboard-home-card {
+  @apply bg-(--background) shadow rounded-lg p-6 border;
+}
+
+.dashboard-home-welcome-title {
+  @apply text-2xl font-bold text-(--foreground) mb-2;
+}
+
+.dashboard-home-welcome-subtitle {
+  @apply text-(--muted-foreground);
+}
+
+.dashboard-home-card-title {
+  @apply text-lg font-semibold text-(--foreground) mb-4;
+}
+
+.dashboard-home-info-grid {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+}
+
+.dashboard-home-info-label {
+  @apply text-sm font-medium text-(--muted-foreground);
+}
+
+.dashboard-home-info-value {
+  @apply mt-1 text-sm text-(--foreground);
+}
+
+.dashboard-home-tenants-grid {
+  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.dashboard-home-tenant-card {
+  @apply border rounded-lg p-4 hover:border-(--primary) transition-colors;
+}
+
+.dashboard-home-tenant-name {
+  @apply font-medium text-(--foreground);
+}
+
+.dashboard-home-tenant-info {
+  @apply text-sm text-(--muted-foreground) mt-1;
+}
+
+.dashboard-home-actions-grid {
+  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.dashboard-home-action-button {
+  @apply flex flex-col items-center justify-center p-6 border-2 border-dashed border-(--border) rounded-lg hover:border-(--primary) transition-colors;
+}
+
+.dashboard-home-action-icon {
+  @apply h-12 w-12 text-(--muted-foreground);
+}
+
+.dashboard-home-action-label {
+  @apply mt-2 text-sm font-medium text-(--foreground);
+}

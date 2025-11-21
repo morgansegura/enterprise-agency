@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+/* Form Item */
+[data-slot="form-item"] {
+  @apply flex flex-col gap-2;
+}
+
+/* Form Label */
+[data-slot="form-label"][data-error="true"] {
+  @apply text-(--destructive);
+}
+
+/* Form Description */
+[data-slot="form-description"] {
+  @apply text-xs text-(--muted-foreground);
+}
+
+/* Form Message */
+[data-slot="form-message"] {
+  @apply text-xs font-medium text-(--destructive);
+}
