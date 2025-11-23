@@ -4,12 +4,13 @@ import type { HeaderConfig } from "@/lib/headers/types";
 import type { Menu } from "@/lib/menus/types";
 import type { LogoConfig } from "@/lib/logos/types";
 import { Logo } from "@/components/logo";
+import { MenuRenderer } from "@/components/menu-renderer";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { MobileNav } from "./mobile-nav";
 
-import "./header-renderer.css";
+import "@/styles/tokens/header.css";
 
 type HeaderRendererProps = {
   config: HeaderConfig;
@@ -103,48 +104,14 @@ export function HeaderRenderer({
         {/* Navigation - Desktop */}
         {menu && (
           <nav className="header-nav" data-style={navigation.style}>
-            <ul className="header-nav-list" data-variant={navigation.variant}>
-              {menu.items.map((item) => (
-                <li key={item.id} className="header-nav-item">
-                  <Link
-                    href={item.url || "#"}
-                    className="header-nav-link"
-                    data-active={item.isActive}
-                  >
-                    {navigation.showIcons && item.icon && (
-                      <span className="header-nav-icon">
-                        {/* Icon would be rendered here */}
-                      </span>
-                    )}
-                    <span>{item.label}</span>
-                    {item.badge && (
-                      <span
-                        className="header-nav-badge"
-                        data-variant={item.badge.variant}
-                      >
-                        {item.badge.text}
-                      </span>
-                    )}
-                  </Link>
-
-                  {/* Dropdown for child items */}
-                  {item.children && item.children.length > 0 && (
-                    <ul className="header-nav-dropdown">
-                      {item.children.map((child) => (
-                        <li key={child.id} className="header-nav-dropdown-item">
-                          <Link
-                            href={child.url || "#"}
-                            className="header-nav-dropdown-link"
-                          >
-                            {child.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
+            <MenuRenderer
+              menu={menu}
+              style={navigation.style}
+              variant={navigation.variant}
+              context="header"
+              dropdownTrigger={navigation.dropdownTrigger}
+              showIcons={navigation.showIcons}
+            />
           </nav>
         )}
 
