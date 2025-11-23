@@ -54,18 +54,21 @@ Lightweight, Tailwind-first theming:
 Complete token-based styling for layout components with zero hardcoded values:
 
 **Header Tokens** (~150 properties):
+
 - Layout & structure (height, padding, positioning)
 - Behavior & animation (scroll effects, transitions)
 - Visual styling (backgrounds, borders, shadows)
 - All customizable per-tenant
 
 **Menu Tokens** (~130 properties):
+
 - Reusable across header, footer, sidebar, tabs
 - Multiple variants (pills, underline, bordered, minimal)
 - Dropdown & mega menu support
 - Context-aware styling (header/footer/sidebar)
 
 **Footer Tokens** (~80 properties):
+
 - Layout & sections
 - Column configurations
 - Social links, bottom bar, CTA sections
@@ -150,7 +153,7 @@ import {
   footerDefaults,
   generateHeaderCSS,
   generateMenuCSS,
-  generateFooterCSS
+  generateFooterCSS,
 } from "@/lib/tokens";
 
 // Use platform defaults

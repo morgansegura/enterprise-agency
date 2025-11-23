@@ -23,3 +23,11 @@ export {
   generateTenantFooterCSS,
 } from "./generate-footer-css";
 export type { FooterTokens } from "./footer-tokens";
+
+// Section Tokens
+export { sectionDefaults } from "./section-defaults";
+export {
+  generateSectionCSS,
+  generateTenantSectionCSS,
+} from "./generate-section-css";
+export type { SectionTokens } from "./section-tokens";

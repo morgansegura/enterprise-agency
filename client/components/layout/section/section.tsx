@@ -6,7 +6,7 @@ import type {
   Width,
   TextAlign,
 } from "@/lib/types";
-import "./section.css";
+import "@/styles/tokens/section.css";
 
 type SectionProps = {
   children?: React.ReactNode;
