@@ -49,6 +49,30 @@ Lightweight, Tailwind-first theming:
 - Semantic spacing tokens
 - All in `lib/site-config.ts`
 
+### Token System
+
+Complete token-based styling for layout components with zero hardcoded values:
+
+**Header Tokens** (~150 properties):
+- Layout & structure (height, padding, positioning)
+- Behavior & animation (scroll effects, transitions)
+- Visual styling (backgrounds, borders, shadows)
+- All customizable per-tenant
+
+**Menu Tokens** (~130 properties):
+- Reusable across header, footer, sidebar, tabs
+- Multiple variants (pills, underline, bordered, minimal)
+- Dropdown & mega menu support
+- Context-aware styling (header/footer/sidebar)
+
+**Footer Tokens** (~80 properties):
+- Layout & sections
+- Column configurations
+- Social links, bottom bar, CTA sections
+- Multiple templates (centered, stacked, minimal)
+
+All tokens generate CSS custom properties for complete tenant customization.
+
 ## Quick Start
 
 ```bash
@@ -81,21 +105,96 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 ```
 ├── app/                      # Next.js app directory
 │   ├── globals.css          # Global styles + Tailwind config
-│   └── layout.tsx           # Root layout with theme injection
+│   ├── layout.tsx           # Root layout with theme injection
+│   └── test/                # Visual testing pages
+│       └── headers/         # Header variations test page
 ├── components/
 │   ├── block/               # Content block components
 │   ├── block-renderer/      # Block rendering engine
+│   ├── header-renderer/     # Header rendering with token support
+│   ├── footer-renderer/     # Footer rendering with token support
+│   ├── menu-renderer/       # Reusable menu component
 │   ├── layout/              # Layout components (Section, Container)
 │   ├── section-renderer/    # Section rendering engine
 │   └── ui/                  # UI primitives (shadcn-based)
 ├── lib/
 │   ├── blocks/              # Block type definitions
+│   ├── tokens/              # Token system (headers, menus, footers)
+│   │   ├── header-tokens.ts       # Header token schema
+│   │   ├── header-defaults.ts     # Platform header defaults
+│   │   ├── menu-tokens.ts         # Menu token schema
+│   │   ├── menu-defaults.ts       # Platform menu defaults
+│   │   ├── footer-tokens.ts       # Footer token schema
+│   │   ├── footer-defaults.ts     # Platform footer defaults
+│   │   └── generate-*-css.ts      # CSS generation functions
 │   ├── site-config.ts       # Site metadata + theme config
 │   ├── theme.ts             # Theme utilities
 │   └── types.ts             # Global type definitions
+├── styles/
+│   └── tokens/              # Token-based CSS (zero hardcoded values)
+│       ├── header.css       # Header token styles
+│       ├── menu.css         # Menu token styles
+│       └── footer.css       # Footer token styles
 ├── data/mocks/              # Mock page data for development
 └── docs/                    # Architecture documentation
 ```
+
+## Using the Token System
+
+### Generating Custom Token CSS
+
+```typescript
+import {
+  headerDefaults,
+  menuDefaults,
+  footerDefaults,
+  generateHeaderCSS,
+  generateMenuCSS,
+  generateFooterCSS
+} from "@/lib/tokens";
+
+// Use platform defaults
+const headerCSS = generateHeaderCSS(headerDefaults);
+const menuCSS = generateMenuCSS(menuDefaults);
+const footerCSS = generateFooterCSS(footerDefaults);
+
+// Or customize for a tenant
+const customTokens = {
+  ...headerDefaults,
+  height: {
+    default: "100px", // Taller header
+    shrunk: "80px",
+    mobile: "72px",
+  },
+};
+
+const tenantCSS = generateHeaderCSS(customTokens);
+```
+
+### Token-Based Components
+
+All layout components use token-based CSS with clean classnames:
+
+```tsx
+// Headers use .header-* classes
+<header className="header-renderer" data-position="sticky">
+  <div className="header-container">...</div>
+</header>
+
+// Menus use .menu-* classes (reusable everywhere)
+<MenuRenderer
+  menu={menu}
+  context="header"  // or "footer", "sidebar"
+  variant="pills"   // or "underline", "bordered", "minimal"
+/>
+
+// Footers use .footer-* classes
+<footer className="footer-renderer" data-template="centered">
+  <div className="footer-container">...</div>
+</footer>
+```
+
+No hardcoded styles - everything driven by CSS custom properties from tokens.
 
 ## Type Safety
 
