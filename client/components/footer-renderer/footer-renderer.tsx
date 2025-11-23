@@ -1,7 +1,7 @@
 import { BlockRenderer } from "@/components/block-renderer";
 import type { FooterConfig } from "@/lib/footers/types";
 import { cn } from "@/lib/utils";
-import "./footer-renderer.css";
+import "@/styles/tokens/footer.css";
 
 type FooterRendererProps = {
   config: FooterConfig;
@@ -21,37 +21,27 @@ export function FooterRenderer({ config, className }: FooterRendererProps) {
   const { template, columns, bottomBar, styling } = config;
 
   return (
-    <div
+    <footer
       className={cn("footer-renderer", className)}
-      data-background={styling?.background || "dark"}
+      data-template={template}
       data-max-width={styling?.maxWidth || "container"}
     >
-      {/* Main footer columns */}
-      <div
-        className="footer-columns"
-        data-template={template}
-        data-max-width={styling?.maxWidth || "container"}
-        data-spacing={styling?.spacing || "lg"}
-      >
-        {columns.map((column) => (
-          <div
-            key={column._key}
-            className="footer-column"
-            data-width={column.width}
-          >
-            <BlockRenderer blocks={column.blocks} />
-          </div>
-        ))}
+      {/* Main footer container */}
+      <div className="footer-container">
+        {/* Footer columns/sections */}
+        <div className="footer-sections">
+          {columns.map((column) => (
+            <div key={column._key} className="footer-section">
+              <BlockRenderer blocks={column.blocks} />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Optional bottom bar */}
       {bottomBar && (
-        <>
-          {styling?.divider && <div className="footer-divider" />}
-          <div
-            className="footer-bottom-bar"
-            data-max-width={styling?.maxWidth || "container"}
-          >
+        <div className="footer-bottom-bar">
+          <div className="footer-bottom-bar-container">
             {bottomBar.left && (
               <div className="footer-bottom-section" data-align="left">
                 <BlockRenderer blocks={bottomBar.left} />
@@ -70,8 +60,8 @@ export function FooterRenderer({ config, className }: FooterRendererProps) {
               </div>
             )}
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </footer>
   );
 }

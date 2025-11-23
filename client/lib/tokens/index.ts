@@ -15,3 +15,11 @@ export type { HeaderTokens } from "./header-tokens";
 export { menuDefaults } from "./menu-defaults";
 export { generateMenuCSS, generateTenantMenuCSS } from "./generate-menu-css";
 export type { MenuTokens } from "./menu-tokens";
+
+// Footer Tokens
+export { footerDefaults } from "./footer-defaults";
+export {
+  generateFooterCSS,
+  generateTenantFooterCSS,
+} from "./generate-footer-css";
+export type { FooterTokens } from "./footer-tokens";
