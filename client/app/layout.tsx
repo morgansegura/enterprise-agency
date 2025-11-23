@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import { churchInfo } from "@/lib/site-config";
 import { generateChurchSchema } from "@/lib/seo";
+import { CookieConsent } from "@/components/cookie-consent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,7 +60,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* JSON-LD Structured Data for Church */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -67,6 +67,7 @@ export default function RootLayout({
           }}
         />
         {children}
+        <CookieConsent />
       </body>
     </html>
   );

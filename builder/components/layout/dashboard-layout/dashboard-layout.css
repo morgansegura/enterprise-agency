@@ -9,7 +9,7 @@
 }
 
 .dashboard-layout-header {
-  @apply flex h-16 shrink-0 items-center justify-between border-b px-4 bg-(--color-background);
+  @apply flex h-12 shrink-0 items-center justify-between border-b px-2 bg-(--color-background);
 }
 
 .dashboard-layout-header-left {

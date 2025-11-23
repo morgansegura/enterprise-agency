@@ -17,14 +17,8 @@ import {
 import { Throttle } from "@nestjs/throttler";
 import { Public } from "@/modules/auth/decorators/public.decorator";
 import { PublicApiService } from "./public-api.service";
-import {
-  PublicPageDto,
-  PublicPagesListDto,
-} from "./dto/public-page.dto";
-import {
-  PublicPostDto,
-  PublicPostsListDto,
-} from "./dto/public-post.dto";
+import { PublicPageDto, PublicPagesListDto } from "./dto/public-page.dto";
+import { PublicPostDto, PublicPostsListDto } from "./dto/public-post.dto";
 import { PublicSiteConfigDto } from "./dto/public-site-config.dto";
 
 /**
@@ -205,11 +199,7 @@ export class PublicApiController {
     @Query("tags") tags?: string | string[],
   ): Promise<PublicPostsListDto> {
     // Handle tags as array
-    const tagsArray = tags
-      ? Array.isArray(tags)
-        ? tags
-        : [tags]
-      : undefined;
+    const tagsArray = tags ? (Array.isArray(tags) ? tags : [tags]) : undefined;
 
     return this.publicApiService.listPosts(tenantSlug, {
       page,

@@ -18,6 +18,7 @@ Mobile apps (iOS/Android) will be built after the web platform is stable.
 ## Design Principles
 
 The mobile app will:
+
 - **Consume the same API** as the web app
 - **Reuse the block data model** for content
 - **Share types** with the web frontend

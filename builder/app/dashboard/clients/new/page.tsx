@@ -80,7 +80,7 @@ export default function ClientIntakePage() {
         onSuccess: () => {
           router.push("/dashboard/clients");
         },
-      }
+      },
     );
   };
 

@@ -86,4 +86,16 @@ export class TenantsController {
   ) {
     return this.tenantsService.removeDomain(tenantId, domainId);
   }
+
+  @Post(":id/users")
+  async addUserToTenant(
+    @Param("id") tenantId: string,
+    @Body() data: { userId: string; role?: string },
+  ) {
+    return this.tenantsService.addUser(
+      tenantId,
+      data.userId,
+      data.role || "owner",
+    );
+  }
 }

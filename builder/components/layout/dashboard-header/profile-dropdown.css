@@ -9,7 +9,7 @@
 }
 
 .profile-dropdown-user-info {
-  @apply flex flex-col space-y-1;
+  @apply flex flex-col space-y-1.5;
 }
 
 .profile-dropdown-user-name {
@@ -17,13 +17,13 @@
 }
 
 .profile-dropdown-user-email {
-  @apply text-xs leading-none text-(--color-muted-foreground);
+  @apply text-xs leading-none text-(--muted-foreground);
 }
 
 .profile-dropdown-user-role {
-  @apply text-xs text-(--color-muted-foreground);
+  @apply text-xs text-(---muted-foreground);
 }
 
 .profile-dropdown-logout {
-  @apply text-(--color-destructive) focus:text-(--color-destructive);
+  @apply text-(--destructive) focus:text-(--destructive);
 }

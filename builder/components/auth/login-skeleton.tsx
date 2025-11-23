@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from "@/components/ui/skeleton";
 import "./login-skeleton.css";
 
 export function LoginSkeleton() {
@@ -30,5 +30,5 @@ export function LoginSkeleton() {
         </div>
       </div>
     </div>
-  )
+  );
 }

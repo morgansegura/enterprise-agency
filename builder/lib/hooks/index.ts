@@ -6,7 +6,7 @@
  */
 
 // Query keys
-export { queryKeys } from './query-keys'
+export { queryKeys } from "./query-keys";
 
 // Admin Users
 export {
@@ -17,13 +17,13 @@ export {
   useInviteUser,
   useUpdateUser,
   useDeleteUser,
-} from './use-admin-users'
+} from "./use-admin-users";
 
 export type {
   CreateUserDto,
   InviteUserDto,
   UpdateUserDto,
-} from './use-admin-users'
+} from "./use-admin-users";
 
 // Features
 export {
@@ -31,12 +31,9 @@ export {
   useTenantFeatures,
   useUpdateFeatures,
   useToggleFeature,
-} from './use-features'
+} from "./use-features";
 
-export type {
-  FeatureDefinition,
-  EnabledFeatures,
-} from './use-features'
+export type { FeatureDefinition, EnabledFeatures } from "./use-features";
 
 // Projects
 export {
@@ -45,26 +42,26 @@ export {
   useCreateAssignment,
   useUpdateAssignment,
   useDeleteAssignment,
-} from './use-projects'
+} from "./use-projects";
 
 export type {
   CreateProjectAssignmentDto,
   UpdateProjectAssignmentDto,
   ProjectAssignmentFilters,
-} from './use-projects'
+} from "./use-projects";
 
 // Tenants (Admin)
 export {
   useAdminTenants,
   useTenantStats,
   useTenantActivity,
-} from './use-admin-tenants'
+} from "./use-admin-tenants";
 
 export type {
   TenantStats,
   TenantActivity,
   TenantWithStats,
-} from './use-admin-tenants'
+} from "./use-admin-tenants";
 
 // Regular Tenants (Non-Admin)
 export {
@@ -73,4 +70,14 @@ export {
   useCreateTenant,
   useUpdateTenant,
   useDeleteTenant,
-} from './use-tenants'
+} from "./use-tenants";
+
+export type { Tenant, TenantTier } from "./use-tenants";
+
+// Tier Management
+export {
+  useTier,
+  useIsBuilder,
+  useIsContentEditor,
+  useHasTier,
+} from "./use-tier";

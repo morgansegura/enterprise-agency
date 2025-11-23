@@ -1,16 +1,17 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuthStore } from '@/lib/stores/auth-store'
-import { logger } from '@/lib/logger'
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/stores/auth-store";
+import { logger } from "@/lib/logger";
+import "./auth-guard.css";
 
 interface AuthGuardProps {
-  children: React.ReactNode
-  requireAuth?: boolean
-  requireSuperAdmin?: boolean
-  requiredRoles?: string[]
-  redirectTo?: string
+  children: React.ReactNode;
+  requireAuth?: boolean;
+  requireSuperAdmin?: boolean;
+  requiredRoles?: string[];
+  redirectTo?: string;
 }
 
 /**
@@ -27,38 +28,38 @@ export function AuthGuard({
   requireAuth = true,
   requireSuperAdmin = false,
   requiredRoles = [],
-  redirectTo = '/login',
+  redirectTo = "/login",
 }: AuthGuardProps) {
-  const router = useRouter()
-  const { user, isAuthenticated, isLoading } = useAuthStore()
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading } = useAuthStore();
 
   useEffect(() => {
     // Wait for auth to initialize
-    if (isLoading) return
+    if (isLoading) return;
 
     // Redirect if auth is required but user is not authenticated
     if (requireAuth && !isAuthenticated) {
-      logger.log('Auth guard: User not authenticated, redirecting to login')
-      router.push(redirectTo)
-      return
+      logger.log("Auth guard: User not authenticated, redirecting to login");
+      router.push(redirectTo);
+      return;
     }
 
     // Check super admin requirement
     if (requireSuperAdmin && !user?.isSuperAdmin) {
-      logger.log('Auth guard: Super admin required, redirecting')
-      router.push('/dashboard')
-      return
+      logger.log("Auth guard: Super admin required, redirecting");
+      router.push("/dashboard");
+      return;
     }
 
     // Check role requirements
     if (requiredRoles.length > 0 && user?.agencyRole) {
       if (!requiredRoles.includes(user.agencyRole)) {
-        logger.log('Auth guard: Insufficient role, redirecting', {
+        logger.log("Auth guard: Insufficient role, redirecting", {
           userRole: user.agencyRole,
           requiredRoles,
-        })
-        router.push('/dashboard')
-        return
+        });
+        router.push("/dashboard");
+        return;
       }
     }
   }, [
@@ -70,7 +71,7 @@ export function AuthGuard({
     requiredRoles,
     redirectTo,
     router,
-  ])
+  ]);
 
   // Show loading state during auth check
   if (isLoading) {
@@ -78,23 +79,23 @@ export function AuthGuard({
       <div className="auth-guard-loading">
         <div className="auth-guard-spinner">Verifying access...</div>
       </div>
-    )
+    );
   }
 
   // Don't render children if auth check fails
   if (requireAuth && !isAuthenticated) {
-    return null
+    return null;
   }
 
   if (requireSuperAdmin && !user?.isSuperAdmin) {
-    return null
+    return null;
   }
 
   if (requiredRoles.length > 0 && user?.agencyRole) {
     if (!requiredRoles.includes(user.agencyRole)) {
-      return null
+      return null;
     }
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }

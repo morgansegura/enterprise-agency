@@ -55,7 +55,8 @@ export const homePageMock = {
               _key: "hero-text",
               _type: "text-block" as const,
               data: {
-                content: "A community of faith, worship, and service. Join us this Sunday!",
+                content:
+                  "A community of faith, worship, and service. Join us this Sunday!",
                 size: "xl" as const,
                 align: "center" as const,
                 variant: "lead" as const,

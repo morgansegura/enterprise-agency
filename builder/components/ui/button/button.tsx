@@ -1,15 +1,21 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cn } from "@/lib/utils"
-import "./button.css"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cn } from "@/lib/utils";
+import "./button.css";
 
-type ButtonVariant = "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
-type ButtonSize = "default" | "sm" | "lg" | "icon" | "icon-sm" | "icon-lg"
+type ButtonVariant =
+  | "default"
+  | "destructive"
+  | "outline"
+  | "secondary"
+  | "ghost"
+  | "link";
+type ButtonSize = "default" | "sm" | "lg" | "icon" | "icon-sm" | "icon-lg";
 
 interface ButtonProps extends React.ComponentProps<"button"> {
-  variant?: ButtonVariant
-  size?: ButtonSize
-  asChild?: boolean
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  asChild?: boolean;
 }
 
 function Button({
@@ -19,7 +25,7 @@ function Button({
   asChild = false,
   ...props
 }: ButtonProps) {
-  const Comp = asChild ? Slot : "button"
+  const Comp = asChild ? Slot : "button";
 
   return (
     <Comp
@@ -29,8 +35,8 @@ function Button({
       className={cn(className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Button }
-export type { ButtonVariant, ButtonSize }
+export { Button };
+export type { ButtonVariant, ButtonSize };

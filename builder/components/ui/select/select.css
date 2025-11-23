@@ -1,0 +1,202 @@
+@reference "tailwindcss";
+
+/* Keyframe Animations */
+@keyframes select-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes select-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes select-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes select-zoom-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes select-slide-in-from-top {
+  from {
+    transform: translateY(-0.5rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes select-slide-in-from-bottom {
+  from {
+    transform: translateY(0.5rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes select-slide-in-from-left {
+  from {
+    transform: translateX(-0.5rem);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes select-slide-in-from-right {
+  from {
+    transform: translateX(0.5rem);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Select Trigger */
+[data-slot="select-trigger"] {
+  @apply flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-(--input) bg-transparent px-3 py-2 text-sm shadow-sm ring-(--offset-background) transition-all outline-none disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+[data-slot="select-trigger"][data-placeholder] {
+  @apply text-(--muted-foreground);
+}
+
+[data-slot="select-trigger"]:focus {
+  @apply ring-1 ring-(--ring);
+}
+
+[data-slot="select-trigger"] > span {
+  @apply line-clamp-1;
+}
+
+[data-slot="select-trigger-icon"] {
+  @apply h-4 w-4 opacity-50;
+}
+
+/* Select Content */
+[data-slot="select-content"] {
+  @apply relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-(--popover) text-(--popover-foreground) shadow-md;
+  transform-origin: var(--radix-select-content-transform-origin);
+}
+
+[data-slot="select-content"][data-state="open"] {
+  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out;
+}
+
+[data-slot="select-content"][data-state="closed"] {
+  animation: select-fade-out 150ms ease-in, select-zoom-out 150ms ease-in;
+}
+
+[data-slot="select-content"][data-state="open"][data-side="bottom"] {
+  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out,
+    select-slide-in-from-top 150ms ease-out;
+}
+
+[data-slot="select-content"][data-state="open"][data-side="top"] {
+  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out,
+    select-slide-in-from-bottom 150ms ease-out;
+}
+
+[data-slot="select-content"][data-state="open"][data-side="left"] {
+  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out,
+    select-slide-in-from-right 150ms ease-out;
+}
+
+[data-slot="select-content"][data-state="open"][data-side="right"] {
+  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out,
+    select-slide-in-from-left 150ms ease-out;
+}
+
+[data-slot="select-content"][data-position="popper"][data-side="bottom"] {
+  @apply translate-y-1;
+}
+
+[data-slot="select-content"][data-position="popper"][data-side="left"] {
+  @apply -translate-x-1;
+}
+
+[data-slot="select-content"][data-position="popper"][data-side="right"] {
+  @apply translate-x-1;
+}
+
+[data-slot="select-content"][data-position="popper"][data-side="top"] {
+  @apply -translate-y-1;
+}
+
+/* Select Viewport */
+[data-slot="select-viewport"] {
+  @apply p-1;
+}
+
+[data-slot="select-viewport"][data-position="popper"] {
+  @apply h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)];
+}
+
+/* Select Label */
+[data-slot="select-label"] {
+  @apply px-2 py-1.5 text-sm font-semibold;
+}
+
+/* Select Item */
+[data-slot="select-item"] {
+  @apply relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none transition-colors;
+}
+
+[data-slot="select-item"]:focus {
+  @apply bg-(--accent) text-(--accent-foreground);
+}
+
+[data-slot="select-item"][data-disabled] {
+  @apply pointer-events-none opacity-50;
+}
+
+[data-slot="select-item-indicator"] {
+  @apply absolute right-2 flex h-3.5 w-3.5 items-center justify-center;
+}
+
+[data-slot="select-item-indicator"] svg {
+  @apply h-4 w-4;
+}
+
+/* Select Separator */
+[data-slot="select-separator"] {
+  @apply -mx-1 my-1 h-px bg-(--muted);
+}
+
+/* Select Scroll Buttons */
+[data-slot="select-scroll-button"] {
+  @apply flex cursor-default items-center justify-center py-1;
+}
+
+[data-slot="select-scroll-button"] svg {
+  @apply h-4 w-4;
+}
+
+.dark [data-slot="select-trigger"] {
+  @apply bg-(--input)/30;
+}

@@ -38,41 +38,13 @@ export class RolesGuard implements CanActivate {
       throw new ForbiddenException("Tenant context required");
     }
 
-    // DEVELOPMENT MODE: Allow access if tenant exists (skip user membership check)
-    if (process.env.NODE_ENV === "development") {
-      // Try to find tenant by slug first, then by ID
-      const tenant = await this.prisma.tenant.findFirst({
-        where: {
-          OR: [{ slug: tenantId }, { id: tenantId }],
-        },
-      });
-
-      if (tenant) {
-        // Create a mock tenant user for development with owner role
-        request.tenantUser = {
-          tenantId: tenant.id,
-          userId: user.id,
-          role: "owner",
-        };
-        return true;
-      }
-    }
-
-    // Get user from database by Clerk ID
-    const dbUser = await this.prisma.user.findUnique({
-      where: { clerkUserId: user.id },
-    });
-
-    if (!dbUser) {
-      throw new ForbiddenException("User not found");
-    }
-
+    // user.id is already the database user ID from JWT strategy validation
     // Check if user has required role in this tenant
     const tenantUser = await this.prisma.tenantUser.findUnique({
       where: {
         tenantId_userId: {
           tenantId,
-          userId: dbUser.id,
+          userId: user.id,
         },
       },
     });

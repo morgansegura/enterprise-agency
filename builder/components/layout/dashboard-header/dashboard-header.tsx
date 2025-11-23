@@ -1,8 +1,8 @@
-import './dashboard-header.css'
+import "./dashboard-header.css";
 
 interface DashboardHeaderProps {
-  title: string
-  description: string
+  title: string;
+  description: string;
 }
 
 export function DashboardHeader({ title, description }: DashboardHeaderProps) {
@@ -11,5 +11,5 @@ export function DashboardHeader({ title, description }: DashboardHeaderProps) {
       <h1 className="dashboard-header-title">{title}</h1>
       <p className="dashboard-header-description">{description}</p>
     </div>
-  )
+  );
 }

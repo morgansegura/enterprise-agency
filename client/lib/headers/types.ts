@@ -4,7 +4,6 @@
  */
 
 import type {
-  MenuItem,
   NavigationStyle,
   NavigationVariant,
   DropdownTrigger,

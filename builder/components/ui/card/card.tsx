@@ -6,12 +6,7 @@ const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    data-slot="card"
-    className={cn(className)}
-    {...props}
-  />
+  <div ref={ref} data-slot="card" className={cn(className)} {...props} />
 ));
 Card.displayName = "Card";
 
@@ -19,12 +14,7 @@ const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    data-slot="card-header"
-    className={cn(className)}
-    {...props}
-  />
+  <div ref={ref} data-slot="card-header" className={cn(className)} {...props} />
 ));
 CardHeader.displayName = "CardHeader";
 
@@ -32,12 +22,7 @@ const CardTitle = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    data-slot="card-title"
-    className={cn(className)}
-    {...props}
-  />
+  <div ref={ref} data-slot="card-title" className={cn(className)} {...props} />
 ));
 CardTitle.displayName = "CardTitle";
 
@@ -71,13 +56,15 @@ const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    data-slot="card-footer"
-    className={cn(className)}
-    {...props}
-  />
+  <div ref={ref} data-slot="card-footer" className={cn(className)} {...props} />
 ));
 CardFooter.displayName = "CardFooter";
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+};

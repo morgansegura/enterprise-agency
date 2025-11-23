@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+.block-info {
+  @apply grid flex-1 text-left text-sm leading-tight;
+}
+
+.block-name {
+  @apply truncate font-medium;
+}
+
+.block-description {
+  @apply truncate text-xs text-(--muted-foreground);
+}

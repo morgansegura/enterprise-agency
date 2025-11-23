@@ -18,7 +18,7 @@ import "./dashboard-layout.css";
 function DashboardContent({
   user,
   onLogout,
-  children
+  children,
 }: {
   user: User;
   onLogout: () => void;
@@ -41,9 +41,7 @@ function DashboardContent({
             <ProfileDropdown user={user} onLogout={onLogout} />
           </div>
         </header>
-        <div className="dashboard-layout-main">
-          {children}
-        </div>
+        <div className="dashboard-layout-main">{children}</div>
       </SidebarInset>
     </>
   );

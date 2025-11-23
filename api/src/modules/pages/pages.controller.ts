@@ -12,6 +12,7 @@ import {
 import { PagesService } from "./pages.service";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";
+import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { TenantGuard } from "@/common/guards/tenant.guard";
 import { RolesGuard } from "@/common/guards/roles.guard";
 import { Roles } from "@/common/decorators/roles.decorator";
@@ -19,7 +20,7 @@ import { TenantId } from "@/common/decorators/tenant.decorator";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
 
 @Controller("pages")
-@UseGuards(TenantGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
 export class PagesController {
   constructor(private readonly pagesService: PagesService) {}
 

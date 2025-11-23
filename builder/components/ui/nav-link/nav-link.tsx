@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 
 interface NavLinkProps {
-  href: string
-  icon: React.ReactNode
-  title: string
+  href: string;
+  icon: React.ReactNode;
+  title: string;
 }
 
 export function NavLink({ href, icon, title }: NavLinkProps) {
-  const pathname = usePathname()
-  const isActive = pathname === href
+  const pathname = usePathname();
+  const isActive = pathname === href;
 
   return (
     <SidebarMenuItem>
@@ -23,5 +23,5 @@ export function NavLink({ href, icon, title }: NavLinkProps) {
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
-  )
+  );
 }

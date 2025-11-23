@@ -1,7 +1,8 @@
 @reference "tailwindcss";
 
 [data-slot="button"] {
-  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all enabled:cursor-pointer disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none;
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all enabled:cursor-pointer
+  select-none disabled:cursor-default disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none;
 }
 
 [data-slot="button"]:focus-visible {

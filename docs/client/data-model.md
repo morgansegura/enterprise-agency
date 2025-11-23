@@ -7,6 +7,7 @@ This document defines the data structures used throughout the frontend, designed
 **Design the API you wish you had.**
 
 We're building the frontend first with mock data that matches what the backend API will eventually provide. This allows us to:
+
 - Perfect the UX without backend constraints
 - Define the ideal data structure
 - Build the backend to match what the frontend needs
@@ -21,16 +22,27 @@ All types are defined in `/lib/types.ts` and should be imported wherever needed.
 
 ```typescript
 // Typography
-export type TextAlign = 'left' | 'center' | 'right' | 'justify'
-export type TextSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl'
-export type HeadingSize = TextSize | '3xl' | '4xl'
-export type FontWeight = 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold'
-export type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+export type TextAlign = "left" | "center" | "right" | "justify";
+export type TextSize = "xs" | "sm" | "base" | "lg" | "xl" | "2xl";
+export type HeadingSize = TextSize | "3xl" | "4xl";
+export type FontWeight =
+  | "normal"
+  | "medium"
+  | "semibold"
+  | "bold"
+  | "extrabold";
+export type HeadingLevel = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
 // Layout
-export type Spacing = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-export type Width = 'narrow' | 'wide' | 'full'
-export type BackgroundVariant = 'none' | 'white' | 'gray' | 'dark' | 'primary' | 'secondary'
+export type Spacing = "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export type Width = "narrow" | "wide" | "full";
+export type BackgroundVariant =
+  | "none"
+  | "white"
+  | "gray"
+  | "dark"
+  | "primary"
+  | "secondary";
 ```
 
 ---
@@ -41,30 +53,30 @@ export type BackgroundVariant = 'none' | 'white' | 'gray' | 'dark' | 'primary' |
 
 ```typescript
 type Page = {
-  id: string
-  slug: string
-  title: string
-  description: string
-  status: 'draft' | 'published' | 'scheduled'
-  publishedAt?: string
-  metadata: PageMetadata
-  blocks: Block[]
-  createdAt: string
-  updatedAt: string
-}
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  status: "draft" | "published" | "scheduled";
+  publishedAt?: string;
+  metadata: PageMetadata;
+  blocks: Block[];
+  createdAt: string;
+  updatedAt: string;
+};
 ```
 
 ### Page Metadata (SEO)
 
 ```typescript
 type PageMetadata = {
-  title: string
-  description: string
-  keywords?: string[]
-  ogImage?: string
-  ogType?: 'website' | 'article'
-  canonicalUrl?: string
-}
+  title: string;
+  description: string;
+  keywords?: string[];
+  ogImage?: string;
+  ogType?: "website" | "article";
+  canonicalUrl?: string;
+};
 ```
 
 ### Example Page JSON
@@ -112,11 +124,11 @@ All blocks share this base structure:
 
 ```typescript
 type Block = {
-  id: string
-  type: string  // 'heading-block', 'text-block', etc.
-  order: number // Display order on page
-  data: Record<string, any> // Block-specific data
-}
+  id: string;
+  type: string; // 'heading-block', 'text-block', etc.
+  order: number; // Display order on page
+  data: Record<string, any>; // Block-specific data
+};
 ```
 
 ### Heading Block
@@ -176,17 +188,17 @@ type TextBlockData = {
 
 ```typescript
 type HeroBlockData = {
-  title: string
-  subtitle?: string
-  backgroundImage?: string
-  overlayOpacity?: number
+  title: string;
+  subtitle?: string;
+  backgroundImage?: string;
+  overlayOpacity?: number;
   cta?: {
-    text: string
-    href: string
-    variant: 'primary' | 'secondary'
-  }
-  align?: TextAlign
-}
+    text: string;
+    href: string;
+    variant: "primary" | "secondary";
+  };
+  align?: TextAlign;
+};
 ```
 
 ---
@@ -238,6 +250,7 @@ When building a new block or feature, create mock data first:
 When the backend is built, these will be the API endpoints:
 
 ### Get Page by Slug
+
 ```
 GET /api/pages/:slug
 
@@ -249,6 +262,7 @@ Response:
 ```
 
 ### Get All Pages
+
 ```
 GET /api/pages
 
@@ -260,6 +274,7 @@ Response:
 ```
 
 ### Create/Update Blocks
+
 ```
 PUT /api/pages/:id/blocks
 

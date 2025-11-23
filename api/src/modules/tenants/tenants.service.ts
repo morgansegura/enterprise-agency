@@ -197,4 +197,83 @@ export class TenantsService {
 
     return { success: true };
   }
+
+  async addUser(tenantId: string, userId: string, role: string) {
+    // Verify tenant exists
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException("Tenant not found");
+    }
+
+    // Verify user exists
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    // Check if user already has access
+    const existing = await this.prisma.tenantUser.findUnique({
+      where: {
+        tenantId_userId: {
+          tenantId,
+          userId,
+        },
+      },
+    });
+
+    if (existing) {
+      throw new ConflictException("User already has access to this tenant");
+    }
+
+    // Add user to tenant
+    const tenantUser = await this.prisma.tenantUser.create({
+      data: {
+        tenantId,
+        userId,
+        role,
+        permissions: {
+          pages: {
+            view: true,
+            create: role === "owner" || role === "admin",
+            edit: role === "owner" || role === "admin",
+            delete: role === "owner",
+          },
+          posts: {
+            view: true,
+            create: role === "owner" || role === "admin",
+            edit: role === "owner" || role === "admin",
+            delete: role === "owner",
+          },
+          assets: {
+            view: true,
+            create: role === "owner" || role === "admin",
+            edit: role === "owner" || role === "admin",
+            delete: role === "owner",
+          },
+          settings: {
+            view: true,
+            edit: role === "owner" || role === "admin",
+          },
+        },
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    return tenantUser;
+  }
 }

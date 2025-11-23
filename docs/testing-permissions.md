@@ -8,18 +8,18 @@ After running `pnpm db:seed`, you'll have the following test users:
 
 ### Agency Team (All have access to Builder at localhost:4001)
 
-| Role | Email | Password | Permissions |
-|------|-------|----------|-------------|
-| **Owner** (Super Admin) | mo@webfunnel.com | password123 | Full platform access, can create/delete users, modify all settings |
-| **Admin** | admin@webfunnel.com | password123 | Can manage users, features, assignments (no destructive actions) |
-| **Developer** | dev@webfunnel.com | password123 | Technical project access, can deploy |
-| **Designer** | designer@webfunnel.com | password123 | Design project access |
-| **Content Manager** | content@webfunnel.com | password123 | Content editing access |
+| Role                    | Email                  | Password    | Permissions                                                        |
+| ----------------------- | ---------------------- | ----------- | ------------------------------------------------------------------ |
+| **Owner** (Super Admin) | mo@webfunnel.com       | password123 | Full platform access, can create/delete users, modify all settings |
+| **Admin**               | admin@webfunnel.com    | password123 | Can manage users, features, assignments (no destructive actions)   |
+| **Developer**           | dev@webfunnel.com      | password123 | Technical project access, can deploy                               |
+| **Designer**            | designer@webfunnel.com | password123 | Design project access                                              |
+| **Content Manager**     | content@webfunnel.com  | password123 | Content editing access                                             |
 
 ### Client Users
 
-| Role | Email | Password | Access |
-|------|-------|----------|--------|
+| Role              | Email                     | Password    | Access                                             |
+| ----------------- | ------------------------- | ----------- | -------------------------------------------------- |
 | **Church Pastor** | pastor@mhbiblebaptist.com | password123 | LOCKED - Features must be unlocked via admin panel |
 
 ---
@@ -39,6 +39,7 @@ Controlled by `@Roles()` and `@SuperAdmin()` decorators in API endpoints:
 ```
 
 **Agency Roles Hierarchy:**
+
 - `owner` - Super admin access (can create/delete users, full CRUD)
 - `admin` - Can manage users, features, assignments (no delete users)
 - `developer` - Technical access to projects
@@ -50,6 +51,7 @@ Controlled by `@Roles()` and `@SuperAdmin()` decorators in API endpoints:
 Controlled by `enabledFeatures` JSONB column in `Tenant` model:
 
 **Available Features:**
+
 ```typescript
 {
   'pages.view': boolean,
@@ -95,12 +97,14 @@ Controlled by `ProjectAssignment` model with custom `permissions` JSONB:
 ### Test Environment Setup
 
 1. **Reseed Database:**
+
    ```bash
    cd api
    pnpm db:reset  # Drops, recreates, and seeds database
    ```
 
 2. **Start Servers:**
+
    ```bash
    # Terminal 1: API
    cd api && pnpm dev  # Port 4000
@@ -121,6 +125,7 @@ Controlled by `ProjectAssignment` model with custom `permissions` JSONB:
 **Login:** `mo@webfunnel.com` / `password123`
 
 ✅ **Should Be Able To:**
+
 - Access all admin endpoints
 - Create new users (`POST /api/admin/users`)
 - Delete users (`DELETE /api/admin/users/:id`)
@@ -166,6 +171,7 @@ curl -b cookies.txt -X POST http://localhost:4000/api/v1/admin/features/tenant/T
 **Login:** `admin@webfunnel.com` / `password123`
 
 ✅ **Should Be Able To:**
+
 - List all users
 - Invite new users
 - Update existing users
@@ -173,6 +179,7 @@ curl -b cookies.txt -X POST http://localhost:4000/api/v1/admin/features/tenant/T
 - Manage project assignments
 
 ❌ **Should NOT Be Able To:**
+
 - Create users directly (only invite)
 - Delete users
 - Access super-admin-only endpoints
@@ -222,6 +229,7 @@ curl -b cookies-admin.txt -X DELETE http://localhost:4000/api/v1/admin/users/USE
 **Login:** `dev@webfunnel.com` / `password123`
 
 ❌ **Should NOT Be Able To:**
+
 - Access any admin endpoints (`/api/v1/admin/*`)
 - Manage users, features, or projects
 
@@ -335,13 +343,13 @@ curl -b cookies-pastor.txt -X POST http://localhost:4000/api/v1/pages \
 
 **Test each role to verify UI restrictions:**
 
-| Role | Should See | Should NOT See |
-|------|-----------|----------------|
-| Owner | All admin panels, delete buttons | - |
-| Admin | User management, feature management | Delete user button |
-| Developer | Dashboard, assigned projects | Admin panels |
-| Designer | Dashboard, assigned projects | Admin panels |
-| Content | Dashboard, content areas | Admin panels, technical settings |
+| Role      | Should See                          | Should NOT See                   |
+| --------- | ----------------------------------- | -------------------------------- |
+| Owner     | All admin panels, delete buttons    | -                                |
+| Admin     | User management, feature management | Delete user button               |
+| Developer | Dashboard, assigned projects        | Admin panels                     |
+| Designer  | Dashboard, assigned projects        | Admin panels                     |
+| Content   | Dashboard, content areas            | Admin panels, technical settings |
 
 ---
 
@@ -411,6 +419,7 @@ echo "🎉 Permission tests complete!"
 ```
 
 Make executable and run:
+
 ```bash
 chmod +x api/scripts/test-permissions.sh
 ./api/scripts/test-permissions.sh
@@ -422,31 +431,31 @@ chmod +x api/scripts/test-permissions.sh
 
 ### Admin Operations Matrix
 
-| Operation | Owner | Admin | Developer | Designer | Content | Client |
-|-----------|-------|-------|-----------|----------|---------|--------|
-| List Users | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Create User | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Invite User | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Update User | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Delete User | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Manage Features | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Manage Projects | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| View Tenants | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Operation       | Owner | Admin | Developer | Designer | Content | Client |
+| --------------- | ----- | ----- | --------- | -------- | ------- | ------ |
+| List Users      | ✅    | ✅    | ❌        | ❌       | ❌      | ❌     |
+| Create User     | ✅    | ❌    | ❌        | ❌       | ❌      | ❌     |
+| Invite User     | ✅    | ✅    | ❌        | ❌       | ❌      | ❌     |
+| Update User     | ✅    | ✅    | ❌        | ❌       | ❌      | ❌     |
+| Delete User     | ✅    | ❌    | ❌        | ❌       | ❌      | ❌     |
+| Manage Features | ✅    | ✅    | ❌        | ❌       | ❌      | ❌     |
+| Manage Projects | ✅    | ✅    | ❌        | ❌       | ❌      | ❌     |
+| View Tenants    | ✅    | ✅    | ❌        | ❌       | ❌      | ❌     |
 
 ### Client Content Operations (Feature-Gated)
 
-| Operation | Requires Feature |
-|-----------|-----------------|
-| View Pages | `pages.view` |
-| Edit Pages | `pages.edit` |
-| Create Pages | `pages.create` |
-| Delete Pages | `pages.delete` |
-| Access Builder | `builder.access` |
+| Operation         | Requires Feature |
+| ----------------- | ---------------- |
+| View Pages        | `pages.view`     |
+| Edit Pages        | `pages.edit`     |
+| Create Pages      | `pages.create`   |
+| Delete Pages      | `pages.delete`   |
+| Access Builder    | `builder.access` |
 | Use Custom Blocks | `builder.blocks` |
-| Upload Assets | `assets.upload` |
-| Delete Assets | `assets.delete` |
-| Create Posts | `posts.create` |
-| Edit Posts | `posts.edit` |
+| Upload Assets     | `assets.upload`  |
+| Delete Assets     | `assets.delete`  |
+| Create Posts      | `posts.create`   |
+| Edit Posts        | `posts.edit`     |
 
 ---
 
@@ -455,6 +464,7 @@ chmod +x api/scripts/test-permissions.sh
 ### Issue: "403 Forbidden" for valid user
 
 **Check:**
+
 1. User has correct `agencyRole` in database
 2. Endpoint has `@Roles()` decorator with required roles
 3. JWT token is valid (check cookies)
@@ -462,6 +472,7 @@ chmod +x api/scripts/test-permissions.sh
 ### Issue: Client can access locked features
 
 **Check:**
+
 1. Feature gate middleware is applied
 2. `enabledFeatures` column in Tenant table
 3. Feature key matches exactly (case-sensitive)
@@ -469,6 +480,7 @@ chmod +x api/scripts/test-permissions.sh
 ### Issue: Admin can delete users
 
 **Check:**
+
 1. Delete endpoint has `@SuperAdmin()` decorator
 2. User's `isSuperAdmin` field is `false`
 

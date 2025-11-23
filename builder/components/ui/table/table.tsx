@@ -7,12 +7,7 @@ const Table = React.forwardRef<
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
   <div data-slot="table-wrapper">
-    <table
-      ref={ref}
-      data-slot="table"
-      className={cn(className)}
-      {...props}
-    />
+    <table ref={ref} data-slot="table" className={cn(className)} {...props} />
   </div>
 ));
 Table.displayName = "Table";
@@ -60,12 +55,7 @@ const TableRow = React.forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
 >(({ className, ...props }, ref) => (
-  <tr
-    ref={ref}
-    data-slot="table-row"
-    className={cn(className)}
-    {...props}
-  />
+  <tr ref={ref} data-slot="table-row" className={cn(className)} {...props} />
 ));
 TableRow.displayName = "TableRow";
 
@@ -73,12 +63,7 @@ const TableHead = React.forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
-  <th
-    ref={ref}
-    data-slot="table-head"
-    className={cn(className)}
-    {...props}
-  />
+  <th ref={ref} data-slot="table-head" className={cn(className)} {...props} />
 ));
 TableHead.displayName = "TableHead";
 
@@ -86,12 +71,7 @@ const TableCell = React.forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
-  <td
-    ref={ref}
-    data-slot="table-cell"
-    className={cn(className)}
-    {...props}
-  />
+  <td ref={ref} data-slot="table-cell" className={cn(className)} {...props} />
 ));
 TableCell.displayName = "TableCell";
 

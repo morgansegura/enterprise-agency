@@ -1,1 +1,1 @@
-export { LayoutHeading } from './layout-heading'
+export { LayoutHeading } from "./layout-heading";

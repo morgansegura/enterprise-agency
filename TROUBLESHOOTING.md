@@ -13,18 +13,22 @@
 ### API Errors
 
 #### Error: "tokenVersion does not exist"
+
 **Status:** ✅ FIXED (Prisma types regenerated)
 
 **If still showing:**
+
 ```bash
 cd api
 pnpm prisma generate
 ```
 
-#### Error: "JWT_SECRET is not configured"  
+#### Error: "JWT_SECRET is not configured"
+
 **Expected in development!** This is actually good - it means security is working.
 
 **Fix:**
+
 ```bash
 cd api
 # Make sure you have .env file with JWT_SECRET set
@@ -32,17 +36,21 @@ cat .env | grep JWT_SECRET
 ```
 
 If empty, add it:
+
 ```env
 JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
 ```
 
 #### TypeScript errors in auth.service.ts
+
 **Status:** ✅ FIXED (removed hardcoded secrets)
 
 ### Builder Errors
 
 #### Cannot find module '@/lib/...'
+
 **Check:** Make sure TypeScript paths are configured in `tsconfig.json`:
+
 ```json
 {
   "compilerOptions": {
@@ -54,7 +62,9 @@ JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
 ```
 
 #### Import errors for auth functions
+
 **Check these files exist:**
+
 - `builder/lib/auth.ts` ✓
 - `builder/lib/api-client.ts` ✓
 - `builder/lib/stores/auth-store.ts` ✓
@@ -68,31 +78,36 @@ All should exist already.
 ## 🧪 Quick Health Check
 
 ### Test API
+
 ```bash
 cd api
 pnpm dev
 ```
 
 **Expected output:**
+
 ```
 🚀 API server running on http://localhost:4000
 📚 Health check: http://localhost:4000/api/v1/health
 ```
 
 **Test health endpoint:**
+
 ```bash
 curl http://localhost:4000/api/v1/health
 ```
 
 Should return: `{"status":"ok"}`
 
-### Test Builder  
+### Test Builder
+
 ```bash
 cd builder
 pnpm dev
 ```
 
 **Expected output:**
+
 ```
 ▲ Next.js 15.x.x
 - Local: http://localhost:4001
@@ -105,11 +120,13 @@ pnpm dev
 ## ⚠️ Warnings vs Errors
 
 ### Warnings (Safe to ignore)
+
 - ✅ "deprecated eslint@8.57.1" - Known, not breaking
 - ✅ Deprecation warnings in dependencies - Normal
 - ✅ "Prisma Migrate detected non-interactive" - Expected until you run migration
 
 ### Errors (Need to fix)
+
 - ❌ "tokenVersion does not exist" - Run `pnpm prisma generate`
 - ❌ "Cannot find module" - Check file paths
 - ❌ "JWT_SECRET is not configured" - Add to .env
@@ -119,13 +136,16 @@ pnpm dev
 ## 🚨 If Servers Won't Start
 
 ### API won't start
+
 1. **Check database is running:**
+
    ```bash
    # Check if PostgreSQL is running on port 5433
    lsof -i :5433
    ```
 
 2. **Check .env has DATABASE_URL:**
+
    ```bash
    cd api
    cat .env | grep DATABASE_URL
@@ -138,12 +158,13 @@ pnpm dev
    ```
 
 ### Builder won't start
+
 1. **Check port 4001 is free:**
    ```bash
    lsof -i :4001
    ```
-   
 2. **Kill if needed:**
+
    ```bash
    kill -9 <PID>
    ```
@@ -184,7 +205,7 @@ After running servers, verify:
 cd api
 pnpm build
 
-# Check Builder build  
+# Check Builder build
 cd builder
 pnpm build
 
@@ -204,6 +225,7 @@ pnpm prisma generate
 Once errors are cleared:
 
 1. **Run database migration:**
+
    ```bash
    cd api
    pnpm db:migrate -- --name add_token_version

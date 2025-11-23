@@ -5,24 +5,28 @@
 ### KEEP - Core CMS Functionality
 
 **✅ auth/** - Authentication & authorization
+
 - JWT strategy
 - Login/register/refresh
 - Role-based access control
 - **Status:** Keep as-is, critical
 
 **✅ tenants/** - Multi-tenant management
+
 - Customer site management
 - Theme configuration
 - Feature flags
 - **Status:** Keep, extend with site config
 
 **✅ users/** - User management
+
 - Agency users
 - Customer editors
 - Permissions
 - **Status:** Keep as-is
 
 **✅ pages/** - Content pages
+
 - CRUD operations
 - Block-based content
 - SEO metadata
@@ -30,22 +34,26 @@
 - **Status:** Keep, extend with church blocks
 
 **✅ assets/** - Media management
+
 - File uploads
 - Image optimization
 - Media library
 - **Status:** Keep as-is
 
 **✅ health/** - Health checks
+
 - API status
 - Database connectivity
 - **Status:** Keep as-is
 
 **✅ webhooks/** - Integration webhooks
+
 - Event notifications
 - External integrations
 - **Status:** Keep for future integrations
 
 **✅ posts/** - Blog/news posts
+
 - Church announcements
 - Sermon notes
 - News updates
@@ -56,58 +64,72 @@
 ### REMOVE - E-commerce & CRM (Not Needed)
 
 **❌ products/** - E-commerce products
+
 - **Reason:** Churches don't sell products via this CMS
 - **Remove:** Yes
 
 **❌ orders/** - E-commerce orders
+
 - **Reason:** No e-commerce functionality needed
 - **Remove:** Yes
 
 **❌ cart/** - Shopping cart
+
 - **Reason:** No e-commerce
 - **Remove:** Yes
 
 **❌ checkout/** - Checkout flow
+
 - **Reason:** No e-commerce
 - **Remove:** Yes
 
 **❌ discount-codes/** - Coupon codes
+
 - **Reason:** No e-commerce
 - **Remove:** Yes
 
 **❌ shipping-zones/** - Shipping configuration
+
 - **Reason:** No e-commerce
 - **Remove:** Yes
 
 **❌ customers/** - E-commerce customers
+
 - **Reason:** Different from users, e-commerce specific
 - **Remove:** Yes
 
 **❌ portals/** - Customer portals for file sharing
+
 - **Reason:** Overly complex for church CMS
 - **Remove:** Yes
 
 **❌ leads/** - CRM lead management
+
 - **Reason:** Agency-specific, not for churches
 - **Remove:** Yes
 
 **❌ projects/** - Project management
+
 - **Reason:** Agency-specific workflow
 - **Remove:** Yes
 
 **❌ tasks/** - Task management
+
 - **Reason:** Agency-specific workflow
 - **Remove:** Yes
 
 **❌ activities/** - Activity timeline
+
 - **Reason:** CRM-specific feature
 - **Remove:** Yes
 
 **❌ sites/** - Unclear purpose (check before removing)
+
 - **Reason:** Likely duplicate of tenants
 - **Action:** Check implementation first
 
 **❌ themes/** - Theme management (check before removing)
+
 - **Reason:** Theme config is in Tenant model
 - **Action:** Check if actually used
 
@@ -116,6 +138,7 @@
 ## Removal Steps
 
 ### Phase 1: Remove Module Directories
+
 ```bash
 cd api/src/modules/
 rm -rf products orders cart checkout discount-codes shipping-zones
@@ -123,16 +146,19 @@ rm -rf customers portals leads projects tasks activities
 ```
 
 ### Phase 2: Remove from app.module.ts
+
 - Remove imports
 - Remove from imports array
 - Clean up dependencies
 
 ### Phase 3: Clean Prisma Schema
+
 - Remove unused models
 - Remove unused relations
 - Create migration
 
 ### Phase 4: Remove Dependencies
+
 - Check package.json for e-commerce specific deps
 - Remove if unused elsewhere
 
@@ -145,6 +171,7 @@ rm -rf customers portals leads projects tasks activities
 **Purpose:** Centralized configuration per tenant
 
 **Endpoints:**
+
 ```typescript
 GET    /api/tenants/:tenantId/config
 PUT    /api/tenants/:tenantId/config
@@ -159,6 +186,7 @@ PUT    /api/tenants/:tenantId/config/logos
 ```
 
 **Data Structure:**
+
 ```typescript
 {
   headerConfig: {
@@ -193,6 +221,7 @@ PUT    /api/tenants/:tenantId/config/logos
 **Access Pattern:** Read-only, high-volume, cacheable
 
 **Endpoints Needed:**
+
 ```typescript
 // Pages - Public
 GET /api/public/sites/:slug/pages/:pageSlug
@@ -208,6 +237,7 @@ GET /api/public/sites/:slug/posts/:postSlug
 ```
 
 **Response Format (Optimized):**
+
 ```json
 {
   "page": {
@@ -223,6 +253,7 @@ GET /api/public/sites/:slug/posts/:postSlug
 **Access Pattern:** Read-write, authenticated, real-time
 
 **Endpoints Needed:**
+
 ```typescript
 // Pages - Full CRUD
 GET    /api/pages?tenantId=...
@@ -262,6 +293,7 @@ PATCH  /api/users/:id
 ```
 
 **Response Format (Full):**
+
 ```json
 {
   "page": {
@@ -286,6 +318,7 @@ PATCH  /api/users/:id
 ### 1. Separation of Concerns
 
 **Public API** (`/api/public/*`)
+
 - No auth required
 - Only published content
 - Aggressive caching
@@ -293,6 +326,7 @@ PATCH  /api/users/:id
 - Rate limited by IP
 
 **Admin API** (`/api/*`)
+
 - Auth required
 - Full CRUD access
 - No caching (or short TTL)
@@ -302,6 +336,7 @@ PATCH  /api/users/:id
 ### 2. Multi-Tenancy Strategy
 
 **All endpoints scoped by tenant:**
+
 ```typescript
 // Via header (preferred)
 X-Tenant-Id: church-slug
@@ -314,15 +349,17 @@ church-slug.yourdomain.com
 ```
 
 **Database queries always filtered:**
+
 ```typescript
 this.prisma.page.findMany({
-  where: { tenantId }  // ALWAYS present
+  where: { tenantId }, // ALWAYS present
 });
 ```
 
 ### 3. Response Format Standardization
 
 **Success:**
+
 ```json
 {
   "data": { ... },
@@ -335,24 +372,25 @@ this.prisma.page.findMany({
 ```
 
 **Error:**
+
 ```json
 {
   "statusCode": 400,
   "message": "Validation failed",
-  "errors": [
-    { "field": "title", "message": "Title is required" }
-  ]
+  "errors": [{ "field": "title", "message": "Title is required" }]
 }
 ```
 
 ### 4. Caching Strategy
 
 **Client (Frontend):**
+
 - CDN cache: 1 hour
 - Browser cache: 5 minutes
 - Revalidate on publish
 
 **Builder (Admin):**
+
 - No CDN cache
 - Browser cache: disabled
 - Real-time updates
@@ -360,12 +398,14 @@ this.prisma.page.findMany({
 ### 5. Performance Optimization
 
 **Queries:**
+
 - Indexed tenant_id on all tables
 - Composite indexes for common queries
 - Limit + offset pagination
 - Cursor-based for large datasets
 
 **Responses:**
+
 - Gzip compression
 - JSON serialization optimization
 - Field selection (sparse fieldsets)
@@ -374,11 +414,13 @@ this.prisma.page.findMany({
 ### 6. Security
 
 **Public API:**
+
 - Rate limiting (100 req/min per IP)
 - CORS whitelist
 - No sensitive data exposure
 
 **Admin API:**
+
 - JWT authentication
 - Role-based access (owner/admin/editor)
 - Audit logging
@@ -390,6 +432,7 @@ this.prisma.page.findMany({
 ## Database Schema Changes
 
 ### Tables to Remove:
+
 ```sql
 DROP TABLE products;
 DROP TABLE orders;
@@ -407,6 +450,7 @@ DROP TABLE portal_documents;
 ```
 
 ### Tables to Keep & Modify:
+
 ```sql
 -- Tenants: Add config columns
 ALTER TABLE tenants
@@ -431,27 +475,32 @@ ADD COLUMN logos_config JSONB;
 ## Migration Plan
 
 ### Step 1: Remove Modules (Today)
+
 - Delete unnecessary module directories
 - Update app.module.ts
 - Test API starts
 
 ### Step 2: Update Prisma Schema (Today)
+
 - Remove unused models
 - Add config columns to Tenant
 - Generate migration
 - Run migration
 
 ### Step 3: Extend Pages Module (Tomorrow)
+
 - Add church block DTOs
 - Update validation
 - Test with sample data
 
 ### Step 4: Create SiteConfig Module (Tomorrow)
+
 - Build CRUD endpoints
 - Add validation
 - Test with Builder
 
 ### Step 5: Test Integration (Day 3)
+
 - Builder → API → Database
 - Client → API → Render
 - End-to-end flow

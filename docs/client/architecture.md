@@ -36,16 +36,19 @@ This platform is built on a **composable block system** designed for maximum fle
 **Purpose**: Handle all layout concerns - background, spacing, width, alignment.
 
 **Responsibilities**:
+
 - Background colors/patterns
 - Vertical spacing (padding)
 - Content width constraints
 - Horizontal alignment
 
 **Does NOT**:
+
 - Render content directly
 - Handle internal layout of blocks
 
 **Example**:
+
 ```typescript
 {
   _type: "section",
@@ -294,17 +297,19 @@ Blocks and sections reference theme values:
 The same data structure works across platforms:
 
 ### Web (React)
+
 ```tsx
 import { BlockRenderer } from "@/components/block-renderer";
 
-<BlockRenderer blocks={pageData.blocks} />
+<BlockRenderer blocks={pageData.blocks} />;
 ```
 
 ### Mobile (React Native)
+
 ```tsx
 import { BlockRenderer } from "@/components/block-renderer.native";
 
-<BlockRenderer blocks={pageData.blocks} />
+<BlockRenderer blocks={pageData.blocks} />;
 ```
 
 The data is identical. Only the component implementations differ.
@@ -314,6 +319,7 @@ The data is identical. Only the component implementations differ.
 ### Adding a New Content Block
 
 1. Define data type in `lib/blocks/types.ts`:
+
 ```typescript
 export type VideoBlockData = {
   url: string;
@@ -323,6 +329,7 @@ export type VideoBlockData = {
 ```
 
 2. Add to `ContentBlock` union:
+
 ```typescript
 export type ContentBlock =
   | { _type: "heading-block"; ... }

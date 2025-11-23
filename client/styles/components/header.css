@@ -7,7 +7,7 @@
 
 :root {
   /* Header structural tokens */
-  --header-height: var(--space-16);
+  --header-height: var(--space-8);
   --header-height-shrunk: var(--space-12);
   --header-padding-inline: var(--spacing-container);
   --header-padding-block: var(--space-4);

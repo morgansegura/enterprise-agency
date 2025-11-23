@@ -141,38 +141,38 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ```typescript
 // src/lib/api/client.ts
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 class ApiError extends Error {
   constructor(
     public status: number,
-    public data: any
+    public data: any,
   ) {
-    super(data.message || 'An error occurred')
+    super(data.message || "An error occurred");
   }
 }
 
 export async function fetchApi<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<T> {
-  const url = `${API_URL}${endpoint}`
+  const url = `${API_URL}${endpoint}`;
 
   const response = await fetch(url, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
-    credentials: 'include', // Send cookies
-  })
+    credentials: "include", // Send cookies
+  });
 
   if (!response.ok) {
-    const error = await response.json()
-    throw new ApiError(response.status, error)
+    const error = await response.json();
+    throw new ApiError(response.status, error);
   }
 
-  return response.json()
+  return response.json();
 }
 ```
 
@@ -184,21 +184,21 @@ export async function fetchApi<T>(
 
 ```typescript
 // src/lib/hooks/use-pages.ts
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { pagesApi } from '@/lib/api/pages'
-import type { Page, CreatePageDto, UpdatePageDto } from '@/types'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { pagesApi } from "@/lib/api/pages";
+import type { Page, CreatePageDto, UpdatePageDto } from "@/types";
 
 // Query Keys
 export const pageKeys = {
-  all: ['pages'] as const,
-  lists: () => [...pageKeys.all, 'list'] as const,
+  all: ["pages"] as const,
+  lists: () => [...pageKeys.all, "list"] as const,
   list: (tenantId: string, filters?: any) =>
     [...pageKeys.lists(), tenantId, filters] as const,
-  details: () => [...pageKeys.all, 'detail'] as const,
+  details: () => [...pageKeys.all, "detail"] as const,
   detail: (id: string) => [...pageKeys.details(), id] as const,
   bySlug: (tenantId: string, slug: string) =>
-    [...pageKeys.all, 'slug', tenantId, slug] as const,
-}
+    [...pageKeys.all, "slug", tenantId, slug] as const,
+};
 
 // List Pages
 export function usePages(tenantId: string, filters?: any) {
@@ -206,7 +206,7 @@ export function usePages(tenantId: string, filters?: any) {
     queryKey: pageKeys.list(tenantId, filters),
     queryFn: () => pagesApi.list(tenantId, filters),
     enabled: !!tenantId,
-  })
+  });
 }
 
 // Get Single Page
@@ -215,97 +215,97 @@ export function usePage(id: string) {
     queryKey: pageKeys.detail(id),
     queryFn: () => pagesApi.getById(id),
     enabled: !!id,
-  })
+  });
 }
 
 // Create Page
 export function useCreatePage() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: CreatePageDto) => pagesApi.create(data),
     onSuccess: (newPage) => {
       // Invalidate pages list
-      queryClient.invalidateQueries({ queryKey: pageKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: pageKeys.lists() });
 
       // Optimistically add to cache
-      queryClient.setQueryData(pageKeys.detail(newPage.id), newPage)
+      queryClient.setQueryData(pageKeys.detail(newPage.id), newPage);
     },
-  })
+  });
 }
 
 // Update Page
 export function useUpdatePage() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdatePageDto }) =>
       pagesApi.update(id, data),
     onMutate: async ({ id, data }) => {
       // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: pageKeys.detail(id) })
+      await queryClient.cancelQueries({ queryKey: pageKeys.detail(id) });
 
       // Snapshot previous value
-      const previousPage = queryClient.getQueryData(pageKeys.detail(id))
+      const previousPage = queryClient.getQueryData(pageKeys.detail(id));
 
       // Optimistically update
       queryClient.setQueryData(pageKeys.detail(id), (old: any) => ({
         ...old,
         ...data,
-      }))
+      }));
 
-      return { previousPage }
+      return { previousPage };
     },
     onError: (err, { id }, context) => {
       // Rollback on error
       if (context?.previousPage) {
-        queryClient.setQueryData(pageKeys.detail(id), context.previousPage)
+        queryClient.setQueryData(pageKeys.detail(id), context.previousPage);
       }
     },
     onSettled: (data, error, { id }) => {
       // Refetch after mutation
-      queryClient.invalidateQueries({ queryKey: pageKeys.detail(id) })
-      queryClient.invalidateQueries({ queryKey: pageKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: pageKeys.detail(id) });
+      queryClient.invalidateQueries({ queryKey: pageKeys.lists() });
     },
-  })
+  });
 }
 
 // Delete Page
 export function useDeletePage() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (id: string) => pagesApi.delete(id),
     onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: pageKeys.lists() })
-      queryClient.removeQueries({ queryKey: pageKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: pageKeys.lists() });
+      queryClient.removeQueries({ queryKey: pageKeys.detail(id) });
     },
-  })
+  });
 }
 
 // Publish Page
 export function usePublishPage() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (id: string) => pagesApi.publish(id),
     onSuccess: (updatedPage) => {
-      queryClient.setQueryData(pageKeys.detail(updatedPage.id), updatedPage)
-      queryClient.invalidateQueries({ queryKey: pageKeys.lists() })
+      queryClient.setQueryData(pageKeys.detail(updatedPage.id), updatedPage);
+      queryClient.invalidateQueries({ queryKey: pageKeys.lists() });
     },
-  })
+  });
 }
 
 // Duplicate Page
 export function useDuplicatePage() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (id: string) => pagesApi.duplicate(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: pageKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: pageKeys.lists() });
     },
-  })
+  });
 }
 ```
 
@@ -356,39 +356,43 @@ export default function PagesListPage() {
 
 ```typescript
 // src/lib/stores/editor-store.ts
-import { create } from 'zustand'
-import { devtools, subscribeWithSelector } from 'zustand/middleware'
-import type { Block, Section } from '@/lib/blocks/types'
+import { create } from "zustand";
+import { devtools, subscribeWithSelector } from "zustand/middleware";
+import type { Block, Section } from "@/lib/blocks/types";
 
 interface EditorState {
   // Current editing state
-  sections: Section[]
-  selectedBlockKey: string | null
-  hoveredBlockKey: string | null
+  sections: Section[];
+  selectedBlockKey: string | null;
+  hoveredBlockKey: string | null;
 
   // History (undo/redo)
-  history: Section[][]
-  historyIndex: number
-  canUndo: boolean
-  canRedo: boolean
+  history: Section[][];
+  historyIndex: number;
+  canUndo: boolean;
+  canRedo: boolean;
 
   // Drag & drop
-  isDragging: boolean
-  draggedBlockKey: string | null
+  isDragging: boolean;
+  draggedBlockKey: string | null;
 
   // Actions
-  setSections: (sections: Section[]) => void
-  selectBlock: (key: string | null) => void
-  hoverBlock: (key: string | null) => void
-  updateBlock: (key: string, updates: Partial<Block>) => void
-  deleteBlock: (key: string) => void
-  duplicateBlock: (key: string) => void
-  moveBlock: (fromKey: string, toKey: string, position: 'before' | 'after') => void
-  undo: () => void
-  redo: () => void
-  startDragging: (key: string) => void
-  stopDragging: () => void
-  resetEditor: () => void
+  setSections: (sections: Section[]) => void;
+  selectBlock: (key: string | null) => void;
+  hoverBlock: (key: string | null) => void;
+  updateBlock: (key: string, updates: Partial<Block>) => void;
+  deleteBlock: (key: string) => void;
+  duplicateBlock: (key: string) => void;
+  moveBlock: (
+    fromKey: string,
+    toKey: string,
+    position: "before" | "after",
+  ) => void;
+  undo: () => void;
+  redo: () => void;
+  startDragging: (key: string) => void;
+  stopDragging: () => void;
+  resetEditor: () => void;
 }
 
 export const useEditorStore = create<EditorState>()(
@@ -407,7 +411,7 @@ export const useEditorStore = create<EditorState>()(
 
       // Actions
       setSections: (sections) => {
-        const { history, historyIndex } = get()
+        const { history, historyIndex } = get();
 
         set({
           sections,
@@ -416,7 +420,7 @@ export const useEditorStore = create<EditorState>()(
           historyIndex: historyIndex + 1,
           canUndo: true,
           canRedo: false,
-        })
+        });
       },
 
       selectBlock: (key) => set({ selectedBlockKey: key }),
@@ -424,51 +428,56 @@ export const useEditorStore = create<EditorState>()(
       hoverBlock: (key) => set({ hoveredBlockKey: key }),
 
       updateBlock: (key, updates) => {
-        const { sections } = get()
-        const newSections = updateBlockInSections(sections, key, updates)
-        get().setSections(newSections)
+        const { sections } = get();
+        const newSections = updateBlockInSections(sections, key, updates);
+        get().setSections(newSections);
       },
 
       deleteBlock: (key) => {
-        const { sections } = get()
-        const newSections = deleteBlockFromSections(sections, key)
-        get().setSections(newSections)
-        set({ selectedBlockKey: null })
+        const { sections } = get();
+        const newSections = deleteBlockFromSections(sections, key);
+        get().setSections(newSections);
+        set({ selectedBlockKey: null });
       },
 
       duplicateBlock: (key) => {
-        const { sections } = get()
-        const newSections = duplicateBlockInSections(sections, key)
-        get().setSections(newSections)
+        const { sections } = get();
+        const newSections = duplicateBlockInSections(sections, key);
+        get().setSections(newSections);
       },
 
       moveBlock: (fromKey, toKey, position) => {
-        const { sections } = get()
-        const newSections = moveBlockInSections(sections, fromKey, toKey, position)
-        get().setSections(newSections)
+        const { sections } = get();
+        const newSections = moveBlockInSections(
+          sections,
+          fromKey,
+          toKey,
+          position,
+        );
+        get().setSections(newSections);
       },
 
       undo: () => {
-        const { history, historyIndex } = get()
+        const { history, historyIndex } = get();
         if (historyIndex > 0) {
           set({
             sections: history[historyIndex - 1],
             historyIndex: historyIndex - 1,
             canUndo: historyIndex > 1,
             canRedo: true,
-          })
+          });
         }
       },
 
       redo: () => {
-        const { history, historyIndex } = get()
+        const { history, historyIndex } = get();
         if (historyIndex < history.length - 1) {
           set({
             sections: history[historyIndex + 1],
             historyIndex: historyIndex + 1,
             canUndo: true,
             canRedo: historyIndex < history.length - 2,
-          })
+          });
         }
       },
 
@@ -488,32 +497,40 @@ export const useEditorStore = create<EditorState>()(
           isDragging: false,
           draggedBlockKey: null,
         }),
-    }))
-  )
-)
+    })),
+  ),
+);
 
 // Helper functions
-function updateBlockInSections(sections: Section[], key: string, updates: Partial<Block>): Section[] {
+function updateBlockInSections(
+  sections: Section[],
+  key: string,
+  updates: Partial<Block>,
+): Section[] {
   // Recursively find and update block
   return sections.map((section) => ({
     ...section,
     blocks: updateBlockInBlocks(section.blocks, key, updates),
-  }))
+  }));
 }
 
-function updateBlockInBlocks(blocks: Block[], key: string, updates: Partial<Block>): Block[] {
+function updateBlockInBlocks(
+  blocks: Block[],
+  key: string,
+  updates: Partial<Block>,
+): Block[] {
   return blocks.map((block) => {
     if (block._key === key) {
-      return { ...block, ...updates }
+      return { ...block, ...updates };
     }
-    if ('blocks' in block && block.blocks) {
+    if ("blocks" in block && block.blocks) {
       return {
         ...block,
         blocks: updateBlockInBlocks(block.blocks, key, updates),
-      }
+      };
     }
-    return block
-  })
+    return block;
+  });
 }
 
 // ... more helper functions for delete, duplicate, move
@@ -525,27 +542,27 @@ function updateBlockInBlocks(blocks: Block[], key: string, updates: Partial<Bloc
 
 ```typescript
 // src/lib/stores/ui-store.ts
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface UIState {
   // Panels
-  leftPanelOpen: boolean
-  rightPanelOpen: boolean
-  activePanel: 'blocks' | 'layers' | 'settings' | null
+  leftPanelOpen: boolean;
+  rightPanelOpen: boolean;
+  activePanel: "blocks" | "layers" | "settings" | null;
 
   // Preview
-  previewMode: 'desktop' | 'tablet' | 'mobile'
+  previewMode: "desktop" | "tablet" | "mobile";
 
   // Theme
-  darkMode: boolean
+  darkMode: boolean;
 
   // Actions
-  toggleLeftPanel: () => void
-  toggleRightPanel: () => void
-  setActivePanel: (panel: 'blocks' | 'layers' | 'settings' | null) => void
-  setPreviewMode: (mode: 'desktop' | 'tablet' | 'mobile') => void
-  toggleDarkMode: () => void
+  toggleLeftPanel: () => void;
+  toggleRightPanel: () => void;
+  setActivePanel: (panel: "blocks" | "layers" | "settings" | null) => void;
+  setPreviewMode: (mode: "desktop" | "tablet" | "mobile") => void;
+  toggleDarkMode: () => void;
 }
 
 export const useUIStore = create<UIState>()(
@@ -553,21 +570,23 @@ export const useUIStore = create<UIState>()(
     (set) => ({
       leftPanelOpen: true,
       rightPanelOpen: true,
-      activePanel: 'blocks',
-      previewMode: 'desktop',
+      activePanel: "blocks",
+      previewMode: "desktop",
       darkMode: false,
 
-      toggleLeftPanel: () => set((state) => ({ leftPanelOpen: !state.leftPanelOpen })),
-      toggleRightPanel: () => set((state) => ({ rightPanelOpen: !state.rightPanelOpen })),
+      toggleLeftPanel: () =>
+        set((state) => ({ leftPanelOpen: !state.leftPanelOpen })),
+      toggleRightPanel: () =>
+        set((state) => ({ rightPanelOpen: !state.rightPanelOpen })),
       setActivePanel: (panel) => set({ activePanel: panel }),
       setPreviewMode: (mode) => set({ previewMode: mode }),
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
     }),
     {
-      name: 'builder-ui-storage',
-    }
-  )
-)
+      name: "builder-ui-storage",
+    },
+  ),
+);
 ```
 
 ---
@@ -735,39 +754,39 @@ export function BlocksPanel() {
 
 ```typescript
 // src/lib/hooks/use-auth.ts
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { authApi } from '@/lib/api/auth'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { authApi } from "@/lib/api/auth";
 
 export function useAuth() {
   return useQuery({
-    queryKey: ['auth', 'me'],
+    queryKey: ["auth", "me"],
     queryFn: () => authApi.me(),
     retry: false,
     staleTime: Infinity,
-  })
+  });
 }
 
 export function useLogin() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (credentials: { email: string; password: string }) =>
       authApi.login(credentials),
     onSuccess: (user) => {
-      queryClient.setQueryData(['auth', 'me'], user)
+      queryClient.setQueryData(["auth", "me"], user);
     },
-  })
+  });
 }
 
 export function useLogout() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => authApi.logout(),
     onSuccess: () => {
-      queryClient.clear()
+      queryClient.clear();
     },
-  })
+  });
 }
 ```
 
@@ -777,49 +796,49 @@ export function useLogout() {
 
 ```typescript
 // src/components/editor/keyboard-shortcuts.tsx
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { useEditorStore } from '@/lib/stores/editor-store'
-import { useUpdatePage } from '@/lib/hooks/use-pages'
+import { useEffect } from "react";
+import { useEditorStore } from "@/lib/stores/editor-store";
+import { useUpdatePage } from "@/lib/hooks/use-pages";
 
 export function KeyboardShortcuts({ pageId }: { pageId: string }) {
-  const { undo, redo, deleteBlock, selectedBlockKey } = useEditorStore()
-  const updatePage = useUpdatePage()
+  const { undo, redo, deleteBlock, selectedBlockKey } = useEditorStore();
+  const updatePage = useUpdatePage();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Cmd/Ctrl + Z - Undo
-      if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
-        e.preventDefault()
-        undo()
+      if ((e.metaKey || e.ctrlKey) && e.key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        undo();
       }
 
       // Cmd/Ctrl + Shift + Z - Redo
-      if ((e.metaKey || e.ctrlKey) && e.key === 'z' && e.shiftKey) {
-        e.preventDefault()
-        redo()
+      if ((e.metaKey || e.ctrlKey) && e.key === "z" && e.shiftKey) {
+        e.preventDefault();
+        redo();
       }
 
       // Cmd/Ctrl + S - Save
-      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
-        e.preventDefault()
-        const sections = useEditorStore.getState().sections
-        updatePage.mutate({ id: pageId, data: { content: { sections } } })
+      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+        e.preventDefault();
+        const sections = useEditorStore.getState().sections;
+        updatePage.mutate({ id: pageId, data: { content: { sections } } });
       }
 
       // Delete/Backspace - Delete selected block
-      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedBlockKey) {
-        e.preventDefault()
-        deleteBlock(selectedBlockKey)
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedBlockKey) {
+        e.preventDefault();
+        deleteBlock(selectedBlockKey);
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [undo, redo, deleteBlock, selectedBlockKey, pageId, updatePage])
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [undo, redo, deleteBlock, selectedBlockKey, pageId, updatePage]);
 
-  return null
+  return null;
 }
 ```
 

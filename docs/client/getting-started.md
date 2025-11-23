@@ -29,22 +29,22 @@ Create mock page data in `data/mocks/`:
 ```typescript
 // data/mocks/home.mock.ts
 export const homePageMock = {
-  id: 'page_home',
-  slug: 'home',
-  title: 'Home',
+  id: "page_home",
+  slug: "home",
+  title: "Home",
   blocks: [
     {
-      _key: 'block_1',
-      _type: 'heading-block',
+      _key: "block_1",
+      _type: "heading-block",
       data: {
-        title: 'Welcome',
-        level: 'h1',
-        size: '4xl',
-        align: 'center'
-      }
-    }
-  ]
-}
+        title: "Welcome",
+        level: "h1",
+        size: "4xl",
+        align: "center",
+      },
+    },
+  ],
+};
 ```
 
 ---
@@ -144,19 +144,22 @@ export function Heading({ as, size, children }) {
 ### Add More Blocks
 
 1. Generate the component:
+
    ```bash
    npm run generate component block/text-block
    ```
 
 2. Define the data type:
+
    ```typescript
    export type TextBlockData = {
-     content: string
-     size?: 'sm' | 'base' | 'lg'
-   }
+     content: string;
+     size?: "sm" | "base" | "lg";
+   };
    ```
 
 3. Build with UI components:
+
    ```typescript
    export function TextBlock({ content, size = 'base' }) {
      return <Text size={size}>{content}</Text>
@@ -164,11 +167,12 @@ export function Heading({ as, size, children }) {
    ```
 
 4. Register in BlockRenderer:
+
    ```typescript
    const BLOCK_REGISTRY = {
-     'heading-block': HeadingBlock,
-     'text-block': TextBlock,  // Add here
-   }
+     "heading-block": HeadingBlock,
+     "text-block": TextBlock, // Add here
+   };
    ```
 
 5. Use in mock data:
@@ -184,6 +188,7 @@ export function Heading({ as, size, children }) {
 ## Editing Content
 
 Visit `/admin/editor` to test the TipTap editor:
+
 - Type and format content
 - Use markdown shortcuts (`#`, `**`, etc.)
 - Content converts to your block format
@@ -197,10 +202,10 @@ When you build the backend, simply swap:
 
 ```typescript
 // Before
-const pageData = homePageMock
+const pageData = homePageMock;
 
 // After
-const pageData = await fetch('/api/pages/home').then(r => r.json())
+const pageData = await fetch("/api/pages/home").then((r) => r.json());
 ```
 
 Everything else stays the same!

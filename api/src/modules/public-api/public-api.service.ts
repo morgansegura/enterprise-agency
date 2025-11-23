@@ -1,13 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 import { PrismaService } from "@/common/services/prisma.service";
-import {
-  PublicPageDto,
-  PublicPagesListDto,
-} from "./dto/public-page.dto";
-import {
-  PublicPostDto,
-  PublicPostsListDto,
-} from "./dto/public-post.dto";
+import { PublicPageDto, PublicPagesListDto } from "./dto/public-page.dto";
+import { PublicPostDto, PublicPostsListDto } from "./dto/public-post.dto";
 import { PublicSiteConfigDto } from "./dto/public-site-config.dto";
 
 /**
@@ -65,6 +60,7 @@ export class PublicApiService {
         footerConfig: true,
         menusConfig: true,
         logosConfig: true,
+        themeConfig: true,
         updatedAt: true,
         status: true,
       },
@@ -90,6 +86,7 @@ export class PublicApiService {
       footerConfig: tenant.footerConfig ?? undefined,
       menusConfig: tenant.menusConfig ?? undefined,
       logosConfig: tenant.logosConfig ?? undefined,
+      themeConfig: tenant.themeConfig ?? undefined,
       updatedAt: tenant.updatedAt.toISOString(),
     };
   }
@@ -185,9 +182,7 @@ export class PublicApiService {
     });
 
     if (!page) {
-      throw new NotFoundException(
-        `Page not found: ${tenantSlug}/${pageSlug}`,
-      );
+      throw new NotFoundException(`Page not found: ${tenantSlug}/${pageSlug}`);
     }
 
     return {
@@ -223,7 +218,7 @@ export class PublicApiService {
     const skip = (page - 1) * limit;
 
     // Build where clause with filters
-    const where: any = {
+    const where: Prisma.PostWhereInput = {
       tenantId: tenant.id,
       status: "published",
     };
@@ -333,9 +328,7 @@ export class PublicApiService {
     });
 
     if (!post) {
-      throw new NotFoundException(
-        `Post not found: ${tenantSlug}/${postSlug}`,
-      );
+      throw new NotFoundException(`Post not found: ${tenantSlug}/${postSlug}`);
     }
 
     // Increment view count asynchronously (don't await)

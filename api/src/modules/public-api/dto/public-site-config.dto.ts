@@ -73,6 +73,20 @@ export class PublicSiteConfigDto {
   })
   logosConfig?: JsonValue;
 
+  @ApiProperty({
+    description: "Theme configuration (CSS custom properties)",
+    type: "object",
+    additionalProperties: true,
+    example: {
+      primary: "#1e40af",
+      secondary: "#0891b2",
+      "space-6": "1.5rem",
+      "font-body": "Inter",
+      "nav-link-gap": "1.5rem",
+    },
+  })
+  themeConfig?: JsonValue;
+
   @ApiProperty({ example: "2024-01-01T10:00:00.000Z" })
   updatedAt: string;
 }

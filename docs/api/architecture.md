@@ -60,6 +60,7 @@ api/
 Every request is scoped to a tenant (customer church site).
 
 **Tenant Identification:**
+
 ```typescript
 // Via custom header (preferred)
 X-Tenant-Id: church-slug
@@ -72,30 +73,33 @@ church-slug.yourdomain.com
 ```
 
 **Middleware:**
+
 ```typescript
 // src/common/middleware/tenant.middleware.ts
 export class TenantMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const tenantId =
-      req.headers['x-tenant-id'] ||
+      req.headers["x-tenant-id"] ||
       req.query.tenantId ||
-      extractFromSubdomain(req.hostname)
+      extractFromSubdomain(req.hostname);
 
-    req['tenantId'] = tenantId
-    next()
+    req["tenantId"] = tenantId;
+    next();
   }
 }
 ```
 
 **Row-Level Security:**
+
 ```typescript
 // ALL queries scoped by tenantId
 this.prisma.page.findMany({
-  where: { tenantId }  // ALWAYS present
-})
+  where: { tenantId }, // ALWAYS present
+});
 ```
 
 **Custom Decorator:**
+
 ```typescript
 // Extract tenantId from request
 @Get()
@@ -109,11 +113,13 @@ findAll(@TenantId() tenantId: string) {
 ### 2. Authentication & Authorization
 
 **JWT Strategy:**
+
 - Access tokens (15min expiry)
 - Refresh tokens (7 days expiry)
 - Stored in httpOnly cookies
 
 **Role Hierarchy:**
+
 1. **Super Admin** - Agency owner (manages all tenants)
 2. **Owner** - Tenant owner (full access to their site)
 3. **Admin** - Tenant admin (manage content + users)
@@ -121,6 +127,7 @@ findAll(@TenantId() tenantId: string) {
 5. **Viewer** - Read-only access
 
 **Guards:**
+
 ```typescript
 // JWT Guard - Verify user is authenticated
 @UseGuards(JwtAuthGuard)
@@ -159,6 +166,7 @@ module/
 ```
 
 **Example Module:**
+
 ```typescript
 // pages.module.ts
 @Module({
@@ -177,6 +185,7 @@ export class PagesModule {}
 ### Auth Module
 
 **Endpoints:**
+
 ```
 POST   /api/auth/login            # Login with email/password
 POST   /api/auth/register         # Register new user (agency only)
@@ -188,6 +197,7 @@ POST   /api/auth/reset-password   # Reset password
 ```
 
 **Service Methods:**
+
 - `register(dto)` - Create new user with hashed password
 - `login(dto)` - Validate credentials, return tokens
 - `refreshToken(token)` - Issue new access token
@@ -200,6 +210,7 @@ POST   /api/auth/reset-password   # Reset password
 ### Tenants Module
 
 **Endpoints:**
+
 ```
 POST   /api/tenants               # Create tenant
 GET    /api/tenants               # List all tenants
@@ -212,6 +223,7 @@ DELETE /api/tenants/:id/domains/:domainId  # Remove domain
 ```
 
 **Tenant Model:**
+
 ```typescript
 {
   id: string
@@ -259,6 +271,7 @@ DELETE /api/tenants/:id/domains/:domainId  # Remove domain
 ### Pages Module
 
 **Endpoints:**
+
 ```
 POST   /api/pages                 # Create page
 GET    /api/pages                 # List pages (filtered by tenant)
@@ -272,6 +285,7 @@ POST   /api/pages/:id/duplicate   # Duplicate page
 ```
 
 **Page Model:**
+
 ```typescript
 {
   id: string
@@ -306,6 +320,7 @@ POST   /api/pages/:id/duplicate   # Duplicate page
 ```
 
 **Content Structure:**
+
 ```typescript
 // Top level
 Page.content = {
@@ -343,6 +358,7 @@ ContainerBlock =
 ```
 
 **Service Methods:**
+
 - `create(tenantId, dto)` - Create new page with blocks
 - `findAll(tenantId, query)` - List pages with filters
 - `findById(tenantId, id)` - Get single page
@@ -360,6 +376,7 @@ ContainerBlock =
 Similar to Pages but for blog/announcements.
 
 **Endpoints:**
+
 ```
 POST   /api/posts                 # Create post
 GET    /api/posts                 # List posts
@@ -372,6 +389,7 @@ GET    /api/posts/tags            # List tags
 ```
 
 **Post Model:**
+
 ```typescript
 {
   id: string
@@ -401,6 +419,7 @@ GET    /api/posts/tags            # List tags
 Media and file management.
 
 **Endpoints:**
+
 ```
 POST   /api/assets/upload         # Upload file
 GET    /api/assets                # List assets
@@ -410,6 +429,7 @@ DELETE /api/assets/:id            # Delete asset
 ```
 
 **Asset Model:**
+
 ```typescript
 {
   id: string
@@ -446,6 +466,7 @@ DELETE /api/assets/:id            # Delete asset
 User management within tenants.
 
 **Endpoints:**
+
 ```
 GET    /api/users/:id             # Get user
 PATCH  /api/users/:id             # Update user
@@ -453,6 +474,7 @@ GET    /api/users/tenant/:tenantId  # List tenant users
 ```
 
 **User Model:**
+
 ```typescript
 {
   id: string
@@ -480,6 +502,7 @@ GET    /api/users/tenant/:tenantId  # List tenant users
 ```
 
 **TenantUser (Join Table):**
+
 ```typescript
 {
   id: string
@@ -508,6 +531,7 @@ GET    /api/users/tenant/:tenantId  # List tenant users
 System health checks.
 
 **Endpoints:**
+
 ```
 GET    /api/health                # Health check
 GET    /api/health/db             # Database connectivity
@@ -520,6 +544,7 @@ GET    /api/health/db             # Database connectivity
 Integration webhooks for external services.
 
 **Endpoints:**
+
 ```
 POST   /api/webhooks              # Create webhook
 GET    /api/webhooks              # List webhooks
@@ -536,6 +561,7 @@ POST   /api/webhooks/:id/test     # Test webhook
 Centralized configuration for headers, footers, menus, and logos.
 
 **Endpoints:**
+
 ```
 GET    /api/tenants/:tenantId/config              # Get all config
 PUT    /api/tenants/:tenantId/config              # Update all config
@@ -550,6 +576,7 @@ PUT    /api/tenants/:tenantId/config/logos        # Update logos config
 ```
 
 **Data Structure:**
+
 ```typescript
 // Stored in Tenant.headerConfig (JSONB)
 HeaderConfig = {
@@ -628,6 +655,7 @@ LogosConfig = {
 ```
 
 **Service Methods:**
+
 - `getConfig(tenantId)` - Get all site config
 - `updateConfig(tenantId, dto)` - Update all config
 - `getHeaderConfig(tenantId)` - Get header config
@@ -646,6 +674,7 @@ LogosConfig = {
 The API needs to validate all 24+ block types from the client.
 
 **Current State:**
+
 - Generic `ContentBlockDto` exists but doesn't validate specific block types
 - No type-specific validation
 - JSONB content field accepts any structure
@@ -653,152 +682,159 @@ The API needs to validate all 24+ block types from the client.
 **What to Build:**
 
 1. **Create DTOs for each block type:**
+
 ```typescript
 // dto/blocks/heading-block.dto.ts
 export class HeadingBlockDto {
   @IsString()
-  text: string
+  text: string;
 
-  @IsEnum(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
-  level: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  @IsEnum(["h1", "h2", "h3", "h4", "h5", "h6"])
+  level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
-  @IsEnum(['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'])
+  @IsEnum(["xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "6xl"])
   @IsOptional()
-  size?: string
+  size?: string;
 
-  @IsEnum(['left', 'center', 'right'])
+  @IsEnum(["left", "center", "right"])
   @IsOptional()
-  align?: 'left' | 'center' | 'right'
+  align?: "left" | "center" | "right";
 
-  @IsEnum(['normal', 'medium', 'semibold', 'bold'])
+  @IsEnum(["normal", "medium", "semibold", "bold"])
   @IsOptional()
-  weight?: string
+  weight?: string;
 
-  @IsEnum(['default', 'primary', 'secondary', 'muted'])
+  @IsEnum(["default", "primary", "secondary", "muted"])
   @IsOptional()
-  color?: string
+  color?: string;
 }
 
 // dto/blocks/text-block.dto.ts
 export class TextBlockDto {
   @IsString()
-  text: string
+  text: string;
 
-  @IsEnum(['xs', 'sm', 'md', 'lg', 'xl'])
+  @IsEnum(["xs", "sm", "md", "lg", "xl"])
   @IsOptional()
-  size?: string
+  size?: string;
 
-  @IsEnum(['left', 'center', 'right', 'justify'])
+  @IsEnum(["left", "center", "right", "justify"])
   @IsOptional()
-  align?: string
+  align?: string;
 
-  @IsEnum(['body', 'muted', 'caption'])
+  @IsEnum(["body", "muted", "caption"])
   @IsOptional()
-  variant?: string
+  variant?: string;
 }
 
 // ... 22 more block DTOs
 ```
 
 2. **Create discriminated union validator:**
+
 ```typescript
 // dto/content-block.dto.ts
 export class ContentBlockDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsEnum([
-    'heading-block',
-    'text-block',
-    'button-block',
-    'image-block',
+    "heading-block",
+    "text-block",
+    "button-block",
+    "image-block",
     // ... all 24+ block types
   ])
-  _type: string
+  _type: string;
 
   @ValidateNested()
   @Type(() => Object, {
     discriminator: {
-      property: '_type',
+      property: "_type",
       subTypes: [
-        { value: HeadingBlockDto, name: 'heading-block' },
-        { value: TextBlockDto, name: 'text-block' },
-        { value: ButtonBlockDto, name: 'button-block' },
+        { value: HeadingBlockDto, name: "heading-block" },
+        { value: TextBlockDto, name: "text-block" },
+        { value: ButtonBlockDto, name: "button-block" },
         // ... all block types
       ],
     },
   })
-  data: any
+  data: any;
 }
 ```
 
 3. **Update CreatePageDto:**
+
 ```typescript
 export class CreatePageDto {
   @IsString()
-  slug: string
+  slug: string;
 
   @IsString()
-  title: string
+  title: string;
 
   @ValidateNested()
   @Type(() => ContentDto)
   content: {
-    sections: SectionDto[]
-  }
+    sections: SectionDto[];
+  };
 
   // ... other fields
 }
 
 export class SectionDto {
   @IsString()
-  _key: string
+  _key: string;
 
   @IsString()
-  _type: 'section'
+  _type: "section";
 
-  @IsEnum(['default', 'primary', 'secondary', 'accent', 'muted'])
+  @IsEnum(["default", "primary", "secondary", "accent", "muted"])
   @IsOptional()
-  background?: string
+  background?: string;
 
-  @IsEnum(['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'])
+  @IsEnum(["none", "xs", "sm", "md", "lg", "xl", "2xl"])
   @IsOptional()
-  spacing?: string
+  spacing?: string;
 
-  @IsEnum(['narrow', 'default', 'wide', 'full'])
+  @IsEnum(["narrow", "default", "wide", "full"])
   @IsOptional()
-  width?: string
+  width?: string;
 
   @ValidateNested({ each: true })
   @Type(() => ContentBlockDto)
-  blocks: ContentBlockDto[]
+  blocks: ContentBlockDto[];
 }
 ```
 
 4. **Nesting Validation:**
+
 ```typescript
 // Custom validator for max 4-level nesting
-@ValidatorConstraint({ name: 'maxNestingLevel', async: false })
+@ValidatorConstraint({ name: "maxNestingLevel", async: false })
 export class MaxNestingLevelConstraint implements ValidatorConstraintInterface {
   validate(blocks: any[], args: ValidationArguments) {
-    return this.checkNestingLevel(blocks, 0) <= 4
+    return this.checkNestingLevel(blocks, 0) <= 4;
   }
 
   private checkNestingLevel(blocks: any[], currentLevel: number): number {
-    if (!Array.isArray(blocks)) return currentLevel
+    if (!Array.isArray(blocks)) return currentLevel;
 
-    let maxLevel = currentLevel
+    let maxLevel = currentLevel;
     for (const block of blocks) {
       if (block.blocks) {
-        const nestedLevel = this.checkNestingLevel(block.blocks, currentLevel + 1)
-        maxLevel = Math.max(maxLevel, nestedLevel)
+        const nestedLevel = this.checkNestingLevel(
+          block.blocks,
+          currentLevel + 1,
+        );
+        maxLevel = Math.max(maxLevel, nestedLevel);
       }
     }
-    return maxLevel
+    return maxLevel;
   }
 
   defaultMessage(args: ValidationArguments) {
-    return 'Block nesting cannot exceed 4 levels'
+    return "Block nesting cannot exceed 4 levels";
   }
 }
 ```
@@ -808,6 +844,7 @@ export class MaxNestingLevelConstraint implements ValidatorConstraintInterface {
 ## Database Schema (Prisma)
 
 **Current Schema:**
+
 ```prisma
 model Tenant {
   id              String   @id @default(dbgenerated("gen_random_uuid()"))
@@ -882,6 +919,7 @@ model Page {
 ## API Response Format
 
 **Success Response:**
+
 ```json
 {
   "data": { ... },
@@ -894,6 +932,7 @@ model Page {
 ```
 
 **Error Response:**
+
 ```json
 {
   "statusCode": 400,
@@ -908,6 +947,7 @@ model Page {
 ```
 
 **Pagination:**
+
 ```typescript
 GET /api/pages?page=1&limit=20&status=published&sort=-createdAt
 ```
@@ -917,32 +957,36 @@ GET /api/pages?page=1&limit=20&status=published&sort=-createdAt
 ## Security
 
 **Authentication:**
+
 - JWT tokens in httpOnly cookies
 - CSRF protection
 - Rate limiting (100 req/min for public, 1000 req/min for authenticated)
 
 **Authorization:**
+
 - Role-based access control (RBAC)
 - Tenant-scoped data isolation
 - Row-level security in Prisma queries
 
 **Validation:**
+
 - All DTOs validated with class-validator
 - SQL injection prevention via Prisma
 - XSS prevention via sanitization
 
 **CORS:**
+
 ```typescript
 // main.ts
 app.enableCors({
   origin: [
-    'http://localhost:3000',  // Client
-    'http://localhost:3001',  // Builder
+    "http://localhost:3000", // Client
+    "http://localhost:3001", // Builder
     process.env.CLIENT_URL,
     process.env.BUILDER_URL,
   ],
   credentials: true,
-})
+});
 ```
 
 ---

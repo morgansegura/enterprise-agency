@@ -1,14 +1,8 @@
-import { cn } from "@/lib/utils"
-import "./skeleton.css"
+import { cn } from "@/lib/utils";
+import "./skeleton.css";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="skeleton"
-      className={cn(className)}
-      {...props}
-    />
-  )
+  return <div data-slot="skeleton" className={cn(className)} {...props} />;
 }
 
-export { Skeleton }
+export { Skeleton };

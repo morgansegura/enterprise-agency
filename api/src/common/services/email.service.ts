@@ -155,6 +155,63 @@ export class EmailService {
   }
 
   /**
+   * Send account exists email (for registration attempts on existing accounts)
+   */
+  async sendAccountExistsEmail(to: string): Promise<void> {
+    if (!this.enabled) {
+      this.logger.warn(
+        `Email disabled - Would send account exists email to ${to}`,
+      );
+      return;
+    }
+
+    const loginUrl = `${this.config.get("ADMIN_URL")}/login`;
+
+    try {
+      await this.transporter.sendMail({
+        from: `"${this.fromName}" <${this.fromEmail}>`,
+        to,
+        subject: "Account Already Exists",
+        html: `
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Account Already Exists</title>
+            </head>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px;">
+                <h1 style="color: #2563eb; margin-bottom: 20px;">Account Already Exists</h1>
+                <p>Someone tried to create an account with this email address, but you already have an account with us.</p>
+                <p>If this was you, you can log in using your existing credentials:</p>
+                <div style="margin: 30px 0;">
+                  <a href="${loginUrl}"
+                     style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                    Log In
+                  </a>
+                </div>
+                <p style="color: #666; font-size: 14px;">
+                  If you forgot your password, you can reset it from the login page.
+                </p>
+                <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+                <p style="color: #999; font-size: 12px;">
+                  If you didn't try to create an account, you can safely ignore this email. This may indicate someone tried to use your email address.
+                </p>
+              </div>
+            </body>
+          </html>
+        `,
+      });
+
+      this.logger.log(`Account exists email sent to ${to}`);
+    } catch (error) {
+      this.logger.error(`Failed to send account exists email to ${to}`, error);
+      // Don't throw - this is a nice-to-have notification
+    }
+  }
+
+  /**
    * Test email connection
    */
   async testConnection(): Promise<boolean> {

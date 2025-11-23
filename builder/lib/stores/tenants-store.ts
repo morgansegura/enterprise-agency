@@ -1,45 +1,48 @@
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface Tenant {
-  id: string
-  slug: string
-  businessName: string
-  businessType: string
-  status: string
-  enabledFeatures: Record<string, boolean>
+  id: string;
+  slug: string;
+  businessName: string;
+  businessType?: string;
+  status: string;
+  enabledFeatures: Record<string, boolean>;
+  contactEmail?: string;
+  contactPhone?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface TenantsState {
-  tenants: Tenant[]
-  selectedTenant: Tenant | null
-  isLoading: boolean
+  tenants: Tenant[];
+  selectedTenant: Tenant | null;
+  isLoading: boolean;
 }
 
 interface TenantsActions {
-  setTenants: (tenants: Tenant[]) => void
-  addTenant: (tenant: Tenant) => void
-  updateTenant: (id: string, updates: Partial<Tenant>) => void
-  deleteTenant: (id: string) => void
-  selectTenant: (tenant: Tenant | null) => void
-  setLoading: (isLoading: boolean) => void
+  setTenants: (tenants: Tenant[]) => void;
+  addTenant: (tenant: Tenant) => void;
+  updateTenant: (id: string, updates: Partial<Tenant>) => void;
+  deleteTenant: (id: string) => void;
+  selectTenant: (tenant: Tenant | null) => void;
+  setLoading: (isLoading: boolean) => void;
 }
 
-type TenantsStore = TenantsState & TenantsActions
+type TenantsStore = TenantsState & TenantsActions;
 
 const initialState: TenantsState = {
   tenants: [],
   selectedTenant: null,
   isLoading: false,
-}
+};
 
 export const useTenantsStore = create<TenantsStore>()(
   devtools(
     (set) => ({
       ...initialState,
 
-      setTenants: (tenants) =>
-        set({ tenants }, false, 'tenants/setTenants'),
+      setTenants: (tenants) => set({ tenants }, false, "tenants/setTenants"),
 
       addTenant: (tenant) =>
         set(
@@ -47,14 +50,14 @@ export const useTenantsStore = create<TenantsStore>()(
             tenants: [...state.tenants, tenant],
           }),
           false,
-          'tenants/addTenant'
+          "tenants/addTenant",
         ),
 
       updateTenant: (id, updates) =>
         set(
           (state) => ({
             tenants: state.tenants.map((t) =>
-              t.id === id ? { ...t, ...updates } : t
+              t.id === id ? { ...t, ...updates } : t,
             ),
             selectedTenant:
               state.selectedTenant?.id === id
@@ -62,7 +65,7 @@ export const useTenantsStore = create<TenantsStore>()(
                 : state.selectedTenant,
           }),
           false,
-          'tenants/updateTenant'
+          "tenants/updateTenant",
         ),
 
       deleteTenant: (id) =>
@@ -73,15 +76,15 @@ export const useTenantsStore = create<TenantsStore>()(
               state.selectedTenant?.id === id ? null : state.selectedTenant,
           }),
           false,
-          'tenants/deleteTenant'
+          "tenants/deleteTenant",
         ),
 
       selectTenant: (tenant) =>
-        set({ selectedTenant: tenant }, false, 'tenants/selectTenant'),
+        set({ selectedTenant: tenant }, false, "tenants/selectTenant"),
 
       setLoading: (isLoading) =>
-        set({ isLoading }, false, 'tenants/setLoading'),
+        set({ isLoading }, false, "tenants/setLoading"),
     }),
-    { name: 'TenantsStore' }
-  )
-)
+    { name: "TenantsStore" },
+  ),
+);

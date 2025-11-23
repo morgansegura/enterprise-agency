@@ -10,6 +10,7 @@
 
 .sidebar-header-title {
   @apply truncate font-semibold;
+  @apply font-(family-name:--font-roboto-slab);
 }
 
 .sidebar-header-subtitle {

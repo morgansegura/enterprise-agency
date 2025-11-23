@@ -8,7 +8,7 @@ export const headerConfigMock: HeaderConfig = {
   template: "standard",
 
   behavior: {
-    position: "sticky",
+    position: "fixed",
     shrinkOnScroll: true,
     showShadowOnScroll: true,
     transparent: false,

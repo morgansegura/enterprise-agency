@@ -1,36 +1,36 @@
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface UIState {
-  sidebarOpen: boolean
-  theme: 'light' | 'dark' | 'system'
-  notifications: Notification[]
+  sidebarOpen: boolean;
+  theme: "light" | "dark" | "system";
+  notifications: Notification[];
 }
 
 interface Notification {
-  id: string
-  type: 'success' | 'error' | 'warning' | 'info'
-  title: string
-  message?: string
-  duration?: number
+  id: string;
+  type: "success" | "error" | "warning" | "info";
+  title: string;
+  message?: string;
+  duration?: number;
 }
 
 interface UIActions {
-  toggleSidebar: () => void
-  setSidebarOpen: (open: boolean) => void
-  setTheme: (theme: 'light' | 'dark' | 'system') => void
-  addNotification: (notification: Omit<Notification, 'id'>) => void
-  removeNotification: (id: string) => void
-  clearNotifications: () => void
+  toggleSidebar: () => void;
+  setSidebarOpen: (open: boolean) => void;
+  setTheme: (theme: "light" | "dark" | "system") => void;
+  addNotification: (notification: Omit<Notification, "id">) => void;
+  removeNotification: (id: string) => void;
+  clearNotifications: () => void;
 }
 
-type UIStore = UIState & UIActions
+type UIStore = UIState & UIActions;
 
 const initialState: UIState = {
   sidebarOpen: true,
-  theme: 'system',
+  theme: "system",
   notifications: [],
-}
+};
 
 export const useUIStore = create<UIStore>()(
   devtools(
@@ -41,13 +41,13 @@ export const useUIStore = create<UIStore>()(
         set(
           (state) => ({ sidebarOpen: !state.sidebarOpen }),
           false,
-          'ui/toggleSidebar'
+          "ui/toggleSidebar",
         ),
 
       setSidebarOpen: (open) =>
-        set({ sidebarOpen: open }, false, 'ui/setSidebarOpen'),
+        set({ sidebarOpen: open }, false, "ui/setSidebarOpen"),
 
-      setTheme: (theme) => set({ theme }, false, 'ui/setTheme'),
+      setTheme: (theme) => set({ theme }, false, "ui/setTheme"),
 
       addNotification: (notification) =>
         set(
@@ -61,7 +61,7 @@ export const useUIStore = create<UIStore>()(
             ],
           }),
           false,
-          'ui/addNotification'
+          "ui/addNotification",
         ),
 
       removeNotification: (id) =>
@@ -70,12 +70,12 @@ export const useUIStore = create<UIStore>()(
             notifications: state.notifications.filter((n) => n.id !== id),
           }),
           false,
-          'ui/removeNotification'
+          "ui/removeNotification",
         ),
 
       clearNotifications: () =>
-        set({ notifications: [] }, false, 'ui/clearNotifications'),
+        set({ notifications: [] }, false, "ui/clearNotifications"),
     }),
-    { name: 'UIStore' }
-  )
-)
+    { name: "UIStore" },
+  ),
+);

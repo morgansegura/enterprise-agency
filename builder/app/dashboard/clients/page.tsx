@@ -53,10 +53,16 @@ export default function ClientsPage() {
         <LayoutHeading
           title="Manage Clients"
           description={`${tenants.length} total clients`}
+          actions={
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => router.push("/dashboard/clients/new")}
+            >
+              Client Intake
+            </Button>
+          }
         />
-        <Button onClick={() => router.push("/dashboard/clients/new")}>
-          Client Intake
-        </Button>
       </div>
 
       <Table>
@@ -74,7 +80,9 @@ export default function ClientsPage() {
             <TableRow key={tenant.id}>
               <TableCell>{tenant.businessName}</TableCell>
               <TableCell>{tenant.slug}</TableCell>
-              <TableCell>{getServiceType(tenant.enabledFeatures || {})}</TableCell>
+              <TableCell>
+                {getServiceType(tenant.enabledFeatures || {})}
+              </TableCell>
               <TableCell>{tenant.status}</TableCell>
               <TableCell>
                 <DropdownMenu>

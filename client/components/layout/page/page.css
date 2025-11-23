@@ -6,15 +6,15 @@
 
 /* Header positioning */
 .page-header[data-position="static"] {
-  @apply relative;
+  @apply relative z-50;
 }
 
 .page-header[data-position="sticky"] {
-  @apply sticky top-0;
+  @apply sticky top-0 z-50;
 }
 
 .page-header[data-position="fixed"] {
-  @apply fixed top-0 left-0 right-0;
+  @apply fixed top-0 left-0 right-0 z-50;
 }
 
 /* Main content - takes remaining space */

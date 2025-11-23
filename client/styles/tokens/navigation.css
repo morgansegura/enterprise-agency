@@ -1,3 +1,4 @@
+@reference "tailwindcss";
 /**
  * Navigation Tokens
  * Customizable tokens for header and footer navigation
@@ -14,9 +15,9 @@
   --nav-link-line-height: 1.5;
 
   /* Link Spacing */
-  --nav-link-padding-x: var(--spacing-4);
-  --nav-link-padding-y: var(--spacing-2);
-  --nav-link-gap: var(--spacing-6); /* Gap between nav items */
+  --nav-link-padding-x: var(--space-2);
+  --nav-link-padding-y: var(--space-1);
+  --nav-link-gap: var(--space-2); /* Gap between nav items */
 
   /* Link Colors - Default State */
   --nav-link-color: var(--foreground);
@@ -48,7 +49,6 @@
   --nav-link-transition-duration: 200ms;
   --nav-link-transition-timing: ease-in-out;
   --nav-link-hover-transform: none; /* e.g., "translateY(-2px)" */
-
 
   /* ========================================
    * Dropdown Menus
@@ -82,7 +82,6 @@
   --dropdown-animation-timing: ease-out;
   --dropdown-slide-distance: 8px;
 
-
   /* ========================================
    * Mobile Navigation
    * ======================================== */
@@ -107,7 +106,6 @@
   /* Mobile Nav Submenu */
   --mobile-nav-submenu-indent: var(--spacing-4);
   --mobile-nav-submenu-border-color: var(--border);
-
 
   /* ========================================
    * Footer Navigation

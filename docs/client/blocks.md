@@ -27,6 +27,7 @@ Renders text headings with semantic HTML levels.
 ```
 
 **Example**:
+
 ```typescript
 {
   _type: "heading-block",
@@ -63,12 +64,14 @@ Renders paragraph text with formatting options.
 ```
 
 **Variants**:
+
 - `default` - Normal text color
 - `muted` - Lighter, secondary text
 - `lead` - Larger, lead paragraph style
 - `subtle` - Very light, tertiary text
 
 **Example**:
+
 ```typescript
 {
   _type: "text-block",
@@ -106,6 +109,7 @@ Renders images with optional captions.
 ```
 
 **Example**:
+
 ```typescript
 {
   _type: "image-block",
@@ -142,6 +146,7 @@ Renders call-to-action buttons.
 ```
 
 **Variants**:
+
 - `default` - Filled primary button
 - `destructive` - Danger/delete action
 - `outline` - Outlined button
@@ -150,6 +155,7 @@ Renders call-to-action buttons.
 - `link` - Styled as link
 
 **Example**:
+
 ```typescript
 {
   _type: "button-block",
@@ -187,16 +193,19 @@ Renders feature cards with title, description, image, and actions.
 ```
 
 **Variants**:
+
 - `default` - Standard card
 - `elevated` - Card with shadow
 - `outlined` - Card with border
 
 **Image Positions**:
+
 - `top` - Image above content
 - `left` - Image on left, content on right
 - `background` - Image as background with overlay
 
 **Example**:
+
 ```typescript
 {
   _type: "card-block",
@@ -248,6 +257,7 @@ Arranges child blocks in a responsive CSS grid.
 ```
 
 **Responsive Columns**:
+
 ```typescript
 {
   mobile?: 1 | 2;
@@ -257,6 +267,7 @@ Arranges child blocks in a responsive CSS grid.
 ```
 
 **Example - 3 Column Feature Grid**:
+
 ```typescript
 {
   _type: "grid-block",
@@ -275,6 +286,7 @@ Arranges child blocks in a responsive CSS grid.
 ```
 
 **Example - Nested Grid**:
+
 ```typescript
 {
   _type: "grid-block",
@@ -326,6 +338,7 @@ Arranges child blocks using flexbox.
 ```
 
 **Example - Horizontal Button Group**:
+
 ```typescript
 {
   _type: "flex-block",
@@ -363,6 +376,7 @@ Simplified vertical stacking (flex column).
 ```
 
 **Example - Vertical Content Stack**:
+
 ```typescript
 {
   _type: "stack-block",

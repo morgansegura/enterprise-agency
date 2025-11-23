@@ -31,7 +31,7 @@ export function ProfileDropdown({ user, onLogout }: ProfileDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm">
+        <Button variant="ghost" size="icon">
           <div className="profile-dropdown-avatar">
             <span className="profile-dropdown-avatar-initials">
               {user.firstName[0]}
@@ -47,9 +47,6 @@ export function ProfileDropdown({ user, onLogout }: ProfileDropdownProps) {
               {user.firstName} {user.lastName}
             </p>
             <p className="profile-dropdown-user-email">{user.email}</p>
-            {user.isSuperAdmin && (
-              <p className="profile-dropdown-user-role">corporate admin</p>
-            )}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -72,7 +69,10 @@ export function ProfileDropdown({ user, onLogout }: ProfileDropdownProps) {
           <span>Support</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onLogout} className="profile-dropdown-logout">
+        <DropdownMenuItem
+          onClick={onLogout}
+          className="profile-dropdown-logout"
+        >
           <LogOut />
           <span>Log out</span>
         </DropdownMenuItem>

@@ -11,6 +11,15 @@ datasource db {
 }
 
 // ============================================================================
+// ENUMS
+// ============================================================================
+
+enum TenantTier {
+  CONTENT_EDITOR
+  BUILDER
+}
+
+// ============================================================================
 // CORE TABLES
 // ============================================================================
 
@@ -26,7 +35,13 @@ model Tenant {
   // Feature flags (JSONB)
   enabledFeatures Json @default("{}") @map("enabled_features") @db.JsonB
 
-  // Theme configuration (JSONB)
+  // Tier & pricing (two-tier system: content-editor vs builder)
+  tier TenantTier @default(CONTENT_EDITOR)
+
+  // Design tokens (separate from theme config for token-based design system)
+  designTokens Json? @map("design_tokens") @db.JsonB
+
+  // Theme configuration (JSONB - CSS variables and runtime theme)
   themeConfig Json @default("{}") @map("theme_config") @db.JsonB
 
   // Site configuration (JSONB)
@@ -61,6 +76,7 @@ model Tenant {
 
   @@index([slug])
   @@index([status])
+  @@index([tier], map: "idx_tenants_tier")
   @@index([businessType], map: "idx_tenants_business_type")
   @@map("tenants")
 }
@@ -276,6 +292,11 @@ model Page {
 
   // Template
   template String? @db.VarChar(50)
+
+  // System page type (null for custom pages)
+  // Values: "home", "privacy-policy", "terms-of-service", "cookie-policy", "coming-soon", "under-construction"
+  pageType     String?  @map("page_type") @db.VarChar(50)
+  isSystemPage Boolean @default(false) @map("is_system_page")
 
   // Timestamps
   createdAt   DateTime  @default(now()) @map("created_at")

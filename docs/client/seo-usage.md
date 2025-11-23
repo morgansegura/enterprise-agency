@@ -5,6 +5,7 @@ This guide explains how to use the comprehensive SEO utilities for the MH Bible 
 ## Overview
 
 The SEO system provides:
+
 - **Open Graph** tags for social media sharing (Facebook, LinkedIn, etc.)
 - **Twitter Cards** for optimized Twitter/X sharing
 - **Meta tags** for search engines
@@ -38,6 +39,7 @@ export const churchInfo = {
 ### 2. Add Social Media Image
 
 Create an Open Graph image at `public/og-image.jpg`:
+
 - Dimensions: 1200x630px
 - Format: JPG or PNG
 - Content: Church logo, name, or representative image
@@ -94,7 +96,7 @@ export const metadata: Metadata = generateMetadata(
     ],
     keywords: ["Easter Service", "Resurrection Sunday", "Church Event"],
   },
-  defaultSEO
+  defaultSEO,
 );
 ```
 
@@ -116,7 +118,7 @@ export const metadata: Metadata = generateMetadata(
       tags: ["Baptism", "Theology", "Church Practices"],
     },
   },
-  defaultSEO
+  defaultSEO,
 );
 ```
 
@@ -129,7 +131,11 @@ For dynamic routes, use `generateMetadata` function:
 import { generateMetadata as generateMeta } from "@/lib/seo";
 import { defaultSEO } from "@/lib/site-config";
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
   // Fetch sermon data
   const sermon = await getSermon(params.slug);
 
@@ -138,9 +144,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: sermon.title,
       description: sermon.excerpt,
       url: `/sermons/${params.slug}`,
-      images: [{ url: sermon.thumbnail, width: 1200, height: 630, alt: sermon.title }],
+      images: [
+        { url: sermon.thumbnail, width: 1200, height: 630, alt: sermon.title },
+      ],
     },
-    defaultSEO
+    defaultSEO,
   );
 }
 ```
@@ -157,7 +165,7 @@ export const metadata: Metadata = generateMetadata(
     url: "/contact",
     // robots defaults to index: true, follow: true
   },
-  defaultSEO
+  defaultSEO,
 );
 ```
 
@@ -174,7 +182,7 @@ export const metadata: Metadata = generateMetadata(
       follow: false,
     },
   },
-  defaultSEO
+  defaultSEO,
 );
 ```
 
@@ -241,7 +249,7 @@ export const metadata: Metadata = generateMetadata(
       yandex: "your-yandex-verification-code",
     },
   },
-  defaultSEO
+  defaultSEO,
 );
 ```
 
@@ -264,6 +272,7 @@ export const metadata: Metadata = generateMetadata(
 ## Example Pages
 
 See these files for examples:
+
 - `app/layout.tsx` - Root layout with default SEO and church schema
 - `app/about/page.tsx` - Static page with custom SEO
 - `lib/site-config.ts` - Site-wide configuration

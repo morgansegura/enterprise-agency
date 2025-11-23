@@ -1,13 +1,13 @@
-'use client'
+"use client";
 
-import { useState, FormEvent, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
-import { resetPassword } from '@/lib/auth'
-import { getErrorMessage } from '@/lib/errors'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { logger } from '@/lib/logger'
+import { useState, FormEvent, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { resetPassword } from "@/lib/auth";
+import { getErrorMessage } from "@/lib/errors";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { logger } from "@/lib/logger";
 
 /**
  * Reset Password Page
@@ -19,63 +19,65 @@ import { logger } from '@/lib/logger'
  * - Automatic redirect on success
  */
 export default function ResetPasswordPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const token = searchParams.get('token')
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
-  const [password, setPassword] = useState<string>('')
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
-  const [error, setError] = useState<string>('')
-  const [success, setSuccess] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!token) {
-      setError('Invalid or missing reset token')
+      setError("Invalid or missing reset token");
     }
-  }, [token])
+  }, [token]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault()
-    setError('')
-    setSuccess('')
+    e.preventDefault();
+    setError("");
+    setSuccess("");
 
     // Validation
     if (!token) {
-      setError('Invalid reset token')
-      return
+      setError("Invalid reset token");
+      return;
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters')
-      return
+      setError("Password must be at least 8 characters");
+      return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
-      return
+      setError("Passwords do not match");
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      logger.log('Reset password attempt')
-      const message = await resetPassword(token, password)
-      setSuccess(message || 'Password reset successful')
-      logger.log('Password reset successful')
+      logger.log("Reset password attempt");
+      const message = await resetPassword(token, password);
+      setSuccess(message || "Password reset successful");
+      logger.log("Password reset successful");
 
       // Redirect to login after 2 seconds
       setTimeout(() => {
-        router.push('/login')
-      }, 2000)
+        router.push("/login");
+      }, 2000);
     } catch (err) {
-      const message = getErrorMessage(err)
-      setError(message || 'Failed to reset password. The link may have expired.')
-      logger.error('Password reset failed', err as Error)
+      const message = getErrorMessage(err);
+      setError(
+        message || "Failed to reset password. The link may have expired.",
+      );
+      logger.error("Password reset failed", err as Error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -157,7 +159,7 @@ export default function ResetPasswordPage() {
               disabled={loading || success.length > 0 || !token}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
             >
-              {loading ? 'Resetting Password...' : 'Reset Password'}
+              {loading ? "Resetting Password..." : "Reset Password"}
             </button>
 
             <div className="text-center">
@@ -172,5 +174,5 @@ export default function ResetPasswordPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }

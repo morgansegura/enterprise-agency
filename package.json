@@ -1,8 +1,8 @@
 {
-  "name": "mh-bible-baptist-cms",
+  "name": "agency-platform",
   "version": "1.0.0",
   "private": true,
-  "description": "Church CMS - API, Builder, and Client Frontend",
+  "description": "Professional Agency Platform - Multi-tenant website builder with token-based design system",
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=8.0.0"

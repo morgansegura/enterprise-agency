@@ -50,6 +50,7 @@ api/
 Manages content pages for all customer sites.
 
 **Endpoints:**
+
 ```
 POST   /api/pages                 # Create page
 GET    /api/pages                 # List pages (filtered by tenant)
@@ -63,6 +64,7 @@ POST   /api/pages/:id/duplicate   # Duplicate page
 ```
 
 **Page Structure:**
+
 ```typescript
 {
   id: string;
@@ -91,6 +93,7 @@ POST   /api/pages/:id/duplicate   # Duplicate page
 Manages customer sites (tenants).
 
 **Endpoints:**
+
 ```
 POST   /api/tenants               # Create tenant
 GET    /api/tenants               # List tenants
@@ -100,6 +103,7 @@ DELETE /api/tenants/:id           # Delete tenant
 ```
 
 **Tenant Structure:**
+
 ```typescript
 {
   id: string;
@@ -120,6 +124,7 @@ DELETE /api/tenants/:id           # Delete tenant
 JWT-based authentication.
 
 **Endpoints:**
+
 ```
 POST   /api/auth/login            # Login
 POST   /api/auth/register         # Register
@@ -133,6 +138,7 @@ GET    /api/auth/me               # Get current user
 Media and file management.
 
 **Endpoints:**
+
 ```
 POST   /api/assets/upload         # Upload file
 GET    /api/assets                # List assets
@@ -153,17 +159,20 @@ Authorization: Bearer <token>
 ### Guards
 
 **TenantGuard:**
+
 - Extracts `tenantId` from request
 - Validates tenant access
 - Injects tenant context
 
 **RolesGuard:**
+
 - Checks user role permissions
 - Enforces RBAC
 
 ### Decorators
 
 **@TenantId():** Extract tenant ID from request
+
 ```typescript
 @Get()
 findAll(@TenantId() tenantId: string) {
@@ -172,6 +181,7 @@ findAll(@TenantId() tenantId: string) {
 ```
 
 **@CurrentUser():** Extract current user
+
 ```typescript
 @Get()
 getProfile(@CurrentUser() user: User) {
@@ -180,6 +190,7 @@ getProfile(@CurrentUser() user: User) {
 ```
 
 **@Roles():** Require specific roles
+
 ```typescript
 @Roles('owner', 'admin', 'editor')
 @Post()
@@ -206,7 +217,7 @@ create() {
    ```typescript
    // All queries automatically scoped
    this.prisma.page.findMany({
-     where: { tenantId }  // Always required
+     where: { tenantId }, // Always required
    });
    ```
 
@@ -215,6 +226,7 @@ create() {
 ### Schema Overview
 
 **Core Tables:**
+
 - `tenants` - Customer sites
 - `pages` - Content pages
 - `users` - All users (agency + customers)
@@ -222,6 +234,7 @@ create() {
 - `assets` - Files and media
 
 **JSONB Fields:**
+
 - `page.content` - Block-based page content
 - `tenant.themeConfig` - Design tokens
 
@@ -283,6 +296,7 @@ pnpm start
 ## Next Tasks
 
 ### To Add:
+
 1. ✅ Pages CRUD (done)
 2. ✅ Tenants CRUD (done)
 3. ✅ Auth system (done)

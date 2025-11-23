@@ -45,6 +45,7 @@ Every page is composed of sections.
 ```
 
 **Validation Rules:**
+
 - `_key` must be unique within page
 - `blocks` array required, can be empty
 - Max 20 sections per page (recommended)
@@ -75,6 +76,7 @@ Display headings with various sizes and styles.
 ```
 
 **Example:**
+
 ```json
 {
   "_key": "hero-heading",
@@ -129,6 +131,7 @@ Rich text with formatting (bold, italic, links, lists).
 ```
 
 **Example:**
+
 ```json
 {
   "_key": "about-text",
@@ -191,6 +194,7 @@ Display images with responsive handling.
 ```
 
 **Example:**
+
 ```json
 {
   "_key": "church-photo",
@@ -280,6 +284,7 @@ Card with image, title, description, and optional link.
 ```
 
 **Example:**
+
 ```json
 {
   "_key": "ministry-card",
@@ -344,6 +349,7 @@ Blockquote with optional attribution.
 ```
 
 **Example:**
+
 ```json
 {
   "_key": "verse-quote",
@@ -429,10 +435,10 @@ Vertical spacing.
 
 ```typescript
 {
-  _key: string
-  _type: 'spacer-block'
+  _key: string;
+  _type: "spacer-block";
   data: {
-    height: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
+    height: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
   }
 }
 ```
@@ -499,6 +505,7 @@ Display statistics/metrics.
 ```
 
 **Example:**
+
 ```json
 {
   "_key": "church-stats",
@@ -595,6 +602,7 @@ CSS Grid layout.
 ```
 
 **Example:**
+
 ```json
 {
   "_key": "ministries-grid",
@@ -655,6 +663,7 @@ Vertical stacking (simplified flex column).
 ```
 
 **Example:**
+
 ```json
 {
   "_key": "hero-content",
@@ -723,6 +732,7 @@ Section
 ```
 
 **Allowed:**
+
 ```
 Section
 └── GridBlock (Level 1)
@@ -732,6 +742,7 @@ Section
 ```
 
 **Not Allowed:**
+
 ```
 Section
 └── GridBlock (Level 1)
@@ -742,11 +753,13 @@ Section
 ```
 
 **Container Blocks Can Nest:**
+
 - GridBlock → StackBlock ✅
 - FlexBlock → ContainerBlock ✅
 - StackBlock → GridBlock ✅
 
 **Content Blocks Cannot Have Children:**
+
 - HeadingBlock → anything ❌
 - TextBlock → anything ❌
 - CardBlock → anything ❌
@@ -756,21 +769,25 @@ Section
 ## Validation Rules
 
 ### Key Uniqueness
+
 - `_key` must be unique across ALL blocks in a page
 - Recommendation: Use UUID or `{type}-{timestamp}-{random}`
 
 ### Required Fields
+
 - Every block must have `_key` and `_type`
 - Content blocks must have `data` object
 - Container blocks must have `data` and `blocks` array
 
 ### Block Count Limits
+
 - Sections per page: 20 (recommended)
 - Blocks per section: 50 (recommended)
 - Blocks per container: 20 (recommended)
 - Total blocks per page: 500 (hard limit)
 
 ### Field Validation
+
 - All enum fields must match allowed values exactly
 - URLs must be valid
 - Images must have alt text (accessibility)

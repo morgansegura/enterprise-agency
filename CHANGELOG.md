@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added - API
 
 #### Site Configuration Module
+
 - Created comprehensive `site-config` module for managing tenant-level configuration
 - **DTOs Created:**
   - `HeaderConfigDto` - Header layout, navigation, actions, and behavior
@@ -16,6 +17,7 @@ All notable changes to this project will be documented in this file.
   - `SiteConfigDto` - Combined configuration for all site elements
 
 - **Endpoints:**
+
   ```
   GET/PUT  /api/tenants/:tenantId/config         # Full config
   GET/PUT  /api/tenants/:tenantId/config/header  # Header only
@@ -31,6 +33,7 @@ All notable changes to this project will be documented in this file.
   - Integrated with existing Tenant JSONB columns
 
 #### Block Validation System
+
 - Extended Pages module with comprehensive block DTOs
 - **Content Block DTOs:**
   - `HeadingBlockDto` - Text headings (h1-h6) with size, alignment, weight
@@ -57,6 +60,7 @@ All notable changes to this project will be documented in this file.
   - Updated `PagesService` to handle section-based content
 
 ### Changed - API
+
 - Registered `SiteConfigModule` in `app.module.ts`
 - Updated Pages service to use `sections` instead of flat `blocks`
 - Enhanced content validation with custom validators
@@ -64,6 +68,7 @@ All notable changes to this project will be documented in this file.
 ### Technical Details
 
 #### Database Schema
+
 - Leverages existing Prisma JSONB columns on Tenant model:
   - `headerConfig` → stores header configuration
   - `footerConfig` → stores footer configuration
@@ -71,12 +76,14 @@ All notable changes to this project will be documented in this file.
   - `logosConfig` → stores logo library
 
 #### Validation Strategy
+
 - Discriminated union validation for block types
 - Recursive validation for nested container blocks
 - Type-safe DTOs with class-validator decorators
 - Custom validators for business rules (nesting, uniqueness)
 
 #### Architecture Compliance
+
 - Follows NestJS best practices
 - Modular design with clear separation of concerns
 - Comprehensive type safety throughout
@@ -85,6 +92,7 @@ All notable changes to this project will be documented in this file.
 ## Status Summary
 
 ### ✅ Completed
+
 - API module cleanup (e-commerce/CRM modules already removed)
 - Site configuration CRUD module with full validation
 - Block validation system with 9+ block types
@@ -93,12 +101,14 @@ All notable changes to this project will be documented in this file.
 - API compiles and builds successfully
 
 ### 📦 Ready for Next Phase
+
 - Builder application setup
 - TanStack Query integration
 - Block editor UI development
 - Real-time preview system
 
 ### 🎯 Next Steps
+
 1. Initialize Builder with Next.js 15 + TypeScript
 2. Set up TanStack Query for API communication
 3. Build basic UI (login, tenants list, pages list)

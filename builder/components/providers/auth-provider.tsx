@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { usePathname } from 'next/navigation'
-import { initializeAuth } from '@/lib/auth'
-import { useAuthStore } from '@/lib/stores/auth-store'
-import { logger } from '@/lib/logger'
-import { LoginSkeleton } from '@/components/auth/login-skeleton'
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { initializeAuth } from "@/lib/auth";
+import { useAuthStore } from "@/lib/stores/auth-store";
+import { logger } from "@/lib/logger";
+import { LoginSkeleton } from "@/components/auth/login-skeleton";
 
 /**
  * Auth Provider - Initializes authentication on app load
@@ -17,25 +17,26 @@ import { LoginSkeleton } from '@/components/auth/login-skeleton'
  * - Provides skeleton loader during initialization
  */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { isLoading } = useAuthStore()
-  const pathname = usePathname()
+  const { isLoading } = useAuthStore();
+  const pathname = usePathname();
 
   useEffect(() => {
     // Initialize auth on mount
     initializeAuth().catch((error: Error) => {
-      logger.error('Failed to initialize auth', error)
-    })
-  }, [])
+      logger.error("Failed to initialize auth", error);
+    });
+  }, []);
 
   // Show skeleton loader during initial auth check
   // Only show login skeleton on auth pages, otherwise show generic loading
   if (isLoading) {
-    const isAuthPage = pathname?.startsWith('/login') ||
-                       pathname?.startsWith('/forgot-password') ||
-                       pathname?.startsWith('/reset-password')
+    const isAuthPage =
+      pathname?.startsWith("/login") ||
+      pathname?.startsWith("/forgot-password") ||
+      pathname?.startsWith("/reset-password");
 
     if (isAuthPage) {
-      return <LoginSkeleton />
+      return <LoginSkeleton />;
     }
 
     // Generic skeleton for other pages
@@ -46,8 +47,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           <div className="h-4 w-64 bg-gray-200 rounded"></div>
         </div>
       </div>
-    )
+    );
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }

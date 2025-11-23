@@ -141,6 +141,7 @@ All components use TypeScript with shared types from `/lib/types.ts`.
 We're building the frontend first with mock data, perfecting the UX and data model before building the backend.
 
 **Next up:**
+
 - [ ] Create mock JSON data
 - [ ] Build BlockRenderer
 - [ ] Add more block types

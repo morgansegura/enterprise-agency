@@ -24,23 +24,6 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
       return true;
     }
 
-    // Development mode bypass
-    if (process.env.NODE_ENV === "development") {
-      const request = context.switchToHttp().getRequest();
-      const devUserId = request.headers["x-dev-user-id"] as string;
-
-      if (devUserId) {
-        request.user = {
-          id: devUserId,
-          email: "dev@example.com",
-          firstName: "Dev",
-          lastName: "User",
-          tenants: [],
-        };
-        return true;
-      }
-    }
-
     return super.canActivate(context);
   }
 

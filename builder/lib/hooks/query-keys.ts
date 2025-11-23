@@ -11,39 +11,30 @@ export const queryKeys = {
   admin: {
     users: {
       all: (filters?: { includeDeleted?: boolean }) =>
-        ['admin', 'users', filters] as const,
-      detail: (id: string) =>
-        ['admin', 'users', id] as const,
-      search: (query: string) =>
-        ['admin', 'users', 'search', query] as const,
+        ["admin", "users", filters] as const,
+      detail: (id: string) => ["admin", "users", id] as const,
+      search: (query: string) => ["admin", "users", "search", query] as const,
     },
     features: {
-      available: () =>
-        ['admin', 'features', 'available'] as const,
+      available: () => ["admin", "features", "available"] as const,
       tenant: (tenantId: string) =>
-        ['admin', 'features', 'tenant', tenantId] as const,
+        ["admin", "features", "tenant", tenantId] as const,
     },
     projects: {
       assignments: (filters?: { tenantId?: string; userId?: string }) =>
-        ['admin', 'projects', 'assignments', filters] as const,
-      detail: (id: string) =>
-        ['admin', 'projects', 'assignments', id] as const,
+        ["admin", "projects", "assignments", filters] as const,
+      detail: (id: string) => ["admin", "projects", "assignments", id] as const,
     },
     tenants: {
-      all: () =>
-        ['admin', 'tenants'] as const,
-      detail: (id: string) =>
-        ['admin', 'tenants', id] as const,
-      stats: (id: string) =>
-        ['admin', 'tenants', id, 'stats'] as const,
+      all: () => ["admin", "tenants"] as const,
+      detail: (id: string) => ["admin", "tenants", id] as const,
+      stats: (id: string) => ["admin", "tenants", id, "stats"] as const,
       activity: (id: string, days?: number) =>
-        ['admin', 'tenants', id, 'activity', { days }] as const,
+        ["admin", "tenants", id, "activity", { days }] as const,
     },
   },
   tenants: {
-    all: () =>
-      ['tenants'] as const,
-    detail: (id: string) =>
-      ['tenants', id] as const,
+    all: () => ["tenants"] as const,
+    detail: (id: string) => ["tenants", id] as const,
   },
-}
+};

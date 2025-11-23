@@ -27,17 +27,20 @@ UI Components (Primitives)
 ## Layout Components
 
 ### Page
+
 **Location:** `components/layout/page`
 
 **Purpose:** Top-level layout structure with header/footer slots
 
 **Props:**
+
 - `children` - Main content
 - `header?` - Header component
 - `footer?` - Footer component
 - `headerPosition?` - 'static' | 'sticky' | 'fixed'
 
 **Usage:**
+
 ```tsx
 <Page header={<Header />} footer={<Footer />}>
   {children}
@@ -47,11 +50,13 @@ UI Components (Primitives)
 ---
 
 ### Section
+
 **Location:** `components/layout/section`
 
 **Purpose:** Page sections with spacing and backgrounds
 
 **Props:**
+
 - `as?` - HTML element (section, div, article, etc.)
 - `spacing?` - Vertical padding
 - `background?` - Background variant
@@ -59,6 +64,7 @@ UI Components (Primitives)
 - `align?` - Text alignment
 
 **Usage:**
+
 ```tsx
 <Section spacing="lg" background="gray" width="wide">
   {children}
@@ -68,6 +74,7 @@ UI Components (Primitives)
 ---
 
 ### Container
+
 **Location:** `components/layout/container` (future)
 
 **Purpose:** Width constraints and horizontal padding
@@ -77,6 +84,7 @@ UI Components (Primitives)
 ## Block Components
 
 ### HeadingBlock
+
 **Location:** `components/block/heading-block`
 
 **Purpose:** Page headings with optional subtitles
@@ -84,6 +92,7 @@ UI Components (Primitives)
 **Data Type:** `HeadingBlockData`
 
 **Usage:**
+
 ```tsx
 <HeadingBlock
   title="Welcome"
@@ -99,11 +108,13 @@ UI Components (Primitives)
 ## UI Components
 
 ### Heading
+
 **Location:** `components/ui/heading`
 
 **Purpose:** Semantic headings (h1-h6) with visual styling
 
 **Props:**
+
 - `as?` - Heading level (h1-h6)
 - `size?` - Visual size
 - `weight?` - Font weight
@@ -111,6 +122,7 @@ UI Components (Primitives)
 - `variant?` - Color variant
 
 **Usage:**
+
 ```tsx
 <Heading as="h2" size="2xl" align="center">
   Title
@@ -120,11 +132,13 @@ UI Components (Primitives)
 ---
 
 ### Text
+
 **Location:** `components/ui/text`
 
 **Purpose:** Paragraph text with variants
 
 **Props:**
+
 - `as?` - HTML element (p, span, div)
 - `size?` - Text size
 - `weight?` - Font weight
@@ -132,6 +146,7 @@ UI Components (Primitives)
 - `variant?` - Style variant
 
 **Usage:**
+
 ```tsx
 <Text variant="lead" size="lg">
   Introduction text
@@ -155,7 +170,7 @@ UI Components (Primitives)
 ### 2. **Import Shared Types**
 
 ```tsx
-import type { HeadingSize, TextAlign } from '@/lib/types'
+import type { HeadingSize, TextAlign } from "@/lib/types";
 ```
 
 ### 3. **Composition Over Props**
@@ -170,7 +185,7 @@ export function HeadingBlock({ title, subtitle }: HeadingBlockData) {
       <Heading>{title}</Heading>
       {subtitle && <Text variant="muted">{subtitle}</Text>}
     </div>
-  )
+  );
 }
 ```
 
@@ -179,10 +194,10 @@ export function HeadingBlock({ title, subtitle }: HeadingBlockData) {
 ```tsx
 // Export data type separately
 export type HeadingBlockData = {
-  title: string
-  subtitle?: string
+  title: string;
+  subtitle?: string;
   // ...
-}
+};
 
 // Component uses the data type
 export function HeadingBlock(props: HeadingBlockData) {
@@ -262,6 +277,7 @@ When creating a new component:
 ## Reference
 
 See existing components for examples:
+
 - `components/ui/heading/heading.tsx`
 - `components/ui/text/text.tsx`
 - `components/layout/section/section.tsx`

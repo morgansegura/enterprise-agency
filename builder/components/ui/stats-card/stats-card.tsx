@@ -1,14 +1,19 @@
-import { LucideIcon } from 'lucide-react'
-import './stats-card.css'
+import { LucideIcon } from "lucide-react";
+import "./stats-card.css";
 
 interface StatsCardProps {
-  name: string
-  value: string | number
-  icon: LucideIcon
-  iconColor: 'blue' | 'green' | 'purple' | 'orange'
+  name: string;
+  value: string | number;
+  icon: LucideIcon;
+  iconColor: "blue" | "green" | "purple" | "orange";
 }
 
-export function StatsCard({ name, value, icon: Icon, iconColor }: StatsCardProps) {
+export function StatsCard({
+  name,
+  value,
+  icon: Icon,
+  iconColor,
+}: StatsCardProps) {
   return (
     <div className="stats-card">
       <div className="stats-card-content">
@@ -25,5 +30,5 @@ export function StatsCard({ name, value, icon: Icon, iconColor }: StatsCardProps
         </div>
       </div>
     </div>
-  )
+  );
 }

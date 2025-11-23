@@ -17,6 +17,7 @@ import {
   LoginDto,
   ForgotPasswordDto,
   ResetPasswordDto,
+  ResendVerificationDto,
 } from "./dto";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { Public, CurrentUser } from "./decorators";
@@ -47,9 +48,16 @@ export class AuthController {
   @Post("login")
   async login(
     @Body() dto: LoginDto,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const result = await this.authService.login(dto);
+    // Extract IP address (handle proxies)
+    const ipAddress =
+      (req.headers["x-forwarded-for"] as string)?.split(",")[0] ||
+      req.socket.remoteAddress ||
+      "unknown";
+
+    const result = await this.authService.login(dto, ipAddress);
 
     // Set HTTP-only cookies for tokens
     this.setAuthCookies(
@@ -143,8 +151,8 @@ export class AuthController {
    */
   @Public()
   @Post("resend-verification")
-  async resendVerification(@Body("email") email: string) {
-    return this.authService.resendVerificationEmail(email);
+  async resendVerification(@Body() dto: ResendVerificationDto) {
+    return this.authService.resendVerificationEmail(dto.email);
   }
 
   /**

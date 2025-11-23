@@ -69,8 +69,8 @@ export function Button({ children, className }: ButtonProps) {
 ### Import Usage
 
 ```typescript
-import { Button } from '@/components/ui/button'
-import { Header } from '@/components/layout/header'
+import { Button } from "@/components/ui/button";
+import { Header } from "@/components/layout/header";
 ```
 
 ## Generate Pages
@@ -200,12 +200,12 @@ Generated files are **templates** - modify them as needed:
 ```typescript
 // Add custom props
 type ButtonProps = {
-  children?: React.ReactNode
-  className?: string
-  variant?: 'primary' | 'secondary' | 'outline'  // ✓ Add this
-  size?: 'sm' | 'md' | 'lg'                      // ✓ Add this
-  onClick?: () => void                            // ✓ Add this
-}
+  children?: React.ReactNode;
+  className?: string;
+  variant?: "primary" | "secondary" | "outline"; // ✓ Add this
+  size?: "sm" | "md" | "lg"; // ✓ Add this
+  onClick?: () => void; // ✓ Add this
+};
 ```
 
 ### 5. Update Page Metadata
@@ -214,8 +214,8 @@ Always update generated page metadata for better SEO:
 
 ```typescript
 export const metadata: Metadata = {
-  title: "Youth Ministry",  // ✓ Specific title
-  description: "Join our vibrant youth ministry...",  // ✓ Compelling description
+  title: "Youth Ministry", // ✓ Specific title
+  description: "Join our vibrant youth ministry...", // ✓ Compelling description
   // ... update images, keywords, etc.
 };
 ```
@@ -257,6 +257,7 @@ Result: `app/ministries/youth/page.tsx` (accessible at `/ministries/youth`)
 ## Troubleshooting
 
 **"Permission denied" error:**
+
 ```bash
 chmod +x scripts/generate.js
 ```
@@ -265,6 +266,7 @@ chmod +x scripts/generate.js
 Make sure you're in the `client/` directory
 
 **Import errors after generation:**
+
 - Check that `@/` path alias is configured in `tsconfig.json`
 - Restart your IDE/editor
 - Restart the dev server
@@ -277,6 +279,7 @@ Make sure you're in the `client/` directory
 ## Customizing Templates
 
 Edit templates in `scripts/generate.js`:
+
 - `generateComponentTemplate()` - Component structure
 - `generateComponentCSSTemplate()` - CSS file
 - `generatePageTemplate()` - Page structure

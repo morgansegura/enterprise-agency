@@ -51,12 +51,8 @@ export function LoginForm() {
     <div className="login-form-container">
       <div className="login-form-card">
         <div className="login-form-header">
-          <h2 className="login-form-title">
-            Web & Funnel Builder
-          </h2>
-          <p className="login-form-subtitle">
-            Sign in to your agency account
-          </p>
+          <h2 className="login-form-title">Web & Funnel Builder</h2>
+          <p className="login-form-subtitle">Sign in to your agency account</p>
         </div>
         <form className="login-form" onSubmit={handleSubmit}>
           {error && (

@@ -1,13 +1,13 @@
 module.exports = {
-  extends: ['next/core-web-vitals', 'next/typescript'],
+  extends: ["next/core-web-vitals", "next/typescript"],
   rules: {
-    '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-unused-vars': [
-      'error',
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
       {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
       },
     ],
   },
-}
+};

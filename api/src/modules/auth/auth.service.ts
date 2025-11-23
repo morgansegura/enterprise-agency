@@ -1,6 +1,5 @@
 import {
   Injectable,
-  ConflictException,
   UnauthorizedException,
   BadRequestException,
   NotFoundException,
@@ -43,8 +42,38 @@ export class AuthService {
       where: { email: dto.email.toLowerCase() },
     });
 
+    // SECURITY: Always return same message to prevent email enumeration
+    const genericMessage =
+      "If this email is not already registered, we've sent a verification email. Please check your inbox.";
+
     if (existingUser) {
-      throw new ConflictException("Email already in use");
+      // User exists - don't reveal this in the response
+      // Send appropriate email based on their status
+      if (existingUser.emailVerified) {
+        // Account already exists and verified - send a reminder email
+        await this.emailService.sendAccountExistsEmail(existingUser.email);
+      } else {
+        // Account exists but unverified - resend verification
+        const newToken = this.generateSecureToken();
+        const newExpiry = new Date(
+          Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+        );
+
+        await this.prisma.user.update({
+          where: { id: existingUser.id },
+          data: {
+            verificationToken: newToken,
+            verificationTokenExpires: newExpiry,
+          },
+        });
+
+        await this.emailService.sendVerificationEmail(
+          existingUser.email,
+          newToken,
+        );
+      }
+
+      return { message: genericMessage };
     }
 
     // Hash password
@@ -75,18 +104,13 @@ export class AuthService {
       verificationToken,
     );
 
-    return {
-      message:
-        "Registration successful. Please check your email to verify your account.",
-      userId: user.id,
-      email: user.email,
-    };
+    return { message: genericMessage };
   }
 
   /**
    * Login with email and password
    */
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto, ipAddress?: string) {
     // Find user by email
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email.toLowerCase() },
@@ -99,17 +123,16 @@ export class AuthService {
       },
     });
 
-    if (!user || !user.passwordHash) {
-      throw new UnauthorizedException("Invalid credentials");
-    }
+    // SECURITY: Always perform bcrypt comparison to prevent timing attacks
+    // Use dummy hash if user doesn't exist to keep timing consistent
+    const dummyHash =
+      "$2b$12$dummyHashToPreventTimingAttack1234567890123456789012345678";
+    const hashToCompare = user?.passwordHash || dummyHash;
 
-    // Verify password
-    const isPasswordValid = await bcrypt.compare(
-      dto.password,
-      user.passwordHash,
-    );
+    const isPasswordValid = await bcrypt.compare(dto.password, hashToCompare);
 
-    if (!isPasswordValid) {
+    // Check credentials after comparison to prevent timing-based user enumeration
+    if (!user || !user.passwordHash || !isPasswordValid) {
       throw new UnauthorizedException("Invalid credentials");
     }
 
@@ -120,10 +143,13 @@ export class AuthService {
       );
     }
 
-    // Update last login
+    // Update last login with timestamp and IP address
     await this.prisma.user.update({
       where: { id: user.id },
-      data: { lastLoginAt: new Date() },
+      data: {
+        lastLoginAt: new Date(),
+        lastLoginIp: ipAddress || null,
+      },
     });
 
     // Generate tokens

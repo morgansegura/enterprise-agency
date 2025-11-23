@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Roboto_Slab } from "next/font/google";
 import { Providers } from "./providers";
 import "@/styles/globals.css";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+const roboto_slab = Roboto_Slab({
+  variable: "--font-roboto-slab",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Web & Funnel Builder",
@@ -17,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={cn("antialiased", inter.variable, roboto_slab.variable)}>
         <Providers>{children}</Providers>
       </body>
     </html>

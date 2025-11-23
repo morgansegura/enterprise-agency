@@ -47,6 +47,7 @@
 ## Technology Stack
 
 ### API (Backend)
+
 - **Framework:** NestJS 10.x
 - **Language:** TypeScript 5.x
 - **Database:** PostgreSQL 16.x
@@ -55,6 +56,7 @@
 - **API Style:** REST (GraphQL optional later)
 
 ### Builder (Admin)
+
 - **Framework:** Next.js 15.x
 - **Language:** TypeScript 5.x
 - **UI:** Radix UI + Tailwind CSS 4
@@ -62,6 +64,7 @@
 - **State:** React Query (TanStack Query)
 
 ### Client (Customer Frontends)
+
 - **Framework:** Next.js 16.x
 - **Language:** TypeScript 5.x
 - **Styling:** Tailwind CSS 4 + CSS Custom Properties
@@ -103,6 +106,7 @@
 ## Data Flow
 
 ### Content Creation Flow
+
 ```
 1. Agency owner opens Builder
 2. Creates new site for customer
@@ -113,6 +117,7 @@
 ```
 
 ### Content Editing Flow (Optional - if customer pays)
+
 ```
 1. Customer logs into Builder
 2. Views their site's pages
@@ -126,24 +131,28 @@
 ### Approach: Shared Database, Isolated Data
 
 **Database:**
+
 - Single PostgreSQL instance
 - All customers in same database
 - Data isolated by `siteId` foreign keys
 - Row-level security via Prisma queries
 
 **Benefits:**
+
 - Simple to manage
 - Cost-effective
 - Easy backups
 - Can split later if needed
 
 **Alternative (Future):**
+
 - Database per customer (more isolation)
 - Schema per customer (PostgreSQL schemas)
 
 ## Authentication & Authorization
 
 ### Levels
+
 1. **Agency Owner** (you)
    - Full access to all sites
    - Can create/delete sites
@@ -160,6 +169,7 @@
    - Rate limited
 
 ### Implementation
+
 - JWT tokens for Builder authentication
 - API keys for frontend authentication
 - Role-based access control (RBAC)
@@ -167,6 +177,7 @@
 ## Content Storage
 
 ### Page Content Structure
+
 ```json
 {
   "sections": [
@@ -192,6 +203,7 @@
 ```
 
 **Stored as:**
+
 - PostgreSQL JSONB column
 - Validated against TypeScript types
 - Queryable with JSON operators (future)
@@ -199,6 +211,7 @@
 ## Deployment Strategy
 
 ### Development
+
 ```
 API:      http://localhost:3000
 Builder:  http://localhost:3001
@@ -206,6 +219,7 @@ Client:   http://localhost:3002
 ```
 
 ### Production
+
 ```
 API:      api.yourcompany.com
 Builder:  builder.yourcompany.com
@@ -213,6 +227,7 @@ Client:   customer-domain.com (custom per customer)
 ```
 
 ### Hosting Recommendations
+
 - **API:** Railway, Render, DigitalOcean App Platform
 - **Builder:** Vercel, Netlify
 - **Client:** Vercel, Netlify (per customer)
@@ -221,17 +236,20 @@ Client:   customer-domain.com (custom per customer)
 ## Scaling Considerations
 
 ### Phase 1 (0-10 customers)
+
 - Single API server
 - Single database instance
 - Simple deployment
 
 ### Phase 2 (10-50 customers)
+
 - Add Redis for caching
 - Database connection pooling
 - CDN for static assets
 - Image optimization service
 
 ### Phase 3 (50+ customers)
+
 - Horizontal API scaling
 - Database read replicas
 - Separate media storage (S3/R2)
@@ -261,12 +279,14 @@ Client:   customer-domain.com (custom per customer)
 ## Future Enhancements
 
 ### Short-term (3-6 months)
+
 - Visual drag-and-drop editor
 - Block library (save/reuse sections)
 - Image optimization pipeline
 - Version history
 
 ### Medium-term (6-12 months)
+
 - Multi-user collaboration
 - Real-time preview
 - A/B testing
@@ -274,6 +294,7 @@ Client:   customer-domain.com (custom per customer)
 - SEO optimization tools
 
 ### Long-term (12+ months)
+
 - AI content suggestions
 - Template marketplace
 - White-label for other agencies
@@ -283,22 +304,26 @@ Client:   customer-domain.com (custom per customer)
 ## Development Roadmap
 
 ### Week 1: Foundation
+
 - [ ] API setup (NestJS + Prisma)
 - [ ] Database schema
 - [ ] Sites CRUD
 - [ ] Basic Builder UI
 
 ### Week 2: Pages & Content
+
 - [ ] Pages CRUD API
 - [ ] Block editor foundation
 - [ ] Preview system
 
 ### Week 3: Block Editors
+
 - [ ] All block type editors
 - [ ] Config management
 - [ ] Image upload
 
 ### Week 4: Integration & Deploy
+
 - [ ] Connect client to API
 - [ ] Polish UX
 - [ ] Deploy to production
@@ -307,6 +332,7 @@ Client:   customer-domain.com (custom per customer)
 ## Success Metrics
 
 ### Week 4 Goals
+
 - ✅ Can create a new site in < 5 minutes
 - ✅ Can build a homepage in < 30 minutes
 - ✅ Customer can edit content without breaking design
@@ -314,6 +340,7 @@ Client:   customer-domain.com (custom per customer)
 - ✅ Zero downtime deployments
 
 ### Month 3 Goals
+
 - 5+ customer sites live
 - Builder is stable and fast
 - Documentation complete
@@ -322,12 +349,14 @@ Client:   customer-domain.com (custom per customer)
 ## Support & Maintenance
 
 ### Monitoring
+
 - API uptime monitoring
 - Error tracking (Sentry)
 - Performance monitoring
 - Database health checks
 
 ### Backup Strategy
+
 - Daily database backups
 - 30-day retention
 - Point-in-time recovery available

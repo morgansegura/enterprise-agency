@@ -1,230 +1,111 @@
-# MH Bible Baptist Church Platform Documentation
+# Documentation Index
 
-**A modern, block-based church website platform built for scale.**
-
-This platform is designed to serve multiple churches with a shared backend and customizable frontends.
+Complete documentation for the Professional Web Agency Platform.
 
 ---
 
-## 📚 Documentation Index
+## Product & Strategy
 
-### 🎯 Getting Started
-- **[Architecture Overview](./architecture.md)** - System architecture and core concepts
-- **[Monorepo Strategy](./MONOREPO_STRATEGY.md)** - How to manage multiple client deployments
-- **[Public API Guide](./PUBLIC_API.md)** - Public endpoints for client frontends
-- **[Security Recommendations](./SECURITY_RECOMMENDATIONS.md)** - Security best practices & fixes
-- **[Testing Permissions](./testing-permissions.md)** - RBAC and permission testing guide
+**Start here to understand our vision and approach:**
 
-### [Client (Next.js Frontends)](./client/)
-- [Component System](./client/components.md)
-- [Block Architecture](./client/blocks.md)
-- [Data Model](./client/data-model.md)
-- [SEO System](./client/seo-usage.md)
-- [Code Generator](./client/generator.md)
-
-### [Builder (Admin Panel)](./builder/)
-- [Architecture](./builder/architecture.md)
-- [README](./builder/README.md)
-
-### [API (NestJS Backend)](./api/)
-- [Architecture](./api/architecture.md)
-- [Block Types](./api/block-types.md)
-- [README](./api/README.md)
-
-### [App (Mobile)](./app/)
-*Coming soon - Mobile apps will consume the same API*
-- [README](./app/README.md)
+- **[Vision & Product Strategy](./vision.md)** - Platform vision, competitive positioning, and why token-based design
+- **[Feature Flags System](./feature-flags.md)** - Progressive feature development and monetization
+- **[Build Plan](./build-plan.md)** - Current state, roadmap, and immediate next steps
+- [Architecture Overview](./architecture.md) - System architecture and multi-tenant design
 
 ---
 
-## 🏗️ Architecture Overview
+## Builder (Admin Platform)
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                     WEBFUNNEL PLATFORM                            │
-├──────────────────────────────────────────────────────────────────┤
-│                                                                   │
-│  Builder (4001)           API (4000)          Clients (4002+)    │
-│  ┌──────────────┐       ┌──────────┐       ┌────────────────┐  │
-│  │ Admin Panel  │◄──────┤ NestJS   │◄──────┤ Client Sites   │  │
-│  │              │       │  API     │       │                │  │
-│  │ - Auth       │       │          │       │ - Public API   │  │
-│  │ - CRUD Pages │       │ Auth API │       │ - No Auth      │  │
-│  │ - Manage     │       │ Public API│       │ - Published    │  │
-│  │   Users      │       └────┬─────┘       │   Content      │  │
-│  └──────────────┘            │             └────────────────┘  │
-│                               │                                 │
-│                        ┌──────▼──────┐                         │
-│                        │ PostgreSQL  │                         │
-│                        │  (Prisma)   │                         │
-│                        │             │                         │
-│                        │ - Tenants   │                         │
-│                        │ - Pages     │                         │
-│                        │ - Users     │                         │
-│                        │ - RBAC      │                         │
-│                        └─────────────┘                         │
-└──────────────────────────────────────────────────────────────────┘
-```
+**Documentation for the admin/builder application:**
 
-### Key Concepts
-
-- **Builder:** Single admin panel at `builder.webfunnel.com` for agency + clients
-- **API:** Multi-tenant backend with authenticated + public endpoints
-- **Clients:** Individual deployments per client (not cookie-cutter)
-- **Monorepo:** Shared packages for components, isolated customizations
+- [Builder Overview](./builder/readme.md) - Admin platform documentation index
+- **[Two-Tier System](./builder/two-tier-system.md)** - Content Editor vs Builder tiers (implementation guide)
+- **[Token System](./builder/token-system.md)** - Token-based design system (complete reference)
+- [Builder Architecture](./builder/architecture.md) - Codebase structure, TanStack Query, Zustand
+- [CSS Architecture](./builder/css-architecture.md) - Tailwind v4 CSS-first approach
+- [State Management](./builder/state-management.md) - React state patterns and hooks
+- [Hook Examples](./builder/hook-examples.md) - Custom React hooks usage
+- [Agency Platform Features](./builder/agency-platform.md) - CRM, project management (future)
+- [Client Intake System](./builder/intake.md) - Onboarding workflows (future)
+- [System Overview](./builder/system-overview.md) - High-level platform overview
 
 ---
 
-## 🎯 Current Phase: Backend Integration & Security
+## API (Backend)
 
-**Status:** Backend API and Builder are functional, need security hardening and public API
+**Documentation for the NestJS backend:**
 
-**Current State:**
-- ✅ NestJS API with multi-tenant architecture
-- ✅ Builder admin panel with authentication
-- ✅ Enterprise RBAC (agency + tenant roles)
-- ✅ HTTP-only cookie JWT auth
-- ⏳ Public API for client frontends (in progress)
-- ⏳ Security hardening (token revocation, rate limiting)
-
-**Next Steps:**
-- Implement public API endpoints
-- Fix critical security issues (P0)
-- Setup monorepo for client deployments
-- Deploy to staging environment
+- [API Overview](./api/readme.md) - API documentation index
+- [API Architecture](./api/architecture.md) - Backend structure and modules
+- [Block Types](./api/block-types.md) - Block DTOs and validation rules
+- [Admin API](./api/admin-api.md) - Admin-specific endpoints
+- [Guards](./api/guards.md) - Authentication and authorization guards
+- [Cleanup Plan](./api/cleanup-plan.md) - Module cleanup strategy (historical)
 
 ---
 
-## 🚀 Quick Links
+## Client (Frontend)
 
-### For Developers
-- **[Architecture](./architecture.md)** - Understand the system design
-- **[Monorepo Strategy](./MONOREPO_STRATEGY.md)** - Managing multiple client deployments
-- **[Security Guide](./SECURITY_RECOMMENDATIONS.md)** - Critical fixes before production
-- **[Public API](./PUBLIC_API.md)** - Client frontend integration
+**Documentation for the public-facing Next.js frontend:**
 
-### For Testing
-- **[Testing Permissions](./testing-permissions.md)** - Test RBAC and feature gates
-- **[API Documentation](./api/README.md)** - Backend endpoints reference
-- **[Builder Guide](./builder/README.md)** - Admin panel usage
-
----
-
-## 📦 Tech Stack
-
-### Frontend (Current Focus)
-- **Framework:** Next.js 16 (App Router)
-- **Styling:** Tailwind CSS 4
-- **Language:** TypeScript
-- **State:** React Server Components + Client Components
-- **Data:** Mock JSON (transitioning to API)
-
-### Backend (Active)
-- **Framework:** NestJS 10.x
-- **Database:** PostgreSQL 16.x with Prisma ORM
-- **Auth:** Custom JWT with HTTP-only cookies
-- **Storage:** Local (transitioning to S3/Cloudflare R2)
-- **Cache:** Planned (Redis)
-
-### Mobile (Future)
-- **Framework:** React Native (Expo)
-- **Same API:** Shares backend with web
-- **Same Blocks:** Reuses block data model
+- [Client Overview](./client/readme.md) - Frontend documentation index
+- [Client Architecture](./client/architecture.md) - Frontend structure and data flow
+- [Blocks Reference](./client/blocks.md) - All 23 block types with properties
+- [Components](./client/components.md) - Component system documentation
+- [Data Model](./client/data-model.md) - Page/section/block data structures
+- [SEO Usage](./client/seo-usage.md) - SEO implementation guide
+- [Navigation Styling Tokens](./client/navigation-styling-tokens.md) - Navigation token reference
+- [Generator](./client/generator.md) - Code generation tools
+- [Getting Started](./client/getting-started.md) - Quick start guide
 
 ---
 
-## 🎨 Design System
+## Operations & Security
 
-### Core Principles
-1. **Block-based:** Everything is a composable block
-2. **Data-driven:** All content comes from data (JSON → API)
-3. **Type-safe:** Full TypeScript coverage
-4. **Multi-tenant:** One platform, many churches
-5. **API-first:** Frontend consumes API (even if mocked initially)
-
-### Component Hierarchy
-```
-Page Layout (structural)
-  ├── Section (layout + spacing)
-  │   ├── Container (width constraints)
-  │   │   ├── Blocks (content)
-  │   │   │   ├── Heading Block
-  │   │   │   ├── Text Block
-  │   │   │   ├── Hero Block
-  │   │   │   └── Custom Blocks
-  │   │   └── UI Components (primitives)
-  │   │       ├── Heading
-  │   │       ├── Text
-  │   │       ├── Button
-  │   │       └── etc.
-```
+- [Security Recommendations](./security-recommendations.md) - Security best practices
+- [Testing Permissions](./testing-permissions.md) - RBAC testing guide
 
 ---
 
-## 🔄 Development Phases
+## Guides & References
 
-### ✅ Phase 1: Foundation (Completed)
-- [x] Next.js client template
-- [x] Component system (Heading, Text, Section, Page)
-- [x] Global types
-- [x] SEO system
-- [x] Block architecture
+### Setup Guides
 
-### ✅ Phase 2: Backend Development (Completed)
-- [x] NestJS API setup
-- [x] Database schema with Prisma
-- [x] Multi-tenant architecture
-- [x] Authentication (JWT + HTTP-only cookies)
-- [x] Enterprise RBAC (agency + tenant roles)
-- [x] Pages, Posts, Assets modules
-- [x] Site configuration module
+- [Root README](../readme.md) - Project setup and quick start
+- [Setup Guide](../setup-guide.md) - Detailed setup instructions
+- [Troubleshooting](../troubleshooting.md) - Common issues and solutions
+- [Changelog](../changelog.md) - Version history
 
-### ✅ Phase 3: Builder (Completed)
-- [x] Admin panel setup
-- [x] Authentication flow
-- [x] User management
-- [x] Protected routes
+### Development Guides
 
-### 🔨 Phase 4: Integration & Security (Current)
-- [ ] Implement public API endpoints
-- [ ] Fix critical security issues (P0)
-- [ ] Setup monorepo for client deployments
-- [ ] Connect client template to public API
-- [ ] Implement rate limiting
-- [ ] Add security headers
-- [ ] Token revocation mechanism
+- [Client Getting Started](./client/getting-started.md) - Frontend development
+- [Hook Examples](./builder/hook-examples.md) - React hooks patterns
+- [State Management](./builder/state-management.md) - Zustand + TanStack Query
 
-### 📋 Phase 5: Production Ready (Next)
-- [ ] Deploy to staging environment
-- [ ] Security penetration testing
-- [ ] Performance optimization
-- [ ] Setup monitoring & logging
-- [ ] Deploy first client site
-- [ ] Production launch
+### System Design
 
-### 📱 Phase 6: Mobile (Future)
-- [ ] React Native setup
-- [ ] Mobile block renderer
-- [ ] Native components
-- [ ] App store deployment
+- [Architecture](./architecture.md) - Multi-tenant system design
+- [API Architecture](./api/architecture.md) - Backend architecture
+- [Builder Architecture](./builder/architecture.md) - Admin architecture
+- [Client Architecture](./client/architecture.md) - Frontend architecture
 
 ---
 
-## 🤝 Contributing
+## Quick Links
 
-This is an internal agency project. All documentation should be kept up-to-date as features are built.
+**For Product Strategy:**
 
-### When Adding Features:
-1. Update relevant docs
-2. Add examples
-3. Update this master index if adding new sections
+- Vision → Build Plan → Feature Flags → Two-Tier System
+
+**For Development:**
+
+- Setup Guide → Architecture → Build Plan → API/Builder/Client docs
+
+**For Understanding Token System:**
+
+- Vision (why tokens) → Token System (how to implement) → CSS Architecture (patterns)
 
 ---
 
-## 📧 Support
-
-Internal agency project - contact development team for questions.
-
----
-
-**Last Updated:** November 2025
+**Last Updated:** 2025-01-22

@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { useState, FormEvent } from 'react'
-import Link from 'next/link'
-import { forgotPassword } from '@/lib/auth'
-import { getErrorMessage } from '@/lib/errors'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { logger } from '@/lib/logger'
+import { useState, FormEvent } from "react";
+import Link from "next/link";
+import { forgotPassword } from "@/lib/auth";
+import { getErrorMessage } from "@/lib/errors";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { logger } from "@/lib/logger";
 
 /**
  * Forgot Password Page
@@ -17,31 +17,33 @@ import { logger } from '@/lib/logger'
  * - Loading states
  */
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState<string>('')
-  const [error, setError] = useState<string>('')
-  const [success, setSuccess] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault()
-    setError('')
-    setSuccess('')
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
 
     try {
-      logger.log('Forgot password request', { email })
-      const message = await forgotPassword(email)
-      setSuccess(message || 'Password reset instructions have been sent to your email')
-      setEmail('') // Clear form
-      logger.log('Forgot password successful', { email })
+      logger.log("Forgot password request", { email });
+      const message = await forgotPassword(email);
+      setSuccess(
+        message || "Password reset instructions have been sent to your email",
+      );
+      setEmail(""); // Clear form
+      logger.log("Forgot password successful", { email });
     } catch (err) {
-      const message = getErrorMessage(err)
-      setError(message || 'Failed to send reset email. Please try again.')
-      logger.error('Forgot password failed', err as Error, { email })
+      const message = getErrorMessage(err);
+      setError(message || "Failed to send reset email. Please try again.");
+      logger.error("Forgot password failed", err as Error, { email });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -51,7 +53,8 @@ export default function ForgotPasswordPage() {
             Reset Password
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email address and we'll send you instructions to reset your password
+            Enter your email address and we'll send you instructions to reset
+            your password
           </p>
         </div>
 
@@ -94,7 +97,7 @@ export default function ForgotPasswordPage() {
               disabled={loading}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
             >
-              {loading ? 'Sending...' : 'Send Reset Instructions'}
+              {loading ? "Sending..." : "Send Reset Instructions"}
             </button>
 
             <div className="text-center">
@@ -109,5 +112,5 @@ export default function ForgotPasswordPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }
