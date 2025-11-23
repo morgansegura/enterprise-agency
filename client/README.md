@@ -74,6 +74,17 @@ Complete token-based styling for layout components with zero hardcoded values:
 - Social links, bottom bar, CTA sections
 - Multiple templates (centered, stacked, minimal)
 
+**Section Tokens** (~200+ properties):
+
+- Vertical spacing scale (8 levels) with responsive overrides
+- Container widths (narrow, container, wide, full, prose)
+- Backgrounds (solid colors, gradients, images, overlays)
+- Borders, dividers, shadows, and border radius
+- Pattern overlays (dots, grid, diagonal lines)
+- Content and text alignment
+- Animations, transitions, and z-index layers
+- Complete responsive breakpoint controls
+
 All tokens generate CSS custom properties for complete tenant customization.
 
 ## Quick Start
@@ -122,13 +133,15 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 │   └── ui/                  # UI primitives (shadcn-based)
 ├── lib/
 │   ├── blocks/              # Block type definitions
-│   ├── tokens/              # Token system (headers, menus, footers)
+│   ├── tokens/              # Token system (headers, menus, footers, sections)
 │   │   ├── header-tokens.ts       # Header token schema
 │   │   ├── header-defaults.ts     # Platform header defaults
 │   │   ├── menu-tokens.ts         # Menu token schema
 │   │   ├── menu-defaults.ts       # Platform menu defaults
 │   │   ├── footer-tokens.ts       # Footer token schema
 │   │   ├── footer-defaults.ts     # Platform footer defaults
+│   │   ├── section-tokens.ts      # Section token schema
+│   │   ├── section-defaults.ts    # Platform section defaults
 │   │   └── generate-*-css.ts      # CSS generation functions
 │   ├── site-config.ts       # Site metadata + theme config
 │   ├── theme.ts             # Theme utilities
@@ -137,7 +150,8 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 │   └── tokens/              # Token-based CSS (zero hardcoded values)
 │       ├── header.css       # Header token styles
 │       ├── menu.css         # Menu token styles
-│       └── footer.css       # Footer token styles
+│       ├── footer.css       # Footer token styles
+│       └── section.css      # Section token styles
 ├── data/mocks/              # Mock page data for development
 └── docs/                    # Architecture documentation
 ```
@@ -151,15 +165,18 @@ import {
   headerDefaults,
   menuDefaults,
   footerDefaults,
+  sectionDefaults,
   generateHeaderCSS,
   generateMenuCSS,
   generateFooterCSS,
+  generateSectionCSS,
 } from "@/lib/tokens";
 
 // Use platform defaults
 const headerCSS = generateHeaderCSS(headerDefaults);
 const menuCSS = generateMenuCSS(menuDefaults);
 const footerCSS = generateFooterCSS(footerDefaults);
+const sectionCSS = generateSectionCSS(sectionDefaults);
 
 // Or customize for a tenant
 const customTokens = {
@@ -195,6 +212,17 @@ All layout components use token-based CSS with clean classnames:
 <footer className="footer-renderer" data-template="centered">
   <div className="footer-container">...</div>
 </footer>
+
+// Sections use .section classes
+<section
+  className="section"
+  data-spacing="lg"
+  data-width="container"
+  data-background="primary"
+  data-pattern="dots"
+>
+  <div>...</div>
+</section>
 ```
 
 No hardcoded styles - everything driven by CSS custom properties from tokens.
