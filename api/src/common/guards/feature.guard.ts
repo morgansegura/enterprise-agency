@@ -54,7 +54,7 @@ export class FeatureGuard implements CanActivate {
       select: {
         id: true,
         businessName: true,
-        features: true,
+        enabledFeatures: true,
       },
     });
 
@@ -64,9 +64,10 @@ export class FeatureGuard implements CanActivate {
 
     // Check if tenant has all required features
     const missingFeatures: string[] = [];
+    const features = tenant.enabledFeatures as Record<string, unknown> | null;
 
     for (const feature of requiredFeatures) {
-      if (!this.hasFeature(tenant.features, feature)) {
+      if (!features || !this.hasFeature(features, feature)) {
         missingFeatures.push(feature);
       }
     }
@@ -88,18 +89,26 @@ export class FeatureGuard implements CanActivate {
    * @param features - The tenant's features object
    * @param feature - The feature key (supports dot notation for nested features)
    */
-  private hasFeature(features: any, feature: string): boolean {
+  private hasFeature(
+    features: Record<string, unknown>,
+    feature: string,
+  ): boolean {
     if (!features) {
       return false;
     }
 
     // Support nested features (e.g., 'payments.stripe')
     const keys = feature.split(".");
-    let value: any = features;
+    let value: unknown = features;
 
     for (const key of keys) {
-      value = value?.[key];
-      if (value === undefined || value === null) {
+      if (
+        typeof value === "object" &&
+        value !== null &&
+        key in (value as Record<string, unknown>)
+      ) {
+        value = (value as Record<string, unknown>)[key];
+      } else {
         return false;
       }
     }

@@ -79,6 +79,24 @@ export class PublicApiClient {
   }
 
   /**
+   * Get tenant design tokens
+   * Cached for 5 minutes (tokens change infrequently)
+   */
+  async getTokens(): Promise<Record<string, unknown>> {
+    const res = await fetch(`${this.baseUrl}/tokens`, {
+      next: { revalidate: 300 }, // 5 minutes
+    });
+
+    if (!res.ok) {
+      throw new Error(
+        `Failed to fetch design tokens: ${res.status} ${res.statusText}`,
+      );
+    }
+
+    return res.json();
+  }
+
+  /**
    * Get site configuration (theme, branding, navigation)
    * Cached for 5 minutes to reduce API load
    */

@@ -31,3 +31,10 @@ export {
   generateTenantSectionCSS,
 } from "./generate-section-css";
 export type { SectionTokens } from "./section-tokens";
+
+// Token Merging
+export { mergeTokens } from "./merge-tokens";
+export type { TenantTokens, MergedTokens } from "./merge-tokens";
+
+// CSS Generation
+export { generateCSS, generateTenantCSS } from "./generate-css";

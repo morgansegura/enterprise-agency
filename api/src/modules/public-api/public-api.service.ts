@@ -42,6 +42,31 @@ export class PublicApiService {
   }
 
   /**
+   * Get tenant design tokens
+   * GET /api/v1/public/:tenantSlug/tokens
+   */
+  async getDesignTokens(tenantSlug: string): Promise<Record<string, unknown>> {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { slug: tenantSlug },
+      select: {
+        designTokens: true,
+        status: true,
+      },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException(`Site not found: ${tenantSlug}`);
+    }
+
+    if (tenant.status !== "active") {
+      throw new NotFoundException(`Site is not active: ${tenantSlug}`);
+    }
+
+    // Return empty object if no tokens are set
+    return (tenant.designTokens as Record<string, unknown>) || {};
+  }
+
+  /**
    * Get site configuration
    * GET /api/v1/public/:tenantSlug/config
    */

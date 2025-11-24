@@ -40,6 +40,36 @@ export class PublicApiController {
   constructor(private readonly publicApiService: PublicApiService) {}
 
   /**
+   * Get tenant design tokens
+   * GET /api/v1/public/:tenantSlug/tokens
+   *
+   * Returns: Design token overrides for the tenant
+   * Cache: 5 minutes (tokens change infrequently)
+   */
+  @Get(":tenantSlug/tokens")
+  @Header("Cache-Control", "public, max-age=300") // 5 minutes
+  @ApiOperation({
+    summary: "Get tenant design tokens",
+    description:
+      "Returns design token overrides for the tenant (header, menu, footer, section tokens)",
+  })
+  @ApiParam({
+    name: "tenantSlug",
+    description: "Tenant slug (e.g., 'bible-baptist-church')",
+    example: "bible-baptist-church",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Design tokens retrieved successfully",
+  })
+  @ApiResponse({ status: 404, description: "Tenant not found" })
+  async getDesignTokens(
+    @Param("tenantSlug") tenantSlug: string,
+  ): Promise<Record<string, unknown>> {
+    return this.publicApiService.getDesignTokens(tenantSlug);
+  }
+
+  /**
    * Get site configuration
    * GET /api/v1/public/:tenantSlug/config
    *

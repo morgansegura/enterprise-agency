@@ -4,10 +4,20 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useTenantTokens, useUpdateTenantTokens, TenantTokens } from "@/lib/hooks";
+import {
+  useTenantTokens,
+  useUpdateTenantTokens,
+  TenantTokens,
+} from "@/lib/hooks";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,

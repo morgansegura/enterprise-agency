@@ -95,9 +95,7 @@ export function useTenantTokens(tenantId: string) {
     queryKey: TENANT_TOKENS_KEY(tenantId),
     queryFn: async () => {
       try {
-        return await apiClient.get<TenantTokens>(
-          `/tenants/${tenantId}/tokens`,
-        );
+        return await apiClient.get<TenantTokens>(`/tenants/${tenantId}/tokens`);
       } catch (error) {
         logger.error("Failed to fetch tenant tokens", error as Error);
         // Return empty tokens if none exist yet

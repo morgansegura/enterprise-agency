@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { churchInfo } from "@/lib/site-config";
 import { generateChurchSchema } from "@/lib/seo";
 import { CookieConsent } from "@/components/cookie-consent";
+import { TokenProvider } from "@/components/providers/token-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,6 +58,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <TokenProvider />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
