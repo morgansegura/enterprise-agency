@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ArrowLeft } from "lucide-react";
+import { DesignTokensTab } from "@/components/design-tokens";
 
 const clientSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
@@ -119,6 +120,7 @@ export default function ClientDetailPage({
               <TabsTrigger value="business">Business</TabsTrigger>
               <TabsTrigger value="contact">Contact</TabsTrigger>
               <TabsTrigger value="services">Services</TabsTrigger>
+              <TabsTrigger value="design">Design</TabsTrigger>
               <TabsTrigger value="technical">Technical</TabsTrigger>
             </TabsList>
 
@@ -240,6 +242,10 @@ export default function ClientDetailPage({
                   </div>
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            <TabsContent value="design">
+              <DesignTokensTab tenantId={id} />
             </TabsContent>
 
             <TabsContent value="technical">
