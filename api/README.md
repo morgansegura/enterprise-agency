@@ -42,6 +42,7 @@ This is a **multi-tenant NestJS API** with modular feature design:
 ### Client Management
 
 - **Tenants** - Client businesses with feature gating and usage stats
+- **Design Tokens** - Per-tenant design customization (header, menu, footer, section tokens)
 - **Site Config** - Header, footer, menus, and logos configuration
 - **Project Assignments** - Agency team assignments to client projects
 
@@ -153,6 +154,28 @@ getTenantData(@TenantId() tenantId: string) {
   return this.service.getDataForTenant(tenantId)
 }
 ```
+
+## Design Token Customization
+
+The API supports per-tenant design token overrides stored in the `designTokens` JSONB column:
+
+### Endpoints
+
+- **GET /api/v1/tenants/:id/tokens** - Fetch tenant design token overrides
+- **PUT /api/v1/tenants/:id/tokens** - Update tenant design token overrides
+
+### Token Structure
+
+```typescript
+{
+  header?: { height?: {...}, background?: {...} },
+  menu?: { item?: {...}, color?: {...} },
+  footer?: { background?: {...}, padding?: {...} },
+  section?: { spacing?: {...}, width?: {...}, background?: {...} }
+}
+```
+
+These tokens override the platform defaults defined in the client application, enabling complete per-client design customization.
 
 ## Health Checks
 
