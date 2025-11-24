@@ -157,6 +157,7 @@ Access the platform at `http://localhost:4001/admin`
 
 ### Phase 4: Website Builder
 
+- [x] Design token configuration system
 - [ ] Visual page builder
 - [ ] Component library
 - [ ] Template system
@@ -181,6 +182,24 @@ This platform uses a custom design system with:
 - **App prefix** - All application styles use `app-*` naming convention
 
 See [CSS Architecture Documentation](./docs/development/css-architecture.md) for details.
+
+### Design Token Configuration
+
+The builder includes a comprehensive design token configuration system for per-client website customization:
+
+- **Token Editors** - Form-based UI for customizing header, menu, footer, and section tokens
+- **Visual Customization** - Per-tenant overrides for spacing, colors, typography, and layout
+- **Live Updates** - Changes apply instantly to client websites
+- **Type-Safe** - Full TypeScript support for token schemas
+
+**Available Token Systems:**
+- **Header Tokens** - Heights (default, shrunk, mobile), backgrounds, positioning
+- **Menu Tokens** - Typography, colors, padding, hover states
+- **Section Tokens** - Spacing scale, container widths, background colors
+- **Footer Tokens** - Layout, columns, social links (coming soon)
+
+Access token configuration via:
+`Dashboard → Clients → [Client Name] → Design Tab`
 
 ---
 
