@@ -8,6 +8,7 @@ import { PrismaService } from "@/common/services/prisma.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
 import { CreateDomainDto } from "./dto/create-domain.dto";
+import { UpdateDesignTokensDto } from "./dto/update-design-tokens.dto";
 
 @Injectable()
 export class TenantsService {
@@ -275,5 +276,58 @@ export class TenantsService {
     });
 
     return tenantUser;
+  }
+
+  /**
+   * Get tenant design tokens
+   */
+  async getDesignTokens(tenantId: string) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+      select: {
+        id: true,
+        slug: true,
+        designTokens: true,
+      },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException("Tenant not found");
+    }
+
+    // Return empty object if no tokens are set
+    return tenant.designTokens || {};
+  }
+
+  /**
+   * Update tenant design tokens
+   */
+  async updateDesignTokens(
+    tenantId: string,
+    tokensData: UpdateDesignTokensDto,
+  ) {
+    // Verify tenant exists
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException("Tenant not found");
+    }
+
+    // Update design tokens
+    const updated = await this.prisma.tenant.update({
+      where: { id: tenantId },
+      data: {
+        designTokens: tokensData as Prisma.InputJsonValue,
+      },
+      select: {
+        id: true,
+        slug: true,
+        designTokens: true,
+      },
+    });
+
+    return updated.designTokens || {};
   }
 }

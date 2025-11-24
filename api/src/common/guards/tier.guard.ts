@@ -24,10 +24,10 @@ export class TierGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredTiers = this.reflector.getAllAndOverride<string[]>(
-      TIER_KEY,
-      [context.getHandler(), context.getClass()],
-    );
+    const requiredTiers = this.reflector.getAllAndOverride<string[]>(TIER_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     // If no tier requirement is specified, allow access
     if (!requiredTiers || requiredTiers.length === 0) {

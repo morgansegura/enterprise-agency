@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Patch,
   Delete,
   Body,
@@ -14,6 +15,7 @@ import { UsersService } from "@/modules/users/users.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
 import { CreateDomainDto } from "./dto/create-domain.dto";
+import { UpdateDesignTokensDto } from "./dto/update-design-tokens.dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { RolesGuard } from "@/common/guards/roles.guard";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
@@ -97,5 +99,26 @@ export class TenantsController {
       data.userId,
       data.role || "owner",
     );
+  }
+
+  /**
+   * Get tenant design tokens
+   * GET /tenants/:id/tokens
+   */
+  @Get(":id/tokens")
+  async getDesignTokens(@Param("id") tenantId: string) {
+    return this.tenantsService.getDesignTokens(tenantId);
+  }
+
+  /**
+   * Update tenant design tokens
+   * PUT /tenants/:id/tokens
+   */
+  @Put(":id/tokens")
+  async updateDesignTokens(
+    @Param("id") tenantId: string,
+    @Body() tokensData: UpdateDesignTokensDto,
+  ) {
+    return this.tenantsService.updateDesignTokens(tenantId, tokensData);
   }
 }
