@@ -36,6 +36,7 @@ builder/
 ### Purpose
 
 The `BlockRegistry` class provides:
+
 - Centralized management of all block types
 - Lazy loading of editor components
 - Type-safe block creation with defaults
@@ -56,7 +57,7 @@ class BlockRegistry {
 
   // Register multiple blocks at once
   registerMany(registrations: BlockRegistration[]): void {
-    registrations.forEach(reg => this.register(reg));
+    registrations.forEach((reg) => this.register(reg));
   }
 
   // Get a specific block registration
@@ -65,7 +66,9 @@ class BlockRegistry {
   }
 
   // Load editor component dynamically
-  async loadEditor(type: string): Promise<ComponentType<BlockEditorProps> | null> {
+  async loadEditor(
+    type: string,
+  ): Promise<ComponentType<BlockEditorProps> | null> {
     const registration = this.get(type);
     if (!registration) return null;
 
@@ -87,12 +90,12 @@ class BlockRegistry {
 
   // Filter blocks by category
   getByCategory(category: string): BlockRegistration[] {
-    return this.getAll().filter(reg => reg.category === category);
+    return this.getAll().filter((reg) => reg.category === category);
   }
 
   // Filter blocks by tier
   getByTier(tier: string): BlockRegistration[] {
-    return this.getAll().filter(reg => reg.tier === tier);
+    return this.getAll().filter((reg) => reg.tier === tier);
   }
 }
 
@@ -103,16 +106,17 @@ export const blockRegistry = new BlockRegistry();
 
 ```typescript
 interface BlockRegistration {
-  type: string;                    // Unique block type ID (e.g., "button-block")
-  displayName: string;             // Human-readable name (e.g., "Button")
+  type: string; // Unique block type ID (e.g., "button-block")
+  displayName: string; // Human-readable name (e.g., "Button")
   category: "content" | "media" | "layout" | "interactive";
-  icon: string;                    // Lucide icon name
-  description: string;             // Short description
-  component: () => Promise<{       // Lazy-loaded editor component
+  icon: string; // Lucide icon name
+  description: string; // Short description
+  component: () => Promise<{
+    // Lazy-loaded editor component
     default: ComponentType<BlockEditorProps>;
   }>;
-  createDefault: () => Block;      // Factory function for default data
-  tier: "CONTENT_EDITOR" | "BUILDER";  // Required tier
+  createDefault: () => Block; // Factory function for default data
+  tier: "CONTENT_EDITOR" | "BUILDER"; // Required tier
 }
 ```
 
@@ -151,6 +155,7 @@ interface BlockRegistration {
 ### Purpose
 
 The `BlockEditorRenderer` component:
+
 - Dynamically loads the appropriate editor for any block type
 - Handles loading states
 - Displays errors gracefully
@@ -245,6 +250,7 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 ### Preview Mode
 
 **Visual Design:**
+
 - Dashed border (`border-2 border-dashed border-border`)
 - Hover effect (`hover:border-primary`)
 - Click to edit (`onClick={() => setIsEditing(true)}`)
@@ -275,6 +281,7 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 ### Edit Mode
 
 **Visual Design:**
+
 - Solid primary border (`border-2 border-primary`)
 - Header with icon and title
 - Done/Delete buttons
@@ -326,7 +333,9 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 ### Phase 1 - Core Editors (6 editors) ✅
 
 #### 1. Button Block Editor
+
 **Features:**
+
 - Text input
 - URL input
 - Variant selector (default, destructive, outline, secondary, ghost, link)
@@ -335,11 +344,17 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 - Open in new tab toggle
 
 **Data Structure:**
+
 ```typescript
 {
   text: string;
   href: string;
-  variant: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  variant: "default" |
+    "destructive" |
+    "outline" |
+    "secondary" |
+    "ghost" |
+    "link";
   size: "default" | "sm" | "lg" | "icon";
   fullWidth: boolean;
   openInNewTab: boolean;
@@ -347,11 +362,14 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 ```
 
 #### 2. Spacer Block Editor
+
 **Features:**
+
 - Height selector (xs, sm, md, lg, xl, 2xl)
 - Visual height preview with measurements
 
 **Data Structure:**
+
 ```typescript
 {
   height: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
@@ -359,13 +377,16 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 ```
 
 #### 3. Divider Block Editor
+
 **Features:**
+
 - Style selector (solid, dashed, dotted)
 - Thickness selector (thin, medium, thick)
 - Spacing selector (sm, md, lg)
 - Color selector (default, primary, muted)
 
 **Data Structure:**
+
 ```typescript
 {
   style: "solid" | "dashed" | "dotted";
@@ -376,7 +397,9 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 ```
 
 #### 4. Text Block Editor
+
 **Features:**
+
 - Textarea for content
 - Size selector (xs, sm, md, lg, xl)
 - Alignment selector (left, center, right, justify)
@@ -384,6 +407,7 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 - Optional max-width for readability
 
 **Data Structure:**
+
 ```typescript
 {
   text: string;
@@ -395,7 +419,9 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 ```
 
 #### 5. Heading Block Editor
+
 **Features:**
+
 - Text input
 - Semantic level selector (h1-h6)
 - Visual size customization (xs-6xl) - independent of semantic level
@@ -404,11 +430,21 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 - Color selector (default, primary, secondary, muted)
 
 **Data Structure:**
+
 ```typescript
 {
   text: string;
   level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  size: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
+  size: "xs" |
+    "sm" |
+    "md" |
+    "lg" |
+    "xl" |
+    "2xl" |
+    "3xl" |
+    "4xl" |
+    "5xl" |
+    "6xl";
   align: "left" | "center" | "right";
   weight: "normal" | "medium" | "semibold" | "bold";
   color: "default" | "primary" | "secondary" | "muted";
@@ -418,7 +454,9 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 **Implementation Note:** Uses explicit conditional rendering for type safety instead of dynamic JSX component.
 
 #### 6. Image Block Editor
+
 **Features:**
+
 - URL input
 - Alt text input (required for accessibility)
 - Aspect ratio selector (16:9, 4:3, 1:1, 3:2, auto)
@@ -429,6 +467,7 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
   - Open in new tab toggle
 
 **Data Structure:**
+
 ```typescript
 {
   src: string;
@@ -582,6 +621,7 @@ export function MyNewBlockEditor({
 ### Data Management
 
 1. **Immutability**: Always create new objects when updating
+
 ```typescript
 // Good
 onChange({ ...block, data: { ...block.data, field: value } });
@@ -610,31 +650,290 @@ onChange(block);
 3. **Debouncing**: Debounce rapid onChange calls if needed
 4. **Code Splitting**: Each editor is its own chunk
 
+### Phase 2 - Rich Content (5 editors) ✅
+
+#### 7. Rich Text Block Editor
+
+**Features:**
+
+- TipTap WYSIWYG editor with formatting toolbar
+- Bold, italic, strike, code formatting
+- Headings (H1-H6), bullet lists, ordered lists
+- Blockquotes, code blocks, horizontal rules
+- Link management with URL prompt
+- Size selector (xs-xl)
+- Alignment selector (left, center, right, justify)
+
+**Data Structure:**
+
+```typescript
+{
+  html: string;
+  size: "xs" | "sm" | "md" | "lg" | "xl";
+  align: "left" | "center" | "right" | "justify";
+}
+```
+
+#### 8. Quote Block Editor
+
+**Features:**
+
+- Quote text (Textarea)
+- Optional title input
+- Optional author input
+- Size selector (sm, md, lg)
+- Alignment selector (left, center, right)
+- Variant selector (default, bordered, highlighted)
+
+**Data Structure:**
+
+```typescript
+{
+  text: string;
+  title?: string;
+  author?: string;
+  size: "sm" | "md" | "lg";
+  align: "left" | "center" | "right";
+  variant: "default" | "bordered" | "highlighted";
+}
+```
+
+#### 9. List Block Editor
+
+**Features:**
+
+- Dynamic items array with add/remove
+- Items management with text inputs
+- Ordered/unordered toggle
+- Style selector (default, checkmarks, bullets, numbers)
+- Spacing selector (compact, comfortable, relaxed)
+
+**Data Structure:**
+
+```typescript
+{
+  items: Array<{ text: string }>;
+  ordered: boolean;
+  style: "default" | "checkmarks" | "bullets" | "numbers";
+  spacing: "compact" | "comfortable" | "relaxed";
+}
+```
+
+#### 10. Icon Block Editor
+
+**Features:**
+
+- Icon name input (Lucide icons)
+- Quick select common icons (Star, Heart, Check, X, etc.)
+- Optional label input
+- Size selector (sm, md, lg, xl)
+- Color selector (default, primary, secondary, muted)
+- Alignment selector (left, center, right)
+
+**Data Structure:**
+
+```typescript
+{
+  icon: string;
+  label?: string;
+  size: "sm" | "md" | "lg" | "xl";
+  color: "default" | "primary" | "secondary" | "muted";
+  align: "left" | "center" | "right";
+}
+```
+
+#### 11. Card Block Editor
+
+**Features:**
+
+- Title input
+- Description (Textarea)
+- Optional footer text
+- Optional image (Accordion)
+  - Image URL, alt text, aspect ratio, object fit
+- Optional link (Accordion)
+  - URL, open in new tab toggle
+- Variant selector (default, bordered, elevated)
+- Padding selector (sm, md, lg)
+
+**Data Structure:**
+
+```typescript
+{
+  title: string;
+  description: string;
+  footer?: string;
+  image?: {
+    src: string;
+    alt: string;
+    aspectRatio: "16/9" | "4/3" | "1/1";
+    objectFit: "cover" | "contain" | "fill";
+  };
+  link?: {
+    href: string;
+    openInNewTab: boolean;
+  };
+  variant: "default" | "bordered" | "elevated";
+  padding: "sm" | "md" | "lg";
+}
+```
+
+### Phase 3 - Interactive/Media (6 editors) ✅
+
+#### 12. Video Block Editor
+
+**Features:**
+
+- URL input
+- Provider selector (YouTube, Vimeo, direct)
+- Aspect ratio selector (16:9, 4:3, 1:1, 21:9)
+- Controls toggle
+- Autoplay toggle
+- Muted toggle
+- Loop toggle
+
+**Data Structure:**
+
+```typescript
+{
+  url: string;
+  provider: "youtube" | "vimeo" | "direct";
+  aspectRatio: "16/9" | "4/3" | "1/1" | "21/9";
+  controls: boolean;
+  autoplay: boolean;
+  muted: boolean;
+  loop: boolean;
+}
+```
+
+#### 13. Audio Block Editor
+
+**Features:**
+
+- Source URL input
+- Optional title input
+- Optional artist input
+- Controls toggle
+- Autoplay toggle
+- Loop toggle
+
+**Data Structure:**
+
+```typescript
+{
+  src: string;
+  title?: string;
+  artist?: string;
+  controls: boolean;
+  autoplay: boolean;
+  loop: boolean;
+}
+```
+
+#### 14. Embed Block Editor
+
+**Features:**
+
+- HTML/iframe code input (Textarea with monospace font)
+- Aspect ratio selector (16:9, 4:3, 1:1, auto)
+- Optional caption
+- Supports any embed code
+
+**Data Structure:**
+
+```typescript
+{
+  html: string;
+  aspectRatio: "16/9" | "4/3" | "1/1" | "auto";
+  caption?: string;
+}
+```
+
+#### 15. Accordion Block Editor
+
+**Features:**
+
+- Dynamic items array with add/remove
+- Expandable editing per item (title, content, defaultOpen)
+- Allow multiple toggle (open multiple items simultaneously)
+- Variant selector (default, bordered, separated)
+
+**Data Structure:**
+
+```typescript
+{
+  items: Array<{
+    title: string;
+    content: string;
+    defaultOpen: boolean;
+  }>;
+  allowMultiple: boolean;
+  variant: "default" | "bordered" | "separated";
+}
+```
+
+#### 16. Tabs Block Editor
+
+**Features:**
+
+- Dynamic tabs array with add/remove
+- Tab navigation for editing active tab
+- Label, content, optional icon per tab
+- Default tab selector
+- Variant selector (default, pills, underline)
+
+**Data Structure:**
+
+```typescript
+{
+  tabs: Array<{
+    label: string;
+    content: string;
+    icon?: string;
+  }>;
+  defaultTab: number;
+  variant: "default" | "pills" | "underline";
+}
+```
+
+#### 17. Stats Block Editor
+
+**Features:**
+
+- Dynamic stats array with add/remove
+- Expandable editing per stat (value, label, description, icon)
+- Layout selector (horizontal, vertical)
+- Variant selector (default, highlighted, bordered)
+
+**Data Structure:**
+
+```typescript
+{
+  stats: Array<{
+    value: string;
+    label: string;
+    description?: string;
+    icon?: string;
+  }>;
+  layout: "horizontal" | "vertical";
+  variant: "default" | "highlighted" | "bordered";
+}
+```
+
 ## Roadmap
 
-### Phase 2 - Rich Content (5 editors)
-- rich-text-block-editor.tsx
-- quote-block-editor.tsx
-- card-block-editor.tsx
-- list-block-editor.tsx
-- icon-block-editor.tsx
+### Phase 4 - Layout Containers (5 editors) ⏳
 
-### Phase 3 - Interactive/Media (6 editors)
-- video-block-editor.tsx
-- audio-block-editor.tsx
-- embed-block-editor.tsx
-- accordion-block-editor.tsx
-- tabs-block-editor.tsx
-- stats-block-editor.tsx
+Requires nested block support infrastructure.
 
-### Phase 4 - Layout Containers (5 editors)
 - container-block-editor.tsx
 - stack-block-editor.tsx
 - flex-block-editor.tsx
 - grid-block-editor.tsx
 - columns-block-editor.tsx
 
-### Phase 5 - Specialized (2 editors)
+### Phase 5 - Specialized (2 editors) ⏳
+
 - logo-block-editor.tsx
 - map-block-editor.tsx
 
@@ -648,4 +947,4 @@ onChange(block);
 ---
 
 **Last Updated:** 2025-01-25
-**Status:** Phase 1 Complete (6/24 editors)
+**Status:** Phases 1-3 Complete (17/24 editors)
