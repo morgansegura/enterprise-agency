@@ -20,11 +20,11 @@ import {
   Rows2,
   Store,
   Plus,
-  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ButtonBlockEditor } from "@/components/blocks/button-block-editor";
+import { BlockEditorRenderer } from "@/components/blocks/block-editor-renderer";
+import { blockRegistry } from "@/lib/editor";
 import { toast } from "sonner";
 
 export default function EditPagePage({
@@ -152,42 +152,20 @@ export default function EditPagePage({
   };
 
   function createDefaultBlock(blockType: string): Block {
-    switch (blockType) {
-      case "button-block":
-        return {
-          _key: `button-${Date.now()}`,
-          _type: "button-block",
-          data: {
-            text: "Click me",
-            href: "#",
-            variant: "default",
-            size: "default",
-          },
-        };
-      case "heading-block":
-        return {
-          _key: `heading-${Date.now()}`,
-          _type: "heading-block",
-          data: {
-            text: "Heading",
-            level: "h2",
-          },
-        };
-      case "text-block":
-        return {
-          _key: `text-${Date.now()}`,
-          _type: "text-block",
-          data: {
-            text: "Your text here",
-          },
-        };
-      default:
-        return {
-          _key: `block-${Date.now()}`,
-          _type: blockType,
-          data: {},
-        };
+    // Use block registry to create default block
+    const defaultBlock = blockRegistry.createDefault(blockType);
+
+    if (!defaultBlock) {
+      // Fallback if block type not registered
+      console.warn(`Block type "${blockType}" not found in registry, using fallback`);
+      return {
+        _key: `block-${Date.now()}`,
+        _type: blockType,
+        data: {},
+      };
     }
+
+    return defaultBlock;
   }
 
   return (
@@ -264,38 +242,19 @@ export default function EditPagePage({
                   ) : (
                     section.blocks.map((block, blockIndex) => (
                       <div key={block._key}>
-                        {block._type === "button-block" && (
-                          <ButtonBlockEditor
-                            block={block as any}
-                            onChange={(updatedBlock) =>
-                              handleBlockChange(
-                                sectionIndex,
-                                blockIndex,
-                                updatedBlock as unknown as Block,
-                              )
-                            }
-                            onDelete={() =>
-                              handleBlockDelete(sectionIndex, blockIndex)
-                            }
-                          />
-                        )}
-                        {block._type !== "button-block" && (
-                          <div className="border-2 border-dashed border-muted rounded-lg p-4">
-                            <p className="text-sm text-muted-foreground">
-                              {block._type} (Editor not yet implemented)
-                            </p>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() =>
-                                handleBlockDelete(sectionIndex, blockIndex)
-                              }
-                            >
-                              <Trash2 className="h-3 w-3 mr-1" />
-                              Delete
-                            </Button>
-                          </div>
-                        )}
+                        <BlockEditorRenderer
+                          block={block}
+                          onChange={(updatedBlock) =>
+                            handleBlockChange(
+                              sectionIndex,
+                              blockIndex,
+                              updatedBlock,
+                            )
+                          }
+                          onDelete={() =>
+                            handleBlockDelete(sectionIndex, blockIndex)
+                          }
+                        />
                       </div>
                     ))
                   )}
