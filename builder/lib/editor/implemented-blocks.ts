@@ -268,6 +268,152 @@ const implementedBlocks: BlockRegistration[] = [
     }),
     tier: "CONTENT_EDITOR",
   },
+
+  {
+    type: "video-block",
+    displayName: "Video",
+    category: "media",
+    icon: "Video",
+    description: "YouTube, Vimeo, or direct video",
+    component: () =>
+      import("@/components/blocks/video-block-editor").then((mod) => ({
+        default: mod.VideoBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `video-${Date.now()}`,
+      _type: "video-block",
+      data: {
+        url: "",
+        provider: "youtube",
+        aspectRatio: "16/9",
+        controls: true,
+        autoplay: false,
+        muted: false,
+        loop: false,
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "audio-block",
+    displayName: "Audio",
+    category: "media",
+    icon: "Music",
+    description: "Audio player with title and artist",
+    component: () =>
+      import("@/components/blocks/audio-block-editor").then((mod) => ({
+        default: mod.AudioBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `audio-${Date.now()}`,
+      _type: "audio-block",
+      data: {
+        src: "",
+        controls: true,
+        autoplay: false,
+        loop: false,
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "embed-block",
+    displayName: "Embed",
+    category: "media",
+    icon: "Code",
+    description: "Embed code (iframe, scripts)",
+    component: () =>
+      import("@/components/blocks/embed-block-editor").then((mod) => ({
+        default: mod.EmbedBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `embed-${Date.now()}`,
+      _type: "embed-block",
+      data: {
+        html: "",
+        aspectRatio: "16/9",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "accordion-block",
+    displayName: "Accordion",
+    category: "interactive",
+    icon: "ChevronDown",
+    description: "Collapsible content sections",
+    component: () =>
+      import("@/components/blocks/accordion-block-editor").then((mod) => ({
+        default: mod.AccordionBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `accordion-${Date.now()}`,
+      _type: "accordion-block",
+      data: {
+        items: [
+          { title: "First item", content: "Content here...", defaultOpen: false },
+          { title: "Second item", content: "Content here...", defaultOpen: false },
+        ],
+        allowMultiple: false,
+        variant: "default",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "tabs-block",
+    displayName: "Tabs",
+    category: "interactive",
+    icon: "LayoutGrid",
+    description: "Tabbed content",
+    component: () =>
+      import("@/components/blocks/tabs-block-editor").then((mod) => ({
+        default: mod.TabsBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `tabs-${Date.now()}`,
+      _type: "tabs-block",
+      data: {
+        tabs: [
+          { label: "First tab", content: "Content here..." },
+          { label: "Second tab", content: "Content here..." },
+        ],
+        defaultTab: 0,
+        variant: "default",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "stats-block",
+    displayName: "Stats",
+    category: "content",
+    icon: "BarChart3",
+    description: "Display statistics and metrics",
+    component: () =>
+      import("@/components/blocks/stats-block-editor").then((mod) => ({
+        default: mod.StatsBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `stats-${Date.now()}`,
+      _type: "stats-block",
+      data: {
+        stats: [
+          { label: "Customers", value: "1000+", description: "Happy customers" },
+          { label: "Projects", value: "50+", description: "Completed" },
+          { label: "Years", value: "10+", description: "Experience" },
+        ],
+        layout: "horizontal",
+        variant: "default",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
 ];
 
 /**
