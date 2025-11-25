@@ -354,8 +354,16 @@ const implementedBlocks: BlockRegistration[] = [
       _type: "accordion-block",
       data: {
         items: [
-          { title: "First item", content: "Content here...", defaultOpen: false },
-          { title: "Second item", content: "Content here...", defaultOpen: false },
+          {
+            title: "First item",
+            content: "Content here...",
+            defaultOpen: false,
+          },
+          {
+            title: "Second item",
+            content: "Content here...",
+            defaultOpen: false,
+          },
         ],
         allowMultiple: false,
         variant: "default",
@@ -404,12 +412,65 @@ const implementedBlocks: BlockRegistration[] = [
       _type: "stats-block",
       data: {
         stats: [
-          { label: "Customers", value: "1000+", description: "Happy customers" },
+          {
+            label: "Customers",
+            value: "1000+",
+            description: "Happy customers",
+          },
           { label: "Projects", value: "50+", description: "Completed" },
           { label: "Years", value: "10+", description: "Experience" },
         ],
         layout: "horizontal",
         variant: "default",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "logo-block",
+    displayName: "Logo",
+    category: "content",
+    icon: "Image",
+    description: "Logo image with optional link",
+    component: () =>
+      import("@/components/blocks/logo-block-editor").then((mod) => ({
+        default: mod.LogoBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `logo-${Date.now()}`,
+      _type: "logo-block",
+      data: {
+        src: "",
+        alt: "Logo",
+        size: "md",
+        align: "left",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "map-block",
+    displayName: "Map",
+    category: "media",
+    icon: "MapPin",
+    description: "Interactive map with location",
+    component: () =>
+      import("@/components/blocks/map-block-editor").then((mod) => ({
+        default: mod.MapBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `map-${Date.now()}`,
+      _type: "map-block",
+      data: {
+        center: {
+          lat: 40.7128,
+          lng: -74.006,
+        },
+        zoom: 12,
+        height: "md",
+        style: "default",
       },
     }),
     tier: "CONTENT_EDITOR",

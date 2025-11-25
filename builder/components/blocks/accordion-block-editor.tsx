@@ -79,9 +79,7 @@ export function AccordionBlockEditor({
 
   const toggleItem = (index: number) => {
     setExpandedItems((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index],
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
 
@@ -109,11 +107,7 @@ export function AccordionBlockEditor({
             block.data.items.map((item, index) => (
               <div
                 key={index}
-                className={
-                  variant === "separated"
-                    ? "border rounded-lg"
-                    : ""
-                }
+                className={variant === "separated" ? "border rounded-lg" : ""}
               >
                 <div className="flex items-center justify-between p-3">
                   <span className="font-medium text-sm">
@@ -308,9 +302,7 @@ export function AccordionBlockEditor({
               block.data.items.map((item, index) => (
                 <div
                   key={index}
-                  className={
-                    variant === "separated" ? "border rounded-lg" : ""
-                  }
+                  className={variant === "separated" ? "border rounded-lg" : ""}
                 >
                   <div className="flex items-center justify-between p-3">
                     <span className="font-medium text-sm">

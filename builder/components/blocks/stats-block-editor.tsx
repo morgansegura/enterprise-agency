@@ -80,9 +80,7 @@ export function StatsBlockEditor({
 
   const toggleStat = (index: number) => {
     setExpandedStats((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index],
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
 
@@ -110,7 +108,10 @@ export function StatsBlockEditor({
             </div>
           ) : (
             block.data.stats.map((stat, index) => (
-              <div key={index} className={`text-center ${variantStyles[variant]}`}>
+              <div
+                key={index}
+                className={`text-center ${variantStyles[variant]}`}
+              >
                 <div className="text-3xl font-bold text-primary">
                   {stat.value || "0"}
                 </div>

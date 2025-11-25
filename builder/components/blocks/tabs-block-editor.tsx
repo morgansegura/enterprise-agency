@@ -54,7 +54,11 @@ export function TabsBlockEditor({
     });
   };
 
-  const handleTabChange = (index: number, field: keyof TabItem, value: unknown) => {
+  const handleTabChange = (
+    index: number,
+    field: keyof TabItem,
+    value: unknown,
+  ) => {
     const updatedTabs = [...block.data.tabs];
     updatedTabs[index] = { ...updatedTabs[index], [field]: value };
     handleDataChange("tabs", updatedTabs);
@@ -182,7 +186,9 @@ export function TabsBlockEditor({
               <div className="border rounded-lg p-3 space-y-3 bg-muted/30">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">
-                    Editing: {block.data.tabs[activeEditTab]?.label || `Tab ${activeEditTab + 1}`}
+                    Editing:{" "}
+                    {block.data.tabs[activeEditTab]?.label ||
+                      `Tab ${activeEditTab + 1}`}
                   </span>
                   <Button
                     type="button"

@@ -70,7 +70,9 @@ export function VideoBlockEditor({
         className="group relative border-2 border-dashed border-border rounded-lg p-4 hover:border-primary cursor-pointer transition-colors"
         onClick={() => setIsEditing(true)}
       >
-        <div className={`relative ${aspectRatioMap[aspectRatio]} bg-muted rounded overflow-hidden`}>
+        <div
+          className={`relative ${aspectRatioMap[aspectRatio]} bg-muted rounded overflow-hidden`}
+        >
           {block.data.url ? (
             <div className="flex items-center justify-center h-full">
               <Video className="h-12 w-12 text-muted-foreground" />
@@ -82,7 +84,9 @@ export function VideoBlockEditor({
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
                 <Video className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">No video URL set</p>
+                <p className="text-sm text-muted-foreground">
+                  No video URL set
+                </p>
               </div>
             </div>
           )}
@@ -226,7 +230,9 @@ export function VideoBlockEditor({
 
         <div className="border rounded-lg p-4 bg-muted/30">
           <p className="text-xs text-muted-foreground mb-2">Preview:</p>
-          <div className={`relative ${aspectRatioMap[aspectRatio]} bg-muted rounded overflow-hidden`}>
+          <div
+            className={`relative ${aspectRatioMap[aspectRatio]} bg-muted rounded overflow-hidden`}
+          >
             <div className="flex items-center justify-center h-full">
               <Video className="h-12 w-12 text-muted-foreground" />
               <span className="ml-2 text-sm text-muted-foreground">
