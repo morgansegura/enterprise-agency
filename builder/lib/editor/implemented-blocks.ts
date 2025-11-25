@@ -150,6 +150,124 @@ const implementedBlocks: BlockRegistration[] = [
     }),
     tier: "CONTENT_EDITOR",
   },
+
+  {
+    type: "rich-text-block",
+    displayName: "Rich Text",
+    category: "content",
+    icon: "Type",
+    description: "Formatted text with rich editing",
+    component: () =>
+      import("@/components/blocks/rich-text-block-editor").then((mod) => ({
+        default: mod.RichTextBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `rich-text-${Date.now()}`,
+      _type: "rich-text-block",
+      data: {
+        html: "<p>Start typing...</p>",
+        size: "md",
+        align: "left",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "quote-block",
+    displayName: "Quote",
+    category: "content",
+    icon: "Quote",
+    description: "Blockquote with attribution",
+    component: () =>
+      import("@/components/blocks/quote-block-editor").then((mod) => ({
+        default: mod.QuoteBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `quote-${Date.now()}`,
+      _type: "quote-block",
+      data: {
+        text: "Insert your quote here...",
+        size: "md",
+        align: "left",
+        variant: "default",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "list-block",
+    displayName: "List",
+    category: "content",
+    icon: "List",
+    description: "Bulleted or numbered list",
+    component: () =>
+      import("@/components/blocks/list-block-editor").then((mod) => ({
+        default: mod.ListBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `list-${Date.now()}`,
+      _type: "list-block",
+      data: {
+        items: [
+          { text: "First item" },
+          { text: "Second item" },
+          { text: "Third item" },
+        ],
+        ordered: false,
+        style: "default",
+        spacing: "comfortable",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "icon-block",
+    displayName: "Icon",
+    category: "content",
+    icon: "Sparkles",
+    description: "Icon with optional label",
+    component: () =>
+      import("@/components/blocks/icon-block-editor").then((mod) => ({
+        default: mod.IconBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `icon-${Date.now()}`,
+      _type: "icon-block",
+      data: {
+        icon: "Star",
+        size: "md",
+        color: "default",
+        align: "center",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "card-block",
+    displayName: "Card",
+    category: "content",
+    icon: "CreditCard",
+    description: "Card with image, title, and description",
+    component: () =>
+      import("@/components/blocks/card-block-editor").then((mod) => ({
+        default: mod.CardBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `card-${Date.now()}`,
+      _type: "card-block",
+      data: {
+        title: "Card Title",
+        description: "Card description goes here...",
+        variant: "default",
+        padding: "md",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
 ];
 
 /**
