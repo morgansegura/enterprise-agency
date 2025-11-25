@@ -193,6 +193,7 @@ The builder includes a comprehensive design token configuration system for per-c
 - **Type-Safe** - Full TypeScript support for token schemas
 
 **Available Token Systems:**
+
 - **Header Tokens** - Heights (default, shrunk, mobile), backgrounds, positioning
 - **Menu Tokens** - Typography, colors, padding, hover states
 - **Section Tokens** - Spacing scale, container widths, background colors

@@ -102,9 +102,7 @@ class BlockRegistry {
   /**
    * Get blocks by category
    */
-  getByCategory(
-    category: BlockRegistration["category"],
-  ): BlockRegistration[] {
+  getByCategory(category: BlockRegistration["category"]): BlockRegistration[] {
     return this.getAll().filter((reg) => reg.category === category);
   }
 

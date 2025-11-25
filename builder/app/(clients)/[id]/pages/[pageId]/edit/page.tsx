@@ -157,7 +157,9 @@ export default function EditPagePage({
 
     if (!defaultBlock) {
       // Fallback if block type not registered
-      console.warn(`Block type "${blockType}" not found in registry, using fallback`);
+      console.warn(
+        `Block type "${blockType}" not found in registry, using fallback`,
+      );
       return {
         _key: `block-${Date.now()}`,
         _type: blockType,

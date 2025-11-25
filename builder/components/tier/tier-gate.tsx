@@ -62,7 +62,9 @@ export function TierGate({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
           <Sparkles className="h-4 w-4 text-primary" />
-          Upgrade to {requiredTier === "BUILDER" ? "Builder" : "Content Editor"}{" "}
+          Upgrade to {requiredTier === "BUILDER"
+            ? "Builder"
+            : "Content Editor"}{" "}
           Tier
         </CardTitle>
       </CardHeader>

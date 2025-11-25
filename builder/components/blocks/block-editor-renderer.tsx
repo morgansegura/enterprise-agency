@@ -106,5 +106,7 @@ export function BlockEditorRenderer({
   }
 
   // Render the loaded editor component
-  return <EditorComponent block={block} onChange={onChange} onDelete={onDelete} />;
+  return (
+    <EditorComponent block={block} onChange={onChange} onDelete={onDelete} />
+  );
 }
