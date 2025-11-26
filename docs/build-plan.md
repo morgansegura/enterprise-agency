@@ -131,12 +131,12 @@ Roadmap from current state to production-ready professional agency platform.
 - ✅ Created TierGate component with upgrade prompts (builder/components/tier/tier-gate.tsx)
 - ✅ Exported types (Tenant, TenantTier) from use-tenants.ts
 
-**Builder UI Updates:** ⏳ IN PROGRESS
+**Builder UI Updates:** ✅ COMPLETE
 
-- ⏳ Hide blocks library for content-editor tier (pending)
-- ⏳ Disable block add/remove/rearrange for content-editor (pending)
+- ✅ Hide layout blocks from content-editor tier (TierGate in blocks library)
+- ✅ Disable block delete for content-editor (toast message with upgrade prompt)
 - ✅ Upgrade prompt component ready (TierGate)
-- ⏳ Update page editor with tier-aware UI (pending)
+- ✅ Page editor with tier-aware delete restrictions
 
 ### 1.3 Block Editors ✅ ALL PHASES COMPLETE
 

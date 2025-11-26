@@ -5,11 +5,14 @@ import { blockRegistry, type BlockEditorProps } from "@/lib/editor";
 import type { Block } from "@/lib/hooks/use-pages";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { useIsBuilder } from "@/lib/hooks/use-tier";
+import { toast } from "sonner";
 
 interface BlockEditorRendererProps {
   block: Block;
   onChange: (block: Block) => void;
   onDelete: () => void;
+  tenantId?: string;
 }
 
 /**
@@ -37,11 +40,13 @@ export function BlockEditorRenderer({
   block,
   onChange,
   onDelete,
+  tenantId,
 }: BlockEditorRendererProps) {
   const [EditorComponent, setEditorComponent] =
     React.useState<React.ComponentType<BlockEditorProps> | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
+  const isBuilder = tenantId ? useIsBuilder(tenantId) : true; // Default to true if no tenantId provided
 
   // Lazy load the editor component
   React.useEffect(() => {
@@ -65,6 +70,17 @@ export function BlockEditorRenderer({
         setIsLoading(false);
       });
   }, [block._type]);
+
+  // Wrap onDelete with tier check
+  const handleDelete = React.useCallback(() => {
+    if (!isBuilder) {
+      toast.error("Delete blocks is a Builder-tier feature", {
+        description: "Upgrade to Builder tier to add, remove, and rearrange blocks.",
+      });
+      return;
+    }
+    onDelete();
+  }, [isBuilder, onDelete]);
 
   // Loading state
   if (isLoading) {
@@ -94,7 +110,7 @@ export function BlockEditorRenderer({
           <Button
             variant="ghost"
             size="sm"
-            onClick={onDelete}
+            onClick={handleDelete}
             className="text-destructive hover:text-destructive"
           >
             <Trash2 className="h-3 w-3 mr-1" />
@@ -107,6 +123,6 @@ export function BlockEditorRenderer({
 
   // Render the loaded editor component
   return (
-    <EditorComponent block={block} onChange={onChange} onDelete={onDelete} />
+    <EditorComponent block={block} onChange={onChange} onDelete={handleDelete} />
   );
 }

@@ -256,6 +256,7 @@ export default function EditPagePage({
                           onDelete={() =>
                             handleBlockDelete(sectionIndex, blockIndex)
                           }
+                          tenantId={id}
                         />
                       </div>
                     ))
