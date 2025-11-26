@@ -13,6 +13,7 @@ export interface Tenant {
   status: string;
   tier: TenantTier;
   enabledFeatures: Record<string, boolean>;
+  designTokens?: Record<string, unknown> | null;
   contactEmail?: string;
   contactPhone?: string;
   createdAt?: string;
