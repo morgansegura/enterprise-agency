@@ -302,7 +302,9 @@ export function BlocksLibrary() {
         >
           <AccordionItem value="layout">
             <AccordionTrigger>Layout</AccordionTrigger>
-            <AccordionContent>{renderBlockList(LAYOUT_BLOCKS)}</AccordionContent>
+            <AccordionContent>
+              {renderBlockList(LAYOUT_BLOCKS)}
+            </AccordionContent>
           </AccordionItem>
         </TierGate>
       )}

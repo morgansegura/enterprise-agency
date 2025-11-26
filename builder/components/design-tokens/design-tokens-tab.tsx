@@ -1,15 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import {
-  useTenantTokens,
-  useUpdateTenantTokens,
-  TenantTokens,
-} from "@/lib/hooks";
-import { Form } from "@/components/ui/form";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,131 +10,54 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Loader2 } from "lucide-react";
-import { HeaderTokenEditor } from "./header-token-editor";
-import { MenuTokenEditor } from "./menu-token-editor";
-import { SectionTokenEditor } from "./section-token-editor";
-
-// Simplified schema - all fields are optional overrides
-const tokenSchema = z.object({
-  header: z.any().optional(),
-  menu: z.any().optional(),
-  footer: z.any().optional(),
-  section: z.any().optional(),
-});
+import { Palette, ArrowRight } from "lucide-react";
 
 interface DesignTokensTabProps {
   tenantId: string;
 }
 
 export function DesignTokensTab({ tenantId }: DesignTokensTabProps) {
-  const { data: tokens, isLoading } = useTenantTokens(tenantId);
-  const updateTokens = useUpdateTenantTokens();
-
-  const form = useForm<TenantTokens>({
-    resolver: zodResolver(tokenSchema),
-    values: tokens || {},
-  });
-
-  const onSubmit = (data: TenantTokens) => {
-    updateTokens.mutate(
-      { tenantId, tokens: data },
-      {
-        onSuccess: () => {
-          // Success handled by mutation hook
-        },
-      },
-    );
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>Design Tokens</CardTitle>
         <CardDescription>
-          Customize the visual appearance of this client's website. These values
-          override the platform defaults.
+          Customize your site's complete design system with colors, typography,
+          spacing, and more.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="header">
-                <AccordionTrigger className="text-sm font-medium">
-                  Header Tokens
-                </AccordionTrigger>
-                <AccordionContent className="pt-4">
-                  <HeaderTokenEditor form={form} />
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="menu">
-                <AccordionTrigger className="text-sm font-medium">
-                  Menu Tokens
-                </AccordionTrigger>
-                <AccordionContent className="pt-4">
-                  <MenuTokenEditor form={form} />
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="section">
-                <AccordionTrigger className="text-sm font-medium">
-                  Section Tokens
-                </AccordionTrigger>
-                <AccordionContent className="pt-4">
-                  <SectionTokenEditor form={form} />
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="footer">
-                <AccordionTrigger className="text-sm font-medium">
-                  Footer Tokens
-                </AccordionTrigger>
-                <AccordionContent className="pt-4">
-                  <div className="text-sm text-muted-foreground">
-                    Footer token customization coming soon
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-
-            <div className="flex items-center justify-between pt-4 border-t">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => form.reset()}
-                disabled={updateTokens.isPending}
-              >
-                Reset
+      <CardContent className="space-y-6">
+        <div className="flex items-start gap-4 p-6 bg-muted/50 rounded-lg border">
+          <div className="rounded-full bg-primary/10 p-3">
+            <Palette className="h-6 w-6 text-primary" />
+          </div>
+          <div className="flex-1 space-y-2">
+            <h3 className="font-semibold">Use the Theme Manager</h3>
+            <p className="text-sm text-muted-foreground">
+              The new Theme Manager provides a comprehensive interface for
+              customizing all design tokens including color scales, typography
+              settings, spacing values, and more. Generate live CSS previews and
+              see changes in real-time.
+            </p>
+            <Link href={`/${tenantId}/theme`}>
+              <Button className="mt-3">
+                Open Theme Manager
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button type="submit" disabled={updateTokens.isPending}>
-                {updateTokens.isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  "Save Changes"
-                )}
-              </Button>
-            </div>
-          </form>
-        </Form>
+            </Link>
+          </div>
+        </div>
+
+        <div className="text-xs text-muted-foreground space-y-2">
+          <p className="font-medium">Available in Theme Manager:</p>
+          <ul className="list-disc list-inside space-y-1 ml-2">
+            <li>Complete color system with 11-shade scales</li>
+            <li>Typography: font families, sizes, weights, and spacing</li>
+            <li>Spacing scale with 34 values</li>
+            <li>Border radius, shadows, and transitions</li>
+            <li>Live CSS preview and export</li>
+          </ul>
+        </div>
       </CardContent>
     </Card>
   );

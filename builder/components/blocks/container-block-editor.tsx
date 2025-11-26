@@ -111,7 +111,7 @@ export function ContainerBlockEditor({
         reg.type !== "stack-block" &&
         reg.type !== "flex-block" &&
         reg.type !== "grid-block" &&
-        reg.type !== "columns-block"
+        reg.type !== "columns-block",
     );
 
   if (!isEditing) {
@@ -124,7 +124,8 @@ export function ContainerBlockEditor({
           <Box className="h-4 w-4" />
           <span className="text-sm font-medium">Container</span>
           <span className="text-xs text-muted-foreground">
-            ({block.data.blocks.length} block{block.data.blocks.length !== 1 ? "s" : ""})
+            ({block.data.blocks.length} block
+            {block.data.blocks.length !== 1 ? "s" : ""})
           </span>
         </div>
         <div
@@ -134,7 +135,8 @@ export function ContainerBlockEditor({
             <p className="text-xs text-muted-foreground">Empty container</p>
           ) : (
             <p className="text-xs text-muted-foreground">
-              {block.data.blocks.length} nested block{block.data.blocks.length !== 1 ? "s" : ""}
+              {block.data.blocks.length} nested block
+              {block.data.blocks.length !== 1 ? "s" : ""}
             </p>
           )}
         </div>
@@ -284,7 +286,9 @@ export function ContainerBlockEditor({
                 <BlockEditorRenderer
                   key={childBlock._key}
                   block={childBlock as any}
-                  onChange={(updated) => handleBlockChange(index, updated as Block)}
+                  onChange={(updated) =>
+                    handleBlockChange(index, updated as Block)
+                  }
                   onDelete={() => handleBlockDelete(index)}
                 />
               ))}
@@ -298,10 +302,12 @@ export function ContainerBlockEditor({
             className={`${maxWidthClasses[maxWidth]} ${paddingClasses[padding]} ${backgroundClasses[background]} border rounded min-h-[60px]`}
           >
             <p className="text-xs text-muted-foreground">
-              Container: {maxWidth} width, {padding} padding, {background} background
+              Container: {maxWidth} width, {padding} padding, {background}{" "}
+              background
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              {block.data.blocks.length} nested block{block.data.blocks.length !== 1 ? "s" : ""}
+              {block.data.blocks.length} nested block
+              {block.data.blocks.length !== 1 ? "s" : ""}
             </p>
           </div>
         </div>

@@ -85,10 +85,4 @@ export {
 // Tenant Design Tokens
 export { useTenantTokens, useUpdateTenantTokens } from "./use-tenant-tokens";
 
-export type {
-  TenantTokens,
-  HeaderTokenOverrides,
-  MenuTokenOverrides,
-  FooterTokenOverrides,
-  SectionTokenOverrides,
-} from "./use-tenant-tokens";
+export type { TenantTokens } from "./use-tenant-tokens";

@@ -16,6 +16,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TierGate } from "@/components/tier";
 import { useTenant } from "@/lib/hooks/use-tenants";
+import {
+  useTenantTokens,
+  useUpdateTenantTokens,
+} from "@/lib/hooks/use-tenant-tokens";
 import { platformDefaults, generateTenantCSS } from "@/lib/tokens";
 import type { ColorScale, DesignTokens } from "@/lib/tokens";
 import { toast } from "sonner";
@@ -25,19 +29,21 @@ export default function ThemePage() {
   const params = useParams();
   const tenantId = params?.id as string;
   const { data: tenant } = useTenant(tenantId);
+  const { data: existingTokens, isLoading } = useTenantTokens(tenantId);
+  const updateTokens = useUpdateTenantTokens();
 
-  // Initialize tokens from tenant or use platform defaults
+  // Initialize tokens from API or use platform defaults
   const [customTokens, setCustomTokens] = React.useState<Partial<DesignTokens>>(
     {},
   );
   const [useCustom, setUseCustom] = React.useState(false);
 
   React.useEffect(() => {
-    if (tenant?.designTokens) {
-      setCustomTokens(tenant.designTokens as Partial<DesignTokens>);
+    if (existingTokens && Object.keys(existingTokens).length > 0) {
+      setCustomTokens(existingTokens);
       setUseCustom(true);
     }
-  }, [tenant]);
+  }, [existingTokens]);
 
   // Get active tokens (custom or platform defaults)
   const activeTokens = useCustom ? customTokens : platformDefaults;
@@ -59,13 +65,17 @@ export default function ThemePage() {
     }));
   };
 
-  const handleFontFamilyChange = (type: "sans" | "serif" | "mono", value: string) => {
+  const handleFontFamilyChange = (
+    type: "sans" | "serif" | "mono",
+    value: string,
+  ) => {
     setCustomTokens((prev) => ({
       ...prev,
       typography: {
         ...prev.typography,
         fontFamily: {
-          ...(prev.typography?.fontFamily || platformDefaults.typography.fontFamily),
+          ...(prev.typography?.fontFamily ||
+            platformDefaults.typography.fontFamily),
           [type]: value.split(",").map((f) => f.trim()),
         },
       },
@@ -73,15 +83,34 @@ export default function ThemePage() {
   };
 
   const handleSave = async () => {
-    // TODO: Implement API call to save tokens
-    console.log("Saving tokens:", customTokens);
-    toast.success("Theme saved successfully!");
+    try {
+      await updateTokens.mutateAsync({
+        tenantId,
+        tokens: customTokens,
+      });
+      setUseCustom(true);
+      toast.success("Theme saved successfully!");
+    } catch (error) {
+      toast.error("Failed to save theme", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
   };
 
-  const handleReset = () => {
-    setCustomTokens({});
-    setUseCustom(false);
-    toast.info("Theme reset to platform defaults");
+  const handleReset = async () => {
+    try {
+      await updateTokens.mutateAsync({
+        tenantId,
+        tokens: {},
+      });
+      setCustomTokens({});
+      setUseCustom(false);
+      toast.info("Theme reset to platform defaults");
+    } catch (error) {
+      toast.error("Failed to reset theme", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
   };
 
   const generatedCSS = React.useMemo(() => {
@@ -99,12 +128,19 @@ export default function ThemePage() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={handleReset}>
+            <Button
+              variant="outline"
+              onClick={handleReset}
+              disabled={updateTokens.isPending || isLoading}
+            >
               Reset to Defaults
             </Button>
-            <Button onClick={handleSave}>
+            <Button
+              onClick={handleSave}
+              disabled={updateTokens.isPending || isLoading}
+            >
               <Sparkles className="h-4 w-4 mr-2" />
-              Save Theme
+              {updateTokens.isPending ? "Saving..." : "Save Theme"}
             </Button>
           </div>
         </div>
@@ -192,7 +228,9 @@ export default function ThemePage() {
                       <Input
                         id="font-sans"
                         value={
-                          activeTokens.typography?.fontFamily?.sans?.join(", ") ||
+                          activeTokens.typography?.fontFamily?.sans?.join(
+                            ", ",
+                          ) ||
                           platformDefaults.typography.fontFamily.sans.join(", ")
                         }
                         onChange={(e) =>
@@ -207,8 +245,12 @@ export default function ThemePage() {
                       <Input
                         id="font-serif"
                         value={
-                          activeTokens.typography?.fontFamily?.serif?.join(", ") ||
-                          platformDefaults.typography.fontFamily.serif.join(", ")
+                          activeTokens.typography?.fontFamily?.serif?.join(
+                            ", ",
+                          ) ||
+                          platformDefaults.typography.fontFamily.serif.join(
+                            ", ",
+                          )
                         }
                         onChange={(e) =>
                           handleFontFamilyChange("serif", e.target.value)
@@ -222,7 +264,9 @@ export default function ThemePage() {
                       <Input
                         id="font-mono"
                         value={
-                          activeTokens.typography?.fontFamily?.mono?.join(", ") ||
+                          activeTokens.typography?.fontFamily?.mono?.join(
+                            ", ",
+                          ) ||
                           platformDefaults.typography.fontFamily.mono.join(", ")
                         }
                         onChange={(e) =>
@@ -243,8 +287,8 @@ export default function ThemePage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">
-                      Spacing tokens use the platform default scale. Custom spacing
-                      will be available in a future update.
+                      Spacing tokens use the platform default scale. Custom
+                      spacing will be available in a future update.
                     </p>
                   </CardContent>
                 </Card>
@@ -273,7 +317,9 @@ export default function ThemePage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-xs text-muted-foreground mb-2">Primary Colors</p>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Primary Colors
+                  </p>
                   <div className="flex gap-1">
                     {Object.entries(
                       (activeTokens.colors?.primary ||
@@ -289,7 +335,9 @@ export default function ThemePage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground mb-2">Typography</p>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Typography
+                  </p>
                   <div
                     className="space-y-2"
                     style={{

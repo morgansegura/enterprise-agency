@@ -86,7 +86,7 @@ export function GridBlockEditor({
         reg.type !== "stack-block" &&
         reg.type !== "flex-block" &&
         reg.type !== "grid-block" &&
-        reg.type !== "columns-block"
+        reg.type !== "columns-block",
     );
 
   if (!isEditing) {
@@ -99,7 +99,8 @@ export function GridBlockEditor({
           <LayoutGrid className="h-4 w-4" />
           <span className="text-sm font-medium">Grid</span>
           <span className="text-xs text-muted-foreground">
-            ({block.data.blocks.length} block{block.data.blocks.length !== 1 ? "s" : ""})
+            ({block.data.blocks.length} block
+            {block.data.blocks.length !== 1 ? "s" : ""})
           </span>
         </div>
         <div className="rounded border border-dashed border-border/50 p-2 min-h-[60px]">
@@ -163,7 +164,10 @@ export function GridBlockEditor({
 
           <div>
             <Label htmlFor="grid-gap">Gap</Label>
-            <Select value={gap} onValueChange={(value) => handleDataChange("gap", value)}>
+            <Select
+              value={gap}
+              onValueChange={(value) => handleDataChange("gap", value)}
+            >
               <SelectTrigger id="grid-gap">
                 <SelectValue />
               </SelectTrigger>
@@ -249,7 +253,9 @@ export function GridBlockEditor({
                 <BlockEditorRenderer
                   key={childBlock._key}
                   block={childBlock as any}
-                  onChange={(updated) => handleBlockChange(index, updated as Block)}
+                  onChange={(updated) =>
+                    handleBlockChange(index, updated as Block)
+                  }
                   onDelete={() => handleBlockDelete(index)}
                 />
               ))}
@@ -263,7 +269,8 @@ export function GridBlockEditor({
             Grid: {columns} columns, {gap} gap, {autoFlow} auto-flow
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            {block.data.blocks.length} nested block{block.data.blocks.length !== 1 ? "s" : ""}
+            {block.data.blocks.length} nested block
+            {block.data.blocks.length !== 1 ? "s" : ""}
           </p>
         </div>
       </div>

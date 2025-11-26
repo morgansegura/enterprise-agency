@@ -114,7 +114,9 @@ function generateColorVariables(name: string, scale: ColorScale): string {
  * @param tenantTokens - Tenant-specific token overrides
  * @returns CSS string ready to be injected
  */
-export function generateTenantCSS(tenantTokens?: Partial<DesignTokens>): string {
+export function generateTenantCSS(
+  tenantTokens?: Partial<DesignTokens>,
+): string {
   if (!tenantTokens) {
     return generateTokenCSS();
   }

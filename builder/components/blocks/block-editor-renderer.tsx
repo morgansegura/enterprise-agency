@@ -75,7 +75,8 @@ export function BlockEditorRenderer({
   const handleDelete = React.useCallback(() => {
     if (!isBuilder) {
       toast.error("Delete blocks is a Builder-tier feature", {
-        description: "Upgrade to Builder tier to add, remove, and rearrange blocks.",
+        description:
+          "Upgrade to Builder tier to add, remove, and rearrange blocks.",
       });
       return;
     }
@@ -123,6 +124,10 @@ export function BlockEditorRenderer({
 
   // Render the loaded editor component
   return (
-    <EditorComponent block={block} onChange={onChange} onDelete={handleDelete} />
+    <EditorComponent
+      block={block}
+      onChange={onChange}
+      onDelete={handleDelete}
+    />
   );
 }

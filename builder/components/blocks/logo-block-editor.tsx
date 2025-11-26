@@ -158,7 +158,9 @@ export function LogoBlockEditor({
               type="checkbox"
               id="logo-new-tab"
               checked={block.data.openInNewTab || false}
-              onChange={(e) => handleDataChange("openInNewTab", e.target.checked)}
+              onChange={(e) =>
+                handleDataChange("openInNewTab", e.target.checked)
+              }
               className="h-4 w-4 rounded border-gray-300"
             />
             <Label htmlFor="logo-new-tab" className="cursor-pointer">
@@ -170,7 +172,10 @@ export function LogoBlockEditor({
         <div className="grid grid-cols-2 gap-3">
           <div>
             <Label htmlFor="logo-size">Size</Label>
-            <Select value={size} onValueChange={(value) => handleDataChange("size", value)}>
+            <Select
+              value={size}
+              onValueChange={(value) => handleDataChange("size", value)}
+            >
               <SelectTrigger id="logo-size">
                 <SelectValue />
               </SelectTrigger>
@@ -185,7 +190,10 @@ export function LogoBlockEditor({
 
           <div>
             <Label htmlFor="logo-align">Alignment</Label>
-            <Select value={align} onValueChange={(value) => handleDataChange("align", value)}>
+            <Select
+              value={align}
+              onValueChange={(value) => handleDataChange("align", value)}
+            >
               <SelectTrigger id="logo-align">
                 <SelectValue />
               </SelectTrigger>
