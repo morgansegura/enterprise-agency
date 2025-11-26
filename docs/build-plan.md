@@ -71,13 +71,14 @@ Roadmap from current state to production-ready professional agency platform.
 
 **Goal:** Token system + Two-tier permissions + Core block editors
 
-### 1.1 Token System Implementation ⏳ IN PROGRESS
+### 1.1 Token System Implementation ✅ PHASE COMPLETE
 
 **Database:** ✅ COMPLETE
 
 - ✅ Add `designTokens` JSONB field to Tenant model
 - ✅ Updated UpdateDesignTokensDto for complete token structure
-- ✅ API endpoints: GET/PUT /tenants/:id/tokens
+- ✅ API endpoints: GET/PUT /tenants/:id/tokens (auth required)
+- ✅ Public API endpoint: GET /api/v1/public/:slug/tokens (5-min cache)
 
 **Platform Tokens:** ✅ COMPLETE
 
@@ -95,7 +96,9 @@ Roadmap from current state to production-ready professional agency platform.
 - ✅ Build function to generate CSS variables from tokens (generateTokenCSS)
 - ✅ Merge custom tokens with platform defaults
 - ✅ Type-safe token definitions (DesignTokens interface)
-- ⏳ Create middleware to inject tenant tokens into client CSS (pending)
+- ✅ Client-side token injection via TokenProvider (server component)
+- ✅ CSS injected into <head> before first paint (zero layout shift)
+- ✅ Backward compatibility with legacy token system
 
 **Builder UI:** ✅ COMPLETE
 
@@ -107,6 +110,14 @@ Roadmap from current state to production-ready professional agency platform.
 - ✅ Save/reset functionality with API integration
 - ✅ Loading states and error handling
 - ✅ Deprecated old DesignTokensTab (redirects to Theme Manager)
+
+**Client Integration:** ✅ COMPLETE
+
+- ✅ Design system module (client/lib/tokens/design-system/)
+- ✅ TokenProvider fetches tokens via public API
+- ✅ Generates CSS custom properties for all token categories
+- ✅ Server-side rendering for instant availability
+- ✅ 5-minute cache for performance optimization
 
 ### 1.2 Two-Tier Permission System ✅ PHASE COMPLETE
 
