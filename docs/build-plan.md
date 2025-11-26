@@ -71,39 +71,42 @@ Roadmap from current state to production-ready professional agency platform.
 
 **Goal:** Token system + Two-tier permissions + Core block editors
 
-### 1.1 Token System Implementation (3-4 weeks)
+### 1.1 Token System Implementation ⏳ IN PROGRESS
 
-**Database:**
+**Database:** ✅ COMPLETE
 
-- Add `designTokens` JSONB field to Tenant model
-- Add `useCustomTokens` boolean field
-- Create migration
+- ✅ Add `designTokens` JSONB field to Tenant model
+- ✅ Updated UpdateDesignTokensDto for complete token structure
+- ✅ API endpoints: GET/PUT /tenants/:id/tokens
 
-**Platform Tokens:**
+**Platform Tokens:** ✅ COMPLETE
 
-- Define complete default token set (colors, typography, spacing, radii, shadows, etc.)
-- Create platform-defaults.ts with all token categories
-- Color scales (50-950) for primary, secondary, accent, neutral, semantic colors
-- Typography scales (fonts, sizes, weights, line heights, letter spacing)
-- Spacing scale (0-96)
-- Border radii (none-full)
-- Shadow system
-- Transition timings
+- ✅ Define complete default token set (colors, typography, spacing, radii, shadows, etc.)
+- ✅ Create platform-defaults.ts with all token categories
+- ✅ Color scales (50-950) for primary, secondary, accent, neutral, semantic colors
+- ✅ Typography scales (fonts, sizes, weights, line heights, letter spacing)
+- ✅ Spacing scale (0-96)
+- ✅ Border radii (none-full)
+- ✅ Shadow system
+- ✅ Transition timings
 
-**CSS Generation:**
+**CSS Generation:** ✅ COMPLETE
 
-- Build function to generate CSS variables from tokens
-- Create middleware to inject tenant tokens into client CSS
-- Update all client components to use CSS variables
+- ✅ Build function to generate CSS variables from tokens (generateTokenCSS)
+- ✅ Merge custom tokens with platform defaults
+- ✅ Type-safe token definitions (DesignTokens interface)
+- ⏳ Create middleware to inject tenant tokens into client CSS (pending)
 
-**Builder UI:**
+**Builder UI:** ✅ COMPLETE
 
-- Theme manager page (token editor)
-- Color scale editor
-- Typography selector
-- Spacing adjuster
-- Live preview iframe
-- Save/publish theme
+- ✅ Theme manager page (builder/app/(clients)/[id]/theme/page.tsx)
+- ✅ Color scale editors with HTML color pickers
+- ✅ Typography selector (font families)
+- ✅ Live preview panel
+- ✅ CSS preview tab
+- ✅ Save/reset functionality with API integration
+- ✅ Loading states and error handling
+- ✅ Deprecated old DesignTokensTab (redirects to Theme Manager)
 
 ### 1.2 Two-Tier Permission System ✅ PHASE COMPLETE
 
