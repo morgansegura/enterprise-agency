@@ -475,6 +475,122 @@ const implementedBlocks: BlockRegistration[] = [
     }),
     tier: "CONTENT_EDITOR",
   },
+
+  {
+    type: "container-block",
+    displayName: "Container",
+    category: "layout",
+    icon: "Box",
+    description: "Container with max-width and padding",
+    component: () =>
+      import("@/components/blocks/container-block-editor").then((mod) => ({
+        default: mod.ContainerBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `container-${Date.now()}`,
+      _type: "container-block",
+      data: {
+        maxWidth: "full",
+        padding: "md",
+        background: "none",
+        blocks: [],
+      },
+    }),
+    tier: "BUILDER",
+  },
+
+  {
+    type: "stack-block",
+    displayName: "Stack",
+    category: "layout",
+    icon: "AlignVerticalSpaceAround",
+    description: "Vertical stack layout with gap",
+    component: () =>
+      import("@/components/blocks/stack-block-editor").then((mod) => ({
+        default: mod.StackBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `stack-${Date.now()}`,
+      _type: "stack-block",
+      data: {
+        gap: "md",
+        align: "start",
+        blocks: [],
+      },
+    }),
+    tier: "BUILDER",
+  },
+
+  {
+    type: "flex-block",
+    displayName: "Flex",
+    category: "layout",
+    icon: "Layers",
+    description: "Flexbox layout with full control",
+    component: () =>
+      import("@/components/blocks/flex-block-editor").then((mod) => ({
+        default: mod.FlexBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `flex-${Date.now()}`,
+      _type: "flex-block",
+      data: {
+        direction: "row",
+        justify: "start",
+        align: "start",
+        gap: "md",
+        wrap: false,
+        blocks: [],
+      },
+    }),
+    tier: "BUILDER",
+  },
+
+  {
+    type: "grid-block",
+    displayName: "Grid",
+    category: "layout",
+    icon: "LayoutGrid",
+    description: "CSS Grid layout with columns",
+    component: () =>
+      import("@/components/blocks/grid-block-editor").then((mod) => ({
+        default: mod.GridBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `grid-${Date.now()}`,
+      _type: "grid-block",
+      data: {
+        columns: "2",
+        gap: "md",
+        autoFlow: "row",
+        blocks: [],
+      },
+    }),
+    tier: "BUILDER",
+  },
+
+  {
+    type: "columns-block",
+    displayName: "Columns",
+    category: "layout",
+    icon: "Columns3",
+    description: "Multi-column layout",
+    component: () =>
+      import("@/components/blocks/columns-block-editor").then((mod) => ({
+        default: mod.ColumnsBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `columns-${Date.now()}`,
+      _type: "columns-block",
+      data: {
+        count: "2",
+        gap: "md",
+        responsive: true,
+        blocks: [],
+      },
+    }),
+    tier: "BUILDER",
+  },
 ];
 
 /**
