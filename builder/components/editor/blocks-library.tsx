@@ -1,5 +1,6 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import {
   Type,
   Image,
@@ -22,6 +23,7 @@ import {
   Layout,
   Square,
   Sparkles,
+  Lock,
 } from "lucide-react";
 import {
   SidebarMenu,
@@ -34,6 +36,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { TierGate } from "@/components/tier";
+import { useIsBuilder } from "@/lib/hooks/use-tier";
 import "./blocks-library.css";
 
 interface Block {
@@ -195,6 +199,13 @@ const LAYOUT_BLOCKS: Block[] = [
     type: "container-block",
   },
   {
+    id: "columns",
+    name: "Columns",
+    icon: Columns2,
+    description: "Multi-column layout",
+    type: "columns-block",
+  },
+  {
     id: "grid",
     name: "Grid",
     icon: Square,
@@ -218,6 +229,10 @@ const LAYOUT_BLOCKS: Block[] = [
 ];
 
 export function BlocksLibrary() {
+  const params = useParams();
+  const tenantId = params?.id as string;
+  const isBuilder = useIsBuilder(tenantId);
+
   const handleBlockClick = (block: Block) => {
     // Emit event for parent to handle block addition
     window.dispatchEvent(
@@ -269,10 +284,28 @@ export function BlocksLibrary() {
         <AccordionContent>{renderBlockList(MEDIA_BLOCKS)}</AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="layout">
-        <AccordionTrigger>Layout</AccordionTrigger>
-        <AccordionContent>{renderBlockList(LAYOUT_BLOCKS)}</AccordionContent>
-      </AccordionItem>
+      {/* Layout blocks - Builder tier only */}
+      {tenantId && (
+        <TierGate
+          tenantId={tenantId}
+          requiredTier="BUILDER"
+          fallback={
+            <AccordionItem value="layout" className="opacity-50">
+              <AccordionTrigger className="cursor-default">
+                <div className="flex items-center gap-2">
+                  <span>Layout</span>
+                  <Lock className="h-3 w-3" />
+                </div>
+              </AccordionTrigger>
+            </AccordionItem>
+          }
+        >
+          <AccordionItem value="layout">
+            <AccordionTrigger>Layout</AccordionTrigger>
+            <AccordionContent>{renderBlockList(LAYOUT_BLOCKS)}</AccordionContent>
+          </AccordionItem>
+        </TierGate>
+      )}
     </Accordion>
   );
 }
