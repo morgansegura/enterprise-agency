@@ -248,6 +248,7 @@ Roadmap from current state to production-ready professional agency platform.
 - ✅ Section settings (background, spacing, width, alignment)
 
 **Implementation:**
+
 - Created SectionSettings component with all section properties
 - Created SortableSection component wrapping section content
 - Integrated section-level drag-and-drop (outer DndContext)

@@ -5,3 +5,6 @@ export { PageSettings } from "./page-settings";
 export { PageLayers } from "./page-layers";
 export { SectionSettings } from "./section-settings";
 export { SortableSection } from "./sortable-section";
+export { BreakpointSelector } from "./breakpoint-selector";
+export { ResponsivePreview } from "./responsive-preview";
+export type { Breakpoint } from "./breakpoint-selector";

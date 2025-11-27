@@ -15,6 +15,7 @@ import {
 import { BlocksLibrary } from "./blocks-library";
 import { PageSettings } from "./page-settings";
 import { PageLayers } from "./page-layers";
+import { BreakpointSelector, type Breakpoint } from "./breakpoint-selector";
 import "./page-editor-layout.css";
 
 interface PageEditorLayoutProps {
@@ -26,6 +27,8 @@ interface PageEditorLayoutProps {
     status?: string;
     template?: string;
   };
+  breakpoint?: Breakpoint;
+  onBreakpointChange?: (breakpoint: Breakpoint) => void;
   onSave: () => void;
   onPublish: () => void;
   onPageChange?: (field: string, value: string) => void;
@@ -47,6 +50,8 @@ export function PageEditorLayout({
   pageId,
   pageTitle,
   page,
+  breakpoint = "desktop",
+  onBreakpointChange,
   onSave,
   onPublish,
   onPageChange,
@@ -66,6 +71,14 @@ export function PageEditorLayout({
         <div className="page-editor-toolbar-left">
           <h2 className="page-editor-title">{pageTitle}</h2>
           {isSaving && <span className="page-editor-status">Saving...</span>}
+        </div>
+        <div className="page-editor-toolbar-center">
+          {onBreakpointChange && (
+            <BreakpointSelector
+              value={breakpoint}
+              onChange={onBreakpointChange}
+            />
+          )}
         </div>
         <div className="page-editor-toolbar-right">
           <Button variant="ghost" size="sm">

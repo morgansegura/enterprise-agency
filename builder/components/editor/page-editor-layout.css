@@ -10,11 +10,15 @@
 }
 
 .page-editor-toolbar-left {
-  @apply flex items-center gap-4;
+  @apply flex items-center gap-4 flex-1;
+}
+
+.page-editor-toolbar-center {
+  @apply flex items-center justify-center flex-1;
 }
 
 .page-editor-toolbar-right {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-2 flex-1 justify-end;
 }
 
 .page-editor-title {
