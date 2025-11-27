@@ -143,10 +143,10 @@ export function getTokenValue(
   const path = match[1].split("-");
 
   // Handle nested access
-  let value: any = tokens;
+  let value: unknown = tokens;
   for (const key of path) {
     if (value && typeof value === "object" && key in value) {
-      value = value[key];
+      value = (value as Record<string, unknown>)[key];
     } else {
       return null;
     }
