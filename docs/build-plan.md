@@ -222,15 +222,22 @@ Roadmap from current state to production-ready professional agency platform.
 
 **Goal:** Complete visual builder with drag-and-drop and content management
 
-### 2.1 Drag-and-Drop (2-3 weeks)
+### 2.1 Drag-and-Drop ✅ PHASE COMPLETE
 
-- Install dnd-kit library
-- Add drag handles to blocks
-- Implement sortable blocks within sections
-- Visual drop zones
-- Drag animations
-- Reorder state management
-- Test thoroughly
+- ✅ Install dnd-kit library (@dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities)
+- ✅ Add drag handles to blocks (hover-reveal grip icon)
+- ✅ Implement sortable blocks within sections (DndContext + SortableContext)
+- ✅ Visual drop zones (built into dnd-kit collision detection)
+- ✅ Drag animations (CSS transforms with dnd-kit utilities)
+- ✅ Reorder state management (arrayMove with section state updates)
+- ✅ Test thoroughly (verified with pnpm verify)
+
+**Implementation:**
+- Created SortableBlockItem component wrapping BlockEditorRenderer
+- Integrated dnd-kit with page editor using DndContext per section
+- Drag handle appears on hover with focus support for accessibility
+- Smooth animations via CSS transforms
+- Keyboard navigation support for screen readers
 
 ### 2.2 Section Management (1-2 weeks)
 

@@ -23,9 +23,24 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BlockEditorRenderer } from "@/components/blocks/block-editor-renderer";
+import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
 import { blockRegistry } from "@/lib/editor";
 import { toast } from "sonner";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 export default function EditPagePage({
   params,
@@ -37,6 +52,14 @@ export default function EditPagePage({
   const router = useRouter();
   const { data: page, isLoading, error } = usePage(id, pageId);
   const updatePage = useUpdatePage(id);
+
+  // Drag-and-drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   // Initialize sections from page content or create default
   const [sections, setSections] = React.useState<Section[]>([]);
@@ -151,6 +174,35 @@ export default function EditPagePage({
     toast.success("Block deleted");
   };
 
+  const handleDragEnd = (event: DragEndEvent, sectionIndex: number) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    setSections((prevSections) => {
+      const updatedSections = [...prevSections];
+      const section = updatedSections[sectionIndex];
+
+      const oldIndex = section.blocks.findIndex(
+        (block) => block._key === active.id,
+      );
+      const newIndex = section.blocks.findIndex(
+        (block) => block._key === over.id,
+      );
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        updatedSections[sectionIndex] = {
+          ...section,
+          blocks: arrayMove(section.blocks, oldIndex, newIndex),
+        };
+      }
+
+      return updatedSections;
+    });
+  };
+
   function createDefaultBlock(blockType: string): Block {
     // Use block registry to create default block
     const defaultBlock = blockRegistry.createDefault(blockType);
@@ -242,24 +294,36 @@ export default function EditPagePage({
                       </p>
                     </div>
                   ) : (
-                    section.blocks.map((block, blockIndex) => (
-                      <div key={block._key}>
-                        <BlockEditorRenderer
-                          block={block}
-                          onChange={(updatedBlock) =>
-                            handleBlockChange(
-                              sectionIndex,
-                              blockIndex,
-                              updatedBlock,
-                            )
-                          }
-                          onDelete={() =>
-                            handleBlockDelete(sectionIndex, blockIndex)
-                          }
-                          tenantId={id}
-                        />
-                      </div>
-                    ))
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={(event) => handleDragEnd(event, sectionIndex)}
+                    >
+                      <SortableContext
+                        items={section.blocks.map((block) => block._key)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <div className="space-y-4">
+                          {section.blocks.map((block, blockIndex) => (
+                            <SortableBlockItem
+                              key={block._key}
+                              block={block}
+                              onChange={(updatedBlock) =>
+                                handleBlockChange(
+                                  sectionIndex,
+                                  blockIndex,
+                                  updatedBlock,
+                                )
+                              }
+                              onDelete={() =>
+                                handleBlockDelete(sectionIndex, blockIndex)
+                              }
+                              tenantId={id}
+                            />
+                          ))}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
                   )}
                 </div>
               ))}
