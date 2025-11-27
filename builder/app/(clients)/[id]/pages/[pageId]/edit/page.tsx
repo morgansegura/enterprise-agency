@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
+import { SortableSection } from "@/components/editor/sortable-section";
 import { blockRegistry } from "@/lib/editor";
 import { toast } from "sonner";
 import {
@@ -174,7 +175,7 @@ export default function EditPagePage({
     toast.success("Block deleted");
   };
 
-  const handleDragEnd = (event: DragEndEvent, sectionIndex: number) => {
+  const handleBlockDragEnd = (event: DragEndEvent, sectionIndex: number) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) {
@@ -203,6 +204,58 @@ export default function EditPagePage({
     });
   };
 
+  const handleSectionDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    setSections((prevSections) => {
+      const oldIndex = prevSections.findIndex(
+        (section) => section._key === active.id,
+      );
+      const newIndex = prevSections.findIndex(
+        (section) => section._key === over.id,
+      );
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        return arrayMove(prevSections, oldIndex, newIndex);
+      }
+
+      return prevSections;
+    });
+  };
+
+  const handleSectionChange = (
+    sectionIndex: number,
+    updatedSection: Section,
+  ) => {
+    setSections((prevSections) => {
+      const updatedSections = [...prevSections];
+      updatedSections[sectionIndex] = updatedSection;
+      return updatedSections;
+    });
+  };
+
+  const handleSectionDelete = (sectionIndex: number) => {
+    setSections((prevSections) =>
+      prevSections.filter((_, idx) => idx !== sectionIndex),
+    );
+    toast.success("Section deleted");
+  };
+
+  const handleAddSection = () => {
+    const newSection: Section = {
+      _type: "section",
+      _key: `section-${Date.now()}`,
+      blocks: [],
+    };
+
+    setSections((prevSections) => [...prevSections, newSection]);
+    toast.success("Section added");
+  };
+
   function createDefaultBlock(blockType: string): Block {
     // Use block registry to create default block
     const defaultBlock = blockRegistry.createDefault(blockType);
@@ -224,7 +277,7 @@ export default function EditPagePage({
 
   return (
     <div className="flex">
-      <aside className="relative bg-white -m-4 w-12 border-r flex flex-col top-0 bottom-0 items-center space-y-4 py-4 text-(--muted-foreground)">
+      <aside className="relative bg-white -m-4 w-12 border-r flex flex-col top-0 bottom-0 items-center space-y-4 py-4 text-muted-foreground">
         <Button
           variant="ghost"
           size="icon-sm"
@@ -284,60 +337,92 @@ export default function EditPagePage({
         {/* Canvas Content */}
         <Card className="page-editor-canvas-content bg-white h-full">
           <CardContent className="p-8">
-            <div className="space-y-4">
-              {sections.map((section, sectionIndex) => (
-                <div key={section._key} className="space-y-4">
-                  {section.blocks.length === 0 ? (
-                    <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                      <p className="text-muted-foreground">
-                        Click a block from the left sidebar to get started.
-                      </p>
-                    </div>
-                  ) : (
-                    <DndContext
-                      sensors={sensors}
-                      collisionDetection={closestCenter}
-                      onDragEnd={(event) => handleDragEnd(event, sectionIndex)}
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleSectionDragEnd}
+            >
+              <SortableContext
+                items={sections.map((section) => section._key)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="space-y-12">
+                  {sections.map((section, sectionIndex) => (
+                    <SortableSection
+                      key={section._key}
+                      section={section}
+                      onSectionChange={(updatedSection) =>
+                        handleSectionChange(sectionIndex, updatedSection)
+                      }
+                      onDelete={() => handleSectionDelete(sectionIndex)}
                     >
-                      <SortableContext
-                        items={section.blocks.map((block) => block._key)}
-                        strategy={verticalListSortingStrategy}
-                      >
-                        <div className="space-y-4">
-                          {section.blocks.map((block, blockIndex) => (
-                            <SortableBlockItem
-                              key={block._key}
-                              block={block}
-                              onChange={(updatedBlock) =>
-                                handleBlockChange(
-                                  sectionIndex,
-                                  blockIndex,
-                                  updatedBlock,
-                                )
-                              }
-                              onDelete={() =>
-                                handleBlockDelete(sectionIndex, blockIndex)
-                              }
-                              tenantId={id}
-                            />
-                          ))}
+                      {section.blocks.length === 0 ? (
+                        <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
+                          <p className="text-muted-foreground">
+                            Click a block from the left sidebar to add content
+                            to this section.
+                          </p>
                         </div>
-                      </SortableContext>
-                    </DndContext>
-                  )}
-                </div>
-              ))}
+                      ) : (
+                        <DndContext
+                          sensors={sensors}
+                          collisionDetection={closestCenter}
+                          onDragEnd={(event) =>
+                            handleBlockDragEnd(event, sectionIndex)
+                          }
+                        >
+                          <SortableContext
+                            items={section.blocks.map((block) => block._key)}
+                            strategy={verticalListSortingStrategy}
+                          >
+                            <div className="space-y-4">
+                              {section.blocks.map((block, blockIndex) => (
+                                <SortableBlockItem
+                                  key={block._key}
+                                  block={block}
+                                  onChange={(updatedBlock) =>
+                                    handleBlockChange(
+                                      sectionIndex,
+                                      blockIndex,
+                                      updatedBlock,
+                                    )
+                                  }
+                                  onDelete={() =>
+                                    handleBlockDelete(sectionIndex, blockIndex)
+                                  }
+                                  tenantId={id}
+                                />
+                              ))}
+                            </div>
+                          </SortableContext>
+                        </DndContext>
+                      )}
+                    </SortableSection>
+                  ))}
 
-              {/* Debug: Show content data */}
-              <details className="mt-8">
-                <summary className="cursor-pointer text-sm font-medium">
-                  Content Data (Debug)
-                </summary>
-                <pre className="mt-2 p-4 bg-muted rounded text-xs overflow-auto max-h-96">
-                  {JSON.stringify({ sections }, null, 2)}
-                </pre>
-              </details>
-            </div>
+                  {/* Add Section Button */}
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={handleAddSection}
+                    className="w-full border-2 border-dashed hover:border-primary hover:bg-primary/5"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Section
+                  </Button>
+                </div>
+              </SortableContext>
+            </DndContext>
+
+            {/* Debug: Show content data */}
+            <details className="mt-8">
+              <summary className="cursor-pointer text-sm font-medium">
+                Content Data (Debug)
+              </summary>
+              <pre className="mt-2 p-4 bg-muted rounded text-xs overflow-auto max-h-96">
+                {JSON.stringify({ sections }, null, 2)}
+              </pre>
+            </details>
           </CardContent>
         </Card>
       </PageEditorLayout>
