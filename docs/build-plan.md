@@ -264,9 +264,24 @@ Roadmap from current state to production-ready professional agency platform.
 - Responsive iframe
 - Per-breakpoint overrides (optional future feature)
 
-### 2.4 Content Features (2-3 weeks)
+### 2.4 Content Features ⏳ IN PROGRESS
 
-- Blog post editor (similar to page editor)
+**Blog Post Editor:** ✅ COMPLETE
+
+- ✅ Created use-posts.ts hook (mirroring use-pages.ts pattern)
+- ✅ Created blog posts list page (builder/app/(clients)/[id]/posts/page.tsx)
+- ✅ Created new post page (builder/app/(clients)/[id]/posts/new/page.tsx)
+- ✅ Created post editor page (builder/app/(clients)/[id]/posts/[postId]/edit/page.tsx)
+- ✅ Created PostEditorLayout component (reuses page editor infrastructure)
+- ✅ Created PostSettings component (blog-specific fields: author, publishDate, excerpt, featuredImage, categories, tags)
+- ✅ Full drag-and-drop support (reuses section/block drag-and-drop from page editor)
+- ✅ Responsive preview support (desktop/tablet/mobile)
+- ✅ All 24 block types available for blog content
+- ✅ Auto-slug generation from title
+- ✅ CRUD operations (create, read, update, delete, publish, unpublish, duplicate)
+
+**Remaining Tasks:**
+
 - Media library enhancements (upload, organize, search)
 - SEO tools (meta tags, og tags, structured data)
 - Draft/publish workflow improvements
