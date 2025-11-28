@@ -37,22 +37,27 @@ Roadmap from current state to production-ready professional agency platform.
 - Server-side rendering
 - **NEW: Type-safe API integration with proper type casting**
 
-**Builder (Admin) - 35% Complete**
+**Builder (Admin) - 75% Complete**
 
 - Next.js 15 app structure
 - TanStack Query data fetching
 - Authentication flow
 - Tenant management UI
-- Page list view
-- Basic page editor (PageEditorLayout)
+- Page list view with CRUD operations
+- Full page editor with drag-and-drop
+- Blog post editor with all features
+- Media library with upload/search/filter
+- SEO tools for pages and posts
+- Draft/publish workflow
+- All 24 block editors implemented
 - Blocks library with accordion UI
-- Button block editor (full CRUD working)
 - Tailwind v4 CSS-first architecture
 - Token-based component styling established
-- **NEW: Tier management hooks (useTier, useIsBuilder, useHasTier)**
-- **NEW: TierGate component for conditional rendering**
-- **NEW: Toast notifications with Sonner**
-- **NEW: All TypeScript errors resolved**
+- Tier management hooks (useTier, useIsBuilder, useHasTier)
+- TierGate component for conditional rendering
+- Toast notifications with Sonner
+- Responsive preview controls (desktop/tablet/mobile)
+- All TypeScript errors resolved
 
 ---
 
@@ -259,12 +264,20 @@ Roadmap from current state to production-ready professional agency platform.
 - Hover-reveal section controls (drag, settings, delete)
 - Visual section boundaries with dashed borders
 
-### 2.3 Responsive Controls (2 weeks)
+### 2.3 Responsive Controls ✅ PHASE COMPLETE
 
-- Breakpoint selector (desktop/tablet/mobile)
-- Preview mode switching
-- Responsive iframe
+- ✅ Breakpoint selector (desktop/tablet/mobile) - BreakpointSelector component
+- ✅ Preview mode switching - State managed in page/post editors
+- ✅ Responsive preview wrapper - ResponsivePreview component with smooth transitions
 - Per-breakpoint overrides (optional future feature)
+
+**Implementation:**
+
+- Created BreakpointSelector component with desktop/tablet/mobile buttons
+- Created ResponsivePreview wrapper that adjusts width based on breakpoint
+- Integrated into PageEditorLayout toolbar
+- Both page and post editors support responsive preview
+- Visual boundary indicators (shadow/border) for tablet/mobile views
 
 ### 2.4 Content Features ✅ PHASE COMPLETE
 
