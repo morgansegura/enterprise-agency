@@ -2,7 +2,13 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { usePost, useUpdatePost, type Post } from "@/lib/hooks/use-posts";
+import {
+  usePost,
+  useUpdatePost,
+  usePublishPost,
+  useUnpublishPost,
+  type Post,
+} from "@/lib/hooks/use-posts";
 import { type Section, type Block } from "@/lib/hooks/use-pages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -48,6 +54,8 @@ export default function EditPostPage({
   const router = useRouter();
   const { data: post, isLoading, error } = usePost(id, postId);
   const updatePost = useUpdatePost(id);
+  const publishPost = usePublishPost(id);
+  const unpublishPost = useUnpublishPost(id);
 
   // Drag-and-drop sensors
   const sensors = useSensors(
@@ -132,9 +140,55 @@ export default function EditPostPage({
     });
   };
 
-  const handlePublish = () => {
-    // TODO: Implement publish logic
-    console.log("Publishing post...");
+  const handlePublish = async () => {
+    const isCurrentlyPublished = post?.status === "published";
+
+    if (isCurrentlyPublished) {
+      // Unpublish
+      if (
+        confirm("Unpublish this post? It will no longer be visible publicly.")
+      ) {
+        unpublishPost.mutate(postId, {
+          onSuccess: () => {
+            toast.success("Post unpublished");
+          },
+          onError: () => {
+            toast.error("Failed to unpublish post");
+          },
+        });
+      }
+    } else {
+      // Save first, then publish
+      const confirmed = confirm(
+        "Publish this post? It will be visible to the public.",
+      );
+      if (!confirmed) return;
+
+      try {
+        // Save current changes
+        await updatePost.mutateAsync({
+          id: postId,
+          data: {
+            title: post?.title || "",
+            content: {
+              sections,
+            },
+          },
+        });
+
+        // Then publish
+        publishPost.mutate(postId, {
+          onSuccess: () => {
+            toast.success("Post published successfully!");
+          },
+          onError: () => {
+            toast.error("Failed to publish post");
+          },
+        });
+      } catch (error) {
+        toast.error("Failed to save changes");
+      }
+    }
   };
 
   const handlePostChange = (field: keyof Post, value: unknown) => {

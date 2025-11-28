@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import {
   usePage,
   useUpdatePage,
+  usePublishPage,
+  useUnpublishPage,
   type Section,
   type Block,
 } from "@/lib/hooks/use-pages";
@@ -55,6 +57,8 @@ export default function EditPagePage({
   const router = useRouter();
   const { data: page, isLoading, error } = usePage(id, pageId);
   const updatePage = useUpdatePage(id);
+  const publishPage = usePublishPage(id);
+  const unpublishPage = useUnpublishPage(id);
 
   // Drag-and-drop sensors
   const sensors = useSensors(
@@ -139,9 +143,53 @@ export default function EditPagePage({
     });
   };
 
-  const handlePublish = () => {
-    // TODO: Implement publish logic
-    console.log("Publishing page...");
+  const handlePublish = async () => {
+    const isCurrentlyPublished = page?.status === "published";
+
+    if (isCurrentlyPublished) {
+      // Unpublish
+      if (confirm("Unpublish this page? It will no longer be visible publicly.")) {
+        unpublishPage.mutate(pageId, {
+          onSuccess: () => {
+            toast.success("Page unpublished");
+          },
+          onError: () => {
+            toast.error("Failed to unpublish page");
+          },
+        });
+      }
+    } else {
+      // Save first, then publish
+      const confirmed = confirm(
+        "Publish this page? It will be visible to the public.",
+      );
+      if (!confirmed) return;
+
+      try {
+        // Save current changes
+        await updatePage.mutateAsync({
+          id: pageId,
+          data: {
+            title: page?.title || "",
+            content: {
+              sections,
+            },
+          },
+        });
+
+        // Then publish
+        publishPage.mutate(pageId, {
+          onSuccess: () => {
+            toast.success("Page published successfully!");
+          },
+          onError: () => {
+            toast.error("Failed to publish page");
+          },
+        });
+      } catch (error) {
+        toast.error("Failed to save changes");
+      }
+    }
   };
 
   const handlePageChange = (field: string, value: string) => {

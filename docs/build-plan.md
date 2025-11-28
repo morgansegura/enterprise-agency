@@ -264,7 +264,7 @@ Roadmap from current state to production-ready professional agency platform.
 - Responsive iframe
 - Per-breakpoint overrides (optional future feature)
 
-### 2.4 Content Features ⏳ IN PROGRESS
+### 2.4 Content Features ✅ PHASE COMPLETE
 
 **Blog Post Editor:** ✅ COMPLETE
 
@@ -309,9 +309,18 @@ Roadmap from current state to production-ready professional agency platform.
 - ✅ Integrated into PostSettings component
 - ✅ Reusable across pages and blog posts
 
-**Remaining Tasks:**
+**Draft/Publish Workflow:** ✅ COMPLETE
 
-- Draft/publish workflow improvements
+- ✅ Integrated publish/unpublish hooks into page editor
+- ✅ Integrated publish/unpublish hooks into post editor
+- ✅ Auto-save before publish (prevents data loss)
+- ✅ Confirmation dialogs for publish/unpublish actions
+- ✅ Smart publish button (shows "Publish" vs "Unpublish" based on status)
+- ✅ Toast notifications for success/error states
+- ✅ Proper error handling for failed operations
+- ✅ Status-aware publish workflow (draft → published → unpublished)
+
+**Phase 2.4 Status:** ✅ COMPLETE
 
 ---
 
