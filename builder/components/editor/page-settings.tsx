@@ -2,7 +2,6 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -10,6 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { SeoEditor } from "./seo-editor";
+import type { PageSeo } from "@/lib/hooks/use-pages";
 import "./page-settings.css";
 
 interface PageSettingsProps {
@@ -18,8 +20,9 @@ interface PageSettingsProps {
     slug: string;
     status?: string;
     template?: string;
+    seo?: PageSeo;
   };
-  onChange?: (field: string, value: string) => void;
+  onChange?: (field: string, value: unknown) => void;
 }
 
 export function PageSettings({ page, onChange }: PageSettingsProps) {
@@ -81,22 +84,13 @@ export function PageSettings({ page, onChange }: PageSettingsProps) {
         </div>
       </div>
 
+      <Separator />
+
       <div className="page-settings-section">
-        <h4 className="page-settings-section-title">SEO</h4>
-
-        <div className="page-settings-field">
-          <Label htmlFor="meta-title">Meta Title</Label>
-          <Input id="meta-title" placeholder="Leave empty to use page title" />
-        </div>
-
-        <div className="page-settings-field">
-          <Label htmlFor="meta-description">Meta Description</Label>
-          <Textarea
-            id="meta-description"
-            placeholder="Brief description for search engines"
-            rows={3}
-          />
-        </div>
+        <SeoEditor
+          seo={page.seo}
+          onChange={(seo) => onChange?.("seo", seo)}
+        />
       </div>
     </div>
   );

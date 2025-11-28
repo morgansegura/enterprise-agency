@@ -4,6 +4,7 @@ export { PostEditorLayout } from "./post-editor-layout";
 export { BlocksLibrary } from "./blocks-library";
 export { PageSettings } from "./page-settings";
 export { PostSettings } from "./post-settings";
+export { SeoEditor } from "./seo-editor";
 export { PageLayers } from "./page-layers";
 export { SectionSettings } from "./section-settings";
 export { SortableSection } from "./sortable-section";

@@ -12,6 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { SeoEditor } from "./seo-editor";
+import type { PageSeo } from "@/lib/hooks/use-pages";
 
 interface PostSettingsProps {
   post: {
@@ -24,6 +26,7 @@ interface PostSettingsProps {
     featuredImage?: string;
     categories?: string[];
     tags?: string[];
+    seo?: PageSeo;
   };
   onChange: (field: string, value: unknown) => void;
 }
@@ -192,6 +195,11 @@ export function PostSettings({ post, onChange }: PostSettingsProps) {
           </Select>
         </div>
       </div>
+
+      <Separator />
+
+      {/* SEO */}
+      <SeoEditor seo={post.seo} onChange={(seo) => onChange("seo", seo)} />
     </div>
   );
 }
