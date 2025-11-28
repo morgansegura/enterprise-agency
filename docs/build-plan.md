@@ -134,8 +134,10 @@ Roadmap from current state to production-ready professional agency platform.
 - ✅ Created @RequireTier decorator (api/src/common/decorators/tier.decorator.ts)
 - ✅ Created FeatureGuard (api/src/common/guards/feature.guard.ts)
 - ✅ Created @RequireFeature decorator with nested support (e.g., 'payments.stripe')
-- ⏳ Implement content vs structure validation in PagesService (pending)
-- ⏳ Protect create/delete endpoints with tier checks (pending)
+- ✅ Created @CurrentTenant decorator for accessing tenant in controllers
+- ✅ Created StructureValidationService for content vs structure validation
+- ✅ Protected create/delete/duplicate endpoints with @RequireTier('BUILDER')
+- ✅ Update endpoint validates structure changes based on tenant tier
 
 **Builder Hooks & Components:** ✅ COMPLETE
 
