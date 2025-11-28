@@ -15,6 +15,9 @@ import { AuthModule } from "./modules/auth/auth.module";
 import { SiteConfigModule } from "./modules/site-config/site-config.module";
 import { AdminModule } from "./modules/admin/admin.module";
 import { PublicApiModule } from "./modules/public-api/public-api.module";
+import { ProductsModule } from "./modules/products/products.module";
+import { OrdersModule } from "./modules/orders/orders.module";
+import { CustomersModule } from "./modules/customers/customers.module";
 
 @Module({
   imports: [
@@ -43,6 +46,10 @@ import { PublicApiModule } from "./modules/public-api/public-api.module";
     PagesModule,
     PostsModule,
     AssetsModule,
+    // E-Commerce modules
+    ProductsModule,
+    OrdersModule,
+    CustomersModule,
     // Multi-tenancy
     TenantsModule,
     UsersModule,

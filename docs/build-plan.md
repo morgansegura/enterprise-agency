@@ -343,14 +343,29 @@ Roadmap from current state to production-ready professional agency platform.
 
 **Goal:** E-Commerce suite for print client
 
-### 3.1 E-Commerce Backend (4-5 weeks)
+### 3.1 E-Commerce Backend ✅ IN PROGRESS
 
 **New API Modules:**
 
-- Products module (CRUD, categories, variants, inventory)
-- Orders module (CRUD, status management)
-- Customers module (accounts, addresses)
-- Payments module (Stripe integration)
+- ✅ Products module (CRUD, categories, variants, inventory)
+  - Product categories with hierarchical support
+  - Product CRUD with images, options, variants
+  - Inventory management with low-stock alerts
+  - Product archive/duplicate functionality
+- ✅ Orders module (CRUD, status management)
+  - Order creation with automatic inventory deduction
+  - Order number auto-increment per tenant
+  - Payment and fulfillment status tracking
+  - Order cancellation with inventory restoration
+  - Item-level fulfillment support
+  - Order statistics and reporting
+- ✅ Customers module (accounts, addresses)
+  - Customer CRUD with optional user account linking
+  - Multiple addresses per customer
+  - Default address management
+  - Customer statistics (total orders, lifetime value)
+  - Marketing opt-in tracking
+- Payments module (Stripe integration) - PENDING
 
 **Feature Flag:**
 
@@ -384,6 +399,7 @@ Roadmap from current state to production-ready professional agency platform.
 **Goal:** Allow different block settings per device (desktop/tablet/mobile)
 
 **Block Data Structure:**
+
 ```typescript
 // Current: single value
 data: { size: "lg", align: "center" }
@@ -400,6 +416,7 @@ data: {
 ```
 
 **Implementation:**
+
 - Update block data schema to support `_responsive` overrides
 - Update all 24 block editors to show current breakpoint values
 - Add "Override for this breakpoint" toggle in editors
@@ -538,5 +555,5 @@ Build 10 block editors:
 
 ---
 
-**Last Updated:** 2025-01-22
-**Status:** Active Development - Phase 1 in Progress
+**Last Updated:** 2025-11-27
+**Status:** Active Development - Phase 3 in Progress (E-Commerce Backend Complete)
