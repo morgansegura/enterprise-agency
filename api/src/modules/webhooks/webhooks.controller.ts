@@ -4,12 +4,15 @@ import {
   Body,
   Headers,
   UnauthorizedException,
+  Logger,
 } from "@nestjs/common";
 import { WebhooksService } from "./webhooks.service";
 import { Webhook } from "svix";
 
 @Controller("webhooks")
 export class WebhooksController {
+  private readonly logger = new Logger(WebhooksController.name);
+
   constructor(private readonly webhooksService: WebhooksService) {}
 
   @Post("clerk")
@@ -70,7 +73,7 @@ export class WebhooksController {
         break;
 
       default:
-        console.log(`Unhandled webhook event: ${eventType}`);
+        this.logger.warn(`Unhandled webhook event: ${eventType}`);
     }
 
     return { success: true };

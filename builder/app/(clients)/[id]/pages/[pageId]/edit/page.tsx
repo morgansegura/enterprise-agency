@@ -30,6 +30,7 @@ import { SortableSection } from "@/components/editor/sortable-section";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
 import { blockRegistry } from "@/lib/editor";
+import { logger } from "@/lib/logger";
 import { toast } from "sonner";
 import {
   DndContext,
@@ -196,7 +197,7 @@ export default function EditPagePage({
 
   const handlePageChange = (field: string, value: string) => {
     // Update page data locally (you could debounce this to auto-save)
-    console.log("Page field changed:", field, value);
+    logger.debug("Page field changed", { field, value });
   };
 
   const handleBlockChange = (
@@ -336,7 +337,7 @@ export default function EditPagePage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => console.log("Test click")}
+          onClick={() => toast.info("Website editor coming soon")}
           title="Visit the Website Editor"
         >
           <PanelsTopLeft />
@@ -344,7 +345,7 @@ export default function EditPagePage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => console.log("Test click")}
+          onClick={() => toast.info("Blog editor coming soon")}
           title="Visit the Blog Editor"
         >
           <Newspaper />
@@ -352,7 +353,7 @@ export default function EditPagePage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => console.log("Test click")}
+          onClick={() => toast.info("Shop editor coming soon")}
           title="Visit the Shop Editor"
         >
           <Store />
@@ -361,7 +362,7 @@ export default function EditPagePage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => console.log("Test click")}
+          onClick={() => toast.info("Block editor coming soon")}
           title="Open Block Editor"
         >
           <LayoutPanelTop />
@@ -369,7 +370,7 @@ export default function EditPagePage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => console.log("Test click")}
+          onClick={() => toast.info("Settings coming soon")}
           title="Open Editor Settings"
         >
           <Layers />

@@ -7,24 +7,24 @@ import { JsonValue } from "@prisma/client/runtime/library";
  * Enterprise: Only exposes client-facing branding and navigation
  */
 export class PublicSiteConfigDto {
-  @ApiProperty({ example: "bible-baptist-church" })
+  @ApiProperty({ example: "acme-consulting" })
   slug: string;
 
-  @ApiProperty({ example: "Bible Baptist Church" })
+  @ApiProperty({ example: "Acme Consulting" })
   businessName: string;
 
-  @ApiProperty({ example: "church" })
+  @ApiProperty({ example: "professional-services" })
   businessType: string;
 
-  @ApiProperty({ example: "https://cdn.example.com/logos/bbc-logo.png" })
+  @ApiProperty({ example: "https://cdn.example.com/logos/acme-logo.png" })
   logoUrl?: string;
 
   @ApiProperty({
-    example: "A welcoming community church serving families since 1985",
+    example: "Professional consulting services for growing businesses",
   })
   metaDescription?: string;
 
-  @ApiProperty({ example: "info@biblebaptist.com" })
+  @ApiProperty({ example: "hello@acmeconsulting.com" })
   contactEmail?: string;
 
   @ApiProperty({ example: "(555) 123-4567" })
@@ -35,10 +35,12 @@ export class PublicSiteConfigDto {
     type: "object",
     additionalProperties: true,
     example: {
-      logo: { url: "/logo.png", alt: "Church Logo" },
+      logo: { url: "/logo.png", alt: "Company Logo" },
       navigation: [
         { label: "Home", href: "/" },
         { label: "About", href: "/about" },
+        { label: "Services", href: "/services" },
+        { label: "Contact", href: "/contact" },
       ],
     },
   })
@@ -52,7 +54,7 @@ export class PublicSiteConfigDto {
       columns: [
         {
           title: "Contact",
-          links: [{ label: "Email Us", href: "mailto:info@church.com" }],
+          links: [{ label: "Email Us", href: "mailto:hello@example.com" }],
         },
       ],
     },

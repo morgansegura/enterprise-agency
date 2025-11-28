@@ -55,8 +55,8 @@ export class PublicApiController {
   })
   @ApiParam({
     name: "tenantSlug",
-    description: "Tenant slug (e.g., 'bible-baptist-church')",
-    example: "bible-baptist-church",
+    description: "Tenant slug identifier",
+    example: "acme-consulting",
   })
   @ApiResponse({
     status: 200,
@@ -85,8 +85,8 @@ export class PublicApiController {
   })
   @ApiParam({
     name: "tenantSlug",
-    description: "Tenant slug (e.g., 'bible-baptist-church')",
-    example: "bible-baptist-church",
+    description: "Tenant slug identifier",
+    example: "acme-consulting",
   })
   @ApiResponse({
     status: 200,
@@ -114,7 +114,7 @@ export class PublicApiController {
   })
   @ApiParam({
     name: "tenantSlug",
-    example: "bible-baptist-church",
+    example: "acme-consulting",
   })
   @ApiQuery({
     name: "page",
@@ -155,7 +155,7 @@ export class PublicApiController {
   })
   @ApiParam({
     name: "tenantSlug",
-    example: "bible-baptist-church",
+    example: "acme-consulting",
   })
   @ApiParam({
     name: "pageSlug",
@@ -190,7 +190,7 @@ export class PublicApiController {
   })
   @ApiParam({
     name: "tenantSlug",
-    example: "bible-baptist-church",
+    example: "acme-consulting",
   })
   @ApiQuery({
     name: "page",
@@ -208,13 +208,13 @@ export class PublicApiController {
     name: "category",
     required: false,
     type: String,
-    example: "sermons",
+    example: "announcements",
   })
   @ApiQuery({
     name: "tags",
     required: false,
     type: [String],
-    example: ["easter", "worship"],
+    example: ["product", "news"],
   })
   @ApiResponse({
     status: 200,
@@ -254,11 +254,11 @@ export class PublicApiController {
   })
   @ApiParam({
     name: "tenantSlug",
-    example: "bible-baptist-church",
+    example: "acme-consulting",
   })
   @ApiParam({
     name: "postSlug",
-    example: "easter-service-2024",
+    example: "product-launch-2024",
   })
   @ApiResponse({
     status: 200,

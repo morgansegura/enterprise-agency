@@ -9,37 +9,37 @@ export class PublicPostDto {
   @ApiProperty({ example: "123e4567-e89b-12d3-a456-426614174000" })
   id: string;
 
-  @ApiProperty({ example: "easter-service-2024" })
+  @ApiProperty({ example: "product-launch-2024" })
   slug: string;
 
-  @ApiProperty({ example: "Easter Service 2024 - Join Us!" })
+  @ApiProperty({ example: "Announcing Our New Product Launch" })
   title: string;
 
   @ApiProperty({
     example:
-      "Join us for a special Easter celebration service with worship and message",
+      "We are excited to announce the launch of our latest product offering",
   })
   excerpt?: string;
 
   @ApiProperty({
     description: "Full post content (HTML or markdown)",
-    example: "<p>Join us for...</p>",
+    example: "<p>We are excited to announce...</p>",
   })
   content?: string;
 
-  @ApiProperty({ example: "https://cdn.example.com/images/easter-2024.jpg" })
+  @ApiProperty({ example: "https://cdn.example.com/images/launch-2024.jpg" })
   featuredImageUrl?: string;
 
-  @ApiProperty({ example: "events" })
+  @ApiProperty({ example: "announcements" })
   category?: string;
 
-  @ApiProperty({ example: ["easter", "worship", "celebration"] })
+  @ApiProperty({ example: ["product", "launch", "news"] })
   tags: string[];
 
-  @ApiProperty({ example: "Easter Service 2024 - Bible Baptist Church" })
+  @ApiProperty({ example: "Product Launch 2024 - Acme Consulting" })
   metaTitle?: string;
 
-  @ApiProperty({ example: "Join us for Easter celebration service" })
+  @ApiProperty({ example: "Announcing our exciting new product launch" })
   metaDescription?: string;
 
   @ApiProperty({ example: 142 })
@@ -71,9 +71,9 @@ export class PublicPostsListDto {
   @ApiProperty({ example: 8 })
   totalPages: number;
 
-  @ApiProperty({ example: "events" })
+  @ApiProperty({ example: "announcements" })
   category?: string;
 
-  @ApiProperty({ example: ["easter", "worship"] })
+  @ApiProperty({ example: ["product", "news"] })
   tags?: string[];
 }

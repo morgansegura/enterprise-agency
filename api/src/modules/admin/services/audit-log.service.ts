@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "@/common/services/prisma.service";
 
 export enum AuditAction {
@@ -26,12 +26,15 @@ interface AuditLogData {
 
 @Injectable()
 export class AuditLogService {
+  private readonly logger = new Logger(AuditLogService.name);
+
   constructor(private prisma: PrismaService) {}
 
   async log(data: AuditLogData) {
-    // For now, just log to console
+    // For now, log using NestJS logger
     // In production, store in database or send to logging service
-    console.log("[AUDIT]", {
+    this.logger.log({
+      message: "Audit event",
       timestamp: new Date().toISOString(),
       ...data,
     });

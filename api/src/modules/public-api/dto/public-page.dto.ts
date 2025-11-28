@@ -13,7 +13,7 @@ export class PublicPageDto {
   @ApiProperty({ example: "about-us" })
   slug: string;
 
-  @ApiProperty({ example: "About Our Church" })
+  @ApiProperty({ example: "About Our Company" })
   title: string;
 
   @ApiProperty({
@@ -23,11 +23,11 @@ export class PublicPageDto {
   })
   content: JsonValue;
 
-  @ApiProperty({ example: "About Our Church - Bible Baptist Church" })
+  @ApiProperty({ example: "About Us - Acme Consulting" })
   metaTitle?: string;
 
   @ApiProperty({
-    example: "Learn about our church history, mission, and values",
+    example: "Learn about our company history, mission, and values",
   })
   metaDescription?: string;
 

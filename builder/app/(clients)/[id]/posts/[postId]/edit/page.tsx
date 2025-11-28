@@ -18,6 +18,7 @@ import { SortableSection } from "@/components/editor/sortable-section";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
 import { blockRegistry } from "@/lib/editor";
+import { logger } from "@/lib/logger";
 import { toast } from "sonner";
 import {
   DndContext,
@@ -193,7 +194,7 @@ export default function EditPostPage({
 
   const handlePostChange = (field: keyof Post, value: unknown) => {
     // Update post data locally (you could debounce this to auto-save)
-    console.log("Post field changed:", field, value);
+    logger.debug("Post field changed", { field, value });
   };
 
   const handleBlockChange = (
@@ -349,7 +350,7 @@ export default function EditPostPage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => console.log("Shop coming soon")}
+          onClick={() => toast.info("Shop editor coming soon")}
           title="Visit the Shop Editor"
         >
           <Store />
@@ -358,7 +359,7 @@ export default function EditPostPage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => console.log("Block editor")}
+          onClick={() => toast.info("Block editor coming soon")}
           title="Open Block Editor"
         >
           <LayoutPanelTop />
@@ -366,7 +367,7 @@ export default function EditPostPage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => console.log("Settings")}
+          onClick={() => toast.info("Settings coming soon")}
           title="Open Editor Settings"
         >
           <Layers />

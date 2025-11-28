@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BlockEditor } from "@/components/editor";
+import { logger } from "@/lib/logger";
 import type { Block } from "@/lib/editor/types";
 
 export default function EditorTestPage() {
@@ -29,7 +30,10 @@ export default function EditorTestPage() {
   ]);
 
   const handleChange = (newBlocks: Block[]) => {
-    console.log("Content changed:", newBlocks);
+    logger.log("Content changed", {
+      context: "BlockEditor",
+      meta: { blocks: newBlocks },
+    });
     setBlocks(newBlocks);
   };
 
