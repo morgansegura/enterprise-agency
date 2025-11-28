@@ -379,7 +379,37 @@ Roadmap from current state to production-ready professional agency platform.
 
 **Goal:** Production-ready with client portals and agency tools
 
-### 4.1 Client Portal (3-4 weeks)
+### 4.1 Per-Breakpoint Responsive Overrides (2-3 weeks)
+
+**Goal:** Allow different block settings per device (desktop/tablet/mobile)
+
+**Block Data Structure:**
+```typescript
+// Current: single value
+data: { size: "lg", align: "center" }
+
+// With overrides: base + responsive
+data: {
+  size: "lg",
+  align: "center",
+  _responsive: {
+    tablet: { size: "md" },
+    mobile: { size: "sm", align: "left" }
+  }
+}
+```
+
+**Implementation:**
+- Update block data schema to support `_responsive` overrides
+- Update all 24 block editors to show current breakpoint values
+- Add "Override for this breakpoint" toggle in editors
+- Update client rendering to apply breakpoint-specific values
+- Generate CSS media queries or use JS-based responsive logic
+- Builder tier only (Content Editors see preview but can't set overrides)
+
+**Note:** Deferred from Phase 2.3 - current responsive preview shows viewport width only.
+
+### 4.2 Client Portal (3-4 weeks)
 
 - White-label client dashboards
 - Per-tenant branding
@@ -387,14 +417,14 @@ Roadmap from current state to production-ready professional agency platform.
 - Self-service upgrades
 - Team member management
 
-### 4.2 Agency Tools (2-3 weeks)
+### 4.3 Agency Tools (2-3 weeks)
 
 - CRM integration
 - Project management
 - Client health monitoring
 - Billing automation
 
-### 4.3 Testing & QA (2 weeks)
+### 4.4 Testing & QA (2 weeks)
 
 - Unit tests for all stores and hooks
 - Integration tests for editor
@@ -402,7 +432,7 @@ Roadmap from current state to production-ready professional agency platform.
 - Performance testing
 - Security audit
 
-### 4.4 Documentation & Training (1-2 weeks)
+### 4.5 Documentation & Training (1-2 weeks)
 
 - User guides for both tiers
 - Video tutorials
