@@ -44,7 +44,11 @@ export default function MediaLibraryPage({
   const [uploading, setUploading] = React.useState(false);
 
   // Queries
-  const { data: assets, isLoading, error } = useAssets(id, {
+  const {
+    data: assets,
+    isLoading,
+    error,
+  } = useAssets(id, {
     fileType: fileTypeFilter || undefined,
   });
   const uploadAsset = useUploadAsset(id);

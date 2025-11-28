@@ -29,7 +29,8 @@ export function useAssets(
 ) {
   const params = new URLSearchParams();
   if (filters?.fileType) params.append("fileType", filters.fileType);
-  if (filters?.usageContext) params.append("usageContext", filters.usageContext);
+  if (filters?.usageContext)
+    params.append("usageContext", filters.usageContext);
   const queryString = params.toString();
 
   return useQuery<Asset[]>({

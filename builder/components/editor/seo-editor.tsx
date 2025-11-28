@@ -19,6 +19,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { PageSeo } from "@/lib/hooks/use-pages";
+import { FormItem } from "@/components/ui/form";
 
 interface SeoEditorProps {
   seo?: PageSeo;
@@ -91,7 +92,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
 
       {/* Basic Meta Tags */}
       <div className="space-y-4">
-        <div>
+        <FormItem>
           <Label htmlFor="seo-meta-title">Meta Title</Label>
           <Input
             id="seo-meta-title"
@@ -103,9 +104,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
           <p className="text-xs text-muted-foreground mt-1">
             {seo.metaTitle?.length || 0}/60 characters
           </p>
-        </div>
+        </FormItem>
 
-        <div>
+        <FormItem>
           <Label htmlFor="seo-meta-description">Meta Description</Label>
           <Textarea
             id="seo-meta-description"
@@ -118,9 +119,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
           <p className="text-xs text-muted-foreground mt-1">
             {seo.metaDescription?.length || 0}/160 characters
           </p>
-        </div>
+        </FormItem>
 
-        <div>
+        <FormItem>
           <Label htmlFor="seo-keywords">Keywords</Label>
           <Input
             id="seo-keywords"
@@ -131,9 +132,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
           <p className="text-xs text-muted-foreground mt-1">
             Comma-separated list of relevant keywords
           </p>
-        </div>
+        </FormItem>
 
-        <div>
+        <FormItem>
           <Label htmlFor="seo-canonical">Canonical URL</Label>
           <Input
             id="seo-canonical"
@@ -145,7 +146,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
           <p className="text-xs text-muted-foreground mt-1">
             Specify the preferred URL for this content
           </p>
-        </div>
+        </FormItem>
       </div>
 
       <Separator />
@@ -156,7 +157,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
         <AccordionItem value="open-graph">
           <AccordionTrigger>Open Graph (Facebook, LinkedIn)</AccordionTrigger>
           <AccordionContent className="space-y-4 pt-4">
-            <div>
+            <FormItem>
               <Label htmlFor="og-title">OG Title</Label>
               <Input
                 id="og-title"
@@ -164,9 +165,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                 onChange={(e) => updateOpenGraph({ title: e.target.value })}
                 placeholder={seo.metaTitle || "Page title"}
               />
-            </div>
+            </FormItem>
 
-            <div>
+            <FormItem>
               <Label htmlFor="og-description">OG Description</Label>
               <Textarea
                 id="og-description"
@@ -177,9 +178,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                 placeholder={seo.metaDescription || "Page description"}
                 rows={2}
               />
-            </div>
+            </FormItem>
 
-            <div>
+            <FormItem>
               <Label htmlFor="og-image">OG Image URL</Label>
               <Input
                 id="og-image"
@@ -191,9 +192,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
               <p className="text-xs text-muted-foreground mt-1">
                 Recommended: 1200×630px
               </p>
-            </div>
+            </FormItem>
 
-            <div>
+            <FormItem>
               <Label htmlFor="og-type">OG Type</Label>
               <Select
                 value={seo.openGraph?.type || "website"}
@@ -209,7 +210,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                   <SelectItem value="product">Product</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </FormItem>
           </AccordionContent>
         </AccordionItem>
 
@@ -217,7 +218,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
         <AccordionItem value="twitter">
           <AccordionTrigger>Twitter Cards</AccordionTrigger>
           <AccordionContent className="space-y-4 pt-4">
-            <div>
+            <FormItem>
               <Label htmlFor="twitter-card">Card Type</Label>
               <Select
                 value={seo.twitter?.card || "summary"}
@@ -235,9 +236,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                   <SelectItem value="player">Player</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </FormItem>
 
-            <div>
+            <FormItem>
               <Label htmlFor="twitter-title">Twitter Title</Label>
               <Input
                 id="twitter-title"
@@ -247,9 +248,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                   seo.openGraph?.title || seo.metaTitle || "Page title"
                 }
               />
-            </div>
+            </FormItem>
 
-            <div>
+            <FormItem>
               <Label htmlFor="twitter-description">Twitter Description</Label>
               <Textarea
                 id="twitter-description"
@@ -262,9 +263,9 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                 }
                 rows={2}
               />
-            </div>
+            </FormItem>
 
-            <div>
+            <FormItem>
               <Label htmlFor="twitter-image">Twitter Image URL</Label>
               <Input
                 id="twitter-image"
@@ -278,7 +279,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
               <p className="text-xs text-muted-foreground mt-1">
                 Recommended: 1200×600px for large cards
               </p>
-            </div>
+            </FormItem>
           </AccordionContent>
         </AccordionItem>
 
@@ -286,7 +287,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
         <AccordionItem value="structured-data">
           <AccordionTrigger>Structured Data (JSON-LD)</AccordionTrigger>
           <AccordionContent className="space-y-4 pt-4">
-            <div>
+            <FormItem>
               <Label htmlFor="structured-data">JSON-LD Schema</Label>
               <Textarea
                 id="structured-data"
@@ -303,7 +304,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
               <p className="text-xs text-muted-foreground mt-1">
                 Add structured data for rich search results
               </p>
-            </div>
+            </FormItem>
           </AccordionContent>
         </AccordionItem>
       </Accordion>

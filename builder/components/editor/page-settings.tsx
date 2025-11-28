@@ -12,6 +12,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SeoEditor } from "./seo-editor";
 import type { PageSeo } from "@/lib/hooks/use-pages";
+import { FormItem } from "@/components/ui/form";
+
 import "./page-settings.css";
 
 interface PageSettingsProps {
@@ -31,25 +33,25 @@ export function PageSettings({ page, onChange }: PageSettingsProps) {
       <div className="page-settings-section">
         <h4 className="page-settings-section-title">General</h4>
 
-        <div className="page-settings-field">
+        <FormItem className="page-settings-field">
           <Label htmlFor="page-title">Title</Label>
           <Input
             id="page-title"
             value={page.title}
             onChange={(e) => onChange?.("title", e.target.value)}
           />
-        </div>
+        </FormItem>
 
-        <div className="page-settings-field">
+        <FormItem className="page-settings-field">
           <Label htmlFor="page-slug">Slug</Label>
           <Input
             id="page-slug"
             value={page.slug}
             onChange={(e) => onChange?.("slug", e.target.value)}
           />
-        </div>
+        </FormItem>
 
-        <div className="page-settings-field">
+        <FormItem className="page-settings-field">
           <Label htmlFor="page-status">Status</Label>
           <Select
             value={page.status || "draft"}
@@ -64,9 +66,9 @@ export function PageSettings({ page, onChange }: PageSettingsProps) {
               <SelectItem value="archived">Archived</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </FormItem>
 
-        <div className="page-settings-field">
+        <FormItem className="page-settings-field">
           <Label htmlFor="page-template">Template</Label>
           <Select
             value={page.template || "default"}
@@ -81,16 +83,13 @@ export function PageSettings({ page, onChange }: PageSettingsProps) {
               <SelectItem value="landing">Landing Page</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </FormItem>
       </div>
 
       <Separator />
 
       <div className="page-settings-section">
-        <SeoEditor
-          seo={page.seo}
-          onChange={(seo) => onChange?.("seo", seo)}
-        />
+        <SeoEditor seo={page.seo} onChange={(seo) => onChange?.("seo", seo)} />
       </div>
     </div>
   );

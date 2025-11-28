@@ -148,7 +148,9 @@ export default function EditPagePage({
 
     if (isCurrentlyPublished) {
       // Unpublish
-      if (confirm("Unpublish this page? It will no longer be visible publicly.")) {
+      if (
+        confirm("Unpublish this page? It will no longer be visible publicly.")
+      ) {
         unpublishPage.mutate(pageId, {
           onSuccess: () => {
             toast.success("Page unpublished");
