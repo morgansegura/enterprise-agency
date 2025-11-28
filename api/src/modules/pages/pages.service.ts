@@ -4,16 +4,26 @@ import {
   ConflictException,
   Logger,
 } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
+import { Prisma, TenantTier } from "@prisma/client";
 import { PrismaService } from "@/common/services/prisma.service";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";
+import { StructureValidationService } from "./services/structure-validation.service";
+
+/**
+ * Type alias for page content structure
+ * Uses Record<string, unknown> for flexibility with JSONB storage
+ */
+type PageContent = Record<string, unknown> | null;
 
 @Injectable()
 export class PagesService {
   private readonly logger = new Logger(PagesService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private structureValidation: StructureValidationService,
+  ) {}
 
   async create(tenantId: string, userId: string, createData: CreatePageDto) {
     // Check if slug already exists for this tenant
@@ -170,28 +180,50 @@ export class PagesService {
     return page;
   }
 
-  async update(tenantId: string, id: string, updateData: UpdatePageDto) {
-    // Verify page belongs to tenant
-    await this.findOne(tenantId, id);
+  /**
+   * Updates a page with tier-aware validation
+   * Content Editor tier can only modify block data, not structure
+   * Builder tier can modify everything
+   *
+   * @param tenantId - The tenant ID
+   * @param id - The page ID
+   * @param updateData - The update payload
+   * @param tenantTier - Optional tenant tier for structure validation
+   */
+  async update(
+    tenantId: string,
+    id: string,
+    updateData: UpdatePageDto,
+    tenantTier?: TenantTier,
+  ) {
+    // Verify page belongs to tenant and get existing data
+    const existing = await this.findOne(tenantId, id);
 
     // If slug is being updated, check it's not taken
-    if (updateData.slug) {
-      const existing = await this.findOne(tenantId, id);
-
-      if (updateData.slug !== existing.slug) {
-        const slugTaken = await this.prisma.page.findUnique({
-          where: {
-            tenantId_slug: {
-              tenantId,
-              slug: updateData.slug,
-            },
+    if (updateData.slug && updateData.slug !== existing.slug) {
+      const slugTaken = await this.prisma.page.findUnique({
+        where: {
+          tenantId_slug: {
+            tenantId,
+            slug: updateData.slug,
           },
-        });
+        },
+      });
 
-        if (slugTaken) {
-          throw new ConflictException("Slug already exists for this tenant");
-        }
+      if (slugTaken) {
+        throw new ConflictException("Slug already exists for this tenant");
       }
+    }
+
+    // Validate structure changes if tier is provided and sections are being updated
+    if (tenantTier && updateData.sections !== undefined) {
+      const existingContent = (existing.content ?? null) as PageContent;
+      const updatedContent = { sections: updateData.sections } as PageContent;
+      this.structureValidation.validateContentChanges(
+        tenantTier,
+        existingContent,
+        updatedContent,
+      );
     }
 
     // Build updated content structure
@@ -203,7 +235,6 @@ export class PagesService {
       updateData.accessibility ||
       updateData.performance
     ) {
-      const existing = await this.findOne(tenantId, id);
       const existingContent = (existing.content || {}) as Record<
         string,
         unknown
