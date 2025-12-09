@@ -4,9 +4,10 @@
   "private": true,
   "description": "Professional Agency Platform - Multi-tenant website builder with token-based design system",
   "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=8.0.0"
+    "node": ">=22.0.0 <23.0.0",
+    "pnpm": ">=9.0.0"
   },
+  "packageManager": "pnpm@10.20.0",
   "scripts": {
     "dev": "pnpm --parallel --stream run dev",
     "dev:client": "pnpm --filter client run dev -p 4002",
@@ -48,5 +49,15 @@
     "web-and-funnel"
   ],
   "author": "Morgan Segura",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "prisma",
+      "bcrypt",
+      "esbuild",
+      "sharp",
+      "@prisma/engines"
+    ]
+  }
 }
