@@ -1,0 +1,96 @@
+@reference "tailwindcss";
+
+/**
+ * Mobile Navigation Styles
+ * Vertical navigation for mobile drawer
+ */
+
+.mobile-nav-content {
+  width: var(--mobile-nav-width);
+}
+
+.mobile-nav-title {
+  @apply text-lg font-semibold;
+}
+
+.mobile-nav {
+  @apply mt-8;
+}
+
+.mobile-nav-list {
+  @apply flex flex-col;
+  gap: var(--mobile-nav-item-gap);
+}
+
+.mobile-nav-item {
+  @apply list-none;
+}
+
+.mobile-nav-link {
+  @apply flex items-center justify-between w-full text-base font-medium;
+  padding: var(--mobile-nav-item-padding-y) var(--mobile-nav-item-padding-x);
+  border-radius: var(--mobile-nav-item-border-radius);
+  color: var(--mobile-nav-item-color);
+  background: transparent;
+  transition: all var(--footer-nav-link-transition-duration) var(--footer-nav-link-transition-timing);
+}
+
+.mobile-nav-link:hover {
+  color: var(--mobile-nav-item-hover-color);
+  background: var(--mobile-nav-item-hover-bg);
+}
+
+.mobile-nav-link[data-active="true"] {
+  color: var(--mobile-nav-item-active-color);
+  background: var(--mobile-nav-item-active-bg);
+}
+
+.mobile-nav-chevron {
+  @apply transition-transform text-sm text-(--muted-foreground);
+}
+
+.mobile-nav-chevron[data-expanded="true"] {
+  @apply rotate-180;
+}
+
+.mobile-nav-badge {
+  @apply ml-2 px-2 py-0.5 text-xs rounded-full;
+}
+
+.mobile-nav-badge[data-variant="new"] {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+
+.mobile-nav-badge[data-variant="hot"] {
+  @apply bg-(--destructive) text-white;
+}
+
+.mobile-nav-badge[data-variant="sale"] {
+  @apply bg-green-600 text-white;
+}
+
+/* Submenu */
+.mobile-nav-submenu {
+  @apply flex flex-col mt-1;
+  gap: var(--mobile-nav-item-gap);
+  margin-left: var(--mobile-nav-submenu-indent);
+  padding-left: var(--mobile-nav-submenu-indent);
+  border-left: 2px solid var(--mobile-nav-submenu-border-color);
+}
+
+.mobile-nav-submenu-item {
+  @apply list-none;
+}
+
+.mobile-nav-submenu-link {
+  @apply block text-sm;
+  padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
+  border-radius: var(--mobile-nav-item-border-radius);
+  color: var(--dropdown-item-color);
+  transition: all var(--footer-nav-link-transition-duration) var(--footer-nav-link-transition-timing);
+}
+
+.mobile-nav-submenu-link:hover {
+  color: var(--dropdown-item-hover-color);
+  background: var(--dropdown-item-hover-bg);
+}

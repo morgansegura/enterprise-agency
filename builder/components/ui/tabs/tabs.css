@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+/* Tabs List */
+[data-slot="tabs-list"] {
+  @apply inline-flex h-9 items-center justify-center rounded-lg bg-(--muted) p-1 text-(--muted-foreground);
+}
+
+/* Tabs Trigger */
+[data-slot="tabs-trigger"] {
+  @apply inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium;
+  @apply ring-offset-(--background) transition-all;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+}
+
+[data-slot="tabs-trigger"][data-state="active"] {
+  @apply bg-(--background) text-(--foreground) shadow;
+}
+
+/* Tabs Content */
+[data-slot="tabs-content"] {
+  @apply mt-2;
+  @apply ring-offset-(--background);
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+}

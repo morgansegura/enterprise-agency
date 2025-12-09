@@ -1,0 +1,33 @@
+@reference "tailwindcss";
+
+.client-layout-header {
+  @apply flex h-16 shrink-0 items-center justify-between gap-2 px-4 border-b border-(--border);
+}
+
+.client-layout-header-left {
+  @apply flex items-center gap-2;
+}
+
+.client-layout-header-trigger {
+  @apply -ml-1;
+}
+
+.client-layout-header-separator {
+  @apply mr-2 h-4;
+}
+
+.client-layout-header-right {
+  @apply flex items-center gap-2;
+}
+
+.client-layout-main {
+  @apply flex-1 overflow-auto;
+}
+
+.client-layout-loading {
+  @apply flex h-screen w-full items-center justify-center;
+}
+
+.client-layout-loading-text {
+  @apply text-(--muted-foreground);
+}

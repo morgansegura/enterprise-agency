@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+
+[data-slot="tabs-block"] {
+  @apply w-full;
+}
+
+[data-slot="tabs-block-list"] {
+  @apply flex gap-1 border-b border-(--border);
+}
+
+[data-slot="tabs-block"][data-variant="pills"] [data-slot="tabs-block-list"] {
+  @apply border-0 gap-2;
+}
+
+[data-slot="tabs-block-trigger"] {
+  @apply px-4 py-2 text-sm font-medium text-(--muted-foreground) hover:text-(--foreground) transition-colors relative;
+}
+
+[data-slot="tabs-block-trigger"][data-active="true"] {
+  @apply text-(--foreground);
+}
+
+[data-slot="tabs-block"][data-variant="default"]
+  [data-slot="tabs-block-trigger"][data-active="true"]::after {
+  @apply content-[''] absolute bottom-0 left-0 right-0 h-0.5 bg-(--primary);
+}
+
+[data-slot="tabs-block"][data-variant="pills"]
+  [data-slot="tabs-block-trigger"] {
+  @apply rounded-md;
+}
+
+[data-slot="tabs-block"][data-variant="pills"]
+  [data-slot="tabs-block-trigger"][data-active="true"] {
+  @apply bg-(--primary) text-white;
+}
+
+[data-slot="tabs-block"][data-variant="underline"]
+  [data-slot="tabs-block-trigger"][data-active="true"] {
+  @apply border-b-2 border-(--primary);
+}
+
+[data-slot="tabs-block-content"] {
+  @apply py-4 text-(--foreground);
+}
+
+[data-slot="tabs-block-content"][data-active="false"] {
+  @apply hidden;
+}

@@ -1,0 +1,109 @@
+@reference "tailwindcss";
+
+[data-slot="button"] {
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium transition-all enabled:cursor-pointer
+  select-none disabled:cursor-default disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none;
+}
+
+[data-slot="button"]:focus-visible {
+  @apply border-(--ring) ring-(--ring)/50 ring-3;
+}
+
+[data-slot="button"][aria-invalid="true"] {
+  @apply ring-(--destructive)/20 border-(--destructive);
+}
+
+[data-slot="button"] svg {
+  @apply pointer-events-none shrink-0;
+}
+
+[data-slot="button"] svg:not([class*="size-"]) {
+  @apply size-4;
+}
+
+/* Variants */
+[data-slot="button"][data-variant="default"] {
+  @apply bg-(--primary) text-(--primary-foreground) hover:bg-(--primary)/90;
+}
+
+[data-slot="button"][data-variant="destructive"] {
+  @apply bg-(--destructive) text-white hover:bg-(--destructive)/90;
+}
+
+[data-slot="button"][data-variant="destructive"]:focus-visible {
+  @apply ring-(--destructive)/20;
+}
+
+[data-slot="button"][data-variant="outline"] {
+  @apply border bg-(--background) shadow-xs hover:bg-(--accent) hover:text-(--accent-foreground);
+}
+
+[data-slot="button"][data-variant="secondary"] {
+  @apply bg-(--secondary) text-(--secondary-foreground) hover:bg-(--secondary)/80;
+}
+
+[data-slot="button"][data-variant="ghost"] {
+  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
+}
+
+[data-slot="button"][data-variant="link"] {
+  @apply text-(--primary) underline-offset-4 hover:underline;
+}
+
+/* Sizes */
+[data-slot="button"][data-size="default"] {
+  @apply h-9 px-4 py-2;
+}
+
+[data-slot="button"][data-size="default"]:has(> svg) {
+  @apply px-3;
+}
+
+[data-slot="button"][data-size="sm"] {
+  @apply h-8 rounded-sm gap-1.5 px-3;
+}
+
+[data-slot="button"][data-size="sm"]:has(> svg) {
+  @apply px-2.5;
+}
+
+[data-slot="button"][data-size="lg"] {
+  @apply h-10 rounded-sm px-6;
+}
+
+[data-slot="button"][data-size="lg"]:has(> svg) {
+  @apply px-4;
+}
+
+[data-slot="button"][data-size="icon"] {
+  @apply size-9;
+}
+
+[data-slot="button"][data-size="icon-sm"] {
+  @apply size-8;
+}
+
+[data-slot="button"][data-size="icon-lg"] {
+  @apply size-10;
+}
+
+/* Dark mode overrides */
+.dark [data-slot="button"][data-variant="destructive"] {
+  @apply bg-(--destructive)/60;
+}
+
+.dark [data-slot="button"][data-variant="destructive"]:focus-visible {
+  @apply ring-(--destructive)/40;
+}
+
+.dark [data-slot="button"][aria-invalid="true"] {
+  @apply ring-(--destructive)/40;
+}
+
+.dark [data-slot="button"][data-variant="outline"] {
+  @apply bg-(--input)/30 border-(--input) hover:bg-(--input)/50;
+}
+
+.dark [data-slot="button"][data-variant="ghost"] {
+  @apply hover:bg-(--accent)/50;
+}

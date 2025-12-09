@@ -1,0 +1,149 @@
+@reference "tailwindcss";
+
+.pages-container {
+  @apply p-6;
+}
+
+.pages-header {
+  @apply flex items-center justify-between mb-6;
+}
+
+.pages-header-title {
+  @apply flex items-center gap-3;
+}
+
+.pages-header-title h1 {
+  @apply text-2xl font-bold text-(--foreground);
+}
+
+.pages-header-count {
+  @apply text-sm text-(--muted-foreground) bg-(--muted) px-2 py-0.5 rounded;
+}
+
+.pages-toolbar {
+  @apply flex items-center justify-between gap-4 mb-6;
+}
+
+.pages-search {
+  @apply relative flex-1 max-w-sm;
+}
+
+.pages-search-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--muted-foreground);
+}
+
+.pages-search-input {
+  @apply pl-9;
+}
+
+.pages-filters {
+  @apply flex items-center gap-2;
+}
+
+.pages-filter-select {
+  @apply w-32;
+}
+
+.pages-view-toggle {
+  @apply flex items-center border border-(--border) rounded-md;
+}
+
+.pages-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+}
+
+.page-card {
+  @apply bg-(--card) border border-(--border) rounded-lg overflow-hidden cursor-pointer transition-all hover:border-(--primary) hover:shadow-md;
+}
+
+.page-card-thumbnail {
+  @apply aspect-video bg-(--muted) flex items-center justify-center;
+}
+
+.page-card-thumbnail-icon {
+  @apply h-12 w-12 text-(--muted-foreground);
+}
+
+.page-card-content {
+  @apply p-4;
+}
+
+.page-card-header {
+  @apply flex items-center justify-between mb-2;
+}
+
+.page-card-status {
+  @apply text-xs font-medium px-2 py-0.5 rounded-full capitalize;
+}
+
+.page-card-status-published {
+  @apply bg-green-100 text-green-700;
+}
+
+.page-card-status-draft {
+  @apply bg-yellow-100 text-yellow-700;
+}
+
+.page-card-menu {
+  @apply h-8 w-8 opacity-0 group-hover:opacity-100;
+}
+
+.page-card:hover .page-card-menu {
+  @apply opacity-100;
+}
+
+.page-card-title {
+  @apply font-medium text-(--foreground) truncate;
+}
+
+.page-card-meta {
+  @apply text-xs text-(--muted-foreground) mt-1;
+}
+
+.pages-list {
+  @apply space-y-2;
+}
+
+.page-list-item {
+  @apply flex items-center gap-4 p-3 bg-(--card) border border-(--border) rounded-lg cursor-pointer transition-colors hover:bg-(--muted);
+}
+
+.page-list-item-icon {
+  @apply text-(--muted-foreground);
+}
+
+.page-list-item-content {
+  @apply flex-1 min-w-0;
+}
+
+.page-list-item-title {
+  @apply font-medium text-(--foreground) truncate;
+}
+
+.page-list-item-slug {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.page-list-item-date {
+  @apply text-sm text-(--muted-foreground);
+}
+
+.pages-empty {
+  @apply flex flex-col items-center justify-center py-16 text-center;
+}
+
+.pages-empty-icon {
+  @apply h-16 w-16 text-(--muted-foreground) mb-4;
+}
+
+.pages-empty h3 {
+  @apply text-lg font-medium text-(--foreground) mb-2;
+}
+
+.pages-empty p {
+  @apply text-(--muted-foreground) mb-4;
+}
+
+.pages-error {
+  @apply p-6 text-center text-(--destructive);
+}

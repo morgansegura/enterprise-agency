@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+/**
+ * Logo Block Styles
+ */
+
+.logo-block {
+  @apply flex;
+}
+
+.logo-block[data-alignment="left"] {
+  @apply justify-start;
+}
+
+.logo-block[data-alignment="center"] {
+  @apply justify-center;
+}
+
+.logo-block[data-alignment="right"] {
+  @apply justify-end;
+}

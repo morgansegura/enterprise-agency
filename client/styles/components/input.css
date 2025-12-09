@@ -1,0 +1,39 @@
+/**
+ * Input Component Color Tokens
+ * Form inputs, borders, and focus ring theming
+ *
+ * Override these per client for custom input appearance
+ */
+
+:root {
+  /* Input - light mode */
+  --border: var(--neutral-200);
+  --input: var(--neutral-200);
+  --ring: var(--brand-secondary-700);
+}
+
+/* Input - dark mode */
+.dark {
+  /* Using transparency for better dark mode integration */
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--brand-secondary-500);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Higher contrast borders
+  --border: var(--neutral-500);
+  --input: var(--neutral-500);
+
+  Example 2: Brand-colored focus ring
+  --ring: var(--brand-primary-500);
+
+  Example 3: Subtle borders
+  --border: oklch(0 0 0 / 5%);
+  --input: oklch(0 0 0 / 5%);
+
+  Example 4: Thicker, more visible inputs
+  --input: var(--neutral-700);
+  --ring: var(--brand-primary-500);
+*/

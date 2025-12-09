@@ -1,0 +1,58 @@
+@reference "tailwindcss";
+
+[data-slot="list-block"] {
+  @apply ml-6 text-(--foreground);
+}
+
+[data-slot="list-block"][data-style="disc"] {
+  @apply list-disc;
+}
+
+[data-slot="list-block"][data-style="circle"] {
+  @apply list-[circle];
+}
+
+[data-slot="list-block"][data-style="square"] {
+  @apply list-[square];
+}
+
+[data-slot="list-block"][data-style="decimal"] {
+  @apply list-decimal;
+}
+
+[data-slot="list-block"][data-style="none"] {
+  @apply list-none;
+}
+
+[data-slot="list-block"][data-spacing="tight"] {
+  @apply space-y-1;
+}
+
+[data-slot="list-block"][data-spacing="normal"] {
+  @apply space-y-2;
+}
+
+[data-slot="list-block"][data-spacing="relaxed"] {
+  @apply space-y-4;
+}
+
+[data-slot="list-block-item"] {
+  @apply text-base;
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Spacing classes (for responsive override support) */
+.list-spacing-tight {
+  @apply space-y-1;
+}
+.list-spacing-normal {
+  @apply space-y-2;
+}
+.list-spacing-relaxed {
+  @apply space-y-4;
+}

@@ -1,0 +1,160 @@
+@reference "tailwindcss";
+
+.text {
+  @apply relative;
+  font-family: var(--font-body);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Sizes - using typography tokens (responsive) */
+.text[data-size="xs"] {
+  font-size: var(--text-size-xs);
+}
+
+.text[data-size="sm"] {
+  font-size: var(--text-size-sm);
+}
+
+.text[data-size="base"] {
+  font-size: var(--text-size-base);
+}
+
+.text[data-size="lg"] {
+  font-size: var(--text-size-lg);
+}
+
+.text[data-size="xl"] {
+  font-size: var(--text-size-xl);
+}
+
+.text[data-size="2xl"] {
+  font-size: var(--text-size-2xl);
+}
+
+.text[data-size="3xl"] {
+  font-size: var(--text-size-3xl);
+}
+
+.text[data-size="4xl"] {
+  font-size: var(--text-size-4xl);
+}
+
+.text[data-size="5xl"] {
+  font-size: var(--text-size-5xl);
+}
+
+.text[data-size="6xl"] {
+  font-size: var(--text-size-6xl);
+}
+
+.text[data-size="7xl"] {
+  font-size: var(--text-size-7xl);
+}
+
+.text[data-size="8xl"] {
+  font-size: var(--text-size-8xl);
+}
+
+.text[data-size="9xl"] {
+  font-size: var(--text-size-9xl);
+}
+
+/* Weight - using typography tokens */
+.text[data-weight="normal"] {
+  font-weight: var(--font-weight-normal);
+}
+
+.text[data-weight="medium"] {
+  font-weight: var(--font-weight-medium);
+}
+
+.text[data-weight="semibold"] {
+  font-weight: var(--font-weight-semibold);
+}
+
+.text[data-weight="bold"] {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Alignment */
+.text[data-align="left"] {
+  @apply text-left;
+}
+
+.text[data-align="center"] {
+  @apply text-center;
+}
+
+.text[data-align="right"] {
+  @apply text-right;
+}
+
+.text[data-align="justify"] {
+  @apply text-justify;
+}
+
+/* Variants - using theme color tokens */
+.text[data-variant="default"] {
+  @apply text-(--foreground);
+}
+
+.text[data-variant="muted"] {
+  @apply text-(--muted-foreground);
+}
+
+.text[data-variant="lead"] {
+  font-size: var(--text-size-xl);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  @apply text-(--muted-foreground);
+}
+
+.text[data-variant="subtle"] {
+  @apply text-(--muted-foreground);
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Size classes (for responsive override support) */
+.text-size-xs {
+  font-size: var(--text-size-xs);
+}
+.text-size-sm {
+  font-size: var(--text-size-sm);
+}
+.text-size-base {
+  font-size: var(--text-size-base);
+}
+.text-size-lg {
+  font-size: var(--text-size-lg);
+}
+.text-size-xl {
+  font-size: var(--text-size-xl);
+}
+.text-size-2xl {
+  font-size: var(--text-size-2xl);
+}
+.text-size-3xl {
+  font-size: var(--text-size-3xl);
+}
+.text-size-4xl {
+  font-size: var(--text-size-4xl);
+}
+
+/* Align classes (for responsive override support) */
+.text-align-left {
+  @apply text-left;
+}
+.text-align-center {
+  @apply text-center;
+}
+.text-align-right {
+  @apply text-right;
+}
+.text-align-justify {
+  @apply text-justify;
+}

@@ -1,0 +1,76 @@
+@reference "tailwindcss";
+
+[data-slot="table-container"] {
+  @apply relative w-full overflow-x-auto;
+}
+
+[data-slot="table"] {
+  @apply w-full caption-bottom;
+  font-size: var(--table-font-size);
+}
+
+[data-slot="table-header"] {
+  & tr {
+    @apply border-b;
+  }
+}
+
+[data-slot="table-body"] {
+  & tr:last-child {
+    @apply border-0;
+  }
+}
+
+[data-slot="table-footer"] {
+  @apply bg-muted/50 border-t;
+  font-weight: var(--table-head-font-weight);
+
+  & > tr:last-child {
+    @apply border-b-0;
+  }
+}
+
+[data-slot="table-row"] {
+  @apply border-b transition-colors;
+  @apply hover:bg-muted/50;
+  @apply data-[state=selected]:bg-muted;
+}
+
+[data-slot="table-head"] {
+  @apply text-left align-middle whitespace-nowrap;
+  @apply text-foreground;
+
+  /* Design token values */
+  height: var(--table-head-height);
+  padding-inline: var(--table-head-padding-inline);
+  font-weight: var(--table-head-font-weight);
+
+  /* Checkbox styling */
+  &:has([role=checkbox]) {
+    @apply pr-0;
+  }
+
+  & > [role=checkbox] {
+    transform: translateY(var(--table-checkbox-translate-y));
+  }
+}
+
+[data-slot="table-cell"] {
+  @apply align-middle whitespace-nowrap;
+  padding: var(--table-cell-padding);
+
+  /* Checkbox styling */
+  &:has([role=checkbox]) {
+    @apply pr-0;
+  }
+
+  & > [role=checkbox] {
+    transform: translateY(var(--table-checkbox-translate-y));
+  }
+}
+
+[data-slot="table-caption"] {
+  @apply text-muted-foreground;
+  margin-top: var(--table-caption-margin-top);
+  font-size: var(--table-caption-font-size);
+}

@@ -1,0 +1,52 @@
+@reference "tailwindcss";
+
+[data-slot="text-block"] {
+  @apply font-(--body) whitespace-pre-line;
+}
+
+/* Size variants */
+[data-slot="text-block"][data-size="sm"] {
+  @apply text-sm;
+}
+
+[data-slot="text-block"][data-size="base"] {
+  @apply text-base;
+}
+
+[data-slot="text-block"][data-size="lg"] {
+  @apply text-lg;
+}
+
+/* Alignment */
+[data-slot="text-block"][data-align="left"] {
+  @apply text-left;
+}
+
+[data-slot="text-block"][data-align="center"] {
+  @apply text-center;
+}
+
+[data-slot="text-block"][data-align="right"] {
+  @apply text-right;
+}
+
+[data-slot="text-block"][data-align="justify"] {
+  @apply text-justify;
+}
+
+/* Variants */
+[data-slot="text-block"][data-variant="default"] {
+  @apply text-(--foreground);
+}
+
+[data-slot="text-block"][data-variant="muted"] {
+  @apply text-(--muted-foreground);
+}
+
+[data-slot="text-block"][data-variant="lead"] {
+  @apply text-lg text-(--muted-foreground);
+}
+
+[data-slot="text-block"][data-variant="subtle"] {
+  @apply text-sm text-(--muted-foreground)/70;
+}

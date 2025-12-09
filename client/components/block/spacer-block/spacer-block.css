@@ -1,0 +1,58 @@
+@reference "tailwindcss";
+
+[data-slot="spacer-block"][data-height="xs"] {
+  @apply h-2;
+}
+
+[data-slot="spacer-block"][data-height="sm"] {
+  @apply h-4;
+}
+
+[data-slot="spacer-block"][data-height="md"] {
+  @apply h-8;
+}
+
+[data-slot="spacer-block"][data-height="lg"] {
+  @apply h-16;
+}
+
+[data-slot="spacer-block"][data-height="xl"] {
+  @apply h-24;
+}
+
+[data-slot="spacer-block"][data-height="2xl"] {
+  @apply h-32;
+}
+
+[data-slot="spacer-block"][data-height="3xl"] {
+  @apply h-40;
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Height classes (for responsive override support) */
+.spacer-h-xs {
+  @apply h-2;
+}
+.spacer-h-sm {
+  @apply h-4;
+}
+.spacer-h-md {
+  @apply h-8;
+}
+.spacer-h-lg {
+  @apply h-16;
+}
+.spacer-h-xl {
+  @apply h-24;
+}
+.spacer-h-2xl {
+  @apply h-32;
+}
+.spacer-h-3xl {
+  @apply h-40;
+}

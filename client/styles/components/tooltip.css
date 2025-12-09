@@ -1,0 +1,41 @@
+/**
+ * Tooltip Component Color Tokens
+ * Small contextual popover theming
+ *
+ * Override these per client for custom tooltip appearance
+ */
+
+:root {
+  /* Tooltip - light mode */
+  --tooltip: var(--neutral-950);
+  --tooltip-foreground: var(--neutral-0);
+}
+
+/* Tooltip - dark mode */
+.dark {
+  --tooltip: var(--neutral-50);
+  --tooltip-foreground: var(--neutral-950);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Match popover styling
+  --tooltip: var(--popover);
+  --tooltip-foreground: var(--popover-foreground);
+
+  Example 2: Brand-colored tooltip
+  --tooltip: var(--primary);
+  --tooltip-foreground: var(--primary-foreground);
+
+  Example 3: Subtle tooltip
+  --tooltip: var(--muted);
+  --tooltip-foreground: var(--foreground);
+
+  Example 4: High contrast tooltip
+  --tooltip: var(--neutral-950);
+  --tooltip-foreground: var(--neutral-0);
+
+  Example 5: Semi-transparent tooltip
+  --tooltip: oklch(0.15 0.005 49 / 95%);
+  --tooltip-foreground: var(--neutral-0);
+*/

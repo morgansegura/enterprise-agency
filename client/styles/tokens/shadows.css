@@ -1,0 +1,74 @@
+/**
+ * Shadow Design Tokens
+ * Elevation and depth system for layered interfaces
+ *
+ * Override these per client for flat vs. elevated design systems
+ */
+
+:root {
+  /* ===== SHADOW SCALE ===== */
+  /* Elevation levels from subtle to dramatic */
+
+  --shadow-none: none;
+
+  --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.05);
+
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1),
+              0 2px 4px -2px oklch(0 0 0 / 0.1);
+
+  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1),
+              0 4px 6px -4px oklch(0 0 0 / 0.1);
+
+  --shadow-xl: 0 20px 25px -5px oklch(0 0 0 / 0.1),
+              0 8px 10px -6px oklch(0 0 0 / 0.1);
+
+  --shadow-2xl: 0 25px 50px -12px oklch(0 0 0 / 0.25);
+
+  /* Inner shadow for inset effects */
+  --shadow-inner: inset 0 2px 4px 0 oklch(0 0 0 / 0.05);
+}
+
+/* Dark mode adjustments - lighter shadows for contrast */
+.dark {
+  --shadow-sm: 0 1px 2px 0 oklch(0 0 0 / 0.3);
+
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.4),
+              0 2px 4px -2px oklch(0 0 0 / 0.4);
+
+  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.5),
+              0 4px 6px -4px oklch(0 0 0 / 0.5);
+
+  --shadow-xl: 0 20px 25px -5px oklch(0 0 0 / 0.6),
+              0 8px 10px -6px oklch(0 0 0 / 0.6);
+
+  --shadow-2xl: 0 25px 50px -12px oklch(0 0 0 / 0.7);
+
+  --shadow-inner: inset 0 2px 4px 0 oklch(0 0 0 / 0.3);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Flat design (minimal shadows)
+  --shadow-sm: 0 1px 1px 0 oklch(0 0 0 / 0.03);
+  --shadow-md: 0 2px 3px 0 oklch(0 0 0 / 0.05);
+  --shadow-lg: 0 4px 6px 0 oklch(0 0 0 / 0.07);
+
+  Example 2: Dramatic shadows (elevated design)
+  --shadow-md: 0 8px 16px -4px oklch(0 0 0 / 0.2);
+  --shadow-lg: 0 16px 32px -8px oklch(0 0 0 / 0.3);
+  --shadow-xl: 0 32px 64px -16px oklch(0 0 0 / 0.4);
+
+  Example 3: Colored shadows (brand-aligned)
+  --shadow-brand: 0 10px 20px -5px oklch(0.5 0.2 220 / 0.3);
+  --shadow-accent: 0 8px 16px -4px oklch(0.6 0.18 30 / 0.25);
+
+  Example 4: No shadows (completely flat)
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+
+  Example 5: Soft, diffused shadows
+  --shadow-sm: 0 2px 8px 0 oklch(0 0 0 / 0.04);
+  --shadow-md: 0 4px 16px 0 oklch(0 0 0 / 0.06);
+  --shadow-lg: 0 8px 32px 0 oklch(0 0 0 / 0.08);
+*/

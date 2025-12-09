@@ -1,0 +1,54 @@
+@reference "tailwindcss";
+
+[data-slot="carousel"] {
+  @apply relative;
+}
+
+[data-slot="carousel-content"] {
+  @apply overflow-hidden;
+}
+
+[data-slot="carousel-content"] > div {
+  @apply flex;
+}
+
+[data-slot="carousel-content"][data-orientation="horizontal"] > div {
+  @apply -ml-4;
+}
+
+[data-slot="carousel-content"][data-orientation="vertical"] > div {
+  @apply -mt-4 flex-col;
+}
+
+[data-slot="carousel-item"] {
+  @apply min-w-0 shrink-0 grow-0 basis-full;
+}
+
+[data-slot="carousel-item"][data-orientation="horizontal"] {
+  @apply pl-4;
+}
+
+[data-slot="carousel-item"][data-orientation="vertical"] {
+  @apply pt-4;
+}
+
+[data-slot="carousel-previous"],
+[data-slot="carousel-next"] {
+  @apply absolute size-8 rounded-full;
+}
+
+[data-slot="carousel-previous"][data-orientation="horizontal"] {
+  @apply top-1/2 -left-12 -translate-y-1/2;
+}
+
+[data-slot="carousel-previous"][data-orientation="vertical"] {
+  @apply -top-12 left-1/2 -translate-x-1/2 rotate-90;
+}
+
+[data-slot="carousel-next"][data-orientation="horizontal"] {
+  @apply top-1/2 -right-12 -translate-y-1/2;
+}
+
+[data-slot="carousel-next"][data-orientation="vertical"] {
+  @apply -bottom-12 left-1/2 -translate-x-1/2 rotate-90;
+}

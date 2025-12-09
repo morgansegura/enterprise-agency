@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+.section {
+  @apply relative w-full;
+}
+
+/* Spacing (vertical padding) */
+.section[data-spacing="none"] { @apply py-0; }
+.section[data-spacing="xs"] { @apply py-4; }
+.section[data-spacing="sm"] { @apply py-8; }
+.section[data-spacing="md"] { @apply py-16; }
+.section[data-spacing="lg"] { @apply py-24; }
+.section[data-spacing="xl"] { @apply py-32; }
+.section[data-spacing="2xl"] { @apply py-40; }
+
+/* Background */
+.section[data-background="none"] { @apply bg-transparent; }
+.section[data-background="white"] { @apply bg-white; }
+.section[data-background="gray"] { @apply bg-gray-50; }
+.section[data-background="dark"] { @apply bg-gray-900 text-white; }
+.section[data-background="primary"] { @apply bg-blue-600 text-white; }
+.section[data-background="secondary"] { @apply bg-blue-50; }
+
+/* Width (max-width constraint) */
+.section[data-width="narrow"] { @apply max-w-4xl mx-auto px-4; }
+.section[data-width="wide"] { @apply max-w-7xl mx-auto px-4; }
+.section[data-width="full"] { @apply max-w-full; }
+
+/* Alignment */
+.section[data-align="left"] { @apply text-left; }
+.section[data-align="center"] { @apply text-center; }
+.section[data-align="right"] { @apply text-right; }

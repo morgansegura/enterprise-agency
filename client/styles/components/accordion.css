@@ -1,0 +1,52 @@
+/**
+ * Accordion Component Tokens
+ * Collapsible content sections theming
+ *
+ * Override these per client for custom accordion appearance
+ */
+
+:root {
+  /* Accordion structural tokens */
+  --accordion-trigger-gap: var(--space-4);
+  --accordion-trigger-border-radius: var(--radius-md);
+  --accordion-trigger-padding-block: var(--space-4);
+  --accordion-trigger-font-size: var(--text-size-sm);
+  --accordion-trigger-font-weight: var(--font-weight-medium);
+  --accordion-trigger-focus-ring-width: 3px;
+
+  --accordion-icon-size: var(--space-4);
+  --accordion-icon-translate-y: 0.125rem; /* translate-y-0.5 */
+  --accordion-icon-transition-duration: 200ms;
+
+  --accordion-content-font-size: var(--text-size-sm);
+  --accordion-content-padding-top: 0;
+  --accordion-content-padding-bottom: var(--space-4);
+
+  /* Accordion color tokens */
+  --accordion-trigger-foreground: var(--foreground);
+  --accordion-icon-color: var(--muted-foreground);
+  --accordion-border: var(--border);
+}
+
+.dark {
+  --accordion-trigger-foreground: var(--foreground);
+  --accordion-icon-color: var(--muted-foreground);
+  --accordion-border: var(--border);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger accordion spacing
+  --accordion-trigger-padding-block: var(--space-6);
+  --accordion-content-padding-bottom: var(--space-6);
+
+  Example 2: Custom icon size
+  --accordion-icon-size: var(--space-5);
+
+  Example 3: No border radius
+  --accordion-trigger-border-radius: 0;
+
+  Example 4: Larger font
+  --accordion-trigger-font-size: var(--text-size-base);
+  --accordion-content-font-size: var(--text-size-base);
+*/

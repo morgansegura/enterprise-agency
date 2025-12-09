@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+[data-slot="switch"] {
+  @apply peer inline-flex shrink-0 items-center;
+  @apply border border-transparent transition-all outline-none;
+  @apply data-[state=checked]:bg-primary;
+  @apply data-[state=unchecked]:bg-input;
+  @apply focus-visible:border-ring focus-visible:ring-ring/50;
+  @apply disabled:cursor-not-allowed disabled:opacity-50;
+
+  /* Design token values */
+  height: var(--switch-height);
+  width: var(--switch-width);
+  border-radius: var(--switch-border-radius);
+  box-shadow: var(--switch-shadow);
+  focus-visible-ring-width: var(--switch-focus-ring-width);
+}
+
+.dark [data-slot="switch"] {
+  @apply data-[state=unchecked]:bg-input/80;
+}
+
+[data-slot="switch-thumb"] {
+  @apply pointer-events-none block ring-0 transition-transform;
+  @apply bg-background;
+  @apply data-[state=unchecked]:translate-x-0;
+
+  /* Design token values */
+  width: var(--switch-thumb-size);
+  height: var(--switch-thumb-size);
+  border-radius: var(--switch-thumb-border-radius);
+
+  &[data-state="checked"] {
+    transform: translateX(var(--switch-thumb-translate-checked));
+  }
+}
+
+.dark [data-slot="switch-thumb"] {
+  @apply data-[state=unchecked]:bg-foreground;
+  @apply data-[state=checked]:bg-primary-foreground;
+}

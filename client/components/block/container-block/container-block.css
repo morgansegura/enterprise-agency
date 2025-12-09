@@ -1,0 +1,85 @@
+@reference "tailwindcss";
+
+[data-slot="container-block"] {
+  @apply relative w-full;
+}
+
+[data-slot="container-block"][data-width="narrow"] {
+  @apply max-w-5xl mx-auto;
+}
+
+[data-slot="container-block"][data-width="wide"] {
+  @apply max-w-7xl mx-auto;
+}
+
+[data-slot="container-block"][data-width="full"] {
+  @apply max-w-full;
+}
+
+[data-slot="container-block"][data-spacing="none"] {
+  @apply px-0;
+}
+
+[data-slot="container-block"][data-spacing="xs"] {
+  @apply px-2;
+}
+
+[data-slot="container-block"][data-spacing="sm"] {
+  @apply px-4 2xl:px-0;
+}
+
+[data-slot="container-block"][data-spacing="md"] {
+  @apply px-6 lg:px-8 2xl:px-0;
+}
+
+[data-slot="container-block"][data-spacing="lg"] {
+  @apply px-8 lg:px-12 2xl:px-0;
+}
+
+[data-slot="container-block"][data-spacing="xl"] {
+  @apply px-12 lg:px-16 2xl:px-0;
+}
+
+[data-slot="container-block"][data-spacing="2xl"] {
+  @apply px-16 lg:px-24 2xl:px-0;
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Width classes (for responsive override support) */
+.container-width-narrow {
+  @apply max-w-5xl mx-auto;
+}
+.container-width-wide {
+  @apply max-w-7xl mx-auto;
+}
+.container-width-full {
+  @apply max-w-full;
+}
+
+/* Spacing classes (for responsive override support) */
+.container-spacing-none {
+  @apply px-0;
+}
+.container-spacing-xs {
+  @apply px-2;
+}
+.container-spacing-sm {
+  @apply px-4 2xl:px-0;
+}
+.container-spacing-md {
+  @apply px-6 lg:px-8 2xl:px-0;
+}
+.container-spacing-lg {
+  @apply px-8 lg:px-12 2xl:px-0;
+}
+.container-spacing-xl {
+  @apply px-12 lg:px-16 2xl:px-0;
+}
+.container-spacing-2xl {
+  @apply px-16 lg:px-24 2xl:px-0;
+}

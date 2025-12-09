@@ -1,0 +1,48 @@
+/**
+ * Alert Dialog Component Tokens
+ * Alert modal overlay and content theming
+ *
+ * Override these per client for custom alert dialog appearance
+ */
+
+:root {
+  /* Alert Dialog structural tokens */
+  --alert-dialog-content-border-radius: var(--radius-lg);
+  --alert-dialog-content-padding: var(--space-6);
+  --alert-dialog-content-gap: var(--space-4);
+  --alert-dialog-content-max-width: 32rem; /* sm:max-w-lg */
+  --alert-dialog-content-shadow: var(--shadow-lg);
+
+  --alert-dialog-header-gap: var(--space-2);
+  --alert-dialog-footer-gap: var(--space-2);
+
+  --alert-dialog-title-font-size: var(--text-size-lg);
+  --alert-dialog-title-font-weight: var(--font-weight-semibold);
+
+  --alert-dialog-description-font-size: var(--text-size-sm);
+
+  /* Alert Dialog color tokens */
+  --alert-dialog-overlay-bg: oklch(0 0 0 / 0.5);
+  --alert-dialog-content-bg: var(--background);
+  --alert-dialog-content-border: var(--border);
+}
+
+.dark {
+  --alert-dialog-overlay-bg: oklch(0 0 0 / 0.5);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger alert dialog spacing
+  --alert-dialog-content-padding: var(--space-8);
+  --alert-dialog-content-gap: var(--space-6);
+
+  Example 2: Wider alert dialog
+  --alert-dialog-content-max-width: 42rem;
+
+  Example 3: Custom overlay opacity
+  --alert-dialog-overlay-bg: oklch(0 0 0 / 0.8);
+
+  Example 4: Rounded corners
+  --alert-dialog-content-border-radius: var(--radius-xl);
+*/

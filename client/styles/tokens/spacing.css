@@ -1,0 +1,130 @@
+/**
+ * Spacing Design Tokens
+ * Multi-layered system for fluid responsive spacing
+ *
+ * Layer 1: Primitive spacing values (base Tailwind scale)
+ * Layer 2: Scaling rates (viewport-based growth)
+ * Layer 3: Fluid spacing (clamp using primitives)
+ *
+ * Override any layer per client for custom spacing
+ */
+
+:root {
+  /* ===== LAYER 1: PRIMITIVE SPACING VALUES ===== */
+  /* Base spacing scale from Tailwind - override per client */
+  --space-0\.5: 0.125rem; /* 2px */
+  --space-1: 0.25rem; /* 4px */
+  --space-1\.5: 0.375rem; /* 6px */
+  --space-2: 0.5rem; /* 8px */
+  --space-2\.5: 0.625rem; /* 10px */
+  --space-3: 0.75rem; /* 12px */
+  --space-3\.5: 0.875rem; /* 14px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-7: 1.75rem; /* 28px */
+  --space-8: 2rem; /* 32px */
+  --space-9: 2.25rem; /* 36px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+  --space-20: 5rem; /* 80px */
+  --space-24: 6rem; /* 96px */
+  --space-32: 8rem; /* 128px */
+  --space-40: 10rem; /* 160px */
+  --space-48: 12rem; /* 192px */
+  --space-64: 16rem; /* 256px */
+
+  /* ===== LAYER 2: SPACING GROWTH RATES ===== */
+  /* Viewport-based scaling rates - override to control spacing fluidity */
+  --space-growth-sm: 2vw;
+  --space-growth-md: 3vw;
+  --space-growth-lg: 4vw;
+  --space-growth-xl: 5vw;
+
+  /* ===== LAYER 3: FLUID SECTION SPACING ===== */
+  /* Vertical spacing between major sections - scales with viewport */
+  --spacing-section-sm: clamp(
+    var(--space-12),
+    calc(var(--space-12) + var(--space-growth-sm)),
+    var(--space-16)
+  );
+  --spacing-section-md: clamp(
+    var(--space-16),
+    calc(var(--space-16) + var(--space-growth-md)),
+    var(--space-24)
+  );
+  --spacing-section-lg: clamp(
+    var(--space-24),
+    calc(var(--space-24) + var(--space-growth-lg)),
+    var(--space-32)
+  );
+  --spacing-section-xl: clamp(
+    var(--space-32),
+    calc(var(--space-32) + var(--space-growth-xl)),
+    var(--space-48)
+  );
+
+  /* ===== LAYER 3: FLUID BLOCK SPACING ===== */
+  /* Spacing between content blocks within sections */
+  --spacing-block-sm: clamp(
+    var(--space-2),
+    calc(var(--space-2) + 0.5vw),
+    var(--space-4)
+  );
+  --spacing-block-md: clamp(
+    var(--space-4),
+    calc(var(--space-4) + 1vw),
+    var(--space-6)
+  );
+  --spacing-block-lg: clamp(
+    var(--space-6),
+    calc(var(--space-6) + 1.5vw),
+    var(--space-8)
+  );
+
+  /* ===== LAYER 3: FLUID CONTAINER SPACING ===== */
+  /* Horizontal padding for containers */
+  --spacing-container: clamp(
+    var(--space-4),
+    calc(var(--space-4) + 2vw),
+    var(--space-12)
+  );
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Override primitive base sizes (tighter overall)
+  --space-16: theme("spacing.12");
+  --space-24: theme("spacing.16");
+  --space-32: theme("spacing.24");
+
+  Example 2: Change growth rates (more/less aggressive scaling)
+  --space-growth-md: 5vw; // More aggressive
+  --space-growth-lg: 2vw; // More subtle
+
+  Example 3: Custom section spacing (editorial - very spacious)
+  --spacing-section-md: clamp(
+    var(--space-24),
+    calc(var(--space-24) + 4vw),
+    var(--space-48)
+  );
+
+  Example 4: Override specific spacing (tight mobile, spacious desktop)
+  --spacing-section-sm: clamp(
+    var(--space-8),
+    calc(var(--space-8) + 3vw),
+    var(--space-20)
+  );
+
+  Example 5: Static spacing (no fluid scaling)
+  --spacing-block-sm: var(--space-4);
+  --spacing-block-md: var(--space-6);
+
+  Example 6: Larger container padding with custom range
+  --spacing-container: clamp(
+    var(--space-8),
+    calc(var(--space-8) + 3vw),
+    var(--space-16)
+  );
+*/

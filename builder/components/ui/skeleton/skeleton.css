@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+[data-slot="skeleton"] {
+  @apply bg-(--accent) animate-pulse rounded-md;
+}

@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.auth-layout {
+  @apply relative;
+}

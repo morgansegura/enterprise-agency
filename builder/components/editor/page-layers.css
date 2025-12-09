@@ -1,0 +1,53 @@
+@reference "tailwindcss";
+
+.page-layers {
+  @apply p-4;
+}
+
+.page-layers-empty {
+  @apply py-8 px-4 text-center;
+}
+
+.page-layers-tree {
+  @apply flex flex-col gap-1;
+}
+
+.layer-item {
+  @apply text-sm;
+}
+
+.layer-item-content {
+  @apply flex items-center gap-2 p-2 rounded-sm cursor-pointer transition-colors;
+}
+
+.layer-item-content:hover {
+  @apply bg-(--accent);
+}
+
+.layer-item-toggle {
+  @apply flex items-center justify-center w-4 h-4 border-none bg-transparent cursor-pointer p-0 text-(--muted-foreground);
+}
+
+.layer-item-spacer {
+  @apply w-4;
+}
+
+.layer-item-type {
+  @apply inline-flex items-center px-1.5 py-0.5 bg-(--muted) border border-(--border) rounded-sm text-xs text-(--muted-foreground) font-medium;
+}
+
+.layer-item-name {
+  @apply flex-1 text-(--foreground) font-medium;
+}
+
+.layer-item-visibility {
+  @apply flex items-center justify-center w-5 h-5 border-none bg-transparent cursor-pointer p-0 text-(--muted-foreground) opacity-0 transition-opacity;
+}
+
+.layer-item-content:hover .layer-item-visibility {
+  @apply opacity-100;
+}
+
+.layer-item-children {
+  @apply mt-1;
+}

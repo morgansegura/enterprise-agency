@@ -1,0 +1,69 @@
+/**
+ * Table Component Color Tokens
+ * Data table theming including headers, rows, and borders
+ *
+ * Override these per client for custom table appearance
+ */
+
+:root {
+  /* Table structural tokens */
+  --table-font-size: var(--text-size-sm);
+  --table-head-height: var(--space-10);
+  --table-head-padding-inline: var(--space-2);
+  --table-head-font-weight: var(--font-weight-medium);
+  --table-cell-padding: var(--space-2);
+  --table-caption-margin-top: var(--space-4);
+  --table-caption-font-size: var(--text-size-sm);
+  --table-checkbox-translate-y: 2px;
+
+  /* Table - light mode */
+  --table-header: var(--muted);
+  --table-header-foreground: var(--muted-foreground);
+
+  --table-row: transparent;
+  --table-row-foreground: var(--foreground);
+
+  --table-row-hover: var(--muted);
+
+  --table-border: var(--border);
+
+  --table-row-selected: var(--accent);
+  --table-row-selected-foreground: var(--accent-foreground);
+}
+
+/* Table - dark mode */
+.dark {
+  --table-header: var(--muted);
+  --table-header-foreground: var(--muted-foreground);
+
+  --table-row: transparent;
+  --table-row-foreground: var(--foreground);
+
+  --table-row-hover: var(--muted);
+
+  --table-border: var(--border);
+
+  --table-row-selected: var(--accent);
+  --table-row-selected-foreground: var(--accent-foreground);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Striped table rows
+  --table-row: transparent;
+  --table-row-alt: var(--muted);
+
+  Example 2: High contrast header
+  --table-header: var(--primary);
+  --table-header-foreground: var(--primary-foreground);
+
+  Example 3: Subtle borders
+  --table-border: oklch(0 0 0 / 5%);
+
+  Example 4: Bold selected row
+  --table-row-selected: var(--primary);
+  --table-row-selected-foreground: var(--primary-foreground);
+
+  Example 5: Borderless table
+  --table-border: transparent;
+*/

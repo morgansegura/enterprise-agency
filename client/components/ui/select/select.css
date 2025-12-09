@@ -1,0 +1,98 @@
+@reference "tailwindcss";
+
+[data-slot="select-trigger"] {
+  @apply border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between border bg-transparent whitespace-nowrap transition-[color,box-shadow] outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center [&_svg]:pointer-events-none [&_svg]:shrink-0;
+
+  /* Design token values */
+  gap: var(--select-trigger-gap);
+  border-radius: var(--select-trigger-border-radius);
+  padding-inline: var(--select-trigger-padding-inline);
+  padding-block: var(--select-trigger-padding-block);
+  font-size: var(--select-trigger-font-size);
+  box-shadow: var(--select-trigger-shadow);
+  focus-visible-ring-width: var(--select-trigger-focus-ring-width);
+
+  &[data-size="default"] {
+    height: var(--select-trigger-height);
+  }
+
+  &[data-size="sm"] {
+    height: var(--select-trigger-height-sm);
+  }
+
+  & *[data-slot="select-value"] {
+    gap: var(--select-trigger-gap);
+  }
+
+  & svg:not([class*='size-']) {
+    width: var(--select-trigger-icon-size);
+    height: var(--select-trigger-icon-size);
+  }
+}
+
+[data-slot="select-content"] {
+  @apply bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto border;
+
+  /* Design token values */
+  min-width: var(--select-content-min-width);
+  border-radius: var(--select-content-border-radius);
+  box-shadow: var(--select-content-shadow);
+}
+
+[data-slot="select-content"][data-position="popper"] {
+  @apply data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1;
+}
+
+[data-slot="select-viewport"] {
+  padding: var(--select-viewport-padding);
+}
+
+[data-slot="select-viewport"][data-position="popper"] {
+  @apply h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)];
+  scroll-margin-block: var(--select-viewport-scroll-margin);
+}
+
+[data-slot="select-label"] {
+  @apply text-muted-foreground;
+  padding-inline: var(--select-label-padding-inline);
+  padding-block: var(--select-label-padding-block);
+  font-size: var(--select-label-font-size);
+}
+
+[data-slot="select-item"] {
+  @apply focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center;
+
+  /* Design token values */
+  gap: var(--select-item-gap);
+  border-radius: var(--select-item-border-radius);
+  padding-inline-start: var(--select-item-padding-inline-start);
+  padding-inline-end: var(--select-item-padding-inline-end);
+  padding-block: var(--select-item-padding-block);
+  font-size: var(--select-item-font-size);
+
+  & svg:not([class*='size-']) {
+    width: var(--select-item-icon-size);
+    height: var(--select-item-icon-size);
+  }
+
+  & *[span]:last {
+    gap: var(--select-item-gap);
+  }
+}
+
+[data-slot="select-separator"] {
+  @apply bg-border pointer-events-none;
+  height: var(--select-separator-height);
+  margin-block: var(--select-separator-margin-block);
+  margin-inline: var(--select-separator-margin-inline);
+}
+
+[data-slot="select-scroll-up-button"] {
+  @apply flex cursor-default items-center justify-center;
+  padding-block: var(--select-scroll-button-padding-block);
+}
+
+[data-slot="select-scroll-down-button"] {
+  @apply flex cursor-default items-center justify-center;
+  padding-block: var(--select-scroll-button-padding-block);
+}

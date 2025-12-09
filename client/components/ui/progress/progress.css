@@ -1,0 +1,11 @@
+@reference "tailwindcss";
+
+[data-slot="progress"] {
+  @apply bg-primary/20 relative w-full overflow-hidden;
+  height: var(--progress-height);
+  border-radius: var(--progress-border-radius);
+}
+
+[data-slot="progress-indicator"] {
+  @apply bg-primary h-full w-full flex-1 transition-all;
+}

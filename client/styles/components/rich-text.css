@@ -1,0 +1,279 @@
+/**
+ * Rich Text Component Styles
+ * Typography and spacing for TipTap HTML output
+ *
+ * Override these per client for custom rich text appearance
+ */
+
+:root {
+  /* Rich text specific tokens */
+  --rich-text-max-width: 65ch; /* Optimal reading width */
+  --rich-text-heading-spacing: var(--spacing-block-lg);
+  --rich-text-paragraph-spacing: var(--spacing-block-md);
+  --rich-text-list-spacing: var(--spacing-block-md);
+}
+
+/* ===== BASE RICH TEXT CONTAINER ===== */
+.rich-text {
+  /* Typography */
+  font-family: var(--font-body);
+  font-size: var(--text-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--foreground);
+
+  /* Max width for readability */
+  max-width: var(--rich-text-max-width);
+}
+
+/* ===== HEADINGS ===== */
+.rich-text h1,
+.rich-text h2,
+.rich-text h3,
+.rich-text h4,
+.rich-text h5,
+.rich-text h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--foreground);
+  margin-block-start: var(--rich-text-heading-spacing);
+  margin-block-end: var(--spacing-block-sm);
+}
+
+/* First heading has no top margin */
+.rich-text > h1:first-child,
+.rich-text > h2:first-child,
+.rich-text > h3:first-child,
+.rich-text > h4:first-child,
+.rich-text > h5:first-child,
+.rich-text > h6:first-child {
+  margin-block-start: 0;
+}
+
+.rich-text h1 {
+  font-size: var(--heading-size-4xl);
+}
+
+.rich-text h2 {
+  font-size: var(--heading-size-3xl);
+}
+
+.rich-text h3 {
+  font-size: var(--heading-size-2xl);
+}
+
+.rich-text h4 {
+  font-size: var(--heading-size-xl);
+}
+
+.rich-text h5 {
+  font-size: var(--heading-size-lg);
+}
+
+.rich-text h6 {
+  font-size: var(--heading-size-base);
+}
+
+/* ===== PARAGRAPHS ===== */
+.rich-text p {
+  margin-block: var(--rich-text-paragraph-spacing);
+}
+
+.rich-text p:first-child {
+  margin-block-start: 0;
+}
+
+.rich-text p:last-child {
+  margin-block-end: 0;
+}
+
+/* ===== LISTS ===== */
+.rich-text ul,
+.rich-text ol {
+  margin-block: var(--rich-text-list-spacing);
+  padding-inline-start: var(--space-8);
+}
+
+.rich-text ul {
+  list-style-type: disc;
+}
+
+.rich-text ol {
+  list-style-type: decimal;
+}
+
+.rich-text li {
+  margin-block: var(--space-2);
+}
+
+.rich-text li > p {
+  margin-block: var(--space-2);
+}
+
+/* Nested lists */
+.rich-text ul ul,
+.rich-text ol ol,
+.rich-text ul ol,
+.rich-text ol ul {
+  margin-block: var(--space-2);
+}
+
+/* ===== INLINE STYLES ===== */
+.rich-text strong,
+.rich-text b {
+  font-weight: var(--font-weight-bold);
+}
+
+.rich-text em,
+.rich-text i {
+  font-style: italic;
+}
+
+.rich-text u {
+  text-decoration: underline;
+}
+
+.rich-text s,
+.rich-text del {
+  text-decoration: line-through;
+}
+
+.rich-text mark {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.125em 0.25em;
+  border-radius: calc(var(--base-radius) / 2);
+}
+
+.rich-text code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  padding: 0.125em 0.375em;
+  border-radius: calc(var(--base-radius) / 2);
+}
+
+.rich-text kbd {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background-color: var(--muted);
+  color: var(--foreground);
+  padding: 0.125em 0.375em;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--base-radius) / 2);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== LINKS ===== */
+.rich-text a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s;
+}
+
+.rich-text a:hover {
+  color: var(--primary);
+  opacity: 0.8;
+}
+
+/* ===== BLOCKQUOTE ===== */
+.rich-text blockquote {
+  margin-block: var(--rich-text-paragraph-spacing);
+  margin-inline-start: 0;
+  padding-inline-start: var(--space-6);
+  border-inline-start: 4px solid var(--border);
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+.rich-text blockquote p {
+  margin-block: var(--space-2);
+}
+
+/* ===== CODE BLOCKS ===== */
+.rich-text pre {
+  margin-block: var(--rich-text-paragraph-spacing);
+  padding: var(--space-4);
+  background-color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--base-radius);
+  overflow-x: auto;
+}
+
+.rich-text pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.875em;
+  line-height: var(--line-height-normal);
+}
+
+/* ===== HORIZONTAL RULE ===== */
+.rich-text hr {
+  margin-block: var(--spacing-block-lg);
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+/* ===== IMAGES ===== */
+.rich-text img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--base-radius);
+  margin-block: var(--rich-text-paragraph-spacing);
+}
+
+/* ===== TABLES ===== */
+.rich-text table {
+  width: 100%;
+  margin-block: var(--rich-text-paragraph-spacing);
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: var(--base-radius);
+  overflow: hidden;
+}
+
+.rich-text th,
+.rich-text td {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.rich-text th {
+  background-color: var(--muted);
+  font-weight: var(--font-weight-semibold);
+}
+
+.rich-text tr:hover {
+  background-color: var(--muted);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Narrower reading width
+  --rich-text-max-width: 55ch;
+
+  Example 2: Tighter spacing (compact)
+  --rich-text-paragraph-spacing: var(--spacing-block-sm);
+  --rich-text-heading-spacing: var(--spacing-block-md);
+
+  Example 3: Spacious editorial layout
+  --rich-text-paragraph-spacing: var(--spacing-block-lg);
+  --rich-text-heading-spacing: var(--spacing-section-sm);
+
+  Example 4: Custom link styling
+  .rich-text a {
+    color: var(--brand-secondary-500);
+    text-decoration: none;
+    border-bottom: 2px solid var(--brand-secondary-500);
+  }
+
+  Example 5: Emphasized blockquotes
+  .rich-text blockquote {
+    background-color: var(--muted);
+    padding: var(--space-4);
+    border-radius: var(--base-radius);
+  }
+*/

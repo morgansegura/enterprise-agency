@@ -1,0 +1,97 @@
+/**
+ * Mega Menu Component Tokens
+ * Large dropdown navigation theming
+ *
+ * Override these per client for custom mega menu appearance
+ */
+
+:root {
+  /* Mega menu structural tokens */
+  --megamenu-max-width: 80rem;
+  --megamenu-padding: var(--space-8);
+  --megamenu-gap: var(--space-8);
+  --megamenu-border-radius: var(--radius-xl);
+  --megamenu-shadow: var(--shadow-2xl);
+  --megamenu-offset: var(--space-2);
+  --megamenu-z-index: 100;
+
+  /* Column tokens */
+  --megamenu-column-gap: var(--space-6);
+  --megamenu-column-min-width: 12rem;
+
+  /* Column title */
+  --megamenu-title-font-size: var(--text-size-sm);
+  --megamenu-title-font-weight: var(--font-weight-semibold);
+  --megamenu-title-margin-bottom: var(--space-3);
+
+  /* Items */
+  --megamenu-item-padding-inline: var(--space-3);
+  --megamenu-item-padding-block: var(--space-2);
+  --megamenu-item-border-radius: var(--radius-sm);
+  --megamenu-item-gap: var(--space-2);
+  --megamenu-item-font-size: var(--text-size-sm);
+
+  /* Icon */
+  --megamenu-icon-size: var(--space-5);
+
+  /* Description */
+  --megamenu-description-font-size: var(--text-size-xs);
+  --megamenu-description-margin-top: var(--space-0\.5);
+
+  /* Featured section */
+  --megamenu-featured-width: 20rem;
+  --megamenu-featured-padding: var(--space-6);
+  --megamenu-featured-border-radius: var(--radius-lg);
+  --megamenu-featured-gap: var(--space-4);
+
+  /* Mega menu color tokens */
+  --megamenu-bg: var(--popover);
+  --megamenu-foreground: var(--popover-foreground);
+  --megamenu-border: var(--border);
+
+  /* Title colors */
+  --megamenu-title-foreground: var(--foreground);
+
+  /* Item colors */
+  --megamenu-item-foreground: var(--foreground);
+  --megamenu-item-hover-bg: var(--accent);
+  --megamenu-item-hover-foreground: var(--accent-foreground);
+
+  /* Description colors */
+  --megamenu-description-foreground: var(--muted-foreground);
+
+  /* Featured colors */
+  --megamenu-featured-bg: var(--muted);
+  --megamenu-featured-foreground: var(--foreground);
+}
+
+.dark {
+  --megamenu-bg: var(--popover);
+  --megamenu-foreground: var(--popover-foreground);
+  --megamenu-item-hover-bg: var(--accent);
+  --megamenu-featured-bg: var(--muted);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Compact mega menu
+  --megamenu-padding: var(--space-6);
+  --megamenu-gap: var(--space-6);
+  --megamenu-item-padding-block: var(--space-1\.5);
+
+  Example 2: Spacious mega menu
+  --megamenu-max-width: 90rem;
+  --megamenu-padding: var(--space-12);
+  --megamenu-gap: var(--space-12);
+
+  Example 3: Larger featured section
+  --megamenu-featured-width: 24rem;
+  --megamenu-featured-padding: var(--space-8);
+
+  Example 4: Custom shadow
+  --megamenu-shadow: 0 25px 50px -12px oklch(0 0 0 / 0.25);
+
+  Example 5: Bordered variant
+  --megamenu-border: var(--border);
+  // Add border in component
+*/

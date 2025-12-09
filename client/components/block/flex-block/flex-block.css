@@ -1,0 +1,141 @@
+@reference "tailwindcss";
+
+[data-slot="flex-block"] {
+  @apply flex;
+}
+
+/* Direction */
+[data-slot="flex-block"][data-direction="row"] {
+  @apply flex-row;
+}
+
+[data-slot="flex-block"][data-direction="col"] {
+  @apply flex-col;
+}
+
+/* Wrap */
+[data-slot="flex-block"][data-wrap="wrap"] {
+  @apply flex-wrap;
+}
+
+[data-slot="flex-block"][data-wrap="nowrap"] {
+  @apply flex-nowrap;
+}
+
+/* Gap sizes */
+[data-slot="flex-block"][data-gap="none"] {
+  @apply gap-0;
+}
+
+[data-slot="flex-block"][data-gap="xs"] {
+  @apply gap-2;
+}
+
+[data-slot="flex-block"][data-gap="sm"] {
+  @apply gap-[var(--spacing-block-sm)];
+}
+
+[data-slot="flex-block"][data-gap="md"] {
+  @apply gap-[var(--spacing-block-md)];
+}
+
+[data-slot="flex-block"][data-gap="lg"] {
+  @apply gap-[var(--spacing-block-lg)];
+}
+
+[data-slot="flex-block"][data-gap="xl"] {
+  @apply gap-[var(--spacing-container)];
+}
+
+[data-slot="flex-block"][data-gap="2xl"] {
+  @apply gap-12;
+}
+
+/* Align items */
+[data-slot="flex-block"][data-align="start"] {
+  @apply items-start;
+}
+
+[data-slot="flex-block"][data-align="center"] {
+  @apply items-center;
+}
+
+[data-slot="flex-block"][data-align="end"] {
+  @apply items-end;
+}
+
+[data-slot="flex-block"][data-align="stretch"] {
+  @apply items-stretch;
+}
+
+[data-slot="flex-block"][data-align="baseline"] {
+  @apply items-baseline;
+}
+
+/* Justify content */
+[data-slot="flex-block"][data-justify="start"] {
+  @apply justify-start;
+}
+
+[data-slot="flex-block"][data-justify="center"] {
+  @apply justify-center;
+}
+
+[data-slot="flex-block"][data-justify="end"] {
+  @apply justify-end;
+}
+
+[data-slot="flex-block"][data-justify="between"] {
+  @apply justify-between;
+}
+
+[data-slot="flex-block"][data-justify="around"] {
+  @apply justify-around;
+}
+
+[data-slot="flex-block"][data-justify="evenly"] {
+  @apply justify-evenly;
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Direction classes (for responsive override support) */
+.flex-dir-row {
+  @apply flex-row;
+}
+.flex-dir-col {
+  @apply flex-col;
+}
+.flex-dir-row-reverse {
+  @apply flex-row-reverse;
+}
+.flex-dir-col-reverse {
+  @apply flex-col-reverse;
+}
+
+/* Gap classes (for responsive override support) */
+.flex-gap-none {
+  @apply gap-0;
+}
+.flex-gap-xs {
+  @apply gap-2;
+}
+.flex-gap-sm {
+  @apply gap-[var(--spacing-block-sm)];
+}
+.flex-gap-md {
+  @apply gap-[var(--spacing-block-md)];
+}
+.flex-gap-lg {
+  @apply gap-[var(--spacing-block-lg)];
+}
+.flex-gap-xl {
+  @apply gap-[var(--spacing-container)];
+}
+.flex-gap-2xl {
+  @apply gap-12;
+}

@@ -1,0 +1,117 @@
+/**
+ * Typography Design Tokens
+ * Multi-layered system for maximum flexibility in site builder
+ *
+ * Layer 1: Primitive tokens (base sizes from Tailwind)
+ * Layer 2: Scaling rates (viewport-based scaling)
+ * Layer 3: Fluid tokens (clamp using primitives)
+ *
+ * Override any layer per client for custom typography
+ */
+
+:root {
+  /* ===== LAYER 1: PRIMITIVE FONT SIZE TOKENS ===== */
+  /* Complete Tailwind scale - xs through 9xl */
+  /* Override these per client to change base sizes */
+  --font-xs: theme(fontSize.xs);
+  --font-sm: theme(fontSize.sm);
+  --font-base: theme(fontSize.base);
+  --font-lg: theme(fontSize.lg);
+  --font-xl: theme(fontSize.xl);
+  --font-2xl: theme(fontSize.2xl);
+  --font-3xl: theme(fontSize.3xl);
+  --font-4xl: theme(fontSize.4xl);
+  --font-5xl: theme(fontSize.5xl);
+  --font-6xl: theme(fontSize.6xl);
+  --font-7xl: theme(fontSize.7xl);
+  --font-8xl: theme(fontSize.8xl);
+  --font-9xl: theme(fontSize.9xl);
+
+  /* ===== LAYER 2: SCALING RATE TOKENS ===== */
+  /* Viewport-based scaling rates */
+  /* Override these per client to change how aggressively fonts scale */
+  --scale-xs: 0.15vw;
+  --scale-sm: 0.25vw;
+  --scale-base: 0.35vw;
+  --scale-lg: 0.5vw;
+  --scale-xl: 0.75vw;
+  --scale-2xl: 1vw;
+  --scale-3xl: 1.25vw;
+  --scale-4xl: 1.5vw;
+  --scale-5xl: 2vw;
+  --scale-6xl: 2.25vw;
+  --scale-7xl: 2.5vw;
+  --scale-8xl: 3vw;
+  --scale-9xl: 3.5vw;
+
+  /* ===== LAYER 3: FLUID HEADING SIZES ===== */
+  /* Using clamp() with primitive tokens for smooth responsive scaling */
+  /* Conservative max sizes for better readability on large screens */
+  --heading-size-xs: clamp(var(--font-xs), calc(var(--font-xs) + var(--scale-xs)), var(--font-sm));
+  --heading-size-sm: clamp(var(--font-sm), calc(var(--font-sm) + var(--scale-sm)), var(--font-base));
+  --heading-size-base: clamp(var(--font-base), calc(var(--font-base) + var(--scale-base)), var(--font-lg));
+  --heading-size-lg: clamp(var(--font-lg), calc(var(--font-lg) + var(--scale-lg)), var(--font-xl));
+  --heading-size-xl: clamp(var(--font-xl), calc(var(--font-xl) + var(--scale-xl)), var(--font-2xl));
+  --heading-size-2xl: clamp(var(--font-2xl), calc(var(--font-2xl) + var(--scale-2xl)), var(--font-3xl));
+  --heading-size-3xl: clamp(var(--font-3xl), calc(var(--font-3xl) + var(--scale-3xl)), var(--font-4xl));
+  --heading-size-4xl: clamp(var(--font-4xl), calc(var(--font-4xl) + var(--scale-4xl)), var(--font-5xl));
+  --heading-size-5xl: clamp(var(--font-5xl), calc(var(--font-5xl) + var(--scale-5xl)), var(--font-6xl));
+  --heading-size-6xl: clamp(var(--font-6xl), calc(var(--font-6xl) + var(--scale-6xl)), var(--font-7xl));
+  --heading-size-7xl: clamp(var(--font-7xl), calc(var(--font-7xl) + var(--scale-7xl)), var(--font-8xl));
+  --heading-size-8xl: clamp(var(--font-8xl), calc(var(--font-8xl) + var(--scale-8xl)), var(--font-9xl));
+  --heading-size-9xl: clamp(var(--font-9xl), calc(var(--font-9xl) + var(--scale-9xl)), var(--font-9xl));
+
+  /* ===== LAYER 3: FLUID TEXT SIZES ===== */
+  /* Complete scale - all sizes available for body text */
+  --text-size-xs: clamp(var(--font-xs), calc(var(--font-xs) + var(--scale-xs)), var(--font-sm));
+  --text-size-sm: clamp(var(--font-sm), calc(var(--font-sm) + var(--scale-sm)), var(--font-base));
+  --text-size-base: clamp(var(--font-base), calc(var(--font-base) + var(--scale-base)), var(--font-lg));
+  --text-size-lg: clamp(var(--font-lg), calc(var(--font-lg) + var(--scale-lg)), var(--font-xl));
+  --text-size-xl: clamp(var(--font-xl), calc(var(--font-xl) + var(--scale-xl)), var(--font-2xl));
+  --text-size-2xl: clamp(var(--font-2xl), calc(var(--font-2xl) + var(--scale-2xl)), var(--font-3xl));
+  --text-size-3xl: clamp(var(--font-3xl), calc(var(--font-3xl) + var(--scale-3xl)), var(--font-4xl));
+  --text-size-4xl: clamp(var(--font-4xl), calc(var(--font-4xl) + var(--scale-4xl)), var(--font-5xl));
+  --text-size-5xl: clamp(var(--font-5xl), calc(var(--font-5xl) + var(--scale-5xl)), var(--font-6xl));
+  --text-size-6xl: clamp(var(--font-6xl), calc(var(--font-6xl) + var(--scale-6xl)), var(--font-7xl));
+  --text-size-7xl: clamp(var(--font-7xl), calc(var(--font-7xl) + var(--scale-7xl)), var(--font-8xl));
+  --text-size-8xl: clamp(var(--font-8xl), calc(var(--font-8xl) + var(--scale-8xl)), var(--font-9xl));
+  --text-size-9xl: clamp(var(--font-9xl), calc(var(--font-9xl) + var(--scale-9xl)), var(--font-9xl));
+
+  /* ===== FONT WEIGHTS ===== */
+  --font-weight-normal: theme(fontWeight.normal);
+  --font-weight-medium: theme(fontWeight.medium);
+  --font-weight-semibold: theme(fontWeight.semibold);
+  --font-weight-bold: theme(fontWeight.bold);
+  --font-weight-extrabold: theme(fontWeight.extrabold);
+  --font-weight-black: theme(fontWeight.black);
+
+  /* ===== LINE HEIGHTS ===== */
+  --line-height-tight: theme(lineHeight.tight);
+  --line-height-snug: theme(lineHeight.snug);
+  --line-height-normal: theme(lineHeight.normal);
+  --line-height-relaxed: theme(lineHeight.relaxed);
+  --line-height-loose: theme(lineHeight.loose);
+
+  /* ===== LETTER SPACING ===== */
+  --letter-spacing-tight: theme(letterSpacing.tight);
+  --letter-spacing-normal: theme(letterSpacing.normal);
+  --letter-spacing-wide: theme(letterSpacing.wide);
+  --letter-spacing-wider: theme(letterSpacing.wider);
+  --letter-spacing-widest: theme(letterSpacing.widest);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Client wants larger base sizes
+  --font-4xl: 3rem;
+  --font-7xl: 6rem;
+
+  Example 2: Client wants more aggressive scaling
+  --scale-4xl: 4vw;
+
+  Example 3: Client wants completely custom heading size
+  --heading-size-4xl: clamp(3rem, 2rem + 5vw, 8rem);
+
+  Example 4: Client wants different min/max but same scaling rate
+  --heading-size-4xl: clamp(var(--font-3xl), calc(var(--font-3xl) + var(--scale-4xl)), var(--font-6xl));
+*/

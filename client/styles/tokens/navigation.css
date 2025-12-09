@@ -1,0 +1,138 @@
+@reference "tailwindcss";
+/**
+ * Navigation Tokens
+ * Customizable tokens for header and footer navigation
+ */
+
+@theme {
+  /* ========================================
+   * Desktop Navigation Links
+   * ======================================== */
+
+  /* Link Typography */
+  --nav-link-font-size: 16px;
+  --nav-link-font-weight: 500;
+  --nav-link-line-height: 1.5;
+
+  /* Link Spacing */
+  --nav-link-padding-x: var(--space-2);
+  --nav-link-padding-y: var(--space-1);
+  --nav-link-gap: var(--space-2); /* Gap between nav items */
+
+  /* Link Colors - Default State */
+  --nav-link-color: var(--foreground);
+  --nav-link-bg: transparent;
+
+  /* Link Colors - Hover State */
+  --nav-link-hover-color: var(--primary);
+  --nav-link-hover-bg: var(--accent);
+
+  /* Link Colors - Active State */
+  --nav-link-active-color: var(--primary);
+  --nav-link-active-bg: var(--accent);
+
+  /* Link Borders - Default */
+  --nav-link-border-width: 0px;
+  --nav-link-border-color: transparent;
+  --nav-link-border-radius: var(--radius-sm);
+
+  /* Link Borders - Hover */
+  --nav-link-hover-border-width: 0px;
+  --nav-link-hover-border-color: transparent;
+
+  /* Link Borders - Active */
+  --nav-link-active-border-width: 0px;
+  --nav-link-active-border-color: var(--primary);
+  --nav-link-active-border-style: bottom; /* "bottom", "all", "underline" */
+
+  /* Link Transitions */
+  --nav-link-transition-duration: 200ms;
+  --nav-link-transition-timing: ease-in-out;
+  --nav-link-hover-transform: none; /* e.g., "translateY(-2px)" */
+
+  /* ========================================
+   * Dropdown Menus
+   * ======================================== */
+
+  /* Dropdown Layout */
+  --dropdown-width: 220px;
+  --dropdown-padding: var(--spacing-2);
+  --dropdown-gap: var(--spacing-1);
+
+  /* Dropdown Appearance */
+  --dropdown-bg: var(--popover);
+  --dropdown-border-width: 1px;
+  --dropdown-border-color: var(--border);
+  --dropdown-border-radius: var(--radius-lg);
+  --dropdown-shadow: var(--shadow-lg);
+
+  /* Dropdown Item Spacing */
+  --dropdown-item-padding-x: var(--spacing-3);
+  --dropdown-item-padding-y: var(--spacing-2);
+  --dropdown-item-border-radius: var(--radius-md);
+
+  /* Dropdown Item Colors */
+  --dropdown-item-color: var(--foreground);
+  --dropdown-item-hover-color: var(--accent-foreground);
+  --dropdown-item-hover-bg: var(--accent);
+
+  /* Dropdown Animations */
+  --dropdown-animation: fade-slide; /* "fade", "slide", "fade-slide", "none" */
+  --dropdown-animation-duration: 200ms;
+  --dropdown-animation-timing: ease-out;
+  --dropdown-slide-distance: 8px;
+
+  /* ========================================
+   * Mobile Navigation
+   * ======================================== */
+
+  /* Mobile Drawer */
+  --mobile-nav-width: 280px;
+  --mobile-nav-bg: var(--background);
+
+  /* Mobile Nav Items */
+  --mobile-nav-item-padding-x: var(--spacing-4);
+  --mobile-nav-item-padding-y: var(--spacing-3);
+  --mobile-nav-item-gap: var(--spacing-1);
+  --mobile-nav-item-border-radius: var(--radius-md);
+
+  /* Mobile Nav Item Colors */
+  --mobile-nav-item-color: var(--foreground);
+  --mobile-nav-item-hover-color: var(--accent-foreground);
+  --mobile-nav-item-hover-bg: var(--accent);
+  --mobile-nav-item-active-color: var(--primary);
+  --mobile-nav-item-active-bg: var(--accent);
+
+  /* Mobile Nav Submenu */
+  --mobile-nav-submenu-indent: var(--spacing-4);
+  --mobile-nav-submenu-border-color: var(--border);
+
+  /* ========================================
+   * Footer Navigation
+   * ======================================== */
+
+  /* Footer Nav Layout */
+  --footer-nav-gap: var(--spacing-2);
+
+  /* Footer Nav Link Typography */
+  --footer-nav-link-font-size: 14px;
+  --footer-nav-link-font-weight: 400;
+
+  /* Footer Nav Link Spacing */
+  --footer-nav-link-padding-x: var(--spacing-2);
+  --footer-nav-link-padding-y: var(--spacing-1);
+  --footer-nav-link-border-radius: var(--radius-sm);
+
+  /* Footer Nav Link Colors - Default */
+  --footer-nav-link-color: var(--muted-foreground);
+  --footer-nav-link-bg: transparent;
+
+  /* Footer Nav Link Colors - Hover */
+  --footer-nav-link-hover-color: var(--foreground);
+  --footer-nav-link-hover-bg: var(--accent);
+  --footer-nav-link-hover-underline: true; /* true or false */
+
+  /* Footer Nav Link Transitions */
+  --footer-nav-link-transition-duration: 150ms;
+  --footer-nav-link-transition-timing: ease-in-out;
+}

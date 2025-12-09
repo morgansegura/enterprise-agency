@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+[data-slot="separator"] {
+  @apply bg-border shrink-0;
+
+  &[data-orientation="horizontal"] {
+    @apply w-full;
+    height: var(--separator-horizontal-height);
+  }
+
+  &[data-orientation="vertical"] {
+    @apply h-full;
+    width: var(--separator-vertical-width);
+  }
+}

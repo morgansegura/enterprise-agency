@@ -1,0 +1,174 @@
+@reference "tailwindcss";
+
+.heading {
+  @apply relative;
+  font-family: var(--font-heading);
+  line-height: var(--line-height-tight);
+  max-width: clamp(20ch, 50vw + 10ch, 75ch);
+}
+
+/* Sizes - using typography tokens (responsive) */
+.heading[data-size="xs"] {
+  font-size: var(--heading-size-xs);
+}
+
+.heading[data-size="sm"] {
+  font-size: var(--heading-size-sm);
+}
+
+.heading[data-size="base"] {
+  font-size: var(--heading-size-base);
+}
+
+.heading[data-size="lg"] {
+  font-size: var(--heading-size-lg);
+}
+
+.heading[data-size="xl"] {
+  font-size: var(--heading-size-xl);
+}
+
+.heading[data-size="2xl"] {
+  font-size: var(--heading-size-2xl);
+}
+
+.heading[data-size="3xl"] {
+  font-size: var(--heading-size-3xl);
+}
+
+.heading[data-size="4xl"] {
+  font-size: var(--heading-size-4xl);
+}
+
+.heading[data-size="5xl"] {
+  font-size: var(--heading-size-5xl);
+}
+
+.heading[data-size="6xl"] {
+  font-size: var(--heading-size-6xl);
+}
+
+.heading[data-size="7xl"] {
+  font-size: var(--heading-size-7xl);
+}
+
+.heading[data-size="8xl"] {
+  font-size: var(--heading-size-8xl);
+}
+
+.heading[data-size="9xl"] {
+  font-size: var(--heading-size-9xl);
+}
+
+/* Weight - using typography tokens */
+.heading[data-weight="normal"] {
+  font-weight: var(--font-weight-normal);
+}
+
+.heading[data-weight="medium"] {
+  font-weight: var(--font-weight-medium);
+}
+
+.heading[data-weight="semibold"] {
+  font-weight: var(--font-weight-semibold);
+}
+
+.heading[data-weight="bold"] {
+  font-weight: var(--font-weight-bold);
+}
+
+.heading[data-weight="extrabold"] {
+  font-weight: var(--font-weight-extrabold);
+}
+
+.heading[data-weight="black"] {
+  font-weight: var(--font-weight-black);
+}
+
+/* Alignment */
+.heading[data-align="left"] {
+  @apply text-left;
+}
+
+.heading[data-align="center"] {
+  @apply text-center mx-auto;
+}
+
+.heading[data-align="right"] {
+  @apply text-right;
+}
+
+.heading[data-align="justify"] {
+  @apply text-justify;
+}
+
+/* Variants - using theme color tokens */
+.heading[data-variant="default"] {
+  @apply text-(--foreground);
+}
+
+.heading[data-variant="primary"] {
+  @apply text-(--primary);
+}
+
+.heading[data-variant="muted"] {
+  @apply text-(--muted-foreground);
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Size classes (for responsive override support) */
+.heading-size-xs {
+  font-size: var(--heading-size-xs);
+}
+.heading-size-sm {
+  font-size: var(--heading-size-sm);
+}
+.heading-size-base {
+  font-size: var(--heading-size-base);
+}
+.heading-size-lg {
+  font-size: var(--heading-size-lg);
+}
+.heading-size-xl {
+  font-size: var(--heading-size-xl);
+}
+.heading-size-2xl {
+  font-size: var(--heading-size-2xl);
+}
+.heading-size-3xl {
+  font-size: var(--heading-size-3xl);
+}
+.heading-size-4xl {
+  font-size: var(--heading-size-4xl);
+}
+.heading-size-5xl {
+  font-size: var(--heading-size-5xl);
+}
+.heading-size-6xl {
+  font-size: var(--heading-size-6xl);
+}
+.heading-size-7xl {
+  font-size: var(--heading-size-7xl);
+}
+.heading-size-8xl {
+  font-size: var(--heading-size-8xl);
+}
+.heading-size-9xl {
+  font-size: var(--heading-size-9xl);
+}
+
+/* Align classes (for responsive override support) */
+.heading-align-left {
+  @apply text-left;
+}
+.heading-align-center {
+  @apply text-center mx-auto;
+}
+.heading-align-right {
+  @apply text-right;
+}

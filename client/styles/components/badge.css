@@ -1,0 +1,68 @@
+/**
+ * Badge Component Color Tokens
+ * Small status/label indicator theming
+ *
+ * Override these per client for custom badge appearance
+ */
+
+:root {
+  /* Badge structural tokens */
+  --badge-border-radius: var(--radius-full);
+  --badge-padding-inline: var(--space-2);
+  --badge-padding-block: var(--space-0\.5);
+  --badge-font-size: var(--text-size-xs);
+  --badge-font-weight: var(--font-weight-medium);
+  --badge-gap: var(--space-1);
+  --badge-icon-size: var(--space-3);
+  --badge-focus-ring-width: 3px;
+
+  /* Badge variants - light mode */
+  --badge-default: var(--primary);
+  --badge-default-foreground: var(--primary-foreground);
+
+  --badge-secondary: var(--secondary);
+  --badge-secondary-foreground: var(--secondary-foreground);
+
+  --badge-destructive: var(--destructive);
+  --badge-destructive-foreground: var(--brand-primary-50);
+
+  --badge-outline: transparent;
+  --badge-outline-foreground: var(--foreground);
+  --badge-outline-border: var(--border);
+}
+
+/* Badge variants - dark mode */
+.dark {
+  --badge-default: var(--primary);
+  --badge-default-foreground: var(--primary-foreground);
+
+  --badge-secondary: var(--secondary);
+  --badge-secondary-foreground: var(--secondary-foreground);
+
+  --badge-destructive: var(--destructive);
+  --badge-destructive-foreground: var(--neutral-0);
+
+  --badge-outline: transparent;
+  --badge-outline-foreground: var(--foreground);
+  --badge-outline-border: var(--border);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Subtle badges
+  --badge-default: var(--muted);
+  --badge-default-foreground: var(--muted-foreground);
+
+  Example 2: High contrast badges
+  --badge-default: var(--neutral-950);
+  --badge-default-foreground: var(--neutral-0);
+
+  Example 3: Brand-colored badges
+  --badge-default: var(--brand-primary-500);
+  --badge-secondary: var(--brand-secondary-500);
+
+  Example 4: Status-specific badges
+  --badge-success: var(--status-success);
+  --badge-warning: var(--status-warning);
+  --badge-error: var(--status-error);
+*/

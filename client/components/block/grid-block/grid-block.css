@@ -1,0 +1,109 @@
+@reference "tailwindcss";
+
+[data-slot="grid-block"] {
+  @apply grid;
+}
+
+/* Gap sizes */
+[data-slot="grid-block"][data-gap="none"] {
+  @apply gap-0;
+}
+
+[data-slot="grid-block"][data-gap="xs"] {
+  @apply gap-2;
+}
+
+[data-slot="grid-block"][data-gap="sm"] {
+  @apply gap-[var(--spacing-block-sm)];
+}
+
+[data-slot="grid-block"][data-gap="md"] {
+  @apply gap-[var(--spacing-block-md)];
+}
+
+[data-slot="grid-block"][data-gap="lg"] {
+  @apply gap-[var(--spacing-block-lg)];
+}
+
+[data-slot="grid-block"][data-gap="xl"] {
+  @apply gap-[var(--spacing-container)];
+}
+
+[data-slot="grid-block"][data-gap="2xl"] {
+  @apply gap-12;
+}
+
+/* Align items */
+[data-slot="grid-block"][data-align="start"] {
+  @apply items-start;
+}
+
+[data-slot="grid-block"][data-align="center"] {
+  @apply items-center;
+}
+
+[data-slot="grid-block"][data-align="end"] {
+  @apply items-end;
+}
+
+[data-slot="grid-block"][data-align="stretch"] {
+  @apply items-stretch;
+}
+
+[data-slot="grid-block"][data-align="baseline"] {
+  @apply items-baseline;
+}
+
+/* Justify content */
+[data-slot="grid-block"][data-justify="start"] {
+  @apply justify-start;
+}
+
+[data-slot="grid-block"][data-justify="center"] {
+  @apply justify-center;
+}
+
+[data-slot="grid-block"][data-justify="end"] {
+  @apply justify-end;
+}
+
+[data-slot="grid-block"][data-justify="between"] {
+  @apply justify-between;
+}
+
+[data-slot="grid-block"][data-justify="around"] {
+  @apply justify-around;
+}
+
+[data-slot="grid-block"][data-justify="evenly"] {
+  @apply justify-evenly;
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Gap classes (for responsive override support) */
+.grid-gap-none {
+  @apply gap-0;
+}
+.grid-gap-xs {
+  @apply gap-2;
+}
+.grid-gap-sm {
+  @apply gap-[var(--spacing-block-sm)];
+}
+.grid-gap-md {
+  @apply gap-[var(--spacing-block-md)];
+}
+.grid-gap-lg {
+  @apply gap-[var(--spacing-block-lg)];
+}
+.grid-gap-xl {
+  @apply gap-[var(--spacing-container)];
+}
+.grid-gap-2xl {
+  @apply gap-12;
+}

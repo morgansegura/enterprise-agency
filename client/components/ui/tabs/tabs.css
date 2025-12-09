@@ -1,0 +1,61 @@
+@reference "tailwindcss";
+
+[data-slot="tabs"] {
+  @apply flex flex-col;
+  gap: var(--tabs-gap);
+}
+
+[data-slot="tabs-list"] {
+  @apply inline-flex w-fit items-center justify-center;
+  @apply bg-muted text-muted-foreground;
+  height: var(--tabs-list-height);
+  padding: var(--tabs-list-padding);
+  border-radius: var(--tabs-list-border-radius);
+}
+
+[data-slot="tabs-trigger"] {
+  @apply inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center;
+  @apply border border-transparent;
+  @apply text-foreground;
+  @apply transition-[color,box-shadow] whitespace-nowrap;
+  @apply focus-visible:border-ring focus-visible:ring-ring/50;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+  @apply data-[state=active]:bg-background;
+
+  /* Design token values */
+  gap: var(--tabs-trigger-gap);
+  border-radius: var(--tabs-trigger-border-radius);
+  padding-inline: var(--tabs-trigger-padding-inline);
+  padding-block: var(--tabs-trigger-padding-block);
+  font-size: var(--tabs-trigger-font-size);
+  font-weight: var(--tabs-trigger-font-weight);
+  focus-visible-ring-width: var(--tabs-trigger-focus-ring-width);
+
+  &:focus-visible {
+    @apply outline-ring;
+    outline-width: var(--tabs-trigger-focus-outline-width);
+  }
+
+  &[data-state="active"] {
+    box-shadow: var(--tabs-trigger-active-shadow);
+  }
+
+  /* SVG styling */
+  & svg {
+    @apply pointer-events-none shrink-0;
+  }
+
+  & svg:not([class*='size-']) {
+    width: var(--tabs-trigger-icon-size);
+    height: var(--tabs-trigger-icon-size);
+  }
+}
+
+.dark [data-slot="tabs-trigger"] {
+  @apply text-muted-foreground;
+  @apply data-[state=active]:text-foreground data-[state=active]:border-input data-[state=active]:bg-input/30;
+}
+
+[data-slot="tabs-content"] {
+  @apply flex-1 outline-none;
+}

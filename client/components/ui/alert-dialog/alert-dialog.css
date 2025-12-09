@@ -1,0 +1,40 @@
+@reference "tailwindcss";
+
+[data-slot="alert-dialog-overlay"] {
+  @apply data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50;
+  background-color: var(--alert-dialog-overlay-bg);
+}
+
+[data-slot="alert-dialog-content"] {
+  @apply bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] border duration-200;
+
+  /* Design token values */
+  gap: var(--alert-dialog-content-gap);
+  border-radius: var(--alert-dialog-content-border-radius);
+  padding: var(--alert-dialog-content-padding);
+  box-shadow: var(--alert-dialog-content-shadow);
+
+  @media (min-width: theme(screens.sm)) {
+    max-width: var(--alert-dialog-content-max-width);
+  }
+}
+
+[data-slot="alert-dialog-header"] {
+  @apply flex flex-col text-center sm:text-left;
+  gap: var(--alert-dialog-header-gap);
+}
+
+[data-slot="alert-dialog-footer"] {
+  @apply flex flex-col-reverse sm:flex-row sm:justify-end;
+  gap: var(--alert-dialog-footer-gap);
+}
+
+[data-slot="alert-dialog-title"] {
+  font-size: var(--alert-dialog-title-font-size);
+  font-weight: var(--alert-dialog-title-font-weight);
+}
+
+[data-slot="alert-dialog-description"] {
+  @apply text-muted-foreground;
+  font-size: var(--alert-dialog-description-font-size);
+}

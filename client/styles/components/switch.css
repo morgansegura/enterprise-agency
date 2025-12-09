@@ -1,0 +1,45 @@
+/**
+ * Switch Component Tokens
+ * Toggle switch theming
+ *
+ * Override these per client for custom switch appearance
+ */
+
+:root {
+  /* Switch structural tokens */
+  --switch-height: 1.15rem;
+  --switch-width: var(--space-8);
+  --switch-border-radius: var(--radius-full);
+  --switch-thumb-size: var(--space-4);
+  --switch-thumb-border-radius: var(--radius-full);
+  --switch-focus-ring-width: 3px;
+  --switch-thumb-translate-checked: calc(100% - 2px);
+
+  /* Switch color tokens */
+  --switch-checked-bg: var(--primary);
+  --switch-unchecked-bg: var(--input);
+  --switch-thumb-checked-bg: var(--primary-foreground);
+  --switch-thumb-unchecked-bg: var(--background);
+  --switch-shadow: var(--shadow-xs);
+}
+
+.dark {
+  --switch-unchecked-bg-opacity: 0.8;
+  --switch-thumb-unchecked-bg: var(--foreground);
+  --switch-thumb-checked-bg: var(--primary-foreground);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger switch
+  --switch-height: 1.5rem;
+  --switch-width: var(--space-10);
+  --switch-thumb-size: var(--space-5);
+
+  Example 2: Square thumb
+  --switch-thumb-border-radius: var(--radius-sm);
+
+  Example 3: Custom colors
+  --switch-checked-bg: var(--brand-primary-500);
+  --switch-unchecked-bg: var(--neutral-300);
+*/

@@ -1,0 +1,422 @@
+@reference "tailwindcss";
+
+/**
+ * Menu Token-Based Styles
+ * All styling driven by CSS custom properties
+ * Zero hardcoded values - complete token control
+ * Reusable across header, footer, sidebar, tabs, etc.
+ */
+
+/* ==========================================
+ * BASE MENU CONTAINER
+ * ========================================== */
+
+.menu-renderer {
+  @apply flex list-none;
+}
+
+/* Horizontal layout */
+.menu-renderer[data-style="horizontal"] {
+  @apply flex-row items-center;
+  gap: var(--menu-gap-horizontal);
+}
+
+/* Vertical layout */
+.menu-renderer[data-style="vertical"] {
+  @apply flex-col;
+  gap: var(--menu-gap-vertical);
+}
+
+/* ==========================================
+ * MENU ITEMS
+ * ========================================== */
+
+.menu-item {
+  @apply relative list-none;
+}
+
+.menu-link {
+  @apply flex items-center no-underline cursor-pointer;
+  font-size: var(--menu-item-font-size);
+  font-weight: var(--menu-item-font-weight);
+  line-height: var(--menu-item-line-height);
+  padding-left: var(--menu-item-padding-x);
+  padding-right: var(--menu-item-padding-x);
+  padding-top: var(--menu-item-padding-y);
+  padding-bottom: var(--menu-item-padding-y);
+  color: var(--menu-color);
+  background: var(--menu-bg);
+  border: var(--menu-item-border-width) solid var(--menu-item-border-color);
+  border-radius: var(--menu-item-border-radius);
+  transition-property: all;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.menu-link:hover {
+  color: var(--menu-color-hover);
+  background: var(--menu-bg-hover);
+  border-color: var(--menu-item-border-color-hover);
+}
+
+.menu-link[data-active="true"] {
+  color: var(--menu-color-active);
+  background: var(--menu-bg-active);
+  border-color: var(--menu-item-border-color-active);
+}
+
+/* ==========================================
+ * STYLE VARIANTS
+ * ========================================== */
+
+/* Pills Variant */
+.menu-renderer[data-variant="pills"] .menu-link {
+  border-radius: var(--menu-variant-pills-border-radius);
+  background: var(--menu-variant-pills-bg);
+}
+
+.menu-renderer[data-variant="pills"] .menu-link:hover {
+  background: var(--menu-variant-pills-bg-hover);
+}
+
+.menu-renderer[data-variant="pills"] .menu-link[data-active="true"] {
+  background: var(--menu-variant-pills-bg-active);
+}
+
+/* Underline Variant */
+.menu-renderer[data-variant="underline"] .menu-link {
+  @apply rounded-none;
+  border: none;
+  border-bottom: var(--menu-variant-underline-border-width) solid
+    var(--menu-variant-underline-border-color);
+  padding-bottom: calc(
+    var(--menu-item-padding-y) + var(--menu-variant-underline-offset)
+  );
+}
+
+.menu-renderer[data-variant="underline"] .menu-link:hover {
+  border-bottom-color: var(--menu-variant-underline-border-color-hover);
+  background: transparent;
+}
+
+.menu-renderer[data-variant="underline"] .menu-link[data-active="true"] {
+  border-bottom-color: var(--menu-variant-underline-border-color-active);
+  background: transparent;
+}
+
+/* Bordered Variant */
+.menu-renderer[data-variant="bordered"] .menu-link {
+  border: var(--menu-variant-bordered-border-width) solid
+    var(--menu-variant-bordered-border-color);
+}
+
+.menu-renderer[data-variant="bordered"] .menu-link:hover {
+  border-color: var(--menu-variant-bordered-border-color-hover);
+}
+
+.menu-renderer[data-variant="bordered"] .menu-link[data-active="true"] {
+  border-color: var(--menu-variant-bordered-border-color-active);
+}
+
+/* Minimal Variant */
+.menu-renderer[data-variant="minimal"] .menu-link {
+  padding-left: var(--menu-variant-minimal-padding-x);
+  padding-right: var(--menu-variant-minimal-padding-x);
+  padding-top: var(--menu-variant-minimal-padding-y);
+  padding-bottom: var(--menu-variant-minimal-padding-y);
+  background: transparent;
+}
+
+.menu-renderer[data-variant="minimal"] .menu-link:hover {
+  background: transparent;
+}
+
+/* ==========================================
+ * CONTEXT OVERRIDES
+ * ========================================== */
+
+/* Header context */
+.menu-renderer[data-context="header"] .menu-link {
+  font-size: var(--menu-context-header-font-size, var(--menu-item-font-size));
+  font-weight: var(
+    --menu-context-header-font-weight,
+    var(--menu-item-font-weight)
+  );
+  color: var(--menu-context-header-color, var(--menu-color));
+}
+
+.menu-renderer[data-context="header"] .menu-link:hover {
+  color: var(--menu-context-header-color-hover, var(--menu-color-hover));
+}
+
+.menu-renderer[data-context="header"] .menu-link[data-active="true"] {
+  color: var(--menu-context-header-color-active, var(--menu-color-active));
+}
+
+/* Footer context */
+.menu-renderer[data-context="footer"] .menu-link {
+  font-size: var(--menu-context-footer-font-size, var(--menu-item-font-size));
+  font-weight: var(
+    --menu-context-footer-font-weight,
+    var(--menu-item-font-weight)
+  );
+  color: var(--menu-context-footer-color, var(--menu-color));
+}
+
+.menu-renderer[data-context="footer"] .menu-link:hover {
+  color: var(--menu-context-footer-color-hover, var(--menu-color-hover));
+}
+
+.menu-renderer[data-context="footer"] .menu-link[data-active="true"] {
+  color: var(--menu-context-footer-color-active, var(--menu-color-active));
+}
+
+/* Sidebar context */
+.menu-renderer[data-context="sidebar"] .menu-link {
+  font-size: var(--menu-context-sidebar-font-size, var(--menu-item-font-size));
+  font-weight: var(
+    --menu-context-sidebar-font-weight,
+    var(--menu-item-font-weight)
+  );
+  padding-left: var(
+    --menu-context-sidebar-padding-x,
+    var(--menu-item-padding-x)
+  );
+  padding-right: var(
+    --menu-context-sidebar-padding-x,
+    var(--menu-item-padding-x)
+  );
+  padding-top: var(--menu-context-sidebar-padding-y, var(--menu-item-padding-y));
+  padding-bottom: var(
+    --menu-context-sidebar-padding-y,
+    var(--menu-item-padding-y)
+  );
+}
+
+/* ==========================================
+ * BADGES
+ * ========================================== */
+
+.menu-badge {
+  @apply inline-flex items-center justify-center;
+  font-size: var(--menu-badge-font-size);
+  font-weight: var(--menu-badge-font-weight);
+  padding-left: var(--menu-badge-padding-x);
+  padding-right: var(--menu-badge-padding-x);
+  padding-top: var(--menu-badge-padding-y);
+  padding-bottom: var(--menu-badge-padding-y);
+  border-radius: var(--menu-badge-border-radius);
+  margin-left: var(--menu-badge-margin-left);
+}
+
+.menu-badge[data-variant="new"] {
+  background: var(--menu-badge-new-bg);
+  color: var(--menu-badge-new-color);
+}
+
+.menu-badge[data-variant="hot"] {
+  background: var(--menu-badge-hot-bg);
+  color: var(--menu-badge-hot-color);
+}
+
+.menu-badge[data-variant="sale"] {
+  background: var(--menu-badge-sale-bg);
+  color: var(--menu-badge-sale-color);
+}
+
+/* ==========================================
+ * ICONS
+ * ========================================== */
+
+.menu-icon {
+  @apply flex-shrink-0;
+  width: var(--menu-icon-size);
+  height: var(--menu-icon-size);
+  color: var(--menu-icon-color);
+  transition: color 150ms ease-out;
+}
+
+.menu-icon[data-position="left"] {
+  margin-right: var(--menu-icon-margin-right);
+}
+
+.menu-icon[data-position="right"] {
+  margin-left: var(--menu-icon-margin-left);
+}
+
+.menu-link:hover .menu-icon {
+  color: var(--menu-icon-color-hover);
+}
+
+/* ==========================================
+ * DROPDOWN MENUS
+ * ========================================== */
+
+.menu-dropdown {
+  @apply absolute left-0 list-none;
+  top: calc(100% + 0.5rem);
+  width: var(--menu-dropdown-width);
+  padding: var(--menu-dropdown-padding);
+  background: var(--menu-dropdown-bg);
+  border: var(--menu-dropdown-border-width) solid
+    var(--menu-dropdown-border-color);
+  border-radius: var(--menu-dropdown-border-radius);
+  box-shadow: var(--menu-dropdown-shadow);
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(calc(-1 * var(--menu-dropdown-slide-distance)));
+  transition-property: opacity, transform, visibility;
+  transition-duration: var(--menu-dropdown-animation-duration);
+  transition-timing-function: var(--menu-dropdown-animation-timing);
+}
+
+.menu-item:hover > .menu-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.menu-dropdown-item {
+  @apply list-none;
+}
+
+.menu-dropdown-link {
+  @apply block no-underline cursor-pointer;
+  font-size: var(--menu-dropdown-item-font-size);
+  font-weight: var(--menu-dropdown-item-font-weight);
+  padding-left: var(--menu-dropdown-item-padding-x);
+  padding-right: var(--menu-dropdown-item-padding-x);
+  padding-top: var(--menu-dropdown-item-padding-y);
+  padding-bottom: var(--menu-dropdown-item-padding-y);
+  color: var(--menu-dropdown-item-color);
+  background: var(--menu-dropdown-item-bg);
+  border-radius: var(--menu-dropdown-item-border-radius);
+  transition-property: all;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.menu-dropdown-link:hover {
+  color: var(--menu-dropdown-item-color-hover);
+  background: var(--menu-dropdown-item-bg-hover);
+}
+
+/* ==========================================
+ * MEGA MENU
+ * ========================================== */
+
+.menu-megamenu {
+  @apply absolute left-1/2;
+  top: calc(100% + 0.5rem);
+  transform: translateX(-50%) translateY(calc(-1 * var(--menu-dropdown-slide-distance)));
+  width: var(--menu-megamenu-width);
+  max-width: var(--menu-megamenu-max-width);
+  padding: var(--menu-megamenu-padding);
+  background: var(--menu-megamenu-bg);
+  border: var(--menu-megamenu-border-width) solid
+    var(--menu-megamenu-border-color);
+  border-radius: var(--menu-megamenu-border-radius);
+  box-shadow: var(--menu-megamenu-shadow);
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transition-property: opacity, transform, visibility;
+  transition-duration: var(--menu-dropdown-animation-duration);
+  transition-timing-function: var(--menu-dropdown-animation-timing);
+}
+
+.menu-item:hover > .menu-megamenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.menu-megamenu-grid {
+  @apply grid;
+  gap: var(--menu-megamenu-gap);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.menu-megamenu-column {
+  @apply flex flex-col;
+}
+
+.menu-megamenu-heading {
+  font-size: var(--menu-megamenu-heading-font-size);
+  font-weight: var(--menu-megamenu-heading-font-weight);
+  color: var(--menu-megamenu-heading-color);
+  margin-bottom: var(--menu-megamenu-heading-margin-bottom);
+}
+
+.menu-megamenu-item {
+  @apply list-none;
+}
+
+.menu-megamenu-link {
+  @apply block no-underline cursor-pointer;
+  font-size: var(--menu-megamenu-item-font-size);
+  padding-left: var(--menu-megamenu-item-padding-x);
+  padding-right: var(--menu-megamenu-item-padding-x);
+  padding-top: var(--menu-megamenu-item-padding-y);
+  padding-bottom: var(--menu-megamenu-item-padding-y);
+  color: var(--menu-dropdown-item-color);
+  border-radius: var(--menu-dropdown-item-border-radius);
+  transition-property: all;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.menu-megamenu-link:hover {
+  color: var(--menu-dropdown-item-color-hover);
+  background: var(--menu-dropdown-item-bg-hover);
+}
+
+/* ==========================================
+ * MOBILE MENU (Vertical in Drawer)
+ * ========================================== */
+
+.menu-mobile {
+  @apply flex flex-col list-none;
+  gap: var(--menu-mobile-gap);
+}
+
+.menu-mobile-item {
+  @apply list-none;
+}
+
+.menu-mobile-link {
+  @apply flex items-center justify-between no-underline cursor-pointer w-full;
+  font-size: var(--menu-mobile-font-size);
+  font-weight: var(--menu-mobile-font-weight);
+  padding-left: var(--menu-mobile-padding-x);
+  padding-right: var(--menu-mobile-padding-x);
+  padding-top: var(--menu-mobile-padding-y);
+  padding-bottom: var(--menu-mobile-padding-y);
+  color: var(--menu-color);
+  background: var(--menu-bg);
+  border-radius: var(--menu-mobile-border-radius);
+  transition-property: all;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.menu-mobile-link:hover {
+  color: var(--menu-color-hover);
+  background: var(--menu-bg-hover);
+}
+
+.menu-mobile-link[data-active="true"] {
+  color: var(--menu-color-active);
+  background: var(--menu-bg-active);
+}
+
+/* Mobile submenu */
+.menu-mobile-submenu {
+  @apply flex flex-col list-none mt-2;
+  gap: var(--menu-mobile-gap);
+  padding-left: var(--menu-mobile-submenu-indent);
+  border-left: var(--menu-mobile-submenu-border-width) solid
+    var(--menu-mobile-submenu-border-color);
+  background: var(--menu-mobile-submenu-bg);
+}

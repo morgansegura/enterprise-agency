@@ -1,0 +1,57 @@
+@reference "tailwindcss";
+
+.login-skeleton-container {
+  @apply min-h-screen flex items-center justify-center bg-(--muted);
+}
+
+.login-skeleton-card {
+  @apply max-w-md w-full space-y-8 p-8 bg-(--card) rounded-lg shadow;
+}
+
+.login-skeleton-header {
+  @apply space-y-2;
+}
+
+.login-skeleton-title {
+  @apply h-9 w-3/4 mx-auto;
+}
+
+.login-skeleton-subtitle {
+  @apply h-4 w-2/3 mx-auto;
+}
+
+.login-skeleton-form {
+  @apply mt-8 space-y-6;
+}
+
+.login-skeleton-field {
+  @apply space-y-2;
+}
+
+.login-skeleton-label {
+  @apply h-4 w-24;
+}
+
+.login-skeleton-label-short {
+  @apply h-4 w-20;
+}
+
+.login-skeleton-input {
+  @apply h-10 w-full;
+}
+
+.login-skeleton-actions {
+  @apply space-y-4;
+}
+
+.login-skeleton-button {
+  @apply h-10 w-full;
+}
+
+.login-skeleton-link-container {
+  @apply flex justify-center;
+}
+
+.login-skeleton-link {
+  @apply h-4 w-32;
+}

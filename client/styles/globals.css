@@ -1,0 +1,114 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Import animations */
+@import "./tokens/animations.css";
+
+/* Import design tokens first - establish the foundation */
+@import "./tokens/colors.css";
+@import "./tokens/fonts.css";
+@import "./tokens/radius.css";
+@import "./tokens/shadows.css";
+@import "./tokens/spacing.css";
+@import "./tokens/typography.css";
+@import "./tokens/navigation.css";
+
+/* Import component-specific tokens - build on the foundation */
+@import "./components/accordion.css";
+@import "./components/alert.css";
+@import "./components/alert-dialog.css";
+@import "./components/avatar.css";
+@import "./components/badge.css";
+@import "./components/breadcrumb.css";
+@import "./components/button.css";
+@import "./components/card.css";
+@import "./components/charts.css";
+@import "./components/checkbox.css";
+@import "./components/dialog.css";
+@import "./components/hover-card.css";
+@import "./components/input.css";
+@import "./components/label.css";
+@import "./components/pagination.css";
+@import "./components/popover.css";
+@import "./components/progress.css";
+@import "./components/radio-group.css";
+@import "./components/rich-text.css";
+@import "./components/scroll-area.css";
+@import "./components/section.css";
+@import "./components/select.css";
+@import "./components/separator.css";
+@import "./components/sidebar.css";
+@import "./components/skeleton.css";
+@import "./components/slider.css";
+@import "./components/switch.css";
+@import "./components/table.css";
+@import "./components/tabs.css";
+@import "./components/tooltip.css";
+
+@theme inline {
+  /* Font mappings for Tailwind */
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  /* Radius mappings for Tailwind utilities */
+  --radius-sm: calc(var(--base-radius) - 4px);
+  --radius-md: calc(var(--base-radius) - 2px);
+  --radius-lg: var(--base-radius);
+  --radius-xl: calc(var(--base-radius) + 4px);
+
+  /* Shadow mappings for Tailwind utilities */
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow-md);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+  --shadow-inner: var(--shadow-inner);
+  --shadow-none: var(--shadow-none);
+
+  /* Color mappings for Tailwind utilities */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-section-background: var(--section-background);
+  --color-section-foreground: var(--section-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

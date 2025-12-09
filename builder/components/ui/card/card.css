@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+/* Card */
+[data-slot="card"] {
+  @apply rounded-xl border bg-(--card) text-(--card-foreground) shadow;
+}
+
+/* Card Header */
+[data-slot="card-header"] {
+  @apply flex flex-col gap-1.5 p-6;
+}
+
+/* Card Title */
+[data-slot="card-title"] {
+  @apply font-semibold leading-none tracking-tight;
+}
+
+/* Card Description */
+[data-slot="card-description"] {
+  @apply text-sm text-(--muted-foreground);
+}
+
+/* Card Content */
+[data-slot="card-content"] {
+  @apply p-6 pt-0;
+}
+
+/* Card Footer */
+[data-slot="card-footer"] {
+  @apply flex items-center p-6 pt-0;
+}

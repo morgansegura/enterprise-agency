@@ -1,0 +1,38 @@
+/**
+ * Breadcrumb Component Tokens
+ * Navigation path theming
+ *
+ * Override these per client for custom breadcrumb appearance
+ */
+
+:root {
+  /* Breadcrumb structural tokens */
+  --breadcrumb-gap: var(--space-1\.5);
+  --breadcrumb-gap-sm: var(--space-2\.5);
+  --breadcrumb-font-size: var(--text-size-sm);
+  --breadcrumb-separator-icon-size: var(--space-3\.5);
+  --breadcrumb-ellipsis-size: var(--space-9);
+
+  /* Breadcrumb color tokens */
+  --breadcrumb-foreground: var(--muted-foreground);
+  --breadcrumb-page-foreground: var(--foreground);
+}
+
+.dark {
+  --breadcrumb-foreground: var(--muted-foreground);
+  --breadcrumb-page-foreground: var(--foreground);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger breadcrumb spacing
+  --breadcrumb-gap: var(--space-2);
+  --breadcrumb-gap-sm: var(--space-3);
+
+  Example 2: Larger font
+  --breadcrumb-font-size: var(--text-size-base);
+
+  Example 3: Custom colors
+  --breadcrumb-foreground: var(--neutral-600);
+  --breadcrumb-page-foreground: var(--primary);
+*/

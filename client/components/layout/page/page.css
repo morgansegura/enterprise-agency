@@ -1,0 +1,28 @@
+@reference "tailwindcss";
+
+.page {
+  @apply flex flex-col min-h-screen;
+}
+
+/* Header positioning */
+.page-header[data-position="static"] {
+  @apply relative z-50;
+}
+
+.page-header[data-position="sticky"] {
+  @apply sticky top-0 z-50;
+}
+
+.page-header[data-position="fixed"] {
+  @apply fixed top-0 left-0 right-0 z-50;
+}
+
+/* Main content - takes remaining space */
+.page-main {
+  @apply flex-1 relative z-0;
+}
+
+/* Add top padding when header is fixed */
+.page-header[data-position="fixed"] ~ .page-main {
+  @apply pt-20; /* Adjust based on header height */
+}

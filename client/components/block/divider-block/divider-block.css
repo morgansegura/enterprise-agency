@@ -1,0 +1,58 @@
+@reference "tailwindcss";
+
+[data-slot="divider-block"] {
+  @apply border-0 border-t border-(--border);
+}
+
+[data-slot="divider-block"][data-style="dashed"] {
+  @apply border-dashed;
+}
+
+[data-slot="divider-block"][data-style="dotted"] {
+  @apply border-dotted;
+}
+
+[data-slot="divider-block"][data-weight="thin"] {
+  @apply border-t;
+}
+
+[data-slot="divider-block"][data-weight="normal"] {
+  @apply border-t-2;
+}
+
+[data-slot="divider-block"][data-weight="thick"] {
+  @apply border-t-4;
+}
+
+[data-slot="divider-block"][data-spacing="sm"] {
+  @apply my-2;
+}
+
+[data-slot="divider-block"][data-spacing="md"] {
+  @apply my-4;
+}
+
+[data-slot="divider-block"][data-spacing="lg"] {
+  @apply my-8;
+}
+
+[data-slot="divider-block"][data-variant="gradient"] {
+  @apply border-0 h-px bg-gradient-to-r from-transparent via-(--border) to-transparent;
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Spacing classes (for responsive override support) */
+.divider-spacing-sm {
+  @apply my-2;
+}
+.divider-spacing-md {
+  @apply my-4;
+}
+.divider-spacing-lg {
+  @apply my-8;
+}

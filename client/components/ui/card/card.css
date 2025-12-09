@@ -1,0 +1,54 @@
+@reference "tailwindcss";
+
+[data-slot="card"] {
+  @apply relative flex flex-col border bg-(--card) text-(--card-foreground);
+  gap: var(--space-6);
+  border-radius: var(--radius-xl);
+  padding-block: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-slot="card-header"] {
+  @apply grid auto-rows-min grid-rows-[auto_auto] items-start;
+  @apply @container/card-header;
+  gap: var(--space-2);
+  padding-inline: var(--space-6);
+
+  /* When card-action exists */
+  &:has([data-slot="card-action"]) {
+    @apply grid-cols-[1fr_auto];
+  }
+}
+
+/* Card header inside a bordered card */
+.border-b [data-slot="card-header"] {
+  padding-block-end: var(--space-6);
+}
+
+[data-slot="card-title"] {
+  @apply leading-none;
+  font-weight: var(--font-weight-semibold);
+}
+
+[data-slot="card-description"] {
+  @apply text-(--muted-foreground);
+  font-size: var(--text-size-sm);
+}
+
+[data-slot="card-action"] {
+  @apply col-start-2 row-span-2 row-start-1 self-start justify-self-end;
+}
+
+[data-slot="card-content"] {
+  padding-inline: var(--space-6);
+}
+
+[data-slot="card-footer"] {
+  @apply flex items-center;
+  padding-inline: var(--space-6);
+}
+
+/* Card footer inside a bordered card */
+.border-t [data-slot="card-footer"] {
+  padding-block-start: var(--space-6);
+}

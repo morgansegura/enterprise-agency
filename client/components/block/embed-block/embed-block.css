@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+
+[data-slot="embed-block"] {
+  @apply w-full;
+}
+
+[data-slot="embed-block-wrapper"] {
+  @apply relative w-full overflow-hidden rounded-lg bg-(--muted);
+}
+
+[data-slot="embed-block-wrapper"][data-aspect-ratio="16:9"] {
+  @apply aspect-video;
+}
+
+[data-slot="embed-block-wrapper"][data-aspect-ratio="4:3"] {
+  @apply aspect-4/3;
+}
+
+[data-slot="embed-block-wrapper"][data-aspect-ratio="1:1"] {
+  @apply aspect-square;
+}
+
+[data-slot="embed-block-wrapper"][data-aspect-ratio="auto"] {
+  @apply aspect-auto;
+}
+
+[data-slot="embed-block-iframe"] {
+  @apply absolute inset-0 h-full w-full border-0;
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Aspect ratio classes (for responsive override support) */
+.embed-aspect-16-9 {
+  @apply aspect-video;
+}
+.embed-aspect-4-3 {
+  @apply aspect-4/3;
+}
+.embed-aspect-1-1 {
+  @apply aspect-square;
+}
+.embed-aspect-auto {
+  @apply aspect-auto;
+}

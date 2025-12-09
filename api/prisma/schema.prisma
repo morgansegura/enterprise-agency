@@ -1,0 +1,814 @@
+// Prisma Schema for Multi-Tenant SaaS Platform
+// PostgreSQL database with UUID primary keys
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum TenantTier {
+  CONTENT_EDITOR
+  BUILDER
+}
+
+// ============================================================================
+// CORE TABLES
+// ============================================================================
+
+model Tenant {
+  id           String  @id @default(dbgenerated("gen_random_uuid()"))
+  slug         String  @unique @db.VarChar(255)
+  businessName String  @map("business_name") @db.VarChar(255)
+  businessType String? @map("business_type") @db.VarChar(50)
+
+  // Status & lifecycle
+  status String @default("active") @db.VarChar(20)
+
+  // Feature flags (JSONB)
+  enabledFeatures Json @default("{}") @map("enabled_features") @db.JsonB
+
+  // Tier & pricing (two-tier system: content-editor vs builder)
+  tier TenantTier @default(CONTENT_EDITOR)
+
+  // Design tokens (separate from theme config for token-based design system)
+  designTokens Json? @map("design_tokens") @db.JsonB
+
+  // Theme configuration (JSONB - CSS variables and runtime theme)
+  themeConfig Json @default("{}") @map("theme_config") @db.JsonB
+
+  // Site configuration (JSONB)
+  headerConfig Json? @map("header_config") @db.JsonB
+  footerConfig Json? @map("footer_config") @db.JsonB
+  menusConfig  Json? @map("menus_config") @db.JsonB
+  logosConfig  Json? @map("logos_config") @db.JsonB
+
+  // Plan & limits (JSONB)
+  planLimits Json @default("{}") @map("plan_limits") @db.JsonB
+
+  // Payment provider configuration (JSONB for flexibility)
+  // Stores Stripe, Square, or other provider configs
+  // Structure: { stripe?: { publishableKey, secretKey, webhookSecret }, square?: { applicationId, accessToken, locationId } }
+  paymentConfig Json? @map("payment_config") @db.JsonB
+
+  // Active payment provider
+  paymentProvider String? @map("payment_provider") @db.VarChar(20) // "stripe" | "square" | null
+
+  // Business info
+  logoUrl         String? @map("logo_url")
+  metaDescription String? @map("meta_description")
+  contactEmail    String? @map("contact_email") @db.VarChar(255)
+  contactPhone    String? @map("contact_phone") @db.VarChar(50)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  domains            TenantDomain[]
+  tenantUsers        TenantUser[]
+  assets             Asset[]
+  pages              Page[]
+  posts              Post[]
+  auditLogs          AuditLog[]
+  tenantUsage        TenantUsage[]
+  webhooks           Webhook[]
+  projectAssignments ProjectAssignment[]
+
+  // E-commerce
+  productCategories  ProductCategory[]
+  products           Product[]
+  customers          Customer[]
+  orders             Order[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([tier], map: "idx_tenants_tier")
+  @@index([businessType], map: "idx_tenants_business_type")
+  @@map("tenants")
+}
+
+model TenantDomain {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  domain    String  @unique @db.VarChar(255)
+  isPrimary Boolean @default(false) @map("is_primary")
+
+  // SSL & verification
+  sslStatus         String    @default("pending") @map("ssl_status") @db.VarChar(20)
+  verifiedAt        DateTime? @map("verified_at")
+  verificationToken String?   @map("verification_token") @db.VarChar(255)
+
+  // Environment
+  environment String @default("production") @db.VarChar(20)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId], map: "idx_tenant_domains_tenant")
+  @@index([domain], map: "idx_tenant_domains_domain")
+  @@map("tenant_domains")
+}
+
+// ============================================================================
+// AUTHENTICATION & USERS
+// ============================================================================
+
+model User {
+  id String @id @default(dbgenerated("gen_random_uuid()"))
+
+  // Clerk integration (deprecated - keeping for migration)
+  clerkUserId String? @unique @map("clerk_user_id") @db.VarChar(255)
+
+  // Basic info
+  email     String  @unique @db.VarChar(255)
+  firstName String? @map("first_name") @db.VarChar(100)
+  lastName  String? @map("last_name") @db.VarChar(100)
+  avatarUrl String? @map("avatar_url")
+
+  // Authentication (custom JWT-based)
+  passwordHash String? @map("password_hash") @db.VarChar(255)
+
+  // Email verification
+  emailVerified            Boolean   @default(false) @map("email_verified")
+  verificationToken        String?   @unique @map("verification_token") @db.VarChar(255)
+  verificationTokenExpires DateTime? @map("verification_token_expires")
+
+  // Password reset
+  resetToken        String?   @unique @map("reset_token") @db.VarChar(255)
+  resetTokenExpires DateTime? @map("reset_token_expires")
+
+  // Platform-level access (agency team)
+  isSuperAdmin Boolean @default(false) @map("is_super_admin")
+  agencyRole   String? @map("agency_role") @db.VarChar(50)
+
+  // Status
+  status String @default("active") @db.VarChar(20)
+
+  // Security
+  lastLoginAt  DateTime? @map("last_login_at")
+  lastLoginIp  String?   @map("last_login_ip")
+  tokenVersion Int       @default(0) @map("token_version") // For token revocation
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenantUsers        TenantUser[]
+  uploadedAssets     Asset[]             @relation("UploadedAssets")
+  authoredPages      Page[]
+  authoredPosts      Post[]
+  auditLogs          AuditLog[]
+  invitedUsers       TenantUser[]        @relation("InvitedBy")
+  projectAssignments ProjectAssignment[]
+  customers          Customer[]
+
+  @@index([email])
+  @@index([clerkUserId], map: "idx_users_clerk_id")
+  @@index([status])
+  @@map("users")
+}
+
+model TenantUser {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+  userId   String @map("user_id")
+
+  // Role-based access
+  role String @db.VarChar(50)
+
+  // Granular permissions (JSONB)
+  permissions Json @default("{}") @db.JsonB
+
+  // Invitation tracking
+  invitedBy            String?   @map("invited_by")
+  invitationAcceptedAt DateTime? @map("invitation_accepted_at")
+
+  // Activity
+  lastActiveAt DateTime? @map("last_active_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  tenant  Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inviter User?  @relation("InvitedBy", fields: [invitedBy], references: [id])
+
+  @@unique([tenantId, userId])
+  @@index([tenantId], map: "idx_tenant_users_tenant")
+  @@index([userId], map: "idx_tenant_users_user")
+  @@index([tenantId, role], map: "idx_tenant_users_role")
+  @@map("tenant_users")
+}
+
+// Links agency team members to specific client projects
+model ProjectAssignment {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  userId   String @map("user_id")
+  tenantId String @map("tenant_id")
+
+  // Agency team role on this project
+  role        String @map("role") @db.VarChar(50)
+  permissions Json   @default("{}") @db.JsonB
+
+  // Status
+  status String @default("active") @db.VarChar(20)
+
+  // Timestamps
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  removedAt DateTime? @map("removed_at")
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tenantId])
+  @@index([userId], map: "idx_project_assignments_user")
+  @@index([tenantId], map: "idx_project_assignments_tenant")
+  @@index([tenantId, status], map: "idx_project_assignments_status")
+  @@map("project_assignments")
+}
+
+// ============================================================================
+// FILE STORAGE & ASSETS
+// ============================================================================
+
+model Asset {
+  id         String  @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId   String  @map("tenant_id")
+  uploadedBy String? @map("uploaded_by")
+
+  // File info
+  fileKey   String  @map("file_key") @db.VarChar(500)
+  fileName  String  @map("file_name") @db.VarChar(255)
+  fileType  String  @map("file_type") @db.VarChar(50)
+  mimeType  String? @map("mime_type") @db.VarChar(100)
+  sizeBytes BigInt? @map("size_bytes")
+
+  // Image-specific
+  width  Int?
+  height Int?
+
+  // URLs
+  url          String  @db.Text
+  thumbnailUrl String? @map("thumbnail_url") @db.Text
+
+  // Metadata
+  altText      String? @map("alt_text") @db.Text
+  usageContext String? @map("usage_context") @db.VarChar(50)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  tenant        Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  uploader      User?  @relation("UploadedAssets", fields: [uploadedBy], references: [id])
+  featuredPosts Post[] @relation("FeaturedImage")
+
+  @@index([tenantId], map: "idx_assets_tenant")
+  @@index([tenantId, fileType], map: "idx_assets_type")
+  @@index([tenantId, usageContext], map: "idx_assets_usage")
+  @@index([uploadedBy], map: "idx_assets_uploader")
+  @@map("assets")
+}
+
+// ============================================================================
+// CONTENT MANAGEMENT
+// ============================================================================
+
+model Page {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  slug  String @db.VarChar(255)
+  title String @db.VarChar(255)
+
+  // Content (structured blocks)
+  content Json? @db.JsonB
+
+  // SEO
+  metaTitle       String? @map("meta_title") @db.VarChar(255)
+  metaDescription String? @map("meta_description") @db.Text
+
+  // Author & status
+  authorId String? @map("author_id")
+  status   String  @default("draft") @db.VarChar(20)
+
+  // Template
+  template String? @db.VarChar(50)
+
+  // System page type (null for custom pages)
+  // Values: "home", "privacy-policy", "terms-of-service", "cookie-policy", "coming-soon", "under-construction"
+  pageType     String?  @map("page_type") @db.VarChar(50)
+  isSystemPage Boolean @default(false) @map("is_system_page")
+
+  // Timestamps
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  publishedAt DateTime? @map("published_at")
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  author User?  @relation(fields: [authorId], references: [id])
+
+  @@unique([tenantId, slug])
+  @@index([tenantId], map: "idx_pages_tenant")
+  @@index([tenantId, slug], map: "idx_pages_tenant_slug")
+  @@index([tenantId, status], map: "idx_pages_tenant_status")
+  @@index([authorId], map: "idx_pages_author")
+  @@map("pages")
+}
+
+model Post {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  slug    String  @db.VarChar(255)
+  title   String  @db.VarChar(255)
+  excerpt String? @db.Text
+  content String? @db.Text
+
+  // Media
+  featuredImageId String? @map("featured_image_id")
+
+  // Organization
+  category String?  @db.VarChar(100)
+  tags     String[]
+
+  // SEO
+  metaTitle       String? @map("meta_title") @db.VarChar(255)
+  metaDescription String? @map("meta_description") @db.Text
+
+  // Author & status
+  authorId String? @map("author_id")
+  status   String  @default("draft") @db.VarChar(20)
+
+  // Engagement
+  viewCount Int @default(0) @map("view_count")
+
+  // Timestamps
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  publishedAt DateTime? @map("published_at")
+
+  // Relations
+  tenant        Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  author        User?  @relation(fields: [authorId], references: [id])
+  featuredImage Asset? @relation("FeaturedImage", fields: [featuredImageId], references: [id])
+
+  @@unique([tenantId, slug])
+  @@index([tenantId], map: "idx_posts_tenant")
+  @@index([tenantId, slug], map: "idx_posts_tenant_slug")
+  @@index([tenantId, category], map: "idx_posts_category")
+  @@index([authorId], map: "idx_posts_author")
+  @@map("posts")
+}
+
+// ============================================================================
+// MONITORING & ANALYTICS
+// ============================================================================
+
+model AuditLog {
+  id       String  @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String  @map("tenant_id")
+  userId   String? @map("user_id")
+
+  // Action details
+  action       String  @db.VarChar(50)
+  resourceType String  @map("resource_type") @db.VarChar(50)
+  resourceId   String? @map("resource_id")
+
+  // Change tracking
+  changes Json? @db.JsonB
+
+  // Context
+  metadata  Json?   @db.JsonB
+  ipAddress String? @map("ip_address")
+  userAgent String? @map("user_agent") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User?  @relation(fields: [userId], references: [id])
+
+  @@index([tenantId, createdAt(sort: Desc)], map: "idx_audit_logs_tenant_time")
+  @@index([userId, createdAt(sort: Desc)], map: "idx_audit_logs_user")
+  @@index([resourceType, resourceId], map: "idx_audit_logs_resource")
+  @@index([tenantId, action], map: "idx_audit_logs_action")
+  @@map("audit_logs")
+}
+
+model TenantUsage {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  // Time period
+  periodStart DateTime @map("period_start") @db.Date
+  periodEnd   DateTime @map("period_end") @db.Date
+
+  // Infrastructure usage
+  totalRequests BigInt  @default(0) @map("total_requests")
+  bandwidthMb   Decimal @default(0) @map("bandwidth_mb") @db.Decimal(12, 2)
+  storageMb     Decimal @default(0) @map("storage_mb") @db.Decimal(12, 2)
+
+  // Content metrics
+  productsCount Int @default(0) @map("products_count")
+  pagesCount    Int @default(0) @map("pages_count")
+  postsCount    Int @default(0) @map("posts_count")
+  assetsCount   Int @default(0) @map("assets_count")
+  usersCount    Int @default(0) @map("users_count")
+
+  // Engagement (if analytics enabled)
+  pageViews      BigInt @default(0) @map("page_views")
+  uniqueVisitors BigInt @default(0) @map("unique_visitors")
+
+  // Commerce (if shop enabled)
+  ordersCount Int     @default(0) @map("orders_count")
+  revenue     Decimal @default(0) @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, periodStart])
+  @@index([tenantId, periodStart(sort: Desc)], map: "idx_tenant_usage_tenant_period")
+  @@index([periodStart], map: "idx_tenant_usage_period")
+  @@map("tenant_usage")
+}
+
+// ============================================================================
+// INTEGRATIONS
+// ============================================================================
+
+model Webhook {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  // Webhook config
+  url    String  @db.Text
+  secret String? @db.VarChar(255)
+
+  // Events to listen for
+  events String[]
+
+  // Status
+  status String @default("active") @db.VarChar(20)
+
+  // Reliability tracking
+  lastTriggeredAt DateTime? @map("last_triggered_at")
+  lastSuccessAt   DateTime? @map("last_success_at")
+  lastFailureAt   DateTime? @map("last_failure_at")
+  failureCount    Int       @default(0) @map("failure_count")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant     Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  deliveries WebhookDelivery[]
+
+  @@index([tenantId], map: "idx_webhooks_tenant")
+  @@index([tenantId, status], map: "idx_webhooks_status")
+  @@map("webhooks")
+}
+
+model WebhookDelivery {
+  id        String @id @default(dbgenerated("gen_random_uuid()"))
+  webhookId String @map("webhook_id")
+
+  // Event details
+  eventType String @map("event_type") @db.VarChar(100)
+  payload   Json   @db.JsonB
+
+  // Delivery attempt
+  status       String  @db.VarChar(20)
+  statusCode   Int?    @map("status_code")
+  responseBody String? @map("response_body") @db.Text
+  errorMessage String? @map("error_message") @db.Text
+
+  // Retry logic
+  attempts    Int       @default(0)
+  nextRetryAt DateTime? @map("next_retry_at")
+
+  // Timestamps
+  createdAt   DateTime  @default(now()) @map("created_at")
+  deliveredAt DateTime? @map("delivered_at")
+
+  // Relations
+  webhook Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId, createdAt(sort: Desc)], map: "idx_webhook_deliveries_webhook")
+  @@map("webhook_deliveries")
+}
+
+// ============================================================================
+// E-COMMERCE MODELS
+// ============================================================================
+
+model ProductCategory {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  name        String  @db.VarChar(255)
+  slug        String  @db.VarChar(255)
+  description String? @db.Text
+  imageUrl    String? @map("image_url") @db.Text
+  parentId    String? @map("parent_id")
+
+  // Display order
+  sortOrder Int @default(0) @map("sort_order")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant   Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  parent   ProductCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children ProductCategory[] @relation("CategoryHierarchy")
+  products Product[]
+
+  @@unique([tenantId, slug], map: "uq_product_categories_tenant_slug")
+  @@index([tenantId], map: "idx_product_categories_tenant")
+  @@map("product_categories")
+}
+
+model Product {
+  id         String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId   String @map("tenant_id")
+  categoryId String? @map("category_id")
+
+  // Basic info
+  name        String  @db.VarChar(255)
+  slug        String  @db.VarChar(255)
+  description String? @db.Text
+  shortDescription String? @map("short_description") @db.Text
+
+  // Pricing
+  price       Decimal @db.Decimal(10, 2)
+  compareAtPrice Decimal? @map("compare_at_price") @db.Decimal(10, 2)
+  costPerItem Decimal? @map("cost_per_item") @db.Decimal(10, 2)
+
+  // Inventory
+  sku              String?  @db.VarChar(100)
+  barcode          String?  @db.VarChar(100)
+  trackInventory   Boolean  @default(true) @map("track_inventory")
+  inventoryQty     Int      @default(0) @map("inventory_qty")
+  allowBackorder   Boolean  @default(false) @map("allow_backorder")
+  lowStockThreshold Int?    @default(10) @map("low_stock_threshold")
+
+  // Media
+  images Json? @db.JsonB // Array of image URLs
+
+  // SEO
+  metaTitle       String? @map("meta_title") @db.VarChar(255)
+  metaDescription String? @map("meta_description") @db.Text
+
+  // Product options (for variants)
+  hasVariants Boolean @default(false) @map("has_variants")
+  options     Json?   @db.JsonB // e.g., [{ name: "Size", values: ["S", "M", "L"] }]
+
+  // Status
+  status String @default("draft") @db.VarChar(20) // draft, active, archived
+
+  // Display order
+  sortOrder Int @default(0) @map("sort_order")
+  featured  Boolean @default(false)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant   Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  category ProductCategory?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  variants ProductVariant[]
+  orderItems OrderItem[]
+
+  @@unique([tenantId, slug], map: "uq_products_tenant_slug")
+  @@index([tenantId], map: "idx_products_tenant")
+  @@index([tenantId, status], map: "idx_products_status")
+  @@index([tenantId, categoryId], map: "idx_products_category")
+  @@map("products")
+}
+
+model ProductVariant {
+  id        String @id @default(dbgenerated("gen_random_uuid()"))
+  productId String @map("product_id")
+
+  // Variant details
+  title   String @db.VarChar(255)
+  options Json   @db.JsonB // e.g., { "Size": "M", "Color": "Blue" }
+
+  // Pricing (overrides product price if set)
+  price          Decimal? @db.Decimal(10, 2)
+  compareAtPrice Decimal? @map("compare_at_price") @db.Decimal(10, 2)
+
+  // Inventory
+  sku          String? @db.VarChar(100)
+  barcode      String? @db.VarChar(100)
+  inventoryQty Int     @default(0) @map("inventory_qty")
+
+  // Media
+  imageUrl String? @map("image_url") @db.Text
+
+  // Status
+  available Boolean @default(true)
+
+  // Display order
+  sortOrder Int @default(0) @map("sort_order")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+
+  @@unique([productId, options], map: "uq_product_variants_options")
+  @@index([productId], map: "idx_product_variants_product")
+  @@map("product_variants")
+}
+
+model Customer {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  // Basic info
+  email     String  @db.VarChar(255)
+  firstName String? @map("first_name") @db.VarChar(100)
+  lastName  String? @map("last_name") @db.VarChar(100)
+  phone     String? @db.VarChar(50)
+
+  // Account
+  hasAccount Boolean @default(false) @map("has_account")
+  userId     String? @map("user_id") // Links to User model if they create an account
+
+  // Marketing
+  acceptsMarketing Boolean @default(false) @map("accepts_marketing")
+
+  // Stats
+  totalOrders Int     @default(0) @map("total_orders")
+  totalSpent  Decimal @default(0) @db.Decimal(10, 2) @map("total_spent")
+
+  // Notes
+  note String? @db.Text
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant    Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user      User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  addresses CustomerAddress[]
+  orders    Order[]
+
+  @@unique([tenantId, email], map: "uq_customers_tenant_email")
+  @@index([tenantId], map: "idx_customers_tenant")
+  @@index([userId], map: "idx_customers_user")
+  @@map("customers")
+}
+
+model CustomerAddress {
+  id         String @id @default(dbgenerated("gen_random_uuid()"))
+  customerId String @map("customer_id")
+
+  // Address details
+  firstName   String  @map("first_name") @db.VarChar(100)
+  lastName    String  @map("last_name") @db.VarChar(100)
+  company     String? @db.VarChar(255)
+  address1    String  @db.VarChar(255)
+  address2    String? @db.VarChar(255)
+  city        String  @db.VarChar(100)
+  province    String? @db.VarChar(100) // State/Province
+  country     String  @db.VarChar(2) // ISO 3166-1 alpha-2
+  postalCode  String  @map("postal_code") @db.VarChar(20)
+  phone       String? @db.VarChar(50)
+
+  // Flags
+  isDefault Boolean @default(false) @map("is_default")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  customer         Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  shippingOrders   Order[]  @relation("ShippingAddress")
+  billingOrders    Order[]  @relation("BillingAddress")
+
+  @@index([customerId], map: "idx_customer_addresses_customer")
+  @@map("customer_addresses")
+}
+
+model Order {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+  customerId String @map("customer_id")
+
+  // Order number
+  orderNumber Int @map("order_number") // Auto-incrementing per tenant
+
+  // Contact info
+  email String @db.VarChar(255)
+  phone String? @db.VarChar(50)
+
+  // Addresses
+  shippingAddressId String? @map("shipping_address_id")
+  billingAddressId  String? @map("billing_address_id")
+
+  // Pricing
+  subtotal        Decimal @db.Decimal(10, 2)
+  tax             Decimal @default(0) @db.Decimal(10, 2)
+  shipping        Decimal @default(0) @db.Decimal(10, 2)
+  discount        Decimal @default(0) @db.Decimal(10, 2)
+  total           Decimal @db.Decimal(10, 2)
+  currency        String  @default("USD") @db.VarChar(3)
+
+  // Payment
+  paymentStatus  String @default("pending") @map("payment_status") @db.VarChar(20) // pending, paid, refunded, partially_refunded
+  paymentMethod  String? @map("payment_method") @db.VarChar(50) // stripe, paypal, etc.
+  transactionId  String? @map("transaction_id") @db.VarChar(255)
+
+  // Fulfillment
+  fulfillmentStatus String @default("unfulfilled") @map("fulfillment_status") @db.VarChar(20) // unfulfilled, partial, fulfilled
+  shippingMethod    String? @map("shipping_method") @db.VarChar(100)
+  trackingNumber    String? @map("tracking_number") @db.VarChar(255)
+  trackingUrl       String? @map("tracking_url") @db.Text
+
+  // Status
+  status String @default("open") @db.VarChar(20) // open, completed, cancelled
+
+  // Notes
+  customerNote String? @map("customer_note") @db.Text
+  staffNote    String? @map("staff_note") @db.Text
+
+  // Timestamps
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  completedAt DateTime? @map("completed_at")
+  cancelledAt DateTime? @map("cancelled_at")
+
+  // Relations
+  tenant          Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customer        Customer         @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  shippingAddress CustomerAddress? @relation("ShippingAddress", fields: [shippingAddressId], references: [id], onDelete: SetNull)
+  billingAddress  CustomerAddress? @relation("BillingAddress", fields: [billingAddressId], references: [id], onDelete: SetNull)
+  items           OrderItem[]
+
+  @@unique([tenantId, orderNumber], map: "uq_orders_tenant_number")
+  @@index([tenantId], map: "idx_orders_tenant")
+  @@index([customerId], map: "idx_orders_customer")
+  @@index([tenantId, status], map: "idx_orders_status")
+  @@index([tenantId, paymentStatus], map: "idx_orders_payment_status")
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String @id @default(dbgenerated("gen_random_uuid()"))
+  orderId   String @map("order_id")
+  productId String @map("product_id")
+  variantId String? @map("variant_id")
+
+  // Product details (snapshot at time of order)
+  productTitle  String  @map("product_title") @db.VarChar(255)
+  variantTitle  String? @map("variant_title") @db.VarChar(255)
+  sku           String? @db.VarChar(100)
+
+  // Pricing
+  price    Decimal @db.Decimal(10, 2)
+  quantity Int
+  total    Decimal @db.Decimal(10, 2)
+
+  // Fulfillment
+  fulfilled Boolean @default(false)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product         @relation(fields: [productId], references: [id], onDelete: Restrict)
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([orderId], map: "idx_order_items_order")
+  @@index([productId], map: "idx_order_items_product")
+  @@map("order_items")
+}

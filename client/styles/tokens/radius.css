@@ -1,0 +1,37 @@
+/**
+ * Radius Design Tokens
+ * Base border radius for rounded corners
+ *
+ * Override this per client for sharper/rounder design systems
+ * The scale (sm, md, lg, xl) is derived from this value in globals.css
+ */
+
+:root {
+  /* ===== BASE RADIUS ===== */
+  /* Primary radius value - scale derives from this */
+  --base-radius: 0.625rem; /* 10px */
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Sharp/minimal design (no rounded corners)
+  --base-radius: 0;
+
+  Example 2: Subtle rounding
+  --base-radius: 0.25rem;
+
+  Example 3: Moderate rounding (default)
+  --base-radius: 0.5rem;
+
+  Example 4: Heavy rounding (very rounded)
+  --base-radius: 1rem;
+
+  Example 5: Pill-shaped buttons
+  --base-radius: 9999px;
+
+  Example 6: Custom scale override
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 16px;
+*/

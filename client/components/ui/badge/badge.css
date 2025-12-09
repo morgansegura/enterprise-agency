@@ -1,0 +1,56 @@
+@reference "tailwindcss";
+
+[data-slot="badge"] {
+  @apply inline-flex items-center justify-center border w-fit whitespace-nowrap shrink-0 overflow-hidden transition-[color,box-shadow];
+  @apply focus-visible:border-ring focus-visible:ring-ring/50;
+  @apply aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive;
+
+  /* Design token values */
+  border-radius: var(--badge-border-radius);
+  padding-inline: var(--badge-padding-inline);
+  padding-block: var(--badge-padding-block);
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  font-family: var(--font-body);
+  gap: var(--badge-gap);
+  focus-visible-ring-width: var(--badge-focus-ring-width);
+
+  & > svg {
+    @apply pointer-events-none;
+    width: var(--badge-icon-size);
+    height: var(--badge-icon-size);
+  }
+}
+
+[data-slot="badge"][data-variant="default"] {
+  @apply border-transparent bg-primary text-primary-foreground;
+
+  a& {
+    @apply hover:bg-primary/90;
+  }
+}
+
+[data-slot="badge"][data-variant="secondary"] {
+  @apply border-transparent bg-secondary text-secondary-foreground;
+
+  a& {
+    @apply hover:bg-secondary/90;
+  }
+}
+
+[data-slot="badge"][data-variant="destructive"] {
+  @apply border-transparent bg-destructive text-white;
+  @apply focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60;
+
+  a& {
+    @apply hover:bg-destructive/90;
+  }
+}
+
+[data-slot="badge"][data-variant="outline"] {
+  @apply text-foreground;
+
+  a& {
+    @apply hover:bg-accent hover:text-accent-foreground;
+  }
+}

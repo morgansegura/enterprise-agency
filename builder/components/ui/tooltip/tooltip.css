@@ -1,0 +1,113 @@
+@reference "tailwindcss";
+
+@keyframes tooltip-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tooltip-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes tooltip-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes tooltip-zoom-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes tooltip-slide-in-from-top {
+  from {
+    transform: translateY(-0.5rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes tooltip-slide-in-from-bottom {
+  from {
+    transform: translateY(0.5rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes tooltip-slide-in-from-left {
+  from {
+    transform: translateX(-0.5rem);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes tooltip-slide-in-from-right {
+  from {
+    transform: translateX(0.5rem);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+[data-slot="tooltip-content"] {
+  @apply z-50 w-fit rounded-md px-3 py-1.5 text-xs text-balance;
+  @apply bg-(--foreground) text-(--background);
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+}
+
+[data-slot="tooltip-content"][data-state="open"] {
+  animation: tooltip-zoom-in 150ms ease-out;
+}
+
+[data-slot="tooltip-content"][data-state="closed"] {
+  animation: tooltip-zoom-out 150ms ease-in;
+}
+
+[data-slot="tooltip-content"][data-state="open"][data-side="bottom"] {
+  animation: tooltip-zoom-in 150ms ease-out, tooltip-slide-in-from-top 150ms ease-out;
+}
+
+[data-slot="tooltip-content"][data-state="open"][data-side="left"] {
+  animation: tooltip-zoom-in 150ms ease-out, tooltip-slide-in-from-right 150ms ease-out;
+}
+
+[data-slot="tooltip-content"][data-state="open"][data-side="right"] {
+  animation: tooltip-zoom-in 150ms ease-out, tooltip-slide-in-from-left 150ms ease-out;
+}
+
+[data-slot="tooltip-content"][data-state="open"][data-side="top"] {
+  animation: tooltip-zoom-in 150ms ease-out, tooltip-slide-in-from-bottom 150ms ease-out;
+}
+
+.tooltip-arrow {
+  @apply z-50 size-2.5 rotate-45 rounded-[2px];
+  @apply bg-(--foreground) fill-(--foreground);
+  translate: 0 calc(-50% - 2px);
+}

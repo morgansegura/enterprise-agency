@@ -1,0 +1,105 @@
+/**
+ * Color Design Tokens
+ * Multi-layered system for client-specific brand theming
+ *
+ * Layer 1: Primitive colors (brand-specific OKLCH values)
+ * Layer 2: Semantic color mappings (light mode)
+ * Layer 3: Semantic color mappings (dark mode)
+ *
+ * Override Layer 1 per client for brand customization
+ * Override Layer 2/3 for custom semantic mappings
+ */
+
+:root {
+  /* ===== LAYER 1: PRIMITIVE BRAND COLORS ===== */
+  /* Base brand color palette - override these per client */
+
+  /* Primary brand color scale */
+  --brand-primary-50: oklch(0.985 0.001 106.423);
+  --brand-primary-100: oklch(0.97 0.001 106.424);
+  --brand-primary-200: oklch(0.923 0.003 48.717);
+  --brand-primary-500: oklch(0.216 0.006 56.043); /* Main brand color */
+  --brand-primary-600: oklch(0.268 0.007 34.298);
+  --brand-primary-900: oklch(0.147 0.004 49.25);
+
+  /* Secondary/accent brand color scale */
+  --brand-secondary-200: oklch(0.97 0.001 106.424);
+  --brand-secondary-500: oklch(0.553 0.013 58.071);
+  --brand-secondary-700: oklch(0.709 0.01 56.259);
+
+  /* Neutral color scale (grays) */
+  --neutral-0: oklch(1 0 0); /* Pure white */
+  --neutral-50: oklch(0.985 0.001 106.423);
+  --neutral-100: oklch(0.97 0.001 106.424);
+  --neutral-200: oklch(0.923 0.003 48.717);
+  --neutral-500: oklch(0.553 0.013 58.071);
+  --neutral-700: oklch(0.709 0.01 56.259);
+  --neutral-800: oklch(0.268 0.007 34.298);
+  --neutral-900: oklch(0.216 0.006 56.043);
+  --neutral-950: oklch(0.147 0.004 49.25);
+
+  /* Status colors */
+  --status-destructive-light: oklch(0.577 0.245 27.325);
+  --status-destructive-dark: oklch(0.704 0.191 22.216);
+
+  /* ===== LAYER 2: SEMANTIC COLOR MAPPINGS (LIGHT MODE) ===== */
+  /* These reference Layer 1 primitive colors */
+
+  /* Base colors */
+  --background: var(--neutral-0);
+  --foreground: var(--neutral-950);
+
+  /* Interactive elements */
+  --primary: var(--brand-primary-500);
+  --primary-foreground: var(--brand-primary-50);
+
+  --secondary: var(--brand-primary-100);
+  --secondary-foreground: var(--brand-primary-500);
+
+  --accent: var(--brand-primary-100);
+  --accent-foreground: var(--brand-primary-500);
+
+  /* Subtle/muted elements */
+  --muted: var(--brand-primary-100);
+  --muted-foreground: var(--brand-secondary-500);
+}
+
+/* ===== LAYER 3: DARK MODE SEMANTIC MAPPINGS ===== */
+.dark {
+  /* Base colors */
+  --background: var(--neutral-950);
+  --foreground: var(--brand-primary-50);
+
+  /* Interactive elements */
+  --primary: var(--neutral-200);
+  --primary-foreground: var(--brand-primary-500);
+
+  --secondary: var(--neutral-800);
+  --secondary-foreground: var(--brand-primary-50);
+
+  --accent: var(--neutral-800);
+  --accent-foreground: var(--brand-primary-50);
+
+  /* Subtle/muted elements */
+  --muted: var(--neutral-800);
+  --muted-foreground: var(--brand-secondary-700);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Change brand colors
+  --brand-primary-500: oklch(0.5 0.2 220); // Blue brand
+  --brand-primary-900: oklch(0.2 0.15 220); // Darker blue
+
+  Example 2: Custom accent color
+  --brand-secondary-500: oklch(0.7 0.18 30); // Orange accent
+
+  Example 3: Warmer neutral palette
+  --neutral-950: oklch(0.15 0.01 40); // Warm dark gray
+
+  Example 4: Override semantic mapping
+  --primary: var(--brand-secondary-500); // Use secondary as primary
+
+  Example 5: Custom section alternating colors
+  --section-background: var(--neutral-50); // Light gray sections
+*/

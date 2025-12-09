@@ -1,0 +1,52 @@
+{
+  "name": "agency-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Professional Agency Platform - Multi-tenant website builder with token-based design system",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --stream run dev",
+    "dev:client": "pnpm --filter client run dev -p 4002",
+    "dev:builder": "pnpm --filter builder run dev -p 4001",
+    "dev:api": "pnpm --filter api run dev -p 4000",
+    "build": "pnpm --recursive run build",
+    "build:client": "pnpm --filter client run build",
+    "build:builder": "pnpm --filter builder run build",
+    "build:api": "pnpm --filter api run build",
+    "test": "pnpm --recursive run test",
+    "test:client": "pnpm --filter client run test",
+    "test:builder": "pnpm --filter builder run test",
+    "test:api": "pnpm --filter api run test",
+    "lint": "pnpm --recursive run lint",
+    "lint:fix": "pnpm --recursive run lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "typecheck": "pnpm --recursive run typecheck",
+    "verify": "pnpm run format && pnpm run lint && pnpm run typecheck && pnpm run test",
+    "clean": "pnpm --recursive run clean && rm -rf node_modules",
+    "db:migrate": "pnpm --filter api run db:migrate",
+    "db:push": "pnpm --filter api run db:push",
+    "db:seed": "pnpm --filter api run db:seed",
+    "db:studio": "pnpm --filter api run db:studio",
+    "db:reset": "pnpm --filter api run db:reset"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "prettier": "^3.3.2",
+    "typescript": "^5.5.0"
+  },
+  "keywords": [
+    "multi-tenant",
+    "cms",
+    "nextjs",
+    "nestjs",
+    "prisma",
+    "monorepo",
+    "web-and-funnel"
+  ],
+  "author": "Morgan Segura",
+  "license": "UNLICENSED"
+}

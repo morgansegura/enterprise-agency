@@ -1,0 +1,108 @@
+@reference "tailwindcss";
+
+/* Editor Container */
+[data-slot="block-editor"] {
+  @apply w-full;
+}
+
+/* Editor Loading State */
+[data-slot="editor-loading"] {
+  @apply flex items-center justify-center p-8 text-(--muted-foreground);
+}
+
+/* Editor Content */
+.block-editor-content {
+  @apply min-h-[200px] w-full rounded-lg border bg-(--background) p-4;
+  @apply focus:outline-none focus:ring-2 focus:ring-(--ring) focus:ring-offset-2;
+}
+
+/* Placeholder */
+.block-editor-content .ProseMirror p.is-editor-empty:first-child::before {
+  @apply text-(--muted-foreground);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Typography */
+.block-editor-content .ProseMirror h1 {
+  @apply text-4xl font-bold mb-4;
+}
+
+.block-editor-content .ProseMirror h2 {
+  @apply text-3xl font-bold mb-3;
+}
+
+.block-editor-content .ProseMirror h3 {
+  @apply text-2xl font-bold mb-2;
+}
+
+.block-editor-content .ProseMirror h4 {
+  @apply text-xl font-bold mb-2;
+}
+
+.block-editor-content .ProseMirror h5 {
+  @apply text-lg font-bold mb-2;
+}
+
+.block-editor-content .ProseMirror h6 {
+  @apply text-base font-bold mb-2;
+}
+
+.block-editor-content .ProseMirror p {
+  @apply mb-4;
+}
+
+.block-editor-content .ProseMirror ul,
+.block-editor-content .ProseMirror ol {
+  @apply mb-4 pl-6;
+}
+
+.block-editor-content .ProseMirror ul {
+  @apply list-disc;
+}
+
+.block-editor-content .ProseMirror ol {
+  @apply list-decimal;
+}
+
+.block-editor-content .ProseMirror li {
+  @apply mb-1;
+}
+
+.block-editor-content .ProseMirror blockquote {
+  @apply border-l-4 border-(--border) pl-4 italic my-4;
+}
+
+.block-editor-content .ProseMirror code {
+  @apply bg-(--muted) px-1.5 py-0.5 rounded text-sm;
+}
+
+.block-editor-content .ProseMirror pre {
+  @apply bg-(--muted) p-4 rounded-lg mb-4 overflow-x-auto;
+}
+
+.block-editor-content .ProseMirror pre code {
+  @apply bg-transparent p-0;
+}
+
+/* Links */
+.block-editor-content .ProseMirror .editor-link {
+  @apply text-(--primary) underline cursor-pointer;
+}
+
+.block-editor-content .ProseMirror .editor-link:hover {
+  @apply text-(--primary)/80;
+}
+
+/* Images */
+.block-editor-content .ProseMirror img {
+  @apply max-w-full h-auto rounded-lg;
+}
+
+/* Selection */
+.block-editor-content .ProseMirror::selection,
+.block-editor-content .ProseMirror *::selection {
+  @apply bg-(--accent);
+}

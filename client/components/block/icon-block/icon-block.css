@@ -1,0 +1,65 @@
+@reference "tailwindcss";
+
+[data-slot="icon-block"] {
+  @apply flex items-center justify-center gap-2;
+}
+
+[data-slot="icon-block"][data-position="top"] {
+  @apply flex-col;
+}
+
+[data-slot="icon-block"][data-position="bottom"] {
+  @apply flex-col-reverse;
+}
+
+[data-slot="icon-block"][data-position="left"] {
+  @apply flex-row;
+}
+
+[data-slot="icon-block"][data-position="right"] {
+  @apply flex-row-reverse;
+}
+
+[data-slot="icon-block-icon"] {
+  @apply flex-shrink-0;
+}
+
+[data-slot="icon-block"][data-size="sm"] [data-slot="icon-block-icon"] {
+  @apply text-lg;
+}
+
+[data-slot="icon-block"][data-size="md"] [data-slot="icon-block-icon"] {
+  @apply text-2xl;
+}
+
+[data-slot="icon-block"][data-size="lg"] [data-slot="icon-block-icon"] {
+  @apply text-4xl;
+}
+
+[data-slot="icon-block"][data-size="xl"] [data-slot="icon-block-icon"] {
+  @apply text-6xl;
+}
+
+[data-slot="icon-block-text"] {
+  @apply text-sm text-(--foreground);
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Size classes (for responsive override support) */
+.icon-size-sm [data-slot="icon-block-icon"] {
+  @apply text-lg;
+}
+.icon-size-md [data-slot="icon-block-icon"] {
+  @apply text-2xl;
+}
+.icon-size-lg [data-slot="icon-block-icon"] {
+  @apply text-4xl;
+}
+.icon-size-xl [data-slot="icon-block-icon"] {
+  @apply text-6xl;
+}

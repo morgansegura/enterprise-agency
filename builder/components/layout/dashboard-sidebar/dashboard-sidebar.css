@@ -1,0 +1,35 @@
+@reference "tailwindcss";
+
+.sidebar-header-icon {
+  @apply flex aspect-square size-8 items-center justify-center rounded-lg bg-(--color-sidebar-primary) text-(--color-sidebar-primary-foreground);
+}
+
+.sidebar-header-text {
+  @apply grid flex-1 text-left text-sm leading-tight;
+}
+
+.sidebar-header-title {
+  @apply truncate font-semibold;
+  @apply font-(family-name:--font-roboto-slab);
+}
+
+.sidebar-header-subtitle {
+  @apply truncate text-xs;
+}
+
+.sidebar-footer-user {
+  @apply grid flex-1 text-left text-sm leading-tight px-2 py-1.5;
+}
+
+.sidebar-footer-user-name {
+  @apply truncate font-semibold;
+}
+
+.sidebar-footer-user-email {
+  @apply truncate text-xs;
+  @apply text-(--muted-foreground);
+}
+
+.sidebar-footer-user-badge {
+  @apply inline-block px-2 py-0.5 mt-1 text-xs font-medium rounded-full bg-(--sidebar-accent) text-(--sidebar-accent-foreground) w-fit;
+}

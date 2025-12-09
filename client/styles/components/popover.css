@@ -1,0 +1,36 @@
+/**
+ * Popover Component Color Tokens
+ * Dropdown/tooltip elevated surface theming
+ *
+ * Override these per client for custom popover appearance
+ */
+
+:root {
+  /* Popover - light mode */
+  --popover: var(--neutral-0);
+  --popover-foreground: var(--neutral-950);
+}
+
+/* Popover - dark mode */
+.dark {
+  --popover: var(--neutral-900);
+  --popover-foreground: var(--brand-primary-50);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Higher contrast popover
+  --popover: var(--neutral-950);
+  --popover-foreground: var(--neutral-0);
+
+  Example 2: Blurred backdrop popover
+  --popover: oklch(1 0 0 / 95%);
+
+  Example 3: Brand-colored popover
+  --popover: var(--brand-primary-500);
+  --popover-foreground: var(--brand-primary-50);
+
+  Example 4: Match card styling
+  --popover: var(--card);
+  --popover-foreground: var(--card-foreground);
+*/

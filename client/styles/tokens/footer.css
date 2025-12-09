@@ -1,0 +1,254 @@
+@reference "tailwindcss";
+
+/**
+ * Footer Token-Based Styles
+ * All styling driven by CSS custom properties
+ * Zero hardcoded values - complete token control
+ */
+
+/* ==========================================
+ * BASE FOOTER
+ * ========================================== */
+
+.footer-renderer {
+  @apply w-full;
+  background: var(--footer-bg);
+  border-top: var(--footer-border-width) solid var(--footer-border-color-top);
+}
+
+/* ==========================================
+ * FOOTER CONTAINER
+ * ========================================== */
+
+.footer-container {
+  @apply mx-auto;
+  max-width: var(--footer-max-width-container);
+  padding-left: var(--footer-padding-x);
+  padding-right: var(--footer-padding-x);
+  padding-top: var(--footer-padding-y);
+  padding-bottom: var(--footer-padding-y);
+}
+
+/* Max width variants */
+.footer-renderer[data-max-width="narrow"] .footer-container {
+  max-width: var(--footer-max-width-narrow);
+}
+
+.footer-renderer[data-max-width="full"] .footer-container {
+  max-width: var(--footer-max-width-full);
+}
+
+/* Mobile padding */
+@media (max-width: 768px) {
+  .footer-container {
+    padding-left: var(--footer-padding-x-mobile);
+    padding-right: var(--footer-padding-x-mobile);
+    padding-top: var(--footer-padding-y-mobile);
+    padding-bottom: var(--footer-padding-y-mobile);
+  }
+}
+
+/* ==========================================
+ * FOOTER SECTIONS (Columns)
+ * ========================================== */
+
+.footer-sections {
+  @apply grid;
+  gap: var(--footer-gap-sections);
+  grid-template-columns: repeat(auto-fit, minmax(var(--footer-columns-min-width), 1fr));
+}
+
+@media (max-width: 768px) {
+  .footer-sections {
+    gap: var(--footer-gap-mobile);
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-section {
+  @apply flex flex-col;
+  gap: var(--footer-section-gap);
+}
+
+/* ==========================================
+ * SECTION HEADINGS
+ * ========================================== */
+
+.footer-heading {
+  font-size: var(--footer-heading-font-size);
+  font-weight: var(--footer-heading-font-weight);
+  line-height: var(--footer-heading-line-height);
+  color: var(--footer-heading-color);
+  margin-bottom: var(--footer-heading-margin-bottom);
+  text-transform: var(--footer-heading-text-transform);
+}
+
+/* ==========================================
+ * LINKS
+ * ========================================== */
+
+.footer-link {
+  @apply inline-block no-underline cursor-pointer;
+  font-size: var(--footer-link-font-size);
+  font-weight: var(--footer-link-font-weight);
+  line-height: var(--footer-link-line-height);
+  color: var(--footer-link-color);
+  text-decoration: var(--footer-link-text-decoration);
+  transition-property: color, text-decoration;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.footer-link:hover {
+  color: var(--footer-link-color-hover);
+  text-decoration: var(--footer-link-text-decoration-hover);
+}
+
+/* ==========================================
+ * TEXT (Copyright, descriptions)
+ * ========================================== */
+
+.footer-text {
+  font-size: var(--footer-text-font-size);
+  font-weight: var(--footer-text-font-weight);
+  line-height: var(--footer-text-line-height);
+  color: var(--footer-text-color);
+}
+
+/* ==========================================
+ * SOCIAL LINKS
+ * ========================================== */
+
+.footer-social {
+  @apply flex items-center;
+  gap: var(--footer-social-gap);
+}
+
+.footer-social-link {
+  @apply inline-flex items-center justify-center no-underline cursor-pointer;
+  width: var(--footer-social-icon-size);
+  height: var(--footer-social-icon-size);
+  padding: var(--footer-social-padding);
+  color: var(--footer-social-color);
+  background: var(--footer-social-bg);
+  border-radius: var(--footer-social-border-radius);
+  transition-property: color, background;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.footer-social-link:hover {
+  color: var(--footer-social-color-hover);
+  background: var(--footer-social-bg-hover);
+}
+
+.footer-social-icon {
+  width: var(--footer-social-icon-size);
+  height: var(--footer-social-icon-size);
+}
+
+/* ==========================================
+ * BOTTOM BAR (Copyright section)
+ * ========================================== */
+
+.footer-bottom-bar {
+  @apply w-full;
+  padding-top: var(--footer-bottom-bar-padding-y);
+  padding-bottom: var(--footer-bottom-bar-padding-y);
+  background: var(--footer-bottom-bar-bg);
+  border-top: var(--footer-bottom-bar-border-width) solid
+    var(--footer-bottom-bar-border-color);
+}
+
+.footer-bottom-bar-container {
+  @apply mx-auto flex items-center justify-between flex-wrap gap-4;
+  max-width: var(--footer-max-width-container);
+  padding-left: var(--footer-padding-x);
+  padding-right: var(--footer-padding-x);
+}
+
+@media (max-width: 768px) {
+  .footer-bottom-bar-container {
+    padding-left: var(--footer-padding-x-mobile);
+    padding-right: var(--footer-padding-x-mobile);
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.footer-copyright {
+  font-size: var(--footer-bottom-bar-font-size);
+  font-weight: var(--footer-bottom-bar-font-weight);
+  color: var(--footer-bottom-bar-color);
+}
+
+/* ==========================================
+ * CTA SECTION (Newsletter, etc.)
+ * ========================================== */
+
+.footer-cta {
+  @apply w-full;
+  padding-top: var(--footer-cta-padding-y);
+  padding-bottom: var(--footer-cta-padding-y);
+  background: var(--footer-cta-bg);
+  border-radius: var(--footer-cta-border-radius);
+  margin-bottom: var(--footer-section-gap);
+}
+
+.footer-cta-container {
+  @apply text-center;
+}
+
+.footer-cta-title {
+  font-size: var(--footer-cta-title-font-size);
+  font-weight: var(--footer-cta-title-font-weight);
+  color: var(--footer-cta-title-color);
+  margin-bottom: var(--footer-cta-title-margin-bottom);
+}
+
+.footer-cta-description {
+  font-size: var(--footer-cta-description-font-size);
+  color: var(--footer-cta-description-color);
+  margin-bottom: var(--footer-cta-description-margin-bottom);
+}
+
+/* ==========================================
+ * TEMPLATE VARIATIONS
+ * ========================================== */
+
+/* Centered Template */
+.footer-renderer[data-template="centered"] .footer-container {
+  @apply text-center;
+  text-align: var(--footer-template-centered-text-align);
+}
+
+.footer-renderer[data-template="centered"] .footer-logo {
+  @apply mx-auto;
+  margin-bottom: var(--footer-template-centered-logo-margin-bottom);
+}
+
+.footer-renderer[data-template="centered"] .footer-sections {
+  @apply flex flex-wrap justify-center;
+}
+
+.footer-renderer[data-template="centered"] .footer-social {
+  @apply justify-center;
+}
+
+/* Stacked Template */
+.footer-renderer[data-template="stacked"] .footer-sections {
+  @apply flex flex-col;
+  gap: var(--footer-template-stacked-section-gap);
+  grid-template-columns: none;
+}
+
+/* Minimal Template */
+.footer-renderer[data-template="minimal"] .footer-container {
+  padding-top: var(--footer-template-minimal-padding-y);
+  padding-bottom: var(--footer-template-minimal-padding-y);
+}
+
+.footer-renderer[data-template="minimal"] .footer-sections {
+  @apply flex flex-row items-center justify-between flex-wrap;
+  grid-template-columns: none;
+}

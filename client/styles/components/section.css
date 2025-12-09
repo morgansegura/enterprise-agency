@@ -1,0 +1,35 @@
+/**
+ * Section Component Color Tokens
+ * Section block background theming for alternating sections
+ *
+ * Override these per client for custom section appearance
+ */
+
+:root {
+  /* Section - light mode */
+  --section-background: var(--neutral-0);
+  --section-foreground: var(--neutral-950);
+}
+
+/* Section - dark mode */
+.dark {
+  --section-background: var(--neutral-900);
+  --section-foreground: var(--brand-primary-50);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Subtle alternating sections (light mode)
+  --section-background: var(--neutral-50); // Slight gray tint
+
+  Example 2: Brand-colored sections
+  --section-background: var(--brand-primary-50);
+  --section-foreground: var(--brand-primary-900);
+
+  Example 3: High contrast sections
+  --section-background: var(--brand-primary-500);
+  --section-foreground: var(--brand-primary-50);
+
+  Example 4: Transparent sections with pattern
+  --section-background: transparent;
+*/

@@ -1,0 +1,57 @@
+@reference "tailwindcss";
+
+[data-slot="dialog-overlay"] {
+  @apply data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50;
+  background-color: var(--dialog-overlay-bg);
+}
+
+[data-slot="dialog-content"] {
+  @apply bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] border duration-200;
+
+  /* Design token values */
+  gap: var(--dialog-content-gap);
+  border-radius: var(--dialog-content-border-radius);
+  padding: var(--dialog-content-padding);
+  box-shadow: var(--dialog-content-shadow);
+
+  @media (min-width: theme(screens.sm)) {
+    max-width: var(--dialog-content-max-width);
+  }
+}
+
+[data-slot="dialog-close"] {
+  @apply ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute opacity-70 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0;
+
+  /* Design token values */
+  top: var(--dialog-close-top);
+  right: var(--dialog-close-right);
+  border-radius: var(--dialog-close-border-radius);
+  focus-ring-width: var(--dialog-close-focus-ring-width);
+  focus-ring-offset-width: var(--dialog-close-focus-ring-offset);
+
+  &:not([class*='size-']) svg {
+    width: var(--dialog-close-icon-size);
+    height: var(--dialog-close-icon-size);
+  }
+}
+
+[data-slot="dialog-header"] {
+  @apply flex flex-col text-center sm:text-left;
+  gap: var(--dialog-header-gap);
+}
+
+[data-slot="dialog-footer"] {
+  @apply flex flex-col-reverse sm:flex-row sm:justify-end;
+  gap: var(--dialog-footer-gap);
+}
+
+[data-slot="dialog-title"] {
+  @apply leading-none;
+  font-size: var(--dialog-title-font-size);
+  font-weight: var(--dialog-title-font-weight);
+}
+
+[data-slot="dialog-description"] {
+  @apply text-muted-foreground;
+  font-size: var(--dialog-description-font-size);
+}

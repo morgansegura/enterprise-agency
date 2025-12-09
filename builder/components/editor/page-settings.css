@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.page-settings {
+  @apply p-4;
+}
+
+.page-settings-section {
+  @apply mb-6;
+}
+
+.page-settings-section:last-child {
+  @apply mb-0;
+}
+
+.page-settings-section-title {
+  @apply text-xs uppercase font-semibold mb-4 border-b inline-flex tracking-wide text-(--muted-foreground);
+}
+
+.page-settings-field {
+  @apply mb-4;
+}
+
+.page-settings-field:last-child {
+  @apply mb-0;
+}

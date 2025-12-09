@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+[data-slot="button-block"] {
+  /* Inherits all styling from Button UI component */
+  /* Additional block-specific styles can be added here */
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Size classes (for responsive override support) */
+.btn-size-sm {
+  @apply h-8 px-3 text-xs rounded-md;
+}
+.btn-size-default {
+  @apply h-9 px-4 py-2;
+}
+.btn-size-lg {
+  @apply h-10 px-8 rounded-md;
+}
+
+/* Width classes (for responsive override support) */
+.btn-full-width {
+  @apply w-full;
+}
+.btn-auto-width {
+  @apply w-auto;
+}

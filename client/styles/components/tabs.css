@@ -1,0 +1,53 @@
+/**
+ * Tabs Component Tokens
+ * Tabbed interface theming
+ *
+ * Override these per client for custom tabs appearance
+ */
+
+:root {
+  /* Tabs structural tokens */
+  --tabs-gap: var(--space-2);
+  --tabs-list-height: var(--space-9);
+  --tabs-list-padding: 3px;
+  --tabs-list-border-radius: var(--radius-lg);
+
+  --tabs-trigger-gap: var(--space-1\.5);
+  --tabs-trigger-border-radius: var(--radius-md);
+  --tabs-trigger-padding-inline: var(--space-2);
+  --tabs-trigger-padding-block: var(--space-1);
+  --tabs-trigger-font-size: var(--text-size-sm);
+  --tabs-trigger-font-weight: var(--font-weight-medium);
+  --tabs-trigger-icon-size: var(--space-4);
+  --tabs-trigger-focus-ring-width: 3px;
+  --tabs-trigger-focus-outline-width: 1px;
+
+  /* Tabs color tokens */
+  --tabs-list-bg: var(--muted);
+  --tabs-list-foreground: var(--muted-foreground);
+  --tabs-trigger-foreground: var(--foreground);
+  --tabs-trigger-active-bg: var(--background);
+  --tabs-trigger-active-shadow: var(--shadow-sm);
+}
+
+.dark {
+  --tabs-trigger-foreground: var(--muted-foreground);
+  --tabs-trigger-active-foreground: var(--foreground);
+  --tabs-trigger-active-border: var(--input);
+  --tabs-trigger-active-bg: var(--input);
+  --tabs-trigger-active-bg-opacity: 0.3;
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger tabs
+  --tabs-list-height: var(--space-10);
+  --tabs-trigger-padding-inline: var(--space-3);
+
+  Example 2: More spacing
+  --tabs-gap: var(--space-4);
+
+  Example 3: Custom colors
+  --tabs-trigger-active-bg: var(--brand-primary-500);
+  --tabs-trigger-active-foreground: white;
+*/

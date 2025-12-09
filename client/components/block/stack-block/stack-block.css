@@ -1,0 +1,84 @@
+@reference "tailwindcss";
+
+[data-slot="stack-block"] {
+  @apply flex flex-col;
+}
+
+/* Gap sizes - using fluid spacing tokens */
+[data-slot="stack-block"][data-gap="none"] {
+  gap: 0;
+}
+
+[data-slot="stack-block"][data-gap="xs"] {
+  gap: var(--space-2);
+}
+
+[data-slot="stack-block"][data-gap="sm"] {
+  gap: var(--spacing-block-sm);
+}
+
+[data-slot="stack-block"][data-gap="md"] {
+  gap: var(--spacing-block-md);
+}
+
+[data-slot="stack-block"][data-gap="lg"] {
+  gap: var(--spacing-block-lg);
+}
+
+[data-slot="stack-block"][data-gap="xl"] {
+  gap: var(--spacing-container);
+}
+
+[data-slot="stack-block"][data-gap="2xl"] {
+  gap: var(--spacing-section-sm);
+}
+
+/* Align items */
+[data-slot="stack-block"][data-align="start"] {
+  @apply items-start;
+}
+
+[data-slot="stack-block"][data-align="center"] {
+  @apply items-center;
+}
+
+[data-slot="stack-block"][data-align="end"] {
+  @apply items-end;
+}
+
+[data-slot="stack-block"][data-align="stretch"] {
+  @apply items-stretch;
+}
+
+[data-slot="stack-block"][data-align="baseline"] {
+  @apply items-baseline;
+}
+
+/* ==============================================
+   Responsive Class Overrides
+   These classes can be combined with Tailwind
+   responsive prefixes (md:, lg:) for per-breakpoint control
+   ============================================== */
+
+/* Gap classes (for responsive override support) */
+.stack-gap-none {
+  gap: 0;
+}
+.stack-gap-xs {
+  gap: var(--space-2);
+}
+.stack-gap-sm {
+  gap: var(--spacing-block-sm);
+}
+.stack-gap-md {
+  gap: var(--spacing-block-md);
+}
+.stack-gap-lg {
+  gap: var(--spacing-block-lg);
+}
+.stack-gap-xl {
+  gap: var(--spacing-container);
+}
+.stack-gap-2xl {
+  gap: var(--spacing-section-sm);
+}

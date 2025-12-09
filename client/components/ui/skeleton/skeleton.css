@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+
+[data-slot="skeleton"] {
+  @apply bg-accent animate-pulse;
+  border-radius: var(--skeleton-border-radius);
+}

@@ -1,0 +1,33 @@
+@reference "tailwindcss";
+
+[data-slot="input"] {
+  @apply h-9 w-full min-w-0 rounded-md border border-(--input) bg-transparent px-3 py-1 text-base shadow-xs transition-all outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
+}
+
+[data-slot="input"]::placeholder {
+  @apply text-(--muted-foreground);
+}
+
+[data-slot="input"]::selection {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+
+[data-slot="input"]:focus-visible {
+  @apply border-(--ring) ring-(--ring)/50 ring-3;
+}
+
+[data-slot="input"][aria-invalid="true"] {
+  @apply ring-(--destructive)/20 border-(--destructive);
+}
+
+[data-slot="input"]::file-selector-button {
+  @apply inline-flex h-7 border-0 bg-transparent text-sm font-medium text-(--foreground);
+}
+
+.dark [data-slot="input"] {
+  @apply bg-(--input)/30;
+}
+
+.dark [data-slot="input"][aria-invalid="true"] {
+  @apply ring-(--destructive)/40;
+}

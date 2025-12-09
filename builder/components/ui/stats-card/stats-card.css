@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+
+.stats-card {
+  @apply bg-(--card) overflow-hidden shadow rounded-lg border border-(--border);
+}
+
+.stats-card-content {
+  @apply p-5;
+}
+
+.stats-card-icon-wrapper {
+  @apply flex items-center;
+}
+
+.stats-card-icon {
+  @apply shrink-0 rounded-md p-3;
+}
+
+.stats-card-icon-blue {
+  @apply bg-blue-500;
+}
+
+.stats-card-icon-green {
+  @apply bg-green-500;
+}
+
+.stats-card-icon-purple {
+  @apply bg-purple-500;
+}
+
+.stats-card-icon-orange {
+  @apply bg-orange-500;
+}
+
+.stats-card-icon-svg {
+  @apply h-6 w-6 text-white;
+}
+
+.stats-card-details {
+  @apply ml-5 w-0 flex-1;
+}
+
+.stats-card-label {
+  @apply text-sm font-medium text-(--muted-foreground) truncate;
+}
+
+.stats-card-value {
+  @apply text-3xl font-semibold text-(--foreground);
+}

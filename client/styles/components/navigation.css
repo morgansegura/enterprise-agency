@@ -1,0 +1,104 @@
+/**
+ * Navigation Component Tokens
+ * Menu and navigation theming
+ *
+ * Override these per client for custom navigation appearance
+ */
+
+:root {
+  /* Navigation structural tokens */
+  --nav-gap: var(--space-6);
+  --nav-item-padding-inline: var(--space-3);
+  --nav-item-padding-block: var(--space-2);
+  --nav-item-border-radius: var(--radius-md);
+  --nav-item-gap: var(--space-2);
+
+  /* Typography */
+  --nav-font-size: var(--text-size-base);
+  --nav-font-weight: var(--font-weight-medium);
+  --nav-line-height: 1.5;
+
+  /* Icon */
+  --nav-icon-size: var(--space-5);
+
+  /* Badge */
+  --nav-badge-font-size: var(--text-size-xs);
+  --nav-badge-padding-inline: var(--space-1\.5);
+  --nav-badge-padding-block: var(--space-0\.5);
+  --nav-badge-border-radius: var(--radius-full);
+
+  /* Dropdown tokens */
+  --nav-dropdown-min-width: 12rem;
+  --nav-dropdown-padding: var(--space-2);
+  --nav-dropdown-border-radius: var(--radius-lg);
+  --nav-dropdown-shadow: var(--shadow-lg);
+  --nav-dropdown-offset: var(--space-2);
+  --nav-dropdown-z-index: 100;
+
+  /* Dropdown item */
+  --nav-dropdown-item-padding-inline: var(--space-3);
+  --nav-dropdown-item-padding-block: var(--space-2);
+  --nav-dropdown-item-border-radius: var(--radius-sm);
+  --nav-dropdown-item-gap: var(--space-2);
+
+  /* Navigation color tokens - light mode */
+  --nav-foreground: var(--foreground);
+  --nav-foreground-hover: var(--primary);
+  --nav-foreground-active: var(--primary);
+  --nav-bg-hover: var(--accent);
+  --nav-bg-active: var(--accent);
+
+  /* Dropdown colors */
+  --nav-dropdown-bg: var(--popover);
+  --nav-dropdown-foreground: var(--popover-foreground);
+  --nav-dropdown-border: var(--border);
+  --nav-dropdown-item-hover-bg: var(--accent);
+  --nav-dropdown-item-hover-foreground: var(--accent-foreground);
+
+  /* Badge colors */
+  --nav-badge-new-bg: var(--primary);
+  --nav-badge-new-foreground: var(--primary-foreground);
+  --nav-badge-hot-bg: var(--destructive);
+  --nav-badge-hot-foreground: white;
+  --nav-badge-sale-bg: oklch(0.7 0.15 142); /* Green */
+  --nav-badge-sale-foreground: white;
+
+  /* Description */
+  --nav-description-font-size: var(--text-size-xs);
+  --nav-description-foreground: var(--muted-foreground);
+}
+
+.dark {
+  --nav-foreground: var(--foreground);
+  --nav-foreground-hover: var(--primary);
+  --nav-foreground-active: var(--primary);
+  --nav-bg-hover: var(--accent);
+  --nav-dropdown-bg: var(--popover);
+  --nav-dropdown-foreground: var(--popover-foreground);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger navigation
+  --nav-gap: var(--space-8);
+  --nav-font-size: var(--text-size-lg);
+  --nav-item-padding-inline: var(--space-4);
+
+  Example 2: Pills variant (always visible background)
+  --nav-item-border-radius: var(--radius-full);
+  --nav-bg-hover: var(--primary);
+  --nav-foreground-hover: var(--primary-foreground);
+
+  Example 3: Underline variant
+  --nav-item-border-radius: 0;
+  --nav-bg-hover: transparent;
+  // Add border-bottom in component
+
+  Example 4: Custom active color
+  --nav-foreground-active: var(--brand-primary-500);
+  --nav-bg-active: transparent;
+
+  Example 5: Minimal dropdown
+  --nav-dropdown-shadow: var(--shadow-sm);
+  --nav-dropdown-border-radius: var(--radius-md);
+*/

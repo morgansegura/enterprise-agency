@@ -1,0 +1,36 @@
+/**
+ * Hover Card Component Tokens
+ * Hover overlay card theming
+ *
+ * Override these per client for custom hover card appearance
+ */
+
+:root {
+  /* Hover card structural tokens */
+  --hover-card-width: 16rem; /* w-64 */
+  --hover-card-border-radius: var(--radius-md);
+  --hover-card-padding: var(--space-4);
+  --hover-card-shadow: var(--shadow-md);
+
+  /* Hover card color tokens */
+  --hover-card-bg: var(--popover);
+  --hover-card-foreground: var(--popover-foreground);
+}
+
+.dark {
+  --hover-card-bg: var(--popover);
+  --hover-card-foreground: var(--popover-foreground);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger hover card
+  --hover-card-width: 20rem;
+  --hover-card-padding: var(--space-6);
+
+  Example 2: More rounded
+  --hover-card-border-radius: var(--radius-lg);
+
+  Example 3: Custom shadow
+  --hover-card-shadow: var(--shadow-lg);
+*/

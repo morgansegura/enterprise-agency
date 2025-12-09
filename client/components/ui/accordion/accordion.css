@@ -1,0 +1,36 @@
+@reference "tailwindcss";
+
+[data-slot="accordion-item"] {
+  @apply border-b last:border-b-0;
+}
+
+[data-slot="accordion-trigger"] {
+  @apply focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between text-left transition-all outline-none hover:underline disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180;
+
+  /* Design token values */
+  gap: var(--accordion-trigger-gap);
+  border-radius: var(--accordion-trigger-border-radius);
+  padding-block: var(--accordion-trigger-padding-block);
+  font-size: var(--accordion-trigger-font-size);
+  font-weight: var(--accordion-trigger-font-weight);
+  focus-visible-ring-width: var(--accordion-trigger-focus-ring-width);
+}
+
+[data-slot="accordion-trigger"] svg {
+  @apply text-muted-foreground pointer-events-none shrink-0 transition-transform;
+
+  width: var(--accordion-icon-size);
+  height: var(--accordion-icon-size);
+  transform: translateY(var(--accordion-icon-translate-y));
+  transition-duration: var(--accordion-icon-transition-duration);
+}
+
+[data-slot="accordion-content"] {
+  @apply data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden;
+  font-size: var(--accordion-content-font-size);
+}
+
+[data-slot="accordion-content"] > div {
+  padding-top: var(--accordion-content-padding-top);
+  padding-bottom: var(--accordion-content-padding-bottom);
+}

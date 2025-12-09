@@ -1,0 +1,40 @@
+/**
+ * Checkbox Component Tokens
+ * Form checkbox theming
+ *
+ * Override these per client for custom checkbox appearance
+ */
+
+:root {
+  /* Checkbox structural tokens */
+  --checkbox-size: var(--space-4);
+  --checkbox-border-radius: 4px;
+  --checkbox-focus-ring-width: 3px;
+
+  /* Checkbox color tokens */
+  --checkbox-border: var(--input);
+  --checkbox-bg: transparent;
+  --checkbox-checked-bg: var(--primary);
+  --checkbox-checked-foreground: var(--primary-foreground);
+  --checkbox-checked-border: var(--primary);
+  --checkbox-shadow: var(--shadow-xs);
+}
+
+.dark {
+  --checkbox-bg: var(--input);
+  --checkbox-bg-opacity: 0.3;
+  --checkbox-checked-bg: var(--primary);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger checkboxes
+  --checkbox-size: var(--space-5);
+
+  Example 2: More rounded
+  --checkbox-border-radius: var(--radius-md);
+
+  Example 3: Custom checked color
+  --checkbox-checked-bg: var(--brand-primary-500);
+  --checkbox-checked-foreground: white;
+*/

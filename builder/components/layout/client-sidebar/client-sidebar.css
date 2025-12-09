@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.client-sidebar-logo {
+  @apply flex aspect-square size-8 items-center justify-center rounded-lg bg-(--primary) text-(--primary-foreground);
+}
+
+.client-sidebar-header-text {
+  @apply grid flex-1 text-left text-sm leading-tight;
+}
+
+.client-sidebar-title {
+  @apply truncate font-semibold;
+}
+
+.client-sidebar-subtitle {
+  @apply truncate text-xs text-(--muted-foreground);
+}
+
+.client-sidebar-back {
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+}

@@ -1,0 +1,29 @@
+@reference "tailwindcss";
+
+.layout-heading {
+  @apply mb-6 grid grid-cols-2;
+}
+
+.layout-heading-title {
+  @apply text-3xl font-bold tracking-tight;
+}
+
+.layout-heading-description {
+  @apply mt-2 text-sm text-(--muted-foreground);
+}
+
+.layout-heading-content {
+  @apply grid;
+}
+
+.layout-heading-actions {
+  @apply flex justify-end space-x-3;
+}
+
+.layout-heading-back-navigation {
+  @apply mb-3;
+
+  button {
+    @apply text-xs px-1.5 h-7 rounded-full;
+  }
+}

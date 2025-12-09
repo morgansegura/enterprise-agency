@@ -1,0 +1,45 @@
+/**
+ * Sidebar Component Color Tokens
+ * Admin/dashboard sidebar theming
+ *
+ * Override these per client for custom sidebar appearance
+ */
+
+:root {
+  /* Sidebar - light mode */
+  --sidebar: var(--brand-primary-50);
+  --sidebar-foreground: var(--neutral-950);
+  --sidebar-primary: var(--brand-primary-500);
+  --sidebar-primary-foreground: var(--brand-primary-50);
+  --sidebar-accent: var(--brand-primary-100);
+  --sidebar-accent-foreground: var(--brand-primary-500);
+  --sidebar-border: var(--neutral-200);
+  --sidebar-ring: var(--brand-secondary-700);
+}
+
+/* Sidebar - dark mode */
+.dark {
+  --sidebar: var(--neutral-900);
+  --sidebar-foreground: var(--brand-primary-50);
+  --sidebar-primary: var(--brand-secondary-700);
+  --sidebar-primary-foreground: var(--brand-primary-50);
+  --sidebar-accent: var(--neutral-800);
+  --sidebar-accent-foreground: var(--brand-primary-50);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: var(--brand-secondary-500);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Dark sidebar in light mode
+  --sidebar: var(--neutral-900);
+  --sidebar-foreground: var(--brand-primary-50);
+
+  Example 2: Accent color sidebar
+  --sidebar: var(--brand-secondary-500);
+  --sidebar-foreground: var(--neutral-0);
+
+  Example 3: Transparent sidebar with backdrop
+  --sidebar: oklch(1 0 0 / 95%);
+  --sidebar-border: var(--border);
+*/

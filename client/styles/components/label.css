@@ -1,0 +1,33 @@
+/**
+ * Label Component Tokens
+ * Form label theming
+ *
+ * Override these per client for custom label appearance
+ */
+
+:root {
+  /* Label structural tokens */
+  --label-gap: var(--space-2);
+  --label-font-size: var(--text-size-sm);
+  --label-font-weight: var(--font-weight-medium);
+  --label-line-height: 1;
+
+  /* Label color tokens */
+  --label-foreground: var(--foreground);
+}
+
+.dark {
+  --label-foreground: var(--foreground);
+}
+
+/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
+/*
+  Example 1: Larger labels
+  --label-font-size: var(--text-size-base);
+
+  Example 2: Bolder labels
+  --label-font-weight: var(--font-weight-semibold);
+
+  Example 3: Custom color
+  --label-foreground: var(--muted-foreground);
+*/

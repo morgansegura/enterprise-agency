@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.theme-switcher-icon-sun {
+  @apply h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all;
+}
+
+.theme-switcher-icon-sun[data-theme="dark"] {
+  @apply -rotate-90 scale-0;
+}
+
+.theme-switcher-icon-moon {
+  @apply absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all;
+}
+
+.theme-switcher-icon-moon[data-theme="dark"] {
+  @apply rotate-0 scale-100;
+}
+
+.theme-switcher-menu-icon {
+  @apply mr-2 h-4 w-4;
+}

@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+[data-slot="label"] {
+  @apply flex items-center select-none;
+  @apply group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50;
+  @apply peer-disabled:cursor-not-allowed peer-disabled:opacity-50;
+
+  /* Design token values */
+  gap: var(--label-gap);
+  font-size: var(--label-font-size);
+  font-weight: var(--label-font-weight);
+  line-height: var(--label-line-height);
+}

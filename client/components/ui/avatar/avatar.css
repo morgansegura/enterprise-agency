@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+[data-slot="avatar"] {
+  @apply relative flex shrink-0 overflow-hidden;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--avatar-border-radius);
+}
+
+[data-slot="avatar-image"] {
+  @apply aspect-square size-full;
+}
+
+[data-slot="avatar-fallback"] {
+  @apply bg-muted flex size-full items-center justify-center;
+  border-radius: var(--avatar-border-radius);
+}

@@ -1,0 +1,76 @@
+@reference "tailwindcss";
+
+[data-slot="pagination"] {
+  @apply mx-auto flex w-full justify-center;
+}
+
+[data-slot="pagination-content"] {
+  @apply flex flex-row items-center;
+  gap: var(--pagination-content-gap);
+}
+
+[data-slot="pagination-link"] {
+  @apply inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+
+  /* Design token values */
+  border-radius: var(--pagination-link-border-radius);
+  font-size: var(--pagination-link-font-size);
+  font-weight: var(--pagination-link-font-weight);
+}
+
+[data-slot="pagination-link"][data-active="false"] {
+  @apply hover:bg-accent hover:text-accent-foreground;
+}
+
+[data-slot="pagination-link"][data-active="true"] {
+  @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  box-shadow: var(--pagination-link-active-shadow);
+}
+
+[data-slot="pagination-link"][data-size="default"] {
+  height: var(--pagination-link-height);
+  padding-inline: var(--pagination-link-padding-inline);
+  padding-block: var(--pagination-link-padding-block);
+}
+
+[data-slot="pagination-link"][data-size="icon"] {
+  width: var(--pagination-link-icon-size);
+  height: var(--pagination-link-icon-size);
+}
+
+[data-slot="pagination-previous"] {
+  gap: var(--pagination-previous-gap);
+  padding-inline: var(--pagination-previous-padding-inline);
+
+  @media (min-width: theme(screens.sm)) {
+    padding-inline-start: var(--pagination-previous-padding-inline);
+  }
+}
+
+[data-slot="pagination-previous"] > span {
+  @apply hidden sm:block;
+}
+
+[data-slot="pagination-next"] {
+  gap: var(--pagination-next-gap);
+  padding-inline: var(--pagination-next-padding-inline);
+
+  @media (min-width: theme(screens.sm)) {
+    padding-inline-end: var(--pagination-next-padding-inline);
+  }
+}
+
+[data-slot="pagination-next"] > span {
+  @apply hidden sm:block;
+}
+
+[data-slot="pagination-ellipsis"] {
+  @apply flex items-center justify-center;
+  width: var(--pagination-ellipsis-size);
+  height: var(--pagination-ellipsis-size);
+}
+
+[data-slot="pagination-ellipsis"] > svg {
+  width: var(--pagination-ellipsis-icon-size);
+  height: var(--pagination-ellipsis-icon-size);
+}
