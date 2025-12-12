@@ -110,7 +110,7 @@
 /* Panel items - full width buttons with icon + text */
 .section-panel-item {
   @apply w-full justify-start gap-3;
-  @apply text-(--foreground) hover:bg-(--muted);
+  @apply text-(--foreground) hover:bg-(--muted)/50 rounded-sm;
   @apply h-10 px-3;
 }
 

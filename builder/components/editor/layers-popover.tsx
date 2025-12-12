@@ -14,7 +14,7 @@ import "./layers-popover.css";
 interface LayersPopoverProps {
   blocks: Block[];
   selectedBlockKey: string | null;
-  onSelectBlock: (key: string) => void;
+  onSelectBlock: (key: string | null) => void;
   onHoverBlock?: (key: string | null) => void;
   children: React.ReactNode;
 }
@@ -66,7 +66,7 @@ export function LayersPopover({
 
   const handleSelectBlock = (key: string) => {
     onSelectBlock(key);
-    setOpen(false);
+    // Don't close the popover - let user continue selecting layers
   };
 
   const handleOpenChange = (isOpen: boolean) => {

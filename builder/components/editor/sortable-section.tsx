@@ -34,7 +34,7 @@ interface SortableSectionProps {
   onMoveDown?: () => void;
   onAddBlock?: (blockType: string) => void;
   selectedBlockKey?: string | null;
-  onSelectBlock?: (key: string) => void;
+  onSelectBlock?: (key: string | null) => void;
   hoveredBlockKey?: string | null;
   onHoverBlock?: (key: string | null) => void;
   isFirst?: boolean;
@@ -272,7 +272,15 @@ export function SortableSection({
         )}
 
         {/* Section Inner Content - renders exactly as live site */}
-        <div className={cn("section-inner", sectionSpacing, sectionWidth)}>
+        <div
+          className={cn("section-inner", sectionSpacing, sectionWidth)}
+          onClick={(e) => {
+            // Only deselect if clicking directly on section-inner, not on a child block
+            if (e.target === e.currentTarget) {
+              onSelectBlock?.(null);
+            }
+          }}
+        >
           {children}
         </div>
       </div>
