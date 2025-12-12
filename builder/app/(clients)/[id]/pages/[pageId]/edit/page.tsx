@@ -670,6 +670,8 @@ export default function EditPagePage({
                           onSelectBlock={setSelectedBlockKey}
                           hoveredBlockKey={hoveredBlockKey}
                           onHoverBlock={setHoveredBlockKey}
+                          isFirst={sectionIndex === 0}
+                          isLast={sectionIndex === sections.length - 1}
                         >
                           {section.blocks.length === 0 ? (
                             <div className="min-h-[60px]" />

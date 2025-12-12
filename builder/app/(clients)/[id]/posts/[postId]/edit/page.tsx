@@ -416,6 +416,8 @@ export default function EditPostPage({
                           handleSectionChange(sectionIndex, updatedSection)
                         }
                         onDelete={() => handleSectionDelete(sectionIndex)}
+                        isFirst={sectionIndex === 0}
+                        isLast={sectionIndex === sections.length - 1}
                       >
                         {section.blocks.length === 0 ? (
                           <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">

@@ -50,6 +50,10 @@ export function BlockWrapper({
 }: BlockWrapperProps) {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const [showSettings, setShowSettings] = React.useState(false);
+  const [isLocalHovered, setIsLocalHovered] = React.useState(false);
+
+  // Show hover state from either direct hover or layers popover hover
+  const showHoverState = (isLocalHovered || isHovered) && !isSelected;
 
   return (
     <div
@@ -57,13 +61,15 @@ export function BlockWrapper({
       className={cn(
         "block-wrapper",
         isSelected && "is-selected",
-        isHovered && "is-hovered",
+        showHoverState && "is-hovered",
         className
       )}
       onClick={(e) => {
         e.stopPropagation();
         onSelect?.();
       }}
+      onMouseEnter={() => setIsLocalHovered(true)}
+      onMouseLeave={() => setIsLocalHovered(false)}
     >
       {/* Floating Toolbar - appears above selected block */}
       {isSelected && (

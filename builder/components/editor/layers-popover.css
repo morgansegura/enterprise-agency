@@ -30,6 +30,10 @@
   @apply border-(--primary) bg-(--primary)/5;
 }
 
+.layers-item.is-hovered {
+  @apply bg-(--muted);
+}
+
 .layers-item svg {
   @apply text-(--muted-foreground) shrink-0;
 }

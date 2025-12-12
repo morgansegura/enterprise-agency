@@ -41,8 +41,10 @@ function getBlockLabel(block: Block): string {
     return block.data.alt as string;
   }
   // Fallback to block type
-  return block._type.replace("-block", "").charAt(0).toUpperCase() +
-         block._type.replace("-block", "").slice(1);
+  return (
+    block._type.replace("-block", "").charAt(0).toUpperCase() +
+    block._type.replace("-block", "").slice(1)
+  );
 }
 
 export function LayersPopover({
@@ -53,6 +55,14 @@ export function LayersPopover({
   children,
 }: LayersPopoverProps) {
   const [open, setOpen] = React.useState(false);
+  const [localHoveredKey, setLocalHoveredKey] = React.useState<string | null>(
+    null,
+  );
+
+  const handleHover = (key: string | null) => {
+    setLocalHoveredKey(key);
+    onHoverBlock?.(key);
+  };
 
   const handleSelectBlock = (key: string) => {
     onSelectBlock(key);
@@ -62,19 +72,25 @@ export function LayersPopover({
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
     // Clear hover state when closing
-    if (!isOpen && onHoverBlock) {
-      onHoverBlock(null);
+    if (!isOpen) {
+      setLocalHoveredKey(null);
+      onHoverBlock?.(null);
     }
   };
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <span className={open ? "layers-trigger-open" : ""}>
-          {children}
-        </span>
+        <span className={open ? "layers-trigger-open" : ""}>{children}</span>
       </PopoverTrigger>
-      <PopoverContent className="layers-popover" align="start" sideOffset={8}>
+      <PopoverContent
+        className="layers-popover"
+        side="bottom"
+        align="start"
+        sideOffset={50}
+        alignOffset={8}
+        avoidCollisions={false}
+      >
         <h4 className="layers-title">Layers</h4>
 
         <div className="layers-list">
@@ -86,10 +102,10 @@ export function LayersPopover({
                 key={block._key}
                 className={`layers-item ${
                   selectedBlockKey === block._key ? "is-selected" : ""
-                }`}
+                } ${localHoveredKey === block._key ? "is-hovered" : ""}`}
                 onClick={() => handleSelectBlock(block._key)}
-                onMouseEnter={() => onHoverBlock?.(block._key)}
-                onMouseLeave={() => onHoverBlock?.(null)}
+                onMouseEnter={() => handleHover(block._key)}
+                onMouseLeave={() => handleHover(null)}
               >
                 {getBlockIcon(block._type)}
                 <span>{getBlockLabel(block)}</span>

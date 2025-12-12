@@ -37,6 +37,8 @@ interface SortableSectionProps {
   onSelectBlock?: (key: string) => void;
   hoveredBlockKey?: string | null;
   onHoverBlock?: (key: string | null) => void;
+  isFirst?: boolean;
+  isLast?: boolean;
   children: React.ReactNode;
 }
 
@@ -66,6 +68,8 @@ export function SortableSection({
   onSelectBlock,
   hoveredBlockKey,
   onHoverBlock,
+  isFirst = false,
+  isLast = false,
   children,
 }: SortableSectionProps) {
   const { setNodeRef, transform, transition, isDragging } = useSortable({
@@ -145,8 +149,8 @@ export function SortableSection({
         {/* Section controls - hidden when a block is selected */}
         {!hasSelectedBlock && (
           <>
-            {/* ADD SECTION - Above (overlaid) */}
-            {onAddSectionAbove ? (
+            {/* ADD SECTION - Above (overlaid) - hidden for first section */}
+            {onAddSectionAbove && !isFirst ? (
               <div className="section-add-above">
                 <Button
                   variant="default"
@@ -221,26 +225,24 @@ export function SortableSection({
                 <Button variant="ghost" size="icon-sm" title="Favorite">
                   <Heart className="h-4 w-4" />
                 </Button>
-                {onMoveUp && (
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={onMoveUp}
-                    title="Move up"
-                  >
-                    <ChevronUp className="h-4 w-4" />
-                  </Button>
-                )}
-                {onMoveDown && (
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={onMoveDown}
-                    title="Move down"
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                )}
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={onMoveUp}
+                  title="Move up"
+                  disabled={isFirst}
+                >
+                  <ChevronUp className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={onMoveDown}
+                  title="Move down"
+                  disabled={isLast}
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
               </div>
 
               {/* Remove */}
