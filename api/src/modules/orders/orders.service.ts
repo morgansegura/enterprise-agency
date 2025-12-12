@@ -4,7 +4,7 @@ import {
   BadRequestException,
   Logger,
 } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
 import { CreateOrderDto, UpdateOrderDto } from "./dto";
 

@@ -8,10 +8,8 @@ import {
   Body,
   Param,
   UseGuards,
-  NotFoundException,
 } from "@nestjs/common";
 import { TenantsService } from "./tenants.service";
-import { UsersService } from "@/modules/users/users.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
 import { CreateDomainDto } from "./dto/create-domain.dto";
@@ -24,10 +22,7 @@ import { Roles } from "@/common/decorators/roles.decorator";
 @Controller("tenants")
 @UseGuards(JwtAuthGuard)
 export class TenantsController {
-  constructor(
-    private readonly tenantsService: TenantsService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly tenantsService: TenantsService) {}
 
   @Get()
   async listTenants() {
@@ -49,14 +44,8 @@ export class TenantsController {
     @CurrentUser() currentUser: { id: string; sessionId: string },
     @Body() createData: CreateTenantDto,
   ) {
-    // Get user from database by Clerk ID
-    const user = await this.usersService.findByClerkId(currentUser.id);
-
-    if (!user) {
-      throw new NotFoundException("User not found");
-    }
-
-    return this.tenantsService.create(createData, user.id);
+    // currentUser.id is already the database user ID from JWT
+    return this.tenantsService.create(createData, currentUser.id);
   }
 
   @Get("slug/:slug")

@@ -9,7 +9,7 @@ import {
   Query,
   UseGuards,
 } from "@nestjs/common";
-import { TenantTier } from "@prisma/client";
+import { TenantTier } from "@prisma";
 import { PagesService } from "./pages.service";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";

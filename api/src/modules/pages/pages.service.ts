@@ -4,7 +4,7 @@ import {
   ConflictException,
   Logger,
 } from "@nestjs/common";
-import { Prisma, TenantTier } from "@prisma/client";
+import { Prisma, TenantTier } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";

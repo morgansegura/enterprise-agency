@@ -1,7 +1,14 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "./generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import * as bcrypt from "bcrypt";
+import { config } from "dotenv";
 
-const prisma = new PrismaClient();
+config();
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+const prisma = new PrismaClient({ adapter });
 
 // ============================================================================
 // DEFAULT PAGES TEMPLATES
@@ -252,7 +259,7 @@ async function main() {
 
   const agencyOwner = await prisma.user.create({
     data: {
-      email: "mo@webfunnel.com",
+      email: "morgansegura@gmail.com",
       firstName: "Morgan",
       lastName: "Segura",
       passwordHash: hashedPassword,
@@ -482,8 +489,8 @@ async function main() {
   console.log("👤 AGENCY TEAM (Test different roles/permissions):");
   console.log("");
   console.log("   🔑 Owner (Super Admin):");
-  console.log("      Email: mo@webfunnel.com");
-  console.log("      Password: password123");
+  console.log("      Email: morgansegura@gmail.com");
+  console.log("      Password: S3GuRa536!!1980");
   console.log("      Access: FULL PLATFORM + All Admin Rights");
   console.log("");
   console.log("   👔 Admin:");

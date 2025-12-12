@@ -1,5 +1,5 @@
 import { Injectable, ForbiddenException } from "@nestjs/common";
-import { TenantTier } from "@prisma/client";
+import { TenantTier } from "@prisma";
 
 /**
  * Internal type for content block structure validation

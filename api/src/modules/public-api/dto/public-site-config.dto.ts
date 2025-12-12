@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { JsonValue } from "@prisma/client/runtime/library";
+import { Prisma } from "@prisma";
+
+type JsonValue = Prisma.JsonValue;
 
 /**
  * Public Site Configuration DTO

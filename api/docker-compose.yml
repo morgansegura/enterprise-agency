@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: webfunnel_dev
+      POSTGRES_DB: enterprise-agency
     ports:
       - '5433:5432'
     volumes:

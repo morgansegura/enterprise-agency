@@ -73,8 +73,8 @@ export class AppModule implements NestModule {
     consumer
       .apply(TenantMiddleware)
       .exclude(
-        "api/health(.*)",
-        "api/webhooks(.*)",
+        "api/v1/health(.*)",
+        "api/v1/webhooks(.*)",
         "api/v1/public(.*)",
         "api/v1/payments/webhooks(.*)",
       )

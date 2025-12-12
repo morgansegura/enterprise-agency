@@ -1,13 +1,13 @@
 @reference "tailwindcss";
 
 [data-slot="input"] {
-  @apply file:text-foreground placeholder:text-muted-foreground;
-  @apply selection:bg-primary selection:text-primary-foreground;
-  @apply border-input bg-transparent w-full min-w-0 border;
+  @apply file:text-(--foreground) placeholder:text-(--muted-foreground);
+  @apply selection:bg-(--primary) selection:text-(--primary-foreground);
+  @apply border-(--input) bg-(--transparent) w-full min-w-0 border;
   @apply transition-[color,box-shadow] outline-none;
   @apply disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50;
-  @apply focus-visible:border-ring focus-visible:ring-ring/50;
-  @apply aria-invalid:ring-destructive/20 aria-invalid:border-destructive;
+  @apply focus-visible:border-(--ring) focus-visible:ring-(--ring)/50;
+  @apply aria-invalid:ring-(--destructive)/20 aria-invalid:border-(--destructive);
 
   /* Design token values */
   height: var(--space-9);
@@ -22,7 +22,7 @@
   /* File input styling */
   &::file-selector-button {
     @apply inline-flex border-0 bg-transparent font-medium;
-    @apply file:text-foreground;
+    @apply file:text-(--foreground);
     height: var(--space-7);
     font-size: var(--text-size-sm);
   }
@@ -35,9 +35,9 @@
 
 /* Dark mode */
 .dark [data-slot="input"] {
-  @apply bg-input/30;
+  @apply bg-(--input)/30;
 }
 
 .dark [data-slot="input"][aria-invalid] {
-  @apply ring-destructive/40;
+  @apply ring-(--destructive)/40;
 }

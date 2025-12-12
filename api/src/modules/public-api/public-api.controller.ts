@@ -33,7 +33,7 @@ import { PublicSiteConfigDto } from "./dto/public-site-config.dto";
  * - Tenant isolation via slug parameter
  */
 @ApiTags("Public API")
-@Controller("api/v1/public")
+@Controller("public")
 @Public() // No authentication required
 @Throttle({ default: { limit: 100, ttl: 60000 } }) // 100 requests per minute
 export class PublicApiController {

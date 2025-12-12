@@ -5,13 +5,13 @@
 }
 
 [data-slot="form-label"][data-error="true"] {
-  @apply text-destructive;
+  @apply text-(--destructive);
 }
 
 [data-slot="form-description"] {
-  @apply text-muted-foreground text-sm;
+  @apply text-(--muted-foreground) text-sm;
 }
 
 [data-slot="form-message"] {
-  @apply text-destructive text-sm;
+  @apply text-(--destructive) text-sm;
 }
