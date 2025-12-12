@@ -9,7 +9,15 @@
 }
 
 .client-layout-header-trigger {
-  @apply -ml-1;
+  @apply relative cursor-pointer rounded-md flex items-center justify-center  -ml-1.5 w-7.5 h-7.5;
+
+  & svg {
+    @apply size-6 stroke-(--muted-foreground) transition-colors duration-300 ease-out;
+  }
+
+  &:hover svg {
+    @apply size-6 outline-inherit stroke-(--foreground);
+  }
 }
 
 .client-layout-header-separator {
@@ -21,7 +29,7 @@
 }
 
 .client-layout-main {
-  @apply flex-1 overflow-auto;
+  @apply flex-1;
 }
 
 .client-layout-loading {

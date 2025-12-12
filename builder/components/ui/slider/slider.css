@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+.slider {
+  @apply relative flex w-full touch-none select-none items-center;
+}
+
+.slider__track {
+  @apply relative h-1.5 w-full grow overflow-hidden rounded-full bg-(--muted);
+}
+
+.slider__range {
+  @apply absolute h-full bg-(--primary);
+}
+
+.slider__thumb {
+  @apply block h-4 w-4 rounded-full border border-(--primary) bg-white shadow;
+  @apply transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+}

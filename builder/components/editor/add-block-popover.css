@@ -1,0 +1,50 @@
+@reference "tailwindcss";
+
+.add-block-popover {
+  @apply w-[400px] p-0;
+}
+
+.add-block-search {
+  @apply flex items-center gap-2 px-4 py-3 border-b border-(--border);
+}
+
+.add-block-search-input {
+  @apply border-0 shadow-none focus-visible:ring-0 p-0 h-auto;
+  @apply text-base;
+}
+
+.add-block-content {
+  @apply max-h-[400px] overflow-y-auto p-4;
+}
+
+.add-block-category {
+  @apply mb-4;
+}
+
+.add-block-category:last-child {
+  @apply mb-0;
+}
+
+.add-block-category-title {
+  @apply text-sm font-semibold text-(--foreground) mb-3;
+}
+
+.add-block-grid {
+  @apply grid grid-cols-2 gap-1;
+}
+
+.add-block-item {
+  @apply flex items-center gap-3 px-3 py-2.5;
+  @apply text-(--foreground) text-sm;
+  @apply rounded-md;
+  @apply hover:bg-(--muted) transition-colors;
+  @apply cursor-pointer;
+}
+
+.add-block-item svg {
+  @apply text-(--muted-foreground);
+}
+
+.add-block-item:hover svg {
+  @apply text-(--foreground);
+}

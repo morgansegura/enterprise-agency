@@ -407,7 +407,7 @@ export default function EditPostPage({
                   items={sections.map((section) => section._key)}
                   strategy={verticalListSortingStrategy}
                 >
-                  <div className="space-y-12">
+                  <div>
                     {sections.map((section, sectionIndex) => (
                       <SortableSection
                         key={section._key}

@@ -1,0 +1,134 @@
+@reference "tailwindcss";
+
+.sortable-section {
+  @apply relative;
+}
+
+.sortable-section.is-dragging {
+  @apply opacity-50 cursor-grabbing;
+}
+
+/* Section content wrapper with border */
+.section-content {
+  @apply relative;
+  @apply border-2 border-transparent;
+  @apply transition-all duration-200;
+}
+
+.sortable-section:hover .section-content {
+  @apply border-(--primary);
+}
+
+/* Hide section border when a block inside is selected */
+.sortable-section.has-selected-block .section-content,
+.sortable-section.has-selected-block:hover .section-content {
+  @apply border-transparent;
+}
+
+/* Drag handle - left side */
+.section-drag-handle {
+  @apply absolute left-2 top-2 z-10;
+  @apply p-2 rounded-lg;
+  @apply bg-(--card) border border-(--border) shadow-sm;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply cursor-grab active:cursor-grabbing;
+  @apply opacity-0 transition-opacity;
+}
+
+.sortable-section:hover .section-drag-handle {
+  @apply opacity-100;
+}
+
+/* Keep layers button visible when a block is selected */
+.sortable-section.has-selected-block .section-drag-handle {
+  @apply opacity-100;
+}
+
+/* Add Block button - top left */
+.section-add-block {
+  @apply absolute left-14 top-2 z-10;
+  @apply opacity-0 transition-opacity;
+}
+
+.sortable-section:hover .section-add-block {
+  @apply opacity-100;
+}
+
+.section-add-block button {
+  @apply bg-(--card) border border-(--border) shadow-sm;
+  @apply text-(--foreground) font-semibold;
+  @apply hover:bg-(--muted);
+}
+
+/* ADD SECTION buttons - positioned as overlays at section boundaries */
+.section-add-above,
+.section-add-below {
+  @apply absolute left-1/2 -translate-x-1/2 z-30;
+  @apply opacity-0 pointer-events-none transition-opacity;
+}
+
+.section-add-above {
+  @apply -top-5;
+}
+
+.section-add-below {
+  @apply -bottom-5;
+}
+
+.sortable-section:hover .section-add-above,
+.sortable-section:hover .section-add-below {
+  @apply opacity-100 pointer-events-auto;
+}
+
+.section-add-btn {
+  @apply bg-(--primary) text-(--primary-foreground);
+  @apply font-semibold uppercase tracking-wide text-sm;
+  @apply px-4 py-1.5;
+  @apply hover:bg-(--primary)/90;
+  @apply shadow-md uppercase;
+}
+
+/* Floating Action Panel - right side (inside the section) */
+.section-panel {
+  @apply absolute top-2 right-2 z-20;
+  @apply bg-(--card) border border-(--border) rounded-lg shadow-lg;
+  @apply p-2 min-w-[180px];
+  @apply opacity-0 pointer-events-none transition-all duration-200;
+  @apply flex flex-col gap-1;
+}
+
+.sortable-section:hover .section-panel {
+  @apply opacity-100 pointer-events-auto;
+}
+
+/* Panel items - full width buttons with icon + text */
+.section-panel-item {
+  @apply w-full justify-start gap-3;
+  @apply text-(--foreground) hover:bg-(--muted);
+  @apply h-10 px-3;
+}
+
+.section-panel-item span {
+  @apply text-sm font-semibold tracking-wide;
+}
+
+/* Panel row - icon buttons in a row */
+.section-panel-row {
+  @apply flex items-center justify-between;
+  @apply border-y border-(--border) py-2 my-1;
+}
+
+.section-panel-row button {
+  @apply h-8 w-8;
+  @apply text-(--muted-foreground) hover:text-(--foreground) hover:bg-(--muted);
+}
+
+/* Delete item - red styling */
+.section-panel-delete {
+  @apply text-(--destructive) hover:text-(--destructive) hover:bg-(--destructive)/10;
+}
+
+/* Section inner content - shows exactly like live site with spacing/width applied */
+.section-inner {
+  @apply min-h-[40px];
+}

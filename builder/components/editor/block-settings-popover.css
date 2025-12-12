@@ -1,0 +1,67 @@
+@reference "tailwindcss";
+
+.block-settings-popover {
+  @apply w-80 p-0;
+}
+
+.block-settings-header {
+  @apply px-4 py-3 border-b border-(--border);
+}
+
+.block-settings-title {
+  @apply text-sm font-semibold;
+}
+
+.block-settings-tabs {
+  @apply flex flex-col;
+}
+
+.block-settings-tabs-list {
+  @apply w-full justify-start border-b rounded-none h-auto p-0 bg-transparent px-2;
+}
+
+.block-settings-tabs-list [data-slot="tabs-trigger"] {
+  @apply rounded-none border-b-2 border-transparent data-[state=active]:border-(--primary) data-[state=active]:bg-transparent px-3 py-2 gap-1.5 text-xs;
+}
+
+.block-settings-content {
+  @apply p-4 space-y-4 max-h-[400px] overflow-y-auto;
+}
+
+.block-settings-section {
+  @apply space-y-3;
+}
+
+.block-settings-section-title {
+  @apply text-xs font-semibold uppercase tracking-wide text-(--muted-foreground);
+}
+
+.block-settings-field {
+  @apply space-y-1.5;
+}
+
+.block-settings-field label {
+  @apply text-xs;
+}
+
+.block-settings-row {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.block-settings-checkbox {
+  @apply flex flex-row items-center gap-2 space-y-0;
+}
+
+.block-settings-checkbox input[type="checkbox"] {
+  @apply h-4 w-4 rounded border-(--border);
+}
+
+.block-settings-checkbox label {
+  @apply text-xs cursor-pointer;
+}
+
+.block-settings-textarea {
+  @apply flex min-h-[80px] w-full rounded-md border border-(--input) bg-(--background) px-3 py-2 text-sm;
+  @apply placeholder:text-(--muted-foreground);
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring);
+}

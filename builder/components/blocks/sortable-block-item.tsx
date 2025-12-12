@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical } from "lucide-react";
+import { BlockWrapper } from "@/components/editor/block-wrapper";
 import { BlockEditorRenderer } from "./block-editor-renderer";
 import type { Block } from "@/lib/hooks/use-pages";
 import { cn } from "@/lib/utils";
@@ -12,36 +12,33 @@ interface SortableBlockItemProps {
   block: Block;
   onChange: (block: Block) => void;
   onDelete: () => void;
+  onDuplicate?: () => void;
   tenantId?: string;
+  isSelected?: boolean;
+  isHovered?: boolean;
+  onSelect?: () => void;
 }
 
 /**
- * Sortable Block Item
+ * Sortable Block Item - WYSIWYG Version
  *
- * Wraps BlockEditorRenderer with drag-and-drop functionality.
- * Displays a drag handle on hover and provides visual feedback during dragging.
+ * Wraps blocks with:
+ * - Drag-and-drop functionality
+ * - Selection state with floating toolbar
+ * - Settings popover for block configuration
+ * - Quick actions (edit, duplicate, delete)
  *
- * Features:
- * - Hover-reveal drag handle
- * - Smooth drag animations
- * - Visual feedback during dragging (opacity change)
- * - Accessibility support (keyboard navigation)
- *
- * Usage:
- * ```tsx
- * <SortableBlockItem
- *   block={block}
- *   onChange={handleChange}
- *   onDelete={handleDelete}
- *   tenantId={tenantId}
- * />
- * ```
+ * The content renders exactly as it will appear to end users.
  */
 export function SortableBlockItem({
   block,
   onChange,
   onDelete,
+  onDuplicate,
   tenantId,
+  isSelected = false,
+  isHovered = false,
+  onSelect,
 }: SortableBlockItemProps) {
   const {
     attributes,
@@ -61,36 +58,25 @@ export function SortableBlockItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={cn(
-        "group relative",
-        isDragging && "opacity-50 cursor-grabbing",
-      )}
+      className={cn(isDragging && "opacity-50 cursor-grabbing")}
     >
-      {/* Drag Handle */}
-      <button
-        {...attributes}
-        {...listeners}
-        className={cn(
-          "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full",
-          "opacity-0 group-hover:opacity-100 transition-opacity",
-          "p-2 cursor-grab active:cursor-grabbing",
-          "text-muted-foreground hover:text-foreground",
-          "focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md",
-          "-ml-2",
-        )}
-        aria-label="Drag to reorder block"
-        title="Drag to reorder"
-      >
-        <GripVertical className="h-5 w-5" />
-      </button>
-
-      {/* Block Editor */}
-      <BlockEditorRenderer
+      <BlockWrapper
         block={block}
-        onChange={onChange}
+        onBlockChange={onChange}
+        isSelected={isSelected}
+        isHovered={isHovered}
+        onSelect={onSelect}
         onDelete={onDelete}
-        tenantId={tenantId}
-      />
+        onDuplicate={onDuplicate}
+      >
+        <BlockEditorRenderer
+          block={block}
+          onChange={onChange}
+          onDelete={onDelete}
+          tenantId={tenantId}
+          isSelected={isSelected}
+        />
+      </BlockWrapper>
     </div>
   );
 }

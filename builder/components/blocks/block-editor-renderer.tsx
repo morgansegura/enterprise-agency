@@ -14,6 +14,7 @@ interface BlockEditorRendererProps {
   onChange: (block: Block) => void;
   onDelete: () => void;
   tenantId?: string;
+  isSelected?: boolean;
 }
 
 /**
@@ -22,32 +23,20 @@ interface BlockEditorRendererProps {
  * Dynamically loads and renders the appropriate block editor
  * based on block type using the block registry.
  *
- * Enterprise benefits:
- * - Automatic lazy loading for performance
- * - No need to modify this component when adding new blocks
- * - Consistent loading and error states
- * - Type-safe editor components
- *
- * Usage:
- * ```tsx
- * <BlockEditorRenderer
- *   block={block}
- *   onChange={handleChange}
- *   onDelete={handleDelete}
- * />
- * ```
+ * Now passes isSelected to enable WYSIWYG inline editing.
  */
 export function BlockEditorRenderer({
   block,
   onChange,
   onDelete,
   tenantId,
+  isSelected = false,
 }: BlockEditorRendererProps) {
   const [EditorComponent, setEditorComponent] =
-    React.useState<React.ComponentType<BlockEditorProps> | null>(null);
+    React.useState<React.ComponentType<BlockEditorProps & { isSelected?: boolean }> | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const isBuilder = tenantId ? useIsBuilder(tenantId) : true; // Default to true if no tenantId provided
+  const isBuilder = tenantId ? useIsBuilder(tenantId) : true;
 
   // Lazy load the editor component
   React.useEffect(() => {
@@ -60,7 +49,7 @@ export function BlockEditorRenderer({
         if (!component) {
           setError(`Editor not found for block type: ${block._type}`);
         } else {
-          setEditorComponent(() => component);
+          setEditorComponent(() => component as React.ComponentType<BlockEditorProps & { isSelected?: boolean }>);
         }
       })
       .catch((err) => {
@@ -123,12 +112,13 @@ export function BlockEditorRenderer({
     );
   }
 
-  // Render the loaded editor component
+  // Render the loaded editor component with isSelected
   return (
     <EditorComponent
       block={block}
       onChange={onChange}
       onDelete={handleDelete}
+      isSelected={isSelected}
     />
   );
 }

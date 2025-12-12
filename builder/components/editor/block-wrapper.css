@@ -1,0 +1,92 @@
+@reference "tailwindcss";
+
+.block-wrapper {
+  @apply relative;
+}
+
+/* Selected state - blue outline */
+.block-wrapper.is-selected {
+  @apply outline outline-2 outline-(--primary);
+}
+
+/* Hovered state (from layers popover) - dashed outline */
+.block-wrapper.is-hovered {
+  @apply outline outline-2 outline-dashed outline-(--primary);
+}
+
+/* Floating Toolbar - positioned above the block */
+.block-toolbar {
+  @apply absolute -top-12 left-1/2 -translate-x-1/2;
+  @apply bg-(--card) border border-(--border) rounded-lg shadow-lg;
+  @apply px-2 py-1;
+  @apply flex items-center gap-1;
+  @apply z-20;
+}
+
+.block-toolbar button {
+  @apply h-8 w-8;
+  @apply text-(--muted-foreground) hover:text-(--foreground) hover:bg-(--muted);
+  @apply rounded;
+}
+
+.block-toolbar-separator {
+  @apply w-px h-5 bg-(--border) mx-1;
+}
+
+.block-toolbar-delete {
+  @apply text-(--destructive) hover:text-(--destructive) hover:bg-(--destructive)/10;
+}
+
+/* Selection handles - corner and edge squares */
+.block-handle {
+  @apply absolute w-2 h-2 bg-white border-2 border-(--primary);
+  @apply z-10;
+}
+
+/* Corner handles */
+.block-handle.top-left {
+  @apply -top-1 -left-1 cursor-nwse-resize;
+}
+
+.block-handle.top-right {
+  @apply -top-1 -right-1 cursor-nesw-resize;
+}
+
+.block-handle.bottom-left {
+  @apply -bottom-1 -left-1 cursor-nesw-resize;
+}
+
+.block-handle.bottom-right {
+  @apply -bottom-1 -right-1 cursor-nwse-resize;
+}
+
+/* Edge handles */
+.block-handle.top {
+  @apply -top-1 left-1/2 -translate-x-1/2 cursor-ns-resize;
+}
+
+.block-handle.bottom {
+  @apply -bottom-1 left-1/2 -translate-x-1/2 cursor-ns-resize;
+}
+
+.block-handle.left {
+  @apply top-1/2 -left-1 -translate-y-1/2 cursor-ew-resize;
+}
+
+.block-handle.right {
+  @apply top-1/2 -right-1 -translate-y-1/2 cursor-ew-resize;
+}
+
+/* Content area */
+.block-content {
+  @apply relative;
+}
+
+/* Ensure content is interactive */
+.block-content [contenteditable="true"] {
+  @apply outline-none;
+}
+
+.block-content [contenteditable="true"]:focus {
+  @apply outline-none;
+}

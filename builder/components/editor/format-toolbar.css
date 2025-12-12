@@ -1,0 +1,40 @@
+@reference "tailwindcss";
+
+.format-toolbar {
+  @apply flex items-center gap-1;
+  @apply bg-(--popover) border border-(--border) rounded-lg shadow-lg;
+  @apply p-1;
+}
+
+.format-toolbar__group {
+  @apply flex items-center;
+  @apply border-l border-(--border) pl-1 ml-1;
+}
+
+.format-toolbar__group:first-child {
+  @apply border-l-0 pl-0 ml-0;
+}
+
+.format-toolbar__select {
+  @apply h-7 text-xs border-0 bg-transparent;
+}
+
+.format-toolbar__select--level {
+  @apply w-16;
+}
+
+.format-toolbar__select--size {
+  @apply w-20;
+}
+
+.format-toolbar__select--weight {
+  @apply w-24;
+}
+
+.format-toolbar__select--color {
+  @apply w-24;
+}
+
+.format-toolbar__select [data-slot="select-trigger"] {
+  @apply h-7 px-2;
+}

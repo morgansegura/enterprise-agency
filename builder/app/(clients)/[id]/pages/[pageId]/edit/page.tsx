@@ -10,21 +10,25 @@ import {
   type Section,
   type Block,
 } from "@/lib/hooks/use-pages";
-import { PageEditorLayout } from "@/components/editor";
+import { PageEditorLayout, PageSettingsModal } from "@/components/editor";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Blocks,
   Layers,
-  LayoutPanelTop,
-  MonitorCog,
   Newspaper,
   PanelsTopLeft,
-  Rows2,
   Store,
   Plus,
+  Settings,
+  Search,
+  Palette,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
 import { SortableSection } from "@/components/editor/sortable-section";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
@@ -78,6 +82,24 @@ export default function EditPagePage({
   // Breakpoint state for responsive preview
   const [breakpoint, setBreakpoint] = React.useState<Breakpoint>("desktop");
 
+  // Modal states
+  const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
+
+  // Selection state for WYSIWYG editing
+  const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(null);
+
+  // Hover state for layers popover
+  const [hoveredBlockKey, setHoveredBlockKey] = React.useState<string | null>(null);
+
+  // Local page state for editing
+  const [localPage, setLocalPage] = React.useState({
+    title: "",
+    slug: "",
+    status: "draft",
+    template: "default",
+    seo: undefined as import("@/lib/hooks/use-pages").PageSeo | undefined,
+  });
+
   // Sync sections with page data
   React.useEffect(() => {
     if (page?.content?.sections) {
@@ -91,6 +113,19 @@ export default function EditPagePage({
           blocks: [],
         },
       ]);
+    }
+  }, [page]);
+
+  // Sync local page state with fetched page data
+  React.useEffect(() => {
+    if (page) {
+      setLocalPage({
+        title: page.title,
+        slug: page.slug,
+        status: page.status || "draft",
+        template: page.template || "default",
+        seo: page.seo,
+      });
     }
   }, [page]);
 
@@ -139,7 +174,11 @@ export default function EditPagePage({
     updatePage.mutate({
       id: pageId,
       data: {
-        title: page.title,
+        title: localPage.title,
+        slug: localPage.slug,
+        status: localPage.status,
+        template: localPage.template,
+        seo: localPage.seo,
         content: {
           sections,
         },
@@ -176,7 +215,11 @@ export default function EditPagePage({
         await updatePage.mutateAsync({
           id: pageId,
           data: {
-            title: page?.title || "",
+            title: localPage.title,
+            slug: localPage.slug,
+            status: localPage.status,
+            template: localPage.template,
+            seo: localPage.seo,
             content: {
               sections,
             },
@@ -198,9 +241,17 @@ export default function EditPagePage({
     }
   };
 
-  const handlePageChange = (field: string, value: string) => {
-    // Update page data locally (you could debounce this to auto-save)
+  const handlePageChange = (field: string, value: unknown) => {
+    setLocalPage((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
     logger.debug("Page field changed", { field, value });
+  };
+
+  const handlePreview = () => {
+    // Open preview in new tab
+    window.open(`/preview/${localPage.slug}`, "_blank");
   };
 
   const handleBlockChange = (
@@ -231,7 +282,67 @@ export default function EditPagePage({
       };
       return updatedSections;
     });
+    setSelectedBlockKey(null);
     toast.success("Block deleted");
+  };
+
+  const handleBlockDuplicate = (sectionIndex: number, blockIndex: number) => {
+    setSections((prevSections) => {
+      const updatedSections = [...prevSections];
+      const block = updatedSections[sectionIndex].blocks[blockIndex];
+      const duplicatedBlock = {
+        ...block,
+        _key: `block-${Date.now()}`,
+      };
+      updatedSections[sectionIndex] = {
+        ...updatedSections[sectionIndex],
+        blocks: [
+          ...updatedSections[sectionIndex].blocks.slice(0, blockIndex + 1),
+          duplicatedBlock,
+          ...updatedSections[sectionIndex].blocks.slice(blockIndex + 1),
+        ],
+      };
+      return updatedSections;
+    });
+    toast.success("Block duplicated");
+  };
+
+  const handleBlockMoveUp = (sectionIndex: number, blockIndex: number) => {
+    if (blockIndex === 0) return;
+    setSections((prevSections) => {
+      const updatedSections = [...prevSections];
+      const blocks = [...updatedSections[sectionIndex].blocks];
+      [blocks[blockIndex - 1], blocks[blockIndex]] = [blocks[blockIndex], blocks[blockIndex - 1]];
+      updatedSections[sectionIndex] = { ...updatedSections[sectionIndex], blocks };
+      return updatedSections;
+    });
+  };
+
+  const handleBlockMoveDown = (sectionIndex: number, blockIndex: number) => {
+    setSections((prevSections) => {
+      const section = prevSections[sectionIndex];
+      if (blockIndex >= section.blocks.length - 1) return prevSections;
+      const updatedSections = [...prevSections];
+      const blocks = [...section.blocks];
+      [blocks[blockIndex], blocks[blockIndex + 1]] = [blocks[blockIndex + 1], blocks[blockIndex]];
+      updatedSections[sectionIndex] = { ...updatedSections[sectionIndex], blocks };
+      return updatedSections;
+    });
+  };
+
+  // Clear selection when clicking on canvas background
+  const handleCanvasClick = (e: React.MouseEvent) => {
+    // Check if we clicked on a block wrapper or its children
+    const target = e.target as HTMLElement;
+    const isBlockClick = target.closest('.block-wrapper');
+    const isPanelClick = target.closest('.block-wrapper__panel');
+    const isDialogClick = target.closest('[role="dialog"]');
+    const isPopoverClick = target.closest('[data-radix-popper-content-wrapper]');
+
+    // Only deselect if not clicking on a block, panel, dialog, or popover
+    if (!isBlockClick && !isPanelClick && !isDialogClick && !isPopoverClick) {
+      setSelectedBlockKey(null);
+    }
   };
 
   const handleBlockDragEnd = (event: DragEndEvent, sectionIndex: number) => {
@@ -315,6 +426,76 @@ export default function EditPagePage({
     toast.success("Section added");
   };
 
+  const handleAddSectionAt = (index: number) => {
+    const newSection: Section = {
+      _type: "section",
+      _key: `section-${Date.now()}`,
+      blocks: [],
+    };
+
+    setSections((prevSections) => {
+      const updated = [...prevSections];
+      updated.splice(index, 0, newSection);
+      return updated;
+    });
+    toast.success("Section added");
+  };
+
+  const handleSectionDuplicate = (sectionIndex: number) => {
+    setSections((prevSections) => {
+      const section = prevSections[sectionIndex];
+      const duplicated: Section = {
+        ...section,
+        _key: `section-${Date.now()}`,
+        blocks: section.blocks.map((block) => ({
+          ...block,
+          _key: `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        })),
+      };
+      const updated = [...prevSections];
+      updated.splice(sectionIndex + 1, 0, duplicated);
+      return updated;
+    });
+    toast.success("Section duplicated");
+  };
+
+  const handleSectionMoveUp = (sectionIndex: number) => {
+    if (sectionIndex === 0) return;
+    setSections((prevSections) => {
+      const updated = [...prevSections];
+      [updated[sectionIndex - 1], updated[sectionIndex]] = [
+        updated[sectionIndex],
+        updated[sectionIndex - 1],
+      ];
+      return updated;
+    });
+  };
+
+  const handleSectionMoveDown = (sectionIndex: number) => {
+    setSections((prevSections) => {
+      if (sectionIndex >= prevSections.length - 1) return prevSections;
+      const updated = [...prevSections];
+      [updated[sectionIndex], updated[sectionIndex + 1]] = [
+        updated[sectionIndex + 1],
+        updated[sectionIndex],
+      ];
+      return updated;
+    });
+  };
+
+  const handleAddBlockToSection = (sectionIndex: number, blockType: string) => {
+    const newBlock = createDefaultBlock(blockType);
+    setSections((prevSections) => {
+      const updated = [...prevSections];
+      updated[sectionIndex] = {
+        ...updated[sectionIndex],
+        blocks: [...updated[sectionIndex].blocks, newBlock],
+      };
+      return updated;
+    });
+    toast.success("Block added!");
+  };
+
   function createDefaultBlock(blockType: string): Block {
     // Use block registry to create default block
     const defaultBlock = blockRegistry.createDefault(blockType);
@@ -336,69 +517,130 @@ export default function EditPagePage({
 
   return (
     <div className="flex">
-      <aside className="relative bg-white -m-4 w-12 border-r flex flex-col top-0 bottom-0 items-center space-y-4 py-4 text-muted-foreground">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => toast.info("Website editor coming soon")}
-          title="Visit the Website Editor"
-        >
-          <PanelsTopLeft />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => toast.info("Blog editor coming soon")}
-          title="Visit the Blog Editor"
-        >
-          <Newspaper />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => toast.info("Shop editor coming soon")}
-          title="Visit the Shop Editor"
-        >
-          <Store />
-        </Button>
-        <Separator />
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => toast.info("Block editor coming soon")}
-          title="Open Block Editor"
-        >
-          <LayoutPanelTop />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => toast.info("Settings coming soon")}
-          title="Open Editor Settings"
-        >
-          <Layers />
-        </Button>
+      {/* Icon Toolbar */}
+      <aside className="relative bg-(--sidebar) w-12 border-r flex flex-col top-0 bottom-0 items-center space-y-2 py-4 text-muted-foreground">
+        {/* Navigation Section */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => toast.info("Website editor coming soon")}
+            >
+              <PanelsTopLeft />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Website Editor</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => toast.info("Blog editor coming soon")}
+            >
+              <Newspaper />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Blog Editor</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => toast.info("Shop editor coming soon")}
+            >
+              <Store />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Shop Editor</TooltipContent>
+        </Tooltip>
+
+        <Separator className="my-2" />
+
+        {/* Page Tools Section */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setSettingsModalOpen(true)}
+            >
+              <Settings />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Page Settings</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => {
+                setSettingsModalOpen(true);
+                // The modal will open on SEO tab - handled by defaultValue
+              }}
+            >
+              <Search />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">SEO Settings</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => toast.info("Theme settings coming soon")}
+            >
+              <Palette />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Theme Settings</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => toast.info("Layers panel coming soon")}
+            >
+              <Layers />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Layers</TooltipContent>
+        </Tooltip>
       </aside>
+
+      {/* Page Settings Modal */}
+      <PageSettingsModal
+        open={settingsModalOpen}
+        onOpenChange={setSettingsModalOpen}
+        page={localPage}
+        onChange={handlePageChange}
+        onSave={handleSave}
+      />
+
       <PageEditorLayout
         pageId={pageId}
-        pageTitle={page.title}
-        page={{
-          title: page.title,
-          slug: page.slug,
-          status: page.status,
-          template: page.template,
-        }}
+        pageTitle={localPage.title || page.title}
         breakpoint={breakpoint}
         onBreakpointChange={setBreakpoint}
         onSave={handleSave}
         onPublish={handlePublish}
-        onPageChange={handlePageChange}
+        onPreview={handlePreview}
         isSaving={updatePage.isPending}
       >
         {/* Canvas Content */}
         <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
           <ResponsivePreview breakpoint={breakpoint} className="h-full">
-            <Card className="page-editor-canvas-content bg-white h-full">
+            <Card className="page-editor-canvas-content bg-white h-full" onClick={handleCanvasClick}>
               <CardContent className="p-8">
                 <DndContext
                   sensors={sensors}
@@ -409,7 +651,7 @@ export default function EditPagePage({
                     items={sections.map((section) => section._key)}
                     strategy={verticalListSortingStrategy}
                   >
-                    <div className="space-y-12">
+                    <div>
                       {sections.map((section, sectionIndex) => (
                         <SortableSection
                           key={section._key}
@@ -418,14 +660,19 @@ export default function EditPagePage({
                             handleSectionChange(sectionIndex, updatedSection)
                           }
                           onDelete={() => handleSectionDelete(sectionIndex)}
+                          onAddSectionAbove={() => handleAddSectionAt(sectionIndex)}
+                          onAddSectionBelow={() => handleAddSectionAt(sectionIndex + 1)}
+                          onDuplicate={() => handleSectionDuplicate(sectionIndex)}
+                          onMoveUp={() => handleSectionMoveUp(sectionIndex)}
+                          onMoveDown={() => handleSectionMoveDown(sectionIndex)}
+                          onAddBlock={(blockType) => handleAddBlockToSection(sectionIndex, blockType)}
+                          selectedBlockKey={selectedBlockKey}
+                          onSelectBlock={setSelectedBlockKey}
+                          hoveredBlockKey={hoveredBlockKey}
+                          onHoverBlock={setHoveredBlockKey}
                         >
                           {section.blocks.length === 0 ? (
-                            <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                              <p className="text-muted-foreground">
-                                Click a block from the left sidebar to add
-                                content to this section.
-                              </p>
-                            </div>
+                            <div className="min-h-[60px]" />
                           ) : (
                             <DndContext
                               sensors={sensors}
@@ -458,7 +705,16 @@ export default function EditPagePage({
                                           blockIndex,
                                         )
                                       }
+                                      onDuplicate={() =>
+                                        handleBlockDuplicate(
+                                          sectionIndex,
+                                          blockIndex,
+                                        )
+                                      }
                                       tenantId={id}
+                                      isSelected={selectedBlockKey === block._key}
+                                      isHovered={hoveredBlockKey === block._key}
+                                      onSelect={() => setSelectedBlockKey(block._key)}
                                     />
                                   ))}
                                 </div>
@@ -467,17 +723,6 @@ export default function EditPagePage({
                           )}
                         </SortableSection>
                       ))}
-
-                      {/* Add Section Button */}
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={handleAddSection}
-                        className="w-full border-2 border-dashed hover:border-primary hover:bg-primary/5"
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Section
-                      </Button>
                     </div>
                   </SortableContext>
                 </DndContext>

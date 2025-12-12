@@ -1,0 +1,44 @@
+@reference "tailwindcss";
+
+.layers-popover {
+  @apply w-[300px] p-0;
+}
+
+.layers-title {
+  @apply text-base font-semibold text-(--foreground);
+  @apply px-4 py-3 border-b border-(--border);
+}
+
+.layers-list {
+  @apply max-h-[350px] overflow-y-auto p-2;
+}
+
+.layers-empty {
+  @apply text-sm text-(--muted-foreground) text-center py-8;
+}
+
+.layers-item {
+  @apply flex items-center gap-3 w-full px-3 py-3;
+  @apply text-(--foreground) text-sm;
+  @apply rounded-lg;
+  @apply border border-transparent;
+  @apply hover:bg-(--muted) transition-colors;
+  @apply cursor-pointer;
+}
+
+.layers-item.is-selected {
+  @apply border-(--primary) bg-(--primary)/5;
+}
+
+.layers-item svg {
+  @apply text-(--muted-foreground) shrink-0;
+}
+
+.layers-item span {
+  @apply truncate;
+}
+
+/* Keep trigger visible when popover is open */
+.layers-trigger-open .section-drag-handle {
+  @apply opacity-100;
+}

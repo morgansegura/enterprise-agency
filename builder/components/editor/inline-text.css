@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.inline-text {
+  @apply outline-none;
+  @apply min-h-[1em];
+}
+
+/* Placeholder using ::before pseudo-element */
+.inline-text--empty:empty::before {
+  content: attr(data-placeholder);
+  @apply text-(--muted-foreground);
+  @apply pointer-events-none;
+}
+
+.inline-text:focus {
+  @apply outline-none;
+}

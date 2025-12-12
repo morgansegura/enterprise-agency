@@ -233,7 +233,7 @@
 
 /* Sidebar Inset */
 [data-slot="sidebar-inset"] {
-  @apply relative flex flex-1 flex-col bg-(--background);
+  @apply relative h-screen w-screen flex flex-col bg-(--background) overflow-hidden;
 }
 
 @media (min-width: 768px) {

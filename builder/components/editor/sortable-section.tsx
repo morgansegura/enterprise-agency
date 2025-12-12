@@ -3,23 +3,40 @@
 import * as React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Settings, Trash2, Plus } from "lucide-react";
+import {
+  Pencil,
+  LayoutGrid,
+  Copy,
+  Heart,
+  ChevronUp,
+  ChevronDown,
+  Trash2,
+  Layers,
+  Plus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { Section } from "@/lib/hooks/use-pages";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { SectionSettings } from "./section-settings";
+import { SectionSettingsPopover } from "./section-settings-popover";
+import { AddBlockPopover } from "./add-block-popover";
+import { LayersPopover } from "./layers-popover";
+
+import "./sortable-section.css";
 
 interface SortableSectionProps {
   section: Section;
   onSectionChange: (section: Section) => void;
   onDelete: () => void;
+  onAddSectionAbove?: () => void;
+  onAddSectionBelow?: () => void;
+  onDuplicate?: () => void;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  onAddBlock?: (blockType: string) => void;
+  selectedBlockKey?: string | null;
+  onSelectBlock?: (key: string) => void;
+  hoveredBlockKey?: string | null;
+  onHoverBlock?: (key: string | null) => void;
   children: React.ReactNode;
 }
 
@@ -27,120 +44,224 @@ interface SortableSectionProps {
  * Sortable Section Component
  *
  * Wraps a section with drag-and-drop functionality and section-level controls.
+ * Renders content exactly as it will appear on the live site (WYSIWYG).
  *
  * Features:
- * - Drag handle for reordering sections
- * - Settings button to edit section properties
- * - Delete button to remove section
+ * - ADD SECTION buttons above/below on hover (overlaid)
+ * - Floating action panel on right side
+ * - Settings popover with tabs
  * - Visual feedback during dragging
- *
- * Usage:
- * ```tsx
- * <SortableSection
- *   section={section}
- *   onSectionChange={handleSectionChange}
- *   onDelete={handleDelete}
- * >
- *   {section content}
- * </SortableSection>
- * ```
  */
 export function SortableSection({
   section,
   onSectionChange,
   onDelete,
+  onAddSectionAbove,
+  onAddSectionBelow,
+  onDuplicate,
+  onMoveUp,
+  onMoveDown,
+  onAddBlock,
+  selectedBlockKey,
+  onSelectBlock,
+  hoveredBlockKey,
+  onHoverBlock,
   children,
 }: SortableSectionProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: section._key });
-
-  const [showSettings, setShowSettings] = React.useState(false);
+  const { setNodeRef, transform, transition, isDragging } = useSortable({
+    id: section._key,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
+  // Map spacing values to CSS classes
+  const spacingClasses: Record<string, string> = {
+    none: "",
+    xs: "py-2",
+    sm: "py-4",
+    md: "py-8",
+    lg: "py-12",
+    xl: "py-16",
+    "2xl": "py-24",
+  };
+
+  // Map width values to CSS classes
+  const widthClasses: Record<string, string> = {
+    narrow: "max-w-3xl mx-auto px-4",
+    container: "max-w-5xl mx-auto px-4",
+    wide: "max-w-7xl mx-auto px-4",
+    full: "w-full",
+  };
+
+  // Map background values to CSS classes
+  const backgroundClasses: Record<string, string> = {
+    none: "",
+    primary: "bg-(--primary)",
+    secondary: "bg-(--secondary)",
+    accent: "bg-(--accent)",
+    muted: "bg-(--muted)",
+    card: "bg-(--card)",
+  };
+
+  const sectionSpacing =
+    spacingClasses[section.spacing || "md"] || spacingClasses.md;
+  const sectionWidth = widthClasses[section.width || "wide"] || "";
+  const sectionBackground =
+    backgroundClasses[section.background || "none"] || "";
+
+  // Check if any block in this section is selected
+  const hasSelectedBlock = selectedBlockKey
+    ? section.blocks.some((block) => block._key === selectedBlockKey)
+    : false;
+
   return (
-    <>
-      <Card
-        ref={setNodeRef}
-        style={style}
-        className={cn(
-          "group relative border-2 border-dashed border-muted hover:border-primary/50 transition-colors",
-          isDragging && "opacity-50 cursor-grabbing",
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "sortable-section",
+        isDragging && "is-dragging",
+        hasSelectedBlock && "has-selected-block",
+        sectionBackground,
+      )}
+    >
+      {/* Section Content with border */}
+      <div className="section-content">
+        {/* Layers Button - Left side (always visible) */}
+        <LayersPopover
+          blocks={section.blocks}
+          selectedBlockKey={selectedBlockKey ?? null}
+          onSelectBlock={onSelectBlock ?? (() => {})}
+          onHoverBlock={onHoverBlock}
+        >
+          <button className="section-drag-handle" aria-label="View layers">
+            <Layers className="h-5 w-5" />
+          </button>
+        </LayersPopover>
+
+        {/* Section controls - hidden when a block is selected */}
+        {!hasSelectedBlock && (
+          <>
+            {/* ADD SECTION - Above (overlaid) */}
+            {onAddSectionAbove ? (
+              <div className="section-add-above">
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={onAddSectionAbove}
+                  className="section-add-btn"
+                >
+                  Add Section
+                </Button>
+              </div>
+            ) : null}
+
+            {/* ADD SECTION - Below (overlaid) */}
+            {onAddSectionBelow ? (
+              <div className="section-add-below">
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={onAddSectionBelow}
+                  className="section-add-btn"
+                >
+                  Add Section
+                </Button>
+              </div>
+            ) : null}
+
+            {/* Add Block Button - Top left */}
+            <div className="section-add-block">
+              <AddBlockPopover onAddBlock={onAddBlock ?? (() => {})}>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  ADD BLOCK
+                </Button>
+              </AddBlockPopover>
+            </div>
+
+            {/* Floating Action Panel - Right side */}
+            <div className="section-panel">
+              {/* Edit Section */}
+              <SectionSettingsPopover
+                section={section}
+                onChange={onSectionChange}
+              >
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="section-panel-item"
+                >
+                  <Pencil className="h-4 w-4" />
+                  <span>EDIT SECTION</span>
+                </Button>
+              </SectionSettingsPopover>
+
+              {/* View Layouts */}
+              <Button variant="ghost" size="sm" className="section-panel-item">
+                <LayoutGrid className="h-4 w-4" />
+                <span>VIEW LAYOUTS</span>
+              </Button>
+
+              {/* Quick Actions Row */}
+              <div className="section-panel-row">
+                {onDuplicate && (
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={onDuplicate}
+                    title="Duplicate"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                )}
+                <Button variant="ghost" size="icon-sm" title="Favorite">
+                  <Heart className="h-4 w-4" />
+                </Button>
+                {onMoveUp && (
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={onMoveUp}
+                    title="Move up"
+                  >
+                    <ChevronUp className="h-4 w-4" />
+                  </Button>
+                )}
+                {onMoveDown && (
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={onMoveDown}
+                    title="Move down"
+                  >
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+
+              {/* Remove */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onDelete}
+                className="section-panel-item section-panel-delete"
+              >
+                <Trash2 className="h-4 w-4" />
+                <span>REMOVE</span>
+              </Button>
+            </div>
+          </>
         )}
-      >
-        {/* Section Controls - Top Bar */}
-        <div className="absolute -top-10 left-0 right-0 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="flex items-center gap-2">
-            {/* Drag Handle */}
-            <button
-              {...attributes}
-              {...listeners}
-              className="p-2 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md bg-background border shadow-sm"
-              aria-label="Drag to reorder section"
-              title="Drag to reorder"
-            >
-              <GripVertical className="h-4 w-4" />
-            </button>
 
-            <span className="text-xs font-medium text-muted-foreground bg-background px-2 py-1 rounded border shadow-sm">
-              Section {section.blocks.length}{" "}
-              {section.blocks.length === 1 ? "block" : "blocks"}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {/* Settings Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowSettings(true)}
-              className="shadow-sm"
-            >
-              <Settings className="h-3 w-3 mr-1" />
-              Settings
-            </Button>
-
-            {/* Delete Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onDelete}
-              className="text-destructive hover:text-destructive shadow-sm"
-            >
-              <Trash2 className="h-3 w-3 mr-1" />
-              Delete
-            </Button>
-          </div>
+        {/* Section Inner Content - renders exactly as live site */}
+        <div className={cn("section-inner", sectionSpacing, sectionWidth)}>
+          {children}
         </div>
-
-        {/* Section Content */}
-        <div className="p-6">{children}</div>
-      </Card>
-
-      {/* Settings Sheet */}
-      <Sheet open={showSettings} onOpenChange={setShowSettings}>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Section Settings</SheetTitle>
-          </SheetHeader>
-          <div className="mt-6">
-            <SectionSettings
-              section={section}
-              onChange={onSectionChange}
-              onClose={() => setShowSettings(false)}
-            />
-          </div>
-        </SheetContent>
-      </Sheet>
-    </>
+      </div>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .page-editor-layout {
-  @apply flex flex-col h-screen bg-(--background) -m-4 ml-4 flex-1;
+  @apply flex flex-col h-screen w-full bg-(--background) flex-1;
 }
 
 /* Toolbar */
@@ -31,76 +31,7 @@
 
 /* Editor Body */
 .page-editor-body {
-  @apply flex flex-1 overflow-hidden;
-}
-
-/* Sidebars */
-.page-editor-sidebar {
-  @apply flex flex-col bg-(--card) border-x border-(--border) overflow-hidden;
-  transition:
-    width 300ms ease-out,
-    min-width 300ms ease-out,
-    max-width 300ms ease-out;
-}
-
-.page-editor-sidebar-left {
-  @apply border-l-0;
-}
-
-.page-editor-sidebar-right {
-  @apply border-r-0;
-}
-
-/* Expanded state */
-.page-editor-sidebar-left[data-state="expanded"] {
-  width: 280px;
-  min-width: 280px;
-  max-width: 280px;
-}
-
-.page-editor-sidebar-right[data-state="expanded"] {
-  width: 320px;
-  min-width: 320px;
-  max-width: 320px;
-}
-
-/* Collapsed state */
-.page-editor-sidebar-left[data-state="collapsed"],
-.page-editor-sidebar-right[data-state="collapsed"] {
-  width: 0;
-  min-width: 0;
-  max-width: 0;
-  border: 0;
-  padding: 0;
-}
-
-.page-editor-sidebar-header {
-  @apply flex items-center justify-between px-2 py-1 bg-(--card);
-}
-
-.page-editor-sidebar-header h3 {
-  @apply text-sm font-semibold m-0 text-(--foreground);
-}
-
-.page-editor-sidebar-content {
-  @apply flex-1 overflow-y-auto;
-}
-
-/* Sidebar Tabs (Right sidebar) */
-.page-editor-sidebar-tabs {
-  @apply flex gap-1;
-}
-
-.page-editor-sidebar-tab {
-  @apply flex items-center gap-2 px-3 py-2 text-sm border-none bg-transparent text-(--muted-foreground) cursor-pointer rounded-md transition-all duration-150;
-}
-
-.page-editor-sidebar-tab:hover {
-  @apply bg-(--accent) text-(--accent-foreground);
-}
-
-.page-editor-sidebar-tab.active {
-  @apply bg-(--accent) text-(--accent-foreground) font-medium;
+  @apply flex flex-1 overflow-y-auto;
 }
 
 /* Canvas */
@@ -113,47 +44,5 @@
 
   [data-slot="card"] {
     @apply rounded-none border-none h-full top-0;
-  }
-}
-
-/* Sidebar Toggle Buttons */
-.page-editor-sidebar-toggle {
-  @apply absolute top-1.5 z-5;
-}
-
-.page-editor-sidebar-toggle-left {
-  @apply left-1.5;
-}
-
-.page-editor-sidebar-toggle-right {
-  @apply right-1.5;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .page-editor-sidebar-left[data-state="expanded"] {
-    width: 240px;
-    min-width: 240px;
-    max-width: 240px;
-  }
-
-  .page-editor-sidebar-right[data-state="expanded"] {
-    width: 280px;
-    min-width: 280px;
-    max-width: 280px;
-  }
-}
-
-@media (max-width: 768px) {
-  .page-editor-sidebar {
-    @apply absolute top-0 bottom-0 z-20 shadow-lg;
-  }
-
-  .page-editor-sidebar-left {
-    @apply left-0;
-  }
-
-  .page-editor-sidebar-right {
-    @apply right-0;
   }
 }

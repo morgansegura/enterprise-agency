@@ -1,0 +1,77 @@
+@reference "tailwindcss";
+
+.section-settings-popover {
+  @apply w-80 p-0 max-w-[calc(100vw-2rem)];
+}
+
+.section-settings-tabs {
+  @apply flex flex-col;
+}
+
+.section-settings-tabs-list {
+  @apply w-full justify-start border-b rounded-none h-auto p-0 bg-transparent;
+}
+
+.section-settings-tabs-list [data-slot="tabs-trigger"] {
+  @apply rounded-none border-b-2 border-transparent data-[state=active]:border-(--primary) data-[state=active]:bg-transparent px-4 py-3 text-sm font-medium;
+}
+
+.section-settings-content {
+  @apply p-4 space-y-5 max-h-[450px] overflow-y-auto;
+}
+
+.section-settings-section {
+  @apply space-y-3;
+}
+
+.section-settings-section-title {
+  @apply text-xs font-semibold tracking-wide text-(--muted-foreground);
+}
+
+.section-settings-field {
+  @apply space-y-1.5;
+}
+
+.section-settings-field label {
+  @apply text-sm;
+}
+
+.section-settings-field-row {
+  @apply flex items-center justify-between;
+}
+
+.section-settings-slider-row {
+  @apply flex items-center gap-3;
+}
+
+.section-settings-slider-row label {
+  @apply flex-shrink-0;
+}
+
+.section-settings-slider-value {
+  @apply text-sm text-(--muted-foreground) w-8 text-right;
+}
+
+.section-settings-number-input {
+  @apply w-20 text-right;
+}
+
+.section-settings-select {
+  @apply w-32;
+}
+
+.section-settings-button-group {
+  @apply flex gap-1;
+}
+
+.section-settings-button.is-active {
+  @apply bg-(--primary) text-(--primary-foreground) hover:bg-(--primary) hover:text-(--primary-foreground);
+}
+
+.section-settings-size-btn {
+  @apply w-10 px-0;
+}
+
+.section-settings-hint {
+  @apply text-xs text-(--muted-foreground) leading-relaxed;
+}

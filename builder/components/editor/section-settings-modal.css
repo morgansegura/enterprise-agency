@@ -1,0 +1,37 @@
+@reference "tailwindcss";
+
+.section-settings-modal {
+  @apply max-w-2xl max-h-[85vh] overflow-hidden flex flex-col;
+}
+
+.section-settings-modal-tabs {
+  @apply flex-1 flex flex-col overflow-hidden;
+}
+
+.section-settings-modal-tabs-list {
+  @apply w-full justify-start border-b rounded-none h-auto p-0 bg-transparent;
+}
+
+.section-settings-modal-tabs-list [data-slot="tabs-trigger"] {
+  @apply rounded-none border-b-2 border-transparent data-[state=active]:border-(--primary) data-[state=active]:bg-transparent px-4 py-3 gap-2;
+}
+
+.section-settings-modal-content {
+  @apply flex-1 overflow-y-auto py-4 space-y-6;
+}
+
+.section-settings-modal-section {
+  @apply space-y-4;
+}
+
+.section-settings-modal-section-title {
+  @apply text-sm font-semibold uppercase tracking-wide text-(--muted-foreground);
+}
+
+.section-settings-modal-field {
+  @apply space-y-2;
+}
+
+.section-settings-modal-footer {
+  @apply flex justify-end gap-2 pt-4 border-t mt-4;
+}
