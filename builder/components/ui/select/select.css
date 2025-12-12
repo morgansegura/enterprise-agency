@@ -100,7 +100,8 @@
 
 /* Select Content */
 [data-slot="select-content"] {
-  @apply relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-(--popover) text-(--popover-foreground) shadow-md;
+  @apply relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-(--popover) text-(--popover-foreground) shadow-md;
+  max-height: min(var(--radix-select-content-available-height, 300px), 300px);
   transform-origin: var(--radix-select-content-transform-origin);
 }
 
@@ -150,11 +151,13 @@
 
 /* Select Viewport */
 [data-slot="select-viewport"] {
-  @apply p-1;
+  @apply p-1 overflow-y-auto;
+  max-height: inherit;
 }
 
 [data-slot="select-viewport"][data-position="popper"] {
-  @apply h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)];
+  @apply w-full min-w-[var(--radix-select-trigger-width)];
+  height: auto;
 }
 
 /* Select Label */

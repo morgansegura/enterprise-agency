@@ -54,6 +54,8 @@ export interface FontSizeScale {
   "4xl": string;
   "5xl": string;
   "6xl": string;
+  // Semantic font sizes for theming
+  heading?: string;
 }
 
 export interface FontWeightScale {
@@ -162,6 +164,92 @@ export interface TransitionScale {
 }
 
 /**
+ * UI Component Settings
+ * All values use Tailwind token keys (e.g., "sm", "md", "lg" for radius, "4", "6" for spacing)
+ */
+
+/**
+ * Per-size button settings - each size is fully independent
+ */
+export interface ButtonSizeComponentSettings {
+  // Spacing
+  paddingX: string;
+  paddingY: string;
+  gap: string;
+  minHeight: string;
+  // Typography
+  fontSize: string;
+  fontWeight: string;
+  letterSpacing: string;
+  lineHeight: string;
+  textTransform: string;
+  // Shape
+  borderRadius: string;
+  // Effects
+  transitionDuration: string;
+}
+
+export interface ButtonComponentSettings {
+  // Size variants - each size is fully independent
+  sizes: {
+    xs: ButtonSizeComponentSettings;
+    sm: ButtonSizeComponentSettings;
+    md: ButtonSizeComponentSettings;
+    lg: ButtonSizeComponentSettings;
+    xl: ButtonSizeComponentSettings;
+  };
+}
+
+export interface InputComponentSettings {
+  // Shape
+  borderRadius: string;
+  borderWidth: string; // Tailwind border-width key
+  // Spacing
+  paddingX: string;
+  paddingY: string;
+  // Typography
+  fontSize: string;
+  fontWeight: string;
+  // Effects
+  transitionDuration: string;
+}
+
+export interface CardComponentSettings {
+  // Container Shape
+  borderRadius: string;
+  borderWidth: string;
+  shadow: string; // Tailwind shadow key
+  // Section Spacing
+  headerPaddingX: string;
+  headerPaddingY: string;
+  contentPaddingX: string;
+  contentPaddingY: string;
+  footerPaddingX: string;
+  footerPaddingY: string;
+  // Section borders
+  headerBorder: boolean;
+  footerBorder: boolean;
+  // Title Typography
+  titleFontSize: string;
+  titleFontWeight: string;
+  titleLineHeight: string;
+  titleLetterSpacing: string;
+  // Description Typography
+  descriptionFontSize: string;
+  descriptionFontWeight: string;
+  descriptionLineHeight: string;
+  // Hover Effects
+  hoverShadow: string;
+  transitionDuration: string;
+}
+
+export interface ComponentTokens {
+  buttons?: Partial<ButtonComponentSettings>;
+  inputs?: Partial<InputComponentSettings>;
+  cards?: Partial<CardComponentSettings>;
+}
+
+/**
  * Complete Design Token System
  */
 export interface DesignTokens {
@@ -171,6 +259,7 @@ export interface DesignTokens {
   borderRadius: BorderRadiusScale;
   shadows: ShadowScale;
   transitions: TransitionScale;
+  components?: ComponentTokens;
 }
 
 /**
