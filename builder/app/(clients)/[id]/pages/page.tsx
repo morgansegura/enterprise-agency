@@ -36,7 +36,6 @@ import {
   List,
   FileText,
   ExternalLink,
-  PlusCircle,
 } from "lucide-react";
 import "./pages.css";
 
@@ -113,7 +112,7 @@ export default function PagesPage({
           </span>
         </div>
         <Button onClick={() => router.push(`/${id}/pages/new`)}>
-          <PlusCircle className="h-4 w-4" />
+          <Plus className="h-4 w-4 mr-2" />
           Create Page
         </Button>
       </div>
