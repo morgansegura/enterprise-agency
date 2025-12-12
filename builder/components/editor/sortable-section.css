@@ -15,7 +15,8 @@
   @apply transition-all duration-200;
 }
 
-.sortable-section:hover .section-content {
+.sortable-section:hover .section-content,
+.sortable-section.is-settings-open .section-content {
   @apply border-(--primary);
 }
 
@@ -35,7 +36,8 @@
   @apply opacity-0 transition-opacity;
 }
 
-.sortable-section:hover .section-drag-handle {
+.sortable-section:hover .section-drag-handle,
+.sortable-section.is-settings-open .section-drag-handle {
   @apply opacity-100;
 }
 
@@ -50,7 +52,8 @@
   @apply opacity-0 transition-opacity;
 }
 
-.sortable-section:hover .section-add-block {
+.sortable-section:hover .section-add-block,
+.sortable-section.is-settings-open .section-add-block {
   @apply opacity-100;
 }
 
@@ -76,7 +79,9 @@
 }
 
 .sortable-section:hover .section-add-above,
-.sortable-section:hover .section-add-below {
+.sortable-section:hover .section-add-below,
+.sortable-section.is-settings-open .section-add-above,
+.sortable-section.is-settings-open .section-add-below {
   @apply opacity-100 pointer-events-auto;
 }
 
@@ -97,7 +102,8 @@
   @apply flex flex-col gap-1;
 }
 
-.sortable-section:hover .section-panel {
+.sortable-section:hover .section-panel,
+.sortable-section.is-settings-open .section-panel {
   @apply opacity-100 pointer-events-auto;
 }
 

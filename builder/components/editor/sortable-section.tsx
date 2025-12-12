@@ -212,6 +212,9 @@ export function SortableSection({
     ? section.blocks.some((block) => block._key === selectedBlockKey)
     : false;
 
+  // Track when settings popover is open to keep hover state visible
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
+
   return (
     <div
       ref={setNodeRef}
@@ -223,6 +226,7 @@ export function SortableSection({
         "sortable-section",
         isDragging && "is-dragging",
         hasSelectedBlock && "has-selected-block",
+        settingsOpen && "is-settings-open",
         getBackgroundClass(),
         sectionHeight,
         textColor,
@@ -313,6 +317,8 @@ export function SortableSection({
               <SectionSettingsPopover
                 section={section}
                 onChange={onSectionChange}
+                open={settingsOpen}
+                onOpenChange={setSettingsOpen}
               >
                 <Button
                   variant="ghost"
