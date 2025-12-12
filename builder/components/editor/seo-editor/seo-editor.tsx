@@ -83,13 +83,6 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-4">SEO Settings</h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          Optimize your content for search engines and social media
-        </p>
-      </div>
-
       {/* Basic Meta Tags */}
       <div className="space-y-4">
         <FormItem>

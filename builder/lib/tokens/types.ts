@@ -35,9 +35,12 @@ export interface ColorTokens {
 }
 
 export interface FontFamily {
-  sans: string[];
-  serif: string[];
-  mono: string[];
+  sans?: string[];
+  serif?: string[];
+  mono?: string[];
+  // Tenant-specific fonts (for website customization)
+  base?: string;
+  heading?: string;
 }
 
 export interface FontSizeScale {

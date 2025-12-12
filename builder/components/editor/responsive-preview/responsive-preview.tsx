@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import type { Breakpoint } from "./breakpoint-selector";
+import type { Breakpoint } from "../breakpoint-selector";
 
 interface ResponsivePreviewProps {
   breakpoint: Breakpoint;

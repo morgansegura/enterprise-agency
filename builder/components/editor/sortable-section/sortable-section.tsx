@@ -17,9 +17,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Section } from "@/lib/hooks/use-pages";
-import { SectionSettingsPopover } from "./section-settings-popover";
-import { AddBlockPopover } from "./add-block-popover";
-import { LayersPopover } from "./layers-popover";
+import { SectionSettingsPopover } from "../section-settings-popover";
+import { AddBlockPopover } from "../add-block-popover";
+import { LayersPopover } from "../layers-popover";
 
 import "./sortable-section.css";
 

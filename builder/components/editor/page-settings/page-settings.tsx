@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { SeoEditor } from "./seo-editor";
+import { SeoEditor } from "../seo-editor";
 import type { PageSeo } from "@/lib/hooks/use-pages";
 import { FormItem } from "@/components/ui/form";
 

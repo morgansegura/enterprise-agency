@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Save, Eye } from "lucide-react";
-import { BreakpointSelector, type Breakpoint } from "./breakpoint-selector";
+import { BreakpointSelector, type Breakpoint } from "../breakpoint-selector";
 import "./page-editor-layout.css";
 
 interface PageEditorLayoutProps {

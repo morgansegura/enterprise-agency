@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Inter, Roboto_Slab } from "next/font/google";
+import { Open_Sans, Roboto_Slab } from "next/font/google";
 import { Providers } from "./providers";
 import "@/styles/globals.css";
 import { cn } from "@/lib/utils";
 
-const inter = Inter({
-  variable: "--font-inter",
+const font_base = Open_Sans({
+  variable: "--font-base",
   subsets: ["latin"],
 });
-const roboto_slab = Roboto_Slab({
-  variable: "--font-roboto-slab",
+const font_heading = Roboto_Slab({
+  variable: "--font-heading",
   subsets: ["latin"],
 });
 
@@ -25,7 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("antialiased", inter.variable, roboto_slab.variable)}>
+      <body
+        className={cn("antialiased", font_base.variable, font_heading.variable)}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

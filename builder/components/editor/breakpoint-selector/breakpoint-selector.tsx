@@ -59,7 +59,7 @@ export function BreakpointSelector({
   onChange,
 }: BreakpointSelectorProps) {
   return (
-    <div className="flex items-center gap-1 bg-(--border)/50 p-1 rounded-sm">
+    <div className="flex items-center gap-1 border bg-(--border)/50 rounded-sm">
       {breakpoints.map((breakpoint) => {
         const Icon = breakpoint.icon;
         const isActive = value === breakpoint.value;
@@ -70,7 +70,10 @@ export function BreakpointSelector({
             variant={isActive ? "default" : "ghost"}
             size="sm"
             onClick={() => onChange(breakpoint.value)}
-            className={cn("gap-2", !isActive && "hover:bg-background")}
+            className={cn(
+              "gap-2 rounded-sm",
+              !isActive && "hover:bg-background",
+            )}
             title={`${breakpoint.label} (${breakpoint.width})`}
           >
             <Icon className="h-4 w-4" />

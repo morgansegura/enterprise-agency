@@ -1,0 +1,189 @@
+@reference "tailwindcss";
+
+/* Drawer container - bottom slide */
+.settings-drawer {
+  @apply min-h-screen;
+  @apply p-0;
+}
+
+/* Layout - sidebar + content */
+.settings-drawer-layout {
+  @apply flex h-screen;
+}
+
+/* Sidebar */
+.settings-drawer-sidebar {
+  @apply w-[280px] shrink-0 h-full;
+  @apply border-r border-(--border);
+  @apply bg-(--muted)/30;
+  @apply flex flex-col;
+}
+
+.settings-drawer-header {
+  @apply border-b border-(--border);
+}
+
+/* Navigation */
+.settings-drawer-nav {
+  @apply flex flex-col gap-1 p-3;
+  @apply list-none m-0;
+}
+
+.settings-drawer-nav-item {
+  @apply flex items-center gap-3 w-full;
+  @apply px-4 py-3 rounded-lg;
+  @apply text-left;
+  @apply text-(--muted-foreground);
+  @apply hover:bg-(--muted) hover:text-(--foreground);
+  @apply transition-colors;
+  @apply cursor-pointer;
+}
+
+.settings-drawer-nav-item.is-active {
+  @apply bg-(--muted)/75 text-(--primary) rounded-sm p-2;
+}
+
+.settings-drawer-nav-text {
+  @apply flex flex-col;
+}
+
+.settings-drawer-nav-label {
+  @apply font-semibold text-sm;
+}
+
+.settings-drawer-nav-desc {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.settings-drawer-nav-item.is-active .settings-drawer-nav-desc {
+  @apply text-(--primary)/70;
+}
+
+/* Footer with save button */
+.settings-drawer-footer {
+  @apply mt-auto p-4 border-t border-(--border);
+}
+
+/* Content area */
+.settings-drawer-content {
+  @apply flex-1 overflow-y-auto p-8 relative;
+}
+
+/* Actions bar - top right */
+.settings-drawer-actions {
+  @apply fixed top-3 right-14;
+}
+
+/* Settings sections */
+.settings-section {
+  @apply max-w-3xl;
+}
+
+.settings-grid-block {
+  @apply mb-8;
+}
+
+.settings-grid-title {
+  @apply bg-(--background) text-xs font-semibold text-(--muted-foreground) uppercase tracking-wide mb-6 border inline-flex px-1.5 py-0.5 rounded-sm;
+  @apply after:-z-[1] after:content-[''] after:absolute after:h-px after:bg-(--border) after:translate-y-2.5 after:w-full after:inset-x-0;
+}
+
+.settings-section-title {
+  @apply text-xl font-semibold text-(--foreground) mb-2 font-(family-name:--font-heading);
+}
+
+.settings-section-description {
+  @apply text-sm text-(--muted-foreground) mb-6;
+}
+
+.settings-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-5;
+}
+
+.settings-placeholder {
+  @apply text-sm text-(--muted-foreground);
+  @apply p-8 border border-dashed border-(--border) rounded-lg;
+  @apply text-center;
+}
+
+/* Settings form */
+.settings-form {
+  @apply space-y-6;
+}
+
+.settings-field {
+  @apply space-y-2;
+}
+
+.settings-textarea {
+  @apply flex min-h-[120px] w-full rounded-md;
+  @apply border border-(--input) bg-(--background);
+  @apply px-3 py-2 text-sm font-mono;
+  @apply ring-offset-(--background);
+  @apply placeholder:text-(--muted-foreground);
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+/* Color Picker */
+.color-picker {
+  @apply relative;
+}
+
+.color-picker-label {
+  @apply block text-xs font-semibold text-(--foreground) mb-1;
+}
+
+.color-picker-trigger {
+  @apply flex items-center gap-3 w-full;
+  @apply px-3 py-2.5 rounded-lg;
+  @apply border border-(--border) bg-(--background);
+  @apply hover:border-(--primary)/50;
+  @apply transition-colors cursor-pointer;
+}
+
+.color-picker-swatch {
+  @apply w-8 h-8 rounded-sm;
+  @apply border border-(--border);
+}
+
+.color-picker-value {
+  @apply text-sm font-mono text-(--muted-foreground);
+}
+
+/* Color picker dropdown */
+.color-picker-dropdown {
+  @apply absolute top-full left-0 mt-2 z-50;
+  @apply bg-(--card) border border-(--border) rounded-xl shadow-xl;
+  @apply p-4;
+  @apply max-h-[400px] overflow-y-auto;
+  @apply w-[480px];
+}
+
+.color-palette {
+  @apply flex flex-col gap-2;
+}
+
+.color-row {
+  @apply flex items-center gap-3;
+}
+
+.color-row-label {
+  @apply w-16 text-xs font-medium text-(--muted-foreground) capitalize shrink-0;
+}
+
+.color-row-shades {
+  @apply flex gap-1;
+}
+
+.color-swatch {
+  @apply w-6 h-6 rounded-sm;
+  @apply cursor-pointer;
+  @apply hover:scale-110 hover:z-10;
+  @apply transition-transform;
+  @apply border border-transparent;
+}
+
+.color-swatch.is-selected {
+  @apply ring-2 ring-(--primary) ring-offset-2 ring-offset-(--background);
+}

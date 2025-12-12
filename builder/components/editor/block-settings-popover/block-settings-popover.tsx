@@ -89,9 +89,15 @@ export function BlockSettingsPopover({
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="block-settings-popover" align="start" sideOffset={8}>
+      <PopoverContent
+        className="block-settings-popover"
+        align="start"
+        sideOffset={8}
+      >
         <div className="block-settings-header">
-          <span className="block-settings-title">{getBlockTypeLabel()} Settings</span>
+          <span className="block-settings-title">
+            {getBlockTypeLabel()} Settings
+          </span>
         </div>
 
         <Tabs defaultValue="content" className="block-settings-tabs">
@@ -141,7 +147,14 @@ export function BlockSettingsPopover({
   // Render style settings based on block type
   function renderStyleSettings() {
     // Common style settings for text-based blocks
-    if (["text-block", "heading-block", "quote-block", "rich-text-block"].includes(block._type)) {
+    if (
+      [
+        "text-block",
+        "heading-block",
+        "quote-block",
+        "rich-text-block",
+      ].includes(block._type)
+    ) {
       return (
         <div className="block-settings-section">
           <h4 className="block-settings-section-title">Typography</h4>

@@ -109,13 +109,13 @@
 
 /* Panel items - full width buttons with icon + text */
 .section-panel-item {
-  @apply w-full justify-start gap-3;
+  @apply w-full justify-start gap-3 text-sm;
   @apply text-(--foreground) hover:bg-(--muted)/50 rounded-sm;
   @apply h-10 px-3;
 }
 
 .section-panel-item span {
-  @apply text-sm font-semibold tracking-wide;
+  @apply text-sm font-semibold tracking-wide text-inherit;
 }
 
 /* Panel row - icon buttons in a row */

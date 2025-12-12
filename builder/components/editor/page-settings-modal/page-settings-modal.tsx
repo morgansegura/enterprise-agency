@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormItem } from "@/components/ui/form";
-import { SeoEditor } from "./seo-editor";
+import { SeoEditor } from "../seo-editor";
 import { Settings, Search, Layout, Palette } from "lucide-react";
 import type { PageSeo } from "@/lib/hooks/use-pages";
 

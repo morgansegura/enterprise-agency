@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { BlocksLibrary } from "./blocks-library";
-import { PostSettings } from "./post-settings";
-import { PageLayers } from "./page-layers";
-import { BreakpointSelector, type Breakpoint } from "./breakpoint-selector";
+import { BlocksLibrary } from "../blocks-library";
+import { PostSettings } from "../post-settings";
+import { PageLayers } from "../page-layers";
+import { BreakpointSelector, type Breakpoint } from "../breakpoint-selector";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import "./page-editor-layout.css";
+import "../page-editor-layout/page-editor-layout.css";
 
 interface PostEditorLayoutProps {
   postId: string;

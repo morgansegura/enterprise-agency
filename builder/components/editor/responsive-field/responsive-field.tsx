@@ -19,7 +19,7 @@ import {
   removeResponsiveOverride,
 } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
-import type { Breakpoint } from "./breakpoint-selector";
+import type { Breakpoint } from "../breakpoint-selector";
 
 interface ResponsiveFieldProps {
   /** The field name in block data */

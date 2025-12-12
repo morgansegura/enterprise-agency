@@ -2,19 +2,13 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Trash2,
-  Copy,
-  MoveUp,
-  Pencil,
-  PaintBucket,
-  Pin,
-} from "lucide-react";
+import { Trash2, Copy, MoveUp, Pencil, PaintBucket, Pin } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BlockSettingsPopover } from "./block-settings-popover";
+
 import type { Block } from "@/lib/hooks/use-pages";
 
 import "./block-wrapper.css";
+import { BlockSettingsPopover } from "../block-settings-popover";
 
 interface BlockWrapperProps {
   children: React.ReactNode;
@@ -62,7 +56,7 @@ export function BlockWrapper({
         "block-wrapper",
         isSelected && "is-selected",
         showHoverState && "is-hovered",
-        className
+        className,
       )}
       onClick={(e) => {
         e.stopPropagation();
@@ -184,9 +178,7 @@ export function BlockWrapper({
       )}
 
       {/* Block Content */}
-      <div className="block-content">
-        {children}
-      </div>
+      <div className="block-content">{children}</div>
     </div>
   );
 }

@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
-import { XIcon } from "lucide-react";
+import { XCircleIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 import "./sheet.css";
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
@@ -60,7 +61,7 @@ function SheetContent({
       >
         {children}
         <SheetPrimitive.Close className="sheet-close-button">
-          <XIcon />
+          <XCircleIcon />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>

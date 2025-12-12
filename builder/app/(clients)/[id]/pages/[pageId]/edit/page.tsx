@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import {
   usePage,
   useUpdatePage,
@@ -10,17 +10,14 @@ import {
   type Section,
   type Block,
 } from "@/lib/hooks/use-pages";
-import { PageEditorLayout, PageSettingsModal } from "@/components/editor";
+import { PageEditorLayout, PageSettingsDrawer } from "@/components/editor";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Layers,
   Newspaper,
   PanelsTopLeft,
   Store,
-  Plus,
-  Settings,
-  Search,
-  Palette,
+  Cog,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -31,6 +28,7 @@ import {
 } from "@/components/ui/tooltip";
 import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
 import { SortableSection } from "@/components/editor/sortable-section";
+import { GlobalSettingsDrawer } from "@/components/editor/global-settings-drawer";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
 import { blockRegistry } from "@/lib/editor";
@@ -61,7 +59,7 @@ export default function EditPagePage({
 }) {
   const resolvedParams = React.use(params);
   const { id, pageId } = resolvedParams;
-  const router = useRouter();
+  // const router = useRouter();
   const { data: page, isLoading, error } = usePage(id, pageId);
   const isBuilder = useIsBuilder(id);
   const updatePage = useUpdatePage(id);
@@ -84,6 +82,7 @@ export default function EditPagePage({
 
   // Modal states
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
+  const [globalSettingsOpen, setGlobalSettingsOpen] = React.useState(false);
 
   // Selection state for WYSIWYG editing
   const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(
@@ -587,7 +586,7 @@ export default function EditPagePage({
               size="icon-sm"
               onClick={() => setSettingsModalOpen(true)}
             >
-              <Settings />
+              <Cog />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">Page Settings</TooltipContent>
@@ -598,51 +597,29 @@ export default function EditPagePage({
             <Button
               variant="ghost"
               size="icon-sm"
-              onClick={() => {
-                setSettingsModalOpen(true);
-                // The modal will open on SEO tab - handled by defaultValue
-              }}
+              onClick={() => setGlobalSettingsOpen(true)}
             >
-              <Search />
+              <Globe />
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="right">SEO Settings</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => toast.info("Theme settings coming soon")}
-            >
-              <Palette />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Theme Settings</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => toast.info("Layers panel coming soon")}
-            >
-              <Layers />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Layers</TooltipContent>
+          <TooltipContent side="right">Global Settings</TooltipContent>
         </Tooltip>
       </aside>
 
-      {/* Page Settings Modal */}
-      <PageSettingsModal
+      {/* Page Settings Drawer */}
+      <PageSettingsDrawer
         open={settingsModalOpen}
         onOpenChange={setSettingsModalOpen}
         page={localPage}
         onChange={handlePageChange}
         onSave={handleSave}
+      />
+
+      {/* Global Settings Drawer */}
+      <GlobalSettingsDrawer
+        open={globalSettingsOpen}
+        onOpenChange={setGlobalSettingsOpen}
+        tenantId={id}
       />
 
       <PageEditorLayout
