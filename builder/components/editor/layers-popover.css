@@ -31,7 +31,7 @@
 }
 
 .layers-item.is-hovered {
-  @apply bg-(--muted);
+  @apply bg-(--muted)/50 rounded-sm;
 }
 
 .layers-item svg {

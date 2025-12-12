@@ -348,17 +348,20 @@ export default function EditPagePage({
 
   // Clear selection when clicking on canvas background
   const handleCanvasClick = (e: React.MouseEvent) => {
-    // Check if we clicked on a block wrapper or its children
+    // Check if we clicked on interactive elements that shouldn't deselect
     const target = e.target as HTMLElement;
     const isBlockClick = target.closest(".block-wrapper");
-    const isPanelClick = target.closest(".block-wrapper__panel");
+    const isPanelClick = target.closest(".section-panel");
     const isDialogClick = target.closest('[role="dialog"]');
     const isPopoverClick = target.closest(
       "[data-radix-popper-content-wrapper]",
     );
+    const isSectionControlClick = target.closest(
+      ".section-drag-handle, .section-add-block, .section-add-above, .section-add-below",
+    );
 
-    // Only deselect if not clicking on a block, panel, dialog, or popover
-    if (!isBlockClick && !isPanelClick && !isDialogClick && !isPopoverClick) {
+    // Only deselect if not clicking on a block, panel, dialog, popover, or section controls
+    if (!isBlockClick && !isPanelClick && !isDialogClick && !isPopoverClick && !isSectionControlClick) {
       setSelectedBlockKey(null);
     }
   };
