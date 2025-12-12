@@ -30,7 +30,8 @@ model Tenant {
   businessType String? @map("business_type") @db.VarChar(50)
 
   // Status & lifecycle
-  status String @default("active") @db.VarChar(20)
+  status          String  @default("active") @db.VarChar(20)
+  isPrimaryTenant Boolean @default(false) @map("is_primary_tenant")
 
   // Feature flags (JSONB)
   enabledFeatures Json @default("{}") @map("enabled_features") @db.JsonB

@@ -94,6 +94,7 @@ export const TenantScalarFieldEnum = {
   businessName: 'businessName',
   businessType: 'businessType',
   status: 'status',
+  isPrimaryTenant: 'isPrimaryTenant',
   enabledFeatures: 'enabledFeatures',
   tier: 'tier',
   designTokens: 'designTokens',

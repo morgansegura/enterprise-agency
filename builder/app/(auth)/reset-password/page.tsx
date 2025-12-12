@@ -58,7 +58,7 @@ export default function ResetPasswordPage() {
       logger.log("Password reset successful");
 
       setTimeout(() => {
-        router.push("/login");
+        router.push("/");
       }, 2000);
     } catch (err) {
       const message = getErrorMessage(err);
@@ -143,7 +143,7 @@ export default function ResetPasswordPage() {
             </button>
 
             <div className="auth-form-link-container">
-              <Link href="/login" className="auth-form-link">
+              <Link href="/" className="auth-form-link">
                 Back to login
               </Link>
             </div>

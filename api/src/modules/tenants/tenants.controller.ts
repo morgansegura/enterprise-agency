@@ -39,6 +39,35 @@ export class TenantsController {
     return this.tenantsService.getAllTenantsHealth();
   }
 
+  /**
+   * Get the primary/marketing site tenant
+   * GET /tenants/primary
+   */
+  @Get("primary")
+  async getPrimaryTenant() {
+    return this.tenantsService.findPrimary();
+  }
+
+  /**
+   * Get tenant by domain
+   * GET /tenants/domain/:domain
+   */
+  @Get("domain/:domain")
+  async getTenantByDomain(@Param("domain") domain: string) {
+    return this.tenantsService.findByDomain(domain);
+  }
+
+  /**
+   * Set a tenant as the primary/marketing site
+   * POST /tenants/:id/set-primary
+   */
+  @Post(":id/set-primary")
+  @UseGuards(RolesGuard)
+  @Roles("owner")
+  async setPrimaryTenant(@Param("id") id: string) {
+    return this.tenantsService.setPrimary(id);
+  }
+
   @Post()
   async createTenant(
     @CurrentUser() currentUser: { id: string; sessionId: string },

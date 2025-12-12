@@ -40,6 +40,58 @@ export class PublicApiController {
   constructor(private readonly publicApiService: PublicApiService) {}
 
   /**
+   * Resolve tenant from domain
+   * GET /api/v1/public/resolve?domain=example.com
+   *
+   * Used by client middleware to determine which tenant to serve
+   * Falls back to primary tenant if domain not found
+   * Cache: 5 minutes
+   */
+  @Get("resolve")
+  @Header("Cache-Control", "public, max-age=300") // 5 minutes
+  @ApiOperation({
+    summary: "Resolve tenant from domain",
+    description:
+      "Returns tenant slug for a given domain, or the primary tenant if not found",
+  })
+  @ApiQuery({
+    name: "domain",
+    required: false,
+    type: String,
+    example: "example.com",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Tenant resolved successfully",
+  })
+  async resolveTenant(
+    @Query("domain") domain?: string,
+  ): Promise<{ slug: string; isPrimary: boolean }> {
+    return this.publicApiService.resolveTenant(domain);
+  }
+
+  /**
+   * Get the primary/marketing site tenant slug
+   * GET /api/v1/public/primary
+   *
+   * Cache: 5 minutes
+   */
+  @Get("primary")
+  @Header("Cache-Control", "public, max-age=300") // 5 minutes
+  @ApiOperation({
+    summary: "Get primary tenant",
+    description: "Returns the primary/marketing site tenant slug",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Primary tenant retrieved successfully",
+  })
+  @ApiResponse({ status: 404, description: "Primary tenant not configured" })
+  async getPrimaryTenant(): Promise<{ slug: string }> {
+    return this.publicApiService.getPrimaryTenantSlug();
+  }
+
+  /**
    * Get tenant design tokens
    * GET /api/v1/public/:tenantSlug/tokens
    *

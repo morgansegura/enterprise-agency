@@ -125,6 +125,68 @@ export class TenantsService {
     return tenant;
   }
 
+  /**
+   * Find the primary/marketing site tenant
+   */
+  async findPrimary() {
+    const tenant = await this.prisma.tenant.findFirst({
+      where: { isPrimaryTenant: true },
+      include: {
+        domains: true,
+      },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException("Primary tenant not found");
+    }
+
+    return tenant;
+  }
+
+  /**
+   * Find tenant by domain
+   */
+  async findByDomain(domain: string) {
+    const tenantDomain = await this.prisma.tenantDomain.findUnique({
+      where: { domain },
+      include: {
+        tenant: {
+          include: {
+            domains: true,
+          },
+        },
+      },
+    });
+
+    if (!tenantDomain) {
+      throw new NotFoundException("Tenant not found for domain");
+    }
+
+    return tenantDomain.tenant;
+  }
+
+  /**
+   * Set a tenant as the primary/marketing site (only one can be primary)
+   */
+  async setPrimary(tenantId: string) {
+    // First, unset any existing primary tenant
+    await this.prisma.tenant.updateMany({
+      where: { isPrimaryTenant: true },
+      data: { isPrimaryTenant: false },
+    });
+
+    // Set the new primary tenant
+    const tenant = await this.prisma.tenant.update({
+      where: { id: tenantId },
+      data: { isPrimaryTenant: true },
+      include: {
+        domains: true,
+      },
+    });
+
+    return tenant;
+  }
+
   async update(id: string, updateData: UpdateTenantDto) {
     const updateFields: Record<string, unknown> = {};
 

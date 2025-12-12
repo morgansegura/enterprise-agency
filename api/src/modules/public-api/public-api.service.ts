@@ -23,6 +23,61 @@ export class PublicApiService {
   constructor(private prisma: PrismaService) {}
 
   /**
+   * Resolve tenant from domain
+   * Returns the tenant slug for a given domain, or the primary tenant if not found
+   */
+  async resolveTenant(
+    domain?: string,
+  ): Promise<{ slug: string; isPrimary: boolean }> {
+    // If domain provided, try to find tenant by domain
+    if (domain) {
+      const tenantDomain = await this.prisma.tenantDomain.findUnique({
+        where: { domain },
+        include: {
+          tenant: {
+            select: { slug: true, status: true, isPrimaryTenant: true },
+          },
+        },
+      });
+
+      if (tenantDomain && tenantDomain.tenant.status === "active") {
+        return {
+          slug: tenantDomain.tenant.slug,
+          isPrimary: tenantDomain.tenant.isPrimaryTenant,
+        };
+      }
+    }
+
+    // Fall back to primary tenant
+    const primaryTenant = await this.prisma.tenant.findFirst({
+      where: { isPrimaryTenant: true, status: "active" },
+      select: { slug: true },
+    });
+
+    if (!primaryTenant) {
+      throw new NotFoundException("No primary tenant configured");
+    }
+
+    return { slug: primaryTenant.slug, isPrimary: true };
+  }
+
+  /**
+   * Get primary tenant slug
+   */
+  async getPrimaryTenantSlug(): Promise<{ slug: string }> {
+    const tenant = await this.prisma.tenant.findFirst({
+      where: { isPrimaryTenant: true, status: "active" },
+      select: { slug: true },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException("No primary tenant configured");
+    }
+
+    return { slug: tenant.slug };
+  }
+
+  /**
    * Get tenant by slug
    * Used internally to validate tenant exists and is active
    */

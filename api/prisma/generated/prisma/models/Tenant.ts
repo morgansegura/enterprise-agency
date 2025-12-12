@@ -30,6 +30,7 @@ export type TenantMinAggregateOutputType = {
   businessName: string | null
   businessType: string | null
   status: string | null
+  isPrimaryTenant: boolean | null
   tier: $Enums.TenantTier | null
   paymentProvider: string | null
   logoUrl: string | null
@@ -46,6 +47,7 @@ export type TenantMaxAggregateOutputType = {
   businessName: string | null
   businessType: string | null
   status: string | null
+  isPrimaryTenant: boolean | null
   tier: $Enums.TenantTier | null
   paymentProvider: string | null
   logoUrl: string | null
@@ -62,6 +64,7 @@ export type TenantCountAggregateOutputType = {
   businessName: number
   businessType: number
   status: number
+  isPrimaryTenant: number
   enabledFeatures: number
   tier: number
   designTokens: number
@@ -89,6 +92,7 @@ export type TenantMinAggregateInputType = {
   businessName?: true
   businessType?: true
   status?: true
+  isPrimaryTenant?: true
   tier?: true
   paymentProvider?: true
   logoUrl?: true
@@ -105,6 +109,7 @@ export type TenantMaxAggregateInputType = {
   businessName?: true
   businessType?: true
   status?: true
+  isPrimaryTenant?: true
   tier?: true
   paymentProvider?: true
   logoUrl?: true
@@ -121,6 +126,7 @@ export type TenantCountAggregateInputType = {
   businessName?: true
   businessType?: true
   status?: true
+  isPrimaryTenant?: true
   enabledFeatures?: true
   tier?: true
   designTokens?: true
@@ -219,6 +225,7 @@ export type TenantGroupByOutputType = {
   businessName: string
   businessType: string | null
   status: string
+  isPrimaryTenant: boolean
   enabledFeatures: runtime.JsonValue
   tier: $Enums.TenantTier
   designTokens: runtime.JsonValue | null
@@ -265,6 +272,7 @@ export type TenantWhereInput = {
   businessName?: Prisma.StringFilter<"Tenant"> | string
   businessType?: Prisma.StringNullableFilter<"Tenant"> | string | null
   status?: Prisma.StringFilter<"Tenant"> | string
+  isPrimaryTenant?: Prisma.BoolFilter<"Tenant"> | boolean
   enabledFeatures?: Prisma.JsonFilter<"Tenant">
   tier?: Prisma.EnumTenantTierFilter<"Tenant"> | $Enums.TenantTier
   designTokens?: Prisma.JsonNullableFilter<"Tenant">
@@ -303,6 +311,7 @@ export type TenantOrderByWithRelationInput = {
   businessName?: Prisma.SortOrder
   businessType?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPrimaryTenant?: Prisma.SortOrder
   enabledFeatures?: Prisma.SortOrder
   tier?: Prisma.SortOrder
   designTokens?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -344,6 +353,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   businessName?: Prisma.StringFilter<"Tenant"> | string
   businessType?: Prisma.StringNullableFilter<"Tenant"> | string | null
   status?: Prisma.StringFilter<"Tenant"> | string
+  isPrimaryTenant?: Prisma.BoolFilter<"Tenant"> | boolean
   enabledFeatures?: Prisma.JsonFilter<"Tenant">
   tier?: Prisma.EnumTenantTierFilter<"Tenant"> | $Enums.TenantTier
   designTokens?: Prisma.JsonNullableFilter<"Tenant">
@@ -382,6 +392,7 @@ export type TenantOrderByWithAggregationInput = {
   businessName?: Prisma.SortOrder
   businessType?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPrimaryTenant?: Prisma.SortOrder
   enabledFeatures?: Prisma.SortOrder
   tier?: Prisma.SortOrder
   designTokens?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -413,6 +424,7 @@ export type TenantScalarWhereWithAggregatesInput = {
   businessName?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
   businessType?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"Tenant"> | string
+  isPrimaryTenant?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean
   enabledFeatures?: Prisma.JsonWithAggregatesFilter<"Tenant">
   tier?: Prisma.EnumTenantTierWithAggregatesFilter<"Tenant"> | $Enums.TenantTier
   designTokens?: Prisma.JsonNullableWithAggregatesFilter<"Tenant">
@@ -438,6 +450,7 @@ export type TenantCreateInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -476,6 +489,7 @@ export type TenantUncheckedCreateInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -514,6 +528,7 @@ export type TenantUpdateInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -552,6 +567,7 @@ export type TenantUncheckedUpdateInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -590,6 +606,7 @@ export type TenantCreateManyInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -615,6 +632,7 @@ export type TenantUpdateManyMutationInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -640,6 +658,7 @@ export type TenantUncheckedUpdateManyInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -665,6 +684,7 @@ export type TenantCountOrderByAggregateInput = {
   businessName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPrimaryTenant?: Prisma.SortOrder
   enabledFeatures?: Prisma.SortOrder
   tier?: Prisma.SortOrder
   designTokens?: Prisma.SortOrder
@@ -690,6 +710,7 @@ export type TenantMaxOrderByAggregateInput = {
   businessName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPrimaryTenant?: Prisma.SortOrder
   tier?: Prisma.SortOrder
   paymentProvider?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
@@ -706,6 +727,7 @@ export type TenantMinOrderByAggregateInput = {
   businessName?: Prisma.SortOrder
   businessType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPrimaryTenant?: Prisma.SortOrder
   tier?: Prisma.SortOrder
   paymentProvider?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
@@ -727,6 +749,10 @@ export type StringFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type EnumTenantTierFieldUpdateOperationsInput = {
@@ -925,6 +951,7 @@ export type TenantCreateWithoutDomainsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -962,6 +989,7 @@ export type TenantUncheckedCreateWithoutDomainsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1015,6 +1043,7 @@ export type TenantUpdateWithoutDomainsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1052,6 +1081,7 @@ export type TenantUncheckedUpdateWithoutDomainsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1089,6 +1119,7 @@ export type TenantCreateWithoutTenantUsersInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1126,6 +1157,7 @@ export type TenantUncheckedCreateWithoutTenantUsersInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1179,6 +1211,7 @@ export type TenantUpdateWithoutTenantUsersInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1216,6 +1249,7 @@ export type TenantUncheckedUpdateWithoutTenantUsersInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1253,6 +1287,7 @@ export type TenantCreateWithoutProjectAssignmentsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1290,6 +1325,7 @@ export type TenantUncheckedCreateWithoutProjectAssignmentsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1343,6 +1379,7 @@ export type TenantUpdateWithoutProjectAssignmentsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1380,6 +1417,7 @@ export type TenantUncheckedUpdateWithoutProjectAssignmentsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1417,6 +1455,7 @@ export type TenantCreateWithoutAssetsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1454,6 +1493,7 @@ export type TenantUncheckedCreateWithoutAssetsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1507,6 +1547,7 @@ export type TenantUpdateWithoutAssetsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1544,6 +1585,7 @@ export type TenantUncheckedUpdateWithoutAssetsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1581,6 +1623,7 @@ export type TenantCreateWithoutPagesInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1618,6 +1661,7 @@ export type TenantUncheckedCreateWithoutPagesInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1671,6 +1715,7 @@ export type TenantUpdateWithoutPagesInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1708,6 +1753,7 @@ export type TenantUncheckedUpdateWithoutPagesInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1745,6 +1791,7 @@ export type TenantCreateWithoutPostsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1782,6 +1829,7 @@ export type TenantUncheckedCreateWithoutPostsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1835,6 +1883,7 @@ export type TenantUpdateWithoutPostsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1872,6 +1921,7 @@ export type TenantUncheckedUpdateWithoutPostsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1909,6 +1959,7 @@ export type TenantCreateWithoutAuditLogsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1946,6 +1997,7 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1999,6 +2051,7 @@ export type TenantUpdateWithoutAuditLogsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2036,6 +2089,7 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2073,6 +2127,7 @@ export type TenantCreateWithoutTenantUsageInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2110,6 +2165,7 @@ export type TenantUncheckedCreateWithoutTenantUsageInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2163,6 +2219,7 @@ export type TenantUpdateWithoutTenantUsageInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2200,6 +2257,7 @@ export type TenantUncheckedUpdateWithoutTenantUsageInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2237,6 +2295,7 @@ export type TenantCreateWithoutWebhooksInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2274,6 +2333,7 @@ export type TenantUncheckedCreateWithoutWebhooksInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2327,6 +2387,7 @@ export type TenantUpdateWithoutWebhooksInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2364,6 +2425,7 @@ export type TenantUncheckedUpdateWithoutWebhooksInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2401,6 +2463,7 @@ export type TenantCreateWithoutProductCategoriesInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2438,6 +2501,7 @@ export type TenantUncheckedCreateWithoutProductCategoriesInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2491,6 +2555,7 @@ export type TenantUpdateWithoutProductCategoriesInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2528,6 +2593,7 @@ export type TenantUncheckedUpdateWithoutProductCategoriesInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2565,6 +2631,7 @@ export type TenantCreateWithoutProductsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2602,6 +2669,7 @@ export type TenantUncheckedCreateWithoutProductsInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2655,6 +2723,7 @@ export type TenantUpdateWithoutProductsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2692,6 +2761,7 @@ export type TenantUncheckedUpdateWithoutProductsInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2729,6 +2799,7 @@ export type TenantCreateWithoutCustomersInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2766,6 +2837,7 @@ export type TenantUncheckedCreateWithoutCustomersInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2819,6 +2891,7 @@ export type TenantUpdateWithoutCustomersInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2856,6 +2929,7 @@ export type TenantUncheckedUpdateWithoutCustomersInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2893,6 +2967,7 @@ export type TenantCreateWithoutOrdersInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2930,6 +3005,7 @@ export type TenantUncheckedCreateWithoutOrdersInput = {
   businessName: string
   businessType?: string | null
   status?: string
+  isPrimaryTenant?: boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -2983,6 +3059,7 @@ export type TenantUpdateWithoutOrdersInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3020,6 +3097,7 @@ export type TenantUncheckedUpdateWithoutOrdersInput = {
   businessName?: Prisma.StringFieldUpdateOperationsInput | string
   businessType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier
   designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -3196,6 +3274,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   businessName?: boolean
   businessType?: boolean
   status?: boolean
+  isPrimaryTenant?: boolean
   enabledFeatures?: boolean
   tier?: boolean
   designTokens?: boolean
@@ -3235,6 +3314,7 @@ export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   businessName?: boolean
   businessType?: boolean
   status?: boolean
+  isPrimaryTenant?: boolean
   enabledFeatures?: boolean
   tier?: boolean
   designTokens?: boolean
@@ -3260,6 +3340,7 @@ export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   businessName?: boolean
   businessType?: boolean
   status?: boolean
+  isPrimaryTenant?: boolean
   enabledFeatures?: boolean
   tier?: boolean
   designTokens?: boolean
@@ -3285,6 +3366,7 @@ export type TenantSelectScalar = {
   businessName?: boolean
   businessType?: boolean
   status?: boolean
+  isPrimaryTenant?: boolean
   enabledFeatures?: boolean
   tier?: boolean
   designTokens?: boolean
@@ -3304,7 +3386,7 @@ export type TenantSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "businessName" | "businessType" | "status" | "enabledFeatures" | "tier" | "designTokens" | "themeConfig" | "headerConfig" | "footerConfig" | "menusConfig" | "logosConfig" | "planLimits" | "paymentConfig" | "paymentProvider" | "logoUrl" | "metaDescription" | "contactEmail" | "contactPhone" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
+export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "businessName" | "businessType" | "status" | "isPrimaryTenant" | "enabledFeatures" | "tier" | "designTokens" | "themeConfig" | "headerConfig" | "footerConfig" | "menusConfig" | "logosConfig" | "planLimits" | "paymentConfig" | "paymentProvider" | "logoUrl" | "metaDescription" | "contactEmail" | "contactPhone" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domains?: boolean | Prisma.Tenant$domainsArgs<ExtArgs>
   tenantUsers?: boolean | Prisma.Tenant$tenantUsersArgs<ExtArgs>
@@ -3347,6 +3429,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     businessName: string
     businessType: string | null
     status: string
+    isPrimaryTenant: boolean
     enabledFeatures: runtime.JsonValue
     tier: $Enums.TenantTier
     designTokens: runtime.JsonValue | null
@@ -3805,6 +3888,7 @@ export interface TenantFieldRefs {
   readonly businessName: Prisma.FieldRef<"Tenant", 'String'>
   readonly businessType: Prisma.FieldRef<"Tenant", 'String'>
   readonly status: Prisma.FieldRef<"Tenant", 'String'>
+  readonly isPrimaryTenant: Prisma.FieldRef<"Tenant", 'Boolean'>
   readonly enabledFeatures: Prisma.FieldRef<"Tenant", 'Json'>
   readonly tier: Prisma.FieldRef<"Tenant", 'TenantTier'>
   readonly designTokens: Prisma.FieldRef<"Tenant", 'Json'>

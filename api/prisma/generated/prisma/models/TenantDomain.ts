@@ -447,10 +447,6 @@ export type TenantDomainUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.TenantDomainScalarWhereInput | Prisma.TenantDomainScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
