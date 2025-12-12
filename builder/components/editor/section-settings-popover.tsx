@@ -58,7 +58,10 @@ export function SectionSettingsPopover({
 }: SectionSettingsPopoverProps) {
   // Helper to safely get extended section properties
   const getSectionProp = <T,>(key: string, defaultValue: T): T => {
-    return ((section as unknown as Record<string, unknown>)[key] as T) ?? defaultValue;
+    return (
+      ((section as unknown as Record<string, unknown>)[key] as T) ??
+      defaultValue
+    );
   };
 
   const handleChange = (field: string, value: unknown) => {
@@ -71,7 +74,14 @@ export function SectionSettingsPopover({
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="section-settings-popover" align="end" side="left" sideOffset={8}>
+      <PopoverContent
+        className="section-settings-popover"
+        side="bottom"
+        align="start"
+        sideOffset={-50}
+        alignOffset={-340}
+        avoidCollisions={false}
+      >
         <Tabs defaultValue="design" className="section-settings-tabs">
           <TabsList className="section-settings-tabs-list">
             <TabsTrigger value="design">Design</TabsTrigger>
@@ -93,7 +103,9 @@ export function SectionSettingsPopover({
                     min={1}
                     max={24}
                     value={getSectionProp<number>("rowCount", 1)}
-                    onChange={(e) => handleChange("rowCount", parseInt(e.target.value) || 1)}
+                    onChange={(e) =>
+                      handleChange("rowCount", parseInt(e.target.value) || 1)
+                    }
                     className="section-settings-number-input"
                   />
                 </div>
@@ -108,7 +120,8 @@ export function SectionSettingsPopover({
                       size="icon-sm"
                       className={cn(
                         "section-settings-button",
-                        getSectionProp<string>("gap", "md") === "sm" && "is-active"
+                        getSectionProp<string>("gap", "md") === "sm" &&
+                          "is-active",
                       )}
                       onClick={() => handleChange("gap", "sm")}
                       title="Small gap"
@@ -120,7 +133,8 @@ export function SectionSettingsPopover({
                       size="icon-sm"
                       className={cn(
                         "section-settings-button",
-                        getSectionProp<string>("gap", "md") === "md" && "is-active"
+                        getSectionProp<string>("gap", "md") === "md" &&
+                          "is-active",
                       )}
                       onClick={() => handleChange("gap", "md")}
                       title="Medium gap"
@@ -149,7 +163,9 @@ export function SectionSettingsPopover({
                   <Label>Fill Screen</Label>
                   <Switch
                     checked={getSectionProp<boolean>("fillScreen", false)}
-                    onCheckedChange={(checked) => handleChange("fillScreen", checked)}
+                    onCheckedChange={(checked) =>
+                      handleChange("fillScreen", checked)
+                    }
                   />
                 </div>
               </FormItem>
@@ -163,7 +179,8 @@ export function SectionSettingsPopover({
                       size="sm"
                       className={cn(
                         "section-settings-size-btn section-settings-button",
-                        getSectionProp<string>("height", "auto") === "sm" && "is-active"
+                        getSectionProp<string>("height", "auto") === "sm" &&
+                          "is-active",
                       )}
                       onClick={() => handleChange("height", "sm")}
                     >
@@ -174,7 +191,8 @@ export function SectionSettingsPopover({
                       size="sm"
                       className={cn(
                         "section-settings-size-btn section-settings-button",
-                        getSectionProp<string>("height", "auto") === "md" && "is-active"
+                        getSectionProp<string>("height", "auto") === "md" &&
+                          "is-active",
                       )}
                       onClick={() => handleChange("height", "md")}
                     >
@@ -185,7 +203,8 @@ export function SectionSettingsPopover({
                       size="sm"
                       className={cn(
                         "section-settings-size-btn section-settings-button",
-                        getSectionProp<string>("height", "auto") === "lg" && "is-active"
+                        getSectionProp<string>("height", "auto") === "lg" &&
+                          "is-active",
                       )}
                       onClick={() => handleChange("height", "lg")}
                     >
@@ -207,7 +226,9 @@ export function SectionSettingsPopover({
                 <div className="section-settings-slider-row">
                   <Slider
                     value={[getSectionProp<number>("heightValue", 10)]}
-                    onValueChange={([value]) => handleChange("heightValue", value)}
+                    onValueChange={([value]) =>
+                      handleChange("heightValue", value)
+                    }
                     min={0}
                     max={100}
                     step={1}
@@ -227,7 +248,8 @@ export function SectionSettingsPopover({
                       size="icon-sm"
                       className={cn(
                         "section-settings-button",
-                        getSectionProp<string>("align", "center") === "start" && "is-active"
+                        getSectionProp<string>("align", "center") === "start" &&
+                          "is-active",
                       )}
                       onClick={() => handleChange("align", "start")}
                       title="Align top"
@@ -239,7 +261,8 @@ export function SectionSettingsPopover({
                       size="icon-sm"
                       className={cn(
                         "section-settings-button",
-                        getSectionProp<string>("align", "center") === "center" && "is-active"
+                        getSectionProp<string>("align", "center") ===
+                          "center" && "is-active",
                       )}
                       onClick={() => handleChange("align", "center")}
                       title="Align center"
@@ -251,7 +274,8 @@ export function SectionSettingsPopover({
                       size="icon-sm"
                       className={cn(
                         "section-settings-button",
-                        getSectionProp<string>("align", "center") === "end" && "is-active"
+                        getSectionProp<string>("align", "center") === "end" &&
+                          "is-active",
                       )}
                       onClick={() => handleChange("align", "end")}
                       title="Align bottom"
@@ -263,7 +287,8 @@ export function SectionSettingsPopover({
               </FormItem>
 
               <p className="section-settings-hint">
-                Fill screen will expand the background height to fill a portion of the user's screen.
+                Fill screen will expand the background height to fill a portion
+                of the user's screen.
               </p>
             </div>
 
@@ -316,7 +341,9 @@ export function SectionSettingsPopover({
           {/* Background Tab */}
           <TabsContent value="background" className="section-settings-content">
             <div className="section-settings-section">
-              <h4 className="section-settings-section-title">BACKGROUND TYPE</h4>
+              <h4 className="section-settings-section-title">
+                BACKGROUND TYPE
+              </h4>
 
               <FormItem className="section-settings-field">
                 <Select
@@ -358,17 +385,20 @@ export function SectionSettingsPopover({
                 </FormItem>
               )}
 
-              {section.background === "color" && getSectionProp<string>("bgColor", "") === "custom" && (
-                <FormItem className="section-settings-field">
-                  <Label>Custom Color</Label>
-                  <Input
-                    type="text"
-                    value={getSectionProp<string>("customBgColor", "")}
-                    onChange={(e) => handleChange("customBgColor", e.target.value)}
-                    placeholder="#ffffff"
-                  />
-                </FormItem>
-              )}
+              {section.background === "color" &&
+                getSectionProp<string>("bgColor", "") === "custom" && (
+                  <FormItem className="section-settings-field">
+                    <Label>Custom Color</Label>
+                    <Input
+                      type="text"
+                      value={getSectionProp<string>("customBgColor", "")}
+                      onChange={(e) =>
+                        handleChange("customBgColor", e.target.value)
+                      }
+                      placeholder="#ffffff"
+                    />
+                  </FormItem>
+                )}
 
               {section.background === "image" && (
                 <FormItem className="section-settings-field">
@@ -395,7 +425,8 @@ export function SectionSettingsPopover({
               )}
             </div>
 
-            {(section.background === "image" || section.background === "video") && (
+            {(section.background === "image" ||
+              section.background === "video") && (
               <div className="section-settings-section">
                 <h4 className="section-settings-section-title">OVERLAY</h4>
 
@@ -404,7 +435,9 @@ export function SectionSettingsPopover({
                     <Label>Enable Overlay</Label>
                     <Switch
                       checked={getSectionProp<boolean>("overlay", false)}
-                      onCheckedChange={(checked) => handleChange("overlay", checked)}
+                      onCheckedChange={(checked) =>
+                        handleChange("overlay", checked)
+                      }
                     />
                   </div>
                 </FormItem>
@@ -415,7 +448,9 @@ export function SectionSettingsPopover({
                       <Label>Opacity</Label>
                       <Slider
                         value={[getSectionProp<number>("overlayOpacity", 50)]}
-                        onValueChange={([value]) => handleChange("overlayOpacity", value)}
+                        onValueChange={([value]) =>
+                          handleChange("overlayOpacity", value)
+                        }
                         min={0}
                         max={100}
                         step={5}
@@ -500,7 +535,9 @@ export function SectionSettingsPopover({
                   <Label>Invert Colors</Label>
                   <Switch
                     checked={getSectionProp<boolean>("invertColors", false)}
-                    onCheckedChange={(checked) => handleChange("invertColors", checked)}
+                    onCheckedChange={(checked) =>
+                      handleChange("invertColors", checked)
+                    }
                   />
                 </div>
                 <p className="section-settings-hint">

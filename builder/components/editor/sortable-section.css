@@ -132,3 +132,21 @@
 .section-inner {
   @apply min-h-[40px];
 }
+
+/* Video background */
+.section-video-bg {
+  @apply absolute inset-0 w-full h-full object-cover;
+  @apply pointer-events-none z-0;
+}
+
+/* Overlay for image/video backgrounds */
+.section-overlay {
+  @apply absolute inset-0;
+  @apply bg-black z-[1];
+  @apply pointer-events-none;
+}
+
+/* Ensure section content is above video/overlay */
+.section-content {
+  @apply z-[2];
+}
