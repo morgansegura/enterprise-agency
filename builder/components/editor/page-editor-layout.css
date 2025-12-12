@@ -45,4 +45,7 @@
   [data-slot="card"] {
     @apply rounded-none border-none h-full top-0;
   }
+  [data-slot="card-content"] {
+    @apply p-0;
+  }
 }

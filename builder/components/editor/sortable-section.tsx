@@ -23,11 +23,6 @@ import { LayersPopover } from "./layers-popover";
 
 import "./sortable-section.css";
 
-// Helper to safely get extended section properties
-function getSectionProp<T>(section: Section, key: string, defaultValue: T): T {
-  return ((section as unknown as Record<string, unknown>)[key] as T) ?? defaultValue;
-}
-
 interface SortableSectionProps {
   section: Section;
   onSectionChange: (section: Section) => void;
@@ -53,11 +48,11 @@ interface SortableSectionProps {
  * Wraps a section with drag-and-drop functionality and section-level controls.
  * Renders content exactly as it will appear on the live site (WYSIWYG).
  *
- * Features:
- * - ADD SECTION buttons above/below on hover (overlaid)
- * - Floating action panel on right side
- * - Settings popover with tabs
- * - Visual feedback during dragging
+ * Section Props (matches client Section component):
+ * - background: "none" | "white" | "gray" | "dark" | "primary" | "secondary"
+ * - spacing: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl"
+ * - width: "narrow" | "wide" | "full"
+ * - align: "left" | "center" | "right"
  */
 export function SortableSection({
   section,
@@ -100,112 +95,32 @@ export function SortableSection({
   // Map width values to CSS classes
   const widthClasses: Record<string, string> = {
     narrow: "max-w-3xl mx-auto px-4",
-    container: "max-w-5xl mx-auto px-4",
     wide: "max-w-7xl mx-auto px-4",
     full: "w-full",
   };
 
-  // Map height values to CSS classes
-  const heightClasses: Record<string, string> = {
-    auto: "",
-    sm: "min-h-[200px]",
-    md: "min-h-[400px]",
-    lg: "min-h-[600px]",
+  // Map background values to CSS classes
+  const backgroundClasses: Record<string, string> = {
+    none: "",
+    white: "bg-white",
+    gray: "bg-gray-100",
+    dark: "bg-gray-900",
+    primary: "bg-(--primary)",
+    secondary: "bg-(--secondary)",
   };
 
   // Map alignment values to CSS classes
   const alignClasses: Record<string, string> = {
-    start: "justify-start",
-    center: "justify-center",
-    end: "justify-end",
+    left: "text-left",
+    center: "text-center",
+    right: "text-right",
   };
 
-  // Map text color values to CSS classes
-  const textColorClasses: Record<string, string> = {
-    default: "",
-    light: "text-white",
-    dark: "text-gray-900",
-    primary: "text-(--primary)",
-    muted: "text-(--muted-foreground)",
-  };
-
-  // Map heading color values to CSS classes
-  const headingColorClasses: Record<string, string> = {
-    default: "",
-    light: "[&_h1]:text-white [&_h2]:text-white [&_h3]:text-white [&_h4]:text-white",
-    dark: "[&_h1]:text-gray-900 [&_h2]:text-gray-900 [&_h3]:text-gray-900 [&_h4]:text-gray-900",
-    primary: "[&_h1]:text-(--primary) [&_h2]:text-(--primary) [&_h3]:text-(--primary) [&_h4]:text-(--primary)",
-    accent: "[&_h1]:text-(--accent) [&_h2]:text-(--accent) [&_h3]:text-(--accent) [&_h4]:text-(--accent)",
-  };
-
-  // Map link color values to CSS classes
-  const linkColorClasses: Record<string, string> = {
-    primary: "[&_a]:text-(--primary)",
-    secondary: "[&_a]:text-(--secondary)",
-    accent: "[&_a]:text-(--accent)",
-    inherit: "",
-  };
-
-  // Get section properties
+  // Get section properties with defaults
   const sectionSpacing = spacingClasses[section.spacing || "md"] || spacingClasses.md;
-  const sectionWidth = widthClasses[section.width || "wide"] || "";
-  const sectionHeight = heightClasses[getSectionProp(section, "height", "auto")] || "";
-  const sectionAlign = alignClasses[getSectionProp(section, "align", "center")] || "";
-  const fillScreen = getSectionProp(section, "fillScreen", false);
-  const heightValue = getSectionProp(section, "heightValue", 10);
-
-  // Background settings
-  const backgroundType = section.background || "none";
-  const bgColor = getSectionProp<string>(section, "bgColor", "muted");
-  const customBgColor = getSectionProp<string>(section, "customBgColor", "");
-  const bgImage = getSectionProp<string>(section, "bgImage", "");
-  const bgVideo = getSectionProp<string>(section, "bgVideo", "");
-  const overlay = getSectionProp<boolean>(section, "overlay", false);
-  const overlayOpacity = getSectionProp<number>(section, "overlayOpacity", 50);
-
-  // Color settings
-  const textColor = textColorClasses[getSectionProp(section, "textColor", "default")] || "";
-  const headingColor = headingColorClasses[getSectionProp(section, "headingColor", "default")] || "";
-  const linkColor = linkColorClasses[getSectionProp(section, "linkColor", "primary")] || "";
-  const invertColors = getSectionProp(section, "invertColors", false);
-
-  // Build background class based on type
-  const bgColorClasses: Record<string, string> = {
-    primary: "bg-(--primary)",
-    secondary: "bg-(--secondary)",
-    accent: "bg-(--accent)",
-    muted: "bg-(--muted)",
-    card: "bg-(--card)",
-    custom: "",
-  };
-
-  const getBackgroundClass = () => {
-    if (backgroundType === "color") {
-      return bgColorClasses[bgColor] || "";
-    }
-    return "";
-  };
-
-  // Build inline styles for custom backgrounds
-  const getBackgroundStyle = (): React.CSSProperties => {
-    const styles: React.CSSProperties = {};
-
-    if (backgroundType === "color" && bgColor === "custom" && customBgColor) {
-      styles.backgroundColor = customBgColor;
-    }
-
-    if (backgroundType === "image" && bgImage) {
-      styles.backgroundImage = `url(${bgImage})`;
-      styles.backgroundSize = "cover";
-      styles.backgroundPosition = "center";
-    }
-
-    if (fillScreen) {
-      styles.minHeight = `${heightValue}vh`;
-    }
-
-    return styles;
-  };
+  const sectionWidth = widthClasses[section.width || "full"] || widthClasses.full;
+  const sectionBackground = backgroundClasses[section.background || "none"] || "";
+  const sectionAlign = alignClasses[section.align || "left"] || "";
 
   // Check if any block in this section is selected
   const hasSelectedBlock = selectedBlockKey
@@ -218,46 +133,17 @@ export function SortableSection({
   return (
     <div
       ref={setNodeRef}
-      style={{
-        ...style,
-        ...getBackgroundStyle(),
-      }}
+      style={style}
       className={cn(
         "sortable-section",
         isDragging && "is-dragging",
         hasSelectedBlock && "has-selected-block",
         settingsOpen && "is-settings-open",
-        getBackgroundClass(),
-        sectionHeight,
-        textColor,
-        headingColor,
-        linkColor,
-        invertColors && "dark",
+        sectionBackground,
       )}
     >
-      {/* Video Background */}
-      {backgroundType === "video" && bgVideo && (
-        <video
-          className="section-video-bg"
-          autoPlay
-          muted
-          loop
-          playsInline
-        >
-          <source src={bgVideo} type="video/mp4" />
-        </video>
-      )}
-
-      {/* Overlay for image/video backgrounds */}
-      {(backgroundType === "image" || backgroundType === "video") && overlay && (
-        <div
-          className="section-overlay"
-          style={{ opacity: overlayOpacity / 100 }}
-        />
-      )}
-
       {/* Section Content with border */}
-      <div className={cn("section-content", sectionAlign && "flex flex-col", sectionAlign)}>
+      <div className={cn("section-content", sectionAlign)}>
         {/* Layers Button - Left side (always visible) */}
         <LayersPopover
           blocks={section.blocks}

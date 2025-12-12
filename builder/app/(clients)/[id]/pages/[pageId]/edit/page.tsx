@@ -86,10 +86,14 @@ export default function EditPagePage({
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
 
   // Selection state for WYSIWYG editing
-  const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(null);
+  const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(
+    null,
+  );
 
   // Hover state for layers popover
-  const [hoveredBlockKey, setHoveredBlockKey] = React.useState<string | null>(null);
+  const [hoveredBlockKey, setHoveredBlockKey] = React.useState<string | null>(
+    null,
+  );
 
   // Local page state for editing
   const [localPage, setLocalPage] = React.useState({
@@ -312,8 +316,14 @@ export default function EditPagePage({
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
       const blocks = [...updatedSections[sectionIndex].blocks];
-      [blocks[blockIndex - 1], blocks[blockIndex]] = [blocks[blockIndex], blocks[blockIndex - 1]];
-      updatedSections[sectionIndex] = { ...updatedSections[sectionIndex], blocks };
+      [blocks[blockIndex - 1], blocks[blockIndex]] = [
+        blocks[blockIndex],
+        blocks[blockIndex - 1],
+      ];
+      updatedSections[sectionIndex] = {
+        ...updatedSections[sectionIndex],
+        blocks,
+      };
       return updatedSections;
     });
   };
@@ -324,8 +334,14 @@ export default function EditPagePage({
       if (blockIndex >= section.blocks.length - 1) return prevSections;
       const updatedSections = [...prevSections];
       const blocks = [...section.blocks];
-      [blocks[blockIndex], blocks[blockIndex + 1]] = [blocks[blockIndex + 1], blocks[blockIndex]];
-      updatedSections[sectionIndex] = { ...updatedSections[sectionIndex], blocks };
+      [blocks[blockIndex], blocks[blockIndex + 1]] = [
+        blocks[blockIndex + 1],
+        blocks[blockIndex],
+      ];
+      updatedSections[sectionIndex] = {
+        ...updatedSections[sectionIndex],
+        blocks,
+      };
       return updatedSections;
     });
   };
@@ -334,10 +350,12 @@ export default function EditPagePage({
   const handleCanvasClick = (e: React.MouseEvent) => {
     // Check if we clicked on a block wrapper or its children
     const target = e.target as HTMLElement;
-    const isBlockClick = target.closest('.block-wrapper');
-    const isPanelClick = target.closest('.block-wrapper__panel');
+    const isBlockClick = target.closest(".block-wrapper");
+    const isPanelClick = target.closest(".block-wrapper__panel");
     const isDialogClick = target.closest('[role="dialog"]');
-    const isPopoverClick = target.closest('[data-radix-popper-content-wrapper]');
+    const isPopoverClick = target.closest(
+      "[data-radix-popper-content-wrapper]",
+    );
 
     // Only deselect if not clicking on a block, panel, dialog, or popover
     if (!isBlockClick && !isPanelClick && !isDialogClick && !isPopoverClick) {
@@ -640,8 +658,11 @@ export default function EditPagePage({
         {/* Canvas Content */}
         <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
           <ResponsivePreview breakpoint={breakpoint} className="h-full">
-            <Card className="page-editor-canvas-content bg-white h-full" onClick={handleCanvasClick}>
-              <CardContent className="p-8">
+            <Card
+              className="page-editor-canvas-content"
+              onClick={handleCanvasClick}
+            >
+              <CardContent>
                 <DndContext
                   sensors={sensors}
                   collisionDetection={closestCenter}
@@ -660,12 +681,20 @@ export default function EditPagePage({
                             handleSectionChange(sectionIndex, updatedSection)
                           }
                           onDelete={() => handleSectionDelete(sectionIndex)}
-                          onAddSectionAbove={() => handleAddSectionAt(sectionIndex)}
-                          onAddSectionBelow={() => handleAddSectionAt(sectionIndex + 1)}
-                          onDuplicate={() => handleSectionDuplicate(sectionIndex)}
+                          onAddSectionAbove={() =>
+                            handleAddSectionAt(sectionIndex)
+                          }
+                          onAddSectionBelow={() =>
+                            handleAddSectionAt(sectionIndex + 1)
+                          }
+                          onDuplicate={() =>
+                            handleSectionDuplicate(sectionIndex)
+                          }
                           onMoveUp={() => handleSectionMoveUp(sectionIndex)}
                           onMoveDown={() => handleSectionMoveDown(sectionIndex)}
-                          onAddBlock={(blockType) => handleAddBlockToSection(sectionIndex, blockType)}
+                          onAddBlock={(blockType) =>
+                            handleAddBlockToSection(sectionIndex, blockType)
+                          }
                           selectedBlockKey={selectedBlockKey}
                           onSelectBlock={setSelectedBlockKey}
                           hoveredBlockKey={hoveredBlockKey}
@@ -714,9 +743,13 @@ export default function EditPagePage({
                                         )
                                       }
                                       tenantId={id}
-                                      isSelected={selectedBlockKey === block._key}
+                                      isSelected={
+                                        selectedBlockKey === block._key
+                                      }
                                       isHovered={hoveredBlockKey === block._key}
-                                      onSelect={() => setSelectedBlockKey(block._key)}
+                                      onSelect={() =>
+                                        setSelectedBlockKey(block._key)
+                                      }
                                     />
                                   ))}
                                 </div>
@@ -730,13 +763,13 @@ export default function EditPagePage({
                 </DndContext>
 
                 {/* Debug: Show content data */}
-                <details className="mt-8">
-                  <summary className="cursor-pointer text-sm font-medium">
-                    Content Data (Debug)
-                  </summary>
-                  <pre className="mt-2 p-4 bg-muted rounded text-xs overflow-auto max-h-96">
+                <details className="fixed bottom-8 left-18 flex">
+                  <pre className="absolute bottom-11 left-0 w-screen max-w-6xl mt-2 p-4 bg-muted text-xs overflow-auto max-h-96 rounded-md">
                     {JSON.stringify({ sections }, null, 2)}
                   </pre>
+                  <summary className="cursor-pointer text-sm font-medium border p-2 rounded-md">
+                    Content Data (Debug)
+                  </summary>
                 </details>
               </CardContent>
             </Card>
