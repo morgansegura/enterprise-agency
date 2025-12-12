@@ -294,3 +294,298 @@ export function generateChurchSchema(config: {
     sameAs: config.sameAs,
   };
 }
+
+// ============================================================================
+// AEO (Answer Engine Optimization) Schemas
+// ============================================================================
+
+/**
+ * FAQ Item for FAQ Schema
+ */
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+/**
+ * Generate JSON-LD structured data for FAQ pages
+ * Helps content appear in Google's FAQ rich results
+ *
+ * @param items - Array of question/answer pairs
+ * @returns JSON-LD FAQPage schema
+ */
+export function generateFAQSchema(items: FAQItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+/**
+ * HowTo Step for HowTo Schema
+ */
+export interface HowToStep {
+  name: string;
+  text: string;
+  image?: string;
+  url?: string;
+}
+
+/**
+ * Generate JSON-LD structured data for HowTo guides
+ * Helps content appear in Google's HowTo rich results
+ *
+ * @param config - HowTo configuration
+ * @returns JSON-LD HowTo schema
+ */
+export function generateHowToSchema(config: {
+  name: string;
+  description: string;
+  image?: string;
+  totalTime?: string; // ISO 8601 duration format (e.g., "PT30M" for 30 minutes)
+  estimatedCost?: {
+    currency: string;
+    value: string;
+  };
+  supply?: string[]; // Materials needed
+  tool?: string[]; // Tools needed
+  steps: HowToStep[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: config.name,
+    description: config.description,
+    image: config.image,
+    totalTime: config.totalTime,
+    estimatedCost: config.estimatedCost
+      ? {
+          "@type": "MonetaryAmount",
+          currency: config.estimatedCost.currency,
+          value: config.estimatedCost.value,
+        }
+      : undefined,
+    supply: config.supply?.map((item) => ({
+      "@type": "HowToSupply",
+      name: item,
+    })),
+    tool: config.tool?.map((item) => ({
+      "@type": "HowToTool",
+      name: item,
+    })),
+    step: config.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      image: step.image,
+      url: step.url,
+    })),
+  };
+}
+
+/**
+ * Breadcrumb Item for Breadcrumb Schema
+ */
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+/**
+ * Generate JSON-LD structured data for breadcrumb navigation
+ * Helps search engines understand site hierarchy
+ *
+ * @param items - Array of breadcrumb items (ordered from root to current page)
+ * @returns JSON-LD BreadcrumbList schema
+ */
+export function generateBreadcrumbSchema(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+/**
+ * Generate JSON-LD structured data for articles/blog posts
+ * Improves visibility in Google News and article carousels
+ *
+ * @param config - Article configuration
+ * @returns JSON-LD Article schema
+ */
+export function generateArticleSchema(config: {
+  headline: string;
+  description: string;
+  image: string | string[];
+  datePublished: string;
+  dateModified?: string;
+  author: {
+    name: string;
+    url?: string;
+  };
+  publisher: {
+    name: string;
+    logo: string;
+  };
+  url: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: config.headline,
+    description: config.description,
+    image: config.image,
+    datePublished: config.datePublished,
+    dateModified: config.dateModified || config.datePublished,
+    author: {
+      "@type": "Person",
+      name: config.author.name,
+      url: config.author.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: config.publisher.name,
+      logo: {
+        "@type": "ImageObject",
+        url: config.publisher.logo,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": config.url,
+    },
+  };
+}
+
+/**
+ * Generate JSON-LD structured data for local business
+ * Essential for local SEO and Google Maps visibility
+ *
+ * @param config - Local business configuration
+ * @returns JSON-LD LocalBusiness schema
+ */
+export function generateLocalBusinessSchema(config: {
+  name: string;
+  description: string;
+  url: string;
+  telephone?: string;
+  email?: string;
+  image?: string;
+  priceRange?: string; // e.g., "$$" or "$10-50"
+  address: {
+    streetAddress: string;
+    addressLocality: string;
+    addressRegion: string;
+    postalCode: string;
+    addressCountry: string;
+  };
+  geo?: {
+    latitude: number;
+    longitude: number;
+  };
+  openingHours?: string[]; // e.g., ["Mo-Fr 09:00-17:00", "Sa 10:00-14:00"]
+  sameAs?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: config.name,
+    description: config.description,
+    url: config.url,
+    telephone: config.telephone,
+    email: config.email,
+    image: config.image,
+    priceRange: config.priceRange,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: config.address.streetAddress,
+      addressLocality: config.address.addressLocality,
+      addressRegion: config.address.addressRegion,
+      postalCode: config.address.postalCode,
+      addressCountry: config.address.addressCountry,
+    },
+    geo: config.geo
+      ? {
+          "@type": "GeoCoordinates",
+          latitude: config.geo.latitude,
+          longitude: config.geo.longitude,
+        }
+      : undefined,
+    openingHoursSpecification: config.openingHours?.map((hours) => {
+      const [days, times] = hours.split(" ");
+      const [opens, closes] = times.split("-");
+      return {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: days,
+        opens,
+        closes,
+      };
+    }),
+    sameAs: config.sameAs,
+  };
+}
+
+/**
+ * Generate JSON-LD structured data for products
+ * Essential for e-commerce SEO
+ *
+ * @param config - Product configuration
+ * @returns JSON-LD Product schema
+ */
+export function generateProductSchema(config: {
+  name: string;
+  description: string;
+  image: string | string[];
+  sku?: string;
+  brand?: string;
+  price: number;
+  priceCurrency: string;
+  availability: "InStock" | "OutOfStock" | "PreOrder" | "Discontinued";
+  url: string;
+  reviewCount?: number;
+  ratingValue?: number;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: config.name,
+    description: config.description,
+    image: config.image,
+    sku: config.sku,
+    brand: config.brand
+      ? {
+          "@type": "Brand",
+          name: config.brand,
+        }
+      : undefined,
+    offers: {
+      "@type": "Offer",
+      price: config.price,
+      priceCurrency: config.priceCurrency,
+      availability: `https://schema.org/${config.availability}`,
+      url: config.url,
+    },
+    aggregateRating:
+      config.reviewCount && config.ratingValue
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: config.ratingValue,
+            reviewCount: config.reviewCount,
+          }
+        : undefined,
+  };
+}
