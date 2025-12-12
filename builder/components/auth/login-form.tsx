@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { login } from "@/lib/auth";
 import { AuthError, getErrorMessage } from "@/lib/errors";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
 import { FormItem } from "@/components/ui/form";
@@ -53,8 +54,8 @@ export function LoginForm() {
     <div className="login-form-container">
       <div className="login-form-card">
         <div className="login-form-header">
-          <h2 className="login-form-title">Web & Funnel Builder</h2>
-          <p className="login-form-subtitle">Sign in to your agency account</p>
+          <h2 className="login-form-title">Web & Funnel</h2>
+          <p className="login-form-subtitle">Sign in to your account</p>
         </div>
         <form className="login-form" onSubmit={handleSubmit}>
           {error && (
@@ -82,10 +83,9 @@ export function LoginForm() {
               <Label htmlFor="password" className="login-form-label">
                 Password
               </Label>
-              <Input
+              <PasswordInput
                 id="password"
                 name="password"
-                type="password"
                 autoComplete="current-password"
                 required
                 value={password}

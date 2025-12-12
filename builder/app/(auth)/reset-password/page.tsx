@@ -5,20 +5,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { resetPassword } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/errors";
-import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
 import { FormItem } from "@/components/ui/form";
 
-/**
- * Reset Password Page
- *
- * Enterprise practices:
- * - Token-based password reset
- * - Password confirmation validation
- * - Proper error handling
- * - Automatic redirect on success
- */
+import "@/components/auth/auth-form.css";
+
 export default function ResetPasswordPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,7 +34,6 @@ export default function ResetPasswordPage() {
     setError("");
     setSuccess("");
 
-    // Validation
     if (!token) {
       setError("Invalid reset token");
       return;
@@ -65,7 +57,6 @@ export default function ResetPasswordPage() {
       setSuccess(message || "Password reset successful");
       logger.log("Password reset successful");
 
-      // Redirect to login after 2 seconds
       setTimeout(() => {
         router.push("/login");
       }, 2000);
@@ -81,93 +72,78 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        <div>
-          <h2 className="text-center text-3xl font-bold text-gray-900">
-            Set New Password
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your new password below
-          </p>
+    <div className="auth-form-container">
+      <div className="auth-form-card">
+        <div className="auth-form-header">
+          <h2 className="auth-form-title">Set New Password</h2>
+          <p className="auth-form-subtitle">Enter your new password below</p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="auth-form" onSubmit={handleSubmit}>
           {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-800">{error}</p>
+            <div className="auth-form-error">
+              <p className="auth-form-error-text">{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="rounded-md bg-green-50 p-4">
-              <p className="text-sm text-green-800">{success}</p>
-              <p className="text-xs text-green-700 mt-1">
+            <div className="auth-form-success">
+              <p className="auth-form-success-text">{success}</p>
+              <p className="auth-form-success-subtext">
                 Redirecting to login...
               </p>
             </div>
           )}
 
-          <div className="space-y-4">
+          <div className="auth-form-fields">
             <FormItem>
-              <Label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <Label htmlFor="password" className="auth-form-label">
                 New Password
               </Label>
-              <Input
+              <PasswordInput
                 id="password"
                 name="password"
-                type="password"
                 autoComplete="new-password"
                 required
                 minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading || success.length > 0 || !token}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="auth-form-input"
                 placeholder="At least 8 characters"
               />
             </FormItem>
 
             <FormItem>
-              <Label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <Label htmlFor="confirmPassword" className="auth-form-label">
                 Confirm New Password
               </Label>
-              <Input
+              <PasswordInput
                 id="confirmPassword"
                 name="confirmPassword"
-                type="password"
                 autoComplete="new-password"
                 required
                 minLength={8}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={loading || success.length > 0 || !token}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="auth-form-input"
                 placeholder="Confirm your password"
               />
             </FormItem>
           </div>
 
-          <div className="space-y-4">
+          <div className="auth-form-actions">
             <button
               type="submit"
               disabled={loading || success.length > 0 || !token}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              className="auth-form-submit"
             >
               {loading ? "Resetting Password..." : "Reset Password"}
             </button>
 
-            <div className="text-center">
-              <Link
-                href="/login"
-                className="text-sm text-blue-600 hover:text-blue-500"
-              >
+            <div className="auth-form-link-container">
+              <Link href="/login" className="auth-form-link">
                 Back to login
               </Link>
             </div>
