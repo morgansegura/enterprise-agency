@@ -106,7 +106,8 @@ export function EditorShell({
                       size="icon-sm"
                       asChild
                       className={cn(
-                        item.isActive && "bg-(--accent) text-(--accent-foreground)"
+                        item.isActive &&
+                          "bg-(--accent) text-(--accent-foreground)",
                       )}
                     >
                       <Link href={item.href}>
@@ -119,7 +120,8 @@ export function EditorShell({
                       size="icon-sm"
                       onClick={item.onClick}
                       className={cn(
-                        item.isActive && "bg-(--accent) text-(--accent-foreground)"
+                        item.isActive &&
+                          "bg-(--accent) text-(--accent-foreground)",
                       )}
                     >
                       <item.icon />
@@ -147,7 +149,8 @@ export function EditorShell({
                       size="icon-sm"
                       asChild
                       className={cn(
-                        item.isActive && "bg-(--accent) text-(--accent-foreground)"
+                        item.isActive &&
+                          "bg-(--accent) text-(--accent-foreground)",
                       )}
                     >
                       <Link href={item.href}>
@@ -160,7 +163,8 @@ export function EditorShell({
                       size="icon-sm"
                       onClick={item.onClick}
                       className={cn(
-                        item.isActive && "bg-(--accent) text-(--accent-foreground)"
+                        item.isActive &&
+                          "bg-(--accent) text-(--accent-foreground)",
                       )}
                     >
                       <item.icon />
@@ -176,19 +180,6 @@ export function EditorShell({
 
       {/* Main Content */}
       <div className="editor-shell-main">
-        <header className="editor-shell-header">
-          <div className="editor-shell-header-left">
-            {headerTitle && (
-              <span className="text-sm font-medium text-muted-foreground">
-                {headerTitle}
-              </span>
-            )}
-          </div>
-          <div className="editor-shell-header-right">
-            <ThemeSwitcher />
-            <ProfileDropdown user={user} onLogout={handleLogout} />
-          </div>
-        </header>
         <main className="editor-shell-content">{children}</main>
       </div>
     </div>

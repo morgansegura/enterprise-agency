@@ -34,14 +34,12 @@ export interface PageLayoutProps {
 export function PageLayout({
   title,
   description,
-  icon: Icon,
   actions,
   backHref,
   backLabel = "Back",
   onBack,
   toolbar,
   children,
-  maxWidth = "full",
   className,
   contentClassName,
 }: PageLayoutProps) {
@@ -57,45 +55,32 @@ export function PageLayout({
 
   return (
     <div className={cn("page-layout", className)}>
-      <div
-        className={cn("page-layout-inner", {
-          "page-layout-content-sm": maxWidth === "sm",
-          "page-layout-content-md": maxWidth === "md",
-          "page-layout-content-lg": maxWidth === "lg",
-          "page-layout-content-xl": maxWidth === "xl",
-          "page-layout-content-2xl": maxWidth === "2xl",
-        })}
-      >
-        {/* Back Navigation */}
-        {showBack && (
-          <div className="page-layout-back">
-            <Button variant="ghost" size="sm" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
-              {backLabel}
-            </Button>
-          </div>
-        )}
-
-        {/* Page Header */}
-        <header className="page-layout-header">
-          <div className="page-layout-header-content">
-            {Icon && (
-              <div className="page-layout-header-icon">
-                <Icon className="h-6 w-6" />
-              </div>
-            )}
-            <div className="page-layout-header-text">
-              <h1 className="page-layout-title">{title}</h1>
-              {description && (
-                <p className="page-layout-description">{description}</p>
-              )}
+      <div className={cn("page-layout-inner")}>
+        {/* Page Title Row */}
+        <div className="page-layout-title-row">
+          {/* Back Navigation */}
+          {showBack ? (
+            <div className="page-layout-back">
+              <Button variant="ghost" size="sm" onClick={handleBack}>
+                <ArrowLeft className="h-4 w-4" />
+                {backLabel}
+              </Button>
             </div>
+          ) : null}
+
+          <div className="page-layout-title-content">
+            <h1 className="page-layout-title">{title}</h1>
+            {description && (
+              <p className="page-layout-description">{description}</p>
+            )}
           </div>
           {actions && <div className="page-layout-actions">{actions}</div>}
-        </header>
+        </div>
+      </div>
 
+      <div className={cn("page-layout-inner")}>
         {/* Toolbar (optional) */}
-        {toolbar && <div className="page-layout-toolbar">{toolbar}</div>}
+        {toolbar ? <div className="page-layout-toolbar">{toolbar}</div> : null}
 
         {/* Page Content */}
         <div className={cn("page-layout-content", contentClassName)}>

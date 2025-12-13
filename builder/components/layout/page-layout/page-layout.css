@@ -12,19 +12,11 @@
   @apply mb-4;
 }
 
-.page-layout-header {
-  @apply flex items-start justify-between mb-6;
+.page-layout-title-row {
+  @apply flex items-start justify-between;
 }
 
-.page-layout-header-content {
-  @apply flex items-center gap-4;
-}
-
-.page-layout-header-icon {
-  @apply flex items-center justify-center w-12 h-12 rounded-lg bg-(--muted) text-(--muted-foreground);
-}
-
-.page-layout-header-text {
+.page-layout-title-content {
   @apply flex flex-col;
 }
 

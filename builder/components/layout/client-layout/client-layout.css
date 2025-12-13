@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .client-layout-header {
-  @apply flex h-11 shrink-0 items-center gap-2 px-4 border-b border-(--border);
+  @apply flex h-11 shrink-0 items-center gap-2 px-4 border-b border-(--border) justify-between;
 }
 
 .client-layout-header-left {
