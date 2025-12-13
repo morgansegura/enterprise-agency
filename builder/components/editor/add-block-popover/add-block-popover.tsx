@@ -37,23 +37,108 @@ interface BlockType {
 
 const BLOCK_TYPES: BlockType[] = [
   // Basic
-  { id: "text-block", label: "Text", icon: <Type className="h-5 w-5" />, category: "Basic" },
-  { id: "image-block", label: "Image", icon: <Image className="h-5 w-5" />, category: "Basic" },
-  { id: "button-block", label: "Button", icon: <Square className="h-5 w-5" />, category: "Basic" },
-  { id: "video-block", label: "Video", icon: <Play className="h-5 w-5" />, category: "Basic" },
-  { id: "form-block", label: "Form", icon: <FileText className="h-5 w-5" />, category: "Basic" },
-  { id: "audio-block", label: "Audio", icon: <Music className="h-5 w-5" />, category: "Basic" },
-  { id: "newsletter-block", label: "Newsletter", icon: <Mail className="h-5 w-5" />, category: "Basic" },
-  { id: "accordion-block", label: "Accordion", icon: <ChevronDown className="h-5 w-5" />, category: "Basic" },
-  { id: "shape-block", label: "Shape", icon: <Layers className="h-5 w-5" />, category: "Basic" },
-  { id: "scrolling-block", label: "Scrolling", icon: <Type className="h-5 w-5" />, category: "Basic" },
-  { id: "line-block", label: "Line", icon: <Minus className="h-5 w-5" />, category: "Basic" },
-  { id: "quote-block", label: "Quote", icon: <Quote className="h-5 w-5" />, category: "Basic" },
-  { id: "map-block", label: "Map", icon: <MapPin className="h-5 w-5" />, category: "Basic" },
-  { id: "embed-block", label: "Embed", icon: <Code className="h-5 w-5" />, category: "Basic" },
-  { id: "markdown-block", label: "Markdown", icon: <Type className="h-5 w-5" />, category: "Basic" },
-  { id: "code-block", label: "Code", icon: <Code className="h-5 w-5" />, category: "Basic" },
-  { id: "heading-block", label: "Heading", icon: <Type className="h-5 w-5" />, category: "Basic" },
+  {
+    id: "text-block",
+    label: "Text",
+    icon: <Type className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "image-block",
+    label: "Image",
+    icon: <Image className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "button-block",
+    label: "Button",
+    icon: <Square className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "video-block",
+    label: "Video",
+    icon: <Play className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "form-block",
+    label: "Form",
+    icon: <FileText className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "audio-block",
+    label: "Audio",
+    icon: <Music className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "newsletter-block",
+    label: "Newsletter",
+    icon: <Mail className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "accordion-block",
+    label: "Accordion",
+    icon: <ChevronDown className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "shape-block",
+    label: "Shape",
+    icon: <Layers className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "scrolling-block",
+    label: "Scrolling",
+    icon: <Type className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "line-block",
+    label: "Line",
+    icon: <Minus className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "quote-block",
+    label: "Quote",
+    icon: <Quote className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "map-block",
+    label: "Map",
+    icon: <MapPin className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "embed-block",
+    label: "Embed",
+    icon: <Code className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "markdown-block",
+    label: "Markdown",
+    icon: <Type className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "code-block",
+    label: "Code",
+    icon: <Code className="h-5 w-5" />,
+    category: "Basic",
+  },
+  {
+    id: "heading-block",
+    label: "Heading",
+    icon: <Type className="h-5 w-5" />,
+    category: "Basic",
+  },
 ];
 
 interface AddBlockPopoverProps {
@@ -61,12 +146,15 @@ interface AddBlockPopoverProps {
   children: React.ReactNode;
 }
 
-export function AddBlockPopover({ onAddBlock, children }: AddBlockPopoverProps) {
+export function AddBlockPopover({
+  onAddBlock,
+  children,
+}: AddBlockPopoverProps) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
 
   const filteredBlocks = BLOCK_TYPES.filter((block) =>
-    block.label.toLowerCase().includes(search.toLowerCase())
+    block.label.toLowerCase().includes(search.toLowerCase()),
   );
 
   const categories = [...new Set(filteredBlocks.map((b) => b.category))];
@@ -80,7 +168,11 @@ export function AddBlockPopover({ onAddBlock, children }: AddBlockPopoverProps) 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="add-block-popover" align="start" sideOffset={8}>
+      <PopoverContent
+        className="add-block-popover"
+        align="start"
+        sideOffset={8}
+      >
         {/* Search */}
         <div className="add-block-search">
           <Search className="h-4 w-4 text-(--muted-foreground)" />

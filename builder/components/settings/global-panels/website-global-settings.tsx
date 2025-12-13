@@ -78,10 +78,7 @@ export function WebsiteGlobalSettings({
 }: WebsiteGlobalSettingsProps) {
   return (
     <>
-      <SettingsSection
-        title="General"
-        description="Basic website information."
-      >
+      <SettingsSection title="General" description="Basic website information.">
         <SettingsForm>
           <SettingsField>
             <Label htmlFor="site-name">Site Name</Label>
@@ -131,10 +128,18 @@ export function WebsiteGlobalSettings({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
-                <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
-                <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
-                <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
+                <SelectItem value="America/New_York">
+                  Eastern Time (ET)
+                </SelectItem>
+                <SelectItem value="America/Chicago">
+                  Central Time (CT)
+                </SelectItem>
+                <SelectItem value="America/Denver">
+                  Mountain Time (MT)
+                </SelectItem>
+                <SelectItem value="America/Los_Angeles">
+                  Pacific Time (PT)
+                </SelectItem>
                 <SelectItem value="UTC">UTC</SelectItem>
                 <SelectItem value="Europe/London">London (GMT)</SelectItem>
                 <SelectItem value="Europe/Paris">Paris (CET)</SelectItem>
@@ -258,11 +263,15 @@ export function WebsiteGlobalSettings({
           </SettingsField>
 
           <SettingsField>
-            <Label htmlFor="default-meta-description">Default Meta Description</Label>
+            <Label htmlFor="default-meta-description">
+              Default Meta Description
+            </Label>
             <Textarea
               id="default-meta-description"
               value={data.defaultMetaDescription || ""}
-              onChange={(e) => onChange("defaultMetaDescription", e.target.value)}
+              onChange={(e) =>
+                onChange("defaultMetaDescription", e.target.value)
+              }
               placeholder="A brief description of your website..."
               rows={3}
               disabled={isLoading}
@@ -367,14 +376,18 @@ export function WebsiteGlobalSettings({
           <SettingsField>
             <div className="flex items-center justify-between">
               <div>
-                <Label className="text-sm font-medium">Search Engine Indexing</Label>
+                <Label className="text-sm font-medium">
+                  Search Engine Indexing
+                </Label>
                 <p className="text-xs text-muted-foreground">
                   Allow search engines to index your site
                 </p>
               </div>
               <Switch
                 checked={data.robotsIndexing ?? true}
-                onCheckedChange={(checked) => onChange("robotsIndexing", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("robotsIndexing", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -390,7 +403,9 @@ export function WebsiteGlobalSettings({
               </div>
               <Switch
                 checked={data.xmlSitemapEnabled ?? true}
-                onCheckedChange={(checked) => onChange("xmlSitemapEnabled", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("xmlSitemapEnabled", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -406,7 +421,9 @@ export function WebsiteGlobalSettings({
               </div>
               <Switch
                 checked={data.maintenanceMode ?? false}
-                onCheckedChange={(checked) => onChange("maintenanceMode", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("maintenanceMode", checked)
+                }
                 disabled={isLoading}
               />
             </div>

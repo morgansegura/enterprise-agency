@@ -62,7 +62,12 @@ export default function VideoBlockRenderer({ block }: BlockRendererProps) {
     const videoId = getYouTubeId(url);
     if (!videoId) {
       return (
-        <div className={cn(containerClass, "flex items-center justify-center bg-muted text-muted-foreground")}>
+        <div
+          className={cn(
+            containerClass,
+            "flex items-center justify-center bg-muted text-muted-foreground",
+          )}
+        >
           Invalid YouTube URL
         </div>
       );
@@ -90,7 +95,12 @@ export default function VideoBlockRenderer({ block }: BlockRendererProps) {
     const videoId = getVimeoId(url);
     if (!videoId) {
       return (
-        <div className={cn(containerClass, "flex items-center justify-center bg-muted text-muted-foreground")}>
+        <div
+          className={cn(
+            containerClass,
+            "flex items-center justify-center bg-muted text-muted-foreground",
+          )}
+        >
           Invalid Vimeo URL
         </div>
       );

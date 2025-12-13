@@ -47,7 +47,10 @@ const alignClasses: Record<string, string> = {
  *
  * Matches the editor's SortableSection component exactly for WYSIWYG parity.
  */
-export function SectionRenderer({ section, breakpoint = "desktop" }: SectionRendererProps) {
+export function SectionRenderer({
+  section,
+  breakpoint = "desktop",
+}: SectionRendererProps) {
   const {
     background = "none",
     spacing = "md",

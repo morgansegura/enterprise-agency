@@ -107,7 +107,7 @@ export function InlineText({
         "inline-text",
         isEmpty && "inline-text--empty",
         disabled && "cursor-default",
-        className
+        className,
       )}
       data-placeholder={placeholder}
     />

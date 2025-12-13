@@ -46,7 +46,9 @@ export default function MediaLibraryPage({
   const { id } = resolvedParams;
 
   // State
-  const [selectedAsset, setSelectedAsset] = React.useState<AssetItem | null>(null);
+  const [selectedAsset, setSelectedAsset] = React.useState<AssetItem | null>(
+    null,
+  );
   const [uploading, setUploading] = React.useState(false);
 
   // Queries

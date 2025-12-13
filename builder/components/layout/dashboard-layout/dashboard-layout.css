@@ -1,33 +1,41 @@
 @reference "tailwindcss";
 
-.dashboard-layout-loading {
-  @apply min-h-screen flex items-center justify-center;
-}
-
-.dashboard-layout-loading-text {
-  @apply text-lg;
-}
-
 .dashboard-layout-header {
-  @apply flex h-12 shrink-0 items-center justify-between border-b px-2 bg-(--color-background);
+  @apply flex h-11 shrink-0 items-center gap-2 px-4 border-b border-(--border) justify-between;
 }
 
 .dashboard-layout-header-left {
   @apply flex items-center gap-2;
 }
 
-.dashboard-layout-header-right {
-  @apply flex items-center gap-2;
-}
-
 .dashboard-layout-header-trigger {
-  @apply -ml-1;
+  @apply relative cursor-pointer rounded-md flex items-center justify-center -ml-1.5 w-7.5 h-7.5;
+
+  & svg {
+    @apply size-6 stroke-(--muted-foreground) transition-colors duration-300 ease-out;
+  }
+
+  &:hover svg {
+    @apply size-6 outline-inherit stroke-(--foreground);
+  }
 }
 
 .dashboard-layout-header-separator {
   @apply mr-2 h-4;
 }
 
+.dashboard-layout-header-right {
+  @apply flex items-center gap-2;
+}
+
 .dashboard-layout-main {
-  @apply flex flex-1 flex-col gap-4 p-4;
+  @apply flex-1;
+}
+
+.dashboard-layout-loading {
+  @apply flex h-screen w-full items-center justify-center;
+}
+
+.dashboard-layout-loading-text {
+  @apply text-(--muted-foreground);
 }

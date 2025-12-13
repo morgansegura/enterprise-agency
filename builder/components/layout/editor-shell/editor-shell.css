@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .editor-shell {
-  @apply grid grid-cols-[48px_1fr] h-full;
+  @apply grid grid-cols-[48px_1fr];
 }
 
 .editor-shell-sidebar {
@@ -9,7 +9,7 @@
 }
 
 .editor-shell-main {
-  @apply flex flex-col h-full overflow-hidden;
+  @apply flex flex-col;
 }
 
 .editor-shell-header {
@@ -25,7 +25,7 @@
 }
 
 .editor-shell-content {
-  @apply flex-1 overflow-auto;
+  @apply flex-1;
 }
 
 .editor-shell-loading {

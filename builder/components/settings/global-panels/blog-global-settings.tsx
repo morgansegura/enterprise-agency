@@ -73,10 +73,7 @@ export function BlogGlobalSettings({
 }: BlogGlobalSettingsProps) {
   return (
     <>
-      <SettingsSection
-        title="General"
-        description="Basic blog configuration."
-      >
+      <SettingsSection title="General" description="Basic blog configuration.">
         <SettingsForm>
           <SettingsField>
             <Label htmlFor="blog-title">Blog Title</Label>
@@ -111,7 +108,9 @@ export function BlogGlobalSettings({
               min="1"
               max="100"
               value={data.postsPerPage ?? 10}
-              onChange={(e) => onChange("postsPerPage", parseInt(e.target.value) || 10)}
+              onChange={(e) =>
+                onChange("postsPerPage", parseInt(e.target.value) || 10)
+              }
               disabled={isLoading}
             />
           </SettingsField>
@@ -166,7 +165,9 @@ export function BlogGlobalSettings({
                 min="10"
                 max="500"
                 value={data.excerptLength ?? 55}
-                onChange={(e) => onChange("excerptLength", parseInt(e.target.value) || 55)}
+                onChange={(e) =>
+                  onChange("excerptLength", parseInt(e.target.value) || 55)
+                }
                 disabled={isLoading}
               />
             </SettingsField>
@@ -182,7 +183,9 @@ export function BlogGlobalSettings({
               </div>
               <Switch
                 checked={data.showFeaturedImages ?? true}
-                onCheckedChange={(checked) => onChange("showFeaturedImages", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("showFeaturedImages", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -253,7 +256,9 @@ export function BlogGlobalSettings({
               </div>
               <Switch
                 checked={data.commentsEnabled ?? false}
-                onCheckedChange={(checked) => onChange("commentsEnabled", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("commentsEnabled", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -265,7 +270,9 @@ export function BlogGlobalSettings({
                 <Label htmlFor="comment-moderation">Moderation</Label>
                 <Select
                   value={data.commentModeration || "manual"}
-                  onValueChange={(value) => onChange("commentModeration", value)}
+                  onValueChange={(value) =>
+                    onChange("commentModeration", value)
+                  }
                   disabled={isLoading}
                 >
                   <SelectTrigger id="comment-moderation">
@@ -282,14 +289,18 @@ export function BlogGlobalSettings({
               <SettingsField>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label className="text-sm font-medium">Require Approval</Label>
+                    <Label className="text-sm font-medium">
+                      Require Approval
+                    </Label>
                     <p className="text-xs text-muted-foreground">
                       First comment from new users requires approval
                     </p>
                   </div>
                   <Switch
                     checked={data.requireApproval ?? true}
-                    onCheckedChange={(checked) => onChange("requireApproval", checked)}
+                    onCheckedChange={(checked) =>
+                      onChange("requireApproval", checked)
+                    }
                     disabled={isLoading}
                   />
                 </div>
@@ -330,7 +341,9 @@ export function BlogGlobalSettings({
                   min="5"
                   max="100"
                   value={data.rssPostCount ?? 20}
-                  onChange={(e) => onChange("rssPostCount", parseInt(e.target.value) || 20)}
+                  onChange={(e) =>
+                    onChange("rssPostCount", parseInt(e.target.value) || 20)
+                  }
                   disabled={isLoading}
                 />
               </SettingsField>
@@ -338,14 +351,18 @@ export function BlogGlobalSettings({
               <SettingsField>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label className="text-sm font-medium">Full Content in Feed</Label>
+                    <Label className="text-sm font-medium">
+                      Full Content in Feed
+                    </Label>
                     <p className="text-xs text-muted-foreground">
                       Include complete post content (vs. excerpt only)
                     </p>
                   </div>
                   <Switch
                     checked={data.rssIncludeFullContent ?? false}
-                    onCheckedChange={(checked) => onChange("rssIncludeFullContent", checked)}
+                    onCheckedChange={(checked) =>
+                      onChange("rssIncludeFullContent", checked)
+                    }
                     disabled={isLoading}
                   />
                 </div>
@@ -370,7 +387,9 @@ export function BlogGlobalSettings({
               </div>
               <Switch
                 checked={data.socialSharingEnabled ?? true}
-                onCheckedChange={(checked) => onChange("socialSharingEnabled", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("socialSharingEnabled", checked)
+                }
                 disabled={isLoading}
               />
             </div>

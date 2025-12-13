@@ -36,7 +36,10 @@ const backgroundClasses = {
   secondary: "bg-secondary text-secondary-foreground",
 };
 
-export default function ContainerBlockRenderer({ block, breakpoint }: BlockRendererProps) {
+export default function ContainerBlockRenderer({
+  block,
+  breakpoint,
+}: BlockRendererProps) {
   const data = block.data as unknown as ContainerBlockData;
   const {
     maxWidth = "full",

@@ -20,7 +20,10 @@ interface PageRendererProps {
  * - Block rendering delegation
  * - Responsive breakpoint handling
  */
-export function PageRenderer({ page, breakpoint = "desktop" }: PageRendererProps) {
+export function PageRenderer({
+  page,
+  breakpoint = "desktop",
+}: PageRendererProps) {
   // Get sections from page data (supports both flat and nested structure)
   const sections: Section[] = page.sections || page.content?.sections || [];
 

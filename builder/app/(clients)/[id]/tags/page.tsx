@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { useTagsWithCounts, useRenameTag, useDeleteTag, type Tag } from "@/lib/hooks";
+import {
+  useTagsWithCounts,
+  useRenameTag,
+  useDeleteTag,
+  type Tag,
+} from "@/lib/hooks";
 import { ContentList } from "@/components/layout/content-list";
 import {
   Dialog,
@@ -62,7 +67,11 @@ export default function TagsPage({
   };
 
   const handleDelete = (tag: TagItem) => {
-    if (confirm(`Delete tag "${tag.name}"? This will remove it from ${tag.count} post(s).`)) {
+    if (
+      confirm(
+        `Delete tag "${tag.name}"? This will remove it from ${tag.count} post(s).`,
+      )
+    ) {
       deleteTag.mutate(tag.name, {
         onSuccess: () => {
           toast.success(`Tag "${tag.name}" deleted`);
@@ -85,13 +94,15 @@ export default function TagsPage({
       { oldName: editingTag.name, newName: newTagName.trim() },
       {
         onSuccess: (result) => {
-          toast.success(`Tag renamed to "${newTagName}" (${result.updatedCount} post(s) updated)`);
+          toast.success(
+            `Tag renamed to "${newTagName}" (${result.updatedCount} post(s) updated)`,
+          );
           setEditingTag(null);
         },
         onError: () => {
           toast.error("Failed to rename tag");
         },
-      }
+      },
     );
   };
 

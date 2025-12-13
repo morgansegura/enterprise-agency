@@ -40,16 +40,31 @@ interface GlobalSettingsDrawerProps {
   onOpenChange: (open: boolean) => void;
 }
 
-type ShopTabId = "store" | "checkout" | "payments" | "shipping" | "tax" | "inventory";
+type ShopTabId =
+  | "store"
+  | "checkout"
+  | "payments"
+  | "shipping"
+  | "tax"
+  | "inventory";
 type BlogTabId = "general" | "display" | "comments" | "rss" | "social";
-type WebsiteTabId = "general" | "branding" | "seo" | "social" | "technical" | "contact";
+type WebsiteTabId =
+  | "general"
+  | "branding"
+  | "seo"
+  | "social"
+  | "technical"
+  | "contact";
 type TabId = ShopTabId | BlogTabId | WebsiteTabId | "general";
 
 // =============================================================================
 // Section Icon Map
 // =============================================================================
 
-const SECTION_ICONS: Record<SettingsSection, React.ComponentType<{ className?: string }>> = {
+const SECTION_ICONS: Record<
+  SettingsSection,
+  React.ComponentType<{ className?: string }>
+> = {
   website: Globe,
   blog: Newspaper,
   shop: Store,
@@ -64,27 +79,77 @@ const SECTION_ICONS: Record<SettingsSection, React.ComponentType<{ className?: s
 
 const SHOP_NAV_ITEMS: SettingsNavItem<ShopTabId>[] = [
   { id: "store", label: "Store", icon: Store, description: "Store info" },
-  { id: "checkout", label: "Checkout", icon: CreditCard, description: "Checkout options" },
-  { id: "payments", label: "Payments", icon: CreditCard, description: "Payment providers" },
-  { id: "shipping", label: "Shipping", icon: Truck, description: "Shipping rules" },
+  {
+    id: "checkout",
+    label: "Checkout",
+    icon: CreditCard,
+    description: "Checkout options",
+  },
+  {
+    id: "payments",
+    label: "Payments",
+    icon: CreditCard,
+    description: "Payment providers",
+  },
+  {
+    id: "shipping",
+    label: "Shipping",
+    icon: Truck,
+    description: "Shipping rules",
+  },
   { id: "tax", label: "Tax", icon: CreditCard, description: "Tax settings" },
-  { id: "inventory", label: "Inventory", icon: Store, description: "Stock settings" },
+  {
+    id: "inventory",
+    label: "Inventory",
+    icon: Store,
+    description: "Stock settings",
+  },
 ];
 
 const BLOG_NAV_ITEMS: SettingsNavItem<BlogTabId>[] = [
-  { id: "general", label: "General", icon: Settings, description: "Basic config" },
-  { id: "display", label: "Display", icon: Palette, description: "Layout options" },
-  { id: "comments", label: "Comments", icon: MessageSquare, description: "Commenting" },
+  {
+    id: "general",
+    label: "General",
+    icon: Settings,
+    description: "Basic config",
+  },
+  {
+    id: "display",
+    label: "Display",
+    icon: Palette,
+    description: "Layout options",
+  },
+  {
+    id: "comments",
+    label: "Comments",
+    icon: MessageSquare,
+    description: "Commenting",
+  },
   { id: "rss", label: "RSS", icon: Rss, description: "Feed settings" },
-  { id: "social", label: "Social", icon: Globe, description: "Sharing options" },
+  {
+    id: "social",
+    label: "Social",
+    icon: Globe,
+    description: "Sharing options",
+  },
 ];
 
 const WEBSITE_NAV_ITEMS: SettingsNavItem<WebsiteTabId>[] = [
   { id: "general", label: "General", icon: Settings, description: "Site info" },
-  { id: "branding", label: "Branding", icon: Palette, description: "Colors & logo" },
+  {
+    id: "branding",
+    label: "Branding",
+    icon: Palette,
+    description: "Colors & logo",
+  },
   { id: "seo", label: "SEO", icon: Search, description: "Meta & analytics" },
   { id: "social", label: "Social", icon: Globe, description: "Social links" },
-  { id: "technical", label: "Technical", icon: Settings, description: "Indexing & sitemap" },
+  {
+    id: "technical",
+    label: "Technical",
+    icon: Settings,
+    description: "Indexing & sitemap",
+  },
   { id: "contact", label: "Contact", icon: Mail, description: "Business info" },
 ];
 
@@ -106,7 +171,9 @@ export function GlobalSettingsDrawer({
   const [isSaving, setIsSaving] = React.useState(false);
 
   // Settings data state - in a real app, this would come from a query
-  const [settingsData, setSettingsData] = React.useState<Record<string, unknown>>({});
+  const [settingsData, setSettingsData] = React.useState<
+    Record<string, unknown>
+  >({});
 
   // Reset tab when section changes
   React.useEffect(() => {
@@ -165,11 +232,7 @@ export function GlobalSettingsDrawer({
   const navItems = getNavItems();
 
   return (
-    <SettingsDrawer
-      open={open}
-      onOpenChange={onOpenChange}
-      title={getTitle()}
-    >
+    <SettingsDrawer open={open} onOpenChange={onOpenChange} title={getTitle()}>
       <SettingsDrawerSidebar
         title={getTitle()}
         description={getDescription()}
@@ -219,7 +282,8 @@ export function GlobalSettingsDrawer({
         {section === "media" && (
           <div className="p-6">
             <p className="text-sm text-muted-foreground">
-              Media settings coming soon. Configure storage, upload limits, and image processing options.
+              Media settings coming soon. Configure storage, upload limits, and
+              image processing options.
             </p>
           </div>
         )}
@@ -227,7 +291,8 @@ export function GlobalSettingsDrawer({
         {section === "admin" && (
           <div className="p-6">
             <p className="text-sm text-muted-foreground">
-              Admin settings coming soon. Configure user roles, permissions, and access control.
+              Admin settings coming soon. Configure user roles, permissions, and
+              access control.
             </p>
           </div>
         )}
@@ -235,7 +300,8 @@ export function GlobalSettingsDrawer({
         {section === "bookings" && (
           <div className="p-6">
             <p className="text-sm text-muted-foreground">
-              Bookings settings coming soon. Configure availability, pricing tiers, and booking rules.
+              Bookings settings coming soon. Configure availability, pricing
+              tiers, and booking rules.
             </p>
           </div>
         )}

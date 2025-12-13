@@ -61,7 +61,11 @@ export default function ManageClientsPage({
   };
 
   const handleDelete = (client: ClientItem) => {
-    if (confirm(`Delete client "${client.businessName}"? This action cannot be undone.`)) {
+    if (
+      confirm(
+        `Delete client "${client.businessName}"? This action cannot be undone.`,
+      )
+    ) {
       deleteTenant.mutate(client.id, {
         onSuccess: () => {
           toast.success(`Client "${client.businessName}" deleted`);

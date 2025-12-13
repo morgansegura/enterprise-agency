@@ -30,7 +30,10 @@ const gapClasses = {
   xl: "gap-8",
 };
 
-export default function ColumnsBlockRenderer({ block, breakpoint }: BlockRendererProps) {
+export default function ColumnsBlockRenderer({
+  block,
+  breakpoint,
+}: BlockRendererProps) {
   const data = block.data as unknown as ColumnsBlockData;
   const { count = "2", gap = "md", responsive = true, blocks = [] } = data;
 

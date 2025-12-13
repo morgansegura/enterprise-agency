@@ -14,11 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormItem } from "@/components/ui/form";
-import {
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-} from "lucide-react";
+import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Section } from "@/lib/hooks/use-pages";
@@ -145,7 +141,7 @@ export function SectionSettingsPopover({
                   size="icon-sm"
                   className={cn(
                     "section-settings-button",
-                    (section.align || "left") === "left" && "is-active"
+                    (section.align || "left") === "left" && "is-active",
                   )}
                   onClick={() => handleChange("align", "left")}
                   title="Align left"
@@ -157,7 +153,7 @@ export function SectionSettingsPopover({
                   size="icon-sm"
                   className={cn(
                     "section-settings-button",
-                    section.align === "center" && "is-active"
+                    section.align === "center" && "is-active",
                   )}
                   onClick={() => handleChange("align", "center")}
                   title="Align center"
@@ -169,7 +165,7 @@ export function SectionSettingsPopover({
                   size="icon-sm"
                   className={cn(
                     "section-settings-button",
-                    section.align === "right" && "is-active"
+                    section.align === "right" && "is-active",
                   )}
                   onClick={() => handleChange("align", "right")}
                   title="Align right"

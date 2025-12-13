@@ -241,29 +241,69 @@ const defaultTypography: TypographySettings = {
 const defaultButtons: ButtonSettings = {
   sizes: {
     xs: {
-      paddingX: "2", paddingY: "1", gap: "1", minHeight: "6",
-      fontSize: "xs", fontWeight: "medium", letterSpacing: "normal", lineHeight: "normal", textTransform: "none",
-      borderRadius: "md", transitionDuration: "150",
+      paddingX: "2",
+      paddingY: "1",
+      gap: "1",
+      minHeight: "6",
+      fontSize: "xs",
+      fontWeight: "medium",
+      letterSpacing: "normal",
+      lineHeight: "normal",
+      textTransform: "none",
+      borderRadius: "md",
+      transitionDuration: "150",
     },
     sm: {
-      paddingX: "3", paddingY: "1.5", gap: "1.5", minHeight: "8",
-      fontSize: "sm", fontWeight: "medium", letterSpacing: "normal", lineHeight: "normal", textTransform: "none",
-      borderRadius: "md", transitionDuration: "150",
+      paddingX: "3",
+      paddingY: "1.5",
+      gap: "1.5",
+      minHeight: "8",
+      fontSize: "sm",
+      fontWeight: "medium",
+      letterSpacing: "normal",
+      lineHeight: "normal",
+      textTransform: "none",
+      borderRadius: "md",
+      transitionDuration: "150",
     },
     md: {
-      paddingX: "4", paddingY: "2", gap: "2", minHeight: "10",
-      fontSize: "sm", fontWeight: "medium", letterSpacing: "normal", lineHeight: "normal", textTransform: "none",
-      borderRadius: "md", transitionDuration: "150",
+      paddingX: "4",
+      paddingY: "2",
+      gap: "2",
+      minHeight: "10",
+      fontSize: "sm",
+      fontWeight: "medium",
+      letterSpacing: "normal",
+      lineHeight: "normal",
+      textTransform: "none",
+      borderRadius: "md",
+      transitionDuration: "150",
     },
     lg: {
-      paddingX: "6", paddingY: "2.5", gap: "2", minHeight: "12",
-      fontSize: "base", fontWeight: "medium", letterSpacing: "normal", lineHeight: "normal", textTransform: "none",
-      borderRadius: "md", transitionDuration: "150",
+      paddingX: "6",
+      paddingY: "2.5",
+      gap: "2",
+      minHeight: "12",
+      fontSize: "base",
+      fontWeight: "medium",
+      letterSpacing: "normal",
+      lineHeight: "normal",
+      textTransform: "none",
+      borderRadius: "md",
+      transitionDuration: "150",
     },
     xl: {
-      paddingX: "8", paddingY: "3", gap: "3", minHeight: "14",
-      fontSize: "lg", fontWeight: "medium", letterSpacing: "normal", lineHeight: "normal", textTransform: "none",
-      borderRadius: "lg", transitionDuration: "150",
+      paddingX: "8",
+      paddingY: "3",
+      gap: "3",
+      minHeight: "14",
+      fontSize: "lg",
+      fontWeight: "medium",
+      letterSpacing: "normal",
+      lineHeight: "normal",
+      textTransform: "none",
+      borderRadius: "lg",
+      transitionDuration: "150",
     },
   },
 };
@@ -402,43 +442,100 @@ export function GlobalSettingsDrawer({
         },
         buttons: {
           sizes: {
-            xs: { ...defaultButtons.sizes.xs, ...tokens.components?.buttons?.sizes?.xs },
-            sm: { ...defaultButtons.sizes.sm, ...tokens.components?.buttons?.sizes?.sm },
-            md: { ...defaultButtons.sizes.md, ...tokens.components?.buttons?.sizes?.md },
-            lg: { ...defaultButtons.sizes.lg, ...tokens.components?.buttons?.sizes?.lg },
-            xl: { ...defaultButtons.sizes.xl, ...tokens.components?.buttons?.sizes?.xl },
+            xs: {
+              ...defaultButtons.sizes.xs,
+              ...tokens.components?.buttons?.sizes?.xs,
+            },
+            sm: {
+              ...defaultButtons.sizes.sm,
+              ...tokens.components?.buttons?.sizes?.sm,
+            },
+            md: {
+              ...defaultButtons.sizes.md,
+              ...tokens.components?.buttons?.sizes?.md,
+            },
+            lg: {
+              ...defaultButtons.sizes.lg,
+              ...tokens.components?.buttons?.sizes?.lg,
+            },
+            xl: {
+              ...defaultButtons.sizes.xl,
+              ...tokens.components?.buttons?.sizes?.xl,
+            },
           },
         },
         inputs: {
-          borderRadius: tokens.components?.inputs?.borderRadius || defaultInputs.borderRadius,
-          borderWidth: tokens.components?.inputs?.borderWidth || defaultInputs.borderWidth,
-          paddingX: tokens.components?.inputs?.paddingX || defaultInputs.paddingX,
-          paddingY: tokens.components?.inputs?.paddingY || defaultInputs.paddingY,
-          fontSize: tokens.components?.inputs?.fontSize || defaultInputs.fontSize,
-          fontWeight: tokens.components?.inputs?.fontWeight || defaultInputs.fontWeight,
-          transitionDuration: tokens.components?.inputs?.transitionDuration || defaultInputs.transitionDuration,
+          borderRadius:
+            tokens.components?.inputs?.borderRadius ||
+            defaultInputs.borderRadius,
+          borderWidth:
+            tokens.components?.inputs?.borderWidth || defaultInputs.borderWidth,
+          paddingX:
+            tokens.components?.inputs?.paddingX || defaultInputs.paddingX,
+          paddingY:
+            tokens.components?.inputs?.paddingY || defaultInputs.paddingY,
+          fontSize:
+            tokens.components?.inputs?.fontSize || defaultInputs.fontSize,
+          fontWeight:
+            tokens.components?.inputs?.fontWeight || defaultInputs.fontWeight,
+          transitionDuration:
+            tokens.components?.inputs?.transitionDuration ||
+            defaultInputs.transitionDuration,
         },
         cards: {
-          borderRadius: tokens.components?.cards?.borderRadius || defaultCards.borderRadius,
-          borderWidth: tokens.components?.cards?.borderWidth || defaultCards.borderWidth,
+          borderRadius:
+            tokens.components?.cards?.borderRadius || defaultCards.borderRadius,
+          borderWidth:
+            tokens.components?.cards?.borderWidth || defaultCards.borderWidth,
           shadow: tokens.components?.cards?.shadow || defaultCards.shadow,
-          headerPaddingX: tokens.components?.cards?.headerPaddingX || defaultCards.headerPaddingX,
-          headerPaddingY: tokens.components?.cards?.headerPaddingY || defaultCards.headerPaddingY,
-          contentPaddingX: tokens.components?.cards?.contentPaddingX || defaultCards.contentPaddingX,
-          contentPaddingY: tokens.components?.cards?.contentPaddingY || defaultCards.contentPaddingY,
-          footerPaddingX: tokens.components?.cards?.footerPaddingX || defaultCards.footerPaddingX,
-          footerPaddingY: tokens.components?.cards?.footerPaddingY || defaultCards.footerPaddingY,
-          headerBorder: tokens.components?.cards?.headerBorder ?? defaultCards.headerBorder,
-          footerBorder: tokens.components?.cards?.footerBorder ?? defaultCards.footerBorder,
-          titleFontSize: tokens.components?.cards?.titleFontSize || defaultCards.titleFontSize,
-          titleFontWeight: tokens.components?.cards?.titleFontWeight || defaultCards.titleFontWeight,
-          titleLineHeight: tokens.components?.cards?.titleLineHeight || defaultCards.titleLineHeight,
-          titleLetterSpacing: tokens.components?.cards?.titleLetterSpacing || defaultCards.titleLetterSpacing,
-          descriptionFontSize: tokens.components?.cards?.descriptionFontSize || defaultCards.descriptionFontSize,
-          descriptionFontWeight: tokens.components?.cards?.descriptionFontWeight || defaultCards.descriptionFontWeight,
-          descriptionLineHeight: tokens.components?.cards?.descriptionLineHeight || defaultCards.descriptionLineHeight,
-          hoverShadow: tokens.components?.cards?.hoverShadow || defaultCards.hoverShadow,
-          transitionDuration: tokens.components?.cards?.transitionDuration || defaultCards.transitionDuration,
+          headerPaddingX:
+            tokens.components?.cards?.headerPaddingX ||
+            defaultCards.headerPaddingX,
+          headerPaddingY:
+            tokens.components?.cards?.headerPaddingY ||
+            defaultCards.headerPaddingY,
+          contentPaddingX:
+            tokens.components?.cards?.contentPaddingX ||
+            defaultCards.contentPaddingX,
+          contentPaddingY:
+            tokens.components?.cards?.contentPaddingY ||
+            defaultCards.contentPaddingY,
+          footerPaddingX:
+            tokens.components?.cards?.footerPaddingX ||
+            defaultCards.footerPaddingX,
+          footerPaddingY:
+            tokens.components?.cards?.footerPaddingY ||
+            defaultCards.footerPaddingY,
+          headerBorder:
+            tokens.components?.cards?.headerBorder ?? defaultCards.headerBorder,
+          footerBorder:
+            tokens.components?.cards?.footerBorder ?? defaultCards.footerBorder,
+          titleFontSize:
+            tokens.components?.cards?.titleFontSize ||
+            defaultCards.titleFontSize,
+          titleFontWeight:
+            tokens.components?.cards?.titleFontWeight ||
+            defaultCards.titleFontWeight,
+          titleLineHeight:
+            tokens.components?.cards?.titleLineHeight ||
+            defaultCards.titleLineHeight,
+          titleLetterSpacing:
+            tokens.components?.cards?.titleLetterSpacing ||
+            defaultCards.titleLetterSpacing,
+          descriptionFontSize:
+            tokens.components?.cards?.descriptionFontSize ||
+            defaultCards.descriptionFontSize,
+          descriptionFontWeight:
+            tokens.components?.cards?.descriptionFontWeight ||
+            defaultCards.descriptionFontWeight,
+          descriptionLineHeight:
+            tokens.components?.cards?.descriptionLineHeight ||
+            defaultCards.descriptionLineHeight,
+          hoverShadow:
+            tokens.components?.cards?.hoverShadow || defaultCards.hoverShadow,
+          transitionDuration:
+            tokens.components?.cards?.transitionDuration ||
+            defaultCards.transitionDuration,
         },
       };
       setLocalTokens(initial);
@@ -1430,22 +1527,39 @@ function TypographySettingsPanel({
 // ============================================================================
 
 type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
-type ButtonVariant = "primary" | "secondary" | "outline" | "destructive" | "ghost" | "link";
+type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "destructive"
+  | "ghost"
+  | "link";
 
 interface ButtonSettingsPanelProps {
   settings: ButtonSettings;
-  onChange: <K extends keyof ButtonSettings>(key: K, value: ButtonSettings[K]) => void;
+  onChange: <K extends keyof ButtonSettings>(
+    key: K,
+    value: ButtonSettings[K],
+  ) => void;
   colors: SemanticColors;
 }
 
-function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanelProps) {
+function ButtonSettingsPanel({
+  settings,
+  onChange,
+  colors,
+}: ButtonSettingsPanelProps) {
   const [activeSize, setActiveSize] = React.useState<ButtonSize>("md");
 
   // Ensure sizes is always defined with fallback to defaults
   const sizes = settings.sizes ?? defaultButtons.sizes;
 
   // Helper to update a specific size variant
-  const updateSizeSettings = (size: ButtonSize, field: keyof ButtonSizeSettings, value: string) => {
+  const updateSizeSettings = (
+    size: ButtonSize,
+    field: keyof ButtonSizeSettings,
+    value: string,
+  ) => {
     onChange("sizes", {
       ...sizes,
       [size]: {
@@ -1470,7 +1584,8 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
       paddingBottom: getSpacingValue(currentSize.paddingY),
       gap: getSpacingValue(currentSize.gap),
       minHeight: getSpacingValue(currentSize.minHeight),
-      textTransform: currentSize.textTransform as React.CSSProperties["textTransform"],
+      textTransform:
+        currentSize.textTransform as React.CSSProperties["textTransform"],
       letterSpacing: getLetterSpacingValue(currentSize.letterSpacing),
       lineHeight: getLineHeightValue(currentSize.lineHeight),
       border: "none",
@@ -1482,17 +1597,45 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
 
     switch (variant) {
       case "primary":
-        return { ...baseStyle, backgroundColor: colors.primary, color: colors.primaryForeground };
+        return {
+          ...baseStyle,
+          backgroundColor: colors.primary,
+          color: colors.primaryForeground,
+        };
       case "secondary":
-        return { ...baseStyle, backgroundColor: colors.secondary, color: colors.secondaryForeground };
+        return {
+          ...baseStyle,
+          backgroundColor: colors.secondary,
+          color: colors.secondaryForeground,
+        };
       case "outline":
-        return { ...baseStyle, backgroundColor: "transparent", border: `1px solid ${colors.border}`, color: colors.foreground };
+        return {
+          ...baseStyle,
+          backgroundColor: "transparent",
+          border: `1px solid ${colors.border}`,
+          color: colors.foreground,
+        };
       case "destructive":
-        return { ...baseStyle, backgroundColor: colors.destructive, color: "#ffffff" };
+        return {
+          ...baseStyle,
+          backgroundColor: colors.destructive,
+          color: "#ffffff",
+        };
       case "ghost":
-        return { ...baseStyle, backgroundColor: "transparent", color: colors.foreground };
+        return {
+          ...baseStyle,
+          backgroundColor: "transparent",
+          color: colors.foreground,
+        };
       case "link":
-        return { ...baseStyle, backgroundColor: "transparent", color: colors.primary, textDecoration: "underline", padding: 0, minHeight: "auto" };
+        return {
+          ...baseStyle,
+          backgroundColor: "transparent",
+          color: colors.primary,
+          textDecoration: "underline",
+          padding: 0,
+          minHeight: "auto",
+        };
     }
   };
 
@@ -1518,18 +1661,22 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
     label: string,
     value: string,
     onValueChange: (v: string) => void,
-    options: Array<{ value: string; label: string; description: string }>
+    options: Array<{ value: string; label: string; description: string }>,
   ) => (
     <SettingsField>
       <Label>{label}</Label>
       <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger><SelectValue /></SelectTrigger>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
         <SelectContent>
           {options.map((opt) => (
             <SelectItem key={opt.value} value={opt.value}>
               <span className="flex justify-between w-full">
                 <span>{opt.label}</span>
-                <span className="text-muted-foreground ml-2">{opt.description}</span>
+                <span className="text-muted-foreground ml-2">
+                  {opt.description}
+                </span>
               </span>
             </SelectItem>
           ))}
@@ -1553,7 +1700,9 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
     >
       {/* Size Variant Selector */}
       <div className="mb-6">
-        <Label className="text-sm font-medium mb-2 block">Select Size to Configure</Label>
+        <Label className="text-sm font-medium mb-2 block">
+          Select Size to Configure
+        </Label>
         <div className="flex gap-1">
           {(["xs", "sm", "md", "lg", "xl"] as ButtonSize[]).map((size) => (
             <button
@@ -1563,7 +1712,7 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
                 "px-4 py-2 text-sm font-medium rounded-md transition-colors",
                 activeSize === size
                   ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80",
               )}
             >
               {size.toUpperCase()}
@@ -1573,8 +1722,14 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
       </div>
 
       {/* Live Preview for Active Size */}
-      <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: colors.background }}>
-        <Label className="text-xs mb-3 block" style={{ color: colors.mutedForeground }}>
+      <div
+        className="mb-6 p-4 rounded-lg border"
+        style={{ backgroundColor: colors.background }}
+      >
+        <Label
+          className="text-xs mb-3 block"
+          style={{ color: colors.mutedForeground }}
+        >
           {sizeLabels[activeSize]} ({activeSize.toUpperCase()}) Preview
         </Label>
         <div className="flex gap-2 flex-wrap items-center">
@@ -1585,7 +1740,14 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
           <button style={getButtonStyle("ghost")}>Ghost</button>
           <button style={getButtonStyle("link")}>Link</button>
           <button style={getIconButtonStyle()} title="Icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M12 5v14M5 12h14" />
             </svg>
           </button>
@@ -1594,25 +1756,80 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
 
       {/* Spacing Settings */}
       <SettingsGridBlock title="Spacing">
-        {renderSelect("Padding X", currentSize.paddingX, (v) => updateSizeSettings(activeSize, "paddingX", v), spacingSelectOptions.slice(0, 14))}
-        {renderSelect("Padding Y", currentSize.paddingY, (v) => updateSizeSettings(activeSize, "paddingY", v), spacingSelectOptions.slice(0, 10))}
-        {renderSelect("Icon Gap", currentSize.gap, (v) => updateSizeSettings(activeSize, "gap", v), spacingSelectOptions.slice(0, 8))}
-        {renderSelect("Min Height", currentSize.minHeight, (v) => updateSizeSettings(activeSize, "minHeight", v), spacingSelectOptions.slice(4, 16))}
+        {renderSelect(
+          "Padding X",
+          currentSize.paddingX,
+          (v) => updateSizeSettings(activeSize, "paddingX", v),
+          spacingSelectOptions.slice(0, 14),
+        )}
+        {renderSelect(
+          "Padding Y",
+          currentSize.paddingY,
+          (v) => updateSizeSettings(activeSize, "paddingY", v),
+          spacingSelectOptions.slice(0, 10),
+        )}
+        {renderSelect(
+          "Icon Gap",
+          currentSize.gap,
+          (v) => updateSizeSettings(activeSize, "gap", v),
+          spacingSelectOptions.slice(0, 8),
+        )}
+        {renderSelect(
+          "Min Height",
+          currentSize.minHeight,
+          (v) => updateSizeSettings(activeSize, "minHeight", v),
+          spacingSelectOptions.slice(4, 16),
+        )}
       </SettingsGridBlock>
 
       {/* Typography Settings */}
       <SettingsGridBlock title="Typography">
-        {renderSelect("Font Size", currentSize.fontSize, (v) => updateSizeSettings(activeSize, "fontSize", v), fontSizeSelectOptions.slice(0, 7))}
-        {renderSelect("Font Weight", currentSize.fontWeight, (v) => updateSizeSettings(activeSize, "fontWeight", v), fontWeightSelectOptions)}
-        {renderSelect("Letter Spacing", currentSize.letterSpacing, (v) => updateSizeSettings(activeSize, "letterSpacing", v), letterSpacingSelectOptions)}
-        {renderSelect("Line Height", currentSize.lineHeight, (v) => updateSizeSettings(activeSize, "lineHeight", v), lineHeightSelectOptions)}
-        {renderSelect("Text Transform", currentSize.textTransform, (v) => updateSizeSettings(activeSize, "textTransform", v), textTransformSelectOptions)}
+        {renderSelect(
+          "Font Size",
+          currentSize.fontSize,
+          (v) => updateSizeSettings(activeSize, "fontSize", v),
+          fontSizeSelectOptions.slice(0, 7),
+        )}
+        {renderSelect(
+          "Font Weight",
+          currentSize.fontWeight,
+          (v) => updateSizeSettings(activeSize, "fontWeight", v),
+          fontWeightSelectOptions,
+        )}
+        {renderSelect(
+          "Letter Spacing",
+          currentSize.letterSpacing,
+          (v) => updateSizeSettings(activeSize, "letterSpacing", v),
+          letterSpacingSelectOptions,
+        )}
+        {renderSelect(
+          "Line Height",
+          currentSize.lineHeight,
+          (v) => updateSizeSettings(activeSize, "lineHeight", v),
+          lineHeightSelectOptions,
+        )}
+        {renderSelect(
+          "Text Transform",
+          currentSize.textTransform,
+          (v) => updateSizeSettings(activeSize, "textTransform", v),
+          textTransformSelectOptions,
+        )}
       </SettingsGridBlock>
 
       {/* Shape & Effects */}
       <SettingsGridBlock title="Shape & Effects">
-        {renderSelect("Border Radius", currentSize.borderRadius, (v) => updateSizeSettings(activeSize, "borderRadius", v), borderRadiusSelectOptions)}
-        {renderSelect("Transition Duration", currentSize.transitionDuration, (v) => updateSizeSettings(activeSize, "transitionDuration", v), transitionDurationSelectOptions)}
+        {renderSelect(
+          "Border Radius",
+          currentSize.borderRadius,
+          (v) => updateSizeSettings(activeSize, "borderRadius", v),
+          borderRadiusSelectOptions,
+        )}
+        {renderSelect(
+          "Transition Duration",
+          currentSize.transitionDuration,
+          (v) => updateSizeSettings(activeSize, "transitionDuration", v),
+          transitionDurationSelectOptions,
+        )}
       </SettingsGridBlock>
     </SettingsSection>
   );
@@ -1624,11 +1841,18 @@ function ButtonSettingsPanel({ settings, onChange, colors }: ButtonSettingsPanel
 
 interface InputSettingsPanelProps {
   settings: InputSettings;
-  onChange: <K extends keyof InputSettings>(key: K, value: InputSettings[K]) => void;
+  onChange: <K extends keyof InputSettings>(
+    key: K,
+    value: InputSettings[K],
+  ) => void;
   colors: SemanticColors;
 }
 
-function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelProps) {
+function InputSettingsPanel({
+  settings,
+  onChange,
+  colors,
+}: InputSettingsPanelProps) {
   const previewStyle: React.CSSProperties = {
     borderRadius: getBorderRadiusValue(settings.borderRadius),
     borderWidth: getBorderWidthValue(settings.borderWidth),
@@ -1653,8 +1877,14 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
       description="Customize the appearance of form inputs using Tailwind tokens."
     >
       {/* Preview */}
-      <div className="mb-8 p-6 rounded-lg border" style={{ backgroundColor: colors.muted }}>
-        <Label className="text-xs mb-3 block" style={{ color: colors.mutedForeground }}>
+      <div
+        className="mb-8 p-6 rounded-lg border"
+        style={{ backgroundColor: colors.muted }}
+      >
+        <Label
+          className="text-xs mb-3 block"
+          style={{ color: colors.mutedForeground }}
+        >
           Live Preview
         </Label>
         <input style={previewStyle} type="text" placeholder="Enter text..." />
@@ -1663,14 +1893,21 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
       <SettingsGridBlock title="Shape">
         <SettingsField>
           <Label>Border Radius</Label>
-          <Select value={settings.borderRadius} onValueChange={(v) => onChange("borderRadius", v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+          <Select
+            value={settings.borderRadius}
+            onValueChange={(v) => onChange("borderRadius", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {borderRadiusSelectOptions.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">{opt.description}</span>
+                    <span className="text-muted-foreground ml-2">
+                      {opt.description}
+                    </span>
                   </span>
                 </SelectItem>
               ))}
@@ -1680,14 +1917,21 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
 
         <SettingsField>
           <Label>Border Width</Label>
-          <Select value={settings.borderWidth} onValueChange={(v) => onChange("borderWidth", v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+          <Select
+            value={settings.borderWidth}
+            onValueChange={(v) => onChange("borderWidth", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {borderWidthSelectOptions.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">{opt.description}</span>
+                    <span className="text-muted-foreground ml-2">
+                      {opt.description}
+                    </span>
                   </span>
                 </SelectItem>
               ))}
@@ -1699,14 +1943,21 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
       <SettingsGridBlock title="Spacing">
         <SettingsField>
           <Label>Padding X</Label>
-          <Select value={settings.paddingX} onValueChange={(v) => onChange("paddingX", v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+          <Select
+            value={settings.paddingX}
+            onValueChange={(v) => onChange("paddingX", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {spacingSelectOptions.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">{opt.description}</span>
+                    <span className="text-muted-foreground ml-2">
+                      {opt.description}
+                    </span>
                   </span>
                 </SelectItem>
               ))}
@@ -1716,14 +1967,21 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
 
         <SettingsField>
           <Label>Padding Y</Label>
-          <Select value={settings.paddingY} onValueChange={(v) => onChange("paddingY", v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+          <Select
+            value={settings.paddingY}
+            onValueChange={(v) => onChange("paddingY", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {spacingSelectOptions.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">{opt.description}</span>
+                    <span className="text-muted-foreground ml-2">
+                      {opt.description}
+                    </span>
                   </span>
                 </SelectItem>
               ))}
@@ -1735,14 +1993,21 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
       <SettingsGridBlock title="Typography">
         <SettingsField>
           <Label>Font Size</Label>
-          <Select value={settings.fontSize} onValueChange={(v) => onChange("fontSize", v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+          <Select
+            value={settings.fontSize}
+            onValueChange={(v) => onChange("fontSize", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {fontSizeSelectOptions.slice(0, 7).map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">{opt.description}</span>
+                    <span className="text-muted-foreground ml-2">
+                      {opt.description}
+                    </span>
                   </span>
                 </SelectItem>
               ))}
@@ -1752,14 +2017,21 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
 
         <SettingsField>
           <Label>Font Weight</Label>
-          <Select value={settings.fontWeight} onValueChange={(v) => onChange("fontWeight", v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+          <Select
+            value={settings.fontWeight}
+            onValueChange={(v) => onChange("fontWeight", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {fontWeightSelectOptions.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">{opt.description}</span>
+                    <span className="text-muted-foreground ml-2">
+                      {opt.description}
+                    </span>
                   </span>
                 </SelectItem>
               ))}
@@ -1771,14 +2043,21 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
       <SettingsGridBlock title="Effects">
         <SettingsField>
           <Label>Transition Duration</Label>
-          <Select value={settings.transitionDuration} onValueChange={(v) => onChange("transitionDuration", v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+          <Select
+            value={settings.transitionDuration}
+            onValueChange={(v) => onChange("transitionDuration", v)}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               {transitionDurationSelectOptions.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">{opt.description}</span>
+                    <span className="text-muted-foreground ml-2">
+                      {opt.description}
+                    </span>
                   </span>
                 </SelectItem>
               ))}
@@ -1796,11 +2075,18 @@ function InputSettingsPanel({ settings, onChange, colors }: InputSettingsPanelPr
 
 interface CardSettingsPanelProps {
   settings: CardSettings;
-  onChange: <K extends keyof CardSettings>(key: K, value: CardSettings[K]) => void;
+  onChange: <K extends keyof CardSettings>(
+    key: K,
+    value: CardSettings[K],
+  ) => void;
   colors: SemanticColors;
 }
 
-function CardSettingsPanel({ settings, onChange, colors }: CardSettingsPanelProps) {
+function CardSettingsPanel({
+  settings,
+  onChange,
+  colors,
+}: CardSettingsPanelProps) {
   // Convert Tailwind tokens to CSS values for preview
   const cardStyle: React.CSSProperties = {
     borderRadius: getBorderRadiusValue(settings.borderRadius),
@@ -1860,18 +2146,25 @@ function CardSettingsPanel({ settings, onChange, colors }: CardSettingsPanelProp
   const renderSelect = <K extends keyof CardSettings>(
     label: string,
     key: K,
-    options: Array<{ value: string; label: string; description: string }>
+    options: Array<{ value: string; label: string; description: string }>,
   ) => (
     <SettingsField>
       <Label>{label}</Label>
-      <Select value={settings[key] as string} onValueChange={(v) => onChange(key, v as CardSettings[K])}>
-        <SelectTrigger><SelectValue /></SelectTrigger>
+      <Select
+        value={settings[key] as string}
+        onValueChange={(v) => onChange(key, v as CardSettings[K])}
+      >
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
         <SelectContent>
           {options.map((opt) => (
             <SelectItem key={opt.value} value={opt.value}>
               <span className="flex justify-between w-full">
                 <span>{opt.label}</span>
-                <span className="text-muted-foreground ml-2">{opt.description}</span>
+                <span className="text-muted-foreground ml-2">
+                  {opt.description}
+                </span>
               </span>
             </SelectItem>
           ))}
@@ -1886,8 +2179,14 @@ function CardSettingsPanel({ settings, onChange, colors }: CardSettingsPanelProp
       description="Customize card components using Tailwind tokens."
     >
       {/* Preview */}
-      <div className="mb-8 p-6 rounded-lg border" style={{ backgroundColor: colors.background }}>
-        <Label className="text-xs mb-3 block" style={{ color: colors.mutedForeground }}>
+      <div
+        className="mb-8 p-6 rounded-lg border"
+        style={{ backgroundColor: colors.background }}
+      >
+        <Label
+          className="text-xs mb-3 block"
+          style={{ color: colors.mutedForeground }}
+        >
           Live Preview
         </Label>
         <div style={cardStyle}>
@@ -1896,12 +2195,24 @@ function CardSettingsPanel({ settings, onChange, colors }: CardSettingsPanelProp
             <p style={descriptionStyle}>Card description text</p>
           </div>
           <div style={contentStyle}>
-            <p style={{ fontSize: getFontSizeValue("sm"), color: colors.cardForeground, margin: 0 }}>
+            <p
+              style={{
+                fontSize: getFontSizeValue("sm"),
+                color: colors.cardForeground,
+                margin: 0,
+              }}
+            >
               Card content area with text, images, or components.
             </p>
           </div>
           <div style={footerStyle}>
-            <p style={{ fontSize: getFontSizeValue("xs"), color: colors.mutedForeground, margin: 0 }}>
+            <p
+              style={{
+                fontSize: getFontSizeValue("xs"),
+                color: colors.mutedForeground,
+                margin: 0,
+              }}
+            >
               Card Footer
             </p>
           </div>
@@ -1909,7 +2220,11 @@ function CardSettingsPanel({ settings, onChange, colors }: CardSettingsPanelProp
       </div>
 
       <SettingsGridBlock title="Container Shape">
-        {renderSelect("Border Radius", "borderRadius", borderRadiusSelectOptions)}
+        {renderSelect(
+          "Border Radius",
+          "borderRadius",
+          borderRadiusSelectOptions,
+        )}
         {renderSelect("Border Width", "borderWidth", borderWidthSelectOptions)}
         {renderSelect("Shadow", "shadow", shadowSelectOptions)}
         {renderSelect("Hover Shadow", "hoverShadow", shadowSelectOptions)}
@@ -1920,7 +2235,10 @@ function CardSettingsPanel({ settings, onChange, colors }: CardSettingsPanelProp
         {renderSelect("Padding Y", "headerPaddingY", spacingSelectOptions)}
         <SettingsField>
           <Label>Show Border</Label>
-          <Switch checked={settings.headerBorder} onCheckedChange={(v) => onChange("headerBorder", v)} />
+          <Switch
+            checked={settings.headerBorder}
+            onCheckedChange={(v) => onChange("headerBorder", v)}
+          />
         </SettingsField>
       </SettingsGridBlock>
 
@@ -1934,25 +2252,56 @@ function CardSettingsPanel({ settings, onChange, colors }: CardSettingsPanelProp
         {renderSelect("Padding Y", "footerPaddingY", spacingSelectOptions)}
         <SettingsField>
           <Label>Show Border</Label>
-          <Switch checked={settings.footerBorder} onCheckedChange={(v) => onChange("footerBorder", v)} />
+          <Switch
+            checked={settings.footerBorder}
+            onCheckedChange={(v) => onChange("footerBorder", v)}
+          />
         </SettingsField>
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Title Typography">
         {renderSelect("Font Size", "titleFontSize", fontSizeSelectOptions)}
-        {renderSelect("Font Weight", "titleFontWeight", fontWeightSelectOptions)}
-        {renderSelect("Line Height", "titleLineHeight", lineHeightSelectOptions)}
-        {renderSelect("Letter Spacing", "titleLetterSpacing", letterSpacingSelectOptions)}
+        {renderSelect(
+          "Font Weight",
+          "titleFontWeight",
+          fontWeightSelectOptions,
+        )}
+        {renderSelect(
+          "Line Height",
+          "titleLineHeight",
+          lineHeightSelectOptions,
+        )}
+        {renderSelect(
+          "Letter Spacing",
+          "titleLetterSpacing",
+          letterSpacingSelectOptions,
+        )}
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Description Typography">
-        {renderSelect("Font Size", "descriptionFontSize", fontSizeSelectOptions.slice(0, 5))}
-        {renderSelect("Font Weight", "descriptionFontWeight", fontWeightSelectOptions)}
-        {renderSelect("Line Height", "descriptionLineHeight", lineHeightSelectOptions)}
+        {renderSelect(
+          "Font Size",
+          "descriptionFontSize",
+          fontSizeSelectOptions.slice(0, 5),
+        )}
+        {renderSelect(
+          "Font Weight",
+          "descriptionFontWeight",
+          fontWeightSelectOptions,
+        )}
+        {renderSelect(
+          "Line Height",
+          "descriptionLineHeight",
+          lineHeightSelectOptions,
+        )}
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Effects">
-        {renderSelect("Transition Duration", "transitionDuration", transitionDurationSelectOptions)}
+        {renderSelect(
+          "Transition Duration",
+          "transitionDuration",
+          transitionDurationSelectOptions,
+        )}
       </SettingsGridBlock>
     </SettingsSection>
   );

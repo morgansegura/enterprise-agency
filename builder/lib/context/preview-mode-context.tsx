@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  type ReactNode,
+} from "react";
 
 interface PreviewModeContextValue {
   isPreviewMode: boolean;
@@ -16,11 +22,17 @@ const PreviewModeContext = createContext<PreviewModeContextValue | null>(null);
 
 export function PreviewModeProvider({ children }: { children: ReactNode }) {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
-  const [pageContext, setPageContext] = useState<{ type: string; title: string } | null>(null);
+  const [pageContext, setPageContext] = useState<{
+    type: string;
+    title: string;
+  } | null>(null);
 
   const enterPreviewMode = useCallback(() => setIsPreviewMode(true), []);
   const exitPreviewMode = useCallback(() => setIsPreviewMode(false), []);
-  const togglePreviewMode = useCallback(() => setIsPreviewMode((prev) => !prev), []);
+  const togglePreviewMode = useCallback(
+    () => setIsPreviewMode((prev) => !prev),
+    [],
+  );
 
   return (
     <PreviewModeContext.Provider
@@ -52,12 +64,14 @@ export function usePreviewMode() {
  */
 export function usePreviewModeOptional(): PreviewModeContextValue {
   const context = useContext(PreviewModeContext);
-  return context ?? {
-    isPreviewMode: false,
-    enterPreviewMode: () => {},
-    exitPreviewMode: () => {},
-    togglePreviewMode: () => {},
-    pageContext: null,
-    setPageContext: () => {},
-  };
+  return (
+    context ?? {
+      isPreviewMode: false,
+      enterPreviewMode: () => {},
+      exitPreviewMode: () => {},
+      togglePreviewMode: () => {},
+      pageContext: null,
+      setPageContext: () => {},
+    }
+  );
 }

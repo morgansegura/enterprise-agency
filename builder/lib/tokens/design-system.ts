@@ -144,8 +144,7 @@ export const primitiveShadow = {
     label: "Medium",
   },
   lg: {
-    value:
-      "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    value: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
     label: "Large",
   },
   xl: {
@@ -777,18 +776,27 @@ export function getTransitionTimingValue(key: string): string {
 // THEME PRESETS
 // ============================================================================
 
-export type ThemePreset = "modern" | "classic" | "playful" | "corporate" | "minimal";
+export type ThemePreset =
+  | "modern"
+  | "classic"
+  | "playful"
+  | "corporate"
+  | "minimal";
 
-export const themePresets: Record<ThemePreset, {
-  name: string;
-  description: string;
-  button: Partial<ButtonTokens>;
-  input: Partial<InputTokens>;
-  card: Partial<CardTokens>;
-}> = {
+export const themePresets: Record<
+  ThemePreset,
+  {
+    name: string;
+    description: string;
+    button: Partial<ButtonTokens>;
+    input: Partial<InputTokens>;
+    card: Partial<CardTokens>;
+  }
+> = {
   modern: {
     name: "Modern",
-    description: "Clean, contemporary design with subtle shadows and rounded corners",
+    description:
+      "Clean, contemporary design with subtle shadows and rounded corners",
     button: {
       borderRadius: "lg",
       fontWeight: "medium",

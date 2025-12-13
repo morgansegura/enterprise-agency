@@ -146,34 +146,44 @@ export interface GlobalSettingsState {
 // Type Guards
 // =============================================================================
 
-export function isEditContext(context: RouteContext): context is EditRouteContext {
+export function isEditContext(
+  context: RouteContext,
+): context is EditRouteContext {
   return context.mode === "edit";
 }
 
-export function isCreateContext(context: RouteContext): context is CreateRouteContext {
+export function isCreateContext(
+  context: RouteContext,
+): context is CreateRouteContext {
   return context.mode === "create";
 }
 
-export function isDetailContext(context: RouteContext): context is DetailRouteContext {
+export function isDetailContext(
+  context: RouteContext,
+): context is DetailRouteContext {
   return context.mode === "detail";
 }
 
-export function isListContext(context: RouteContext): context is ListRouteContext {
+export function isListContext(
+  context: RouteContext,
+): context is ListRouteContext {
   return context.mode === "list";
 }
 
-export function isDashboardContext(context: RouteContext): context is DashboardRouteContext {
+export function isDashboardContext(
+  context: RouteContext,
+): context is DashboardRouteContext {
   return context.mode === "dashboard";
 }
 
 export function hasEntityId(
-  context: RouteContext
+  context: RouteContext,
 ): context is EditRouteContext | DetailRouteContext {
   return context.mode === "edit" || context.mode === "detail";
 }
 
 export function isEntityContext(
-  context: RouteContext
+  context: RouteContext,
 ): context is EditRouteContext | CreateRouteContext | DetailRouteContext {
   return ["edit", "create", "detail"].includes(context.mode);
 }

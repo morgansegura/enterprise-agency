@@ -75,7 +75,11 @@ export default function EditPagePage({
   const [globalSettingsOpen, setGlobalSettingsOpen] = React.useState(false);
 
   // Preview mode from context (controls parent layout visibility)
-  const { isPreviewMode: previewMode, togglePreviewMode, setPageContext } = usePreviewMode();
+  const {
+    isPreviewMode: previewMode,
+    togglePreviewMode,
+    setPageContext,
+  } = usePreviewMode();
 
   // Selection state for WYSIWYG editing
   const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(

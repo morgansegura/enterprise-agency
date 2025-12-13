@@ -3,10 +3,13 @@ import {
   IsOptional,
   IsEmail,
   IsObject,
+  IsEnum,
+  IsUUID,
   Matches,
   MinLength,
   MaxLength,
 } from "class-validator";
+import { TenantType, ClientType } from "@prisma";
 
 export class UpdateTenantDto {
   @IsOptional()
@@ -26,6 +29,19 @@ export class UpdateTenantDto {
   @IsOptional()
   @IsString()
   businessType?: string;
+
+  // Tenant hierarchy
+  @IsOptional()
+  @IsUUID()
+  parentTenantId?: string | null;
+
+  @IsOptional()
+  @IsEnum(TenantType)
+  tenantType?: TenantType;
+
+  @IsOptional()
+  @IsEnum(ClientType)
+  clientType?: ClientType | null;
 
   @IsOptional()
   @IsEmail()

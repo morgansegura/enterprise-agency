@@ -21,12 +21,7 @@ const heightClasses = {
 
 export default function MapBlockRenderer({ block }: BlockRendererProps) {
   const data = block.data as unknown as MapBlockData;
-  const {
-    center,
-    zoom = 12,
-    height = "md",
-    marker = true,
-  } = data;
+  const { center, zoom = 12, height = "md", marker = true } = data;
 
   if (!center?.lat || !center?.lng) {
     return (

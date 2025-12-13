@@ -35,14 +35,12 @@ const autoFlowClasses = {
   dense: "grid-flow-dense",
 };
 
-export default function GridBlockRenderer({ block, breakpoint }: BlockRendererProps) {
+export default function GridBlockRenderer({
+  block,
+  breakpoint,
+}: BlockRendererProps) {
   const data = block.data as unknown as GridBlockData;
-  const {
-    columns = "2",
-    gap = "md",
-    autoFlow = "row",
-    blocks = [],
-  } = data;
+  const { columns = "2", gap = "md", autoFlow = "row", blocks = [] } = data;
 
   return (
     <div

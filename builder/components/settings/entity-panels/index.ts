@@ -5,6 +5,15 @@
  * Used by EntitySettingsDrawer to render context-appropriate settings.
  */
 
-export { PageSettingsPanel, type PageSettingsData } from "./page-settings-panel";
-export { PostSettingsPanel, type PostSettingsData } from "./post-settings-panel";
-export { ProductSettingsPanel, type ProductSettingsData } from "./product-settings-panel";
+export {
+  PageSettingsPanel,
+  type PageSettingsData,
+} from "./page-settings-panel";
+export {
+  PostSettingsPanel,
+  type PostSettingsData,
+} from "./post-settings-panel";
+export {
+  ProductSettingsPanel,
+  type ProductSettingsData,
+} from "./product-settings-panel";

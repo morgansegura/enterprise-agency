@@ -4,7 +4,17 @@ import { cn } from "@/lib/utils";
 interface HeadingBlockData {
   text: string;
   level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
+  size?:
+    | "xs"
+    | "sm"
+    | "md"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "6xl";
   align?: "left" | "center" | "right";
   weight?: "normal" | "medium" | "semibold" | "bold";
   color?: "default" | "muted" | "primary" | "secondary";

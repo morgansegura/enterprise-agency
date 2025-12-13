@@ -95,7 +95,7 @@
 /* Left side - collapsed with offcanvas (slide off) */
 [data-slot="sidebar-desktop-wrapper"][data-side="left"][data-state="collapsed"][data-collapsible="offcanvas"]
   [data-slot="sidebar-fixed-container"] {
-  @apply -translate-x-full;
+  @apply -translate-x-[calc(100%-50px)];
 }
 
 /* Right side - expanded (visible) */

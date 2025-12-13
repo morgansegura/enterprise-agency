@@ -44,7 +44,9 @@ export default function IconBlockRenderer({ block }: BlockRendererProps) {
   } = data;
 
   // Dynamically get the icon component
-  const IconComponent = (LucideIcons as unknown as Record<string, LucideIcons.LucideIcon>)[icon];
+  const IconComponent = (
+    LucideIcons as unknown as Record<string, LucideIcons.LucideIcon>
+  )[icon];
 
   if (!IconComponent) {
     return (

@@ -136,12 +136,12 @@ export const GLOBAL_SETTINGS_PANELS: GlobalSettingsPanelConfig[] = [
  */
 export function getEntityPanelConfig(
   entityType: string,
-  mode: string
+  mode: string,
 ): EntitySettingsPanelConfig | undefined {
   return ENTITY_SETTINGS_PANELS.find(
     (panel) =>
       panel.entityType === entityType &&
-      panel.availableModes.includes(mode as "edit" | "create" | "detail")
+      panel.availableModes.includes(mode as "edit" | "create" | "detail"),
   );
 }
 
@@ -149,7 +149,7 @@ export function getEntityPanelConfig(
  * Get global settings panel config by section.
  */
 export function getGlobalPanelConfig(
-  section: string
+  section: string,
 ): GlobalSettingsPanelConfig | undefined {
   return GLOBAL_SETTINGS_PANELS.find((panel) => panel.section === section);
 }

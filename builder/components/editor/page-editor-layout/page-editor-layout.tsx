@@ -53,11 +53,7 @@ export function PageEditorLayout({
           )}
         </div>
         <div className="page-editor-toolbar-right">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onPreview}
-          >
+          <Button variant="ghost" size="sm" onClick={onPreview}>
             <Eye className="h-4 w-4" />
             Preview
           </Button>

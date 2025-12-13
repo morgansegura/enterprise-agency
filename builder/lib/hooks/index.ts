@@ -70,9 +70,25 @@ export {
   useCreateTenant,
   useUpdateTenant,
   useDeleteTenant,
+  // Tenant hierarchy
+  useAgencyTenant,
+  useAccessibleTenants,
+  useTenantsByType,
+  useChildTenants,
+  useTenantHierarchy,
+  useTenantAccess,
+  useActiveTenant,
 } from "./use-tenants";
 
-export type { Tenant, TenantTier } from "./use-tenants";
+export type {
+  Tenant,
+  TenantTier,
+  TenantType,
+  ClientType,
+  AccessibleTenant,
+  TenantHierarchy,
+  TenantAccess,
+} from "./use-tenants";
 
 // Tier Management
 export {

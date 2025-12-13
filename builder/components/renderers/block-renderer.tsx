@@ -19,7 +19,8 @@ interface Props {
  * renderer component based on block._type
  */
 export function BlockRenderer({ block, breakpoint = "desktop" }: Props) {
-  const [Component, setComponent] = React.useState<React.ComponentType<BlockRendererProps> | null>(null);
+  const [Component, setComponent] =
+    React.useState<React.ComponentType<BlockRendererProps> | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -57,9 +58,7 @@ export function BlockRenderer({ block, breakpoint = "desktop" }: Props) {
   }
 
   if (!Component) {
-    return (
-      <div className="animate-pulse bg-muted h-12 rounded-md" />
-    );
+    return <div className="animate-pulse bg-muted h-12 rounded-md" />;
   }
 
   return <Component block={block} breakpoint={breakpoint} />;

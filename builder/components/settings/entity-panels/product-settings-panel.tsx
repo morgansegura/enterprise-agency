@@ -69,10 +69,7 @@ export function ProductSettingsPanel({
 
   return (
     <>
-      <SettingsSection
-        title="General"
-        description="Basic product information."
-      >
+      <SettingsSection title="General" description="Basic product information.">
         <SettingsForm>
           <SettingsField>
             <Label htmlFor="product-name">Product Name</Label>
@@ -164,7 +161,9 @@ export function ProductSettingsPanel({
                 step="0.01"
                 min="0"
                 value={formatPrice(data.compareAtPrice)}
-                onChange={(e) => onChange("compareAtPrice", parsePrice(e.target.value))}
+                onChange={(e) =>
+                  onChange("compareAtPrice", parsePrice(e.target.value))
+                }
                 className="pl-7"
                 placeholder="0.00"
                 disabled={isLoading}
@@ -187,7 +186,9 @@ export function ProductSettingsPanel({
                 step="0.01"
                 min="0"
                 value={formatPrice(data.costPerItem)}
-                onChange={(e) => onChange("costPerItem", parsePrice(e.target.value))}
+                onChange={(e) =>
+                  onChange("costPerItem", parsePrice(e.target.value))
+                }
                 className="pl-7"
                 placeholder="0.00"
                 disabled={isLoading}
@@ -208,7 +209,10 @@ export function ProductSettingsPanel({
           <SettingsField>
             <div className="flex items-center justify-between">
               <div>
-                <Label htmlFor="track-inventory" className="text-sm font-medium">
+                <Label
+                  htmlFor="track-inventory"
+                  className="text-sm font-medium"
+                >
                   Track Inventory
                 </Label>
                 <p className="text-xs text-muted-foreground">
@@ -218,7 +222,9 @@ export function ProductSettingsPanel({
               <Switch
                 id="track-inventory"
                 checked={data.trackInventory || false}
-                onCheckedChange={(checked) => onChange("trackInventory", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("trackInventory", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -232,7 +238,9 @@ export function ProductSettingsPanel({
                 type="number"
                 min="0"
                 value={data.quantity || 0}
-                onChange={(e) => onChange("quantity", parseInt(e.target.value) || 0)}
+                onChange={(e) =>
+                  onChange("quantity", parseInt(e.target.value) || 0)
+                }
                 disabled={isLoading}
               />
             </SettingsField>
@@ -241,7 +249,10 @@ export function ProductSettingsPanel({
           <SettingsField>
             <div className="flex items-center justify-between">
               <div>
-                <Label htmlFor="allow-backorder" className="text-sm font-medium">
+                <Label
+                  htmlFor="allow-backorder"
+                  className="text-sm font-medium"
+                >
                   Allow Backorder
                 </Label>
                 <p className="text-xs text-muted-foreground">
@@ -251,7 +262,9 @@ export function ProductSettingsPanel({
               <Switch
                 id="allow-backorder"
                 checked={data.allowBackorder || false}
-                onCheckedChange={(checked) => onChange("allowBackorder", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("allowBackorder", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -273,7 +286,9 @@ export function ProductSettingsPanel({
                 step="0.01"
                 min="0"
                 value={data.weight || ""}
-                onChange={(e) => onChange("weight", parseFloat(e.target.value) || undefined)}
+                onChange={(e) =>
+                  onChange("weight", parseFloat(e.target.value) || undefined)
+                }
                 placeholder="0.00"
                 disabled={isLoading}
               />
@@ -301,10 +316,7 @@ export function ProductSettingsPanel({
         </SettingsForm>
       </SettingsSection>
 
-      <SettingsSection
-        title="SEO"
-        description="Search engine optimization."
-      >
+      <SettingsSection title="SEO" description="Search engine optimization.">
         <SettingsForm>
           <SettingsField>
             <Label htmlFor="product-meta-title">Meta Title</Label>

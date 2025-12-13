@@ -33,7 +33,9 @@ export function BlockEditorRenderer({
   isSelected = false,
 }: BlockEditorRendererProps) {
   const [EditorComponent, setEditorComponent] =
-    React.useState<React.ComponentType<BlockEditorProps & { isSelected?: boolean }> | null>(null);
+    React.useState<React.ComponentType<
+      BlockEditorProps & { isSelected?: boolean }
+    > | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const isBuilder = tenantId ? useIsBuilder(tenantId) : true;
@@ -49,7 +51,12 @@ export function BlockEditorRenderer({
         if (!component) {
           setError(`Editor not found for block type: ${block._type}`);
         } else {
-          setEditorComponent(() => component as React.ComponentType<BlockEditorProps & { isSelected?: boolean }>);
+          setEditorComponent(
+            () =>
+              component as React.ComponentType<
+                BlockEditorProps & { isSelected?: boolean }
+              >,
+          );
         }
       })
       .catch((err) => {

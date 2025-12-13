@@ -9,6 +9,7 @@ import {
   Param,
   UseGuards,
 } from "@nestjs/common";
+import { TenantType } from "@prisma";
 import { TenantsService } from "./tenants.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
@@ -55,6 +56,39 @@ export class TenantsController {
   @Get("domain/:domain")
   async getTenantByDomain(@Param("domain") domain: string) {
     return this.tenantsService.findByDomain(domain);
+  }
+
+  // ============================================
+  // TENANT HIERARCHY ENDPOINTS
+  // ============================================
+
+  /**
+   * Get the agency tenant (root of all tenants)
+   * GET /tenants/agency
+   */
+  @Get("agency")
+  async getAgencyTenant() {
+    return this.tenantsService.getAgencyTenant();
+  }
+
+  /**
+   * Get all tenants accessible to the current user (for tenant switcher)
+   * GET /tenants/accessible
+   */
+  @Get("accessible")
+  async getAccessibleTenants(
+    @CurrentUser() currentUser: { id: string; sessionId: string },
+  ) {
+    return this.tenantsService.getAccessibleTenants(currentUser.id);
+  }
+
+  /**
+   * Get tenants by type
+   * GET /tenants/type/:type
+   */
+  @Get("type/:type")
+  async getTenantsByType(@Param("type") type: TenantType) {
+    return this.tenantsService.findByTenantType(type);
   }
 
   /**
@@ -201,5 +235,39 @@ export class TenantsController {
   @Get(":id/stats")
   async getTenantStats(@Param("id") tenantId: string) {
     return this.tenantsService.getStats(tenantId);
+  }
+
+  // ============================================
+  // TENANT HIERARCHY PARAMETERIZED ENDPOINTS
+  // ============================================
+
+  /**
+   * Get child tenants of a parent tenant
+   * GET /tenants/:id/children
+   */
+  @Get(":id/children")
+  async getChildTenants(@Param("id") parentTenantId: string) {
+    return this.tenantsService.getChildTenants(parentTenantId);
+  }
+
+  /**
+   * Get full tenant hierarchy (ancestors + children)
+   * GET /tenants/:id/hierarchy
+   */
+  @Get(":id/hierarchy")
+  async getTenantHierarchy(@Param("id") tenantId: string) {
+    return this.tenantsService.getTenantHierarchy(tenantId);
+  }
+
+  /**
+   * Check if current user has access to a tenant
+   * GET /tenants/:id/access
+   */
+  @Get(":id/access")
+  async checkTenantAccess(
+    @Param("id") tenantId: string,
+    @CurrentUser() currentUser: { id: string; sessionId: string },
+  ) {
+    return this.tenantsService.checkUserTenantAccess(currentUser.id, tenantId);
   }
 }

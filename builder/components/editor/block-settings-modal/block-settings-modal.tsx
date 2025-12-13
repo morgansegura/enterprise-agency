@@ -125,7 +125,9 @@ export function BlockSettingsModal({
                   <Label htmlFor="block-font-size">Font Size</Label>
                   <Select
                     value={getBlockData<string>("fontSize", "base")}
-                    onValueChange={(value) => handleDataChange("fontSize", value)}
+                    onValueChange={(value) =>
+                      handleDataChange("fontSize", value)
+                    }
                   >
                     <SelectTrigger id="block-font-size">
                       <SelectValue />
@@ -147,7 +149,9 @@ export function BlockSettingsModal({
                   <Label htmlFor="block-font-weight">Font Weight</Label>
                   <Select
                     value={getBlockData<string>("fontWeight", "normal")}
-                    onValueChange={(value) => handleDataChange("fontWeight", value)}
+                    onValueChange={(value) =>
+                      handleDataChange("fontWeight", value)
+                    }
                   >
                     <SelectTrigger id="block-font-weight">
                       <SelectValue />
@@ -167,7 +171,9 @@ export function BlockSettingsModal({
                 <Label htmlFor="block-text-align">Text Alignment</Label>
                 <Select
                   value={getBlockData<string>("textAlign", "left")}
-                  onValueChange={(value) => handleDataChange("textAlign", value)}
+                  onValueChange={(value) =>
+                    handleDataChange("textAlign", value)
+                  }
                 >
                   <SelectTrigger id="block-text-align">
                     <SelectValue />
@@ -185,7 +191,9 @@ export function BlockSettingsModal({
                 <Label htmlFor="block-text-color">Text Color</Label>
                 <Select
                   value={getBlockData<string>("textColor", "default")}
-                  onValueChange={(value) => handleDataChange("textColor", value)}
+                  onValueChange={(value) =>
+                    handleDataChange("textColor", value)
+                  }
                 >
                   <SelectTrigger id="block-text-color">
                     <SelectValue />
@@ -209,7 +217,9 @@ export function BlockSettingsModal({
                     id="block-custom-color"
                     type="text"
                     value={getBlockData<string>("customColor", "")}
-                    onChange={(e) => handleDataChange("customColor", e.target.value)}
+                    onChange={(e) =>
+                      handleDataChange("customColor", e.target.value)
+                    }
                     placeholder="#000000 or rgb(0,0,0)"
                   />
                 </FormItem>
@@ -243,7 +253,9 @@ export function BlockSettingsModal({
                   <Label htmlFor="block-padding">Padding</Label>
                   <Select
                     value={getBlockData<string>("padding", "none")}
-                    onValueChange={(value) => handleDataChange("padding", value)}
+                    onValueChange={(value) =>
+                      handleDataChange("padding", value)
+                    }
                   >
                     <SelectTrigger id="block-padding">
                       <SelectValue />
@@ -267,7 +279,9 @@ export function BlockSettingsModal({
                 <Label htmlFor="block-background">Background</Label>
                 <Select
                   value={getBlockData<string>("background", "none")}
-                  onValueChange={(value) => handleDataChange("background", value)}
+                  onValueChange={(value) =>
+                    handleDataChange("background", value)
+                  }
                 >
                   <SelectTrigger id="block-background">
                     <SelectValue />
@@ -285,12 +299,16 @@ export function BlockSettingsModal({
 
               {getBlockData<string>("background", "none") === "custom" && (
                 <FormItem className="block-settings-modal-field">
-                  <Label htmlFor="block-bg-color">Custom Background Color</Label>
+                  <Label htmlFor="block-bg-color">
+                    Custom Background Color
+                  </Label>
                   <Input
                     id="block-bg-color"
                     type="text"
                     value={getBlockData<string>("bgColor", "")}
-                    onChange={(e) => handleDataChange("bgColor", e.target.value)}
+                    onChange={(e) =>
+                      handleDataChange("bgColor", e.target.value)
+                    }
                     placeholder="#ffffff or rgba(0,0,0,0.5)"
                   />
                 </FormItem>
@@ -301,7 +319,9 @@ export function BlockSettingsModal({
                   <Label htmlFor="block-border-radius">Border Radius</Label>
                   <Select
                     value={getBlockData<string>("borderRadius", "none")}
-                    onValueChange={(value) => handleDataChange("borderRadius", value)}
+                    onValueChange={(value) =>
+                      handleDataChange("borderRadius", value)
+                    }
                   >
                     <SelectTrigger id="block-border-radius">
                       <SelectValue />
@@ -338,9 +358,14 @@ export function BlockSettingsModal({
           </TabsContent>
 
           {/* Advanced Tab */}
-          <TabsContent value="advanced" className="block-settings-modal-content">
+          <TabsContent
+            value="advanced"
+            className="block-settings-modal-content"
+          >
             <div className="block-settings-modal-section">
-              <h4 className="block-settings-modal-section-title">Identification</h4>
+              <h4 className="block-settings-modal-section-title">
+                Identification
+              </h4>
 
               <FormItem className="block-settings-modal-field">
                 <Label htmlFor="block-id">Block ID</Label>
@@ -360,7 +385,9 @@ export function BlockSettingsModal({
                 <Input
                   id="block-class"
                   value={getBlockData<string>("className", "")}
-                  onChange={(e) => handleDataChange("className", e.target.value)}
+                  onChange={(e) =>
+                    handleDataChange("className", e.target.value)
+                  }
                   placeholder="custom-class another-class"
                 />
                 <p className="text-xs text-(--muted-foreground) mt-1">
@@ -377,7 +404,9 @@ export function BlockSettingsModal({
                   type="checkbox"
                   id="block-hide-desktop"
                   checked={getBlockData<boolean>("hideOnDesktop", false)}
-                  onChange={(e) => handleDataChange("hideOnDesktop", e.target.checked)}
+                  onChange={(e) =>
+                    handleDataChange("hideOnDesktop", e.target.checked)
+                  }
                   className="h-4 w-4 rounded border-(--border)"
                 />
                 <Label htmlFor="block-hide-desktop" className="cursor-pointer">
@@ -390,7 +419,9 @@ export function BlockSettingsModal({
                   type="checkbox"
                   id="block-hide-tablet"
                   checked={getBlockData<boolean>("hideOnTablet", false)}
-                  onChange={(e) => handleDataChange("hideOnTablet", e.target.checked)}
+                  onChange={(e) =>
+                    handleDataChange("hideOnTablet", e.target.checked)
+                  }
                   className="h-4 w-4 rounded border-(--border)"
                 />
                 <Label htmlFor="block-hide-tablet" className="cursor-pointer">
@@ -403,7 +434,9 @@ export function BlockSettingsModal({
                   type="checkbox"
                   id="block-hide-mobile"
                   checked={getBlockData<boolean>("hideOnMobile", false)}
-                  onChange={(e) => handleDataChange("hideOnMobile", e.target.checked)}
+                  onChange={(e) =>
+                    handleDataChange("hideOnMobile", e.target.checked)
+                  }
                   className="h-4 w-4 rounded border-(--border)"
                 />
                 <Label htmlFor="block-hide-mobile" className="cursor-pointer">
@@ -419,7 +452,9 @@ export function BlockSettingsModal({
                 <Label htmlFor="block-animation">Entrance Animation</Label>
                 <Select
                   value={getBlockData<string>("animation", "none")}
-                  onValueChange={(value) => handleDataChange("animation", value)}
+                  onValueChange={(value) =>
+                    handleDataChange("animation", value)
+                  }
                 >
                   <SelectTrigger id="block-animation">
                     <SelectValue />
@@ -440,7 +475,9 @@ export function BlockSettingsModal({
                 <Label htmlFor="block-animation-delay">Animation Delay</Label>
                 <Select
                   value={getBlockData<string>("animationDelay", "0")}
-                  onValueChange={(value) => handleDataChange("animationDelay", value)}
+                  onValueChange={(value) =>
+                    handleDataChange("animationDelay", value)
+                  }
                 >
                   <SelectTrigger id="block-animation-delay">
                     <SelectValue />
@@ -892,7 +929,9 @@ export function BlockSettingsModal({
             type="checkbox"
             id="code-line-numbers"
             checked={getBlockData<boolean>("showLineNumbers", true)}
-            onChange={(e) => handleDataChange("showLineNumbers", e.target.checked)}
+            onChange={(e) =>
+              handleDataChange("showLineNumbers", e.target.checked)
+            }
             className="h-4 w-4 rounded border-(--border)"
           />
           <Label htmlFor="code-line-numbers" className="cursor-pointer">

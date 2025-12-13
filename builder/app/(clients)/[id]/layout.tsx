@@ -101,7 +101,11 @@ export default function ClientLayout({
           icon: Store,
           label: "Shop Editor",
           href: `/${tenantId}/shop`,
-          isActive: isActive("/shop") && !isActive("/shop/products") && !isActive("/shop/orders") && !isActive("/shop/customers"),
+          isActive:
+            isActive("/shop") &&
+            !isActive("/shop/products") &&
+            !isActive("/shop/orders") &&
+            !isActive("/shop/customers"),
         },
         {
           id: "products",

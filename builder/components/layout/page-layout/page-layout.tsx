@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, type LucideIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import "./page-layout.css";
@@ -11,7 +11,6 @@ export interface PageLayoutProps {
   // Header
   title: string;
   description?: string;
-  icon?: LucideIcon;
   actions?: React.ReactNode;
 
   // Back navigation
@@ -31,6 +30,15 @@ export interface PageLayoutProps {
   contentClassName?: string;
 }
 
+const maxWidthClasses = {
+  sm: "page-layout-content-sm",
+  md: "page-layout-content-md",
+  lg: "page-layout-content-lg",
+  xl: "page-layout-content-xl",
+  "2xl": "page-layout-content-2xl",
+  full: "",
+};
+
 export function PageLayout({
   title,
   description,
@@ -40,6 +48,7 @@ export function PageLayout({
   onBack,
   toolbar,
   children,
+  maxWidth,
   className,
   contentClassName,
 }: PageLayoutProps) {
@@ -78,12 +87,18 @@ export function PageLayout({
         </div>
       </div>
 
-      <div className={cn("page-layout-inner")}>
+      <div className="page-layout-inner">
         {/* Toolbar (optional) */}
         {toolbar ? <div className="page-layout-toolbar">{toolbar}</div> : null}
 
         {/* Page Content */}
-        <div className={cn("page-layout-content", contentClassName)}>
+        <div
+          className={cn(
+            "page-layout-content",
+            maxWidth && maxWidthClasses[maxWidth],
+            contentClassName,
+          )}
+        >
           {children}
         </div>
       </div>

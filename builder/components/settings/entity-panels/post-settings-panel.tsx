@@ -69,15 +69,15 @@ export function PostSettingsPanel({
   };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    onChange("tags", (data.tags || []).filter((t) => t !== tagToRemove));
+    onChange(
+      "tags",
+      (data.tags || []).filter((t) => t !== tagToRemove),
+    );
   };
 
   return (
     <>
-      <SettingsSection
-        title="General"
-        description="Basic post information."
-      >
+      <SettingsSection title="General" description="Basic post information.">
         <SettingsForm>
           <SettingsField>
             <Label htmlFor="post-title">Title</Label>
@@ -236,10 +236,7 @@ export function PostSettingsPanel({
         </SettingsForm>
       </SettingsSection>
 
-      <SettingsSection
-        title="SEO"
-        description="Search engine optimization."
-      >
+      <SettingsSection title="SEO" description="Search engine optimization.">
         <SettingsForm>
           <SettingsField>
             <Label htmlFor="post-meta-title">Meta Title</Label>

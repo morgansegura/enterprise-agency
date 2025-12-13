@@ -83,7 +83,11 @@ interface StatusDropdownProps {
   disabled?: boolean;
 }
 
-export function StatusDropdown({ status, onStatusChange, disabled }: StatusDropdownProps) {
+export function StatusDropdown({
+  status,
+  onStatusChange,
+  disabled,
+}: StatusDropdownProps) {
   const currentStatus = (status || "draft") as StatusKey;
   const config = statusConfig[currentStatus] || statusConfig.draft;
   const StatusIcon = config.icon;
@@ -102,16 +106,20 @@ export function StatusDropdown({ status, onStatusChange, disabled }: StatusDropd
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" onClick={(e) => e.stopPropagation()}>
-        {Object.entries(statusConfig).map(([key, { label, icon: Icon, className }]) => (
-          <DropdownMenuItem
-            key={key}
-            onClick={() => onStatusChange(key)}
-            className={currentStatus === key ? "bg-accent" : ""}
-          >
-            <Icon className={`h-4 w-4 mr-2 ${className.replace("content-status-", "text-status-")}`} />
-            {label}
-          </DropdownMenuItem>
-        ))}
+        {Object.entries(statusConfig).map(
+          ([key, { label, icon: Icon, className }]) => (
+            <DropdownMenuItem
+              key={key}
+              onClick={() => onStatusChange(key)}
+              className={currentStatus === key ? "bg-accent" : ""}
+            >
+              <Icon
+                className={`h-4 w-4 mr-2 ${className.replace("content-status-", "text-status-")}`}
+              />
+              {label}
+            </DropdownMenuItem>
+          ),
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -209,7 +217,10 @@ export function ContentList<T extends ContentItem>({
         search === "" ||
         searchFields.some((field) => {
           const value = item[field];
-          return typeof value === "string" && value.toLowerCase().includes(search.toLowerCase());
+          return (
+            typeof value === "string" &&
+            value.toLowerCase().includes(search.toLowerCase())
+          );
         });
       const matchesStatus =
         statusFilter === "all" || item.status === statusFilter;
@@ -258,11 +269,7 @@ export function ContentList<T extends ContentItem>({
 
   if (error) {
     return (
-      <PageLayout
-        title={title}
-        icon={Icon}
-        description={`Error loading ${pluralName}`}
-      >
+      <PageLayout title={title} description={`Error loading ${pluralName}`}>
         <div className="content-list-error">
           <p>{error.message}</p>
         </div>
@@ -328,7 +335,6 @@ export function ContentList<T extends ContentItem>({
   return (
     <PageLayout
       title={title}
-      icon={Icon}
       description={`${items?.length || 0} ${items?.length === 1 ? singularName : pluralName}`}
       actions={
         <Button onClick={onCreate}>
@@ -369,91 +375,99 @@ export function ContentList<T extends ContentItem>({
         </div>
       ) : viewMode === "grid" ? (
         <div className="content-list-grid">
-            {filteredItems.map((item) => (
-              <div
-                key={item.id}
-                className="content-card"
-                onClick={() => onEdit(item)}
-              >
-                <div className="content-card-thumbnail">
-                  {renderThumbnail ? (
-                    renderThumbnail(item)
-                  ) : (
-                    <Icon className="content-card-thumbnail-icon" />
-                  )}
-                </div>
-                <div className="content-card-content">
-                  <div className="content-card-header">
-                    <div className="content-card-badges">
-                      {badges.map((badge, index) =>
-                        badge.show(item) ? (
-                          <span
-                            key={index}
-                            className={`content-card-badge ${badge.className}`}
-                            title={badge.title}
-                          >
-                            <badge.icon className="h-3 w-3" />
-                          </span>
-                        ) : null
-                      )}
-                      {showStatus && onStatusChange && (
-                        <StatusDropdown
-                          status={item.status}
-                          onStatusChange={(newStatus) => onStatusChange(item, newStatus)}
-                        />
-                      )}
-                    </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="content-card-menu"
-                          onClick={(e) => e.stopPropagation()}
+          {filteredItems.map((item) => (
+            <div
+              key={item.id}
+              className="content-card"
+              onClick={() => onEdit(item)}
+            >
+              <div className="content-card-thumbnail">
+                {renderThumbnail ? (
+                  renderThumbnail(item)
+                ) : (
+                  <Icon className="content-card-thumbnail-icon" />
+                )}
+              </div>
+              <div className="content-card-content">
+                <div className="content-card-header">
+                  <div className="content-card-badges">
+                    {badges.map((badge, index) =>
+                      badge.show(item) ? (
+                        <span
+                          key={index}
+                          className={`content-card-badge ${badge.className}`}
+                          title={badge.title}
                         >
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        {defaultMenuActions.map((action) => (
-                          <React.Fragment key={action.label}>
-                            {action.separator && <DropdownMenuSeparator />}
-                            {action.href ? (
-                              <DropdownMenuItem asChild>
-                                <a
-                                  href={action.href(item)}
-                                  target={action.external ? "_blank" : undefined}
-                                  rel={action.external ? "noopener noreferrer" : undefined}
-                                >
-                                  <action.icon className="h-4 w-4 mr-2" />
-                                  {action.label}
-                                </a>
-                              </DropdownMenuItem>
-                            ) : (
-                              <DropdownMenuItem
-                                className={action.destructive ? "text-destructive" : ""}
-                                onClick={() => action.onClick(item)}
+                          <badge.icon className="h-3 w-3" />
+                        </span>
+                      ) : null,
+                    )}
+                    {showStatus && onStatusChange && (
+                      <StatusDropdown
+                        status={item.status}
+                        onStatusChange={(newStatus) =>
+                          onStatusChange(item, newStatus)
+                        }
+                      />
+                    )}
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="content-card-menu"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {defaultMenuActions.map((action) => (
+                        <React.Fragment key={action.label}>
+                          {action.separator && <DropdownMenuSeparator />}
+                          {action.href ? (
+                            <DropdownMenuItem asChild>
+                              <a
+                                href={action.href(item)}
+                                target={action.external ? "_blank" : undefined}
+                                rel={
+                                  action.external
+                                    ? "noopener noreferrer"
+                                    : undefined
+                                }
                               >
                                 <action.icon className="h-4 w-4 mr-2" />
                                 {action.label}
-                              </DropdownMenuItem>
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                  <h3 className="content-card-title">{item.title}</h3>
-                  {renderMeta ? (
-                    renderMeta(item)
-                  ) : (
-                    <p className="content-card-meta">
-                      Last edited {formatDate(item.updatedAt)}
-                    </p>
-                  )}
+                              </a>
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem
+                              className={
+                                action.destructive ? "text-destructive" : ""
+                              }
+                              onClick={() => action.onClick(item)}
+                            >
+                              <action.icon className="h-4 w-4 mr-2" />
+                              {action.label}
+                            </DropdownMenuItem>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
+                <h3 className="content-card-title">{item.title}</h3>
+                {renderMeta ? (
+                  renderMeta(item)
+                ) : (
+                  <p className="content-card-meta">
+                    Last edited {formatDate(item.updatedAt)}
+                  </p>
+                )}
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       ) : (
         <div className="content-list-rows">
@@ -478,15 +492,19 @@ export function ContentList<T extends ContentItem>({
                       >
                         <badge.icon className="h-3 w-3" />
                       </span>
-                    ) : null
+                    ) : null,
                   )}
                 </h3>
-                {item.slug && <p className="content-list-item-slug">/{item.slug}</p>}
+                {item.slug && (
+                  <p className="content-list-item-slug">/{item.slug}</p>
+                )}
               </div>
               {showStatus && onStatusChange && (
                 <StatusDropdown
                   status={item.status}
-                  onStatusChange={(newStatus) => onStatusChange(item, newStatus)}
+                  onStatusChange={(newStatus) =>
+                    onStatusChange(item, newStatus)
+                  }
                 />
               )}
               {renderListMeta ? (

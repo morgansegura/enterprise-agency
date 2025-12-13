@@ -19,6 +19,17 @@ enum TenantTier {
   BUILDER
 }
 
+enum TenantType {
+  AGENCY     // Your agency (Web and Funnel) - full access to everything
+  CLIENT     // Your website clients - can manage their site + their own sub-clients
+  SUB_CLIENT // Your clients' clients - limited access (file sharing, etc.)
+}
+
+enum ClientType {
+  BUSINESS   // Business/organization client
+  INDIVIDUAL // Individual person client
+}
+
 // ============================================================================
 // CORE TABLES
 // ============================================================================
@@ -32,6 +43,11 @@ model Tenant {
   // Status & lifecycle
   status          String  @default("active") @db.VarChar(20)
   isPrimaryTenant Boolean @default(false) @map("is_primary_tenant")
+
+  // Tenant hierarchy
+  parentTenantId String?    @map("parent_tenant_id")
+  tenantType     TenantType @default(CLIENT) @map("tenant_type")
+  clientType     ClientType? @map("client_type")
 
   // Feature flags (JSONB)
   enabledFeatures Json @default("{}") @map("enabled_features") @db.JsonB
@@ -83,6 +99,10 @@ model Tenant {
   webhooks           Webhook[]
   projectAssignments ProjectAssignment[]
 
+  // Tenant hierarchy relations
+  parent   Tenant?  @relation("TenantHierarchy", fields: [parentTenantId], references: [id], onDelete: SetNull)
+  children Tenant[] @relation("TenantHierarchy")
+
   // E-commerce
   productCategories  ProductCategory[]
   products           Product[]
@@ -93,6 +113,8 @@ model Tenant {
   @@index([status])
   @@index([tier], map: "idx_tenants_tier")
   @@index([businessType], map: "idx_tenants_business_type")
+  @@index([parentTenantId], map: "idx_tenants_parent")
+  @@index([tenantType], map: "idx_tenants_type")
   @@map("tenants")
 }
 

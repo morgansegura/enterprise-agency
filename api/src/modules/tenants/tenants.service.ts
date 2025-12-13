@@ -2,8 +2,9 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from "@nestjs/common";
-import { Prisma } from "@prisma";
+import { Prisma, TenantType } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
@@ -18,6 +19,14 @@ export class TenantsService {
     const tenants = await this.prisma.tenant.findMany({
       include: {
         domains: true,
+        parent: {
+          select: {
+            id: true,
+            slug: true,
+            businessName: true,
+            tenantType: true,
+          },
+        },
         tenantUsers: {
           include: {
             user: {
@@ -35,6 +44,7 @@ export class TenantsService {
             pages: true,
             posts: true,
             assets: true,
+            children: true,
           },
         },
       },
@@ -56,6 +66,31 @@ export class TenantsService {
       throw new ConflictException("Tenant slug already exists");
     }
 
+    // Validate parent tenant if provided
+    if (createData.parentTenantId) {
+      const parentTenant = await this.prisma.tenant.findUnique({
+        where: { id: createData.parentTenantId },
+      });
+
+      if (!parentTenant) {
+        throw new NotFoundException("Parent tenant not found");
+      }
+
+      // Validate hierarchy rules:
+      // - AGENCY can have CLIENT children
+      // - CLIENT can have SUB_CLIENT children
+      // - SUB_CLIENT cannot have children
+      if (parentTenant.tenantType === "SUB_CLIENT") {
+        throw new BadRequestException("Sub-clients cannot have child tenants");
+      }
+
+      // Auto-set tenant type based on parent
+      if (!createData.tenantType) {
+        createData.tenantType =
+          parentTenant.tenantType === "AGENCY" ? "CLIENT" : "SUB_CLIENT";
+      }
+    }
+
     // Create tenant with creator as owner and default Coming Soon page
     const tenant = await this.prisma.tenant.create({
       data: {
@@ -64,6 +99,10 @@ export class TenantsService {
         businessType: createData.businessType,
         contactEmail: createData.contactEmail,
         contactPhone: createData.contactPhone,
+        // Hierarchy fields
+        parentTenantId: createData.parentTenantId,
+        tenantType: createData.tenantType || "CLIENT",
+        clientType: createData.clientType,
         enabledFeatures: (createData.enabledFeatures ||
           {}) as Prisma.InputJsonValue,
         themeConfig: (createData.themeConfig || {}) as Prisma.InputJsonValue,
@@ -136,6 +175,14 @@ export class TenantsService {
         tenantUsers: true,
         domains: true,
         pages: true,
+        parent: {
+          select: {
+            id: true,
+            slug: true,
+            businessName: true,
+            tenantType: true,
+          },
+        },
       },
     });
 
@@ -147,6 +194,24 @@ export class TenantsService {
       where: { id },
       include: {
         domains: true,
+        parent: {
+          select: {
+            id: true,
+            slug: true,
+            businessName: true,
+            tenantType: true,
+          },
+        },
+        children: {
+          select: {
+            id: true,
+            slug: true,
+            businessName: true,
+            tenantType: true,
+            clientType: true,
+            status: true,
+          },
+        },
         tenantUsers: {
           include: {
             user: true,
@@ -256,6 +321,55 @@ export class TenantsService {
       updateFields.slug = updateData.slug;
     }
 
+    // Handle parent tenant update with validation
+    if (updateData.parentTenantId !== undefined) {
+      if (updateData.parentTenantId === null) {
+        // Allow clearing parent (only for AGENCY tenant type)
+        updateFields.parentTenantId = null;
+      } else {
+        // Prevent circular references
+        if (updateData.parentTenantId === id) {
+          throw new BadRequestException("Tenant cannot be its own parent");
+        }
+
+        const parentTenant = await this.prisma.tenant.findUnique({
+          where: { id: updateData.parentTenantId },
+        });
+
+        if (!parentTenant) {
+          throw new NotFoundException("Parent tenant not found");
+        }
+
+        // Prevent setting sub-client as parent
+        if (parentTenant.tenantType === "SUB_CLIENT") {
+          throw new BadRequestException(
+            "Sub-clients cannot have child tenants",
+          );
+        }
+
+        // Check for circular reference (parent's parent chain shouldn't include this tenant)
+        let currentParent = parentTenant;
+        while (currentParent.parentTenantId) {
+          if (currentParent.parentTenantId === id) {
+            throw new BadRequestException(
+              "Cannot create circular tenant hierarchy",
+            );
+          }
+          const nextParent = await this.prisma.tenant.findUnique({
+            where: { id: currentParent.parentTenantId },
+          });
+          if (!nextParent) break;
+          currentParent = nextParent;
+        }
+
+        updateFields.parentTenantId = updateData.parentTenantId;
+      }
+    }
+
+    if (updateData.tenantType !== undefined)
+      updateFields.tenantType = updateData.tenantType;
+    if (updateData.clientType !== undefined)
+      updateFields.clientType = updateData.clientType;
     if (updateData.businessName !== undefined)
       updateFields.businessName = updateData.businessName;
     if (updateData.businessType !== undefined)
@@ -282,6 +396,14 @@ export class TenantsService {
       data: updateFields,
       include: {
         domains: true,
+        parent: {
+          select: {
+            id: true,
+            slug: true,
+            businessName: true,
+            tenantType: true,
+          },
+        },
       },
     });
 
@@ -851,5 +973,326 @@ export class TenantsService {
       summary,
       tenants: healthData,
     };
+  }
+
+  // ============================================
+  // TENANT HIERARCHY METHODS
+  // ============================================
+
+  /**
+   * Get the agency tenant (root of all tenants)
+   */
+  async getAgencyTenant() {
+    const agencyTenant = await this.prisma.tenant.findFirst({
+      where: { tenantType: "AGENCY" },
+      include: {
+        domains: true,
+        children: {
+          select: {
+            id: true,
+            slug: true,
+            businessName: true,
+            tenantType: true,
+            clientType: true,
+            status: true,
+          },
+        },
+        _count: {
+          select: {
+            children: true,
+            pages: true,
+            posts: true,
+            assets: true,
+          },
+        },
+      },
+    });
+
+    if (!agencyTenant) {
+      throw new NotFoundException("Agency tenant not found");
+    }
+
+    return agencyTenant;
+  }
+
+  /**
+   * Get all child tenants of a parent tenant
+   */
+  async getChildTenants(parentTenantId: string) {
+    // Verify parent exists
+    const parent = await this.prisma.tenant.findUnique({
+      where: { id: parentTenantId },
+    });
+
+    if (!parent) {
+      throw new NotFoundException("Parent tenant not found");
+    }
+
+    const children = await this.prisma.tenant.findMany({
+      where: { parentTenantId },
+      include: {
+        domains: true,
+        _count: {
+          select: {
+            children: true,
+            pages: true,
+            posts: true,
+            assets: true,
+            tenantUsers: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return children;
+  }
+
+  /**
+   * Get all tenants of a specific type
+   */
+  async findByTenantType(tenantType: TenantType) {
+    const tenants = await this.prisma.tenant.findMany({
+      where: { tenantType },
+      include: {
+        parent: {
+          select: {
+            id: true,
+            slug: true,
+            businessName: true,
+          },
+        },
+        domains: true,
+        _count: {
+          select: {
+            children: true,
+            pages: true,
+            posts: true,
+            assets: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return tenants;
+  }
+
+  /**
+   * Get full tenant hierarchy (parent chain + immediate children)
+   */
+  async getTenantHierarchy(tenantId: string) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+      include: {
+        parent: {
+          include: {
+            parent: {
+              select: {
+                id: true,
+                slug: true,
+                businessName: true,
+                tenantType: true,
+              },
+            },
+          },
+        },
+        children: {
+          include: {
+            _count: {
+              select: {
+                children: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException("Tenant not found");
+    }
+
+    // Build the ancestor chain
+    const ancestors: Array<{
+      id: string;
+      slug: string;
+      businessName: string;
+      tenantType: string;
+    }> = [];
+
+    if (tenant.parent) {
+      ancestors.push({
+        id: tenant.parent.id,
+        slug: tenant.parent.slug,
+        businessName: tenant.parent.businessName,
+        tenantType: tenant.parent.tenantType,
+      });
+
+      if (tenant.parent.parent) {
+        ancestors.push({
+          id: tenant.parent.parent.id,
+          slug: tenant.parent.parent.slug,
+          businessName: tenant.parent.parent.businessName,
+          tenantType: tenant.parent.parent.tenantType,
+        });
+      }
+    }
+
+    return {
+      tenant: {
+        id: tenant.id,
+        slug: tenant.slug,
+        businessName: tenant.businessName,
+        tenantType: tenant.tenantType,
+        clientType: tenant.clientType,
+      },
+      ancestors: ancestors.reverse(), // Root first
+      children: tenant.children.map((child) => ({
+        id: child.id,
+        slug: child.slug,
+        businessName: child.businessName,
+        tenantType: child.tenantType,
+        clientType: child.clientType,
+        hasChildren: child._count.children > 0,
+      })),
+    };
+  }
+
+  /**
+   * Get all tenants accessible to a user (for tenant switcher)
+   * Returns tenants where user has TenantUser access OR ProjectAssignment
+   */
+  async getAccessibleTenants(userId: string) {
+    // Get tenants via TenantUser
+    const tenantUserAccess = await this.prisma.tenantUser.findMany({
+      where: { userId },
+      include: {
+        tenant: {
+          include: {
+            parent: {
+              select: {
+                id: true,
+                slug: true,
+                businessName: true,
+                tenantType: true,
+              },
+            },
+            _count: {
+              select: {
+                children: true,
+                pages: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // Get tenants via ProjectAssignment (agency team working on client sites)
+    const projectAssignments = await this.prisma.projectAssignment.findMany({
+      where: { userId },
+      include: {
+        tenant: {
+          include: {
+            parent: {
+              select: {
+                id: true,
+                slug: true,
+                businessName: true,
+                tenantType: true,
+              },
+            },
+            _count: {
+              select: {
+                children: true,
+                pages: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // Combine and deduplicate
+    const tenantMap = new Map();
+
+    for (const tu of tenantUserAccess) {
+      tenantMap.set(tu.tenant.id, {
+        ...tu.tenant,
+        accessType: "member",
+        role: tu.role,
+      });
+    }
+
+    for (const pa of projectAssignments) {
+      if (!tenantMap.has(pa.tenant.id)) {
+        tenantMap.set(pa.tenant.id, {
+          ...pa.tenant,
+          accessType: "assigned",
+          role: pa.role,
+        });
+      }
+    }
+
+    // Sort by tenant type (AGENCY first), then by name
+    const tenants = Array.from(tenantMap.values()).sort((a, b) => {
+      const typeOrder = { AGENCY: 0, CLIENT: 1, SUB_CLIENT: 2 };
+      const aOrder = typeOrder[a.tenantType as keyof typeof typeOrder] ?? 99;
+      const bOrder = typeOrder[b.tenantType as keyof typeof typeOrder] ?? 99;
+
+      if (aOrder !== bOrder) return aOrder - bOrder;
+      return a.businessName.localeCompare(b.businessName);
+    });
+
+    return tenants;
+  }
+
+  /**
+   * Check if a user has access to a tenant (either via TenantUser or ProjectAssignment)
+   */
+  async checkUserTenantAccess(
+    userId: string,
+    tenantId: string,
+  ): Promise<{
+    hasAccess: boolean;
+    accessType: string | null;
+    role: string | null;
+  }> {
+    // Check TenantUser access
+    const tenantUser = await this.prisma.tenantUser.findUnique({
+      where: {
+        tenantId_userId: { tenantId, userId },
+      },
+    });
+
+    if (tenantUser) {
+      return { hasAccess: true, accessType: "member", role: tenantUser.role };
+    }
+
+    // Check ProjectAssignment access
+    const projectAssignment = await this.prisma.projectAssignment.findFirst({
+      where: { tenantId, userId },
+    });
+
+    if (projectAssignment) {
+      return {
+        hasAccess: true,
+        accessType: "assigned",
+        role: projectAssignment.role,
+      };
+    }
+
+    // Check if user is super admin (has access to everything)
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { isSuperAdmin: true },
+    });
+
+    if (user?.isSuperAdmin) {
+      return { hasAccess: true, accessType: "superadmin", role: "admin" };
+    }
+
+    return { hasAccess: false, accessType: null, role: null };
   }
 }

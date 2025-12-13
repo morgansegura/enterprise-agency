@@ -237,14 +237,19 @@ export default function ManageUsersPage({
                   <SelectItem value="admin">Admin</SelectItem>
                   <SelectItem value="developer">Developer</SelectItem>
                   <SelectItem value="designer">Designer</SelectItem>
-                  <SelectItem value="content_manager">Content Manager</SelectItem>
+                  <SelectItem value="content_manager">
+                    Content Manager
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setInviteDialogOpen(false)}
+            >
               Cancel
             </Button>
             <Button onClick={handleInvite} disabled={inviteUser.isPending}>

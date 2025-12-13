@@ -117,9 +117,12 @@ export function SortableSection({
   };
 
   // Get section properties with defaults
-  const sectionSpacing = spacingClasses[section.spacing || "md"] || spacingClasses.md;
-  const sectionWidth = widthClasses[section.width || "full"] || widthClasses.full;
-  const sectionBackground = backgroundClasses[section.background || "none"] || "";
+  const sectionSpacing =
+    spacingClasses[section.spacing || "md"] || spacingClasses.md;
+  const sectionWidth =
+    widthClasses[section.width || "full"] || widthClasses.full;
+  const sectionBackground =
+    backgroundClasses[section.background || "none"] || "";
   const sectionAlign = alignClasses[section.align || "left"] || "";
 
   // Check if any block in this section is selected

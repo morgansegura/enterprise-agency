@@ -101,7 +101,7 @@ export function SettingsDrawerNav<T extends string>({
             <button
               className={cn(
                 "settings-drawer-nav-item",
-                activeTab === item.id && "is-active"
+                activeTab === item.id && "is-active",
               )}
               onClick={() => onTabChange(item.id)}
             >
@@ -148,7 +148,9 @@ export interface SettingsDrawerActionsProps {
   children: React.ReactNode;
 }
 
-export function SettingsDrawerActions({ children }: SettingsDrawerActionsProps) {
+export function SettingsDrawerActions({
+  children,
+}: SettingsDrawerActionsProps) {
   return <div className="settings-drawer-actions">{children}</div>;
 }
 

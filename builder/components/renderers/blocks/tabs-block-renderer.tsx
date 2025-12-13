@@ -55,7 +55,10 @@ export default function TabsBlockRenderer({ block }: BlockRendererProps) {
 
   return (
     <div>
-      <div className={cn("flex", tabListVariantClasses[variant])} role="tablist">
+      <div
+        className={cn("flex", tabListVariantClasses[variant])}
+        role="tablist"
+      >
         {tabs.map((tab, index) => (
           <button
             key={index}
@@ -64,7 +67,9 @@ export default function TabsBlockRenderer({ block }: BlockRendererProps) {
             aria-selected={activeTab === index}
             className={cn(
               variantStyles.base,
-              activeTab === index ? variantStyles.active : variantStyles.inactive,
+              activeTab === index
+                ? variantStyles.active
+                : variantStyles.inactive,
             )}
             onClick={() => setActiveTab(index)}
           >

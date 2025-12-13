@@ -23,7 +23,14 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { FormItem } from "@/components/ui/form";
 import { SeoEditor } from "../seo-editor";
-import { Settings, Search, Layout, Palette, FileText, Home } from "lucide-react";
+import {
+  Settings,
+  Search,
+  Layout,
+  Palette,
+  FileText,
+  Home,
+} from "lucide-react";
 import type { PageSeo } from "@/lib/hooks/use-pages";
 
 type SettingsTab = "general" | "seo" | "layout" | "style";
@@ -80,7 +87,11 @@ export function PageSettingsDrawer({
   const [activeTab, setActiveTab] = React.useState<SettingsTab>("general");
 
   return (
-    <SettingsDrawer open={open} onOpenChange={onOpenChange} title="Page Settings">
+    <SettingsDrawer
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Page Settings"
+    >
       <SettingsDrawerSidebar
         title="Page Settings"
         description="Configure this page"
@@ -97,9 +108,7 @@ export function PageSettingsDrawer({
         {activeTab === "general" && (
           <GeneralSettings page={page} onChange={onChange} />
         )}
-        {activeTab === "seo" && (
-          <SeoSettings page={page} onChange={onChange} />
-        )}
+        {activeTab === "seo" && <SeoSettings page={page} onChange={onChange} />}
         {activeTab === "layout" && <LayoutSettings />}
         {activeTab === "style" && <StyleSettings />}
       </SettingsDrawerContent>
@@ -277,7 +286,11 @@ function StyleSettings() {
       <SettingsForm>
         <SettingsField>
           <Label htmlFor="bg-color">Background Color</Label>
-          <Input id="bg-color" type="text" placeholder="#ffffff or transparent" />
+          <Input
+            id="bg-color"
+            type="text"
+            placeholder="#ffffff or transparent"
+          />
         </SettingsField>
 
         <SettingsField>

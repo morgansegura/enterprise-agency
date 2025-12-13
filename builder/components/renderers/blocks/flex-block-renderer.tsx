@@ -45,7 +45,10 @@ const gapClasses = {
   xl: "gap-8",
 };
 
-export default function FlexBlockRenderer({ block, breakpoint }: BlockRendererProps) {
+export default function FlexBlockRenderer({
+  block,
+  breakpoint,
+}: BlockRendererProps) {
   const data = block.data as unknown as FlexBlockData;
   const {
     direction = "row",

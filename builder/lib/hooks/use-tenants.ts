@@ -2,8 +2,32 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { useTenantsStore } from "../stores";
 import { logger } from "../logger";
+import type {
+  TenantType,
+  ClientType,
+  AccessibleTenant,
+} from "../stores/tenants-store";
 
 export type TenantTier = "CONTENT_EDITOR" | "BUILDER";
+
+// Re-export types from store
+export type { TenantType, ClientType, AccessibleTenant };
+
+interface ParentTenant {
+  id: string;
+  slug: string;
+  businessName: string;
+  tenantType: TenantType;
+}
+
+interface ChildTenant {
+  id: string;
+  slug: string;
+  businessName: string;
+  tenantType: TenantType;
+  clientType?: ClientType | null;
+  status: string;
+}
 
 export interface Tenant {
   id: string;
@@ -18,6 +42,18 @@ export interface Tenant {
   contactPhone?: string;
   createdAt?: string;
   updatedAt?: string;
+  // Hierarchy fields
+  parentTenantId?: string | null;
+  tenantType: TenantType;
+  clientType?: ClientType | null;
+  parent?: ParentTenant | null;
+  children?: ChildTenant[];
+  _count?: {
+    children?: number;
+    pages?: number;
+    posts?: number;
+    assets?: number;
+  };
 }
 
 const TENANTS_KEY = ["tenants"];
@@ -308,4 +344,163 @@ export function useTenantsHealth() {
       apiClient.get<TenantsHealthOverview>("/tenants/health/overview"),
     staleTime: 60000, // Cache for 1 minute
   });
+}
+
+// ============================================================================
+// Tenant Hierarchy
+// ============================================================================
+
+/**
+ * Get the agency tenant (root of all tenants)
+ */
+export function useAgencyTenant() {
+  return useQuery<Tenant>({
+    queryKey: ["tenants", "agency"],
+    queryFn: () => apiClient.get<Tenant>("/tenants/agency"),
+    staleTime: 300000, // Cache for 5 minutes (agency rarely changes)
+  });
+}
+
+/**
+ * Get all tenants accessible to the current user (for tenant switcher)
+ */
+export function useAccessibleTenants() {
+  const { setAccessibleTenants, setLoading } = useTenantsStore();
+
+  return useQuery<AccessibleTenant[]>({
+    queryKey: ["tenants", "accessible"],
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const data = await apiClient.get<AccessibleTenant[]>(
+          "/tenants/accessible",
+        );
+        setAccessibleTenants(data);
+        return data;
+      } finally {
+        setLoading(false);
+      }
+    },
+    staleTime: 60000, // Cache for 1 minute
+  });
+}
+
+/**
+ * Get tenants by type
+ */
+export function useTenantsByType(type: TenantType) {
+  return useQuery<Tenant[]>({
+    queryKey: ["tenants", "type", type],
+    queryFn: () => apiClient.get<Tenant[]>(`/tenants/type/${type}`),
+    enabled: !!type,
+  });
+}
+
+/**
+ * Get child tenants of a parent
+ */
+export function useChildTenants(parentTenantId: string) {
+  return useQuery<Tenant[]>({
+    queryKey: ["tenants", parentTenantId, "children"],
+    queryFn: () =>
+      apiClient.get<Tenant[]>(`/tenants/${parentTenantId}/children`),
+    enabled: !!parentTenantId,
+  });
+}
+
+/**
+ * Get tenant hierarchy (ancestors + children)
+ */
+export interface TenantHierarchy {
+  tenant: {
+    id: string;
+    slug: string;
+    businessName: string;
+    tenantType: TenantType;
+    clientType?: ClientType | null;
+  };
+  ancestors: Array<{
+    id: string;
+    slug: string;
+    businessName: string;
+    tenantType: TenantType;
+  }>;
+  children: Array<{
+    id: string;
+    slug: string;
+    businessName: string;
+    tenantType: TenantType;
+    clientType?: ClientType | null;
+    hasChildren: boolean;
+  }>;
+}
+
+export function useTenantHierarchy(tenantId: string) {
+  return useQuery<TenantHierarchy>({
+    queryKey: ["tenants", tenantId, "hierarchy"],
+    queryFn: () =>
+      apiClient.get<TenantHierarchy>(`/tenants/${tenantId}/hierarchy`),
+    enabled: !!tenantId,
+  });
+}
+
+/**
+ * Check if current user has access to a tenant
+ */
+export interface TenantAccess {
+  hasAccess: boolean;
+  accessType: "member" | "assigned" | "superadmin" | null;
+  role: string | null;
+}
+
+export function useTenantAccess(tenantId: string) {
+  return useQuery<TenantAccess>({
+    queryKey: ["tenants", tenantId, "access"],
+    queryFn: () => apiClient.get<TenantAccess>(`/tenants/${tenantId}/access`),
+    enabled: !!tenantId,
+  });
+}
+
+/**
+ * Hook to manage active tenant switching
+ */
+export function useActiveTenant() {
+  const {
+    activeTenant,
+    activeTenantId,
+    accessibleTenants,
+    setActiveTenant,
+    switchTenant,
+  } = useTenantsStore();
+
+  // Query to fetch the full tenant data when activeTenantId is set but activeTenant is null
+  const { data: tenantData, isLoading } = useQuery<Tenant>({
+    queryKey: ["tenants", activeTenantId],
+    queryFn: () => apiClient.get<Tenant>(`/tenants/${activeTenantId}`),
+    enabled: !!activeTenantId && !activeTenant,
+  });
+
+  // If we fetched tenant data but don't have activeTenant, set it
+  if (tenantData && !activeTenant) {
+    setActiveTenant(
+      tenantData as unknown as Parameters<typeof setActiveTenant>[0],
+    );
+  }
+
+  return {
+    activeTenant,
+    activeTenantId,
+    accessibleTenants,
+    switchTenant,
+    setActiveTenant,
+    isLoading,
+    // Helper to determine tenant type display
+    tenantTypeLabel: activeTenant?.tenantType
+      ? {
+          AGENCY: "Agency",
+          CLIENT: "Client",
+          SUB_CLIENT: "Sub-Client",
+        }[activeTenant.tenantType]
+      : null,
+  };
 }

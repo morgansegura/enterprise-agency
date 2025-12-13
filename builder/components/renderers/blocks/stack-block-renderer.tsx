@@ -25,7 +25,10 @@ const alignClasses = {
   stretch: "items-stretch",
 };
 
-export default function StackBlockRenderer({ block, breakpoint }: BlockRendererProps) {
+export default function StackBlockRenderer({
+  block,
+  breakpoint,
+}: BlockRendererProps) {
   const data = block.data as unknown as StackBlockData;
   const { gap = "md", align = "stretch", blocks = [] } = data;
 

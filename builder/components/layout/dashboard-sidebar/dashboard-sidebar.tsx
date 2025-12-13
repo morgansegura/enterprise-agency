@@ -20,8 +20,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/ui/nav-link";
+import { TenantSwitcher } from "@/components/layout/tenant-switcher";
 
 import "./dashboard-sidebar.css";
 
@@ -82,6 +84,20 @@ export function DashboardSidebar({
       </SidebarHeader>
 
       <SidebarContent>
+        {/* Tenant Switcher */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <TenantSwitcher />
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarSeparator />
+
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

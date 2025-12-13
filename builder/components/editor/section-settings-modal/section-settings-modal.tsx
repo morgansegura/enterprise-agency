@@ -48,7 +48,10 @@ export function SectionSettingsModal({
 }: SectionSettingsModalProps) {
   // Helper to safely get extended section properties
   const getSectionProp = <T,>(key: string, defaultValue: T): T => {
-    return ((section as unknown as Record<string, unknown>)[key] as T) ?? defaultValue;
+    return (
+      ((section as unknown as Record<string, unknown>)[key] as T) ??
+      defaultValue
+    );
   };
 
   const handleChange = (field: string, value: unknown) => {
@@ -86,9 +89,14 @@ export function SectionSettingsModal({
           </TabsList>
 
           {/* General Tab */}
-          <TabsContent value="general" className="section-settings-modal-content">
+          <TabsContent
+            value="general"
+            className="section-settings-modal-content"
+          >
             <div className="section-settings-modal-section">
-              <h4 className="section-settings-modal-section-title">Background</h4>
+              <h4 className="section-settings-modal-section-title">
+                Background
+              </h4>
 
               <FormItem className="section-settings-modal-field">
                 <Label htmlFor="section-background">Background Style</Label>
@@ -172,7 +180,9 @@ export function SectionSettingsModal({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="narrow">Narrow (720px)</SelectItem>
-                      <SelectItem value="container">Container (1140px)</SelectItem>
+                      <SelectItem value="container">
+                        Container (1140px)
+                      </SelectItem>
                       <SelectItem value="wide">Wide (1320px)</SelectItem>
                       <SelectItem value="full">Full Width</SelectItem>
                     </SelectContent>
@@ -200,9 +210,14 @@ export function SectionSettingsModal({
           </TabsContent>
 
           {/* Layout Tab */}
-          <TabsContent value="layout" className="section-settings-modal-content">
+          <TabsContent
+            value="layout"
+            className="section-settings-modal-content"
+          >
             <div className="section-settings-modal-section">
-              <h4 className="section-settings-modal-section-title">Content Layout</h4>
+              <h4 className="section-settings-modal-section-title">
+                Content Layout
+              </h4>
 
               <FormItem className="section-settings-modal-field">
                 <Label htmlFor="section-direction">Direction</Label>
@@ -216,8 +231,12 @@ export function SectionSettingsModal({
                   <SelectContent>
                     <SelectItem value="column">Vertical (Column)</SelectItem>
                     <SelectItem value="row">Horizontal (Row)</SelectItem>
-                    <SelectItem value="column-reverse">Vertical Reverse</SelectItem>
-                    <SelectItem value="row-reverse">Horizontal Reverse</SelectItem>
+                    <SelectItem value="column-reverse">
+                      Vertical Reverse
+                    </SelectItem>
+                    <SelectItem value="row-reverse">
+                      Horizontal Reverse
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </FormItem>
@@ -301,7 +320,9 @@ export function SectionSettingsModal({
           {/* Style Tab */}
           <TabsContent value="style" className="section-settings-modal-content">
             <div className="section-settings-modal-section">
-              <h4 className="section-settings-modal-section-title">Border & Shadow</h4>
+              <h4 className="section-settings-modal-section-title">
+                Border & Shadow
+              </h4>
 
               <div className="grid grid-cols-2 gap-4">
                 <FormItem className="section-settings-modal-field">
@@ -364,7 +385,9 @@ export function SectionSettingsModal({
             </div>
 
             <div className="section-settings-modal-section">
-              <h4 className="section-settings-modal-section-title">Custom CSS</h4>
+              <h4 className="section-settings-modal-section-title">
+                Custom CSS
+              </h4>
 
               <FormItem className="section-settings-modal-field">
                 <Label htmlFor="section-custom-css">Custom CSS</Label>
@@ -380,9 +403,14 @@ export function SectionSettingsModal({
           </TabsContent>
 
           {/* Advanced Tab */}
-          <TabsContent value="advanced" className="section-settings-modal-content">
+          <TabsContent
+            value="advanced"
+            className="section-settings-modal-content"
+          >
             <div className="section-settings-modal-section">
-              <h4 className="section-settings-modal-section-title">Identification</h4>
+              <h4 className="section-settings-modal-section-title">
+                Identification
+              </h4>
 
               <FormItem className="section-settings-modal-field">
                 <Label htmlFor="section-id">Section ID</Label>
@@ -412,17 +440,24 @@ export function SectionSettingsModal({
             </div>
 
             <div className="section-settings-modal-section">
-              <h4 className="section-settings-modal-section-title">Visibility</h4>
+              <h4 className="section-settings-modal-section-title">
+                Visibility
+              </h4>
 
               <FormItem className="section-settings-modal-field flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="section-hide-desktop"
                   checked={getSectionProp<boolean>("hideOnDesktop", false)}
-                  onChange={(e) => handleChange("hideOnDesktop", e.target.checked)}
+                  onChange={(e) =>
+                    handleChange("hideOnDesktop", e.target.checked)
+                  }
                   className="h-4 w-4 rounded border-border"
                 />
-                <Label htmlFor="section-hide-desktop" className="cursor-pointer">
+                <Label
+                  htmlFor="section-hide-desktop"
+                  className="cursor-pointer"
+                >
                   Hide on Desktop
                 </Label>
               </FormItem>
@@ -432,7 +467,9 @@ export function SectionSettingsModal({
                   type="checkbox"
                   id="section-hide-tablet"
                   checked={getSectionProp<boolean>("hideOnTablet", false)}
-                  onChange={(e) => handleChange("hideOnTablet", e.target.checked)}
+                  onChange={(e) =>
+                    handleChange("hideOnTablet", e.target.checked)
+                  }
                   className="h-4 w-4 rounded border-border"
                 />
                 <Label htmlFor="section-hide-tablet" className="cursor-pointer">
@@ -445,7 +482,9 @@ export function SectionSettingsModal({
                   type="checkbox"
                   id="section-hide-mobile"
                   checked={getSectionProp<boolean>("hideOnMobile", false)}
-                  onChange={(e) => handleChange("hideOnMobile", e.target.checked)}
+                  onChange={(e) =>
+                    handleChange("hideOnMobile", e.target.checked)
+                  }
                   className="h-4 w-4 rounded border-border"
                 />
                 <Label htmlFor="section-hide-mobile" className="cursor-pointer">

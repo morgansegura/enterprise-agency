@@ -1,5 +1,5 @@
-"use client";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
-import DashboardLayout from "@/components/layout/dashboard-layout/dashboard-layout";
-
-export default DashboardLayout;
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <DashboardLayout>{children}</DashboardLayout>;
+}

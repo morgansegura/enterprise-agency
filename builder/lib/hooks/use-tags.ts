@@ -73,15 +73,22 @@ export function useRenameTag(tenantId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ oldName, newName }: { oldName: string; newName: string }) => {
+    mutationFn: async ({
+      oldName,
+      newName,
+    }: {
+      oldName: string;
+      newName: string;
+    }) => {
       // Get all posts with this tag
       const posts = await apiClient.get<{ id: string; tags?: string[] }[]>(
-        `/posts?tags=${encodeURIComponent(oldName)}`
+        `/posts?tags=${encodeURIComponent(oldName)}`,
       );
 
       // Update each post to replace the tag
       const updates = posts.map((post) => {
-        const updatedTags = post.tags?.map((t) => (t === oldName ? newName : t)) || [];
+        const updatedTags =
+          post.tags?.map((t) => (t === oldName ? newName : t)) || [];
         return apiClient.patch(`/posts/${post.id}`, { tags: updatedTags });
       });
 
@@ -109,7 +116,7 @@ export function useDeleteTag(tenantId: string) {
     mutationFn: async (tagName: string) => {
       // Get all posts with this tag
       const posts = await apiClient.get<{ id: string; tags?: string[] }[]>(
-        `/posts?tags=${encodeURIComponent(tagName)}`
+        `/posts?tags=${encodeURIComponent(tagName)}`,
       );
 
       // Update each post to remove the tag

@@ -56,10 +56,7 @@ const variantMap: Record<string, string> = {
  * Renders paragraph text exactly as it will appear on the live site.
  * Click to edit text inline.
  */
-export function TextBlockEditor({
-  block,
-  onChange,
-}: TextBlockEditorProps) {
+export function TextBlockEditor({ block, onChange }: TextBlockEditorProps) {
   const breakpoint = useCurrentBreakpoint();
 
   const handleDataChange = useResponsiveChange(block.data, (newData) =>

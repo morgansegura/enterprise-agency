@@ -128,7 +128,10 @@ export function PageSettingsPanel({
                 <div className="flex items-center gap-2">
                   <Home className="size-4 text-muted-foreground" />
                   <div>
-                    <Label htmlFor="page-is-home" className="text-sm font-medium">
+                    <Label
+                      htmlFor="page-is-home"
+                      className="text-sm font-medium"
+                    >
                       Set as Home Page
                     </Label>
                     <p className="text-xs text-muted-foreground">
@@ -163,7 +166,7 @@ export function PageSettingsPanel({
               disabled={isLoading}
             />
             <p className="text-xs text-muted-foreground mt-1">
-              {(data.metaTitle?.length || 0)}/60 characters
+              {data.metaTitle?.length || 0}/60 characters
             </p>
           </SettingsField>
 
@@ -178,7 +181,7 @@ export function PageSettingsPanel({
               disabled={isLoading}
             />
             <p className="text-xs text-muted-foreground mt-1">
-              {(data.metaDescription?.length || 0)}/160 characters
+              {data.metaDescription?.length || 0}/160 characters
             </p>
           </SettingsField>
         </SettingsForm>

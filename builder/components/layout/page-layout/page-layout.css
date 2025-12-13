@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .page-layout {
-  @apply h-full flex flex-col overflow-auto;
+  @apply relative;
 }
 
 .page-layout-inner {
@@ -36,6 +36,9 @@
   @apply flex items-center justify-between gap-4 mb-6;
 }
 
+.page-layout-content {
+  @apply relative;
+}
 /* Max width variants */
 .page-layout-content-sm {
   @apply max-w-screen-sm mx-auto;

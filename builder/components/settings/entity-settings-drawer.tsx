@@ -45,13 +45,24 @@ interface EntitySettingsDrawerProps {
   onOpenChange: (open: boolean) => void;
 }
 
-type TabId = "general" | "seo" | "layout" | "style" | "publishing" | "inventory" | "shipping" | "pricing";
+type TabId =
+  | "general"
+  | "seo"
+  | "layout"
+  | "style"
+  | "publishing"
+  | "inventory"
+  | "shipping"
+  | "pricing";
 
 // =============================================================================
 // Icon Map
 // =============================================================================
 
-const ENTITY_ICONS: Record<EntityType, React.ComponentType<{ className?: string }>> = {
+const ENTITY_ICONS: Record<
+  EntityType,
+  React.ComponentType<{ className?: string }>
+> = {
   page: FileText,
   post: Newspaper,
   product: Package,
@@ -68,23 +79,63 @@ const ENTITY_ICONS: Record<EntityType, React.ComponentType<{ className?: string 
 // =============================================================================
 
 const PAGE_NAV_ITEMS: SettingsNavItem<TabId>[] = [
-  { id: "general", label: "General", icon: Settings, description: "Basic info" },
+  {
+    id: "general",
+    label: "General",
+    icon: Settings,
+    description: "Basic info",
+  },
   { id: "seo", label: "SEO", icon: Search, description: "Search optimization" },
-  { id: "layout", label: "Layout", icon: Layout, description: "Page structure" },
+  {
+    id: "layout",
+    label: "Layout",
+    icon: Layout,
+    description: "Page structure",
+  },
   { id: "style", label: "Style", icon: Palette, description: "Page styling" },
 ];
 
 const POST_NAV_ITEMS: SettingsNavItem<TabId>[] = [
-  { id: "general", label: "General", icon: Settings, description: "Basic info" },
-  { id: "publishing", label: "Publishing", icon: Newspaper, description: "Status & scheduling" },
+  {
+    id: "general",
+    label: "General",
+    icon: Settings,
+    description: "Basic info",
+  },
+  {
+    id: "publishing",
+    label: "Publishing",
+    icon: Newspaper,
+    description: "Status & scheduling",
+  },
   { id: "seo", label: "SEO", icon: Search, description: "Search optimization" },
 ];
 
 const PRODUCT_NAV_ITEMS: SettingsNavItem<TabId>[] = [
-  { id: "general", label: "General", icon: Settings, description: "Basic info" },
-  { id: "pricing", label: "Pricing", icon: DollarSign, description: "Price & costs" },
-  { id: "inventory", label: "Inventory", icon: Box, description: "Stock tracking" },
-  { id: "shipping", label: "Shipping", icon: Truck, description: "Weight & shipping" },
+  {
+    id: "general",
+    label: "General",
+    icon: Settings,
+    description: "Basic info",
+  },
+  {
+    id: "pricing",
+    label: "Pricing",
+    icon: DollarSign,
+    description: "Price & costs",
+  },
+  {
+    id: "inventory",
+    label: "Inventory",
+    icon: Box,
+    description: "Stock tracking",
+  },
+  {
+    id: "shipping",
+    label: "Shipping",
+    icon: Truck,
+    description: "Weight & shipping",
+  },
   { id: "seo", label: "SEO", icon: Search, description: "Search optimization" },
 ];
 
@@ -102,7 +153,9 @@ export function EntitySettingsDrawer({
   const [isSaving, setIsSaving] = React.useState(false);
 
   // Entity data state - in a real app, this would come from a query
-  const [entityData, setEntityData] = React.useState<Record<string, unknown>>({});
+  const [entityData, setEntityData] = React.useState<Record<string, unknown>>(
+    {},
+  );
 
   // Reset tab when entity changes
   React.useEffect(() => {
@@ -159,11 +212,7 @@ export function EntitySettingsDrawer({
   // Render not available state
   if (!isAvailable || !context) {
     return (
-      <SettingsDrawer
-        open={open}
-        onOpenChange={onOpenChange}
-        title="Settings"
-      >
+      <SettingsDrawer open={open} onOpenChange={onOpenChange} title="Settings">
         <SettingsDrawerSidebar
           title="Settings"
           titleIcon={<Settings className="size-4" />}
@@ -191,11 +240,7 @@ export function EntitySettingsDrawer({
   const navItems = getNavItems();
 
   return (
-    <SettingsDrawer
-      open={open}
-      onOpenChange={onOpenChange}
-      title={getTitle()}
-    >
+    <SettingsDrawer open={open} onOpenChange={onOpenChange} title={getTitle()}>
       <SettingsDrawerSidebar
         title={getTitle()}
         description={
@@ -222,29 +267,32 @@ export function EntitySettingsDrawer({
         </SettingsDrawerActions>
 
         {/* Render appropriate panel based on entity type */}
-        {panelConfig?.entityType === "page" && (isEditContext(context) || isCreateContext(context)) && (
-          <PageSettingsPanel
-            context={context}
-            data={entityData}
-            onChange={handleChange}
-          />
-        )}
+        {panelConfig?.entityType === "page" &&
+          (isEditContext(context) || isCreateContext(context)) && (
+            <PageSettingsPanel
+              context={context}
+              data={entityData}
+              onChange={handleChange}
+            />
+          )}
 
-        {panelConfig?.entityType === "post" && (isEditContext(context) || isCreateContext(context)) && (
-          <PostSettingsPanel
-            context={context}
-            data={entityData}
-            onChange={handleChange}
-          />
-        )}
+        {panelConfig?.entityType === "post" &&
+          (isEditContext(context) || isCreateContext(context)) && (
+            <PostSettingsPanel
+              context={context}
+              data={entityData}
+              onChange={handleChange}
+            />
+          )}
 
-        {panelConfig?.entityType === "product" && (isEditContext(context) || isCreateContext(context)) && (
-          <ProductSettingsPanel
-            context={context}
-            data={entityData}
-            onChange={handleChange}
-          />
-        )}
+        {panelConfig?.entityType === "product" &&
+          (isEditContext(context) || isCreateContext(context)) && (
+            <ProductSettingsPanel
+              context={context}
+              data={entityData}
+              onChange={handleChange}
+            />
+          )}
       </SettingsDrawerContent>
     </SettingsDrawer>
   );

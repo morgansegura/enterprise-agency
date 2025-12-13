@@ -157,7 +157,9 @@ export function PageSettingsModal({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="container">Container (1200px)</SelectItem>
+                    <SelectItem value="container">
+                      Container (1200px)
+                    </SelectItem>
                     <SelectItem value="wide">Wide (1400px)</SelectItem>
                     <SelectItem value="full">Full Width</SelectItem>
                   </SelectContent>

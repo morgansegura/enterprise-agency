@@ -89,9 +89,8 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
     },
   ];
 
-
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -166,7 +165,6 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
       </SidebarContent>
 
       <SidebarFooter>

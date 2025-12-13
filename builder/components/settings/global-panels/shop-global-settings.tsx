@@ -160,7 +160,9 @@ export function ShopGlobalSettings({
               </div>
               <Switch
                 checked={data.guestCheckout ?? true}
-                onCheckedChange={(checked) => onChange("guestCheckout", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("guestCheckout", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -169,7 +171,9 @@ export function ShopGlobalSettings({
           <SettingsField>
             <div className="flex items-center justify-between">
               <div>
-                <Label className="text-sm font-medium">Require Phone Number</Label>
+                <Label className="text-sm font-medium">
+                  Require Phone Number
+                </Label>
                 <p className="text-xs text-muted-foreground">
                   Make phone number required at checkout
                 </p>
@@ -185,14 +189,18 @@ export function ShopGlobalSettings({
           <SettingsField>
             <div className="flex items-center justify-between">
               <div>
-                <Label className="text-sm font-medium">Terms & Conditions</Label>
+                <Label className="text-sm font-medium">
+                  Terms & Conditions
+                </Label>
                 <p className="text-xs text-muted-foreground">
                   Require acceptance before checkout
                 </p>
               </div>
               <Switch
                 checked={data.termsRequired || false}
-                onCheckedChange={(checked) => onChange("termsRequired", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("termsRequired", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -230,7 +238,9 @@ export function ShopGlobalSettings({
               </div>
               <Switch
                 checked={data.stripeEnabled || false}
-                onCheckedChange={(checked) => onChange("stripeEnabled", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("stripeEnabled", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -246,8 +256,17 @@ export function ShopGlobalSettings({
                 placeholder="pk_live_..."
                 disabled={isLoading}
               />
-              <Button variant="link" size="sm" className="px-0 h-auto mt-1" asChild>
-                <a href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="link"
+                size="sm"
+                className="px-0 h-auto mt-1"
+                asChild
+              >
+                <a
+                  href="https://dashboard.stripe.com/apikeys"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Get API keys <ExternalLink className="ml-1 size-3" />
                 </a>
               </Button>
@@ -264,7 +283,9 @@ export function ShopGlobalSettings({
               </div>
               <Switch
                 checked={data.squareEnabled || false}
-                onCheckedChange={(checked) => onChange("squareEnabled", checked)}
+                onCheckedChange={(checked) =>
+                  onChange("squareEnabled", checked)
+                }
                 disabled={isLoading}
               />
             </div>
@@ -276,7 +297,9 @@ export function ShopGlobalSettings({
               <Input
                 id="square-app-id"
                 value={data.squareApplicationId || ""}
-                onChange={(e) => onChange("squareApplicationId", e.target.value)}
+                onChange={(e) =>
+                  onChange("squareApplicationId", e.target.value)
+                }
                 placeholder="sq0idp-..."
                 disabled={isLoading}
               />
@@ -285,10 +308,7 @@ export function ShopGlobalSettings({
         </SettingsForm>
       </SettingsSection>
 
-      <SettingsSection
-        title="Tax"
-        description="Configure tax calculation."
-      >
+      <SettingsSection title="Tax" description="Configure tax calculation.">
         <SettingsForm>
           <SettingsField>
             <div className="flex items-center justify-between">
@@ -317,7 +337,9 @@ export function ShopGlobalSettings({
                   min="0"
                   max="100"
                   value={data.taxRate || ""}
-                  onChange={(e) => onChange("taxRate", parseFloat(e.target.value) || 0)}
+                  onChange={(e) =>
+                    onChange("taxRate", parseFloat(e.target.value) || 0)
+                  }
                   placeholder="0.00"
                   disabled={isLoading}
                 />
@@ -326,14 +348,18 @@ export function ShopGlobalSettings({
               <SettingsField>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label className="text-sm font-medium">Tax Included in Prices</Label>
+                    <Label className="text-sm font-medium">
+                      Tax Included in Prices
+                    </Label>
                     <p className="text-xs text-muted-foreground">
                       Product prices already include tax
                     </p>
                   </div>
                   <Switch
                     checked={data.taxIncludedInPrices || false}
-                    onCheckedChange={(checked) => onChange("taxIncludedInPrices", checked)}
+                    onCheckedChange={(checked) =>
+                      onChange("taxIncludedInPrices", checked)
+                    }
                     disabled={isLoading}
                   />
                 </div>
@@ -355,7 +381,9 @@ export function ShopGlobalSettings({
               type="number"
               min="0"
               value={data.lowStockThreshold ?? 5}
-              onChange={(e) => onChange("lowStockThreshold", parseInt(e.target.value) || 0)}
+              onChange={(e) =>
+                onChange("lowStockThreshold", parseInt(e.target.value) || 0)
+              }
               disabled={isLoading}
             />
             <p className="text-xs text-muted-foreground mt-1">

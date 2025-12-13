@@ -29,7 +29,7 @@ interface RoutePattern {
   extractContext: (
     match: RegExpMatchArray,
     tenantId: string,
-    pathname: string
+    pathname: string,
   ) => Omit<RouteContext, "tenantId" | "pathname">;
 }
 
@@ -45,13 +45,21 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     pattern: /^\/[^/]+\/dashboard\/users$/,
     section: "admin",
     entityType: "user",
-    extractContext: () => ({ mode: "list", section: "admin", entityType: "user" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "admin",
+      entityType: "user",
+    }),
   },
   {
     pattern: /^\/[^/]+\/dashboard\/clients$/,
     section: "admin",
     entityType: "client",
-    extractContext: () => ({ mode: "list", section: "admin", entityType: "client" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "admin",
+      entityType: "client",
+    }),
   },
 
   // ==========================================================================
@@ -72,13 +80,21 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     pattern: /^\/[^/]+\/pages\/new$/,
     section: "website",
     entityType: "page",
-    extractContext: () => ({ mode: "create", section: "website", entityType: "page" }),
+    extractContext: () => ({
+      mode: "create",
+      section: "website",
+      entityType: "page",
+    }),
   },
   {
     pattern: /^\/[^/]+\/pages$/,
     section: "website",
     entityType: "page",
-    extractContext: () => ({ mode: "list", section: "website", entityType: "page" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "website",
+      entityType: "page",
+    }),
   },
 
   // ==========================================================================
@@ -99,13 +115,21 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     pattern: /^\/[^/]+\/posts\/new$/,
     section: "blog",
     entityType: "post",
-    extractContext: () => ({ mode: "create", section: "blog", entityType: "post" }),
+    extractContext: () => ({
+      mode: "create",
+      section: "blog",
+      entityType: "post",
+    }),
   },
   {
     pattern: /^\/[^/]+\/posts$/,
     section: "blog",
     entityType: "post",
-    extractContext: () => ({ mode: "list", section: "blog", entityType: "post" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "blog",
+      entityType: "post",
+    }),
   },
 
   // ==========================================================================
@@ -115,7 +139,11 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     pattern: /^\/[^/]+\/tags$/,
     section: "blog",
     entityType: "tag",
-    extractContext: () => ({ mode: "list", section: "blog", entityType: "tag" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "blog",
+      entityType: "tag",
+    }),
   },
 
   // ==========================================================================
@@ -125,7 +153,11 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     pattern: /^\/[^/]+\/media$/,
     section: "media",
     entityType: "asset",
-    extractContext: () => ({ mode: "list", section: "media", entityType: "asset" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "media",
+      entityType: "asset",
+    }),
   },
 
   // ==========================================================================
@@ -146,13 +178,21 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     pattern: /^\/[^/]+\/shop\/products\/new$/,
     section: "shop",
     entityType: "product",
-    extractContext: () => ({ mode: "create", section: "shop", entityType: "product" }),
+    extractContext: () => ({
+      mode: "create",
+      section: "shop",
+      entityType: "product",
+    }),
   },
   {
     pattern: /^\/[^/]+\/shop\/products$/,
     section: "shop",
     entityType: "product",
-    extractContext: () => ({ mode: "list", section: "shop", entityType: "product" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "shop",
+      entityType: "product",
+    }),
   },
 
   // ==========================================================================
@@ -173,7 +213,11 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     pattern: /^\/[^/]+\/shop\/orders$/,
     section: "shop",
     entityType: "order",
-    extractContext: () => ({ mode: "list", section: "shop", entityType: "order" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "shop",
+      entityType: "order",
+    }),
   },
 
   // ==========================================================================
@@ -194,13 +238,21 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     pattern: /^\/[^/]+\/shop\/customers\/new$/,
     section: "shop",
     entityType: "customer",
-    extractContext: () => ({ mode: "create", section: "shop", entityType: "customer" }),
+    extractContext: () => ({
+      mode: "create",
+      section: "shop",
+      entityType: "customer",
+    }),
   },
   {
     pattern: /^\/[^/]+\/shop\/customers$/,
     section: "shop",
     entityType: "customer",
-    extractContext: () => ({ mode: "list", section: "shop", entityType: "customer" }),
+    extractContext: () => ({
+      mode: "list",
+      section: "shop",
+      entityType: "customer",
+    }),
   },
 
   // ==========================================================================
@@ -284,7 +336,7 @@ export function useRouteContext(): RouteContext {
 
   return useMemo(
     () => parseRouteContext(pathname || "", tenantId),
-    [pathname, tenantId]
+    [pathname, tenantId],
   );
 }
 
@@ -299,7 +351,12 @@ export function useEntitySettingsState(): EntitySettingsState {
     // Entity settings are only available in edit, create, or detail modes
     const isEntityMode = ["edit", "create", "detail"].includes(context.mode);
 
-    if (!isEntityMode || context.mode === "dashboard" || context.mode === "settings" || context.mode === "unknown") {
+    if (
+      !isEntityMode ||
+      context.mode === "dashboard" ||
+      context.mode === "settings" ||
+      context.mode === "unknown"
+    ) {
       return {
         isAvailable: false,
         context: null,
@@ -322,7 +379,9 @@ export function useEntitySettingsState(): EntitySettingsState {
     const panelConfig = ENTITY_SETTINGS_PANELS.find(
       (panel) =>
         panel.entityType === entityType &&
-        panel.availableModes.includes(context.mode as "edit" | "create" | "detail")
+        panel.availableModes.includes(
+          context.mode as "edit" | "create" | "detail",
+        ),
     );
 
     return {
@@ -342,7 +401,7 @@ export function useGlobalSettingsState(): GlobalSettingsState {
 
   return useMemo(() => {
     const panelConfig = GLOBAL_SETTINGS_PANELS.find(
-      (panel) => panel.section === context.section
+      (panel) => panel.section === context.section,
     );
 
     return {

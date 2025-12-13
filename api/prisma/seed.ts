@@ -252,10 +252,10 @@ async function main() {
   await prisma.user.deleteMany();
 
   // ============================================================================
-  // 1. CREATE AGENCY OWNER (YOU - Mo)
+  // 1. CREATE AGENCY OWNER (Morgan Segura)
   // ============================================================================
 
-  const hashedPassword = await bcrypt.hash("password123", 10);
+  const hashedPassword = await bcrypt.hash("S3GuRa536!!1980", 10);
 
   const agencyOwner = await prisma.user.create({
     data: {
@@ -270,262 +270,139 @@ async function main() {
     },
   });
 
-  console.log("✅ Created Web and Funnel owner:", agencyOwner.email);
+  console.log("✅ Created agency owner:", agencyOwner.email);
 
   // ============================================================================
-  // 1.5 CREATE AGENCY TEAM MEMBERS WITH DIFFERENT ROLES
+  // 2. CREATE WEB AND FUNNEL AGENCY TENANT
   // ============================================================================
 
-  const agencyAdmin = await prisma.user.create({
+  const agencyTenant = await prisma.tenant.create({
     data: {
-      email: "admin@webfunnel.com",
-      firstName: "Sarah",
-      lastName: "Admin",
-      passwordHash: hashedPassword,
-      emailVerified: true,
-      isSuperAdmin: false,
-      agencyRole: "admin",
+      slug: "web-and-funnel",
+      businessName: "Web and Funnel",
+      businessType: "agency",
       status: "active",
-    },
-  });
+      isPrimaryTenant: true,
+      tenantType: "AGENCY",
+      clientType: "BUSINESS",
 
-  const agencyDeveloper = await prisma.user.create({
-    data: {
-      email: "dev@webfunnel.com",
-      firstName: "Mike",
-      lastName: "Developer",
-      passwordHash: hashedPassword,
-      emailVerified: true,
-      isSuperAdmin: false,
-      agencyRole: "developer",
-      status: "active",
-    },
-  });
-
-  const agencyDesigner = await prisma.user.create({
-    data: {
-      email: "designer@webfunnel.com",
-      firstName: "Emily",
-      lastName: "Designer",
-      passwordHash: hashedPassword,
-      emailVerified: true,
-      isSuperAdmin: false,
-      agencyRole: "designer",
-      status: "active",
-    },
-  });
-
-  const agencyContentManager = await prisma.user.create({
-    data: {
-      email: "content@webfunnel.com",
-      firstName: "Alex",
-      lastName: "Content",
-      passwordHash: hashedPassword,
-      emailVerified: true,
-      isSuperAdmin: false,
-      agencyRole: "content_manager",
-      status: "active",
-    },
-  });
-
-  console.log("✅ Created agency team members with different roles");
-
-  // ============================================================================
-  // 2. CREATE FIRST CLIENT: MH Bible Baptist Church
-  // ============================================================================
-
-  const mhBibleBaptist = await prisma.tenant.create({
-    data: {
-      slug: "mh-bible-baptist",
-      businessName: "MH Bible Baptist Church",
-      businessType: "church",
-      status: "active",
-
-      // Feature flags - MANUAL UNLOCK MODEL
+      // Agency has ALL features enabled
       enabledFeatures: {
-        // === SERVICES (manually unlocked per client) ===
-        "service.pages": true, // Pages builder - ENABLED for MH Bible Baptist
-        "service.blog": true, // Blog system - ENABLED for MH Bible Baptist
-        "service.shop": false, // E-commerce - LOCKED (not purchased)
-        "service.bookings": false, // Booking system - LOCKED
-        "service.forms": false, // Form builder - LOCKED
+        // === SERVICES ===
+        "service.pages": true,
+        "service.blog": true,
+        "service.shop": true,
+        "service.bookings": true,
+        "service.forms": true,
 
         // === PAGES FEATURES ===
         "pages.view": true,
-        "pages.edit": false,
-        "pages.create": false,
-        "pages.delete": false,
+        "pages.edit": true,
+        "pages.create": true,
+        "pages.delete": true,
 
         // === BUILDER ACCESS ===
-        "builder.access": false,
-        "builder.blocks": false,
-        "builder.layout": false,
+        "builder.access": true,
+        "builder.blocks": true,
+        "builder.layout": true,
 
-        // === BLOG FEATURES (unlocked because service.blog is true) ===
+        // === BLOG FEATURES ===
         "blog.view": true,
-        "blog.create": false,
-        "blog.edit": false,
-        "blog.delete": false,
-        "blog.categories": false,
-        "blog.tags": false,
+        "blog.create": true,
+        "blog.edit": true,
+        "blog.delete": true,
+        "blog.categories": true,
+        "blog.tags": true,
 
         // === CONFIGURATION ===
-        "config.header": false,
-        "config.footer": false,
-        "config.menus": false,
-        "config.logos": false,
-        "config.theme": false,
+        "config.header": true,
+        "config.footer": true,
+        "config.menus": true,
+        "config.logos": true,
+        "config.theme": true,
 
         // === ASSETS ===
-        "assets.upload": false,
-        "assets.delete": false,
+        "assets.upload": true,
+        "assets.delete": true,
 
         // === USER MANAGEMENT ===
-        "users.invite": false,
-        "users.manage": false,
+        "users.invite": true,
+        "users.manage": true,
+
+        // === AGENCY ADMIN ===
+        "admin.clients": true,
+        "admin.users": true,
+        "admin.billing": true,
       },
 
       themeConfig: {
-        primary: "#1e40af",
-        secondary: "#0891b2",
-        "space-6": "1.5rem",
+        primary: "#6366f1", // Indigo
+        secondary: "#8b5cf6", // Purple
+        accent: "#f59e0b", // Amber
+        "font-heading": "Inter",
         "font-body": "Inter",
       },
 
-      // headerConfig, footerConfig, menusConfig, logosConfig left undefined (will be null)
-
-      contactEmail: "info@mhbiblebaptist.com",
+      contactEmail: "hello@webandfunnel.com",
+      metaDescription:
+        "Web and Funnel - Enterprise website and funnel building platform",
     },
   });
 
-  console.log("✅ Created client tenant:", mhBibleBaptist.businessName);
+  console.log("✅ Created agency tenant:", agencyTenant.businessName);
 
-  // Create church pastor user (locked out by default)
-  const churchPastor = await prisma.user.create({
-    data: {
-      email: "pastor@mhbiblebaptist.com",
-      firstName: "John",
-      lastName: "Doe",
-      passwordHash: hashedPassword,
-      emailVerified: true,
-      isSuperAdmin: false,
-      agencyRole: null,
-      status: "active",
-    },
-  });
+  // ============================================================================
+  // 3. LINK OWNER TO AGENCY TENANT
+  // ============================================================================
 
   await prisma.tenantUser.create({
     data: {
-      userId: churchPastor.id,
-      tenantId: mhBibleBaptist.id,
-      role: "owner",
-      permissions: {},
-    },
-  });
-
-  console.log("✅ Created church pastor (features locked)");
-
-  // Assign agency team to this project with different roles
-  await prisma.projectAssignment.create({
-    data: {
       userId: agencyOwner.id,
-      tenantId: mhBibleBaptist.id,
+      tenantId: agencyTenant.id,
       role: "owner",
-      permissions: { fullAccess: true },
-      status: "active",
+      permissions: {
+        pages: { view: true, create: true, edit: true, delete: true },
+        posts: { view: true, create: true, edit: true, delete: true },
+        assets: { view: true, create: true, edit: true, delete: true },
+        settings: { view: true, edit: true },
+        admin: { clients: true, users: true, billing: true },
+      },
     },
   });
 
-  await prisma.projectAssignment.create({
-    data: {
-      userId: agencyAdmin.id,
-      tenantId: mhBibleBaptist.id,
-      role: "admin",
-      permissions: { canManageSettings: true, canDeploy: false },
-      status: "active",
-    },
-  });
+  console.log("✅ Linked owner to agency tenant");
 
-  await prisma.projectAssignment.create({
-    data: {
-      userId: agencyDeveloper.id,
-      tenantId: mhBibleBaptist.id,
-      role: "developer",
-      permissions: { canDeploy: true, canManageSettings: false },
-      status: "active",
-    },
-  });
+  // ============================================================================
+  // 4. CREATE DEFAULT PAGES FOR AGENCY
+  // ============================================================================
 
-  await prisma.projectAssignment.create({
-    data: {
-      userId: agencyDesigner.id,
-      tenantId: mhBibleBaptist.id,
-      role: "designer",
-      permissions: {},
-      status: "active",
-    },
-  });
+  await createDefaultPages(agencyTenant.id, agencyOwner.id);
 
-  await prisma.projectAssignment.create({
-    data: {
-      userId: agencyContentManager.id,
-      tenantId: mhBibleBaptist.id,
-      role: "content_manager",
-      permissions: {},
-      status: "active",
-    },
-  });
-
-  console.log("✅ Assigned agency team to MH Bible Baptist project");
-
-  // Create default system pages
-  await createDefaultPages(mhBibleBaptist.id, agencyOwner.id);
+  // ============================================================================
+  // SUMMARY
+  // ============================================================================
 
   console.log("\n🎉 Web and Funnel platform seeded!\n");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
   console.log("Platform: Web and Funnel");
-  console.log("Database: webfunnel_dev");
-  console.log("");
-  console.log("👤 AGENCY TEAM (Test different roles/permissions):");
-  console.log("");
-  console.log("   🔑 Owner (Super Admin):");
-  console.log("      Email: morgansegura@gmail.com");
-  console.log("      Password: S3GuRa536!!1980");
-  console.log("      Access: FULL PLATFORM + All Admin Rights");
-  console.log("");
-  console.log("   👔 Admin:");
-  console.log("      Email: admin@webfunnel.com");
-  console.log("      Password: password123");
-  console.log("      Access: Can manage users/features (no delete)");
-  console.log("");
-  console.log("   💻 Developer:");
-  console.log("      Email: dev@webfunnel.com");
-  console.log("      Password: password123");
-  console.log("      Access: Technical project access");
-  console.log("");
-  console.log("   🎨 Designer:");
-  console.log("      Email: designer@webfunnel.com");
-  console.log("      Password: password123");
-  console.log("      Access: Design project access");
-  console.log("");
-  console.log("   📝 Content Manager:");
-  console.log("      Email: content@webfunnel.com");
-  console.log("      Password: password123");
-  console.log("      Access: Content editing access");
-  console.log("");
-  console.log("🏢 CLIENT TENANT:");
-  console.log("   Name: MH Bible Baptist Church");
-  console.log("   Slug: mh-bible-baptist");
-  console.log("   Features: ALL LOCKED (unlock via admin panel)");
-  console.log("");
-  console.log("   👤 Church Pastor:");
-  console.log("      Email: pastor@mhbiblebaptist.com");
-  console.log("      Password: password123");
-  console.log("      Access: LOCKED (unlock features as needed)");
-  console.log("");
+  // console.log("");
+  // console.log("🏢 AGENCY TENANT:");
+  // console.log("   Name: Web and Funnel");
+  // console.log("   Slug: web-and-funnel");
+  // console.log("   Type: AGENCY (Primary Tenant)");
+  // console.log("   Features: ALL ENABLED");
+  // console.log("");
+  // console.log("👤 AGENCY OWNER:");
+  // console.log("   Email: morgansegura@gmail.com");
+  // console.log("   Password: password123");
+  // console.log("   Role: Super Admin + Owner");
+  // console.log("   Access: Full Platform Access");
+  // console.log("");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("✅ All users assigned to MH Bible Baptist project");
-  console.log("✅ Test RBAC with different user logins");
+  console.log("✅ Agency tenant created");
+  console.log("✅ Default pages created");
+  console.log("");
+  console.log("📌 Create additional users and clients via the Builder app");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 }
 
