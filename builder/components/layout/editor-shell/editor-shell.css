@@ -1,0 +1,37 @@
+@reference "tailwindcss";
+
+.editor-shell {
+  @apply grid grid-cols-[48px_1fr] h-full;
+}
+
+.editor-shell-sidebar {
+  @apply relative bg-(--sidebar) w-12 border-r flex flex-col items-center space-y-2 py-4 text-muted-foreground;
+}
+
+.editor-shell-main {
+  @apply flex flex-col h-full overflow-hidden;
+}
+
+.editor-shell-header {
+  @apply flex h-12 shrink-0 items-center justify-between border-b px-4 bg-(--color-background);
+}
+
+.editor-shell-header-left {
+  @apply flex items-center gap-2;
+}
+
+.editor-shell-header-right {
+  @apply flex items-center gap-2;
+}
+
+.editor-shell-content {
+  @apply flex-1 overflow-auto;
+}
+
+.editor-shell-loading {
+  @apply min-h-screen flex items-center justify-center;
+}
+
+.editor-shell-loading-text {
+  @apply text-lg;
+}

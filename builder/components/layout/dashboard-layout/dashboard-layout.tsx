@@ -1,96 +1,83 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { getCurrentUser, logout, type User } from "@/lib/auth";
+import { usePathname } from "next/navigation";
 import {
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
-import { Separator } from "@/components/ui/separator";
-import { ThemeSwitcher } from "@/components/layout/dashboard-header/theme-switcher";
-import { ProfileDropdown } from "@/components/layout/dashboard-header/profile-dropdown";
-
-import "./dashboard-layout.css";
-
-function DashboardContent({
-  user,
-  onLogout,
-  children,
-}: {
-  user: User;
-  onLogout: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <DashboardSidebar user={user} onLogout={onLogout} />
-      <SidebarInset>
-        <header className="dashboard-layout-header">
-          <div className="dashboard-layout-header-left">
-            <SidebarTrigger className="dashboard-layout-header-trigger" />
-            <Separator
-              orientation="vertical"
-              className="dashboard-layout-header-separator"
-            />
-          </div>
-          <div className="dashboard-layout-header-right">
-            <ThemeSwitcher />
-            <ProfileDropdown user={user} onLogout={onLogout} />
-          </div>
-        </header>
-        <div className="dashboard-layout-main">{children}</div>
-      </SidebarInset>
-    </>
-  );
-}
+  EditorShell,
+  type NavGroup,
+  type NavItem,
+} from "@/components/layout/editor-shell";
+import {
+  LayoutDashboard,
+  BriefcaseBusiness,
+  Settings,
+  Plus,
+} from "lucide-react";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    async function checkAuth() {
-      const currentUser = await getCurrentUser();
-      if (!currentUser) {
-        router.push("/");
-      } else {
-        setUser(currentUser);
-      }
-      setLoading(false);
+  const isActive = (path: string) => {
+    if (!pathname) return false;
+    if (path === "/dashboard") {
+      return pathname === "/dashboard";
     }
-    checkAuth();
-  }, [router]);
-
-  const handleLogout = () => {
-    logout();
-    router.push("/");
+    return pathname.startsWith(path);
   };
 
-  if (loading) {
-    return (
-      <div className="dashboard-layout-loading">
-        <div className="dashboard-layout-loading-text">Loading...</div>
-      </div>
-    );
-  }
+  const navGroups: NavGroup[] = [
+    {
+      items: [
+        {
+          id: "dashboard",
+          icon: LayoutDashboard,
+          label: "Dashboard",
+          href: "/dashboard",
+          isActive: isActive("/dashboard") && !isActive("/dashboard/clients"),
+        },
+        {
+          id: "clients",
+          icon: BriefcaseBusiness,
+          label: "Clients",
+          href: "/dashboard/clients",
+          isActive: isActive("/dashboard/clients"),
+        },
+      ],
+    },
+    {
+      items: [
+        {
+          id: "new-client",
+          icon: Plus,
+          label: "New Client",
+          href: "/dashboard/clients/new",
+          isActive: isActive("/dashboard/clients/new"),
+        },
+      ],
+    },
+  ];
 
-  if (!user) {
-    return null;
-  }
+  const bottomNav: NavItem[] = [
+    {
+      id: "settings",
+      icon: Settings,
+      label: "Settings",
+      onClick: () => {
+        // TODO: Open settings drawer
+      },
+    },
+  ];
 
   return (
-    <SidebarProvider defaultOpen={false}>
-      <DashboardContent user={user} onLogout={handleLogout}>
-        {children}
-      </DashboardContent>
-    </SidebarProvider>
+    <EditorShell
+      navGroups={navGroups}
+      bottomNav={bottomNav}
+      headerTitle="Web & Funnel"
+    >
+      {children}
+    </EditorShell>
   );
 }
