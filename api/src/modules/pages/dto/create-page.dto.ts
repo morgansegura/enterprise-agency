@@ -6,6 +6,7 @@ import {
   IsObject,
   IsArray,
   ValidateNested,
+  IsBoolean,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { SectionDto } from "./blocks/section.dto";
@@ -80,7 +81,7 @@ export class CreatePageDto {
   @IsOptional()
   @IsString()
   @IsIn(["draft", "published", "scheduled", "archived"])
-  status?: string;
+  status?: "draft" | "published" | "scheduled" | "archived";
 
   @IsOptional()
   @IsString()
@@ -103,4 +104,18 @@ export class CreatePageDto {
     preloadCritical?: boolean;
     cacheStrategy?: "static" | "dynamic" | "hybrid";
   };
+
+  @IsOptional()
+  @IsBoolean()
+  isHomePage?: boolean;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(50)
+  @IsIn(["home", "privacy-policy", "terms-of-service", "cookie-policy", "coming-soon", "under-construction"])
+  pageType?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isSystemPage?: boolean;
 }

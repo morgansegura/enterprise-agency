@@ -4,11 +4,13 @@ import { cn } from "@/lib/utils";
 interface TextBlockData {
   text: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
-  align?: "left" | "center" | "right";
-  variant?: "body" | "lead" | "muted" | "small";
+  align?: "left" | "center" | "right" | "justify";
+  variant?: "body" | "muted" | "caption";
+  maxWidth?: string;
 }
 
-const sizeClasses = {
+// Match editor's TextBlockEditor maps exactly
+const sizeClasses: Record<string, string> = {
   xs: "text-xs",
   sm: "text-sm",
   md: "text-base",
@@ -16,32 +18,45 @@ const sizeClasses = {
   xl: "text-xl",
 };
 
-const alignClasses = {
+const alignClasses: Record<string, string> = {
   left: "text-left",
   center: "text-center",
   right: "text-right",
+  justify: "text-justify",
 };
 
-const variantClasses = {
+const variantClasses: Record<string, string> = {
   body: "text-foreground",
-  lead: "text-xl text-muted-foreground",
   muted: "text-muted-foreground",
-  small: "text-sm text-muted-foreground",
+  caption: "text-muted-foreground text-sm",
 };
 
 export default function TextBlockRenderer({ block }: BlockRendererProps) {
   const data = block.data as unknown as TextBlockData;
-  const { text, size = "md", align = "left", variant = "body" } = data;
+  const {
+    text,
+    size = "md",
+    align = "left",
+    variant = "body",
+    maxWidth,
+  } = data;
 
   return (
-    <p
-      className={cn(
-        sizeClasses[size],
-        alignClasses[align],
-        variantClasses[variant],
-      )}
+    <div
+      style={{
+        maxWidth: maxWidth || "none",
+        margin: align === "center" ? "0 auto" : undefined,
+      }}
     >
-      {text}
-    </p>
+      <p
+        className={cn(
+          sizeClasses[size] || sizeClasses.md,
+          alignClasses[align] || alignClasses.left,
+          variantClasses[variant] || variantClasses.body,
+        )}
+      >
+        {text}
+      </p>
+    </div>
   );
 }

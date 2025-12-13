@@ -7,36 +7,36 @@ interface SectionRendererProps {
   breakpoint?: "desktop" | "tablet" | "mobile";
 }
 
+// Match editor's SortableSection classes exactly
 const backgroundClasses: Record<string, string> = {
   none: "",
   white: "bg-white",
-  gray: "bg-gray-50 dark:bg-gray-900",
-  dark: "bg-gray-900 text-white dark:bg-gray-950",
-  primary: "bg-primary text-primary-foreground",
-  secondary: "bg-secondary text-secondary-foreground",
+  gray: "bg-gray-100",
+  dark: "bg-gray-900",
+  primary: "bg-(--primary)",
+  secondary: "bg-(--secondary)",
 };
 
 const spacingClasses: Record<string, string> = {
-  none: "py-0",
-  xs: "py-4",
-  sm: "py-8",
-  md: "py-12",
-  lg: "py-16",
-  xl: "py-20",
+  none: "",
+  xs: "py-2",
+  sm: "py-4",
+  md: "py-8",
+  lg: "py-12",
+  xl: "py-16",
   "2xl": "py-24",
 };
 
 const widthClasses: Record<string, string> = {
-  narrow: "max-w-3xl",
-  default: "max-w-5xl",
-  wide: "max-w-7xl",
-  full: "max-w-full",
+  narrow: "max-w-3xl mx-auto px-4",
+  wide: "max-w-7xl mx-auto px-4",
+  full: "w-full",
 };
 
 const alignClasses: Record<string, string> = {
   left: "text-left",
-  center: "text-center mx-auto",
-  right: "text-right ml-auto",
+  center: "text-center",
+  right: "text-right",
 };
 
 /**
@@ -44,31 +44,27 @@ const alignClasses: Record<string, string> = {
  *
  * Applies section-level styling (background, spacing, width, alignment)
  * and renders all child blocks.
+ *
+ * Matches the editor's SortableSection component exactly for WYSIWYG parity.
  */
 export function SectionRenderer({ section, breakpoint = "desktop" }: SectionRendererProps) {
   const {
     background = "none",
     spacing = "md",
-    width = "default",
+    width = "full",
     align = "left",
     blocks = [],
   } = section;
 
+  const sectionBackground = backgroundClasses[background] || "";
+  const sectionSpacing = spacingClasses[spacing] || spacingClasses.md;
+  const sectionWidth = widthClasses[width] || widthClasses.full;
+  const sectionAlign = alignClasses[align] || "";
+
   return (
-    <section
-      className={cn(
-        backgroundClasses[background] || "",
-        spacingClasses[spacing] || spacingClasses.md,
-      )}
-    >
-      <div
-        className={cn(
-          "mx-auto px-4 sm:px-6 lg:px-8",
-          widthClasses[width] || widthClasses.default,
-          alignClasses[align] || "",
-        )}
-      >
-        <div className="space-y-6">
+    <section className={cn(sectionBackground, sectionAlign)}>
+      <div className={cn(sectionSpacing, sectionWidth)}>
+        <div className="space-y-4">
           {blocks.map((block) => (
             <BlockRenderer
               key={block._key}

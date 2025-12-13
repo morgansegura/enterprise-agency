@@ -36,6 +36,7 @@ export type PageMinAggregateOutputType = {
   template: string | null
   pageType: string | null
   isSystemPage: boolean | null
+  isHomePage: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   publishedAt: Date | null
@@ -53,6 +54,7 @@ export type PageMaxAggregateOutputType = {
   template: string | null
   pageType: string | null
   isSystemPage: boolean | null
+  isHomePage: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   publishedAt: Date | null
@@ -71,6 +73,7 @@ export type PageCountAggregateOutputType = {
   template: number
   pageType: number
   isSystemPage: number
+  isHomePage: number
   createdAt: number
   updatedAt: number
   publishedAt: number
@@ -90,6 +93,7 @@ export type PageMinAggregateInputType = {
   template?: true
   pageType?: true
   isSystemPage?: true
+  isHomePage?: true
   createdAt?: true
   updatedAt?: true
   publishedAt?: true
@@ -107,6 +111,7 @@ export type PageMaxAggregateInputType = {
   template?: true
   pageType?: true
   isSystemPage?: true
+  isHomePage?: true
   createdAt?: true
   updatedAt?: true
   publishedAt?: true
@@ -125,6 +130,7 @@ export type PageCountAggregateInputType = {
   template?: true
   pageType?: true
   isSystemPage?: true
+  isHomePage?: true
   createdAt?: true
   updatedAt?: true
   publishedAt?: true
@@ -216,6 +222,7 @@ export type PageGroupByOutputType = {
   template: string | null
   pageType: string | null
   isSystemPage: boolean
+  isHomePage: boolean
   createdAt: Date
   updatedAt: Date
   publishedAt: Date | null
@@ -255,6 +262,7 @@ export type PageWhereInput = {
   template?: Prisma.StringNullableFilter<"Page"> | string | null
   pageType?: Prisma.StringNullableFilter<"Page"> | string | null
   isSystemPage?: Prisma.BoolFilter<"Page"> | boolean
+  isHomePage?: Prisma.BoolFilter<"Page"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string
   publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
@@ -275,6 +283,7 @@ export type PageOrderByWithRelationInput = {
   template?: Prisma.SortOrderInput | Prisma.SortOrder
   pageType?: Prisma.SortOrderInput | Prisma.SortOrder
   isSystemPage?: Prisma.SortOrder
+  isHomePage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -299,6 +308,7 @@ export type PageWhereUniqueInput = Prisma.AtLeast<{
   template?: Prisma.StringNullableFilter<"Page"> | string | null
   pageType?: Prisma.StringNullableFilter<"Page"> | string | null
   isSystemPage?: Prisma.BoolFilter<"Page"> | boolean
+  isHomePage?: Prisma.BoolFilter<"Page"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string
   publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
@@ -319,6 +329,7 @@ export type PageOrderByWithAggregationInput = {
   template?: Prisma.SortOrderInput | Prisma.SortOrder
   pageType?: Prisma.SortOrderInput | Prisma.SortOrder
   isSystemPage?: Prisma.SortOrder
+  isHomePage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -343,6 +354,7 @@ export type PageScalarWhereWithAggregatesInput = {
   template?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null
   pageType?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null
   isSystemPage?: Prisma.BoolWithAggregatesFilter<"Page"> | boolean
+  isHomePage?: Prisma.BoolWithAggregatesFilter<"Page"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Page"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Page"> | Date | string
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Page"> | Date | string | null
@@ -359,6 +371,7 @@ export type PageCreateInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -379,6 +392,7 @@ export type PageUncheckedCreateInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -395,6 +409,7 @@ export type PageUpdateInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -415,6 +430,7 @@ export type PageUncheckedUpdateInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -433,6 +449,7 @@ export type PageCreateManyInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -449,6 +466,7 @@ export type PageUpdateManyMutationInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -467,6 +485,7 @@ export type PageUncheckedUpdateManyInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -500,6 +519,7 @@ export type PageCountOrderByAggregateInput = {
   template?: Prisma.SortOrder
   pageType?: Prisma.SortOrder
   isSystemPage?: Prisma.SortOrder
+  isHomePage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
@@ -517,6 +537,7 @@ export type PageMaxOrderByAggregateInput = {
   template?: Prisma.SortOrder
   pageType?: Prisma.SortOrder
   isSystemPage?: Prisma.SortOrder
+  isHomePage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
@@ -534,6 +555,7 @@ export type PageMinOrderByAggregateInput = {
   template?: Prisma.SortOrder
   pageType?: Prisma.SortOrder
   isSystemPage?: Prisma.SortOrder
+  isHomePage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
@@ -634,6 +656,7 @@ export type PageCreateWithoutTenantInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -652,6 +675,7 @@ export type PageUncheckedCreateWithoutTenantInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -699,6 +723,7 @@ export type PageScalarWhereInput = {
   template?: Prisma.StringNullableFilter<"Page"> | string | null
   pageType?: Prisma.StringNullableFilter<"Page"> | string | null
   isSystemPage?: Prisma.BoolFilter<"Page"> | boolean
+  isHomePage?: Prisma.BoolFilter<"Page"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string
   publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null
@@ -715,6 +740,7 @@ export type PageCreateWithoutAuthorInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -733,6 +759,7 @@ export type PageUncheckedCreateWithoutAuthorInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -776,6 +803,7 @@ export type PageCreateManyTenantInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -792,6 +820,7 @@ export type PageUpdateWithoutTenantInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -810,6 +839,7 @@ export type PageUncheckedUpdateWithoutTenantInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -827,6 +857,7 @@ export type PageUncheckedUpdateManyWithoutTenantInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -844,6 +875,7 @@ export type PageCreateManyAuthorInput = {
   template?: string | null
   pageType?: string | null
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   publishedAt?: Date | string | null
@@ -860,6 +892,7 @@ export type PageUpdateWithoutAuthorInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -878,6 +911,7 @@ export type PageUncheckedUpdateWithoutAuthorInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -895,6 +929,7 @@ export type PageUncheckedUpdateManyWithoutAuthorInput = {
   template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -915,6 +950,7 @@ export type PageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   template?: boolean
   pageType?: boolean
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   publishedAt?: boolean
@@ -935,6 +971,7 @@ export type PageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   template?: boolean
   pageType?: boolean
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   publishedAt?: boolean
@@ -955,6 +992,7 @@ export type PageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   template?: boolean
   pageType?: boolean
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   publishedAt?: boolean
@@ -975,12 +1013,13 @@ export type PageSelectScalar = {
   template?: boolean
   pageType?: boolean
   isSystemPage?: boolean
+  isHomePage?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   publishedAt?: boolean
 }
 
-export type PageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "slug" | "title" | "content" | "metaTitle" | "metaDescription" | "authorId" | "status" | "template" | "pageType" | "isSystemPage" | "createdAt" | "updatedAt" | "publishedAt", ExtArgs["result"]["page"]>
+export type PageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "slug" | "title" | "content" | "metaTitle" | "metaDescription" | "authorId" | "status" | "template" | "pageType" | "isSystemPage" | "isHomePage" | "createdAt" | "updatedAt" | "publishedAt", ExtArgs["result"]["page"]>
 export type PageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   author?: boolean | Prisma.Page$authorArgs<ExtArgs>
@@ -1013,6 +1052,7 @@ export type $PagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     template: string | null
     pageType: string | null
     isSystemPage: boolean
+    isHomePage: boolean
     createdAt: Date
     updatedAt: Date
     publishedAt: Date | null
@@ -1453,6 +1493,7 @@ export interface PageFieldRefs {
   readonly template: Prisma.FieldRef<"Page", 'String'>
   readonly pageType: Prisma.FieldRef<"Page", 'String'>
   readonly isSystemPage: Prisma.FieldRef<"Page", 'Boolean'>
+  readonly isHomePage: Prisma.FieldRef<"Page", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Page", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Page", 'DateTime'>
   readonly publishedAt: Prisma.FieldRef<"Page", 'DateTime'>

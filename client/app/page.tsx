@@ -1,85 +1,41 @@
-import { Page } from "@/components/layout/page";
-import { HeaderRenderer } from "@/components/header-renderer";
-import { FooterRenderer } from "@/components/footer-renderer";
-import { SectionRenderer } from "@/components/section-renderer";
-import type { TypedSection } from "@/components/section-renderer/section-renderer";
-import { siteConfigMock, homePageMock } from "@/data/mocks";
-import { publicApi } from "@/lib/public-api-client";
-import { logger } from "@/lib/logger";
-import type { LogoConfig } from "@/lib/logos/types";
-import type { Menu } from "@/lib/menus/types";
-import {
-  resolveHeader,
-  resolveFooter,
-  getHeaderMenu,
-} from "@/lib/config/resolvers";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
-  // Fetch real data from API with fallback to mocks
-  let siteConfig = siteConfigMock;
-  let pageData = homePageMock;
+/**
+ * Root Landing Page
+ *
+ * For multi-tenant architecture, redirects to the default tenant
+ * or shows a tenant selection page.
+ *
+ * URL structure:
+ * - / (this page) → redirects to default tenant
+ * - /{tenantSlug} → tenant home page
+ * - /{tenantSlug}/{pageSlug} → tenant page
+ */
+export default function Home() {
+  // Redirect to default tenant from env, or show error
+  const defaultTenant = process.env.NEXT_PUBLIC_TENANT_SLUG;
 
-  try {
-    // Fetch site configuration and home page from API
-    const [apiConfig, apiPage] = await Promise.all([
-      publicApi.getConfig(),
-      publicApi.getPage("home"),
-    ]);
-
-    // Use API data if available
-    if (apiConfig) {
-      siteConfig = {
-        ...siteConfigMock,
-        ...apiConfig,
-        // Map API fields to expected client structure
-        logos:
-          (apiConfig.logosConfig as Record<string, LogoConfig>) ||
-          siteConfigMock.logos,
-        menus:
-          (apiConfig.menusConfig as Record<string, Menu>) ||
-          siteConfigMock.menus,
-      };
-    }
-
-    if (apiPage?.content) {
-      pageData = {
-        ...homePageMock,
-        ...apiPage,
-        sections:
-          (apiPage.content.sections as TypedSection[]) || homePageMock.sections,
-      };
-    }
-  } catch {
-    // Gracefully fall back to mocks if API unavailable
-    logger.warn("API unavailable, using mock data for homepage");
+  if (defaultTenant) {
+    redirect(`/${defaultTenant}`);
   }
 
-  // Resolve header and footer based on page config and site defaults
-  const headerConfig = resolveHeader(pageData, siteConfig);
-  const footerConfig = resolveFooter(pageData, siteConfig);
-
-  // Get menu for header
-  const headerMenu = headerConfig
-    ? getHeaderMenu(headerConfig, siteConfig)
-    : null;
-
+  // No default tenant configured - show info page
   return (
-    <Page
-      header={
-        headerConfig ? (
-          <HeaderRenderer
-            config={headerConfig}
-            menu={headerMenu}
-            logos={siteConfig.logos}
-          />
-        ) : undefined
-      }
-      footer={
-        footerConfig ? <FooterRenderer config={footerConfig} /> : undefined
-      }
-      headerPosition={headerConfig?.behavior.position}
-    >
-      <SectionRenderer sections={pageData.sections} />
-    </Page>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="text-center max-w-md px-4">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          Multi-Tenant Client
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
+          Access a tenant site using the URL pattern:
+        </p>
+        <code className="block bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-sm font-mono text-gray-800 dark:text-gray-200">
+          /{"{tenant-slug}"}/{"{page-slug}"}
+        </code>
+        <p className="text-gray-500 dark:text-gray-500 mt-6 text-sm">
+          Example: /mh-bible-baptist/about
+        </p>
+      </div>
+    </div>
   );
 }

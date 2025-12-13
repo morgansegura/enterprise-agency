@@ -49,3 +49,14 @@
     @apply p-0;
   }
 }
+
+/* Preview Mode */
+.page-editor-layout[data-preview-mode="true"] {
+  .page-editor-toolbar {
+    @apply bg-transparent border-b-0;
+  }
+
+  .page-editor-canvas {
+    @apply bg-(--background);
+  }
+}

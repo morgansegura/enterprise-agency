@@ -61,6 +61,10 @@ export interface Page {
     preloadCritical?: boolean;
     cacheStrategy?: "static" | "dynamic" | "hybrid";
   };
+  // Home page and system page fields
+  isHomePage?: boolean;
+  pageType?: string;
+  isSystemPage?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }

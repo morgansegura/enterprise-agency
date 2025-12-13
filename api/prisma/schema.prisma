@@ -314,6 +314,10 @@ model Page {
   pageType     String?  @map("page_type") @db.VarChar(50)
   isSystemPage Boolean @default(false) @map("is_system_page")
 
+  // Home page flag - only one page per tenant can be the home page
+  // If no page is set as home, the coming-soon page is shown by default
+  isHomePage Boolean @default(false) @map("is_home_page")
+
   // Timestamps
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")

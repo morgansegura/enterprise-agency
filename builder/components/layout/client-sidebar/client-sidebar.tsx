@@ -10,13 +10,10 @@ import {
   Package,
   Receipt,
   Users,
-  Palette,
   Settings,
   ArrowLeft,
   PanelsTopLeft,
   GlobeLock,
-  UsersRound,
-  BarChart3,
 } from "lucide-react";
 
 import {
@@ -92,28 +89,6 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
     },
   ];
 
-  const settingsMenuItems = [
-    {
-      title: "Theme",
-      url: `/${tenantId}/theme`,
-      icon: Palette,
-    },
-    {
-      title: "Team",
-      url: `/${tenantId}/team`,
-      icon: UsersRound,
-    },
-    {
-      title: "Analytics",
-      url: `/${tenantId}/analytics`,
-      icon: BarChart3,
-    },
-    {
-      title: "Settings",
-      url: `/${tenantId}/settings`,
-      icon: Settings,
-    },
-  ];
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -192,21 +167,6 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup>
-          <SidebarGroupLabel>Settings</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {settingsMenuItems.map((item) => (
-                <NavLink
-                  key={item.url}
-                  href={item.url}
-                  icon={<item.icon />}
-                  title={item.title}
-                />
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter>

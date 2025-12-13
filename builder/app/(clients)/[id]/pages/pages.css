@@ -72,6 +72,62 @@
   @apply flex items-center justify-between mb-2;
 }
 
+.page-card-badges {
+  @apply flex items-center gap-1.5;
+}
+
+.page-card-badge {
+  @apply flex items-center justify-center w-5 h-5 rounded-full;
+}
+
+.page-card-badge-home {
+  @apply bg-blue-100 text-blue-600;
+}
+
+/* Status dropdown button */
+.page-status-dropdown {
+  @apply inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-md cursor-pointer transition-colors;
+  @apply border border-transparent hover:border-(--border);
+}
+
+.page-status-dropdown:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.page-status-draft {
+  @apply bg-amber-50 text-amber-700 hover:bg-amber-100;
+}
+
+.page-status-published {
+  @apply bg-green-50 text-green-700 hover:bg-green-100;
+}
+
+.page-status-scheduled {
+  @apply bg-blue-50 text-blue-700 hover:bg-blue-100;
+}
+
+.page-status-archived {
+  @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
+}
+
+/* Status icon colors for dropdown menu items */
+.text-status-draft {
+  @apply text-amber-500;
+}
+
+.text-status-published {
+  @apply text-green-500;
+}
+
+.text-status-scheduled {
+  @apply text-blue-500;
+}
+
+.text-status-archived {
+  @apply text-gray-500;
+}
+
+/* Legacy status badge (keeping for backwards compat) */
 .page-card-status {
   @apply text-xs font-medium px-2 py-0.5 rounded-full capitalize;
 }
@@ -117,7 +173,11 @@
 }
 
 .page-list-item-title {
-  @apply font-medium text-(--foreground) truncate;
+  @apply font-medium text-(--foreground) truncate flex items-center gap-2;
+}
+
+.page-list-item-home-badge {
+  @apply inline-flex items-center justify-center w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex-shrink-0;
 }
 
 .page-list-item-slug {

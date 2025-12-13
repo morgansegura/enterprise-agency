@@ -1,11 +1,23 @@
 @reference "tailwindcss";
 
 .client-layout-header {
-  @apply flex h-11 shrink-0 items-center justify-between gap-2 px-4 border-b border-(--border);
+  @apply flex h-11 shrink-0 items-center gap-2 px-4 border-b border-(--border);
 }
 
 .client-layout-header-left {
   @apply flex items-center gap-2;
+}
+
+.client-layout-header-center {
+  @apply flex-1 flex items-center justify-center gap-1.5;
+}
+
+.client-layout-header-context-type {
+  @apply text-sm text-(--muted-foreground);
+}
+
+.client-layout-header-context-title {
+  @apply text-sm font-medium text-(--foreground);
 }
 
 .client-layout-header-trigger {
@@ -38,4 +50,9 @@
 
 .client-layout-loading-text {
   @apply text-(--muted-foreground);
+}
+
+/* Preview mode - full screen without chrome */
+.client-layout-preview {
+  @apply min-h-screen w-full bg-(--background);
 }

@@ -11,15 +11,10 @@ import {
   type Block,
 } from "@/lib/hooks/use-pages";
 import { PageEditorLayout, PageSettingsDrawer } from "@/components/editor";
+import { PageRenderer } from "@/components/renderers/page-renderer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Newspaper, PanelsTopLeft, Store, Cog, Globe } from "lucide-react";
+import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
 import { SortableSection } from "@/components/editor/sortable-section";
 import { GlobalSettingsDrawer } from "@/components/editor/global-settings-drawer";
@@ -30,6 +25,7 @@ import { logger } from "@/lib/logger";
 import { toast } from "sonner";
 import { ResponsiveProvider } from "@/lib/responsive/context";
 import { useIsBuilder } from "@/lib/hooks/use-tier";
+import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import {
   DndContext,
   closestCenter,
@@ -78,6 +74,9 @@ export default function EditPagePage({
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
   const [globalSettingsOpen, setGlobalSettingsOpen] = React.useState(false);
 
+  // Preview mode from context (controls parent layout visibility)
+  const { isPreviewMode: previewMode, togglePreviewMode, setPageContext } = usePreviewMode();
+
   // Selection state for WYSIWYG editing
   const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(
     null,
@@ -125,6 +124,15 @@ export default function EditPagePage({
       });
     }
   }, [page]);
+
+  // Set page context for header display
+  React.useEffect(() => {
+    const title = localPage.title || page?.title || "Untitled";
+    setPageContext({ type: "Page", title });
+
+    // Clear context when unmounting
+    return () => setPageContext(null);
+  }, [localPage.title, page?.title, setPageContext]);
 
   // Listen for block additions from BlocksLibrary
   React.useEffect(() => {
@@ -247,8 +255,12 @@ export default function EditPagePage({
   };
 
   const handlePreview = () => {
-    // Open preview in new tab
-    window.open(`/preview/${localPage.slug}`, "_blank");
+    // Toggle preview mode (hides parent layout chrome via context)
+    togglePreviewMode();
+    // Clear selection when entering preview mode
+    if (!previewMode) {
+      setSelectedBlockKey(null);
+    }
   };
 
   const handleBlockChange = (
@@ -526,80 +538,37 @@ export default function EditPagePage({
     return defaultBlock;
   }
 
+  // Preview mode - show rendered page without any editor chrome
+  if (previewMode) {
+    return (
+      <div className="min-h-screen bg-background">
+        {/* Floating exit button */}
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={handlePreview}
+          className="fixed top-4 right-4 z-50 shadow-lg"
+        >
+          <Eye className="h-4 w-4" />
+          Exit Preview
+        </Button>
+
+        {/* Pure page render */}
+        <PageRenderer
+          page={{
+            id: pageId,
+            title: localPage.title,
+            slug: localPage.slug,
+            sections,
+          }}
+          breakpoint={breakpoint}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-[48px_1fr]">
-      {/* Icon Toolbar */}
-      <aside className="relative bg-(--sidebar) w-12 border-r flex flex-col top-0 bottom-0 items-center space-y-2 py-4 text-muted-foreground">
-        {/* Navigation Section */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => toast.info("Website editor coming soon")}
-            >
-              <PanelsTopLeft />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Website Editor</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => toast.info("Blog editor coming soon")}
-            >
-              <Newspaper />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Blog Editor</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => toast.info("Shop editor coming soon")}
-            >
-              <Store />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Shop Editor</TooltipContent>
-        </Tooltip>
-
-        <Separator className="my-2" />
-
-        {/* Page Tools Section */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setSettingsModalOpen(true)}
-            >
-              <Cog />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Page Settings</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setGlobalSettingsOpen(true)}
-            >
-              <Globe />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Global Settings</TooltipContent>
-        </Tooltip>
-      </aside>
-
+    <>
       {/* Page Settings Drawer */}
       <PageSettingsDrawer
         open={settingsModalOpen}
@@ -618,7 +587,6 @@ export default function EditPagePage({
 
       <PageEditorLayout
         pageId={pageId}
-        pageTitle={localPage.title || page.title}
         breakpoint={breakpoint}
         onBreakpointChange={setBreakpoint}
         onSave={handleSave}
@@ -747,6 +715,6 @@ export default function EditPagePage({
           </ResponsivePreview>
         </ResponsiveProvider>
       </PageEditorLayout>
-    </div>
+    </>
   );
 }

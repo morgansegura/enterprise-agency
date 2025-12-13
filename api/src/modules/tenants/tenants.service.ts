@@ -56,7 +56,7 @@ export class TenantsService {
       throw new ConflictException("Tenant slug already exists");
     }
 
-    // Create tenant with creator as owner
+    // Create tenant with creator as owner and default Coming Soon page
     const tenant = await this.prisma.tenant.create({
       data: {
         slug: createData.slug,
@@ -80,10 +80,62 @@ export class TenantsService {
             },
           },
         },
+        // Create default Coming Soon page as the home page
+        pages: {
+          create: {
+            slug: "coming-soon",
+            title: "Coming Soon",
+            authorId: creatorUserId,
+            status: "published",
+            publishedAt: new Date(),
+            isHomePage: true,
+            pageType: "coming-soon",
+            isSystemPage: true,
+            metaTitle: `Coming Soon - ${createData.businessName}`,
+            metaDescription: `${createData.businessName} website is coming soon. Check back for updates.`,
+            content: {
+              sections: [
+                {
+                  _type: "section",
+                  _key: "coming-soon-hero",
+                  background: "default",
+                  spacing: "2xl",
+                  width: "narrow",
+                  align: "center",
+                  blocks: [
+                    {
+                      _type: "heading",
+                      _key: "coming-soon-title",
+                      level: "h1",
+                      text: createData.businessName,
+                      size: "5xl",
+                      align: "center",
+                    },
+                    {
+                      _type: "text",
+                      _key: "coming-soon-subtitle",
+                      text: "We're working on something amazing. Check back soon!",
+                      variant: "lead",
+                      align: "center",
+                    },
+                    {
+                      _type: "text",
+                      _key: "coming-soon-body",
+                      text: "Our website is currently under construction. We're putting the finishing touches on a great experience for you.",
+                      variant: "muted",
+                      align: "center",
+                    },
+                  ],
+                },
+              ],
+            } as Prisma.InputJsonValue,
+          },
+        },
       },
       include: {
         tenantUsers: true,
         domains: true,
+        pages: true,
       },
     });
 
@@ -189,6 +241,20 @@ export class TenantsService {
 
   async update(id: string, updateData: UpdateTenantDto) {
     const updateFields: Record<string, unknown> = {};
+
+    // Handle slug update with uniqueness check
+    if (updateData.slug !== undefined) {
+      // Check if slug is already taken by another tenant
+      const existingWithSlug = await this.prisma.tenant.findUnique({
+        where: { slug: updateData.slug },
+      });
+
+      if (existingWithSlug && existingWithSlug.id !== id) {
+        throw new ConflictException("Tenant slug already exists");
+      }
+
+      updateFields.slug = updateData.slug;
+    }
 
     if (updateData.businessName !== undefined)
       updateFields.businessName = updateData.businessName;

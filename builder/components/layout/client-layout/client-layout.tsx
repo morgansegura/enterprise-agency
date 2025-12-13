@@ -12,6 +12,10 @@ import { ClientSidebar } from "@/components/layout/client-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { ThemeSwitcher } from "@/components/layout/dashboard-header/theme-switcher";
 import { ProfileDropdown } from "@/components/layout/dashboard-header/profile-dropdown";
+import {
+  PreviewModeProvider,
+  usePreviewModeOptional,
+} from "@/lib/context/preview-mode-context";
 
 import "./client-layout.css";
 
@@ -24,6 +28,13 @@ function ClientContent({
   onLogout: () => void;
   children: React.ReactNode;
 }) {
+  const { isPreviewMode, pageContext } = usePreviewModeOptional();
+
+  // In preview mode, render children without layout chrome
+  if (isPreviewMode) {
+    return <div className="client-layout-preview">{children}</div>;
+  }
+
   return (
     <>
       <ClientSidebar user={user} />
@@ -36,6 +47,16 @@ function ClientContent({
               className="client-layout-header-separator"
             />
           </div>
+          {pageContext && (
+            <div className="client-layout-header-center">
+              <span className="client-layout-header-context-type">
+                {pageContext.type}:
+              </span>
+              <span className="client-layout-header-context-title">
+                {pageContext.title}
+              </span>
+            </div>
+          )}
           <div className="client-layout-header-right">
             <ThemeSwitcher />
             <ProfileDropdown user={user} onLogout={onLogout} />
@@ -83,10 +104,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <SidebarProvider defaultOpen={false}>
-      <ClientContent user={user} onLogout={handleLogout}>
-        {children}
-      </ClientContent>
-    </SidebarProvider>
+    <PreviewModeProvider>
+      <SidebarProvider defaultOpen={false}>
+        <ClientContent user={user} onLogout={handleLogout}>
+          {children}
+        </ClientContent>
+      </SidebarProvider>
+    </PreviewModeProvider>
   );
 }

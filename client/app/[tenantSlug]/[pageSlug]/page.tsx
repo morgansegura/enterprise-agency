@@ -1,25 +1,16 @@
 import { Metadata } from "next";
 import { Page } from "@/components/layout/page";
-import { HeaderRenderer } from "@/components/header-renderer";
-import { FooterRenderer } from "@/components/footer-renderer";
 import { SectionRenderer } from "@/components/section-renderer";
 import { BreadcrumbSchema } from "@/components/seo";
 import type { TypedSection } from "@/components/section-renderer/section-renderer";
-import { siteConfigMock } from "@/data/mocks";
-import { createPublicApiClient } from "@/lib/public-api-client";
+import { createPublicApiClientForTenant } from "@/lib/public-api-client";
 import { logger } from "@/lib/logger";
-import type { LogoConfig } from "@/lib/logos/types";
-import type { Menu } from "@/lib/menus/types";
-import {
-  resolveHeader,
-  resolveFooter,
-  getHeaderMenu,
-} from "@/lib/config/resolvers";
 import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{
-    slug: string;
+    tenantSlug: string;
+    pageSlug: string;
   }>;
 }
 
@@ -29,25 +20,25 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { tenantSlug, pageSlug } = await params;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4002";
 
   try {
-    const api = await createPublicApiClient();
+    const api = createPublicApiClientForTenant(tenantSlug);
     const [config, page] = await Promise.all([
       api.getConfig(),
-      api.getPage(slug),
+      api.getPage(pageSlug),
     ]);
 
     const siteName = config?.businessName || "Enterprise Agency";
     const pageTitle = page.metaTitle || page.title;
     const pageDescription =
       page.metaDescription || config?.metaDescription || "";
-    const pageUrl = `${siteUrl}/${slug}`;
+    const pageUrl = `${siteUrl}/${tenantSlug}/${pageSlug}`;
     const ogImage = page.ogImage || config?.logoUrl || "/og-image.jpg";
 
     return {
-      title: pageTitle,
+      title: `${pageTitle} | ${siteName}`,
       description: pageDescription,
       keywords: page.metaKeywords,
       alternates: {
@@ -79,68 +70,70 @@ export async function generateMetadata({
   } catch {
     // Fallback metadata during build or API errors
     return {
-      title: slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, " "),
+      title:
+        pageSlug.charAt(0).toUpperCase() + pageSlug.slice(1).replace(/-/g, " "),
     };
   }
 }
 
-export default async function DynamicPage({ params }: PageProps) {
-  const { slug } = await params;
+/**
+ * Tenant Page
+ * URL: /{tenantSlug}/{pageSlug}
+ *
+ * Renders any published page for a specific tenant.
+ * Complete data isolation - each tenant's data is fetched separately.
+ * All content comes from the API - no mock data fallbacks.
+ */
+export default async function TenantPage({ params }: PageProps) {
+  const { tenantSlug, pageSlug } = await params;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4002";
 
-  // Fetch page and config from API
-  let siteConfig = siteConfigMock;
-  let pageData = null;
+  // Create API client for this specific tenant
+  const api = createPublicApiClientForTenant(tenantSlug);
+
+  let siteConfig: SiteConfig;
+  let pageTitle = "";
+  let sections: TypedSection[] = [];
 
   try {
-    const api = await createPublicApiClient();
     const [apiConfig, apiPage] = await Promise.all([
       api.getConfig(),
-      api.getPage(slug),
+      api.getPage(pageSlug),
     ]);
 
-    if (apiConfig) {
-      siteConfig = {
-        ...siteConfigMock,
-        ...apiConfig,
-        logos:
-          (apiConfig.logosConfig as Record<string, LogoConfig>) ||
-          siteConfigMock.logos,
-        menus:
-          (apiConfig.menusConfig as Record<string, Menu>) ||
-          siteConfigMock.menus,
-      };
-    }
+    siteConfig = apiConfig;
+    pageTitle = apiPage.title;
 
-    if (apiPage?.content) {
-      pageData = {
-        ...apiPage,
-        sections: (apiPage.content.sections as TypedSection[]) || [],
-      };
+    // Extract sections from page content
+    if (apiPage?.content?.sections) {
+      sections = apiPage.content.sections as TypedSection[];
     }
-  } catch {
+  } catch (error) {
     // Page not found - return 404
-    logger.warn(`Page not found: ${slug}`);
+    logger.warn(`Page not found: ${tenantSlug}/${pageSlug}`, error);
     notFound();
   }
 
-  if (!pageData) {
-    notFound();
-  }
+  // Build config object for header/footer resolvers
+  const configWithMenusAndLogos = {
+    ...siteConfig,
+    logos: (siteConfig.logosConfig as Record<string, LogoConfig>) || {},
+    menus: (siteConfig.menusConfig as Record<string, Menu>) || {},
+  };
 
   // Resolve header and footer
-  const headerConfig = resolveHeader(pageData, siteConfig);
-  const footerConfig = resolveFooter(pageData, siteConfig);
+  const headerConfig = resolveHeader({}, configWithMenusAndLogos);
+  const footerConfig = resolveFooter({}, configWithMenusAndLogos);
   const headerMenu = headerConfig
-    ? getHeaderMenu(headerConfig, siteConfig)
+    ? getHeaderMenu(headerConfig, configWithMenusAndLogos)
     : null;
 
   return (
     <>
       <BreadcrumbSchema
         items={[
-          { name: "Home", url: siteUrl },
-          { name: pageData.title, url: `${siteUrl}/${slug}` },
+          { name: "Home", url: `${siteUrl}/${tenantSlug}` },
+          { name: pageTitle, url: `${siteUrl}/${tenantSlug}/${pageSlug}` },
         ]}
       />
       <Page
@@ -149,7 +142,7 @@ export default async function DynamicPage({ params }: PageProps) {
             <HeaderRenderer
               config={headerConfig}
               menu={headerMenu}
-              logos={siteConfig.logos}
+              logos={configWithMenusAndLogos.logos}
             />
           ) : undefined
         }
@@ -158,30 +151,19 @@ export default async function DynamicPage({ params }: PageProps) {
         }
         headerPosition={headerConfig?.behavior.position}
       >
-        <SectionRenderer sections={pageData.sections} />
+        <SectionRenderer sections={sections} />
       </Page>
     </>
   );
 }
 
 /**
- * Generate static params for all published pages
+ * Generate static params for all published pages across all tenants
  * This enables static generation for all pages at build time
  */
 export async function generateStaticParams() {
-  try {
-    const api = await createPublicApiClient();
-    const { pages } = await api.listPages();
-
-    // Filter out 'home' since it's handled by app/page.tsx
-    return pages
-      .filter((page) => page.slug !== "home")
-      .map((page) => ({
-        slug: page.slug,
-      }));
-  } catch {
-    // Build time - API not available, skip static generation
-    logger.warn("Static generation skipped - API not available");
-    return [];
-  }
+  // For now, skip static generation - pages will be generated on-demand
+  // To enable full static generation, we'd need an API endpoint to list all tenants
+  // and then iterate through each tenant's pages
+  return [];
 }

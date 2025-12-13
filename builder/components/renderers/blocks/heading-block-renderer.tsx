@@ -4,13 +4,14 @@ import { cn } from "@/lib/utils";
 interface HeadingBlockData {
   text: string;
   level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
   align?: "left" | "center" | "right";
   weight?: "normal" | "medium" | "semibold" | "bold";
   color?: "default" | "muted" | "primary" | "secondary";
 }
 
-const sizeClasses = {
+// Match editor's HeadingBlockEditor sizeMap exactly
+const sizeClasses: Record<string, string> = {
   xs: "text-xs",
   sm: "text-sm",
   md: "text-base",
@@ -19,22 +20,24 @@ const sizeClasses = {
   "2xl": "text-2xl",
   "3xl": "text-3xl",
   "4xl": "text-4xl",
+  "5xl": "text-5xl",
+  "6xl": "text-6xl",
 };
 
-const alignClasses = {
+const alignClasses: Record<string, string> = {
   left: "text-left",
   center: "text-center",
   right: "text-right",
 };
 
-const weightClasses = {
+const weightClasses: Record<string, string> = {
   normal: "font-normal",
   medium: "font-medium",
   semibold: "font-semibold",
   bold: "font-bold",
 };
 
-const colorClasses = {
+const colorClasses: Record<string, string> = {
   default: "text-foreground",
   muted: "text-muted-foreground",
   primary: "text-primary",
@@ -57,10 +60,10 @@ export default function HeadingBlockRenderer({ block }: BlockRendererProps) {
   return (
     <Tag
       className={cn(
-        sizeClasses[size],
-        alignClasses[align],
-        weightClasses[weight],
-        colorClasses[color],
+        sizeClasses[size] || sizeClasses["2xl"],
+        alignClasses[align] || alignClasses.left,
+        weightClasses[weight] || weightClasses.semibold,
+        colorClasses[color] || colorClasses.default,
       )}
     >
       {text}

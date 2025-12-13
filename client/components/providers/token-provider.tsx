@@ -1,10 +1,17 @@
-import { publicApi } from "@/lib/public-api-client";
+import {
+  publicApi,
+  createPublicApiClientForTenant,
+} from "@/lib/public-api-client";
 import { mergeTokens, generateCSS, type TenantTokens } from "@/lib/tokens";
 import {
   generateTenantCSS,
   type DesignTokens,
 } from "@/lib/tokens/design-system";
 import { logger } from "@/lib/logger";
+
+interface TokenProviderProps {
+  tenantSlug?: string;
+}
 
 /**
  * Token Provider
@@ -39,14 +46,22 @@ import { logger } from "@/lib/logger";
  *   );
  * }
  * ```
+ *
+ * For tenant-specific tokens:
+ * ```tsx
+ * <TokenProvider tenantSlug="my-tenant" />
+ * ```
  */
-export async function TokenProvider() {
+export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   let tenantTokens: TenantTokens & Partial<DesignTokens> = {};
 
   try {
     // Fetch tenant token overrides from API
-    // This is cached for 5 minutes via Next.js fetch cache
-    const apiTokens = await publicApi.getTokens();
+    // Use tenant-specific client if slug provided, otherwise use default
+    const api = tenantSlug
+      ? createPublicApiClientForTenant(tenantSlug)
+      : publicApi;
+    const apiTokens = await api.getTokens();
     tenantTokens = apiTokens as TenantTokens & Partial<DesignTokens>;
   } catch (error) {
     // Graceful fallback: use platform defaults only

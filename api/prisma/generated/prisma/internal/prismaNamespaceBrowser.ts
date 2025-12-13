@@ -222,6 +222,7 @@ export const PageScalarFieldEnum = {
   template: 'template',
   pageType: 'pageType',
   isSystemPage: 'isSystemPage',
+  isHomePage: 'isHomePage',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   publishedAt: 'publishedAt'

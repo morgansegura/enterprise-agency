@@ -237,12 +237,23 @@ export class PublicApiService {
   /**
    * Get single published page by slug
    * GET /api/v1/public/:tenantSlug/pages/:pageSlug
+   *
+   * Special handling for "home" slug:
+   * - First looks for a page with isHomePage: true
+   * - Falls back to page with slug "home"
+   * - Falls back to "coming-soon" system page
+   * - Returns a default coming soon page if none exists
    */
   async getPageBySlug(
     tenantSlug: string,
     pageSlug: string,
   ): Promise<PublicPageDto> {
     const tenant = await this.getTenantBySlug(tenantSlug);
+
+    // Special handling for home page requests
+    if (pageSlug === "home") {
+      return this.getHomePage(tenant.id, tenantSlug);
+    }
 
     const page = await this.prisma.page.findFirst({
       where: {
@@ -277,6 +288,163 @@ export class PublicApiService {
       template: page.template ?? undefined,
       publishedAt: page.publishedAt?.toISOString() || "",
       updatedAt: page.updatedAt.toISOString(),
+    };
+  }
+
+  /**
+   * Get home page for a tenant
+   * Priority:
+   * 1. Page with isHomePage: true
+   * 2. Page with slug "home"
+   * 3. Page with pageType "coming-soon"
+   * 4. Default coming soon content
+   */
+  private async getHomePage(
+    tenantId: string,
+    tenantSlug: string,
+  ): Promise<PublicPageDto> {
+    // 1. Try to find page marked as home
+    let page = await this.prisma.page.findFirst({
+      where: {
+        tenantId,
+        isHomePage: true,
+        status: "published",
+      },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        content: true,
+        metaTitle: true,
+        metaDescription: true,
+        template: true,
+        publishedAt: true,
+        updatedAt: true,
+      },
+    });
+
+    // 2. Fallback to page with slug "home"
+    if (!page) {
+      page = await this.prisma.page.findFirst({
+        where: {
+          tenantId,
+          slug: "home",
+          status: "published",
+        },
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          content: true,
+          metaTitle: true,
+          metaDescription: true,
+          template: true,
+          publishedAt: true,
+          updatedAt: true,
+        },
+      });
+    }
+
+    // 3. Fallback to coming-soon page
+    if (!page) {
+      page = await this.prisma.page.findFirst({
+        where: {
+          tenantId,
+          pageType: "coming-soon",
+          status: "published",
+        },
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          content: true,
+          metaTitle: true,
+          metaDescription: true,
+          template: true,
+          publishedAt: true,
+          updatedAt: true,
+        },
+      });
+    }
+
+    // 4. Return default coming soon content if no page exists
+    if (!page) {
+      this.logger.log(`No home page found for tenant ${tenantSlug}, returning default coming soon`);
+      return this.getDefaultComingSoonPage(tenantSlug);
+    }
+
+    return {
+      id: page.id,
+      slug: page.slug,
+      title: page.title,
+      content: page.content,
+      metaTitle: page.metaTitle ?? undefined,
+      metaDescription: page.metaDescription ?? undefined,
+      template: page.template ?? undefined,
+      publishedAt: page.publishedAt?.toISOString() || "",
+      updatedAt: page.updatedAt.toISOString(),
+    };
+  }
+
+  /**
+   * Generate default coming soon page content
+   */
+  private async getDefaultComingSoonPage(
+    tenantSlug: string,
+  ): Promise<PublicPageDto> {
+    // Get tenant business name for personalization
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { slug: tenantSlug },
+      select: { businessName: true },
+    });
+
+    const businessName = tenant?.businessName || "Our Site";
+
+    return {
+      id: "coming-soon-default",
+      slug: "home",
+      title: "Coming Soon",
+      content: {
+        sections: [
+          {
+            _type: "section",
+            _key: "coming-soon-section",
+            background: "default",
+            spacing: "2xl",
+            width: "narrow",
+            align: "center",
+            blocks: [
+              {
+                _type: "heading",
+                _key: "coming-soon-title",
+                level: "h1",
+                text: businessName,
+                size: "5xl",
+                align: "center",
+              },
+              {
+                _type: "text",
+                _key: "coming-soon-subtitle",
+                text: "We're working on something amazing. Check back soon!",
+                variant: "lead",
+                align: "center",
+              },
+              {
+                _type: "text",
+                _key: "coming-soon-body",
+                text: "Our website is currently under construction. We're putting the finishing touches on a great experience for you.",
+                variant: "muted",
+                align: "center",
+              },
+            ],
+          },
+        ],
+      },
+      metaTitle: `Coming Soon - ${businessName}`,
+      metaDescription: `${businessName} website is coming soon. Check back for updates.`,
+      template: "coming-soon",
+      publishedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
   }
 

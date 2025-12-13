@@ -20,9 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { FormItem } from "@/components/ui/form";
 import { SeoEditor } from "../seo-editor";
-import { Settings, Search, Layout, Palette, FileText } from "lucide-react";
+import { Settings, Search, Layout, Palette, FileText, Home } from "lucide-react";
 import type { PageSeo } from "@/lib/hooks/use-pages";
 
 type SettingsTab = "general" | "seo" | "layout" | "style";
@@ -63,6 +64,8 @@ interface PageSettingsDrawerProps {
     status?: string;
     template?: string;
     seo?: PageSeo;
+    isHomePage?: boolean;
+    pageType?: string;
   };
   onChange?: (field: string, value: unknown) => void;
   onSave?: () => void;
@@ -111,6 +114,8 @@ interface SettingsPanelProps {
     status?: string;
     template?: string;
     seo?: PageSeo;
+    isHomePage?: boolean;
+    pageType?: string;
   };
   onChange?: (field: string, value: unknown) => void;
 }
@@ -172,6 +177,27 @@ function GeneralSettings({ page, onChange }: SettingsPanelProps) {
               <SelectItem value="landing">Landing Page</SelectItem>
             </SelectContent>
           </Select>
+        </SettingsField>
+
+        <SettingsField>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Home className="size-4 text-muted-foreground" />
+              <div>
+                <Label htmlFor="page-is-home" className="text-sm font-medium">
+                  Set as Home Page
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  This page will be shown when visitors access the site root
+                </p>
+              </div>
+            </div>
+            <Switch
+              id="page-is-home"
+              checked={page.isHomePage || false}
+              onCheckedChange={(checked) => onChange?.("isHomePage", checked)}
+            />
+          </div>
         </SettingsField>
       </SettingsForm>
     </SettingsSection>

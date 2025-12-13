@@ -40,6 +40,19 @@ export class PagesService {
       throw new ConflictException("Slug already exists for this tenant");
     }
 
+    // If this page is being set as home, unset any existing home page
+    if (createData.isHomePage) {
+      await this.prisma.page.updateMany({
+        where: {
+          tenantId,
+          isHomePage: true,
+        },
+        data: {
+          isHomePage: false,
+        },
+      });
+    }
+
     // Build content structure for sections and serialize to plain JSON
     const contentData = {
       sections: createData.sections || [],
@@ -66,6 +79,9 @@ export class PagesService {
         status: createData.status || "draft",
         template: createData.template || "default",
         publishedAt: createData.status === "published" ? new Date() : null,
+        isHomePage: createData.isHomePage || false,
+        pageType: createData.pageType,
+        isSystemPage: createData.isSystemPage || false,
       },
       include: {
         author: {
@@ -213,6 +229,20 @@ export class PagesService {
       if (slugTaken) {
         throw new ConflictException("Slug already exists for this tenant");
       }
+    }
+
+    // If this page is being set as home, unset any existing home page first
+    if (updateData.isHomePage === true && !existing.isHomePage) {
+      await this.prisma.page.updateMany({
+        where: {
+          tenantId,
+          isHomePage: true,
+          id: { not: id }, // Don't update the current page
+        },
+        data: {
+          isHomePage: false,
+        },
+      });
     }
 
     // Validate structure changes if tier is provided and sections are being updated

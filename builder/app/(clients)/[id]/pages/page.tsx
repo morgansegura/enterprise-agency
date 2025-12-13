@@ -7,6 +7,8 @@ import {
   usePages,
   useDeletePage,
   useDuplicatePage,
+  useUpdatePage,
+  type Page,
 } from "@/lib/hooks/use-pages";
 import {
   DropdownMenu,
@@ -36,8 +38,81 @@ import {
   List,
   FileText,
   ExternalLink,
+  PlusCircle,
+  Home,
+  Circle,
+  CheckCircle2,
+  Clock,
+  Archive,
+  ChevronDown,
 } from "lucide-react";
 import "./pages.css";
+
+// Status configuration
+const statusConfig = {
+  draft: {
+    label: "Draft",
+    icon: Circle,
+    className: "page-status-draft",
+  },
+  published: {
+    label: "Published",
+    icon: CheckCircle2,
+    className: "page-status-published",
+  },
+  scheduled: {
+    label: "Scheduled",
+    icon: Clock,
+    className: "page-status-scheduled",
+  },
+  archived: {
+    label: "Archived",
+    icon: Archive,
+    className: "page-status-archived",
+  },
+} as const;
+
+type StatusKey = keyof typeof statusConfig;
+
+interface StatusDropdownProps {
+  status: string | undefined;
+  onStatusChange: (status: string) => void;
+  disabled?: boolean;
+}
+
+function StatusDropdown({ status, onStatusChange, disabled }: StatusDropdownProps) {
+  const currentStatus = (status || "draft") as StatusKey;
+  const config = statusConfig[currentStatus] || statusConfig.draft;
+  const StatusIcon = config.icon;
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={`page-status-dropdown ${config.className}`}
+          onClick={(e) => e.stopPropagation()}
+          disabled={disabled}
+        >
+          <StatusIcon className="h-3.5 w-3.5" />
+          <span>{config.label}</span>
+          <ChevronDown className="h-3 w-3 opacity-50" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" onClick={(e) => e.stopPropagation()}>
+        {Object.entries(statusConfig).map(([key, { label, icon: Icon, className }]) => (
+          <DropdownMenuItem
+            key={key}
+            onClick={() => onStatusChange(key)}
+            className={currentStatus === key ? "bg-accent" : ""}
+          >
+            <Icon className={`h-4 w-4 mr-2 ${className.replace("page-status-", "text-status-")}`} />
+            {label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 export default function PagesPage({
   params,
@@ -50,10 +125,15 @@ export default function PagesPage({
   const { data: pages, isLoading, error } = usePages(id);
   const deletePage = useDeletePage(id);
   const duplicatePage = useDuplicatePage(id);
+  const updatePage = useUpdatePage(id);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+
+  const handleStatusChange = (pageId: string, newStatus: string) => {
+    updatePage.mutate({ id: pageId, data: { status: newStatus } });
+  };
 
   const handleEdit = (pageId: string) => {
     router.push(`/${id}/pages/${pageId}/edit`);
@@ -112,7 +192,7 @@ export default function PagesPage({
           </span>
         </div>
         <Button onClick={() => router.push(`/${id}/pages/new`)}>
-          <Plus className="h-4 w-4 mr-2" />
+          <PlusCircle className="h-4 w-4" />
           Create Page
         </Button>
       </div>
@@ -186,73 +266,81 @@ export default function PagesPage({
           )}
         </div>
       ) : viewMode === "grid" ? (
-        <div className="pages-grid">
-          {filteredPages.map((page) => (
-            <div
-              key={page.id}
-              className="page-card"
-              onClick={() => handleEdit(page.id)}
-            >
-              <div className="page-card-thumbnail">
-                <FileText className="page-card-thumbnail-icon" />
-              </div>
-              <div className="page-card-content">
-                <div className="page-card-header">
-                  <span
-                    className={`page-card-status page-card-status-${page.status || "draft"}`}
-                  >
-                    {page.status || "Draft"}
-                  </span>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="page-card-menu"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleEdit(page.id)}>
-                        <Pencil className="h-4 w-4 mr-2" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => handleDuplicate(page.id)}
-                      >
-                        <Copy className="h-4 w-4 mr-2" />
-                        Duplicate
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <a
-                          href={`/${page.slug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          View Page
-                        </a>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        className="text-destructive"
-                        onClick={() => handleDelete(page)}
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+        <div className="scrollbar-y">
+          <div className="pages-grid h-full">
+            {filteredPages.map((page) => (
+              <div
+                key={page.id}
+                className="page-card"
+                onClick={() => handleEdit(page.id)}
+              >
+                <div className="page-card-thumbnail">
+                  <FileText className="page-card-thumbnail-icon" />
                 </div>
-                <h3 className="page-card-title">{page.title}</h3>
-                <p className="page-card-meta">
-                  Last edited {formatDate(page.updatedAt)}
-                </p>
+                <div className="page-card-content">
+                  <div className="page-card-header">
+                    <div className="page-card-badges">
+                      {page.isHomePage && (
+                        <span className="page-card-badge page-card-badge-home" title="Home Page">
+                          <Home className="h-3 w-3" />
+                        </span>
+                      )}
+                      <StatusDropdown
+                        status={page.status}
+                        onStatusChange={(newStatus) => handleStatusChange(page.id, newStatus)}
+                      />
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="page-card-menu"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleEdit(page.id)}>
+                          <Pencil className="h-4 w-4 mr-2" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleDuplicate(page.id)}
+                        >
+                          <Copy className="h-4 w-4 mr-2" />
+                          Duplicate
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <a
+                            href={`/${page.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            View Page
+                          </a>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="text-destructive"
+                          onClick={() => handleDelete(page)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  <h3 className="page-card-title">{page.title}</h3>
+                  <p className="page-card-meta">
+                    Last edited {formatDate(page.updatedAt)}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       ) : (
         <div className="pages-list">
@@ -266,14 +354,20 @@ export default function PagesPage({
                 <FileText className="h-5 w-5" />
               </div>
               <div className="page-list-item-content">
-                <h3 className="page-list-item-title">{page.title}</h3>
+                <h3 className="page-list-item-title">
+                  {page.title}
+                  {page.isHomePage && (
+                    <span className="page-list-item-home-badge" title="Home Page">
+                      <Home className="h-3 w-3" />
+                    </span>
+                  )}
+                </h3>
                 <p className="page-list-item-slug">/{page.slug}</p>
               </div>
-              <span
-                className={`page-card-status page-card-status-${page.status || "draft"}`}
-              >
-                {page.status || "Draft"}
-              </span>
+              <StatusDropdown
+                status={page.status}
+                onStatusChange={(newStatus) => handleStatusChange(page.id, newStatus)}
+              />
               <span className="page-list-item-date">
                 {formatDate(page.updatedAt)}
               </span>

@@ -7,12 +7,12 @@ import "./page-editor-layout.css";
 
 interface PageEditorLayoutProps {
   pageId: string;
-  pageTitle: string;
   breakpoint?: Breakpoint;
   onBreakpointChange?: (breakpoint: Breakpoint) => void;
   onSave: () => void;
   onPublish: () => void;
   onPreview?: () => void;
+  previewMode?: boolean;
   isSaving?: boolean;
   children: React.ReactNode;
 }
@@ -28,21 +28,20 @@ interface PageEditorLayoutProps {
  * - Blocks are added via ADD BLOCK popover in each section
  */
 export function PageEditorLayout({
-  pageTitle,
   breakpoint = "desktop",
   onBreakpointChange,
   onSave,
   onPublish,
   onPreview,
+  previewMode = false,
   isSaving = false,
   children,
 }: PageEditorLayoutProps) {
   return (
-    <div className="page-editor-layout">
+    <div className="page-editor-layout" data-preview-mode={previewMode}>
       {/* Editor Toolbar */}
       <div className="page-editor-toolbar">
         <div className="page-editor-toolbar-left">
-          <h2 className="page-editor-title">{pageTitle}</h2>
           {isSaving && <span className="page-editor-status">Saving...</span>}
         </div>
         <div className="page-editor-toolbar-center">
@@ -54,7 +53,11 @@ export function PageEditorLayout({
           )}
         </div>
         <div className="page-editor-toolbar-right">
-          <Button variant="ghost" size="sm" onClick={onPreview}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onPreview}
+          >
             <Eye className="h-4 w-4" />
             Preview
           </Button>
