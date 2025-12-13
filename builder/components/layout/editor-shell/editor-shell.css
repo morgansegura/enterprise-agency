@@ -5,7 +5,7 @@
 }
 
 .editor-shell-sidebar {
-  @apply relative bg-(--sidebar) w-12 border-r flex flex-col items-center space-y-2 py-4 text-muted-foreground;
+  @apply relative bg-(--sidebar) w-12 border-r flex flex-col items-center space-y-2 py-4 text-(--muted-foreground);
 }
 
 .editor-shell-main {
