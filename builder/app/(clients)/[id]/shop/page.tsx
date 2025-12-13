@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useProducts, useOrders, useCustomers } from "@/lib/hooks";
+import { PageLayout } from "@/components/layout/page-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,10 +12,10 @@ import {
   Receipt,
   Users,
   DollarSign,
-  TrendingUp,
   ShoppingCart,
   ArrowRight,
   Plus,
+  Store,
 } from "lucide-react";
 
 export default function ShopPage({
@@ -51,25 +52,22 @@ export default function ShopPage({
   const isLoading = productsLoading || ordersLoading || customersLoading;
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-(--foreground)">Shop Dashboard</h1>
-          <p className="text-sm text-(--muted-foreground)">
-            Manage your products, orders, and customers
-          </p>
-        </div>
+    <PageLayout
+      title="Shop Dashboard"
+      icon={Store}
+      description="Manage your products, orders, and customers"
+      actions={
         <Button asChild>
           <Link href={`/${id}/shop/products/new`}>
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4" />
             Add Product
           </Link>
         </Button>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      }
+    >
+      <div className="space-y-6">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-(--muted-foreground)">
@@ -263,6 +261,7 @@ export default function ShopPage({
           </CardContent>
         </Card>
       )}
-    </div>
+      </div>
+    </PageLayout>
   );
 }

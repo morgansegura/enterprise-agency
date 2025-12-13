@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useCreateTenant } from "@/lib/hooks/use-tenants";
-import { LayoutHeading } from "@/components/layout/layout-heading";
+import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -17,7 +17,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ArrowLeft } from "lucide-react";
 
 const clientIntakeSchema = z.object({
   // Section 1: General Info & Proposal
@@ -85,23 +84,16 @@ export default function ClientIntakePage() {
   };
 
   return (
-    <div>
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => router.push("/dashboard/clients")}
-      >
-        <ArrowLeft />
-        Back to Clients
-      </Button>
-
-      <LayoutHeading
-        title="Client Intake"
-        description="Complete all sections to onboard a new client"
-      />
-
+    <PageLayout
+      title="Client Intake"
+      // icon={UserPlus}
+      description="Complete all sections to onboard a new client"
+      backLabel="Back to Clients"
+      onBack={() => router.push("/dashboard/clients")}
+      maxWidth="lg"
+    >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>1. General Info & Proposal</CardTitle>
@@ -310,6 +302,6 @@ export default function ClientIntakePage() {
           </Button>
         </form>
       </Form>
-    </div>
+    </PageLayout>
   );
 }

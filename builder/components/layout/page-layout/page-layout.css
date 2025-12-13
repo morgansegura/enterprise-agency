@@ -1,0 +1,66 @@
+@reference "tailwindcss";
+
+.page-layout {
+  @apply h-full flex flex-col overflow-auto;
+}
+
+.page-layout-inner {
+  @apply p-6;
+}
+
+.page-layout-back {
+  @apply mb-4;
+}
+
+.page-layout-header {
+  @apply flex items-start justify-between mb-6;
+}
+
+.page-layout-header-content {
+  @apply flex items-center gap-4;
+}
+
+.page-layout-header-icon {
+  @apply flex items-center justify-center w-12 h-12 rounded-lg bg-(--muted) text-(--muted-foreground);
+}
+
+.page-layout-header-text {
+  @apply flex flex-col;
+}
+
+.page-layout-title {
+  @apply text-2xl font-bold text-(--foreground);
+}
+
+.page-layout-description {
+  @apply text-sm text-(--muted-foreground) mt-1;
+}
+
+.page-layout-actions {
+  @apply flex items-center gap-2;
+}
+
+.page-layout-toolbar {
+  @apply flex items-center justify-between gap-4 mb-6;
+}
+
+/* Max width variants */
+.page-layout-content-sm {
+  @apply max-w-screen-sm mx-auto;
+}
+
+.page-layout-content-md {
+  @apply max-w-screen-md mx-auto;
+}
+
+.page-layout-content-lg {
+  @apply max-w-screen-lg mx-auto;
+}
+
+.page-layout-content-xl {
+  @apply max-w-screen-xl mx-auto;
+}
+
+.page-layout-content-2xl {
+  @apply max-w-screen-2xl mx-auto;
+}

@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageLayout } from "@/components/layout/page-layout";
 import {
   MoreHorizontal,
   Pencil,
@@ -28,7 +29,6 @@ import {
   Search,
   LayoutGrid,
   List,
-  ExternalLink,
   PlusCircle,
   Circle,
   CheckCircle2,
@@ -258,81 +258,86 @@ export function ContentList<T extends ContentItem>({
 
   if (error) {
     return (
-      <div className="content-list-error">
-        <p>Error loading {pluralName}: {error.message}</p>
-      </div>
+      <PageLayout
+        title={title}
+        icon={Icon}
+        description={`Error loading ${pluralName}`}
+      >
+        <div className="content-list-error">
+          <p>{error.message}</p>
+        </div>
+      </PageLayout>
     );
   }
 
-  return (
-    <div className="content-list-container">
-      {/* Header */}
-      <div className="content-list-header">
-        <div className="content-list-header-title">
-          <h1>{title}</h1>
-          <span className="content-list-header-count">
-            {items?.length || 0} {items?.length === 1 ? singularName : pluralName}
-          </span>
+  // Toolbar component
+  const toolbarContent = (
+    <>
+      <div className="content-list-search">
+        <Search className="content-list-search-icon" />
+        <Input
+          placeholder={`Search ${pluralName}...`}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="content-list-search-input"
+        />
+      </div>
+      <div className="content-list-filters">
+        {(showStatus || filterOptions) && (
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="content-list-filter-select">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              {filterOptions ? (
+                filterOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))
+              ) : (
+                <>
+                  <SelectItem value="published">Published</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                </>
+              )}
+            </SelectContent>
+          </Select>
+        )}
+        <div className="content-list-view-toggle">
+          <Button
+            variant={viewMode === "grid" ? "secondary" : "ghost"}
+            size="icon"
+            onClick={() => setViewMode("grid")}
+          >
+            <LayoutGrid className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={viewMode === "list" ? "secondary" : "ghost"}
+            size="icon"
+            onClick={() => setViewMode("list")}
+          >
+            <List className="h-4 w-4" />
+          </Button>
         </div>
+      </div>
+    </>
+  );
+
+  return (
+    <PageLayout
+      title={title}
+      icon={Icon}
+      description={`${items?.length || 0} ${items?.length === 1 ? singularName : pluralName}`}
+      actions={
         <Button onClick={onCreate}>
           <PlusCircle className="h-4 w-4" />
           Create {singularName}
         </Button>
-      </div>
-
-      {/* Toolbar */}
-      <div className="content-list-toolbar">
-        <div className="content-list-search">
-          <Search className="content-list-search-icon" />
-          <Input
-            placeholder={`Search ${pluralName}...`}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="content-list-search-input"
-          />
-        </div>
-        <div className="content-list-filters">
-          {(showStatus || filterOptions) && (
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="content-list-filter-select">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                {filterOptions ? (
-                  filterOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))
-                ) : (
-                  <>
-                    <SelectItem value="published">Published</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                  </>
-                )}
-              </SelectContent>
-            </Select>
-          )}
-          <div className="content-list-view-toggle">
-            <Button
-              variant={viewMode === "grid" ? "secondary" : "ghost"}
-              size="icon"
-              onClick={() => setViewMode("grid")}
-            >
-              <LayoutGrid className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "secondary" : "ghost"}
-              size="icon"
-              onClick={() => setViewMode("list")}
-            >
-              <List className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
-
+      }
+      toolbar={toolbarContent}
+    >
       {/* Content */}
       {isLoading ? (
         <div className="content-list-grid">
@@ -363,8 +368,7 @@ export function ContentList<T extends ContentItem>({
           )}
         </div>
       ) : viewMode === "grid" ? (
-        <div className="content-list-scroll">
-          <div className="content-list-grid">
+        <div className="content-list-grid">
             {filteredItems.map((item) => (
               <div
                 key={item.id}
@@ -411,7 +415,7 @@ export function ContentList<T extends ContentItem>({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        {defaultMenuActions.map((action, index) => (
+                        {defaultMenuActions.map((action) => (
                           <React.Fragment key={action.label}>
                             {action.separator && <DropdownMenuSeparator />}
                             {action.href ? (
@@ -450,7 +454,6 @@ export function ContentList<T extends ContentItem>({
                 </div>
               </div>
             ))}
-          </div>
         </div>
       ) : (
         <div className="content-list-rows">
@@ -522,6 +525,6 @@ export function ContentList<T extends ContentItem>({
           ))}
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

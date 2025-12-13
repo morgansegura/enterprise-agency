@@ -2,6 +2,7 @@
 
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTenantsHealth, TenantHealthData } from "@/lib/hooks/use-tenants";
+import { PageLayout } from "@/components/layout/page-layout";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import {
@@ -16,6 +17,7 @@ import {
   Zap,
   ChevronRight,
   TrendingUp,
+  LayoutDashboard,
 } from "lucide-react";
 import "./dashboard-home.css";
 
@@ -61,15 +63,12 @@ export function DashboardHome() {
   const { data: healthData, isLoading, error } = useTenantsHealth();
 
   return (
-    <div className="dashboard-home">
-      <div className="dashboard-home-card">
-        <h2 className="dashboard-home-welcome-title">
-          Welcome back, {user?.firstName}!
-        </h2>
-        <p className="dashboard-home-welcome-subtitle">
-          Manage your clients and monitor platform health from this dashboard.
-        </p>
-      </div>
+    <PageLayout
+      title={`Welcome back, ${user?.firstName}!`}
+      icon={LayoutDashboard}
+      description="Manage your clients and monitor platform health from this dashboard."
+    >
+      <div className="dashboard-home">
 
       {/* Summary Stats */}
       {isLoading ? (
@@ -249,6 +248,7 @@ export function DashboardHome() {
           </div>
         </>
       ) : null}
-    </div>
+      </div>
+    </PageLayout>
   );
 }

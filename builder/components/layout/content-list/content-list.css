@@ -1,29 +1,6 @@
 @reference "tailwindcss";
 
-.content-list-container {
-  @apply p-6;
-}
-
-.content-list-header {
-  @apply flex items-center justify-between mb-6;
-}
-
-.content-list-header-title {
-  @apply flex items-center gap-3;
-}
-
-.content-list-header-title h1 {
-  @apply text-2xl font-bold text-(--foreground);
-}
-
-.content-list-header-count {
-  @apply text-sm text-(--muted-foreground) bg-(--muted) px-2 py-0.5 rounded;
-}
-
-.content-list-toolbar {
-  @apply flex items-center justify-between gap-4 mb-6;
-}
-
+/* Search & Filters */
 .content-list-search {
   @apply relative flex-1 max-w-sm;
 }
@@ -48,14 +25,12 @@
   @apply flex items-center border border-(--border) rounded-md;
 }
 
-.content-list-scroll {
-  @apply overflow-y-auto;
-}
-
+/* Grid View */
 .content-list-grid {
   @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
 }
 
+/* Card Styles */
 .content-card {
   @apply bg-(--card) border border-(--border) rounded-lg overflow-hidden cursor-pointer transition-all hover:border-(--primary) hover:shadow-md;
 }
@@ -169,7 +144,7 @@
 }
 
 .content-list-item-badge {
-  @apply inline-flex items-center justify-center w-5 h-5 rounded-full flex-shrink-0;
+  @apply inline-flex items-center justify-center w-5 h-5 rounded-full shrink-0;
 }
 
 .content-list-item-badge-home {

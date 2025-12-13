@@ -17,8 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { LayoutHeading } from "@/components/layout/layout-heading";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { PageLayout } from "@/components/layout/page-layout";
+import { BriefcaseBusiness, MoreHorizontal, Pencil, Trash2, Plus } from "lucide-react";
 
 export default function ClientsPage() {
   const router = useRouter();
@@ -35,10 +35,6 @@ export default function ClientsPage() {
     }
   };
 
-  if (isLoading) return <div>Loading clients...</div>;
-  if (error) return <div>Error loading clients: {error.message}</div>;
-  if (!tenants || tenants.length === 0) return <div>No clients found</div>;
-
   const getServiceType = (features: Record<string, boolean>) => {
     const types = [];
     if (features["pages.view"] || features["builder.access"]) types.push("CMS");
@@ -47,66 +43,102 @@ export default function ClientsPage() {
     return types.length > 0 ? types.join(", ") : "None";
   };
 
-  return (
-    <div>
-      <div>
-        <LayoutHeading
-          title="Manage Clients"
-          description={`${tenants.length} total clients`}
-          actions={
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => router.push("/dashboard/clients/new")}
-            >
-              Client Intake
-            </Button>
-          }
-        />
-      </div>
+  if (isLoading) {
+    return (
+      <PageLayout
+        title="Manage Clients"
+        icon={BriefcaseBusiness}
+        description="Loading..."
+      >
+        <div className="flex items-center justify-center py-12">
+          <p className="text-(--muted-foreground)">Loading clients...</p>
+        </div>
+      </PageLayout>
+    );
+  }
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Business Name</TableHead>
-            <TableHead>Slug</TableHead>
-            <TableHead>Services</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tenants.map((tenant) => (
-            <TableRow key={tenant.id}>
-              <TableCell>{tenant.businessName}</TableCell>
-              <TableCell>{tenant.slug}</TableCell>
-              <TableCell>
-                {getServiceType(tenant.enabledFeatures || {})}
-              </TableCell>
-              <TableCell>{tenant.status}</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <MoreHorizontal />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => handleEdit(tenant.id)}>
-                      <Pencil />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleDelete(tenant)}>
-                      <Trash2 />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+  if (error) {
+    return (
+      <PageLayout
+        title="Manage Clients"
+        icon={BriefcaseBusiness}
+        description="Error loading clients"
+      >
+        <div className="flex items-center justify-center py-12">
+          <p className="text-(--destructive)">{error.message}</p>
+        </div>
+      </PageLayout>
+    );
+  }
+
+  return (
+    <PageLayout
+      title="Manage Clients"
+      icon={BriefcaseBusiness}
+      description={`${tenants?.length || 0} total clients`}
+      actions={
+        <Button onClick={() => router.push("/dashboard/clients/new")}>
+          <Plus className="h-4 w-4" />
+          New Client
+        </Button>
+      }
+    >
+      {!tenants || tenants.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <BriefcaseBusiness className="h-16 w-16 text-(--muted-foreground) mb-4" />
+          <h3 className="text-lg font-medium mb-2">No clients yet</h3>
+          <p className="text-(--muted-foreground) mb-4">
+            Create your first client to get started
+          </p>
+          <Button onClick={() => router.push("/dashboard/clients/new")}>
+            <Plus className="h-4 w-4 mr-2" />
+            New Client
+          </Button>
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Business Name</TableHead>
+              <TableHead>Slug</TableHead>
+              <TableHead>Services</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {tenants.map((tenant) => (
+              <TableRow key={tenant.id}>
+                <TableCell>{tenant.businessName}</TableCell>
+                <TableCell>{tenant.slug}</TableCell>
+                <TableCell>
+                  {getServiceType(tenant.enabledFeatures || {})}
+                </TableCell>
+                <TableCell>{tenant.status}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <MoreHorizontal />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleEdit(tenant.id)}>
+                        <Pencil />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDelete(tenant)}>
+                        <Trash2 />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </PageLayout>
   );
 }
