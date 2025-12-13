@@ -12,13 +12,7 @@ import {
 } from "@/lib/hooks/use-pages";
 import { PageEditorLayout, PageSettingsDrawer } from "@/components/editor";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Newspaper,
-  PanelsTopLeft,
-  Store,
-  Cog,
-  Globe,
-} from "lucide-react";
+import { Newspaper, PanelsTopLeft, Store, Cog, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -533,7 +527,7 @@ export default function EditPagePage({
   }
 
   return (
-    <div className="flex">
+    <div className="grid grid-cols-[48px_1fr]">
       {/* Icon Toolbar */}
       <aside className="relative bg-(--sidebar) w-12 border-r flex flex-col top-0 bottom-0 items-center space-y-2 py-4 text-muted-foreground">
         {/* Navigation Section */}
