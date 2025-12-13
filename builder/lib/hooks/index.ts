@@ -178,6 +178,16 @@ export type {
   CustomerFilters,
 } from "./use-customers";
 
+// Tags (derived from posts)
+export {
+  useTags,
+  useTagsWithCounts,
+  useRenameTag,
+  useDeleteTag,
+} from "./use-tags";
+
+export type { Tag } from "./use-tags";
+
 // E-Commerce: Payments
 export {
   usePaymentConfig,

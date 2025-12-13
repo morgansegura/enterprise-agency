@@ -7,16 +7,9 @@ import {
   useDeleteAsset,
   type Asset,
 } from "@/lib/hooks/use-assets";
-import { LayoutHeading } from "@/components/layout/layout-heading";
+import { ContentList } from "@/components/layout/content-list";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -24,10 +17,25 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Upload, Search, X, Trash2, Copy, ExternalLink } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Image, Upload, Trash2, Copy, ExternalLink } from "lucide-react";
+
+// Asset type for ContentList
+interface AssetItem {
+  id: string;
+  title: string;
+  fileName: string;
+  slug?: string;
+  status?: string;
+  updatedAt?: string;
+  url: string;
+  thumbnailUrl?: string;
+  fileType: string;
+  sizeBytes?: number;
+  width?: number;
+  height?: number;
+  altText?: string;
+}
 
 export default function MediaLibraryPage({
   params,
@@ -38,24 +46,22 @@ export default function MediaLibraryPage({
   const { id } = resolvedParams;
 
   // State
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [fileTypeFilter, setFileTypeFilter] = React.useState<string>("");
-  const [selectedAsset, setSelectedAsset] = React.useState<Asset | null>(null);
+  const [selectedAsset, setSelectedAsset] = React.useState<AssetItem | null>(null);
   const [uploading, setUploading] = React.useState(false);
 
   // Queries
-  const {
-    data: assets,
-    isLoading,
-    error,
-  } = useAssets(id, {
-    fileType: fileTypeFilter || undefined,
-  });
+  const { data: assets, isLoading, error } = useAssets(id);
   const uploadAsset = useUploadAsset(id);
   const deleteAsset = useDeleteAsset(id);
 
   // File input ref
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Transform assets to include title field
+  const assetItems = React.useMemo(() => {
+    if (!assets) return [];
+    return assets.map((a) => ({ ...a, title: a.fileName }));
+  }, [assets]);
 
   // Handle file upload
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +75,7 @@ export default function MediaLibraryPage({
         await uploadAsset.mutateAsync({ file });
       }
       toast.success(`Uploaded ${files.length} file(s)`);
-    } catch (error) {
+    } catch {
       toast.error("Upload failed");
     } finally {
       setUploading(false);
@@ -80,7 +86,7 @@ export default function MediaLibraryPage({
   };
 
   // Handle delete
-  const handleDelete = (asset: Asset) => {
+  const handleDelete = (asset: AssetItem) => {
     if (confirm(`Delete "${asset.fileName}"?`)) {
       deleteAsset.mutate(asset.id, {
         onSuccess: () => {
@@ -97,20 +103,6 @@ export default function MediaLibraryPage({
     toast.success("URL copied to clipboard");
   };
 
-  // Filter assets by search query
-  const filteredAssets = React.useMemo(() => {
-    if (!assets) return [];
-
-    return assets.filter((asset) => {
-      const matchesSearch =
-        searchQuery === "" ||
-        asset.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        asset.altText?.toLowerCase().includes(searchQuery.toLowerCase());
-
-      return matchesSearch;
-    });
-  }, [assets, searchQuery]);
-
   // Format file size
   const formatFileSize = (bytes?: number) => {
     if (!bytes) return "—";
@@ -121,30 +113,13 @@ export default function MediaLibraryPage({
     return `${kb.toFixed(2)} KB`;
   };
 
-  if (isLoading) return <div>Loading media library...</div>;
-  if (error) return <div>Error loading media: {error.message}</div>;
+  // Custom create handler - open file picker
+  const handleCreate = () => {
+    fileInputRef.current?.click();
+  };
 
   return (
-    <div className="space-y-6">
-      <LayoutHeading
-        title="Media Library"
-        description={
-          assets && assets.length > 0
-            ? `${filteredAssets.length} of ${assets.length} assets`
-            : "No assets yet"
-        }
-        actions={
-          <Button
-            size="sm"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            {uploading ? "Uploading..." : "Upload"}
-          </Button>
-        }
-      />
-
+    <>
       {/* Hidden file input */}
       <input
         ref={fileInputRef}
@@ -155,92 +130,58 @@ export default function MediaLibraryPage({
         onChange={handleFileSelect}
       />
 
-      {/* Filters */}
-      <div className="flex gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by filename or alt text..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <Select value={fileTypeFilter} onValueChange={setFileTypeFilter}>
-          <SelectTrigger className="w-48">
-            <SelectValue placeholder="All file types" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">All file types</SelectItem>
-            <SelectItem value="image">Images</SelectItem>
-            <SelectItem value="video">Videos</SelectItem>
-            <SelectItem value="audio">Audio</SelectItem>
-            <SelectItem value="document">Documents</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Assets Grid */}
-      {filteredAssets.length === 0 ? (
-        <div className="text-center py-12 border-2 border-dashed rounded-lg">
-          <p className="text-muted-foreground mb-4">
-            {searchQuery || fileTypeFilter
-              ? "No assets match your filters"
-              : "No assets uploaded yet"}
+      <ContentList<AssetItem>
+        title="Media Library"
+        singularName="Asset"
+        pluralName="assets"
+        icon={Image}
+        items={assetItems}
+        isLoading={isLoading || uploading}
+        error={error}
+        onCreate={handleCreate}
+        onEdit={(asset) => setSelectedAsset(asset)}
+        onDelete={handleDelete}
+        showStatus={false}
+        filterOptions={[
+          { value: "image", label: "Images" },
+          { value: "video", label: "Videos" },
+          { value: "audio", label: "Audio" },
+          { value: "document", label: "Documents" },
+        ]}
+        searchFields={["title", "fileName"]}
+        renderThumbnail={(asset) =>
+          asset.fileType === "image" ? (
+            <img
+              src={asset.thumbnailUrl || asset.url}
+              alt={asset.altText || asset.fileName}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full">
+              <span className="text-2xl mb-2">
+                {asset.fileType === "video"
+                  ? "🎥"
+                  : asset.fileType === "audio"
+                    ? "🎵"
+                    : "📄"}
+              </span>
+              <span className="text-xs text-(--muted-foreground) uppercase">
+                {asset.fileType}
+              </span>
+            </div>
+          )
+        }
+        renderMeta={(asset) => (
+          <p className="text-xs text-(--muted-foreground) mt-1">
+            {formatFileSize(asset.sizeBytes)}
           </p>
-          {!searchQuery && !fileTypeFilter && (
-            <Button onClick={() => fileInputRef.current?.click()}>
-              <Upload className="h-4 w-4 mr-2" />
-              Upload your first asset
-            </Button>
-          )}
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {filteredAssets.map((asset) => (
-            <Card
-              key={asset.id}
-              className={cn(
-                "group relative cursor-pointer hover:border-primary transition-colors overflow-hidden",
-                selectedAsset?.id === asset.id && "border-primary",
-              )}
-              onClick={() => setSelectedAsset(asset)}
-            >
-              {/* Preview */}
-              <div className="aspect-square bg-muted flex items-center justify-center overflow-hidden">
-                {asset.fileType === "image" ? (
-                  <img
-                    src={asset.thumbnailUrl || asset.url}
-                    alt={asset.altText || asset.fileName}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center p-4 text-center">
-                    <span className="text-2xl mb-2">
-                      {asset.fileType === "video"
-                        ? "🎥"
-                        : asset.fileType === "audio"
-                          ? "🎵"
-                          : "📄"}
-                    </span>
-                    <span className="text-xs text-muted-foreground uppercase">
-                      {asset.fileType}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Info */}
-              <div className="p-2 border-t">
-                <p className="text-xs font-medium truncate">{asset.fileName}</p>
-                <p className="text-xs text-muted-foreground">
-                  {formatFileSize(asset.sizeBytes)}
-                </p>
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
+        )}
+        renderListMeta={(asset) => (
+          <span className="text-sm text-(--muted-foreground)">
+            {formatFileSize(asset.sizeBytes)}
+          </span>
+        )}
+      />
 
       {/* Asset Detail Dialog */}
       <Dialog
@@ -256,7 +197,7 @@ export default function MediaLibraryPage({
 
               <div className="space-y-4">
                 {/* Preview */}
-                <div className="bg-muted rounded-lg overflow-hidden flex items-center justify-center min-h-[300px]">
+                <div className="bg-(--muted) rounded-lg overflow-hidden flex items-center justify-center min-h-[300px]">
                   {selectedAsset.fileType === "image" ? (
                     <img
                       src={selectedAsset.url}
@@ -272,7 +213,7 @@ export default function MediaLibraryPage({
                             ? "🎵"
                             : "📄"}
                       </span>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-(--muted-foreground)">
                         {selectedAsset.fileName}
                       </p>
                     </div>
@@ -282,18 +223,18 @@ export default function MediaLibraryPage({
                 {/* Metadata */}
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-muted-foreground">File Type</p>
+                    <p className="text-(--muted-foreground)">File Type</p>
                     <p className="font-medium">{selectedAsset.fileType}</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">File Size</p>
+                    <p className="text-(--muted-foreground)">File Size</p>
                     <p className="font-medium">
                       {formatFileSize(selectedAsset.sizeBytes)}
                     </p>
                   </div>
                   {selectedAsset.width && selectedAsset.height && (
                     <div>
-                      <p className="text-muted-foreground">Dimensions</p>
+                      <p className="text-(--muted-foreground)">Dimensions</p>
                       <p className="font-medium">
                         {selectedAsset.width} × {selectedAsset.height}
                       </p>
@@ -301,7 +242,7 @@ export default function MediaLibraryPage({
                   )}
                   {selectedAsset.altText && (
                     <div className="col-span-2">
-                      <p className="text-muted-foreground">Alt Text</p>
+                      <p className="text-(--muted-foreground)">Alt Text</p>
                       <p className="font-medium">{selectedAsset.altText}</p>
                     </div>
                   )}
@@ -309,7 +250,7 @@ export default function MediaLibraryPage({
 
                 {/* URL */}
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">URL</p>
+                  <p className="text-sm text-(--muted-foreground) mb-2">URL</p>
                   <div className="flex gap-2">
                     <Input
                       value={selectedAsset.url}
@@ -353,6 +294,6 @@ export default function MediaLibraryPage({
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }

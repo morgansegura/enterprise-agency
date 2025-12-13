@@ -369,7 +369,9 @@ export class PublicApiService {
 
     // 4. Return default coming soon content if no page exists
     if (!page) {
-      this.logger.log(`No home page found for tenant ${tenantSlug}, returning default coming soon`);
+      this.logger.log(
+        `No home page found for tenant ${tenantSlug}, returning default coming soon`,
+      );
       return this.getDefaultComingSoonPage(tenantSlug);
     }
 

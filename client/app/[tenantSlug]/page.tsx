@@ -76,7 +76,9 @@ export default async function TenantHomePage({ params }: PageProps) {
     }
   } catch (error) {
     // If tenant doesn't exist or API fails, return 404
-    logger.warn(`Failed to load tenant ${tenantSlug}:`, error);
+    logger.warn(`Failed to load tenant ${tenantSlug}`, {
+      meta: { error: error instanceof Error ? error.message : String(error) },
+    });
     notFound();
   }
 

@@ -2,8 +2,23 @@ import { Metadata } from "next";
 import { Page } from "@/components/layout/page";
 import { SectionRenderer } from "@/components/section-renderer";
 import { BreadcrumbSchema } from "@/components/seo";
+import { HeaderRenderer } from "@/components/header-renderer";
+import { FooterRenderer } from "@/components/footer-renderer";
 import type { TypedSection } from "@/components/section-renderer/section-renderer";
-import { createPublicApiClientForTenant } from "@/lib/public-api-client";
+import {
+  createPublicApiClientForTenant,
+  type SiteConfig,
+} from "@/lib/public-api-client";
+import {
+  resolveHeader,
+  resolveFooter,
+  getHeaderMenu,
+} from "@/lib/config/resolvers";
+import type { SiteConfig as ResolverSiteConfig } from "@/lib/config/types";
+import type { LogoConfig } from "@/lib/logos/types";
+import type { Menu } from "@/lib/menus/types";
+import type { HeaderConfig } from "@/lib/headers/types";
+import type { FooterConfig } from "@/lib/footers/types";
 import { logger } from "@/lib/logger";
 import { notFound } from "next/navigation";
 
@@ -91,17 +106,17 @@ export default async function TenantPage({ params }: PageProps) {
   // Create API client for this specific tenant
   const api = createPublicApiClientForTenant(tenantSlug);
 
-  let siteConfig: SiteConfig;
+  let apiConfig: SiteConfig;
   let pageTitle = "";
   let sections: TypedSection[] = [];
 
   try {
-    const [apiConfig, apiPage] = await Promise.all([
+    const [config, apiPage] = await Promise.all([
       api.getConfig(),
       api.getPage(pageSlug),
     ]);
 
-    siteConfig = apiConfig;
+    apiConfig = config;
     pageTitle = apiPage.title;
 
     // Extract sections from page content
@@ -110,22 +125,51 @@ export default async function TenantPage({ params }: PageProps) {
     }
   } catch (error) {
     // Page not found - return 404
-    logger.warn(`Page not found: ${tenantSlug}/${pageSlug}`, error);
+    logger.warn(`Page not found: ${tenantSlug}/${pageSlug}`, {
+      meta: { error: error instanceof Error ? error.message : String(error) },
+    });
     notFound();
   }
 
-  // Build config object for header/footer resolvers
-  const configWithMenusAndLogos = {
-    ...siteConfig,
-    logos: (siteConfig.logosConfig as Record<string, LogoConfig>) || {},
-    menus: (siteConfig.menusConfig as Record<string, Menu>) || {},
+  // Transform API config into resolver-compatible format
+  const headers =
+    (apiConfig.headerConfig as Record<string, HeaderConfig>) || {};
+  const footers =
+    (apiConfig.footerConfig as Record<string, FooterConfig>) || {};
+  const logos = (apiConfig.logosConfig as Record<string, LogoConfig>) || {};
+  const menus = (apiConfig.menusConfig as Record<string, Menu>) || {};
+
+  // Build resolver-compatible config
+  const resolverConfig: ResolverSiteConfig = {
+    tenant: apiConfig.slug,
+    domain: "",
+    defaults: {
+      header: "default",
+      footer: "default",
+    },
+    headers,
+    footers,
+    menus,
+    logos,
+    routing: { routes: [], home: "/" },
+    theme: {
+      fonts: { heading: "", body: "", mono: "" },
+      preferences: {
+        defaultRadius: "md",
+        defaultShadow: "md",
+        headerStyle: "minimal",
+      },
+    },
+    metadata: {
+      siteName: apiConfig.businessName || "",
+    },
   };
 
   // Resolve header and footer
-  const headerConfig = resolveHeader({}, configWithMenusAndLogos);
-  const footerConfig = resolveFooter({}, configWithMenusAndLogos);
+  const headerConfig = resolveHeader({}, resolverConfig);
+  const footerConfig = resolveFooter({}, resolverConfig);
   const headerMenu = headerConfig
-    ? getHeaderMenu(headerConfig, configWithMenusAndLogos)
+    ? getHeaderMenu(headerConfig, resolverConfig)
     : null;
 
   return (
@@ -142,7 +186,7 @@ export default async function TenantPage({ params }: PageProps) {
             <HeaderRenderer
               config={headerConfig}
               menu={headerMenu}
-              logos={configWithMenusAndLogos.logos}
+              logos={logos}
             />
           ) : undefined
         }

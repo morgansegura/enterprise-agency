@@ -1,0 +1,206 @@
+@reference "tailwindcss";
+
+.content-list-container {
+  @apply p-6;
+}
+
+.content-list-header {
+  @apply flex items-center justify-between mb-6;
+}
+
+.content-list-header-title {
+  @apply flex items-center gap-3;
+}
+
+.content-list-header-title h1 {
+  @apply text-2xl font-bold text-(--foreground);
+}
+
+.content-list-header-count {
+  @apply text-sm text-(--muted-foreground) bg-(--muted) px-2 py-0.5 rounded;
+}
+
+.content-list-toolbar {
+  @apply flex items-center justify-between gap-4 mb-6;
+}
+
+.content-list-search {
+  @apply relative flex-1 max-w-sm;
+}
+
+.content-list-search-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--muted-foreground);
+}
+
+.content-list-search-input {
+  @apply pl-9;
+}
+
+.content-list-filters {
+  @apply flex items-center gap-2;
+}
+
+.content-list-filter-select {
+  @apply w-32;
+}
+
+.content-list-view-toggle {
+  @apply flex items-center border border-(--border) rounded-md;
+}
+
+.content-list-scroll {
+  @apply overflow-y-auto;
+}
+
+.content-list-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+}
+
+.content-card {
+  @apply bg-(--card) border border-(--border) rounded-lg overflow-hidden cursor-pointer transition-all hover:border-(--primary) hover:shadow-md;
+}
+
+.content-card-thumbnail {
+  @apply aspect-video bg-(--muted) flex items-center justify-center;
+}
+
+.content-card-thumbnail-icon {
+  @apply h-12 w-12 text-(--muted-foreground);
+}
+
+.content-card-content {
+  @apply p-4;
+}
+
+.content-card-header {
+  @apply flex items-center justify-between mb-2;
+}
+
+.content-card-badges {
+  @apply flex items-center gap-1.5;
+}
+
+.content-card-badge {
+  @apply flex items-center justify-center w-5 h-5 rounded-full;
+}
+
+.content-card-badge-home {
+  @apply bg-blue-100 text-blue-600;
+}
+
+/* Status dropdown button */
+.content-status-dropdown {
+  @apply inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-md cursor-pointer transition-colors;
+  @apply border border-transparent hover:border-(--border);
+}
+
+.content-status-dropdown:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.content-status-draft {
+  @apply bg-amber-50 text-amber-700 hover:bg-amber-100;
+}
+
+.content-status-published {
+  @apply bg-green-50 text-green-700 hover:bg-green-100;
+}
+
+.content-status-scheduled {
+  @apply bg-blue-50 text-blue-700 hover:bg-blue-100;
+}
+
+.content-status-archived {
+  @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
+}
+
+/* Status icon colors for dropdown menu items */
+.text-status-draft {
+  @apply text-amber-500;
+}
+
+.text-status-published {
+  @apply text-green-500;
+}
+
+.text-status-scheduled {
+  @apply text-blue-500;
+}
+
+.text-status-archived {
+  @apply text-gray-500;
+}
+
+.content-card-menu {
+  @apply h-8 w-8 opacity-0 group-hover:opacity-100;
+}
+
+.content-card:hover .content-card-menu {
+  @apply opacity-100;
+}
+
+.content-card-title {
+  @apply font-medium text-(--foreground) truncate;
+}
+
+.content-card-meta {
+  @apply text-xs text-(--muted-foreground) mt-1;
+}
+
+/* List view */
+.content-list-rows {
+  @apply space-y-2;
+}
+
+.content-list-item {
+  @apply flex items-center gap-4 p-3 bg-(--card) border border-(--border) rounded-lg cursor-pointer transition-colors hover:bg-(--muted);
+}
+
+.content-list-item-icon {
+  @apply text-(--muted-foreground);
+}
+
+.content-list-item-content {
+  @apply flex-1 min-w-0;
+}
+
+.content-list-item-title {
+  @apply font-medium text-(--foreground) truncate flex items-center gap-2;
+}
+
+.content-list-item-badge {
+  @apply inline-flex items-center justify-center w-5 h-5 rounded-full flex-shrink-0;
+}
+
+.content-list-item-badge-home {
+  @apply bg-blue-100 text-blue-600;
+}
+
+.content-list-item-slug {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.content-list-item-date {
+  @apply text-sm text-(--muted-foreground);
+}
+
+/* Empty state */
+.content-list-empty {
+  @apply flex flex-col items-center justify-center py-16 text-center;
+}
+
+.content-list-empty-icon {
+  @apply h-16 w-16 text-(--muted-foreground) mb-4;
+}
+
+.content-list-empty h3 {
+  @apply text-lg font-medium text-(--foreground) mb-2;
+}
+
+.content-list-empty p {
+  @apply text-(--muted-foreground) mb-4;
+}
+
+.content-list-error {
+  @apply p-6 text-center text-(--destructive);
+}

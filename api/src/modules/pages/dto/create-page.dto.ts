@@ -112,7 +112,14 @@ export class CreatePageDto {
   @IsOptional()
   @IsString()
   @MaxLength(50)
-  @IsIn(["home", "privacy-policy", "terms-of-service", "cookie-policy", "coming-soon", "under-construction"])
+  @IsIn([
+    "home",
+    "privacy-policy",
+    "terms-of-service",
+    "cookie-policy",
+    "coming-soon",
+    "under-construction",
+  ])
   pageType?: string;
 
   @IsOptional()
