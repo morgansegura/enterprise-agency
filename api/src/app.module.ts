@@ -20,6 +20,7 @@ import { OrdersModule } from "./modules/orders/orders.module";
 import { CustomersModule } from "./modules/customers/customers.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
 import { PreviewModule } from "./modules/preview/preview.module";
+import { MenusModule } from "./modules/menus/menus.module";
 
 @Module({
   imports: [
@@ -59,6 +60,8 @@ import { PreviewModule } from "./modules/preview/preview.module";
     SiteConfigModule,
     // Preview system
     PreviewModule,
+    // Builder components
+    MenusModule,
     // Integrations
     WebhooksModule,
   ],

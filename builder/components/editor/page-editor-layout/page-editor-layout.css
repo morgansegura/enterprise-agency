@@ -34,7 +34,7 @@
 }
 
 .page-editor-status.unsaved {
-  @apply text-(--warning, orange);
+  @apply text-(--warning);
 }
 
 .page-editor-status.saved {

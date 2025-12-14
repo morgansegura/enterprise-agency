@@ -20,13 +20,13 @@ enum TenantTier {
 }
 
 enum TenantType {
-  AGENCY     // Your agency (Web and Funnel) - full access to everything
-  CLIENT     // Your website clients - can manage their site + their own sub-clients
+  AGENCY // Your agency (Web and Funnel) - full access to everything
+  CLIENT // Your website clients - can manage their site + their own sub-clients
   SUB_CLIENT // Your clients' clients - limited access (file sharing, etc.)
 }
 
 enum ClientType {
-  BUSINESS   // Business/organization client
+  BUSINESS // Business/organization client
   INDIVIDUAL // Individual person client
 }
 
@@ -45,8 +45,8 @@ model Tenant {
   isPrimaryTenant Boolean @default(false) @map("is_primary_tenant")
 
   // Tenant hierarchy
-  parentTenantId String?    @map("parent_tenant_id")
-  tenantType     TenantType @default(CLIENT) @map("tenant_type")
+  parentTenantId String?     @map("parent_tenant_id")
+  tenantType     TenantType  @default(CLIENT) @map("tenant_type")
   clientType     ClientType? @map("client_type")
 
   // Feature flags (JSONB)
@@ -104,13 +104,19 @@ model Tenant {
   children Tenant[] @relation("TenantHierarchy")
 
   // E-commerce
-  productCategories  ProductCategory[]
-  products           Product[]
-  customers          Customer[]
-  orders             Order[]
+  productCategories ProductCategory[]
+  products          Product[]
+  customers         Customer[]
+  orders            Order[]
 
   // Preview
   previewTokens PreviewToken[]
+
+  // Builder components
+  libraryComponents LibraryComponent[]
+  menus             Menu[]
+  headers           Header[]
+  footers           Footer[]
 
   @@index([slug])
   @@index([status])
@@ -312,6 +318,200 @@ model Asset {
 }
 
 // ============================================================================
+// COMPONENT LIBRARY (Reusable Components)
+// ============================================================================
+
+enum ComponentScope {
+  GLOBAL // Platform-wide templates (we provide)
+  TENANT // Tenant-specific saved components (users create)
+}
+
+enum ComponentType {
+  MENU
+  HEADER
+  FOOTER
+  SECTION
+  BLOCK
+}
+
+model LibraryComponent {
+  id       String  @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String? @map("tenant_id") // null for global components
+
+  // Identity
+  name        String  @db.VarChar(255)
+  slug        String  @db.VarChar(255)
+  description String? @db.Text
+
+  // Type & scope
+  scope ComponentScope @default(TENANT)
+  type  ComponentType
+
+  // Content (the actual component data)
+  content Json @db.JsonB
+
+  // Organization
+  category String?  @db.VarChar(100) // "heroes", "features", "cta", etc.
+  tags     String[]
+
+  // Preview
+  thumbnailUrl String? @map("thumbnail_url") @db.Text
+
+  // Stats
+  usageCount Int     @default(0) @map("usage_count")
+  isFavorite Boolean @default(false) @map("is_favorite")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, slug, type], map: "uq_library_components_tenant_slug_type")
+  @@index([tenantId], map: "idx_library_components_tenant")
+  @@index([scope], map: "idx_library_components_scope")
+  @@index([type], map: "idx_library_components_type")
+  @@index([category], map: "idx_library_components_category")
+  @@map("library_components")
+}
+
+// ============================================================================
+// MENUS
+// ============================================================================
+
+model Menu {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  // Identity
+  name String @db.VarChar(255)
+  slug String @db.VarChar(255)
+
+  // Menu type
+  type String @default("horizontal") @db.VarChar(20) // horizontal, vertical, dropdown, mega
+
+  // Menu items (JSONB)
+  // Structure: [{ id, label, url, icon?, target?, children?: [], megaContent?: {} }]
+  items Json @default("[]") @db.JsonB
+
+  // Styling options (JSONB)
+  // Structure: { spacing, alignment, fontSize, fontWeight, textTransform, hoverStyle, hoverAnimation, hoverColor, dropdownTrigger, dropdownAnimation, dropdownShadow, dropdownRadius, dropdownBackground, activeStyle, activeColor }
+  style Json @default("{}") @db.JsonB
+
+  // Default flag
+  isDefault Boolean @default(false) @map("is_default")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant  Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  headers Header[] @relation("HeaderMenu")
+
+  @@unique([tenantId, slug], map: "uq_menus_tenant_slug")
+  @@index([tenantId], map: "idx_menus_tenant")
+  @@map("menus")
+}
+
+// ============================================================================
+// HEADERS
+// ============================================================================
+
+enum HeaderBehavior {
+  STATIC // Scrolls with page
+  FIXED // Always at top, content scrolls under
+  STICKY // Sticks to top on scroll
+  SCROLL_HIDE // Hides on scroll down, shows on scroll up
+  TRANSPARENT // Starts transparent, becomes solid on scroll
+}
+
+model Header {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  // Identity
+  name String @db.VarChar(255)
+  slug String @db.VarChar(255)
+
+  // Behavior
+  behavior        HeaderBehavior @default(STATIC)
+  scrollThreshold Int?           @map("scroll_threshold") // px before behavior triggers
+
+  // Animation
+  animation String @default("none") @db.VarChar(20) // none, fade, slide, blur
+
+  // Layout zones (JSONB) - what's in each zone
+  // Structure: { logo: { position, size, ... }, navigation: { menuId, position }, actions: { items: [...] } }
+  zones Json @default("{}") @db.JsonB
+
+  // Styling (JSONB)
+  // Structure: { backgroundColor, textColor, height, padding, shadow, blur, borderBottom }
+  style Json @default("{}") @db.JsonB
+
+  // Transparent state styling (when behavior is TRANSPARENT)
+  transparentStyle Json? @map("transparent_style") @db.JsonB
+
+  // Menu reference
+  menuId String? @map("menu_id")
+
+  // Default flag
+  isDefault Boolean @default(false) @map("is_default")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  menu   Menu?  @relation("HeaderMenu", fields: [menuId], references: [id], onDelete: SetNull)
+  pages  Page[] @relation("PageHeader")
+
+  @@unique([tenantId, slug], map: "uq_headers_tenant_slug")
+  @@index([tenantId], map: "idx_headers_tenant")
+  @@map("headers")
+}
+
+// ============================================================================
+// FOOTERS
+// ============================================================================
+
+model Footer {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  // Identity
+  name String @db.VarChar(255)
+  slug String @db.VarChar(255)
+
+  // Layout type
+  layout String @default("simple") @db.VarChar(20) // simple, columns, mega
+
+  // Content zones (JSONB)
+  // Structure: { columns: [{ title, links: [], content? }], bottom: { copyright, links: [] }, social: [...] }
+  zones Json @default("{}") @db.JsonB
+
+  // Styling (JSONB)
+  style Json @default("{}") @db.JsonB
+
+  // Default flag
+  isDefault Boolean @default(false) @map("is_default")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  pages  Page[] @relation("PageFooter")
+
+  @@unique([tenantId, slug], map: "uq_footers_tenant_slug")
+  @@index([tenantId], map: "idx_footers_tenant")
+  @@map("footers")
+}
+
+// ============================================================================
 // CONTENT MANAGEMENT
 // ============================================================================
 
@@ -338,12 +538,16 @@ model Page {
 
   // System page type (null for custom pages)
   // Values: "home", "privacy-policy", "terms-of-service", "cookie-policy", "coming-soon", "under-construction"
-  pageType     String?  @map("page_type") @db.VarChar(50)
+  pageType     String? @map("page_type") @db.VarChar(50)
   isSystemPage Boolean @default(false) @map("is_system_page")
 
   // Home page flag - only one page per tenant can be the home page
   // If no page is set as home, the coming-soon page is shown by default
   isHomePage Boolean @default(false) @map("is_home_page")
+
+  // Header/Footer overrides (null = use tenant defaults)
+  headerId String? @map("header_id")
+  footerId String? @map("footer_id")
 
   // Timestamps
   createdAt   DateTime  @default(now()) @map("created_at")
@@ -353,6 +557,8 @@ model Page {
   // Relations
   tenant   Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   author   User?         @relation(fields: [authorId], references: [id])
+  header   Header?       @relation("PageHeader", fields: [headerId], references: [id], onDelete: SetNull)
+  footer   Footer?       @relation("PageFooter", fields: [footerId], references: [id], onDelete: SetNull)
   versions PageVersion[]
 
   @@unique([tenantId, slug])
@@ -650,27 +856,27 @@ model ProductCategory {
 }
 
 model Product {
-  id         String @id @default(dbgenerated("gen_random_uuid()"))
-  tenantId   String @map("tenant_id")
+  id         String  @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId   String  @map("tenant_id")
   categoryId String? @map("category_id")
 
   // Basic info
-  name        String  @db.VarChar(255)
-  slug        String  @db.VarChar(255)
-  description String? @db.Text
+  name             String  @db.VarChar(255)
+  slug             String  @db.VarChar(255)
+  description      String? @db.Text
   shortDescription String? @map("short_description") @db.Text
 
   // Pricing
-  price       Decimal @db.Decimal(10, 2)
+  price          Decimal  @db.Decimal(10, 2)
   compareAtPrice Decimal? @map("compare_at_price") @db.Decimal(10, 2)
-  costPerItem Decimal? @map("cost_per_item") @db.Decimal(10, 2)
+  costPerItem    Decimal? @map("cost_per_item") @db.Decimal(10, 2)
 
   // Inventory
-  sku              String?  @db.VarChar(100)
-  barcode          String?  @db.VarChar(100)
-  trackInventory   Boolean  @default(true) @map("track_inventory")
-  inventoryQty     Int      @default(0) @map("inventory_qty")
-  allowBackorder   Boolean  @default(false) @map("allow_backorder")
+  sku               String? @db.VarChar(100)
+  barcode           String? @db.VarChar(100)
+  trackInventory    Boolean @default(true) @map("track_inventory")
+  inventoryQty      Int     @default(0) @map("inventory_qty")
+  allowBackorder    Boolean @default(false) @map("allow_backorder")
   lowStockThreshold Int?    @default(10) @map("low_stock_threshold")
 
   // Media
@@ -688,7 +894,7 @@ model Product {
   status String @default("draft") @db.VarChar(20) // draft, active, archived
 
   // Display order
-  sortOrder Int @default(0) @map("sort_order")
+  sortOrder Int     @default(0) @map("sort_order")
   featured  Boolean @default(false)
 
   // Timestamps
@@ -696,9 +902,9 @@ model Product {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  tenant   Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  category ProductCategory?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  variants ProductVariant[]
+  tenant     Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  category   ProductCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  variants   ProductVariant[]
   orderItems OrderItem[]
 
   @@unique([tenantId, slug], map: "uq_products_tenant_slug")
@@ -766,7 +972,7 @@ model Customer {
 
   // Stats
   totalOrders Int     @default(0) @map("total_orders")
-  totalSpent  Decimal @default(0) @db.Decimal(10, 2) @map("total_spent")
+  totalSpent  Decimal @default(0) @map("total_spent") @db.Decimal(10, 2)
 
   // Notes
   note String? @db.Text
@@ -792,16 +998,16 @@ model CustomerAddress {
   customerId String @map("customer_id")
 
   // Address details
-  firstName   String  @map("first_name") @db.VarChar(100)
-  lastName    String  @map("last_name") @db.VarChar(100)
-  company     String? @db.VarChar(255)
-  address1    String  @db.VarChar(255)
-  address2    String? @db.VarChar(255)
-  city        String  @db.VarChar(100)
-  province    String? @db.VarChar(100) // State/Province
-  country     String  @db.VarChar(2) // ISO 3166-1 alpha-2
-  postalCode  String  @map("postal_code") @db.VarChar(20)
-  phone       String? @db.VarChar(50)
+  firstName  String  @map("first_name") @db.VarChar(100)
+  lastName   String  @map("last_name") @db.VarChar(100)
+  company    String? @db.VarChar(255)
+  address1   String  @db.VarChar(255)
+  address2   String? @db.VarChar(255)
+  city       String  @db.VarChar(100)
+  province   String? @db.VarChar(100) // State/Province
+  country    String  @db.VarChar(2) // ISO 3166-1 alpha-2
+  postalCode String  @map("postal_code") @db.VarChar(20)
+  phone      String? @db.VarChar(50)
 
   // Flags
   isDefault Boolean @default(false) @map("is_default")
@@ -811,24 +1017,24 @@ model CustomerAddress {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  customer         Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  shippingOrders   Order[]  @relation("ShippingAddress")
-  billingOrders    Order[]  @relation("BillingAddress")
+  customer       Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  shippingOrders Order[]  @relation("ShippingAddress")
+  billingOrders  Order[]  @relation("BillingAddress")
 
   @@index([customerId], map: "idx_customer_addresses_customer")
   @@map("customer_addresses")
 }
 
 model Order {
-  id       String @id @default(dbgenerated("gen_random_uuid()"))
-  tenantId String @map("tenant_id")
+  id         String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId   String @map("tenant_id")
   customerId String @map("customer_id")
 
   // Order number
   orderNumber Int @map("order_number") // Auto-incrementing per tenant
 
   // Contact info
-  email String @db.VarChar(255)
+  email String  @db.VarChar(255)
   phone String? @db.VarChar(50)
 
   // Addresses
@@ -836,20 +1042,20 @@ model Order {
   billingAddressId  String? @map("billing_address_id")
 
   // Pricing
-  subtotal        Decimal @db.Decimal(10, 2)
-  tax             Decimal @default(0) @db.Decimal(10, 2)
-  shipping        Decimal @default(0) @db.Decimal(10, 2)
-  discount        Decimal @default(0) @db.Decimal(10, 2)
-  total           Decimal @db.Decimal(10, 2)
-  currency        String  @default("USD") @db.VarChar(3)
+  subtotal Decimal @db.Decimal(10, 2)
+  tax      Decimal @default(0) @db.Decimal(10, 2)
+  shipping Decimal @default(0) @db.Decimal(10, 2)
+  discount Decimal @default(0) @db.Decimal(10, 2)
+  total    Decimal @db.Decimal(10, 2)
+  currency String  @default("USD") @db.VarChar(3)
 
   // Payment
-  paymentStatus  String @default("pending") @map("payment_status") @db.VarChar(20) // pending, paid, refunded, partially_refunded
-  paymentMethod  String? @map("payment_method") @db.VarChar(50) // stripe, paypal, etc.
-  transactionId  String? @map("transaction_id") @db.VarChar(255)
+  paymentStatus String  @default("pending") @map("payment_status") @db.VarChar(20) // pending, paid, refunded, partially_refunded
+  paymentMethod String? @map("payment_method") @db.VarChar(50) // stripe, paypal, etc.
+  transactionId String? @map("transaction_id") @db.VarChar(255)
 
   // Fulfillment
-  fulfillmentStatus String @default("unfulfilled") @map("fulfillment_status") @db.VarChar(20) // unfulfilled, partial, fulfilled
+  fulfillmentStatus String  @default("unfulfilled") @map("fulfillment_status") @db.VarChar(20) // unfulfilled, partial, fulfilled
   shippingMethod    String? @map("shipping_method") @db.VarChar(100)
   trackingNumber    String? @map("tracking_number") @db.VarChar(255)
   trackingUrl       String? @map("tracking_url") @db.Text
@@ -883,15 +1089,15 @@ model Order {
 }
 
 model OrderItem {
-  id        String @id @default(dbgenerated("gen_random_uuid()"))
-  orderId   String @map("order_id")
-  productId String @map("product_id")
+  id        String  @id @default(dbgenerated("gen_random_uuid()"))
+  orderId   String  @map("order_id")
+  productId String  @map("product_id")
   variantId String? @map("variant_id")
 
   // Product details (snapshot at time of order)
-  productTitle  String  @map("product_title") @db.VarChar(255)
-  variantTitle  String? @map("variant_title") @db.VarChar(255)
-  sku           String? @db.VarChar(100)
+  productTitle String  @map("product_title") @db.VarChar(255)
+  variantTitle String? @map("variant_title") @db.VarChar(255)
+  sku          String? @db.VarChar(100)
 
   // Pricing
   price    Decimal @db.Decimal(10, 2)

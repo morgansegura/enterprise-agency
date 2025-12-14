@@ -77,6 +77,18 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   get pageVersion() {
     return this.client.pageVersion;
   }
+  get libraryComponent() {
+    return this.client.libraryComponent;
+  }
+  get menu() {
+    return this.client.menu;
+  }
+  get header() {
+    return this.client.header;
+  }
+  get footer() {
+    return this.client.footer;
+  }
 
   // Expose transaction and other methods
   $transaction<T>(

@@ -340,6 +340,10 @@ export type TenantWhereInput = {
   customers?: Prisma.CustomerListRelationFilter;
   orders?: Prisma.OrderListRelationFilter;
   previewTokens?: Prisma.PreviewTokenListRelationFilter;
+  libraryComponents?: Prisma.LibraryComponentListRelationFilter;
+  menus?: Prisma.MenuListRelationFilter;
+  headers?: Prisma.HeaderListRelationFilter;
+  footers?: Prisma.FooterListRelationFilter;
 };
 
 export type TenantOrderByWithRelationInput = {
@@ -385,6 +389,10 @@ export type TenantOrderByWithRelationInput = {
   customers?: Prisma.CustomerOrderByRelationAggregateInput;
   orders?: Prisma.OrderOrderByRelationAggregateInput;
   previewTokens?: Prisma.PreviewTokenOrderByRelationAggregateInput;
+  libraryComponents?: Prisma.LibraryComponentOrderByRelationAggregateInput;
+  menus?: Prisma.MenuOrderByRelationAggregateInput;
+  headers?: Prisma.HeaderOrderByRelationAggregateInput;
+  footers?: Prisma.FooterOrderByRelationAggregateInput;
 };
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<
@@ -440,6 +448,10 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<
     customers?: Prisma.CustomerListRelationFilter;
     orders?: Prisma.OrderListRelationFilter;
     previewTokens?: Prisma.PreviewTokenListRelationFilter;
+    libraryComponents?: Prisma.LibraryComponentListRelationFilter;
+    menus?: Prisma.MenuListRelationFilter;
+    headers?: Prisma.HeaderListRelationFilter;
+    footers?: Prisma.FooterListRelationFilter;
   },
   "id" | "slug"
 >;
@@ -579,6 +591,10 @@ export type TenantCreateInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateInput = {
@@ -623,6 +639,10 @@ export type TenantUncheckedCreateInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUpdateInput = {
@@ -687,6 +707,10 @@ export type TenantUpdateInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateInput = {
@@ -754,6 +778,10 @@ export type TenantUncheckedUpdateInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateManyInput = {
@@ -1220,6 +1248,112 @@ export type TenantUpdateOneRequiredWithoutAssetsNestedInput = {
   >;
 };
 
+export type TenantCreateNestedOneWithoutLibraryComponentsInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutLibraryComponentsInput,
+    Prisma.TenantUncheckedCreateWithoutLibraryComponentsInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutLibraryComponentsInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+};
+
+export type TenantUpdateOneWithoutLibraryComponentsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutLibraryComponentsInput,
+    Prisma.TenantUncheckedCreateWithoutLibraryComponentsInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutLibraryComponentsInput;
+  upsert?: Prisma.TenantUpsertWithoutLibraryComponentsInput;
+  disconnect?: Prisma.TenantWhereInput | boolean;
+  delete?: Prisma.TenantWhereInput | boolean;
+  connect?: Prisma.TenantWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.TenantUpdateToOneWithWhereWithoutLibraryComponentsInput,
+      Prisma.TenantUpdateWithoutLibraryComponentsInput
+    >,
+    Prisma.TenantUncheckedUpdateWithoutLibraryComponentsInput
+  >;
+};
+
+export type TenantCreateNestedOneWithoutMenusInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutMenusInput,
+    Prisma.TenantUncheckedCreateWithoutMenusInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutMenusInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+};
+
+export type TenantUpdateOneRequiredWithoutMenusNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutMenusInput,
+    Prisma.TenantUncheckedCreateWithoutMenusInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutMenusInput;
+  upsert?: Prisma.TenantUpsertWithoutMenusInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.TenantUpdateToOneWithWhereWithoutMenusInput,
+      Prisma.TenantUpdateWithoutMenusInput
+    >,
+    Prisma.TenantUncheckedUpdateWithoutMenusInput
+  >;
+};
+
+export type TenantCreateNestedOneWithoutHeadersInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutHeadersInput,
+    Prisma.TenantUncheckedCreateWithoutHeadersInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutHeadersInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+};
+
+export type TenantUpdateOneRequiredWithoutHeadersNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutHeadersInput,
+    Prisma.TenantUncheckedCreateWithoutHeadersInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutHeadersInput;
+  upsert?: Prisma.TenantUpsertWithoutHeadersInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.TenantUpdateToOneWithWhereWithoutHeadersInput,
+      Prisma.TenantUpdateWithoutHeadersInput
+    >,
+    Prisma.TenantUncheckedUpdateWithoutHeadersInput
+  >;
+};
+
+export type TenantCreateNestedOneWithoutFootersInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutFootersInput,
+    Prisma.TenantUncheckedCreateWithoutFootersInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutFootersInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+};
+
+export type TenantUpdateOneRequiredWithoutFootersNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutFootersInput,
+    Prisma.TenantUncheckedCreateWithoutFootersInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutFootersInput;
+  upsert?: Prisma.TenantUpsertWithoutFootersInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.TenantUpdateToOneWithWhereWithoutFootersInput,
+      Prisma.TenantUpdateWithoutFootersInput
+    >,
+    Prisma.TenantUncheckedUpdateWithoutFootersInput
+  >;
+};
+
 export type TenantCreateNestedOneWithoutPagesInput = {
   create?: Prisma.XOR<
     Prisma.TenantCreateWithoutPagesInput,
@@ -1521,6 +1655,10 @@ export type TenantCreateWithoutChildrenInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutChildrenInput = {
@@ -1564,6 +1702,10 @@ export type TenantUncheckedCreateWithoutChildrenInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutChildrenInput = {
@@ -1615,6 +1757,10 @@ export type TenantCreateWithoutParentInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutParentInput = {
@@ -1658,6 +1804,10 @@ export type TenantUncheckedCreateWithoutParentInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutParentInput = {
@@ -1756,6 +1906,10 @@ export type TenantUpdateWithoutChildrenInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutChildrenInput = {
@@ -1822,6 +1976,10 @@ export type TenantUncheckedUpdateWithoutChildrenInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUpsertWithWhereUniqueWithoutParentInput = {
@@ -1928,6 +2086,10 @@ export type TenantCreateWithoutDomainsInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutDomainsInput = {
@@ -1971,6 +2133,10 @@ export type TenantUncheckedCreateWithoutDomainsInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutDomainsInput = {
@@ -2062,6 +2228,10 @@ export type TenantUpdateWithoutDomainsInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutDomainsInput = {
@@ -2128,6 +2298,10 @@ export type TenantUncheckedUpdateWithoutDomainsInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutTenantUsersInput = {
@@ -2171,6 +2345,10 @@ export type TenantCreateWithoutTenantUsersInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutTenantUsersInput = {
@@ -2214,6 +2392,10 @@ export type TenantUncheckedCreateWithoutTenantUsersInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutTenantUsersInput = {
@@ -2305,6 +2487,10 @@ export type TenantUpdateWithoutTenantUsersInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutTenantUsersInput = {
@@ -2371,6 +2557,10 @@ export type TenantUncheckedUpdateWithoutTenantUsersInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutProjectAssignmentsInput = {
@@ -2414,6 +2604,10 @@ export type TenantCreateWithoutProjectAssignmentsInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutProjectAssignmentsInput = {
@@ -2457,6 +2651,10 @@ export type TenantUncheckedCreateWithoutProjectAssignmentsInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutProjectAssignmentsInput = {
@@ -2548,6 +2746,10 @@ export type TenantUpdateWithoutProjectAssignmentsInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutProjectAssignmentsInput = {
@@ -2614,6 +2816,10 @@ export type TenantUncheckedUpdateWithoutProjectAssignmentsInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutAssetsInput = {
@@ -2657,6 +2863,10 @@ export type TenantCreateWithoutAssetsInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutAssetsInput = {
@@ -2700,6 +2910,10 @@ export type TenantUncheckedCreateWithoutAssetsInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutAssetsInput = {
@@ -2791,6 +3005,10 @@ export type TenantUpdateWithoutAssetsInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutAssetsInput = {
@@ -2857,6 +3075,1046 @@ export type TenantUncheckedUpdateWithoutAssetsInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantCreateWithoutLibraryComponentsInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutTenantInput;
+  parent?: Prisma.TenantCreateNestedOneWithoutChildrenInput;
+  children?: Prisma.TenantCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantUncheckedCreateWithoutLibraryComponentsInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  parentTenantId?: string | null;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetUncheckedCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookUncheckedCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutTenantInput;
+  children?: Prisma.TenantUncheckedCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantCreateOrConnectWithoutLibraryComponentsInput = {
+  where: Prisma.TenantWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutLibraryComponentsInput,
+    Prisma.TenantUncheckedCreateWithoutLibraryComponentsInput
+  >;
+};
+
+export type TenantUpsertWithoutLibraryComponentsInput = {
+  update: Prisma.XOR<
+    Prisma.TenantUpdateWithoutLibraryComponentsInput,
+    Prisma.TenantUncheckedUpdateWithoutLibraryComponentsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutLibraryComponentsInput,
+    Prisma.TenantUncheckedCreateWithoutLibraryComponentsInput
+  >;
+  where?: Prisma.TenantWhereInput;
+};
+
+export type TenantUpdateToOneWithWhereWithoutLibraryComponentsInput = {
+  where?: Prisma.TenantWhereInput;
+  data: Prisma.XOR<
+    Prisma.TenantUpdateWithoutLibraryComponentsInput,
+    Prisma.TenantUncheckedUpdateWithoutLibraryComponentsInput
+  >;
+};
+
+export type TenantUpdateWithoutLibraryComponentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutTenantNestedInput;
+  parent?: Prisma.TenantUpdateOneWithoutChildrenNestedInput;
+  children?: Prisma.TenantUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantUncheckedUpdateWithoutLibraryComponentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  parentTenantId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUncheckedUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUncheckedUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUncheckedUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUncheckedUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutTenantNestedInput;
+  children?: Prisma.TenantUncheckedUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantCreateWithoutMenusInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutTenantInput;
+  parent?: Prisma.TenantCreateNestedOneWithoutChildrenInput;
+  children?: Prisma.TenantCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantUncheckedCreateWithoutMenusInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  parentTenantId?: string | null;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetUncheckedCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookUncheckedCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutTenantInput;
+  children?: Prisma.TenantUncheckedCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantCreateOrConnectWithoutMenusInput = {
+  where: Prisma.TenantWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutMenusInput,
+    Prisma.TenantUncheckedCreateWithoutMenusInput
+  >;
+};
+
+export type TenantUpsertWithoutMenusInput = {
+  update: Prisma.XOR<
+    Prisma.TenantUpdateWithoutMenusInput,
+    Prisma.TenantUncheckedUpdateWithoutMenusInput
+  >;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutMenusInput,
+    Prisma.TenantUncheckedCreateWithoutMenusInput
+  >;
+  where?: Prisma.TenantWhereInput;
+};
+
+export type TenantUpdateToOneWithWhereWithoutMenusInput = {
+  where?: Prisma.TenantWhereInput;
+  data: Prisma.XOR<
+    Prisma.TenantUpdateWithoutMenusInput,
+    Prisma.TenantUncheckedUpdateWithoutMenusInput
+  >;
+};
+
+export type TenantUpdateWithoutMenusInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutTenantNestedInput;
+  parent?: Prisma.TenantUpdateOneWithoutChildrenNestedInput;
+  children?: Prisma.TenantUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantUncheckedUpdateWithoutMenusInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  parentTenantId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUncheckedUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUncheckedUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUncheckedUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUncheckedUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutTenantNestedInput;
+  children?: Prisma.TenantUncheckedUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantCreateWithoutHeadersInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutTenantInput;
+  parent?: Prisma.TenantCreateNestedOneWithoutChildrenInput;
+  children?: Prisma.TenantCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantUncheckedCreateWithoutHeadersInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  parentTenantId?: string | null;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetUncheckedCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookUncheckedCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutTenantInput;
+  children?: Prisma.TenantUncheckedCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantCreateOrConnectWithoutHeadersInput = {
+  where: Prisma.TenantWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutHeadersInput,
+    Prisma.TenantUncheckedCreateWithoutHeadersInput
+  >;
+};
+
+export type TenantUpsertWithoutHeadersInput = {
+  update: Prisma.XOR<
+    Prisma.TenantUpdateWithoutHeadersInput,
+    Prisma.TenantUncheckedUpdateWithoutHeadersInput
+  >;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutHeadersInput,
+    Prisma.TenantUncheckedCreateWithoutHeadersInput
+  >;
+  where?: Prisma.TenantWhereInput;
+};
+
+export type TenantUpdateToOneWithWhereWithoutHeadersInput = {
+  where?: Prisma.TenantWhereInput;
+  data: Prisma.XOR<
+    Prisma.TenantUpdateWithoutHeadersInput,
+    Prisma.TenantUncheckedUpdateWithoutHeadersInput
+  >;
+};
+
+export type TenantUpdateWithoutHeadersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutTenantNestedInput;
+  parent?: Prisma.TenantUpdateOneWithoutChildrenNestedInput;
+  children?: Prisma.TenantUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantUncheckedUpdateWithoutHeadersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  parentTenantId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUncheckedUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUncheckedUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUncheckedUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUncheckedUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutTenantNestedInput;
+  children?: Prisma.TenantUncheckedUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantCreateWithoutFootersInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutTenantInput;
+  parent?: Prisma.TenantCreateNestedOneWithoutChildrenInput;
+  children?: Prisma.TenantCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantUncheckedCreateWithoutFootersInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  parentTenantId?: string | null;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetUncheckedCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookUncheckedCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutTenantInput;
+  children?: Prisma.TenantUncheckedCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantCreateOrConnectWithoutFootersInput = {
+  where: Prisma.TenantWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutFootersInput,
+    Prisma.TenantUncheckedCreateWithoutFootersInput
+  >;
+};
+
+export type TenantUpsertWithoutFootersInput = {
+  update: Prisma.XOR<
+    Prisma.TenantUpdateWithoutFootersInput,
+    Prisma.TenantUncheckedUpdateWithoutFootersInput
+  >;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutFootersInput,
+    Prisma.TenantUncheckedCreateWithoutFootersInput
+  >;
+  where?: Prisma.TenantWhereInput;
+};
+
+export type TenantUpdateToOneWithWhereWithoutFootersInput = {
+  where?: Prisma.TenantWhereInput;
+  data: Prisma.XOR<
+    Prisma.TenantUpdateWithoutFootersInput,
+    Prisma.TenantUncheckedUpdateWithoutFootersInput
+  >;
+};
+
+export type TenantUpdateWithoutFootersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutTenantNestedInput;
+  parent?: Prisma.TenantUpdateOneWithoutChildrenNestedInput;
+  children?: Prisma.TenantUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantUncheckedUpdateWithoutFootersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  parentTenantId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUncheckedUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUncheckedUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUncheckedUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUncheckedUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutTenantNestedInput;
+  children?: Prisma.TenantUncheckedUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutPagesInput = {
@@ -2900,6 +4158,10 @@ export type TenantCreateWithoutPagesInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutPagesInput = {
@@ -2943,6 +4205,10 @@ export type TenantUncheckedCreateWithoutPagesInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutPagesInput = {
@@ -3034,6 +4300,10 @@ export type TenantUpdateWithoutPagesInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutPagesInput = {
@@ -3100,6 +4370,10 @@ export type TenantUncheckedUpdateWithoutPagesInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutPostsInput = {
@@ -3143,6 +4417,10 @@ export type TenantCreateWithoutPostsInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutPostsInput = {
@@ -3186,6 +4464,10 @@ export type TenantUncheckedCreateWithoutPostsInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutPostsInput = {
@@ -3277,6 +4559,10 @@ export type TenantUpdateWithoutPostsInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutPostsInput = {
@@ -3343,6 +4629,10 @@ export type TenantUncheckedUpdateWithoutPostsInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutPreviewTokensInput = {
@@ -3386,6 +4676,10 @@ export type TenantCreateWithoutPreviewTokensInput = {
   products?: Prisma.ProductCreateNestedManyWithoutTenantInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutPreviewTokensInput = {
@@ -3429,6 +4723,10 @@ export type TenantUncheckedCreateWithoutPreviewTokensInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutPreviewTokensInput = {
@@ -3520,6 +4818,10 @@ export type TenantUpdateWithoutPreviewTokensInput = {
   products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutPreviewTokensInput = {
@@ -3586,6 +4888,10 @@ export type TenantUncheckedUpdateWithoutPreviewTokensInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutAuditLogsInput = {
@@ -3629,6 +4935,10 @@ export type TenantCreateWithoutAuditLogsInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutAuditLogsInput = {
@@ -3672,6 +4982,10 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutAuditLogsInput = {
@@ -3763,6 +5077,10 @@ export type TenantUpdateWithoutAuditLogsInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutAuditLogsInput = {
@@ -3829,6 +5147,10 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutTenantUsageInput = {
@@ -3872,6 +5194,10 @@ export type TenantCreateWithoutTenantUsageInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutTenantUsageInput = {
@@ -3915,6 +5241,10 @@ export type TenantUncheckedCreateWithoutTenantUsageInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutTenantUsageInput = {
@@ -4006,6 +5336,10 @@ export type TenantUpdateWithoutTenantUsageInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutTenantUsageInput = {
@@ -4072,6 +5406,10 @@ export type TenantUncheckedUpdateWithoutTenantUsageInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutWebhooksInput = {
@@ -4115,6 +5453,10 @@ export type TenantCreateWithoutWebhooksInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutWebhooksInput = {
@@ -4158,6 +5500,10 @@ export type TenantUncheckedCreateWithoutWebhooksInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutWebhooksInput = {
@@ -4249,6 +5595,10 @@ export type TenantUpdateWithoutWebhooksInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutWebhooksInput = {
@@ -4315,6 +5665,10 @@ export type TenantUncheckedUpdateWithoutWebhooksInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutProductCategoriesInput = {
@@ -4358,6 +5712,10 @@ export type TenantCreateWithoutProductCategoriesInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutProductCategoriesInput = {
@@ -4401,6 +5759,10 @@ export type TenantUncheckedCreateWithoutProductCategoriesInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutProductCategoriesInput = {
@@ -4492,6 +5854,10 @@ export type TenantUpdateWithoutProductCategoriesInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutProductCategoriesInput = {
@@ -4558,6 +5924,10 @@ export type TenantUncheckedUpdateWithoutProductCategoriesInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutProductsInput = {
@@ -4601,6 +5971,10 @@ export type TenantCreateWithoutProductsInput = {
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutProductsInput = {
@@ -4644,6 +6018,10 @@ export type TenantUncheckedCreateWithoutProductsInput = {
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutProductsInput = {
@@ -4735,6 +6113,10 @@ export type TenantUpdateWithoutProductsInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutProductsInput = {
@@ -4801,6 +6183,10 @@ export type TenantUncheckedUpdateWithoutProductsInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutCustomersInput = {
@@ -4844,6 +6230,10 @@ export type TenantCreateWithoutCustomersInput = {
   products?: Prisma.ProductCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutCustomersInput = {
@@ -4887,6 +6277,10 @@ export type TenantUncheckedCreateWithoutCustomersInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput;
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutCustomersInput = {
@@ -4978,6 +6372,10 @@ export type TenantUpdateWithoutCustomersInput = {
   products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutCustomersInput = {
@@ -5044,6 +6442,10 @@ export type TenantUncheckedUpdateWithoutCustomersInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutOrdersInput = {
@@ -5087,6 +6489,10 @@ export type TenantCreateWithoutOrdersInput = {
   products?: Prisma.ProductCreateNestedManyWithoutTenantInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutOrdersInput = {
@@ -5130,6 +6536,10 @@ export type TenantUncheckedCreateWithoutOrdersInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutOrdersInput = {
@@ -5221,6 +6631,10 @@ export type TenantUpdateWithoutOrdersInput = {
   products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutOrdersInput = {
@@ -5287,6 +6701,10 @@ export type TenantUncheckedUpdateWithoutOrdersInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateManyParentInput = {
@@ -5378,6 +6796,10 @@ export type TenantUpdateWithoutParentInput = {
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutParentInput = {
@@ -5441,6 +6863,10 @@ export type TenantUncheckedUpdateWithoutParentInput = {
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
   orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateManyWithoutParentInput = {
@@ -5511,6 +6937,10 @@ export type TenantCountOutputType = {
   customers: number;
   orders: number;
   previewTokens: number;
+  libraryComponents: number;
+  menus: number;
+  headers: number;
+  footers: number;
 };
 
 export type TenantCountOutputTypeSelect<
@@ -5534,6 +6964,10 @@ export type TenantCountOutputTypeSelect<
   customers?: boolean | TenantCountOutputTypeCountCustomersArgs;
   orders?: boolean | TenantCountOutputTypeCountOrdersArgs;
   previewTokens?: boolean | TenantCountOutputTypeCountPreviewTokensArgs;
+  libraryComponents?: boolean | TenantCountOutputTypeCountLibraryComponentsArgs;
+  menus?: boolean | TenantCountOutputTypeCountMenusArgs;
+  headers?: boolean | TenantCountOutputTypeCountHeadersArgs;
+  footers?: boolean | TenantCountOutputTypeCountFootersArgs;
 };
 
 /**
@@ -5699,6 +7133,46 @@ export type TenantCountOutputTypeCountPreviewTokensArgs<
   where?: Prisma.PreviewTokenWhereInput;
 };
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountLibraryComponentsArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.LibraryComponentWhereInput;
+};
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountMenusArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.MenuWhereInput;
+};
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountHeadersArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.HeaderWhereInput;
+};
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountFootersArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.FooterWhereInput;
+};
+
 export type TenantSelect<
   ExtArgs extends
     runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
@@ -5748,6 +7222,10 @@ export type TenantSelect<
     customers?: boolean | Prisma.Tenant$customersArgs<ExtArgs>;
     orders?: boolean | Prisma.Tenant$ordersArgs<ExtArgs>;
     previewTokens?: boolean | Prisma.Tenant$previewTokensArgs<ExtArgs>;
+    libraryComponents?: boolean | Prisma.Tenant$libraryComponentsArgs<ExtArgs>;
+    menus?: boolean | Prisma.Tenant$menusArgs<ExtArgs>;
+    headers?: boolean | Prisma.Tenant$headersArgs<ExtArgs>;
+    footers?: boolean | Prisma.Tenant$footersArgs<ExtArgs>;
     _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs["result"]["tenant"]
@@ -5906,6 +7384,10 @@ export type TenantInclude<
   customers?: boolean | Prisma.Tenant$customersArgs<ExtArgs>;
   orders?: boolean | Prisma.Tenant$ordersArgs<ExtArgs>;
   previewTokens?: boolean | Prisma.Tenant$previewTokensArgs<ExtArgs>;
+  libraryComponents?: boolean | Prisma.Tenant$libraryComponentsArgs<ExtArgs>;
+  menus?: boolean | Prisma.Tenant$menusArgs<ExtArgs>;
+  headers?: boolean | Prisma.Tenant$headersArgs<ExtArgs>;
+  footers?: boolean | Prisma.Tenant$footersArgs<ExtArgs>;
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type TenantIncludeCreateManyAndReturn<
@@ -5943,6 +7425,10 @@ export type $TenantPayload<
     customers: Prisma.$CustomerPayload<ExtArgs>[];
     orders: Prisma.$OrderPayload<ExtArgs>[];
     previewTokens: Prisma.$PreviewTokenPayload<ExtArgs>[];
+    libraryComponents: Prisma.$LibraryComponentPayload<ExtArgs>[];
+    menus: Prisma.$MenuPayload<ExtArgs>[];
+    headers: Prisma.$HeaderPayload<ExtArgs>[];
+    footers: Prisma.$FooterPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -6698,6 +8184,52 @@ export interface Prisma__TenantClient<
   ): Prisma.PrismaPromise<
     | runtime.Types.Result.GetResult<
         Prisma.$PreviewTokenPayload<ExtArgs>,
+        T,
+        "findMany",
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  libraryComponents<
+    T extends Prisma.Tenant$libraryComponentsArgs<ExtArgs> = {},
+  >(
+    args?: Prisma.Subset<T, Prisma.Tenant$libraryComponentsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$LibraryComponentPayload<ExtArgs>,
+        T,
+        "findMany",
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  menus<T extends Prisma.Tenant$menusArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Tenant$menusArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$MenuPayload<ExtArgs>,
+        T,
+        "findMany",
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  headers<T extends Prisma.Tenant$headersArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Tenant$headersArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$HeaderPayload<ExtArgs>,
+        T,
+        "findMany",
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  footers<T extends Prisma.Tenant$footersArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Tenant$footersArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$FooterPayload<ExtArgs>,
         T,
         "findMany",
         GlobalOmitOptions
@@ -7693,6 +9225,124 @@ export type Tenant$previewTokensArgs<
   distinct?:
     | Prisma.PreviewTokenScalarFieldEnum
     | Prisma.PreviewTokenScalarFieldEnum[];
+};
+
+/**
+ * Tenant.libraryComponents
+ */
+export type Tenant$libraryComponentsArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the LibraryComponent
+   */
+  select?: Prisma.LibraryComponentSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the LibraryComponent
+   */
+  omit?: Prisma.LibraryComponentOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LibraryComponentInclude<ExtArgs> | null;
+  where?: Prisma.LibraryComponentWhereInput;
+  orderBy?:
+    | Prisma.LibraryComponentOrderByWithRelationInput
+    | Prisma.LibraryComponentOrderByWithRelationInput[];
+  cursor?: Prisma.LibraryComponentWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.LibraryComponentScalarFieldEnum
+    | Prisma.LibraryComponentScalarFieldEnum[];
+};
+
+/**
+ * Tenant.menus
+ */
+export type Tenant$menusArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Menu
+   */
+  select?: Prisma.MenuSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Menu
+   */
+  omit?: Prisma.MenuOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MenuInclude<ExtArgs> | null;
+  where?: Prisma.MenuWhereInput;
+  orderBy?:
+    | Prisma.MenuOrderByWithRelationInput
+    | Prisma.MenuOrderByWithRelationInput[];
+  cursor?: Prisma.MenuWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.MenuScalarFieldEnum | Prisma.MenuScalarFieldEnum[];
+};
+
+/**
+ * Tenant.headers
+ */
+export type Tenant$headersArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Header
+   */
+  select?: Prisma.HeaderSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Header
+   */
+  omit?: Prisma.HeaderOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HeaderInclude<ExtArgs> | null;
+  where?: Prisma.HeaderWhereInput;
+  orderBy?:
+    | Prisma.HeaderOrderByWithRelationInput
+    | Prisma.HeaderOrderByWithRelationInput[];
+  cursor?: Prisma.HeaderWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.HeaderScalarFieldEnum | Prisma.HeaderScalarFieldEnum[];
+};
+
+/**
+ * Tenant.footers
+ */
+export type Tenant$footersArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Footer
+   */
+  select?: Prisma.FooterSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Footer
+   */
+  omit?: Prisma.FooterOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FooterInclude<ExtArgs> | null;
+  where?: Prisma.FooterWhereInput;
+  orderBy?:
+    | Prisma.FooterOrderByWithRelationInput
+    | Prisma.FooterOrderByWithRelationInput[];
+  cursor?: Prisma.FooterWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.FooterScalarFieldEnum | Prisma.FooterScalarFieldEnum[];
 };
 
 /**

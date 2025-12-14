@@ -37,6 +37,8 @@ export type PageMinAggregateOutputType = {
   pageType: string | null;
   isSystemPage: boolean | null;
   isHomePage: boolean | null;
+  headerId: string | null;
+  footerId: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
   publishedAt: Date | null;
@@ -55,6 +57,8 @@ export type PageMaxAggregateOutputType = {
   pageType: string | null;
   isSystemPage: boolean | null;
   isHomePage: boolean | null;
+  headerId: string | null;
+  footerId: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
   publishedAt: Date | null;
@@ -74,6 +78,8 @@ export type PageCountAggregateOutputType = {
   pageType: number;
   isSystemPage: number;
   isHomePage: number;
+  headerId: number;
+  footerId: number;
   createdAt: number;
   updatedAt: number;
   publishedAt: number;
@@ -93,6 +99,8 @@ export type PageMinAggregateInputType = {
   pageType?: true;
   isSystemPage?: true;
   isHomePage?: true;
+  headerId?: true;
+  footerId?: true;
   createdAt?: true;
   updatedAt?: true;
   publishedAt?: true;
@@ -111,6 +119,8 @@ export type PageMaxAggregateInputType = {
   pageType?: true;
   isSystemPage?: true;
   isHomePage?: true;
+  headerId?: true;
+  footerId?: true;
   createdAt?: true;
   updatedAt?: true;
   publishedAt?: true;
@@ -130,6 +140,8 @@ export type PageCountAggregateInputType = {
   pageType?: true;
   isSystemPage?: true;
   isHomePage?: true;
+  headerId?: true;
+  footerId?: true;
   createdAt?: true;
   updatedAt?: true;
   publishedAt?: true;
@@ -229,6 +241,8 @@ export type PageGroupByOutputType = {
   pageType: string | null;
   isSystemPage: boolean;
   isHomePage: boolean;
+  headerId: string | null;
+  footerId: string | null;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -266,6 +280,8 @@ export type PageWhereInput = {
   pageType?: Prisma.StringNullableFilter<"Page"> | string | null;
   isSystemPage?: Prisma.BoolFilter<"Page"> | boolean;
   isHomePage?: Prisma.BoolFilter<"Page"> | boolean;
+  headerId?: Prisma.StringNullableFilter<"Page"> | string | null;
+  footerId?: Prisma.StringNullableFilter<"Page"> | string | null;
   createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string;
   publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null;
@@ -276,6 +292,14 @@ export type PageWhereInput = {
   author?: Prisma.XOR<
     Prisma.UserNullableScalarRelationFilter,
     Prisma.UserWhereInput
+  > | null;
+  header?: Prisma.XOR<
+    Prisma.HeaderNullableScalarRelationFilter,
+    Prisma.HeaderWhereInput
+  > | null;
+  footer?: Prisma.XOR<
+    Prisma.FooterNullableScalarRelationFilter,
+    Prisma.FooterWhereInput
   > | null;
   versions?: Prisma.PageVersionListRelationFilter;
 };
@@ -294,11 +318,15 @@ export type PageOrderByWithRelationInput = {
   pageType?: Prisma.SortOrderInput | Prisma.SortOrder;
   isSystemPage?: Prisma.SortOrder;
   isHomePage?: Prisma.SortOrder;
+  headerId?: Prisma.SortOrderInput | Prisma.SortOrder;
+  footerId?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
   tenant?: Prisma.TenantOrderByWithRelationInput;
   author?: Prisma.UserOrderByWithRelationInput;
+  header?: Prisma.HeaderOrderByWithRelationInput;
+  footer?: Prisma.FooterOrderByWithRelationInput;
   versions?: Prisma.PageVersionOrderByRelationAggregateInput;
 };
 
@@ -321,6 +349,8 @@ export type PageWhereUniqueInput = Prisma.AtLeast<
     pageType?: Prisma.StringNullableFilter<"Page"> | string | null;
     isSystemPage?: Prisma.BoolFilter<"Page"> | boolean;
     isHomePage?: Prisma.BoolFilter<"Page"> | boolean;
+    headerId?: Prisma.StringNullableFilter<"Page"> | string | null;
+    footerId?: Prisma.StringNullableFilter<"Page"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string;
     publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null;
@@ -331,6 +361,14 @@ export type PageWhereUniqueInput = Prisma.AtLeast<
     author?: Prisma.XOR<
       Prisma.UserNullableScalarRelationFilter,
       Prisma.UserWhereInput
+    > | null;
+    header?: Prisma.XOR<
+      Prisma.HeaderNullableScalarRelationFilter,
+      Prisma.HeaderWhereInput
+    > | null;
+    footer?: Prisma.XOR<
+      Prisma.FooterNullableScalarRelationFilter,
+      Prisma.FooterWhereInput
     > | null;
     versions?: Prisma.PageVersionListRelationFilter;
   },
@@ -351,6 +389,8 @@ export type PageOrderByWithAggregationInput = {
   pageType?: Prisma.SortOrderInput | Prisma.SortOrder;
   isSystemPage?: Prisma.SortOrder;
   isHomePage?: Prisma.SortOrder;
+  headerId?: Prisma.SortOrderInput | Prisma.SortOrder;
+  footerId?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -383,6 +423,8 @@ export type PageScalarWhereWithAggregatesInput = {
   pageType?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null;
   isSystemPage?: Prisma.BoolWithAggregatesFilter<"Page"> | boolean;
   isHomePage?: Prisma.BoolWithAggregatesFilter<"Page"> | boolean;
+  headerId?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null;
+  footerId?: Prisma.StringNullableWithAggregatesFilter<"Page"> | string | null;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Page"> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Page"> | Date | string;
   publishedAt?:
@@ -409,6 +451,8 @@ export type PageCreateInput = {
   publishedAt?: Date | string | null;
   tenant: Prisma.TenantCreateNestedOneWithoutPagesInput;
   author?: Prisma.UserCreateNestedOneWithoutAuthoredPagesInput;
+  header?: Prisma.HeaderCreateNestedOneWithoutPagesInput;
+  footer?: Prisma.FooterCreateNestedOneWithoutPagesInput;
   versions?: Prisma.PageVersionCreateNestedManyWithoutPageInput;
 };
 
@@ -426,6 +470,8 @@ export type PageUncheckedCreateInput = {
   pageType?: string | null;
   isSystemPage?: boolean;
   isHomePage?: boolean;
+  headerId?: string | null;
+  footerId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
@@ -456,6 +502,8 @@ export type PageUpdateInput = {
     | null;
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPagesNestedInput;
   author?: Prisma.UserUpdateOneWithoutAuthoredPagesNestedInput;
+  header?: Prisma.HeaderUpdateOneWithoutPagesNestedInput;
+  footer?: Prisma.FooterUpdateOneWithoutPagesNestedInput;
   versions?: Prisma.PageVersionUpdateManyWithoutPageNestedInput;
 };
 
@@ -476,6 +524,8 @@ export type PageUncheckedUpdateInput = {
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   publishedAt?:
@@ -500,6 +550,8 @@ export type PageCreateManyInput = {
   pageType?: string | null;
   isSystemPage?: boolean;
   isHomePage?: boolean;
+  headerId?: string | null;
+  footerId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
@@ -546,6 +598,8 @@ export type PageUncheckedUpdateManyInput = {
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   publishedAt?:
@@ -584,6 +638,8 @@ export type PageCountOrderByAggregateInput = {
   pageType?: Prisma.SortOrder;
   isSystemPage?: Prisma.SortOrder;
   isHomePage?: Prisma.SortOrder;
+  headerId?: Prisma.SortOrder;
+  footerId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   publishedAt?: Prisma.SortOrder;
@@ -602,6 +658,8 @@ export type PageMaxOrderByAggregateInput = {
   pageType?: Prisma.SortOrder;
   isSystemPage?: Prisma.SortOrder;
   isHomePage?: Prisma.SortOrder;
+  headerId?: Prisma.SortOrder;
+  footerId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   publishedAt?: Prisma.SortOrder;
@@ -620,6 +678,8 @@ export type PageMinOrderByAggregateInput = {
   pageType?: Prisma.SortOrder;
   isSystemPage?: Prisma.SortOrder;
   isHomePage?: Prisma.SortOrder;
+  headerId?: Prisma.SortOrder;
+  footerId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   publishedAt?: Prisma.SortOrder;
@@ -802,6 +862,178 @@ export type PageUncheckedUpdateManyWithoutAuthorNestedInput = {
   deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[];
 };
 
+export type PageCreateNestedManyWithoutHeaderInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.PageCreateWithoutHeaderInput,
+        Prisma.PageUncheckedCreateWithoutHeaderInput
+      >
+    | Prisma.PageCreateWithoutHeaderInput[]
+    | Prisma.PageUncheckedCreateWithoutHeaderInput[];
+  connectOrCreate?:
+    | Prisma.PageCreateOrConnectWithoutHeaderInput
+    | Prisma.PageCreateOrConnectWithoutHeaderInput[];
+  createMany?: Prisma.PageCreateManyHeaderInputEnvelope;
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+};
+
+export type PageUncheckedCreateNestedManyWithoutHeaderInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.PageCreateWithoutHeaderInput,
+        Prisma.PageUncheckedCreateWithoutHeaderInput
+      >
+    | Prisma.PageCreateWithoutHeaderInput[]
+    | Prisma.PageUncheckedCreateWithoutHeaderInput[];
+  connectOrCreate?:
+    | Prisma.PageCreateOrConnectWithoutHeaderInput
+    | Prisma.PageCreateOrConnectWithoutHeaderInput[];
+  createMany?: Prisma.PageCreateManyHeaderInputEnvelope;
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+};
+
+export type PageUpdateManyWithoutHeaderNestedInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.PageCreateWithoutHeaderInput,
+        Prisma.PageUncheckedCreateWithoutHeaderInput
+      >
+    | Prisma.PageCreateWithoutHeaderInput[]
+    | Prisma.PageUncheckedCreateWithoutHeaderInput[];
+  connectOrCreate?:
+    | Prisma.PageCreateOrConnectWithoutHeaderInput
+    | Prisma.PageCreateOrConnectWithoutHeaderInput[];
+  upsert?:
+    | Prisma.PageUpsertWithWhereUniqueWithoutHeaderInput
+    | Prisma.PageUpsertWithWhereUniqueWithoutHeaderInput[];
+  createMany?: Prisma.PageCreateManyHeaderInputEnvelope;
+  set?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  disconnect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  delete?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  update?:
+    | Prisma.PageUpdateWithWhereUniqueWithoutHeaderInput
+    | Prisma.PageUpdateWithWhereUniqueWithoutHeaderInput[];
+  updateMany?:
+    | Prisma.PageUpdateManyWithWhereWithoutHeaderInput
+    | Prisma.PageUpdateManyWithWhereWithoutHeaderInput[];
+  deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[];
+};
+
+export type PageUncheckedUpdateManyWithoutHeaderNestedInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.PageCreateWithoutHeaderInput,
+        Prisma.PageUncheckedCreateWithoutHeaderInput
+      >
+    | Prisma.PageCreateWithoutHeaderInput[]
+    | Prisma.PageUncheckedCreateWithoutHeaderInput[];
+  connectOrCreate?:
+    | Prisma.PageCreateOrConnectWithoutHeaderInput
+    | Prisma.PageCreateOrConnectWithoutHeaderInput[];
+  upsert?:
+    | Prisma.PageUpsertWithWhereUniqueWithoutHeaderInput
+    | Prisma.PageUpsertWithWhereUniqueWithoutHeaderInput[];
+  createMany?: Prisma.PageCreateManyHeaderInputEnvelope;
+  set?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  disconnect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  delete?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  update?:
+    | Prisma.PageUpdateWithWhereUniqueWithoutHeaderInput
+    | Prisma.PageUpdateWithWhereUniqueWithoutHeaderInput[];
+  updateMany?:
+    | Prisma.PageUpdateManyWithWhereWithoutHeaderInput
+    | Prisma.PageUpdateManyWithWhereWithoutHeaderInput[];
+  deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[];
+};
+
+export type PageCreateNestedManyWithoutFooterInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.PageCreateWithoutFooterInput,
+        Prisma.PageUncheckedCreateWithoutFooterInput
+      >
+    | Prisma.PageCreateWithoutFooterInput[]
+    | Prisma.PageUncheckedCreateWithoutFooterInput[];
+  connectOrCreate?:
+    | Prisma.PageCreateOrConnectWithoutFooterInput
+    | Prisma.PageCreateOrConnectWithoutFooterInput[];
+  createMany?: Prisma.PageCreateManyFooterInputEnvelope;
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+};
+
+export type PageUncheckedCreateNestedManyWithoutFooterInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.PageCreateWithoutFooterInput,
+        Prisma.PageUncheckedCreateWithoutFooterInput
+      >
+    | Prisma.PageCreateWithoutFooterInput[]
+    | Prisma.PageUncheckedCreateWithoutFooterInput[];
+  connectOrCreate?:
+    | Prisma.PageCreateOrConnectWithoutFooterInput
+    | Prisma.PageCreateOrConnectWithoutFooterInput[];
+  createMany?: Prisma.PageCreateManyFooterInputEnvelope;
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+};
+
+export type PageUpdateManyWithoutFooterNestedInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.PageCreateWithoutFooterInput,
+        Prisma.PageUncheckedCreateWithoutFooterInput
+      >
+    | Prisma.PageCreateWithoutFooterInput[]
+    | Prisma.PageUncheckedCreateWithoutFooterInput[];
+  connectOrCreate?:
+    | Prisma.PageCreateOrConnectWithoutFooterInput
+    | Prisma.PageCreateOrConnectWithoutFooterInput[];
+  upsert?:
+    | Prisma.PageUpsertWithWhereUniqueWithoutFooterInput
+    | Prisma.PageUpsertWithWhereUniqueWithoutFooterInput[];
+  createMany?: Prisma.PageCreateManyFooterInputEnvelope;
+  set?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  disconnect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  delete?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  update?:
+    | Prisma.PageUpdateWithWhereUniqueWithoutFooterInput
+    | Prisma.PageUpdateWithWhereUniqueWithoutFooterInput[];
+  updateMany?:
+    | Prisma.PageUpdateManyWithWhereWithoutFooterInput
+    | Prisma.PageUpdateManyWithWhereWithoutFooterInput[];
+  deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[];
+};
+
+export type PageUncheckedUpdateManyWithoutFooterNestedInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.PageCreateWithoutFooterInput,
+        Prisma.PageUncheckedCreateWithoutFooterInput
+      >
+    | Prisma.PageCreateWithoutFooterInput[]
+    | Prisma.PageUncheckedCreateWithoutFooterInput[];
+  connectOrCreate?:
+    | Prisma.PageCreateOrConnectWithoutFooterInput
+    | Prisma.PageCreateOrConnectWithoutFooterInput[];
+  upsert?:
+    | Prisma.PageUpsertWithWhereUniqueWithoutFooterInput
+    | Prisma.PageUpsertWithWhereUniqueWithoutFooterInput[];
+  createMany?: Prisma.PageCreateManyFooterInputEnvelope;
+  set?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  disconnect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  delete?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  connect?: Prisma.PageWhereUniqueInput | Prisma.PageWhereUniqueInput[];
+  update?:
+    | Prisma.PageUpdateWithWhereUniqueWithoutFooterInput
+    | Prisma.PageUpdateWithWhereUniqueWithoutFooterInput[];
+  updateMany?:
+    | Prisma.PageUpdateManyWithWhereWithoutFooterInput
+    | Prisma.PageUpdateManyWithWhereWithoutFooterInput[];
+  deleteMany?: Prisma.PageScalarWhereInput | Prisma.PageScalarWhereInput[];
+};
+
 export type PageCreateNestedOneWithoutVersionsInput = {
   create?: Prisma.XOR<
     Prisma.PageCreateWithoutVersionsInput,
@@ -844,6 +1076,8 @@ export type PageCreateWithoutTenantInput = {
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
   author?: Prisma.UserCreateNestedOneWithoutAuthoredPagesInput;
+  header?: Prisma.HeaderCreateNestedOneWithoutPagesInput;
+  footer?: Prisma.FooterCreateNestedOneWithoutPagesInput;
   versions?: Prisma.PageVersionCreateNestedManyWithoutPageInput;
 };
 
@@ -860,6 +1094,8 @@ export type PageUncheckedCreateWithoutTenantInput = {
   pageType?: string | null;
   isSystemPage?: boolean;
   isHomePage?: boolean;
+  headerId?: string | null;
+  footerId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
@@ -924,6 +1160,8 @@ export type PageScalarWhereInput = {
   pageType?: Prisma.StringNullableFilter<"Page"> | string | null;
   isSystemPage?: Prisma.BoolFilter<"Page"> | boolean;
   isHomePage?: Prisma.BoolFilter<"Page"> | boolean;
+  headerId?: Prisma.StringNullableFilter<"Page"> | string | null;
+  footerId?: Prisma.StringNullableFilter<"Page"> | string | null;
   createdAt?: Prisma.DateTimeFilter<"Page"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"Page"> | Date | string;
   publishedAt?: Prisma.DateTimeNullableFilter<"Page"> | Date | string | null;
@@ -945,6 +1183,8 @@ export type PageCreateWithoutAuthorInput = {
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
   tenant: Prisma.TenantCreateNestedOneWithoutPagesInput;
+  header?: Prisma.HeaderCreateNestedOneWithoutPagesInput;
+  footer?: Prisma.FooterCreateNestedOneWithoutPagesInput;
   versions?: Prisma.PageVersionCreateNestedManyWithoutPageInput;
 };
 
@@ -961,6 +1201,8 @@ export type PageUncheckedCreateWithoutAuthorInput = {
   pageType?: string | null;
   isSystemPage?: boolean;
   isHomePage?: boolean;
+  headerId?: string | null;
+  footerId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
@@ -1008,6 +1250,172 @@ export type PageUpdateManyWithWhereWithoutAuthorInput = {
   >;
 };
 
+export type PageCreateWithoutHeaderInput = {
+  id?: string;
+  slug: string;
+  title: string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  status?: string;
+  template?: string | null;
+  pageType?: string | null;
+  isSystemPage?: boolean;
+  isHomePage?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  publishedAt?: Date | string | null;
+  tenant: Prisma.TenantCreateNestedOneWithoutPagesInput;
+  author?: Prisma.UserCreateNestedOneWithoutAuthoredPagesInput;
+  footer?: Prisma.FooterCreateNestedOneWithoutPagesInput;
+  versions?: Prisma.PageVersionCreateNestedManyWithoutPageInput;
+};
+
+export type PageUncheckedCreateWithoutHeaderInput = {
+  id?: string;
+  tenantId: string;
+  slug: string;
+  title: string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  authorId?: string | null;
+  status?: string;
+  template?: string | null;
+  pageType?: string | null;
+  isSystemPage?: boolean;
+  isHomePage?: boolean;
+  footerId?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  publishedAt?: Date | string | null;
+  versions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutPageInput;
+};
+
+export type PageCreateOrConnectWithoutHeaderInput = {
+  where: Prisma.PageWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.PageCreateWithoutHeaderInput,
+    Prisma.PageUncheckedCreateWithoutHeaderInput
+  >;
+};
+
+export type PageCreateManyHeaderInputEnvelope = {
+  data: Prisma.PageCreateManyHeaderInput | Prisma.PageCreateManyHeaderInput[];
+  skipDuplicates?: boolean;
+};
+
+export type PageUpsertWithWhereUniqueWithoutHeaderInput = {
+  where: Prisma.PageWhereUniqueInput;
+  update: Prisma.XOR<
+    Prisma.PageUpdateWithoutHeaderInput,
+    Prisma.PageUncheckedUpdateWithoutHeaderInput
+  >;
+  create: Prisma.XOR<
+    Prisma.PageCreateWithoutHeaderInput,
+    Prisma.PageUncheckedCreateWithoutHeaderInput
+  >;
+};
+
+export type PageUpdateWithWhereUniqueWithoutHeaderInput = {
+  where: Prisma.PageWhereUniqueInput;
+  data: Prisma.XOR<
+    Prisma.PageUpdateWithoutHeaderInput,
+    Prisma.PageUncheckedUpdateWithoutHeaderInput
+  >;
+};
+
+export type PageUpdateManyWithWhereWithoutHeaderInput = {
+  where: Prisma.PageScalarWhereInput;
+  data: Prisma.XOR<
+    Prisma.PageUpdateManyMutationInput,
+    Prisma.PageUncheckedUpdateManyWithoutHeaderInput
+  >;
+};
+
+export type PageCreateWithoutFooterInput = {
+  id?: string;
+  slug: string;
+  title: string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  status?: string;
+  template?: string | null;
+  pageType?: string | null;
+  isSystemPage?: boolean;
+  isHomePage?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  publishedAt?: Date | string | null;
+  tenant: Prisma.TenantCreateNestedOneWithoutPagesInput;
+  author?: Prisma.UserCreateNestedOneWithoutAuthoredPagesInput;
+  header?: Prisma.HeaderCreateNestedOneWithoutPagesInput;
+  versions?: Prisma.PageVersionCreateNestedManyWithoutPageInput;
+};
+
+export type PageUncheckedCreateWithoutFooterInput = {
+  id?: string;
+  tenantId: string;
+  slug: string;
+  title: string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  authorId?: string | null;
+  status?: string;
+  template?: string | null;
+  pageType?: string | null;
+  isSystemPage?: boolean;
+  isHomePage?: boolean;
+  headerId?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  publishedAt?: Date | string | null;
+  versions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutPageInput;
+};
+
+export type PageCreateOrConnectWithoutFooterInput = {
+  where: Prisma.PageWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.PageCreateWithoutFooterInput,
+    Prisma.PageUncheckedCreateWithoutFooterInput
+  >;
+};
+
+export type PageCreateManyFooterInputEnvelope = {
+  data: Prisma.PageCreateManyFooterInput | Prisma.PageCreateManyFooterInput[];
+  skipDuplicates?: boolean;
+};
+
+export type PageUpsertWithWhereUniqueWithoutFooterInput = {
+  where: Prisma.PageWhereUniqueInput;
+  update: Prisma.XOR<
+    Prisma.PageUpdateWithoutFooterInput,
+    Prisma.PageUncheckedUpdateWithoutFooterInput
+  >;
+  create: Prisma.XOR<
+    Prisma.PageCreateWithoutFooterInput,
+    Prisma.PageUncheckedCreateWithoutFooterInput
+  >;
+};
+
+export type PageUpdateWithWhereUniqueWithoutFooterInput = {
+  where: Prisma.PageWhereUniqueInput;
+  data: Prisma.XOR<
+    Prisma.PageUpdateWithoutFooterInput,
+    Prisma.PageUncheckedUpdateWithoutFooterInput
+  >;
+};
+
+export type PageUpdateManyWithWhereWithoutFooterInput = {
+  where: Prisma.PageScalarWhereInput;
+  data: Prisma.XOR<
+    Prisma.PageUpdateManyMutationInput,
+    Prisma.PageUncheckedUpdateManyWithoutFooterInput
+  >;
+};
+
 export type PageCreateWithoutVersionsInput = {
   id?: string;
   slug: string;
@@ -1025,6 +1433,8 @@ export type PageCreateWithoutVersionsInput = {
   publishedAt?: Date | string | null;
   tenant: Prisma.TenantCreateNestedOneWithoutPagesInput;
   author?: Prisma.UserCreateNestedOneWithoutAuthoredPagesInput;
+  header?: Prisma.HeaderCreateNestedOneWithoutPagesInput;
+  footer?: Prisma.FooterCreateNestedOneWithoutPagesInput;
 };
 
 export type PageUncheckedCreateWithoutVersionsInput = {
@@ -1041,6 +1451,8 @@ export type PageUncheckedCreateWithoutVersionsInput = {
   pageType?: string | null;
   isSystemPage?: boolean;
   isHomePage?: boolean;
+  headerId?: string | null;
+  footerId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
@@ -1098,6 +1510,8 @@ export type PageUpdateWithoutVersionsInput = {
     | null;
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPagesNestedInput;
   author?: Prisma.UserUpdateOneWithoutAuthoredPagesNestedInput;
+  header?: Prisma.HeaderUpdateOneWithoutPagesNestedInput;
+  footer?: Prisma.FooterUpdateOneWithoutPagesNestedInput;
 };
 
 export type PageUncheckedUpdateWithoutVersionsInput = {
@@ -1117,6 +1531,8 @@ export type PageUncheckedUpdateWithoutVersionsInput = {
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   publishedAt?:
@@ -1139,6 +1555,8 @@ export type PageCreateManyTenantInput = {
   pageType?: string | null;
   isSystemPage?: boolean;
   isHomePage?: boolean;
+  headerId?: string | null;
+  footerId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
@@ -1167,6 +1585,8 @@ export type PageUpdateWithoutTenantInput = {
     | string
     | null;
   author?: Prisma.UserUpdateOneWithoutAuthoredPagesNestedInput;
+  header?: Prisma.HeaderUpdateOneWithoutPagesNestedInput;
+  footer?: Prisma.FooterUpdateOneWithoutPagesNestedInput;
   versions?: Prisma.PageVersionUpdateManyWithoutPageNestedInput;
 };
 
@@ -1186,6 +1606,8 @@ export type PageUncheckedUpdateWithoutTenantInput = {
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   publishedAt?:
@@ -1212,6 +1634,8 @@ export type PageUncheckedUpdateManyWithoutTenantInput = {
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   publishedAt?:
@@ -1234,6 +1658,8 @@ export type PageCreateManyAuthorInput = {
   pageType?: string | null;
   isSystemPage?: boolean;
   isHomePage?: boolean;
+  headerId?: string | null;
+  footerId?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   publishedAt?: Date | string | null;
@@ -1262,6 +1688,8 @@ export type PageUpdateWithoutAuthorInput = {
     | string
     | null;
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPagesNestedInput;
+  header?: Prisma.HeaderUpdateOneWithoutPagesNestedInput;
+  footer?: Prisma.FooterUpdateOneWithoutPagesNestedInput;
   versions?: Prisma.PageVersionUpdateManyWithoutPageNestedInput;
 };
 
@@ -1281,6 +1709,8 @@ export type PageUncheckedUpdateWithoutAuthorInput = {
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   publishedAt?:
@@ -1307,6 +1737,214 @@ export type PageUncheckedUpdateManyWithoutAuthorInput = {
   pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
   isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  publishedAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+};
+
+export type PageCreateManyHeaderInput = {
+  id?: string;
+  tenantId: string;
+  slug: string;
+  title: string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  authorId?: string | null;
+  status?: string;
+  template?: string | null;
+  pageType?: string | null;
+  isSystemPage?: boolean;
+  isHomePage?: boolean;
+  footerId?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  publishedAt?: Date | string | null;
+};
+
+export type PageUpdateWithoutHeaderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  publishedAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPagesNestedInput;
+  author?: Prisma.UserUpdateOneWithoutAuthoredPagesNestedInput;
+  footer?: Prisma.FooterUpdateOneWithoutPagesNestedInput;
+  versions?: Prisma.PageVersionUpdateManyWithoutPageNestedInput;
+};
+
+export type PageUncheckedUpdateWithoutHeaderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  authorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  publishedAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  versions?: Prisma.PageVersionUncheckedUpdateManyWithoutPageNestedInput;
+};
+
+export type PageUncheckedUpdateManyWithoutHeaderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  authorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  footerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  publishedAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+};
+
+export type PageCreateManyFooterInput = {
+  id?: string;
+  tenantId: string;
+  slug: string;
+  title: string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  authorId?: string | null;
+  status?: string;
+  template?: string | null;
+  pageType?: string | null;
+  isSystemPage?: boolean;
+  isHomePage?: boolean;
+  headerId?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  publishedAt?: Date | string | null;
+};
+
+export type PageUpdateWithoutFooterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  publishedAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPagesNestedInput;
+  author?: Prisma.UserUpdateOneWithoutAuthoredPagesNestedInput;
+  header?: Prisma.HeaderUpdateOneWithoutPagesNestedInput;
+  versions?: Prisma.PageVersionUpdateManyWithoutPageNestedInput;
+};
+
+export type PageUncheckedUpdateWithoutFooterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  authorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  publishedAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  versions?: Prisma.PageVersionUncheckedUpdateManyWithoutPageNestedInput;
+};
+
+export type PageUncheckedUpdateManyWithoutFooterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  content?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  authorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  template?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  pageType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  isSystemPage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isHomePage?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  headerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   publishedAt?:
@@ -1372,11 +2010,15 @@ export type PageSelect<
     pageType?: boolean;
     isSystemPage?: boolean;
     isHomePage?: boolean;
+    headerId?: boolean;
+    footerId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     publishedAt?: boolean;
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
     author?: boolean | Prisma.Page$authorArgs<ExtArgs>;
+    header?: boolean | Prisma.Page$headerArgs<ExtArgs>;
+    footer?: boolean | Prisma.Page$footerArgs<ExtArgs>;
     versions?: boolean | Prisma.Page$versionsArgs<ExtArgs>;
     _count?: boolean | Prisma.PageCountOutputTypeDefaultArgs<ExtArgs>;
   },
@@ -1401,11 +2043,15 @@ export type PageSelectCreateManyAndReturn<
     pageType?: boolean;
     isSystemPage?: boolean;
     isHomePage?: boolean;
+    headerId?: boolean;
+    footerId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     publishedAt?: boolean;
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
     author?: boolean | Prisma.Page$authorArgs<ExtArgs>;
+    header?: boolean | Prisma.Page$headerArgs<ExtArgs>;
+    footer?: boolean | Prisma.Page$footerArgs<ExtArgs>;
   },
   ExtArgs["result"]["page"]
 >;
@@ -1428,11 +2074,15 @@ export type PageSelectUpdateManyAndReturn<
     pageType?: boolean;
     isSystemPage?: boolean;
     isHomePage?: boolean;
+    headerId?: boolean;
+    footerId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     publishedAt?: boolean;
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
     author?: boolean | Prisma.Page$authorArgs<ExtArgs>;
+    header?: boolean | Prisma.Page$headerArgs<ExtArgs>;
+    footer?: boolean | Prisma.Page$footerArgs<ExtArgs>;
   },
   ExtArgs["result"]["page"]
 >;
@@ -1451,6 +2101,8 @@ export type PageSelectScalar = {
   pageType?: boolean;
   isSystemPage?: boolean;
   isHomePage?: boolean;
+  headerId?: boolean;
+  footerId?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
   publishedAt?: boolean;
@@ -1473,6 +2125,8 @@ export type PageOmit<
   | "pageType"
   | "isSystemPage"
   | "isHomePage"
+  | "headerId"
+  | "footerId"
   | "createdAt"
   | "updatedAt"
   | "publishedAt",
@@ -1484,6 +2138,8 @@ export type PageInclude<
 > = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
   author?: boolean | Prisma.Page$authorArgs<ExtArgs>;
+  header?: boolean | Prisma.Page$headerArgs<ExtArgs>;
+  footer?: boolean | Prisma.Page$footerArgs<ExtArgs>;
   versions?: boolean | Prisma.Page$versionsArgs<ExtArgs>;
   _count?: boolean | Prisma.PageCountOutputTypeDefaultArgs<ExtArgs>;
 };
@@ -1493,6 +2149,8 @@ export type PageIncludeCreateManyAndReturn<
 > = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
   author?: boolean | Prisma.Page$authorArgs<ExtArgs>;
+  header?: boolean | Prisma.Page$headerArgs<ExtArgs>;
+  footer?: boolean | Prisma.Page$footerArgs<ExtArgs>;
 };
 export type PageIncludeUpdateManyAndReturn<
   ExtArgs extends
@@ -1500,6 +2158,8 @@ export type PageIncludeUpdateManyAndReturn<
 > = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
   author?: boolean | Prisma.Page$authorArgs<ExtArgs>;
+  header?: boolean | Prisma.Page$headerArgs<ExtArgs>;
+  footer?: boolean | Prisma.Page$footerArgs<ExtArgs>;
 };
 
 export type $PagePayload<
@@ -1510,6 +2170,8 @@ export type $PagePayload<
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>;
     author: Prisma.$UserPayload<ExtArgs> | null;
+    header: Prisma.$HeaderPayload<ExtArgs> | null;
+    footer: Prisma.$FooterPayload<ExtArgs> | null;
     versions: Prisma.$PageVersionPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
@@ -1527,6 +2189,8 @@ export type $PagePayload<
       pageType: string | null;
       isSystemPage: boolean;
       isHomePage: boolean;
+      headerId: string | null;
+      footerId: string | null;
       createdAt: Date;
       updatedAt: Date;
       publishedAt: Date | null;
@@ -2107,6 +2771,32 @@ export interface Prisma__PageClient<
     ExtArgs,
     GlobalOmitOptions
   >;
+  header<T extends Prisma.Page$headerArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Page$headerArgs<ExtArgs>>,
+  ): Prisma.Prisma__HeaderClient<
+    runtime.Types.Result.GetResult<
+      Prisma.$HeaderPayload<ExtArgs>,
+      T,
+      "findUniqueOrThrow",
+      GlobalOmitOptions
+    > | null,
+    null,
+    ExtArgs,
+    GlobalOmitOptions
+  >;
+  footer<T extends Prisma.Page$footerArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Page$footerArgs<ExtArgs>>,
+  ): Prisma.Prisma__FooterClient<
+    runtime.Types.Result.GetResult<
+      Prisma.$FooterPayload<ExtArgs>,
+      T,
+      "findUniqueOrThrow",
+      GlobalOmitOptions
+    > | null,
+    null,
+    ExtArgs,
+    GlobalOmitOptions
+  >;
   versions<T extends Prisma.Page$versionsArgs<ExtArgs> = {}>(
     args?: Prisma.Subset<T, Prisma.Page$versionsArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<
@@ -2173,6 +2863,8 @@ export interface PageFieldRefs {
   readonly pageType: Prisma.FieldRef<"Page", "String">;
   readonly isSystemPage: Prisma.FieldRef<"Page", "Boolean">;
   readonly isHomePage: Prisma.FieldRef<"Page", "Boolean">;
+  readonly headerId: Prisma.FieldRef<"Page", "String">;
+  readonly footerId: Prisma.FieldRef<"Page", "String">;
   readonly createdAt: Prisma.FieldRef<"Page", "DateTime">;
   readonly updatedAt: Prisma.FieldRef<"Page", "DateTime">;
   readonly publishedAt: Prisma.FieldRef<"Page", "DateTime">;
@@ -2644,6 +3336,50 @@ export type Page$authorArgs<
    */
   include?: Prisma.UserInclude<ExtArgs> | null;
   where?: Prisma.UserWhereInput;
+};
+
+/**
+ * Page.header
+ */
+export type Page$headerArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Header
+   */
+  select?: Prisma.HeaderSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Header
+   */
+  omit?: Prisma.HeaderOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HeaderInclude<ExtArgs> | null;
+  where?: Prisma.HeaderWhereInput;
+};
+
+/**
+ * Page.footer
+ */
+export type Page$footerArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Footer
+   */
+  select?: Prisma.FooterSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Footer
+   */
+  omit?: Prisma.FooterOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FooterInclude<ExtArgs> | null;
+  where?: Prisma.FooterWhereInput;
 };
 
 /**

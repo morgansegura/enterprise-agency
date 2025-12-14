@@ -562,6 +562,105 @@ export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntNullableFilter<$PrismaModel>;
 };
 
+export type EnumComponentScopeFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ComponentScope
+    | Prisma.EnumComponentScopeFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ComponentScope[]
+    | Prisma.ListEnumComponentScopeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ComponentScope[]
+    | Prisma.ListEnumComponentScopeFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumComponentScopeFilter<$PrismaModel>
+    | $Enums.ComponentScope;
+};
+
+export type EnumComponentTypeFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ComponentType
+    | Prisma.EnumComponentTypeFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ComponentType[]
+    | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ComponentType[]
+    | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumComponentTypeFilter<$PrismaModel>
+    | $Enums.ComponentType;
+};
+
+export type EnumComponentScopeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ComponentScope
+    | Prisma.EnumComponentScopeFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ComponentScope[]
+    | Prisma.ListEnumComponentScopeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ComponentScope[]
+    | Prisma.ListEnumComponentScopeFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumComponentScopeWithAggregatesFilter<$PrismaModel>
+    | $Enums.ComponentScope;
+  _count?: Prisma.NestedIntFilter<$PrismaModel>;
+  _min?: Prisma.NestedEnumComponentScopeFilter<$PrismaModel>;
+  _max?: Prisma.NestedEnumComponentScopeFilter<$PrismaModel>;
+};
+
+export type EnumComponentTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ComponentType
+    | Prisma.EnumComponentTypeFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ComponentType[]
+    | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ComponentType[]
+    | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumComponentTypeWithAggregatesFilter<$PrismaModel>
+    | $Enums.ComponentType;
+  _count?: Prisma.NestedIntFilter<$PrismaModel>;
+  _min?: Prisma.NestedEnumComponentTypeFilter<$PrismaModel>;
+  _max?: Prisma.NestedEnumComponentTypeFilter<$PrismaModel>;
+};
+
+export type EnumHeaderBehaviorFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.HeaderBehavior
+    | Prisma.EnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.HeaderBehavior[]
+    | Prisma.ListEnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.HeaderBehavior[]
+    | Prisma.ListEnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumHeaderBehaviorFilter<$PrismaModel>
+    | $Enums.HeaderBehavior;
+};
+
+export type EnumHeaderBehaviorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.HeaderBehavior
+    | Prisma.EnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.HeaderBehavior[]
+    | Prisma.ListEnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.HeaderBehavior[]
+    | Prisma.ListEnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumHeaderBehaviorWithAggregatesFilter<$PrismaModel>
+    | $Enums.HeaderBehavior;
+  _count?: Prisma.NestedIntFilter<$PrismaModel>;
+  _min?: Prisma.NestedEnumHeaderBehaviorFilter<$PrismaModel>;
+  _max?: Prisma.NestedEnumHeaderBehaviorFilter<$PrismaModel>;
+};
+
 export type BigIntFilter<$PrismaModel = never> = {
   equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>;
   in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>;
@@ -1280,6 +1379,108 @@ export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
   _min?: Prisma.NestedIntNullableFilter<$PrismaModel>;
   _max?: Prisma.NestedIntNullableFilter<$PrismaModel>;
 };
+
+export type NestedEnumComponentScopeFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ComponentScope
+    | Prisma.EnumComponentScopeFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ComponentScope[]
+    | Prisma.ListEnumComponentScopeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ComponentScope[]
+    | Prisma.ListEnumComponentScopeFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumComponentScopeFilter<$PrismaModel>
+    | $Enums.ComponentScope;
+};
+
+export type NestedEnumComponentTypeFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.ComponentType
+    | Prisma.EnumComponentTypeFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.ComponentType[]
+    | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.ComponentType[]
+    | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumComponentTypeFilter<$PrismaModel>
+    | $Enums.ComponentType;
+};
+
+export type NestedEnumComponentScopeWithAggregatesFilter<$PrismaModel = never> =
+  {
+    equals?:
+      | $Enums.ComponentScope
+      | Prisma.EnumComponentScopeFieldRefInput<$PrismaModel>;
+    in?:
+      | $Enums.ComponentScope[]
+      | Prisma.ListEnumComponentScopeFieldRefInput<$PrismaModel>;
+    notIn?:
+      | $Enums.ComponentScope[]
+      | Prisma.ListEnumComponentScopeFieldRefInput<$PrismaModel>;
+    not?:
+      | Prisma.NestedEnumComponentScopeWithAggregatesFilter<$PrismaModel>
+      | $Enums.ComponentScope;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumComponentScopeFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumComponentScopeFilter<$PrismaModel>;
+  };
+
+export type NestedEnumComponentTypeWithAggregatesFilter<$PrismaModel = never> =
+  {
+    equals?:
+      | $Enums.ComponentType
+      | Prisma.EnumComponentTypeFieldRefInput<$PrismaModel>;
+    in?:
+      | $Enums.ComponentType[]
+      | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel>;
+    notIn?:
+      | $Enums.ComponentType[]
+      | Prisma.ListEnumComponentTypeFieldRefInput<$PrismaModel>;
+    not?:
+      | Prisma.NestedEnumComponentTypeWithAggregatesFilter<$PrismaModel>
+      | $Enums.ComponentType;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumComponentTypeFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumComponentTypeFilter<$PrismaModel>;
+  };
+
+export type NestedEnumHeaderBehaviorFilter<$PrismaModel = never> = {
+  equals?:
+    | $Enums.HeaderBehavior
+    | Prisma.EnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  in?:
+    | $Enums.HeaderBehavior[]
+    | Prisma.ListEnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  notIn?:
+    | $Enums.HeaderBehavior[]
+    | Prisma.ListEnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+  not?:
+    | Prisma.NestedEnumHeaderBehaviorFilter<$PrismaModel>
+    | $Enums.HeaderBehavior;
+};
+
+export type NestedEnumHeaderBehaviorWithAggregatesFilter<$PrismaModel = never> =
+  {
+    equals?:
+      | $Enums.HeaderBehavior
+      | Prisma.EnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+    in?:
+      | $Enums.HeaderBehavior[]
+      | Prisma.ListEnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+    notIn?:
+      | $Enums.HeaderBehavior[]
+      | Prisma.ListEnumHeaderBehaviorFieldRefInput<$PrismaModel>;
+    not?:
+      | Prisma.NestedEnumHeaderBehaviorWithAggregatesFilter<$PrismaModel>
+      | $Enums.HeaderBehavior;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumHeaderBehaviorFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumHeaderBehaviorFilter<$PrismaModel>;
+  };
 
 export type NestedBigIntFilter<$PrismaModel = never> = {
   equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>;

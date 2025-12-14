@@ -73,6 +73,26 @@ export type ProjectAssignment = Prisma.ProjectAssignmentModel;
  */
 export type Asset = Prisma.AssetModel;
 /**
+ * Model LibraryComponent
+ *
+ */
+export type LibraryComponent = Prisma.LibraryComponentModel;
+/**
+ * Model Menu
+ *
+ */
+export type Menu = Prisma.MenuModel;
+/**
+ * Model Header
+ *
+ */
+export type Header = Prisma.HeaderModel;
+/**
+ * Model Footer
+ *
+ */
+export type Footer = Prisma.FooterModel;
+/**
  * Model Page
  *
  */

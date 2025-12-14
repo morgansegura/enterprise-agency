@@ -29,3 +29,32 @@ export const ClientType = {
 } as const;
 
 export type ClientType = (typeof ClientType)[keyof typeof ClientType];
+
+export const ComponentScope = {
+  GLOBAL: "GLOBAL",
+  TENANT: "TENANT",
+} as const;
+
+export type ComponentScope =
+  (typeof ComponentScope)[keyof typeof ComponentScope];
+
+export const ComponentType = {
+  MENU: "MENU",
+  HEADER: "HEADER",
+  FOOTER: "FOOTER",
+  SECTION: "SECTION",
+  BLOCK: "BLOCK",
+} as const;
+
+export type ComponentType = (typeof ComponentType)[keyof typeof ComponentType];
+
+export const HeaderBehavior = {
+  STATIC: "STATIC",
+  FIXED: "FIXED",
+  STICKY: "STICKY",
+  SCROLL_HIDE: "SCROLL_HIDE",
+  TRANSPARENT: "TRANSPARENT",
+} as const;
+
+export type HeaderBehavior =
+  (typeof HeaderBehavior)[keyof typeof HeaderBehavior];

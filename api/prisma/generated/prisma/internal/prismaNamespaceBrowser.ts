@@ -60,6 +60,10 @@ export const ModelName = {
   TenantUser: "TenantUser",
   ProjectAssignment: "ProjectAssignment",
   Asset: "Asset",
+  LibraryComponent: "LibraryComponent",
+  Menu: "Menu",
+  Header: "Header",
+  Footer: "Footer",
   Page: "Page",
   PageVersion: "PageVersion",
   Post: "Post",
@@ -217,6 +221,79 @@ export const AssetScalarFieldEnum = {
 export type AssetScalarFieldEnum =
   (typeof AssetScalarFieldEnum)[keyof typeof AssetScalarFieldEnum];
 
+export const LibraryComponentScalarFieldEnum = {
+  id: "id",
+  tenantId: "tenantId",
+  name: "name",
+  slug: "slug",
+  description: "description",
+  scope: "scope",
+  type: "type",
+  content: "content",
+  category: "category",
+  tags: "tags",
+  thumbnailUrl: "thumbnailUrl",
+  usageCount: "usageCount",
+  isFavorite: "isFavorite",
+  createdAt: "createdAt",
+  updatedAt: "updatedAt",
+} as const;
+
+export type LibraryComponentScalarFieldEnum =
+  (typeof LibraryComponentScalarFieldEnum)[keyof typeof LibraryComponentScalarFieldEnum];
+
+export const MenuScalarFieldEnum = {
+  id: "id",
+  tenantId: "tenantId",
+  name: "name",
+  slug: "slug",
+  type: "type",
+  items: "items",
+  style: "style",
+  isDefault: "isDefault",
+  createdAt: "createdAt",
+  updatedAt: "updatedAt",
+} as const;
+
+export type MenuScalarFieldEnum =
+  (typeof MenuScalarFieldEnum)[keyof typeof MenuScalarFieldEnum];
+
+export const HeaderScalarFieldEnum = {
+  id: "id",
+  tenantId: "tenantId",
+  name: "name",
+  slug: "slug",
+  behavior: "behavior",
+  scrollThreshold: "scrollThreshold",
+  animation: "animation",
+  zones: "zones",
+  style: "style",
+  transparentStyle: "transparentStyle",
+  menuId: "menuId",
+  isDefault: "isDefault",
+  createdAt: "createdAt",
+  updatedAt: "updatedAt",
+} as const;
+
+export type HeaderScalarFieldEnum =
+  (typeof HeaderScalarFieldEnum)[keyof typeof HeaderScalarFieldEnum];
+
+export const FooterScalarFieldEnum = {
+  id: "id",
+  tenantId: "tenantId",
+  name: "name",
+  slug: "slug",
+  layout: "layout",
+  zones: "zones",
+  style: "style",
+  isDefault: "isDefault",
+  createdAt: "createdAt",
+  updatedAt: "updatedAt",
+} as const;
+
+export type FooterScalarFieldEnum =
+  (typeof FooterScalarFieldEnum)[keyof typeof FooterScalarFieldEnum];
+
 export const PageScalarFieldEnum = {
   id: "id",
   tenantId: "tenantId",
@@ -231,6 +308,8 @@ export const PageScalarFieldEnum = {
   pageType: "pageType",
   isSystemPage: "isSystemPage",
   isHomePage: "isHomePage",
+  headerId: "headerId",
+  footerId: "footerId",
   createdAt: "createdAt",
   updatedAt: "updatedAt",
   publishedAt: "publishedAt",
