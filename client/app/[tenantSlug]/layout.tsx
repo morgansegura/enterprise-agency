@@ -19,7 +19,7 @@ interface TenantLayoutProps {
  */
 async function getSiteConfig(tenantSlug: string): Promise<SiteConfig | null> {
   try {
-    const api = createPublicApiClientForTenant(tenantSlug);
+    const api = await createPublicApiClientForTenant(tenantSlug);
     return await api.getConfig();
   } catch {
     return null;

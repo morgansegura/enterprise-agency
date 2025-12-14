@@ -4,9 +4,11 @@ import {
   Param,
   Query,
   Header,
+  Res,
   ParseIntPipe,
   DefaultValuePipe,
 } from "@nestjs/common";
+import { Response } from "express";
 import {
   ApiTags,
   ApiOperation,
@@ -17,6 +19,7 @@ import {
 import { Throttle } from "@nestjs/throttler";
 import { Public } from "@/modules/auth/decorators/public.decorator";
 import { PublicApiService } from "./public-api.service";
+import { PreviewService } from "@/modules/preview/preview.service";
 import { PublicPageDto, PublicPagesListDto } from "./dto/public-page.dto";
 import { PublicPostDto, PublicPostsListDto } from "./dto/public-post.dto";
 import { PublicSiteConfigDto } from "./dto/public-site-config.dto";
@@ -37,7 +40,24 @@ import { PublicSiteConfigDto } from "./dto/public-site-config.dto";
 @Public() // No authentication required
 @Throttle({ default: { limit: 100, ttl: 60000 } }) // 100 requests per minute
 export class PublicApiController {
-  constructor(private readonly publicApiService: PublicApiService) {}
+  constructor(
+    private readonly publicApiService: PublicApiService,
+    private readonly previewService: PreviewService,
+  ) {}
+
+  /**
+   * Helper to validate preview token
+   * Returns true if preview mode is valid, false otherwise
+   */
+  private async isPreviewValid(previewToken?: string): Promise<boolean> {
+    if (!previewToken) return false;
+    try {
+      const validated = await this.previewService.validateToken(previewToken);
+      return validated !== null;
+    } catch {
+      return false;
+    }
+  }
 
   /**
    * Resolve tenant from domain
@@ -197,13 +217,14 @@ export class PublicApiController {
    * Get single page by slug
    * GET /api/v1/public/:tenantSlug/pages/:pageSlug
    *
-   * Cache: 2 minutes
+   * Cache: 2 minutes (disabled in preview mode)
+   * Preview: Pass ?preview=TOKEN to include draft content
    */
   @Get(":tenantSlug/pages/:pageSlug")
-  @Header("Cache-Control", "public, max-age=120") // 2 minutes
   @ApiOperation({
     summary: "Get page by slug",
-    description: "Returns a single published page",
+    description:
+      "Returns a single page. Use preview token to access draft content.",
   })
   @ApiParam({
     name: "tenantSlug",
@@ -212,6 +233,11 @@ export class PublicApiController {
   @ApiParam({
     name: "pageSlug",
     example: "about-us",
+  })
+  @ApiQuery({
+    name: "preview",
+    required: false,
+    description: "Preview token for draft content access",
   })
   @ApiResponse({
     status: 200,
@@ -222,8 +248,19 @@ export class PublicApiController {
   async getPageBySlug(
     @Param("tenantSlug") tenantSlug: string,
     @Param("pageSlug") pageSlug: string,
+    @Query("preview") previewToken: string | undefined,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<PublicPageDto> {
-    return this.publicApiService.getPageBySlug(tenantSlug, pageSlug);
+    const isPreview = await this.isPreviewValid(previewToken);
+
+    // Set appropriate cache headers
+    if (isPreview) {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    } else {
+      res.setHeader("Cache-Control", "public, max-age=120"); // 2 minutes
+    }
+
+    return this.publicApiService.getPageBySlug(tenantSlug, pageSlug, isPreview);
   }
 
   /**

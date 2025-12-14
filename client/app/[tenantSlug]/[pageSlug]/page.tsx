@@ -39,7 +39,7 @@ export async function generateMetadata({
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4002";
 
   try {
-    const api = createPublicApiClientForTenant(tenantSlug);
+    const api = await createPublicApiClientForTenant(tenantSlug);
     const [config, page] = await Promise.all([
       api.getConfig(),
       api.getPage(pageSlug),
@@ -104,7 +104,7 @@ export default async function TenantPage({ params }: PageProps) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4002";
 
   // Create API client for this specific tenant
-  const api = createPublicApiClientForTenant(tenantSlug);
+  const api = await createPublicApiClientForTenant(tenantSlug);
 
   let apiConfig: SiteConfig;
   let pageTitle = "";

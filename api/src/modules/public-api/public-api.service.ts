@@ -235,7 +235,7 @@ export class PublicApiService {
   }
 
   /**
-   * Get single published page by slug
+   * Get single page by slug
    * GET /api/v1/public/:tenantSlug/pages/:pageSlug
    *
    * Special handling for "home" slug:
@@ -243,29 +243,39 @@ export class PublicApiService {
    * - Falls back to page with slug "home"
    * - Falls back to "coming-soon" system page
    * - Returns a default coming soon page if none exists
+   *
+   * @param includeDrafts If true, bypasses the published status filter (for preview mode)
    */
   async getPageBySlug(
     tenantSlug: string,
     pageSlug: string,
+    includeDrafts: boolean = false,
   ): Promise<PublicPageDto> {
     const tenant = await this.getTenantBySlug(tenantSlug);
 
     // Special handling for home page requests
     if (pageSlug === "home") {
-      return this.getHomePage(tenant.id, tenantSlug);
+      return this.getHomePage(tenant.id, tenantSlug, includeDrafts);
+    }
+
+    // Build where clause - include drafts if preview mode is active
+    const whereClause: Prisma.PageWhereInput = {
+      tenantId: tenant.id,
+      slug: pageSlug,
+    };
+
+    if (!includeDrafts) {
+      whereClause.status = "published";
     }
 
     const page = await this.prisma.page.findFirst({
-      where: {
-        tenantId: tenant.id,
-        slug: pageSlug,
-        status: "published",
-      },
+      where: whereClause,
       select: {
         id: true,
         slug: true,
         title: true,
         content: true,
+        status: true,
         metaTitle: true,
         metaDescription: true,
         template: true,
@@ -298,17 +308,22 @@ export class PublicApiService {
    * 2. Page with slug "home"
    * 3. Page with pageType "coming-soon"
    * 4. Default coming soon content
+   *
+   * @param includeDrafts If true, bypasses the published status filter (for preview mode)
    */
   private async getHomePage(
     tenantId: string,
     tenantSlug: string,
+    includeDrafts: boolean = false,
   ): Promise<PublicPageDto> {
+    const statusFilter = includeDrafts ? {} : { status: "published" as const };
+
     // 1. Try to find page marked as home
     let page = await this.prisma.page.findFirst({
       where: {
         tenantId,
         isHomePage: true,
-        status: "published",
+        ...statusFilter,
       },
       select: {
         id: true,
@@ -329,7 +344,7 @@ export class PublicApiService {
         where: {
           tenantId,
           slug: "home",
-          status: "published",
+          ...statusFilter,
         },
         select: {
           id: true,
@@ -351,7 +366,7 @@ export class PublicApiService {
         where: {
           tenantId,
           pageType: "coming-soon",
-          status: "published",
+          ...statusFilter,
         },
         select: {
           id: true,

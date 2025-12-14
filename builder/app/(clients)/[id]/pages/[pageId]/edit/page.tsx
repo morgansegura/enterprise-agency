@@ -7,9 +7,11 @@ import {
   useUpdatePage,
   usePublishPage,
   useUnpublishPage,
+  useCreatePreviewToken,
   type Section,
   type Block,
 } from "@/lib/hooks/use-pages";
+import { useAutoSave } from "@/lib/hooks/use-auto-save";
 import { PageEditorLayout, PageSettingsDrawer } from "@/components/editor";
 import { PageRenderer } from "@/components/renderers/page-renderer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -55,6 +57,7 @@ export default function EditPagePage({
   const updatePage = useUpdatePage(id);
   const publishPage = usePublishPage(id);
   const unpublishPage = useUnpublishPage(id);
+  const createPreviewToken = useCreatePreviewToken(id);
 
   // Drag-and-drop sensors
   const sensors = useSensors(
@@ -100,6 +103,16 @@ export default function EditPagePage({
     seo: undefined as import("@/lib/hooks/use-pages").PageSeo | undefined,
   });
 
+  // Auto-save hook
+  const autoSave = useAutoSave({
+    tenantId: id,
+    pageId,
+    debounceMs: 3000,
+    onSaveSuccess: () => {
+      toast.success("Changes saved", { duration: 2000 });
+    },
+  });
+
   // Sync sections with page data
   React.useEffect(() => {
     if (page?.content?.sections) {
@@ -137,6 +150,32 @@ export default function EditPagePage({
     // Clear context when unmounting
     return () => setPageContext(null);
   }, [localPage.title, page?.title, setPageContext]);
+
+  // Track if initial load is complete to avoid auto-saving on mount
+  const initialLoadRef = React.useRef(true);
+
+  // Trigger auto-save when content changes (after initial load)
+  React.useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+
+    // Debounced save of current page state
+    autoSave.save({
+      title: localPage.title,
+      slug: localPage.slug,
+      template: localPage.template,
+      seo: localPage.seo,
+      content: { sections },
+    });
+  }, [
+    sections,
+    localPage.title,
+    localPage.slug,
+    localPage.template,
+    localPage.seo,
+  ]);
 
   // Listen for block additions from BlocksLibrary
   React.useEffect(() => {
@@ -264,6 +303,40 @@ export default function EditPagePage({
     // Clear selection when entering preview mode
     if (!previewMode) {
       setSelectedBlockKey(null);
+    }
+  };
+
+  const handleUnpublish = () => {
+    if (
+      confirm("Unpublish this page? It will no longer be visible publicly.")
+    ) {
+      unpublishPage.mutate(pageId, {
+        onSuccess: () => {
+          toast.success("Page unpublished");
+        },
+        onError: () => {
+          toast.error("Failed to unpublish page");
+        },
+      });
+    }
+  };
+
+  const handleGeneratePreviewLink = async () => {
+    // Flush any pending saves first
+    autoSave.flush();
+
+    try {
+      const result = await createPreviewToken.mutateAsync({
+        contentType: "page",
+        contentId: pageId,
+        expiresInHours: 168, // 7 days
+      });
+
+      // Copy to clipboard
+      await navigator.clipboard.writeText(result.previewUrl);
+      toast.success("Preview link copied to clipboard!");
+    } catch {
+      toast.error("Failed to generate preview link");
     }
   };
 
@@ -597,8 +670,13 @@ export default function EditPagePage({
         onBreakpointChange={setBreakpoint}
         onSave={handleSave}
         onPublish={handlePublish}
+        onUnpublish={handleUnpublish}
         onPreview={handlePreview}
-        isSaving={updatePage.isPending}
+        onGeneratePreviewLink={handleGeneratePreviewLink}
+        isSaving={autoSave.isSaving || updatePage.isPending}
+        isPublished={localPage.status === "published"}
+        hasUnsavedChanges={autoSave.hasUnsavedChanges}
+        lastSaved={autoSave.lastSaved}
       >
         {/* Canvas Content */}
         <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>

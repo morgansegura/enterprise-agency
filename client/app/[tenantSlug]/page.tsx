@@ -22,7 +22,7 @@ export async function generateMetadata({
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4002";
 
   try {
-    const api = createPublicApiClientForTenant(tenantSlug);
+    const api = await createPublicApiClientForTenant(tenantSlug);
     const config = await api.getConfig();
 
     const siteName = config?.businessName || "Enterprise Agency";
@@ -62,7 +62,7 @@ export default async function TenantHomePage({ params }: PageProps) {
   const { tenantSlug } = await params;
 
   // Create API client for this specific tenant
-  const api = createPublicApiClientForTenant(tenantSlug);
+  const api = await createPublicApiClientForTenant(tenantSlug);
 
   let sections: TypedSection[] = [];
 

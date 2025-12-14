@@ -17,9 +17,10 @@ export async function GET(request: NextRequest) {
   const draft = await draftMode();
   draft.disable();
 
-  // Clear preview context cookie
+  // Clear preview cookies
   const cookieStore = await cookies();
   cookieStore.delete("preview_context");
+  cookieStore.delete("preview-token");
 
   // Redirect to return URL
   redirect(returnUrl);

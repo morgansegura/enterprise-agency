@@ -60,8 +60,16 @@ export async function GET(request: NextRequest) {
     const draft = await draftMode();
     draft.enable();
 
-    // Store preview context in a cookie for the session
+    // Store preview token for API client to use
     const cookieStore = await cookies();
+    cookieStore.set("preview-token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24, // 24 hours
+    });
+
+    // Store preview context in a cookie for the session
     cookieStore.set(
       "preview_context",
       JSON.stringify({

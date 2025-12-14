@@ -59,7 +59,7 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
     // Fetch tenant token overrides from API
     // Use tenant-specific client if slug provided, otherwise use default
     const api = tenantSlug
-      ? createPublicApiClientForTenant(tenantSlug)
+      ? await createPublicApiClientForTenant(tenantSlug)
       : publicApi;
     const apiTokens = await api.getTokens();
     tenantTokens = apiTokens as TenantTokens & Partial<DesignTokens>;
