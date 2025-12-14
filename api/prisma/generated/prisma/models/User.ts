@@ -351,10 +351,12 @@ export type UserWhereInput = {
   uploadedAssets?: Prisma.AssetListRelationFilter;
   authoredPages?: Prisma.PageListRelationFilter;
   authoredPosts?: Prisma.PostListRelationFilter;
+  pageVersions?: Prisma.PageVersionListRelationFilter;
   auditLogs?: Prisma.AuditLogListRelationFilter;
   invitedUsers?: Prisma.TenantUserListRelationFilter;
   projectAssignments?: Prisma.ProjectAssignmentListRelationFilter;
   customers?: Prisma.CustomerListRelationFilter;
+  previewTokens?: Prisma.PreviewTokenListRelationFilter;
 };
 
 export type UserOrderByWithRelationInput = {
@@ -382,10 +384,12 @@ export type UserOrderByWithRelationInput = {
   uploadedAssets?: Prisma.AssetOrderByRelationAggregateInput;
   authoredPages?: Prisma.PageOrderByRelationAggregateInput;
   authoredPosts?: Prisma.PostOrderByRelationAggregateInput;
+  pageVersions?: Prisma.PageVersionOrderByRelationAggregateInput;
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput;
   invitedUsers?: Prisma.TenantUserOrderByRelationAggregateInput;
   projectAssignments?: Prisma.ProjectAssignmentOrderByRelationAggregateInput;
   customers?: Prisma.CustomerOrderByRelationAggregateInput;
+  previewTokens?: Prisma.PreviewTokenOrderByRelationAggregateInput;
 };
 
 export type UserWhereUniqueInput = Prisma.AtLeast<
@@ -425,10 +429,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
     uploadedAssets?: Prisma.AssetListRelationFilter;
     authoredPages?: Prisma.PageListRelationFilter;
     authoredPosts?: Prisma.PostListRelationFilter;
+    pageVersions?: Prisma.PageVersionListRelationFilter;
     auditLogs?: Prisma.AuditLogListRelationFilter;
     invitedUsers?: Prisma.TenantUserListRelationFilter;
     projectAssignments?: Prisma.ProjectAssignmentListRelationFilter;
     customers?: Prisma.CustomerListRelationFilter;
+    previewTokens?: Prisma.PreviewTokenListRelationFilter;
   },
   "id" | "clerkUserId" | "email" | "verificationToken" | "resetToken"
 >;
@@ -546,10 +552,12 @@ export type UserCreateInput = {
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateInput = {
@@ -577,10 +585,12 @@ export type UserUncheckedCreateInput = {
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUpdateInput = {
@@ -626,10 +636,12 @@ export type UserUpdateInput = {
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateInput = {
@@ -675,10 +687,12 @@ export type UserUncheckedUpdateInput = {
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserCreateManyInput = {
@@ -1017,6 +1031,32 @@ export type UserUpdateOneWithoutAuthoredPagesNestedInput = {
   >;
 };
 
+export type UserCreateNestedOneWithoutPageVersionsInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutPageVersionsInput,
+    Prisma.UserUncheckedCreateWithoutPageVersionsInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPageVersionsInput;
+  connect?: Prisma.UserWhereUniqueInput;
+};
+
+export type UserUpdateOneRequiredWithoutPageVersionsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutPageVersionsInput,
+    Prisma.UserUncheckedCreateWithoutPageVersionsInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPageVersionsInput;
+  upsert?: Prisma.UserUpsertWithoutPageVersionsInput;
+  connect?: Prisma.UserWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserUpdateToOneWithWhereWithoutPageVersionsInput,
+      Prisma.UserUpdateWithoutPageVersionsInput
+    >,
+    Prisma.UserUncheckedUpdateWithoutPageVersionsInput
+  >;
+};
+
 export type UserCreateNestedOneWithoutAuthoredPostsInput = {
   create?: Prisma.XOR<
     Prisma.UserCreateWithoutAuthoredPostsInput,
@@ -1042,6 +1082,32 @@ export type UserUpdateOneWithoutAuthoredPostsNestedInput = {
       Prisma.UserUpdateWithoutAuthoredPostsInput
     >,
     Prisma.UserUncheckedUpdateWithoutAuthoredPostsInput
+  >;
+};
+
+export type UserCreateNestedOneWithoutPreviewTokensInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutPreviewTokensInput,
+    Prisma.UserUncheckedCreateWithoutPreviewTokensInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPreviewTokensInput;
+  connect?: Prisma.UserWhereUniqueInput;
+};
+
+export type UserUpdateOneRequiredWithoutPreviewTokensNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutPreviewTokensInput,
+    Prisma.UserUncheckedCreateWithoutPreviewTokensInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPreviewTokensInput;
+  upsert?: Prisma.UserUpsertWithoutPreviewTokensInput;
+  connect?: Prisma.UserWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserUpdateToOneWithWhereWithoutPreviewTokensInput,
+      Prisma.UserUpdateWithoutPreviewTokensInput
+    >,
+    Prisma.UserUncheckedUpdateWithoutPreviewTokensInput
   >;
 };
 
@@ -1125,10 +1191,12 @@ export type UserCreateWithoutTenantUsersInput = {
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateWithoutTenantUsersInput = {
@@ -1155,10 +1223,12 @@ export type UserUncheckedCreateWithoutTenantUsersInput = {
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserCreateOrConnectWithoutTenantUsersInput = {
@@ -1194,9 +1264,11 @@ export type UserCreateWithoutInvitedUsersInput = {
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateWithoutInvitedUsersInput = {
@@ -1224,9 +1296,11 @@ export type UserUncheckedCreateWithoutInvitedUsersInput = {
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserCreateOrConnectWithoutInvitedUsersInput = {
@@ -1299,10 +1373,12 @@ export type UserUpdateWithoutTenantUsersInput = {
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutTenantUsersInput = {
@@ -1347,10 +1423,12 @@ export type UserUncheckedUpdateWithoutTenantUsersInput = {
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUpsertWithoutInvitedUsersInput = {
@@ -1416,9 +1494,11 @@ export type UserUpdateWithoutInvitedUsersInput = {
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutInvitedUsersInput = {
@@ -1464,9 +1544,11 @@ export type UserUncheckedUpdateWithoutInvitedUsersInput = {
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserCreateWithoutProjectAssignmentsInput = {
@@ -1494,9 +1576,11 @@ export type UserCreateWithoutProjectAssignmentsInput = {
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateWithoutProjectAssignmentsInput = {
@@ -1524,9 +1608,11 @@ export type UserUncheckedCreateWithoutProjectAssignmentsInput = {
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserCreateOrConnectWithoutProjectAssignmentsInput = {
@@ -1600,9 +1686,11 @@ export type UserUpdateWithoutProjectAssignmentsInput = {
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutProjectAssignmentsInput = {
@@ -1648,9 +1736,11 @@ export type UserUncheckedUpdateWithoutProjectAssignmentsInput = {
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserCreateWithoutUploadedAssetsInput = {
@@ -1677,10 +1767,12 @@ export type UserCreateWithoutUploadedAssetsInput = {
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput;
   authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateWithoutUploadedAssetsInput = {
@@ -1707,10 +1799,12 @@ export type UserUncheckedCreateWithoutUploadedAssetsInput = {
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput;
   authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserCreateOrConnectWithoutUploadedAssetsInput = {
@@ -1783,10 +1877,12 @@ export type UserUpdateWithoutUploadedAssetsInput = {
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput;
   authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutUploadedAssetsInput = {
@@ -1831,10 +1927,12 @@ export type UserUncheckedUpdateWithoutUploadedAssetsInput = {
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput;
   authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserCreateWithoutAuthoredPagesInput = {
@@ -1861,10 +1959,12 @@ export type UserCreateWithoutAuthoredPagesInput = {
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput;
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateWithoutAuthoredPagesInput = {
@@ -1891,10 +1991,12 @@ export type UserUncheckedCreateWithoutAuthoredPagesInput = {
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput;
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserCreateOrConnectWithoutAuthoredPagesInput = {
@@ -1967,10 +2069,12 @@ export type UserUpdateWithoutAuthoredPagesInput = {
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput;
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutAuthoredPagesInput = {
@@ -2015,10 +2119,204 @@ export type UserUncheckedUpdateWithoutAuthoredPagesInput = {
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput;
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
+};
+
+export type UserCreateWithoutPageVersionsInput = {
+  id?: string;
+  clerkUserId?: string | null;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  avatarUrl?: string | null;
+  passwordHash?: string | null;
+  emailVerified?: boolean;
+  verificationToken?: string | null;
+  verificationTokenExpires?: Date | string | null;
+  resetToken?: string | null;
+  resetTokenExpires?: Date | string | null;
+  isSuperAdmin?: boolean;
+  agencyRole?: string | null;
+  status?: string;
+  lastLoginAt?: Date | string | null;
+  lastLoginIp?: string | null;
+  tokenVersion?: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput;
+  uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
+  authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
+  authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
+  invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
+  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
+};
+
+export type UserUncheckedCreateWithoutPageVersionsInput = {
+  id?: string;
+  clerkUserId?: string | null;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  avatarUrl?: string | null;
+  passwordHash?: string | null;
+  emailVerified?: boolean;
+  verificationToken?: string | null;
+  verificationTokenExpires?: Date | string | null;
+  resetToken?: string | null;
+  resetTokenExpires?: Date | string | null;
+  isSuperAdmin?: boolean;
+  agencyRole?: string | null;
+  status?: string;
+  lastLoginAt?: Date | string | null;
+  lastLoginIp?: string | null;
+  tokenVersion?: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput;
+  uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
+  authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
+  authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
+  invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
+};
+
+export type UserCreateOrConnectWithoutPageVersionsInput = {
+  where: Prisma.UserWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutPageVersionsInput,
+    Prisma.UserUncheckedCreateWithoutPageVersionsInput
+  >;
+};
+
+export type UserUpsertWithoutPageVersionsInput = {
+  update: Prisma.XOR<
+    Prisma.UserUpdateWithoutPageVersionsInput,
+    Prisma.UserUncheckedUpdateWithoutPageVersionsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutPageVersionsInput,
+    Prisma.UserUncheckedCreateWithoutPageVersionsInput
+  >;
+  where?: Prisma.UserWhereInput;
+};
+
+export type UserUpdateToOneWithWhereWithoutPageVersionsInput = {
+  where?: Prisma.UserWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserUpdateWithoutPageVersionsInput,
+    Prisma.UserUncheckedUpdateWithoutPageVersionsInput
+  >;
+};
+
+export type UserUpdateWithoutPageVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  clerkUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  passwordHash?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  verificationToken?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  verificationTokenExpires?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  resetTokenExpires?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  lastLoginAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput;
+  uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
+  authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
+  authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
+  invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
+  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
+};
+
+export type UserUncheckedUpdateWithoutPageVersionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  clerkUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  passwordHash?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  verificationToken?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  verificationTokenExpires?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  resetTokenExpires?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  lastLoginAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput;
+  uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
+  authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
+  authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
+  invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserCreateWithoutAuthoredPostsInput = {
@@ -2045,10 +2343,12 @@ export type UserCreateWithoutAuthoredPostsInput = {
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput;
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateWithoutAuthoredPostsInput = {
@@ -2075,10 +2375,12 @@ export type UserUncheckedCreateWithoutAuthoredPostsInput = {
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput;
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserCreateOrConnectWithoutAuthoredPostsInput = {
@@ -2151,10 +2453,12 @@ export type UserUpdateWithoutAuthoredPostsInput = {
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput;
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutAuthoredPostsInput = {
@@ -2199,6 +2503,200 @@ export type UserUncheckedUpdateWithoutAuthoredPostsInput = {
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput;
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
+  invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
+};
+
+export type UserCreateWithoutPreviewTokensInput = {
+  id?: string;
+  clerkUserId?: string | null;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  avatarUrl?: string | null;
+  passwordHash?: string | null;
+  emailVerified?: boolean;
+  verificationToken?: string | null;
+  verificationTokenExpires?: Date | string | null;
+  resetToken?: string | null;
+  resetTokenExpires?: Date | string | null;
+  isSuperAdmin?: boolean;
+  agencyRole?: string | null;
+  status?: string;
+  lastLoginAt?: Date | string | null;
+  lastLoginIp?: string | null;
+  tokenVersion?: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput;
+  uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
+  authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
+  authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
+  invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
+  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+};
+
+export type UserUncheckedCreateWithoutPreviewTokensInput = {
+  id?: string;
+  clerkUserId?: string | null;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  avatarUrl?: string | null;
+  passwordHash?: string | null;
+  emailVerified?: boolean;
+  verificationToken?: string | null;
+  verificationTokenExpires?: Date | string | null;
+  resetToken?: string | null;
+  resetTokenExpires?: Date | string | null;
+  isSuperAdmin?: boolean;
+  agencyRole?: string | null;
+  status?: string;
+  lastLoginAt?: Date | string | null;
+  lastLoginIp?: string | null;
+  tokenVersion?: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput;
+  uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
+  authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
+  authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
+  invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+};
+
+export type UserCreateOrConnectWithoutPreviewTokensInput = {
+  where: Prisma.UserWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutPreviewTokensInput,
+    Prisma.UserUncheckedCreateWithoutPreviewTokensInput
+  >;
+};
+
+export type UserUpsertWithoutPreviewTokensInput = {
+  update: Prisma.XOR<
+    Prisma.UserUpdateWithoutPreviewTokensInput,
+    Prisma.UserUncheckedUpdateWithoutPreviewTokensInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutPreviewTokensInput,
+    Prisma.UserUncheckedCreateWithoutPreviewTokensInput
+  >;
+  where?: Prisma.UserWhereInput;
+};
+
+export type UserUpdateToOneWithWhereWithoutPreviewTokensInput = {
+  where?: Prisma.UserWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserUpdateWithoutPreviewTokensInput,
+    Prisma.UserUncheckedUpdateWithoutPreviewTokensInput
+  >;
+};
+
+export type UserUpdateWithoutPreviewTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  clerkUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  passwordHash?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  verificationToken?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  verificationTokenExpires?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  resetTokenExpires?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  lastLoginAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput;
+  uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
+  authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
+  authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
+  invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
+  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+};
+
+export type UserUncheckedUpdateWithoutPreviewTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  clerkUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  passwordHash?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  verificationToken?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  verificationTokenExpires?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  resetTokenExpires?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  lastLoginAt?:
+    | Prisma.NullableDateTimeFieldUpdateOperationsInput
+    | Date
+    | string
+    | null;
+  lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput;
+  uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
+  authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
+  authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
@@ -2230,9 +2728,11 @@ export type UserCreateWithoutAuditLogsInput = {
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -2260,9 +2760,11 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -2336,9 +2838,11 @@ export type UserUpdateWithoutAuditLogsInput = {
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -2384,9 +2888,11 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserCreateWithoutCustomersInput = {
@@ -2414,9 +2920,11 @@ export type UserCreateWithoutCustomersInput = {
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserUncheckedCreateWithoutCustomersInput = {
@@ -2444,9 +2952,11 @@ export type UserUncheckedCreateWithoutCustomersInput = {
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput;
   authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput;
   authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput;
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput;
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput;
 };
 
 export type UserCreateOrConnectWithoutCustomersInput = {
@@ -2520,9 +3030,11 @@ export type UserUpdateWithoutCustomersInput = {
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutCustomersInput = {
@@ -2568,9 +3080,11 @@ export type UserUncheckedUpdateWithoutCustomersInput = {
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput;
   authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput;
   authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput;
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput;
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput;
 };
 
 /**
@@ -2582,10 +3096,12 @@ export type UserCountOutputType = {
   uploadedAssets: number;
   authoredPages: number;
   authoredPosts: number;
+  pageVersions: number;
   auditLogs: number;
   invitedUsers: number;
   projectAssignments: number;
   customers: number;
+  previewTokens: number;
 };
 
 export type UserCountOutputTypeSelect<
@@ -2596,10 +3112,12 @@ export type UserCountOutputTypeSelect<
   uploadedAssets?: boolean | UserCountOutputTypeCountUploadedAssetsArgs;
   authoredPages?: boolean | UserCountOutputTypeCountAuthoredPagesArgs;
   authoredPosts?: boolean | UserCountOutputTypeCountAuthoredPostsArgs;
+  pageVersions?: boolean | UserCountOutputTypeCountPageVersionsArgs;
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs;
   invitedUsers?: boolean | UserCountOutputTypeCountInvitedUsersArgs;
   projectAssignments?: boolean | UserCountOutputTypeCountProjectAssignmentsArgs;
   customers?: boolean | UserCountOutputTypeCountCustomersArgs;
+  previewTokens?: boolean | UserCountOutputTypeCountPreviewTokensArgs;
 };
 
 /**
@@ -2658,6 +3176,16 @@ export type UserCountOutputTypeCountAuthoredPostsArgs<
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountPageVersionsArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.PageVersionWhereInput;
+};
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountAuditLogsArgs<
   ExtArgs extends
     runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
@@ -2695,6 +3223,16 @@ export type UserCountOutputTypeCountCustomersArgs<
   where?: Prisma.CustomerWhereInput;
 };
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPreviewTokensArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.PreviewTokenWhereInput;
+};
+
 export type UserSelect<
   ExtArgs extends
     runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
@@ -2724,10 +3262,12 @@ export type UserSelect<
     uploadedAssets?: boolean | Prisma.User$uploadedAssetsArgs<ExtArgs>;
     authoredPages?: boolean | Prisma.User$authoredPagesArgs<ExtArgs>;
     authoredPosts?: boolean | Prisma.User$authoredPostsArgs<ExtArgs>;
+    pageVersions?: boolean | Prisma.User$pageVersionsArgs<ExtArgs>;
     auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>;
     invitedUsers?: boolean | Prisma.User$invitedUsersArgs<ExtArgs>;
     projectAssignments?: boolean | Prisma.User$projectAssignmentsArgs<ExtArgs>;
     customers?: boolean | Prisma.User$customersArgs<ExtArgs>;
+    previewTokens?: boolean | Prisma.User$previewTokensArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs["result"]["user"]
@@ -2848,10 +3388,12 @@ export type UserInclude<
   uploadedAssets?: boolean | Prisma.User$uploadedAssetsArgs<ExtArgs>;
   authoredPages?: boolean | Prisma.User$authoredPagesArgs<ExtArgs>;
   authoredPosts?: boolean | Prisma.User$authoredPostsArgs<ExtArgs>;
+  pageVersions?: boolean | Prisma.User$pageVersionsArgs<ExtArgs>;
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>;
   invitedUsers?: boolean | Prisma.User$invitedUsersArgs<ExtArgs>;
   projectAssignments?: boolean | Prisma.User$projectAssignmentsArgs<ExtArgs>;
   customers?: boolean | Prisma.User$customersArgs<ExtArgs>;
+  previewTokens?: boolean | Prisma.User$previewTokensArgs<ExtArgs>;
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<
@@ -2873,10 +3415,12 @@ export type $UserPayload<
     uploadedAssets: Prisma.$AssetPayload<ExtArgs>[];
     authoredPages: Prisma.$PagePayload<ExtArgs>[];
     authoredPosts: Prisma.$PostPayload<ExtArgs>[];
+    pageVersions: Prisma.$PageVersionPayload<ExtArgs>[];
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[];
     invitedUsers: Prisma.$TenantUserPayload<ExtArgs>[];
     projectAssignments: Prisma.$ProjectAssignmentPayload<ExtArgs>[];
     customers: Prisma.$CustomerPayload<ExtArgs>[];
+    previewTokens: Prisma.$PreviewTokenPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -3494,6 +4038,17 @@ export interface Prisma__UserClient<
       >
     | Null
   >;
+  pageVersions<T extends Prisma.User$pageVersionsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$pageVersionsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$PageVersionPayload<ExtArgs>,
+        T,
+        "findMany",
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(
     args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<
@@ -3534,6 +4089,17 @@ export interface Prisma__UserClient<
   ): Prisma.PrismaPromise<
     | runtime.Types.Result.GetResult<
         Prisma.$CustomerPayload<ExtArgs>,
+        T,
+        "findMany",
+        GlobalOmitOptions
+      >
+    | Null
+  >;
+  previewTokens<T extends Prisma.User$previewTokensArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$previewTokensArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$PreviewTokenPayload<ExtArgs>,
         T,
         "findMany",
         GlobalOmitOptions
@@ -4161,6 +4727,37 @@ export type User$authoredPostsArgs<
 };
 
 /**
+ * User.pageVersions
+ */
+export type User$pageVersionsArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the PageVersion
+   */
+  select?: Prisma.PageVersionSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the PageVersion
+   */
+  omit?: Prisma.PageVersionOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PageVersionInclude<ExtArgs> | null;
+  where?: Prisma.PageVersionWhereInput;
+  orderBy?:
+    | Prisma.PageVersionOrderByWithRelationInput
+    | Prisma.PageVersionOrderByWithRelationInput[];
+  cursor?: Prisma.PageVersionWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.PageVersionScalarFieldEnum
+    | Prisma.PageVersionScalarFieldEnum[];
+};
+
+/**
  * User.auditLogs
  */
 export type User$auditLogsArgs<
@@ -4278,6 +4875,37 @@ export type User$customersArgs<
   take?: number;
   skip?: number;
   distinct?: Prisma.CustomerScalarFieldEnum | Prisma.CustomerScalarFieldEnum[];
+};
+
+/**
+ * User.previewTokens
+ */
+export type User$previewTokensArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the PreviewToken
+   */
+  select?: Prisma.PreviewTokenSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the PreviewToken
+   */
+  omit?: Prisma.PreviewTokenOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PreviewTokenInclude<ExtArgs> | null;
+  where?: Prisma.PreviewTokenWhereInput;
+  orderBy?:
+    | Prisma.PreviewTokenOrderByWithRelationInput
+    | Prisma.PreviewTokenOrderByWithRelationInput[];
+  cursor?: Prisma.PreviewTokenWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?:
+    | Prisma.PreviewTokenScalarFieldEnum
+    | Prisma.PreviewTokenScalarFieldEnum[];
 };
 
 /**

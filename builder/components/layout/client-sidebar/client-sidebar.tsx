@@ -27,7 +27,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
+  // SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/ui/nav-link";
 import { useTenant } from "@/lib/hooks/use-tenants";
@@ -181,7 +181,7 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
           </SidebarMenu>
         )}
       </SidebarFooter>
-      <SidebarRail />
+      {/* <SidebarRail /> */}
     </Sidebar>
   );
 }

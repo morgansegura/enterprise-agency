@@ -61,7 +61,9 @@ export const ModelName = {
   ProjectAssignment: "ProjectAssignment",
   Asset: "Asset",
   Page: "Page",
+  PageVersion: "PageVersion",
   Post: "Post",
+  PreviewToken: "PreviewToken",
   AuditLog: "AuditLog",
   TenantUsage: "TenantUsage",
   Webhook: "Webhook",
@@ -237,6 +239,22 @@ export const PageScalarFieldEnum = {
 export type PageScalarFieldEnum =
   (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum];
 
+export const PageVersionScalarFieldEnum = {
+  id: "id",
+  pageId: "pageId",
+  version: "version",
+  content: "content",
+  title: "title",
+  metaTitle: "metaTitle",
+  metaDescription: "metaDescription",
+  createdBy: "createdBy",
+  changeNote: "changeNote",
+  createdAt: "createdAt",
+} as const;
+
+export type PageVersionScalarFieldEnum =
+  (typeof PageVersionScalarFieldEnum)[keyof typeof PageVersionScalarFieldEnum];
+
 export const PostScalarFieldEnum = {
   id: "id",
   tenantId: "tenantId",
@@ -259,6 +277,20 @@ export const PostScalarFieldEnum = {
 
 export type PostScalarFieldEnum =
   (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum];
+
+export const PreviewTokenScalarFieldEnum = {
+  id: "id",
+  tenantId: "tenantId",
+  token: "token",
+  contentType: "contentType",
+  contentId: "contentId",
+  createdBy: "createdBy",
+  expiresAt: "expiresAt",
+  createdAt: "createdAt",
+} as const;
+
+export type PreviewTokenScalarFieldEnum =
+  (typeof PreviewTokenScalarFieldEnum)[keyof typeof PreviewTokenScalarFieldEnum];
 
 export const AuditLogScalarFieldEnum = {
   id: "id",

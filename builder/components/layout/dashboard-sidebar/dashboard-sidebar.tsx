@@ -19,7 +19,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
+  // SidebarRail,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/ui/nav-link";
@@ -147,7 +147,7 @@ export function DashboardSidebar({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-      <SidebarRail />
+      {/* <SidebarRail /> */}
     </Sidebar>
   );
 }

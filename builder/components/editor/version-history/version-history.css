@@ -1,0 +1,82 @@
+@reference "tailwindcss";
+
+.version-history {
+  @apply flex flex-col gap-(--spacing-4);
+}
+
+.version-history-loading {
+  @apply flex flex-col gap-(--spacing-3);
+}
+
+.version-skeleton {
+  @apply flex flex-col gap-(--spacing-2) p-(--spacing-3);
+  @apply rounded-md bg-(--muted);
+}
+
+.version-history-empty {
+  @apply flex flex-col items-center justify-center gap-(--spacing-2) p-(--spacing-8);
+  @apply text-center text-(--muted-foreground);
+}
+
+.version-history-empty p {
+  @apply font-medium;
+}
+
+.version-history-empty span {
+  @apply text-sm;
+}
+
+.version-history-error {
+  @apply p-(--spacing-4) text-center;
+  @apply text-(--destructive) bg-(--destructive)/10 rounded-md;
+}
+
+.version-list {
+  @apply flex flex-col gap-(--spacing-2);
+}
+
+.version-item {
+  @apply flex flex-col gap-(--spacing-2) p-(--spacing-3);
+  @apply border border-(--border) rounded-md bg-(--background);
+  @apply transition-colors;
+}
+
+.version-item:hover {
+  @apply border-(--primary);
+}
+
+.version-item-current {
+  @apply border-(--primary) bg-(--primary)/5;
+}
+
+.version-header {
+  @apply flex items-center justify-between;
+}
+
+.version-number {
+  @apply flex items-center gap-(--spacing-2);
+  @apply font-semibold text-sm;
+}
+
+.version-badge {
+  @apply px-(--spacing-1-5) py-(--spacing-0-5);
+  @apply text-xs font-medium;
+  @apply text-(--primary) bg-(--primary)/15 rounded-sm;
+}
+
+.version-restore-btn {
+  @apply gap-(--spacing-1) text-xs h-auto px-(--spacing-2) py-(--spacing-1);
+}
+
+.version-meta {
+  @apply flex flex-wrap gap-(--spacing-3);
+}
+
+.version-meta-item {
+  @apply inline-flex items-center gap-(--spacing-1);
+  @apply text-xs text-(--muted-foreground);
+}
+
+.version-note {
+  @apply text-xs text-(--muted-foreground) italic m-0;
+}

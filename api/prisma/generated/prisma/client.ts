@@ -78,10 +78,20 @@ export type Asset = Prisma.AssetModel;
  */
 export type Page = Prisma.PageModel;
 /**
+ * Model PageVersion
+ *
+ */
+export type PageVersion = Prisma.PageVersionModel;
+/**
  * Model Post
  *
  */
 export type Post = Prisma.PostModel;
+/**
+ * Model PreviewToken
+ *
+ */
+export type PreviewToken = Prisma.PreviewTokenModel;
 /**
  * Model AuditLog
  *

@@ -71,6 +71,12 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   get orderItem() {
     return this.client.orderItem;
   }
+  get previewToken() {
+    return this.client.previewToken;
+  }
+  get pageVersion() {
+    return this.client.pageVersion;
+  }
 
   // Expose transaction and other methods
   $transaction<T>(

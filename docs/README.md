@@ -10,6 +10,7 @@ Complete documentation for the Professional Web Agency Platform.
 
 - **[Vision & Product Strategy](./vision.md)** - Platform vision, competitive positioning, and why token-based design
 - **[Feature Flags System](./feature-flags.md)** - Progressive feature development and monetization
+- **[Content Preview System](./content-preview-system.md)** - Draft Mode, preview tokens, and publishing workflow
 - **[Build Plan](./build-plan.md)** - Current state, roadmap, and immediate next steps
 - [Architecture Overview](./architecture.md) - System architecture and multi-tenant design
 

@@ -9,6 +9,7 @@ import { PrismaService } from "@/common/services/prisma.service";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";
 import { StructureValidationService } from "./services/structure-validation.service";
+import { RevalidationService } from "@/modules/revalidation/revalidation.service";
 
 /**
  * Type alias for page content structure
@@ -23,6 +24,7 @@ export class PagesService {
   constructor(
     private prisma: PrismaService,
     private structureValidation: StructureValidationService,
+    private revalidationService: RevalidationService,
   ) {}
 
   async create(tenantId: string, userId: string, createData: CreatePageDto) {
@@ -343,6 +345,13 @@ export class PagesService {
       status: "published",
     });
 
+    // Trigger cache revalidation (fire and forget)
+    this.revalidationService
+      .revalidatePage(tenantId, page.slug)
+      .catch((err) => {
+        this.logger.error(`Failed to revalidate page ${page.slug}:`, err);
+      });
+
     this.logger.log(`Page published: ${page.slug}`);
     return page;
   }
@@ -351,6 +360,13 @@ export class PagesService {
     const page = await this.update(tenantId, id, {
       status: "draft",
     });
+
+    // Trigger cache revalidation (fire and forget)
+    this.revalidationService
+      .revalidatePage(tenantId, page.slug)
+      .catch((err) => {
+        this.logger.error(`Failed to revalidate page ${page.slug}:`, err);
+      });
 
     this.logger.log(`Page unpublished: ${page.slug}`);
     return page;

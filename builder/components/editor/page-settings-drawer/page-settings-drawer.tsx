@@ -30,10 +30,12 @@ import {
   Palette,
   FileText,
   Home,
+  History,
 } from "lucide-react";
+import { VersionHistory } from "../version-history";
 import type { PageSeo } from "@/lib/hooks/use-pages";
 
-type SettingsTab = "general" | "seo" | "layout" | "style";
+type SettingsTab = "general" | "seo" | "layout" | "style" | "history";
 
 const navItems: SettingsNavItem<SettingsTab>[] = [
   {
@@ -60,11 +62,19 @@ const navItems: SettingsNavItem<SettingsTab>[] = [
     icon: Palette,
     description: "Page styling",
   },
+  {
+    id: "history",
+    label: "History",
+    icon: History,
+    description: "Version history",
+  },
 ];
 
 interface PageSettingsDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  tenantId: string;
+  pageId: string;
   page: {
     title: string;
     slug: string;
@@ -81,6 +91,8 @@ interface PageSettingsDrawerProps {
 export function PageSettingsDrawer({
   open,
   onOpenChange,
+  tenantId,
+  pageId,
   page,
   onChange,
 }: PageSettingsDrawerProps) {
@@ -111,6 +123,9 @@ export function PageSettingsDrawer({
         {activeTab === "seo" && <SeoSettings page={page} onChange={onChange} />}
         {activeTab === "layout" && <LayoutSettings />}
         {activeTab === "style" && <StyleSettings />}
+        {activeTab === "history" && (
+          <HistorySettings tenantId={tenantId} pageId={pageId} />
+        )}
       </SettingsDrawerContent>
     </SettingsDrawer>
   );
@@ -307,6 +322,22 @@ function StyleSettings() {
           />
         </SettingsField>
       </SettingsForm>
+    </SettingsSection>
+  );
+}
+
+interface HistorySettingsProps {
+  tenantId: string;
+  pageId: string;
+}
+
+function HistorySettings({ tenantId, pageId }: HistorySettingsProps) {
+  return (
+    <SettingsSection
+      title="Version History"
+      description="View and restore previous versions of this page."
+    >
+      <VersionHistory tenantId={tenantId} pageId={pageId} />
     </SettingsSection>
   );
 }

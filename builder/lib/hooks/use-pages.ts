@@ -195,3 +195,143 @@ export function useDuplicatePage(tenantId: string) {
     },
   });
 }
+
+// ===========================================================================
+// Version History Hooks
+// ===========================================================================
+
+export interface PageVersion {
+  id: string;
+  version: number;
+  title: string;
+  createdAt: string;
+  changeNote: string | null;
+  author: {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+    email: string;
+  };
+}
+
+export interface PageVersionFull extends PageVersion {
+  content: Record<string, unknown> | null;
+  metaTitle: string | null;
+  metaDescription: string | null;
+}
+
+const VERSION_KEY = "versions";
+
+export function usePageVersions(tenantId: string, pageId: string) {
+  return useQuery<PageVersion[]>({
+    queryKey: [...PAGES_KEY, tenantId, pageId, VERSION_KEY],
+    queryFn: () => apiClient.get<PageVersion[]>(`/pages/${pageId}/versions`),
+    enabled: !!tenantId && !!pageId,
+  });
+}
+
+export function usePageVersion(
+  tenantId: string,
+  pageId: string,
+  versionId: string,
+) {
+  return useQuery<PageVersionFull>({
+    queryKey: [...PAGES_KEY, tenantId, pageId, VERSION_KEY, versionId],
+    queryFn: () =>
+      apiClient.get<PageVersionFull>(`/pages/${pageId}/versions/${versionId}`),
+    enabled: !!tenantId && !!pageId && !!versionId,
+  });
+}
+
+export function useRestorePageVersion(tenantId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      pageId,
+      versionId,
+    }: {
+      pageId: string;
+      versionId: string;
+    }) =>
+      apiClient.post<Page>(
+        `/pages/${pageId}/versions/${versionId}/restore`,
+        {},
+      ),
+    onSuccess: (_, { pageId }) => {
+      queryClient.invalidateQueries({ queryKey: [...PAGES_KEY, tenantId] });
+      queryClient.invalidateQueries({
+        queryKey: [...PAGES_KEY, tenantId, pageId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [...PAGES_KEY, tenantId, pageId, VERSION_KEY],
+      });
+      logger.log("Page restored to previous version");
+    },
+    onError: (error) => {
+      logger.error("Failed to restore page version", error as Error);
+    },
+  });
+}
+
+export function useComparePageVersions(
+  tenantId: string,
+  pageId: string,
+  versionIdA: string,
+  versionIdB: string,
+) {
+  return useQuery<{ versionA: PageVersionFull; versionB: PageVersionFull }>({
+    queryKey: [
+      ...PAGES_KEY,
+      tenantId,
+      pageId,
+      VERSION_KEY,
+      "compare",
+      versionIdA,
+      versionIdB,
+    ],
+    queryFn: () =>
+      apiClient.get(
+        `/pages/${pageId}/versions/compare?versionA=${versionIdA}&versionB=${versionIdB}`,
+      ),
+    enabled: !!tenantId && !!pageId && !!versionIdA && !!versionIdB,
+  });
+}
+
+// ===========================================================================
+// Preview Token Hooks
+// ===========================================================================
+
+export interface PreviewToken {
+  id: string;
+  token: string;
+  contentType: string;
+  contentId: string;
+  expiresAt: string;
+  previewUrl: string;
+}
+
+export function useCreatePreviewToken(_tenantId: string) {
+  return useMutation({
+    mutationFn: ({
+      contentType,
+      contentId,
+      expiresInHours = 24,
+    }: {
+      contentType: "page" | "post";
+      contentId: string;
+      expiresInHours?: number;
+    }) =>
+      apiClient.post<PreviewToken>("/preview/generate", {
+        contentType,
+        contentId,
+        expiresInHours,
+      }),
+    onSuccess: () => {
+      logger.log("Preview token generated");
+    },
+    onError: (error) => {
+      logger.error("Failed to generate preview token", error as Error);
+    },
+  });
+}

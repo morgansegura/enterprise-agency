@@ -419,7 +419,9 @@ export const ModelName = {
   ProjectAssignment: "ProjectAssignment",
   Asset: "Asset",
   Page: "Page",
+  PageVersion: "PageVersion",
   Post: "Post",
+  PreviewToken: "PreviewToken",
   AuditLog: "AuditLog",
   TenantUsage: "TenantUsage",
   Webhook: "Webhook",
@@ -460,7 +462,9 @@ export type TypeMap<
       | "projectAssignment"
       | "asset"
       | "page"
+      | "pageVersion"
       | "post"
+      | "previewToken"
       | "auditLog"
       | "tenantUsage"
       | "webhook"
@@ -1007,6 +1011,82 @@ export type TypeMap<
         };
       };
     };
+    PageVersion: {
+      payload: Prisma.$PageVersionPayload<ExtArgs>;
+      fields: Prisma.PageVersionFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.PageVersionFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.PageVersionFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>;
+        };
+        findFirst: {
+          args: Prisma.PageVersionFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.PageVersionFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>;
+        };
+        findMany: {
+          args: Prisma.PageVersionFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>[];
+        };
+        create: {
+          args: Prisma.PageVersionCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>;
+        };
+        createMany: {
+          args: Prisma.PageVersionCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.PageVersionCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>[];
+        };
+        delete: {
+          args: Prisma.PageVersionDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>;
+        };
+        update: {
+          args: Prisma.PageVersionUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>;
+        };
+        deleteMany: {
+          args: Prisma.PageVersionDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.PageVersionUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.PageVersionUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>[];
+        };
+        upsert: {
+          args: Prisma.PageVersionUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PageVersionPayload>;
+        };
+        aggregate: {
+          args: Prisma.PageVersionAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePageVersion>;
+        };
+        groupBy: {
+          args: Prisma.PageVersionGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.PageVersionGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.PageVersionCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.PageVersionCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
     Post: {
       payload: Prisma.$PostPayload<ExtArgs>;
       fields: Prisma.PostFieldRefs;
@@ -1079,6 +1159,82 @@ export type TypeMap<
           args: Prisma.PostCountArgs<ExtArgs>;
           result:
             | runtime.Types.Utils.Optional<Prisma.PostCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    PreviewToken: {
+      payload: Prisma.$PreviewTokenPayload<ExtArgs>;
+      fields: Prisma.PreviewTokenFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.PreviewTokenFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.PreviewTokenFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>;
+        };
+        findFirst: {
+          args: Prisma.PreviewTokenFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.PreviewTokenFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>;
+        };
+        findMany: {
+          args: Prisma.PreviewTokenFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>[];
+        };
+        create: {
+          args: Prisma.PreviewTokenCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>;
+        };
+        createMany: {
+          args: Prisma.PreviewTokenCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.PreviewTokenCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>[];
+        };
+        delete: {
+          args: Prisma.PreviewTokenDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>;
+        };
+        update: {
+          args: Prisma.PreviewTokenUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>;
+        };
+        deleteMany: {
+          args: Prisma.PreviewTokenDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.PreviewTokenUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.PreviewTokenUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>[];
+        };
+        upsert: {
+          args: Prisma.PreviewTokenUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PreviewTokenPayload>;
+        };
+        aggregate: {
+          args: Prisma.PreviewTokenAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePreviewToken>;
+        };
+        groupBy: {
+          args: Prisma.PreviewTokenGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.PreviewTokenGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.PreviewTokenCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.PreviewTokenCountAggregateOutputType>
             | number;
         };
       };
@@ -2104,6 +2260,22 @@ export const PageScalarFieldEnum = {
 export type PageScalarFieldEnum =
   (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum];
 
+export const PageVersionScalarFieldEnum = {
+  id: "id",
+  pageId: "pageId",
+  version: "version",
+  content: "content",
+  title: "title",
+  metaTitle: "metaTitle",
+  metaDescription: "metaDescription",
+  createdBy: "createdBy",
+  changeNote: "changeNote",
+  createdAt: "createdAt",
+} as const;
+
+export type PageVersionScalarFieldEnum =
+  (typeof PageVersionScalarFieldEnum)[keyof typeof PageVersionScalarFieldEnum];
+
 export const PostScalarFieldEnum = {
   id: "id",
   tenantId: "tenantId",
@@ -2126,6 +2298,20 @@ export const PostScalarFieldEnum = {
 
 export type PostScalarFieldEnum =
   (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum];
+
+export const PreviewTokenScalarFieldEnum = {
+  id: "id",
+  tenantId: "tenantId",
+  token: "token",
+  contentType: "contentType",
+  contentId: "contentId",
+  createdBy: "createdBy",
+  expiresAt: "expiresAt",
+  createdAt: "createdAt",
+} as const;
+
+export type PreviewTokenScalarFieldEnum =
+  (typeof PreviewTokenScalarFieldEnum)[keyof typeof PreviewTokenScalarFieldEnum];
 
 export const AuditLogScalarFieldEnum = {
   id: "id",
@@ -2692,7 +2878,9 @@ export type GlobalOmitConfig = {
   projectAssignment?: Prisma.ProjectAssignmentOmit;
   asset?: Prisma.AssetOmit;
   page?: Prisma.PageOmit;
+  pageVersion?: Prisma.PageVersionOmit;
   post?: Prisma.PostOmit;
+  previewToken?: Prisma.PreviewTokenOmit;
   auditLog?: Prisma.AuditLogOmit;
   tenantUsage?: Prisma.TenantUsageOmit;
   webhook?: Prisma.WebhookOmit;

@@ -204,6 +204,39 @@ export {
 
 export type { Tag } from "./use-tags";
 
+// Pages
+export {
+  usePages,
+  usePage,
+  usePageBySlug,
+  useCreatePage,
+  useUpdatePage,
+  useDeletePage,
+  usePublishPage,
+  useUnpublishPage,
+  useDuplicatePage,
+  // Version History
+  usePageVersions,
+  usePageVersion,
+  useRestorePageVersion,
+  useComparePageVersions,
+  // Preview
+  useCreatePreviewToken,
+} from "./use-pages";
+
+export type {
+  Page,
+  Section,
+  Block,
+  PageSeo,
+  PageVersion,
+  PageVersionFull,
+  PreviewToken,
+} from "./use-pages";
+
+// Auto-Save
+export { useAutoSave } from "./use-auto-save";
+
 // E-Commerce: Payments
 export {
   usePaymentConfig,

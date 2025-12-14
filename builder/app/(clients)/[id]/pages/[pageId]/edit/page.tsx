@@ -577,6 +577,8 @@ export default function EditPagePage({
       <PageSettingsDrawer
         open={settingsModalOpen}
         onOpenChange={setSettingsModalOpen}
+        tenantId={id}
+        pageId={pageId}
         page={localPage}
         onChange={handlePageChange}
         onSave={handleSave}

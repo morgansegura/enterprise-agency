@@ -19,6 +19,7 @@ import { ProductsModule } from "./modules/products/products.module";
 import { OrdersModule } from "./modules/orders/orders.module";
 import { CustomersModule } from "./modules/customers/customers.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
+import { PreviewModule } from "./modules/preview/preview.module";
 
 @Module({
   imports: [
@@ -56,6 +57,8 @@ import { PaymentsModule } from "./modules/payments/payments.module";
     TenantsModule,
     UsersModule,
     SiteConfigModule,
+    // Preview system
+    PreviewModule,
     // Integrations
     WebhooksModule,
   ],
@@ -76,6 +79,7 @@ export class AppModule implements NestModule {
         "api/v1/health(.*)",
         "api/v1/webhooks(.*)",
         "api/v1/public(.*)",
+        "api/v1/preview/validate(.*)",
         "api/v1/payments/webhooks(.*)",
       )
       .forRoutes("*");

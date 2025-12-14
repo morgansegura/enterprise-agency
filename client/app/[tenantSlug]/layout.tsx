@@ -5,6 +5,7 @@ import {
 } from "@/lib/public-api-client";
 import { generateOrganizationSchema } from "@/lib/seo";
 import { TokenProvider } from "@/components/providers/token-provider";
+import { PreviewBanner } from "@/components/preview-banner";
 
 interface TenantLayoutProps {
   children: React.ReactNode;
@@ -125,6 +126,9 @@ export default async function TenantLayout({
       )}
 
       {children}
+
+      {/* Preview banner shown when Draft Mode is enabled */}
+      <PreviewBanner />
     </>
   );
 }

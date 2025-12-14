@@ -109,6 +109,9 @@ model Tenant {
   customers          Customer[]
   orders             Order[]
 
+  // Preview
+  previewTokens PreviewToken[]
+
   @@index([slug])
   @@index([status])
   @@index([tier], map: "idx_tenants_tier")
@@ -192,10 +195,12 @@ model User {
   uploadedAssets     Asset[]             @relation("UploadedAssets")
   authoredPages      Page[]
   authoredPosts      Post[]
+  pageVersions       PageVersion[]       @relation("PageVersionAuthor")
   auditLogs          AuditLog[]
   invitedUsers       TenantUser[]        @relation("InvitedBy")
   projectAssignments ProjectAssignment[]
   customers          Customer[]
+  previewTokens      PreviewToken[]
 
   @@index([email])
   @@index([clerkUserId], map: "idx_users_clerk_id")
@@ -346,8 +351,9 @@ model Page {
   publishedAt DateTime? @map("published_at")
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  author User?  @relation(fields: [authorId], references: [id])
+  tenant   Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  author   User?         @relation(fields: [authorId], references: [id])
+  versions PageVersion[]
 
   @@unique([tenantId, slug])
   @@index([tenantId], map: "idx_pages_tenant")
@@ -355,6 +361,41 @@ model Page {
   @@index([tenantId, status], map: "idx_pages_tenant_status")
   @@index([authorId], map: "idx_pages_author")
   @@map("pages")
+}
+
+model PageVersion {
+  id     String @id @default(dbgenerated("gen_random_uuid()"))
+  pageId String @map("page_id")
+
+  // Version number (auto-incremented per page)
+  version Int
+
+  // Snapshot of content at this version
+  content Json? @db.JsonB
+
+  // Snapshot of metadata
+  title           String  @db.VarChar(255)
+  metaTitle       String? @map("meta_title") @db.VarChar(255)
+  metaDescription String? @map("meta_description") @db.Text
+
+  // Who created this version
+  createdBy String @map("created_by")
+
+  // Version metadata
+  changeNote String? @map("change_note") @db.VarChar(500)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  page   Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  author User @relation("PageVersionAuthor", fields: [createdBy], references: [id])
+
+  @@unique([pageId, version])
+  @@index([pageId], map: "idx_page_versions_page")
+  @@index([pageId, version], map: "idx_page_versions_page_version")
+  @@index([createdBy], map: "idx_page_versions_author")
+  @@map("page_versions")
 }
 
 model Post {
@@ -400,6 +441,40 @@ model Post {
   @@index([tenantId, category], map: "idx_posts_category")
   @@index([authorId], map: "idx_posts_author")
   @@map("posts")
+}
+
+// ============================================================================
+// PREVIEW TOKENS
+// ============================================================================
+
+model PreviewToken {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  // Token
+  token String @unique @db.VarChar(255)
+
+  // Content reference
+  contentType String @map("content_type") @db.VarChar(20) // "page" | "post"
+  contentId   String @map("content_id")
+
+  // Creator
+  createdBy String @map("created_by")
+
+  // Expiration
+  expiresAt DateTime @map("expires_at")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  tenant  Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  creator User   @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@index([token], map: "idx_preview_tokens_token")
+  @@index([tenantId], map: "idx_preview_tokens_tenant")
+  @@index([expiresAt], map: "idx_preview_tokens_expiry")
+  @@map("preview_tokens")
 }
 
 // ============================================================================

@@ -1,0 +1,71 @@
+.preview-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: white;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.preview-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 1200px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.preview-badge {
+  background: #e94560;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.preview-text {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.preview-exit-link {
+  color: #00d9ff;
+  text-decoration: underline;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.preview-exit-link:hover {
+  color: #fff;
+}
+
+/* Mobile styles */
+@media (max-width: 640px) {
+  .preview-banner {
+    padding: 10px 16px;
+  }
+
+  .preview-banner-content {
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .preview-text {
+    display: none;
+  }
+}

@@ -11,6 +11,7 @@ import {
 } from "@nestjs/common";
 import { TenantTier } from "@prisma";
 import { PagesService } from "./pages.service";
+import { PageVersionService } from "./services/page-version.service";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
@@ -44,7 +45,10 @@ interface TenantInfo {
 @Controller("pages")
 @UseGuards(JwtAuthGuard, TenantGuard, RolesGuard, TierGuard)
 export class PagesController {
-  constructor(private readonly pagesService: PagesService) {}
+  constructor(
+    private readonly pagesService: PagesService,
+    private readonly pageVersionService: PageVersionService,
+  ) {}
 
   /**
    * Create a new page
@@ -156,5 +160,69 @@ export class PagesController {
     @Param("id") id: string,
   ) {
     return this.pagesService.duplicate(tenantId, user.id, id);
+  }
+
+  // ===========================================================================
+  // Version History
+  // ===========================================================================
+
+  /**
+   * List all versions of a page
+   */
+  @Get(":id/versions")
+  @Roles("owner", "admin", "editor")
+  listVersions(@TenantId() tenantId: string, @Param("id") id: string) {
+    return this.pageVersionService.listVersions(tenantId, id);
+  }
+
+  /**
+   * Get a specific version
+   */
+  @Get(":id/versions/:versionId")
+  @Roles("owner", "admin", "editor")
+  getVersion(
+    @TenantId() tenantId: string,
+    @Param("id") id: string,
+    @Param("versionId") versionId: string,
+  ) {
+    return this.pageVersionService.getVersion(tenantId, id, versionId);
+  }
+
+  /**
+   * Restore a page to a previous version
+   */
+  @Post(":id/versions/:versionId/restore")
+  @Roles("owner", "admin", "editor")
+  restoreVersion(
+    @TenantId() tenantId: string,
+    @CurrentUser() user: { id: string },
+    @Param("id") id: string,
+    @Param("versionId") versionId: string,
+  ) {
+    return this.pageVersionService.restoreVersion(
+      tenantId,
+      id,
+      versionId,
+      user.id,
+    );
+  }
+
+  /**
+   * Compare two versions
+   */
+  @Get(":id/versions/compare")
+  @Roles("owner", "admin", "editor")
+  compareVersions(
+    @TenantId() tenantId: string,
+    @Param("id") id: string,
+    @Query("versionA") versionIdA: string,
+    @Query("versionB") versionIdB: string,
+  ) {
+    return this.pageVersionService.compareVersions(
+      tenantId,
+      id,
+      versionIdA,
+      versionIdB,
+    );
   }
 }
