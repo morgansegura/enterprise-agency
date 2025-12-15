@@ -257,6 +257,7 @@ export function GlobalSettingsDrawer({
         {/* Render appropriate panel based on section */}
         {section === "shop" && (
           <ShopGlobalSettings
+            activeTab={activeTab as ShopTabId}
             data={settingsData}
             onChange={handleChange}
             isLoading={isSaving}
@@ -265,6 +266,7 @@ export function GlobalSettingsDrawer({
 
         {section === "blog" && (
           <BlogGlobalSettings
+            activeTab={activeTab as BlogTabId}
             data={settingsData}
             onChange={handleChange}
             isLoading={isSaving}
@@ -273,6 +275,7 @@ export function GlobalSettingsDrawer({
 
         {section === "website" && (
           <WebsiteGlobalSettings
+            activeTab={activeTab as WebsiteTabId}
             data={settingsData}
             onChange={handleChange}
             isLoading={isSaving}

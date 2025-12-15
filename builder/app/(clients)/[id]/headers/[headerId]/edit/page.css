@@ -1,0 +1,537 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+   Loading & Error States
+   ============================================================================= */
+
+.header-editor-loading,
+.header-editor-error {
+  @apply flex flex-col items-center justify-center gap-4 py-16 text-(--muted-foreground);
+}
+
+/* =============================================================================
+   Main Layout
+   ============================================================================= */
+
+.header-editor {
+  @apply flex flex-col gap-6;
+}
+
+/* =============================================================================
+   Canvas Area - Preview with scroll testing
+   ============================================================================= */
+
+.header-editor-canvas {
+  @apply rounded-lg border border-(--border) overflow-hidden;
+}
+
+.canvas-area {
+  @apply relative;
+}
+
+.canvas-toolbar-area {
+  @apply flex items-center justify-center py-2 px-4;
+  @apply bg-(--muted)/50 border-b border-(--border);
+}
+
+.canvas-toolbar-area .block-toolbar {
+  @apply static transform-none;
+}
+
+.canvas-scroll-area {
+  @apply relative w-full overflow-x-hidden;
+  @apply overflow-y-auto;
+  min-height: 300px;
+  max-height: 350px;
+}
+
+/* Fake page content for scroll testing */
+.canvas-page-content {
+  @apply w-full bg-(--muted)/30 min-h-96;
+  /* min-height: 800px; */
+  /* background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.02) 50%,
+    rgba(0, 0, 0, 0.02) 100%
+  ); */
+  /* background-size: 100% 40px; */
+}
+
+.canvas-page-content::before {
+  content: "Scroll to test header behavior";
+  @apply block text-center text-(--muted-foreground) text-sm pt-8;
+}
+
+/* =============================================================================
+   Canvas Wrapper
+   ============================================================================= */
+
+.canvas-wrapper {
+  @apply w-full bg-(--background) overflow-visible;
+  @apply sticky top-0 z-10;
+}
+
+/* =============================================================================
+   Canvas Header
+   ============================================================================= */
+
+.canvas-header {
+  @apply flex items-center w-full;
+}
+
+.canvas-container {
+  @apply flex items-center justify-between w-full mx-auto;
+  @apply transition-all duration-200;
+}
+
+/* Container width variants */
+.canvas-container.max-w-none {
+  @apply max-w-none;
+}
+
+.canvas-container.max-w-7xl {
+  max-width: 1280px;
+}
+
+.canvas-container.max-w-5xl {
+  max-width: 1024px;
+}
+
+/* =============================================================================
+   Canvas Zones
+   ============================================================================= */
+
+.canvas-zone {
+  @apply relative flex items-center gap-2;
+  @apply rounded-md px-2 py-1;
+  @apply transition-all duration-150;
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.canvas-zone-left {
+  @apply shrink-0 justify-start;
+}
+
+.canvas-zone-center {
+  @apply flex-1 justify-center;
+}
+
+.canvas-zone-right {
+  @apply shrink-0 justify-end;
+}
+
+/* Zone add button */
+.canvas-zone-add {
+  @apply flex items-center justify-center;
+  @apply size-5 rounded-full;
+  @apply bg-(--muted) text-(--muted-foreground);
+  @apply opacity-0 scale-90;
+  @apply transition-all duration-150;
+  @apply hover:bg-(--primary) hover:text-(--primary-foreground);
+}
+
+.canvas-zone:hover .canvas-zone-add {
+  @apply opacity-100 scale-100;
+}
+
+/* =============================================================================
+   Canvas Blocks
+   ============================================================================= */
+
+.canvas-block {
+  @apply relative rounded-md cursor-pointer;
+  @apply transition-all duration-150;
+  @apply outline-2 outline-transparent outline-offset-2;
+}
+
+.canvas-block:hover {
+  @apply outline-dashed outline-(--primary)/50;
+}
+
+.canvas-block.is-selected {
+  @apply outline-solid outline-(--primary);
+}
+
+/* =============================================================================
+   Block Floating Toolbar
+   ============================================================================= */
+
+.block-toolbar {
+  @apply absolute -top-12 left-1/2 -translate-x-1/2;
+  @apply flex items-center justify-center gap-1 px-2 py-1.5;
+  @apply bg-(--background) rounded-lg shadow-lg;
+  @apply border border-(--border);
+  @apply z-50;
+  @apply whitespace-nowrap;
+}
+
+.block-toolbar-btn {
+  @apply flex items-center justify-center;
+  @apply size-7 rounded-md;
+  @apply text-(--muted-foreground);
+  @apply hover:bg-(--muted) hover:text-(--foreground);
+  @apply transition-colors;
+  @apply disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent;
+}
+
+.block-toolbar-btn-danger:hover {
+  @apply text-(--destructive);
+}
+
+.block-toolbar-divider {
+  @apply w-px h-5 bg-(--border) mx-1;
+}
+
+/* =============================================================================
+   Canvas Block Elements
+   ============================================================================= */
+
+.canvas-placeholder {
+  @apply flex items-center gap-2 px-3 py-2;
+  @apply text-xs text-(--muted-foreground);
+  @apply bg-(--muted)/50 rounded-md;
+  @apply border border-dashed border-(--muted-foreground)/30;
+}
+
+.canvas-logo-img {
+  @apply w-auto object-contain;
+}
+
+.canvas-logo-svg {
+  @apply flex items-center;
+}
+
+.canvas-logo-svg svg {
+  @apply h-full w-auto;
+  fill: currentColor;
+}
+
+.canvas-nav {
+  @apply flex items-center gap-1;
+}
+
+.canvas-nav-item {
+  @apply text-sm font-medium px-3 py-2 rounded-md;
+  @apply hover:bg-(--muted) transition-colors cursor-pointer;
+}
+
+.canvas-btn {
+  @apply text-sm font-medium px-4 py-2 rounded-md transition-colors;
+}
+
+.canvas-btn-primary {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+
+.canvas-btn-secondary {
+  @apply bg-(--secondary) text-(--secondary-foreground);
+}
+
+.canvas-btn-outline {
+  @apply border border-(--border) bg-transparent;
+}
+
+.canvas-btn-ghost {
+  @apply bg-transparent hover:bg-(--muted);
+}
+
+.canvas-icon {
+  @apply size-5 text-(--muted-foreground);
+}
+
+/* =============================================================================
+   Add Block Menu
+   ============================================================================= */
+
+.add-block-menu {
+  @apply w-48 p-2;
+}
+
+.add-block-grid {
+  @apply grid grid-cols-2 gap-1;
+}
+
+.add-block-option {
+  @apply flex items-center gap-2 px-2 py-1.5;
+  @apply text-sm text-(--foreground);
+  @apply rounded-md cursor-pointer;
+  @apply hover:bg-(--muted);
+  @apply transition-colors;
+}
+
+/* =============================================================================
+   Block Settings Popover
+   ============================================================================= */
+
+.block-popover {
+  @apply w-80 p-0;
+}
+
+.block-popover-header {
+  @apply flex items-center justify-between px-4 py-3 border-b border-(--border);
+}
+
+.block-popover-header-info {
+  @apply flex items-center gap-2;
+}
+
+.block-popover-header-icon {
+  @apply flex items-center justify-center size-6 rounded bg-(--muted);
+}
+
+.block-popover-title {
+  @apply text-sm font-semibold;
+}
+
+.block-popover-content {
+  @apply p-4 space-y-4 max-h-[400px] overflow-y-auto;
+}
+
+.block-popover-field {
+  @apply space-y-1.5;
+}
+
+.block-popover-field label {
+  @apply text-xs font-medium text-(--muted-foreground);
+}
+
+.block-popover-divider {
+  @apply flex items-center gap-4 my-2;
+}
+
+.block-popover-divider::before,
+.block-popover-divider::after {
+  @apply flex-1 h-px bg-(--border);
+  content: "";
+}
+
+.block-popover-divider span {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.block-popover-svg {
+  @apply font-mono text-xs min-h-[60px] max-h-[80px];
+}
+
+.block-popover-hint {
+  @apply text-xs text-(--muted-foreground) mt-1;
+}
+
+.block-popover-tabs {
+  @apply flex gap-0.5;
+}
+
+.block-popover-tab {
+  @apply px-2 py-1 text-xs font-medium rounded-md;
+  @apply text-(--muted-foreground) bg-transparent;
+  @apply transition-colors cursor-pointer;
+  @apply hover:text-(--foreground) hover:bg-(--muted)/50;
+}
+
+.block-popover-tab.active {
+  @apply text-(--foreground) bg-(--muted);
+}
+
+.block-popover-field-row {
+  @apply flex items-center justify-between py-2;
+}
+
+.block-popover-field-row label {
+  @apply text-xs font-medium text-(--muted-foreground);
+}
+
+/* =============================================================================
+   Header Settings Popover (Floating inline editor)
+   ============================================================================= */
+
+.header-settings-popover {
+  @apply w-96 p-0;
+}
+
+.header-popover-header {
+  @apply px-3 py-2 border-b border-(--border);
+}
+
+.header-popover-tabs {
+  @apply flex gap-0.5;
+}
+
+.header-popover-tab {
+  @apply inline-flex items-center gap-1 px-2 py-1.5 text-xs font-medium rounded-md;
+  @apply text-(--muted-foreground) bg-transparent;
+  @apply transition-colors cursor-pointer;
+  @apply hover:text-(--foreground) hover:bg-(--muted);
+}
+
+.header-popover-tab.active {
+  @apply text-(--foreground) bg-(--muted);
+}
+
+.header-popover-content {
+  @apply p-3 max-h-[400px] overflow-y-auto;
+}
+
+.header-popover-section {
+  @apply space-y-3;
+}
+
+.header-popover-row {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.header-popover-divider {
+  @apply h-px bg-(--border) my-3;
+}
+
+.header-popover-toggle-row {
+  @apply flex items-center justify-between py-1.5;
+}
+
+/* Canvas header editing state */
+.canvas-header {
+  @apply cursor-pointer transition-all duration-150;
+}
+
+.canvas-header:hover:not(.is-editing) {
+  outline: 2px dashed color-mix(in srgb, var(--primary) 30%, transparent);
+  outline-offset: -2px;
+}
+
+.canvas-header.is-editing {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+/* =============================================================================
+   Settings Panel
+   ============================================================================= */
+
+.header-editor-settings {
+  @apply w-full;
+}
+
+.settings-panel {
+  @apply w-full;
+}
+
+.settings-tabs {
+  @apply w-full;
+}
+
+.settings-tabs-list {
+  @apply inline-flex gap-1 rounded-lg bg-(--muted) p-1 mb-4;
+}
+
+.settings-tab {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md;
+  @apply text-xs font-medium text-(--muted-foreground);
+  @apply transition-all cursor-pointer;
+  @apply hover:text-(--foreground);
+  @apply data-[state=active]:bg-(--background) data-[state=active]:text-(--foreground);
+  @apply data-[state=active]:shadow-sm;
+}
+
+.settings-tab svg {
+  @apply size-3.5;
+}
+
+.settings-tab-content {
+  @apply space-y-4;
+}
+
+.settings-grid {
+  @apply grid grid-cols-3 gap-3;
+}
+
+.settings-grid-2 {
+  @apply grid grid-cols-2 gap-3;
+}
+
+@media (max-width: 640px) {
+  .settings-grid {
+    @apply grid-cols-2;
+  }
+  .settings-grid-2 {
+    @apply grid-cols-1;
+  }
+}
+
+.settings-stack {
+  @apply space-y-4;
+}
+
+.settings-field {
+  @apply space-y-1.5;
+}
+
+.settings-label {
+  @apply text-xs font-medium text-(--muted-foreground);
+}
+
+.settings-hint {
+  @apply text-xs text-(--muted-foreground) mt-1;
+}
+
+.settings-field-row {
+  @apply flex items-center justify-between gap-4 py-3;
+  @apply border-b border-(--border) last:border-0;
+}
+
+.settings-field-row-content {
+  @apply flex-1 space-y-0.5;
+}
+
+.behavior-option {
+  @apply flex items-center gap-2;
+}
+
+/* Behavior selection grid */
+.behavior-grid {
+  @apply grid grid-cols-1 gap-2;
+}
+
+@media (min-width: 640px) {
+  .behavior-grid {
+    @apply grid-cols-2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .behavior-grid {
+    @apply grid-cols-3;
+  }
+}
+
+.behavior-card {
+  @apply flex items-start gap-3 p-3 rounded-lg border border-(--border);
+  @apply text-left transition-all cursor-pointer;
+  @apply hover:border-(--primary)/50 hover:bg-(--muted)/50;
+}
+
+.behavior-card-active {
+  @apply border-(--primary) bg-(--primary)/5;
+}
+
+.behavior-card-icon {
+  @apply flex items-center justify-center size-8 rounded-md bg-(--muted);
+  @apply shrink-0;
+}
+
+.behavior-card-active .behavior-card-icon {
+  @apply bg-(--primary)/10 text-(--primary);
+}
+
+.behavior-card-content {
+  @apply flex flex-col gap-0.5;
+}
+
+.behavior-card-label {
+  @apply text-sm font-medium;
+}
+
+.behavior-card-desc {
+  @apply text-xs text-(--muted-foreground);
+}

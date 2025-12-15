@@ -21,7 +21,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { FormItem } from "@/components/ui/form";
 import { SeoEditor } from "../seo-editor";
 import {
   Settings,
@@ -33,6 +32,7 @@ import {
   History,
 } from "lucide-react";
 import { VersionHistory } from "../version-history";
+import { useHeaders } from "@/lib/hooks/use-headers";
 import type { PageSeo } from "@/lib/hooks/use-pages";
 
 type SettingsTab = "general" | "seo" | "layout" | "style" | "history";
@@ -83,6 +83,8 @@ interface PageSettingsDrawerProps {
     seo?: PageSeo;
     isHomePage?: boolean;
     pageType?: string;
+    headerId?: string | null;
+    footerId?: string | null;
   };
   onChange?: (field: string, value: unknown) => void;
   onSave?: () => void;
@@ -121,7 +123,9 @@ export function PageSettingsDrawer({
           <GeneralSettings page={page} onChange={onChange} />
         )}
         {activeTab === "seo" && <SeoSettings page={page} onChange={onChange} />}
-        {activeTab === "layout" && <LayoutSettings />}
+        {activeTab === "layout" && (
+          <LayoutSettings tenantId={tenantId} page={page} onChange={onChange} />
+        )}
         {activeTab === "style" && <StyleSettings />}
         {activeTab === "history" && (
           <HistorySettings tenantId={tenantId} pageId={pageId} />
@@ -140,8 +144,14 @@ interface SettingsPanelProps {
     seo?: PageSeo;
     isHomePage?: boolean;
     pageType?: string;
+    headerId?: string | null;
+    footerId?: string | null;
   };
   onChange?: (field: string, value: unknown) => void;
+}
+
+interface LayoutSettingsPanelProps extends SettingsPanelProps {
+  tenantId: string;
 }
 
 function GeneralSettings({ page, onChange }: SettingsPanelProps) {
@@ -239,7 +249,13 @@ function SeoSettings({ page, onChange }: SettingsPanelProps) {
   );
 }
 
-function LayoutSettings() {
+function LayoutSettings({
+  tenantId,
+  page,
+  onChange,
+}: LayoutSettingsPanelProps) {
+  const { data: headers, isLoading: headersLoading } = useHeaders(tenantId);
+
   return (
     <SettingsSection
       title="Layout Options"
@@ -261,31 +277,52 @@ function LayoutSettings() {
         </SettingsField>
 
         <SettingsField>
-          <Label htmlFor="header-style">Header</Label>
-          <Select defaultValue="default">
-            <SelectTrigger id="header-style">
-              <SelectValue />
+          <Label htmlFor="page-header">Header</Label>
+          <Select
+            value={page.headerId || "none"}
+            onValueChange={(value) =>
+              onChange?.("headerId", value === "none" ? null : value)
+            }
+            disabled={headersLoading}
+          >
+            <SelectTrigger id="page-header">
+              <SelectValue placeholder="Select a header" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="default">Default</SelectItem>
-              <SelectItem value="transparent">Transparent</SelectItem>
-              <SelectItem value="hidden">Hidden</SelectItem>
+              <SelectItem value="none">No Header</SelectItem>
+              <SelectItem value="default">Use Default Header</SelectItem>
+              {headers?.map((header) => (
+                <SelectItem key={header.id} value={header.id}>
+                  {header.name} ({header.behavior.toLowerCase()})
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
+          <p className="text-xs text-muted-foreground mt-1">
+            Choose a specific header or use the tenant default
+          </p>
         </SettingsField>
 
         <SettingsField>
-          <Label htmlFor="footer-style">Footer</Label>
-          <Select defaultValue="default">
-            <SelectTrigger id="footer-style">
-              <SelectValue />
+          <Label htmlFor="page-footer">Footer</Label>
+          <Select
+            value={page.footerId || "none"}
+            onValueChange={(value) =>
+              onChange?.("footerId", value === "none" ? null : value)
+            }
+          >
+            <SelectTrigger id="page-footer">
+              <SelectValue placeholder="Select a footer" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="default">Default</SelectItem>
-              <SelectItem value="minimal">Minimal</SelectItem>
-              <SelectItem value="hidden">Hidden</SelectItem>
+              <SelectItem value="none">No Footer</SelectItem>
+              <SelectItem value="default">Use Default Footer</SelectItem>
+              {/* Footer options will be added when Footer API is built */}
             </SelectContent>
           </Select>
+          <p className="text-xs text-muted-foreground mt-1">
+            Choose a specific footer or use the tenant default
+          </p>
         </SettingsField>
       </SettingsForm>
     </SettingsSection>

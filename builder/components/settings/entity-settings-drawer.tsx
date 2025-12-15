@@ -273,6 +273,7 @@ export function EntitySettingsDrawer({
               context={context}
               data={entityData}
               onChange={handleChange}
+              activeTab={activeTab}
             />
           )}
 

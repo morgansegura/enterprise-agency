@@ -271,6 +271,7 @@ export const HeaderScalarFieldEnum = {
   transparentStyle: "transparentStyle",
   menuId: "menuId",
   isDefault: "isDefault",
+  mobileMenu: "mobileMenu",
   createdAt: "createdAt",
   updatedAt: "updatedAt",
 } as const;

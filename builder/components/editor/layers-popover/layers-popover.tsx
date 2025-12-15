@@ -16,6 +16,7 @@ interface LayersPopoverProps {
   selectedBlockKey: string | null;
   onSelectBlock: (key: string | null) => void;
   onHoverBlock?: (key: string | null) => void;
+  onOpenChange?: (open: boolean) => void;
   children: React.ReactNode;
 }
 
@@ -52,6 +53,7 @@ export function LayersPopover({
   selectedBlockKey,
   onSelectBlock,
   onHoverBlock,
+  onOpenChange,
   children,
 }: LayersPopoverProps) {
   const [open, setOpen] = React.useState(false);
@@ -71,6 +73,7 @@ export function LayersPopover({
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
+    onOpenChange?.(isOpen);
     // Clear hover state when closing
     if (!isOpen) {
       setLocalHoveredKey(null);
@@ -91,7 +94,9 @@ export function LayersPopover({
         alignOffset={8}
         avoidCollisions={false}
       >
-        <h4 className="layers-title">Layers</h4>
+        <div className="layers-title">
+          <span>Layers</span>
+        </div>
 
         <div className="layers-list">
           {blocks.length === 0 ? (

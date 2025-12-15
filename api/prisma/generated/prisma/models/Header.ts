@@ -75,6 +75,7 @@ export type HeaderCountAggregateOutputType = {
   transparentStyle: number;
   menuId: number;
   isDefault: number;
+  mobileMenu: number;
   createdAt: number;
   updatedAt: number;
   _all: number;
@@ -129,6 +130,7 @@ export type HeaderCountAggregateInputType = {
   transparentStyle?: true;
   menuId?: true;
   isDefault?: true;
+  mobileMenu?: true;
   createdAt?: true;
   updatedAt?: true;
   _all?: true;
@@ -240,6 +242,7 @@ export type HeaderGroupByOutputType = {
   transparentStyle: runtime.JsonValue | null;
   menuId: string | null;
   isDefault: boolean;
+  mobileMenu: runtime.JsonValue | null;
   createdAt: Date;
   updatedAt: Date;
   _count: HeaderCountAggregateOutputType | null;
@@ -278,6 +281,7 @@ export type HeaderWhereInput = {
   transparentStyle?: Prisma.JsonNullableFilter<"Header">;
   menuId?: Prisma.StringNullableFilter<"Header"> | string | null;
   isDefault?: Prisma.BoolFilter<"Header"> | boolean;
+  mobileMenu?: Prisma.JsonNullableFilter<"Header">;
   createdAt?: Prisma.DateTimeFilter<"Header"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"Header"> | Date | string;
   tenant?: Prisma.XOR<
@@ -304,6 +308,7 @@ export type HeaderOrderByWithRelationInput = {
   transparentStyle?: Prisma.SortOrderInput | Prisma.SortOrder;
   menuId?: Prisma.SortOrderInput | Prisma.SortOrder;
   isDefault?: Prisma.SortOrder;
+  mobileMenu?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   tenant?: Prisma.TenantOrderByWithRelationInput;
@@ -331,6 +336,7 @@ export type HeaderWhereUniqueInput = Prisma.AtLeast<
     transparentStyle?: Prisma.JsonNullableFilter<"Header">;
     menuId?: Prisma.StringNullableFilter<"Header"> | string | null;
     isDefault?: Prisma.BoolFilter<"Header"> | boolean;
+    mobileMenu?: Prisma.JsonNullableFilter<"Header">;
     createdAt?: Prisma.DateTimeFilter<"Header"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Header"> | Date | string;
     tenant?: Prisma.XOR<
@@ -359,6 +365,7 @@ export type HeaderOrderByWithAggregationInput = {
   transparentStyle?: Prisma.SortOrderInput | Prisma.SortOrder;
   menuId?: Prisma.SortOrderInput | Prisma.SortOrder;
   isDefault?: Prisma.SortOrder;
+  mobileMenu?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   _count?: Prisma.HeaderCountOrderByAggregateInput;
@@ -393,6 +400,7 @@ export type HeaderScalarWhereWithAggregatesInput = {
   transparentStyle?: Prisma.JsonNullableWithAggregatesFilter<"Header">;
   menuId?: Prisma.StringNullableWithAggregatesFilter<"Header"> | string | null;
   isDefault?: Prisma.BoolWithAggregatesFilter<"Header"> | boolean;
+  mobileMenu?: Prisma.JsonNullableWithAggregatesFilter<"Header">;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Header"> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Header"> | Date | string;
 };
@@ -408,6 +416,7 @@ export type HeaderCreateInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   tenant: Prisma.TenantCreateNestedOneWithoutHeadersInput;
@@ -428,6 +437,7 @@ export type HeaderUncheckedCreateInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: string | null;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutHeaderInput;
@@ -449,6 +459,7 @@ export type HeaderUpdateInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   tenant?: Prisma.TenantUpdateOneRequiredWithoutHeadersNestedInput;
@@ -474,6 +485,7 @@ export type HeaderUncheckedUpdateInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   pages?: Prisma.PageUncheckedUpdateManyWithoutHeaderNestedInput;
@@ -492,6 +504,7 @@ export type HeaderCreateManyInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: string | null;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -512,6 +525,7 @@ export type HeaderUpdateManyMutationInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -534,6 +548,7 @@ export type HeaderUncheckedUpdateManyInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -566,6 +581,7 @@ export type HeaderCountOrderByAggregateInput = {
   transparentStyle?: Prisma.SortOrder;
   menuId?: Prisma.SortOrder;
   isDefault?: Prisma.SortOrder;
+  mobileMenu?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
@@ -826,6 +842,7 @@ export type HeaderCreateWithoutTenantInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   menu?: Prisma.MenuCreateNestedOneWithoutHeadersInput;
@@ -844,6 +861,7 @@ export type HeaderUncheckedCreateWithoutTenantInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: string | null;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutHeaderInput;
@@ -908,6 +926,7 @@ export type HeaderScalarWhereInput = {
   transparentStyle?: Prisma.JsonNullableFilter<"Header">;
   menuId?: Prisma.StringNullableFilter<"Header"> | string | null;
   isDefault?: Prisma.BoolFilter<"Header"> | boolean;
+  mobileMenu?: Prisma.JsonNullableFilter<"Header">;
   createdAt?: Prisma.DateTimeFilter<"Header"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"Header"> | Date | string;
 };
@@ -923,6 +942,7 @@ export type HeaderCreateWithoutMenuInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   tenant: Prisma.TenantCreateNestedOneWithoutHeadersInput;
@@ -941,6 +961,7 @@ export type HeaderUncheckedCreateWithoutMenuInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   pages?: Prisma.PageUncheckedCreateNestedManyWithoutHeaderInput;
@@ -998,6 +1019,7 @@ export type HeaderCreateWithoutPagesInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   tenant: Prisma.TenantCreateNestedOneWithoutHeadersInput;
@@ -1017,6 +1039,7 @@ export type HeaderUncheckedCreateWithoutPagesInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: string | null;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -1065,6 +1088,7 @@ export type HeaderUpdateWithoutPagesInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   tenant?: Prisma.TenantUpdateOneRequiredWithoutHeadersNestedInput;
@@ -1089,6 +1113,7 @@ export type HeaderUncheckedUpdateWithoutPagesInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -1105,6 +1130,7 @@ export type HeaderCreateManyTenantInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: string | null;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -1125,6 +1151,7 @@ export type HeaderUpdateWithoutTenantInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   menu?: Prisma.MenuUpdateOneWithoutHeadersNestedInput;
@@ -1148,6 +1175,7 @@ export type HeaderUncheckedUpdateWithoutTenantInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   pages?: Prisma.PageUncheckedUpdateManyWithoutHeaderNestedInput;
@@ -1170,6 +1198,7 @@ export type HeaderUncheckedUpdateManyWithoutTenantInput = {
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -1186,6 +1215,7 @@ export type HeaderCreateManyMenuInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -1206,6 +1236,7 @@ export type HeaderUpdateWithoutMenuInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   tenant?: Prisma.TenantUpdateOneRequiredWithoutHeadersNestedInput;
@@ -1229,6 +1260,7 @@ export type HeaderUncheckedUpdateWithoutMenuInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   pages?: Prisma.PageUncheckedUpdateManyWithoutHeaderNestedInput;
@@ -1251,6 +1283,7 @@ export type HeaderUncheckedUpdateManyWithoutMenuInput = {
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -1310,6 +1343,7 @@ export type HeaderSelect<
     transparentStyle?: boolean;
     menuId?: boolean;
     isDefault?: boolean;
+    mobileMenu?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
@@ -1337,6 +1371,7 @@ export type HeaderSelectCreateManyAndReturn<
     transparentStyle?: boolean;
     menuId?: boolean;
     isDefault?: boolean;
+    mobileMenu?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
@@ -1362,6 +1397,7 @@ export type HeaderSelectUpdateManyAndReturn<
     transparentStyle?: boolean;
     menuId?: boolean;
     isDefault?: boolean;
+    mobileMenu?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>;
@@ -1383,6 +1419,7 @@ export type HeaderSelectScalar = {
   transparentStyle?: boolean;
   menuId?: boolean;
   isDefault?: boolean;
+  mobileMenu?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
 };
@@ -1403,6 +1440,7 @@ export type HeaderOmit<
   | "transparentStyle"
   | "menuId"
   | "isDefault"
+  | "mobileMenu"
   | "createdAt"
   | "updatedAt",
   ExtArgs["result"]["header"]
@@ -1455,6 +1493,7 @@ export type $HeaderPayload<
       transparentStyle: runtime.JsonValue | null;
       menuId: string | null;
       isDefault: boolean;
+      mobileMenu: runtime.JsonValue | null;
       createdAt: Date;
       updatedAt: Date;
     },
@@ -2099,6 +2138,7 @@ export interface HeaderFieldRefs {
   readonly transparentStyle: Prisma.FieldRef<"Header", "Json">;
   readonly menuId: Prisma.FieldRef<"Header", "String">;
   readonly isDefault: Prisma.FieldRef<"Header", "Boolean">;
+  readonly mobileMenu: Prisma.FieldRef<"Header", "Json">;
   readonly createdAt: Prisma.FieldRef<"Header", "DateTime">;
   readonly updatedAt: Prisma.FieldRef<"Header", "DateTime">;
 }

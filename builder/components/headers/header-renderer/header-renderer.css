@@ -1,0 +1,249 @@
+@reference "tailwindcss";
+
+/* Base header styles */
+.header-renderer {
+  @apply relative w-full bg-(--background) border-b border-(--border);
+}
+
+.header-container {
+  @apply flex items-center justify-between mx-auto px-4;
+}
+
+/* Container widths */
+.header-width-full {
+  @apply max-w-none px-6;
+}
+
+.header-width-container {
+  @apply max-w-7xl;
+}
+
+.header-width-narrow {
+  @apply max-w-5xl;
+}
+
+/* Header heights */
+.header-height-sm {
+  @apply h-14;
+}
+
+.header-height-md {
+  @apply h-16;
+}
+
+.header-height-lg {
+  @apply h-20;
+}
+
+.header-height-xl {
+  @apply h-24;
+}
+
+/* Header behaviors */
+.header-static {
+  @apply relative;
+}
+
+.header-fixed {
+  @apply fixed top-0 left-0 right-0 z-50;
+}
+
+.header-sticky {
+  @apply sticky top-0 z-50;
+}
+
+.header-transparent {
+  @apply bg-transparent border-transparent;
+}
+
+/* Header zones */
+.header-zone {
+  @apply flex items-center gap-4;
+}
+
+.header-zone-left {
+  @apply flex-shrink-0;
+}
+
+.header-zone-center {
+  @apply flex-1 justify-center;
+}
+
+.header-zone-right {
+  @apply flex-shrink-0;
+}
+
+/* Zone alignments */
+.header-zone-align-left {
+  @apply justify-start;
+}
+
+.header-zone-align-center {
+  @apply justify-center;
+}
+
+.header-zone-align-right {
+  @apply justify-end;
+}
+
+/* Logo */
+.header-logo {
+  @apply flex items-center;
+}
+
+.header-logo-image {
+  @apply h-auto object-contain;
+}
+
+.header-logo-svg {
+  @apply flex items-center;
+}
+
+.header-logo-svg svg {
+  @apply h-8 w-auto;
+}
+
+/* Menu */
+.header-menu {
+  @apply flex items-center;
+}
+
+.header-menu-list {
+  @apply flex items-center gap-1 list-none m-0 p-0;
+}
+
+.header-menu-item {
+  @apply relative;
+}
+
+.header-menu-link {
+  @apply px-3 py-2 text-sm font-medium text-(--foreground);
+  @apply hover:text-(--primary) transition-colors;
+  @apply rounded-md;
+}
+
+.header-menu-link-highlight {
+  @apply bg-(--primary) text-(--primary-foreground);
+  @apply hover:bg-(--primary)/90;
+}
+
+/* Dropdown menu */
+.header-submenu {
+  @apply absolute top-full left-0 mt-1;
+  @apply min-w-[200px] py-2;
+  @apply bg-(--card) border border-(--border) rounded-lg shadow-lg;
+  @apply list-none m-0 p-0;
+  @apply opacity-0 invisible;
+  @apply transition-all duration-200;
+}
+
+.header-menu-item:hover .header-submenu {
+  @apply opacity-100 visible;
+}
+
+.header-submenu-item {
+  @apply block;
+}
+
+.header-submenu-link {
+  @apply block px-4 py-2 text-sm text-(--foreground);
+  @apply hover:bg-(--muted) transition-colors;
+}
+
+/* Vertical menu */
+.header-menu-vertical .header-menu-list {
+  @apply flex-col items-start gap-0;
+}
+
+/* Header buttons */
+.header-button {
+  @apply inline-flex items-center justify-center;
+  @apply px-4 py-2 text-sm font-medium rounded-md;
+  @apply transition-colors;
+}
+
+.header-button-primary {
+  @apply bg-(--primary) text-(--primary-foreground);
+  @apply hover:bg-(--primary)/90;
+}
+
+.header-button-secondary {
+  @apply bg-(--secondary) text-(--secondary-foreground);
+  @apply hover:bg-(--secondary)/80;
+}
+
+.header-button-outline {
+  @apply border border-(--border) bg-transparent;
+  @apply hover:bg-(--muted);
+}
+
+.header-button-ghost {
+  @apply bg-transparent hover:bg-(--muted);
+}
+
+/* Icon buttons */
+.header-search-trigger,
+.header-cart-trigger,
+.header-account-trigger {
+  @apply p-2 rounded-md;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply hover:bg-(--muted) transition-colors;
+}
+
+.header-search-icon,
+.header-cart-icon,
+.header-account-icon {
+  @apply w-5 h-5;
+}
+
+/* Loading state */
+.header-loading {
+  @apply animate-pulse;
+}
+
+.header-skeleton {
+  @apply h-8 w-full max-w-md bg-(--muted) rounded;
+}
+
+/* Empty state */
+.header-empty {
+  @apply bg-(--muted)/30;
+}
+
+.header-empty-text {
+  @apply text-sm text-(--muted-foreground) text-center py-2;
+}
+
+/* Menu loading */
+.header-menu-loading {
+  @apply w-40 h-6 bg-(--muted) rounded animate-pulse;
+}
+
+/* Zone placeholder (builder mode) */
+.header-zone-placeholder {
+  @apply text-xs text-(--muted-foreground) px-3 py-1.5 rounded;
+  @apply border border-dashed border-(--border) bg-(--muted)/30;
+  @apply capitalize;
+}
+
+/* Builder mode indicator */
+.header-builder-indicator {
+  @apply absolute top-1 left-1/2 -translate-x-1/2;
+  @apply flex items-center gap-1.5;
+  @apply text-[10px] font-medium text-(--muted-foreground);
+  @apply bg-(--background)/90 backdrop-blur-sm;
+  @apply px-2 py-0.5 rounded-sm;
+  @apply border border-(--border);
+  @apply z-10;
+}
+
+.header-edit-button {
+  @apply flex items-center justify-center;
+  @apply size-4 rounded-sm;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply hover:bg-(--muted) transition-colors;
+}
+
+.header-builder-empty {
+  @apply bg-(--muted)/30;
+}

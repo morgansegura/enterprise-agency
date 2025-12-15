@@ -67,7 +67,7 @@ export function BreakpointSelector({
         return (
           <Button
             key={breakpoint.value}
-            variant={isActive ? "default" : "ghost"}
+            variant={isActive ? "outline" : "ghost"}
             size="sm"
             onClick={() => onChange(breakpoint.value)}
             className={cn(
@@ -77,7 +77,7 @@ export function BreakpointSelector({
             title={`${breakpoint.label} (${breakpoint.width})`}
           >
             <Icon className="h-4 w-4" />
-            <span className="hidden sm:inline">{breakpoint.label}</span>
+            {/* <span className="hidden sm:inline">{breakpoint.label}</span> */}
           </Button>
         );
       })}

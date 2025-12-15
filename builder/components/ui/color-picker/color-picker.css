@@ -1,0 +1,75 @@
+@reference "tailwindcss";
+
+.color-picker {
+  @apply relative;
+}
+
+.color-picker-label {
+  @apply block text-xs font-semibold text-(--foreground) mb-1;
+}
+
+.color-picker-trigger {
+  @apply flex items-center gap-3 w-full;
+  @apply px-3 py-2.5 rounded-lg;
+  @apply border border-(--border) bg-(--background);
+  @apply hover:border-(--primary)/50;
+  @apply transition-colors cursor-pointer;
+}
+
+.color-picker-swatch {
+  @apply w-8 h-8 rounded-sm;
+  @apply border border-(--border);
+}
+
+.color-picker-value {
+  @apply text-sm font-mono text-(--muted-foreground);
+}
+
+/* Color picker dropdown - positioned by Radix Popover */
+.color-picker-dropdown {
+  @apply bg-(--card) border border-(--border) rounded-xl shadow-xl;
+  @apply p-4;
+  @apply max-h-[400px] overflow-y-auto;
+  @apply w-[480px];
+}
+
+.color-palette {
+  @apply flex flex-col gap-2;
+}
+
+.color-row {
+  @apply flex items-center gap-3;
+}
+
+.color-row-label {
+  @apply w-16 text-xs font-medium text-(--muted-foreground) capitalize shrink-0;
+}
+
+.color-row-shades {
+  @apply flex gap-1;
+}
+
+.color-swatch {
+  @apply w-6 h-6 rounded-sm;
+  @apply cursor-pointer;
+  @apply hover:scale-110 hover:z-10;
+  @apply transition-transform;
+  @apply border border-transparent;
+}
+
+.color-swatch.is-selected {
+  @apply ring-2 ring-(--primary) ring-offset-2 ring-offset-(--background);
+}
+
+.color-swatch.is-transparent {
+  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 6px 6px;
+  background-position: 0 0, 0 3px, 3px -3px, -3px 0px;
+}
+
+.color-divider {
+  @apply h-px bg-(--border) my-3;
+}

@@ -12,8 +12,13 @@ import {
   type Block,
 } from "@/lib/hooks/use-pages";
 import { useAutoSave } from "@/lib/hooks/use-auto-save";
-import { PageEditorLayout, PageSettingsDrawer } from "@/components/editor";
+import {
+  PageEditorLayout,
+  PageSettingsDrawer,
+  EditableHeader,
+} from "@/components/editor";
 import { PageRenderer } from "@/components/renderers/page-renderer";
+import { HeaderRenderer } from "@/components/headers";
 import { Card, CardContent } from "@/components/ui/card";
 import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -101,6 +106,8 @@ export default function EditPagePage({
     status: "draft",
     template: "default",
     seo: undefined as import("@/lib/hooks/use-pages").PageSeo | undefined,
+    headerId: null as string | null,
+    footerId: null as string | null,
   });
 
   // Auto-save hook
@@ -138,6 +145,8 @@ export default function EditPagePage({
         status: page.status || "draft",
         template: page.template || "default",
         seo: page.seo,
+        headerId: page.headerId || null,
+        footerId: page.footerId || null,
       });
     }
   }, [page]);
@@ -167,7 +176,9 @@ export default function EditPagePage({
       slug: localPage.slug,
       template: localPage.template,
       seo: localPage.seo,
-      content: { sections },
+      headerId: localPage.headerId,
+      footerId: localPage.footerId,
+      sections,
     });
   }, [
     sections,
@@ -175,6 +186,8 @@ export default function EditPagePage({
     localPage.slug,
     localPage.template,
     localPage.seo,
+    localPage.headerId,
+    localPage.footerId,
   ]);
 
   // Listen for block additions from BlocksLibrary
@@ -227,9 +240,9 @@ export default function EditPagePage({
         status: localPage.status,
         template: localPage.template,
         seo: localPage.seo,
-        content: {
-          sections,
-        },
+        headerId: localPage.headerId,
+        footerId: localPage.footerId,
+        sections,
       },
     });
   };
@@ -268,9 +281,9 @@ export default function EditPagePage({
             status: localPage.status,
             template: localPage.template,
             seo: localPage.seo,
-            content: {
-              sections,
-            },
+            headerId: localPage.headerId,
+            footerId: localPage.footerId,
+            sections,
           },
         });
 
@@ -630,6 +643,9 @@ export default function EditPagePage({
           Exit Preview
         </Button>
 
+        {/* Header */}
+        <HeaderRenderer tenantId={id} headerId={localPage.headerId} />
+
         {/* Pure page render */}
         <PageRenderer
           page={{
@@ -686,6 +702,15 @@ export default function EditPagePage({
               onClick={handleCanvasClick}
             >
               <CardContent>
+                {/* Editable Header */}
+                <EditableHeader
+                  tenantId={id}
+                  headerId={localPage.headerId}
+                  onHeaderChange={(headerId) =>
+                    handlePageChange("headerId", headerId)
+                  }
+                />
+
                 <DndContext
                   sensors={sensors}
                   collisionDetection={closestCenter}

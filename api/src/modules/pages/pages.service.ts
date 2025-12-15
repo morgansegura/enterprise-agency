@@ -84,6 +84,8 @@ export class PagesService {
         isHomePage: createData.isHomePage || false,
         pageType: createData.pageType,
         isSystemPage: createData.isSystemPage || false,
+        headerId: createData.headerId,
+        footerId: createData.footerId,
       },
       include: {
         author: {
@@ -94,6 +96,8 @@ export class PagesService {
             lastName: true,
           },
         },
+        header: true,
+        footer: true,
       },
     });
 
@@ -137,6 +141,8 @@ export class PagesService {
             lastName: true,
           },
         },
+        header: true,
+        footer: true,
       },
       orderBy: {
         updatedAt: "desc",
@@ -161,6 +167,8 @@ export class PagesService {
             lastName: true,
           },
         },
+        header: true,
+        footer: true,
       },
     });
 
@@ -188,6 +196,8 @@ export class PagesService {
             lastName: true,
           },
         },
+        header: true,
+        footer: true,
       },
     });
 
@@ -321,6 +331,8 @@ export class PagesService {
             lastName: true,
           },
         },
+        header: true,
+        footer: true,
       },
     });
 
@@ -402,6 +414,8 @@ export class PagesService {
         metaDescription: original.metaDescription,
         status: "draft",
         template: original.template,
+        headerId: original.headerId,
+        footerId: original.footerId,
       },
       include: {
         author: {
@@ -412,6 +426,8 @@ export class PagesService {
             lastName: true,
           },
         },
+        header: true,
+        footer: true,
       },
     });
 

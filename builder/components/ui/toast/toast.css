@@ -1,0 +1,118 @@
+@reference "tailwindcss";
+
+/* Toast animations */
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Toast container - bottom right */
+.toast-container {
+  @apply fixed bottom-4 right-4 z-100 flex flex-col gap-2;
+  @apply pointer-events-none w-full max-w-md;
+}
+
+/* Individual toast */
+.toast {
+  @apply pointer-events-auto;
+  @apply flex items-start gap-3 p-4 rounded-lg shadow-lg;
+  @apply border bg-(--background) text-(--foreground);
+  animation: toast-slide-in 0.2s ease-out;
+}
+
+.toast-exiting {
+  animation: toast-slide-out 0.15s ease-in forwards;
+}
+
+/* Toast variants */
+.toast-default {
+  @apply border-(--border);
+}
+
+.toast-success {
+  @apply border-green-500/50 bg-green-500/10;
+}
+
+.toast-error {
+  @apply border-red-500/50 bg-red-500/10;
+}
+
+.toast-warning {
+  @apply border-yellow-500/50 bg-yellow-500/10;
+}
+
+.toast-info {
+  @apply border-blue-500/50 bg-blue-500/10;
+}
+
+/* Toast icon */
+.toast-icon {
+  @apply shrink-0 mt-0.5;
+}
+
+.toast-icon-success {
+  @apply text-green-500;
+}
+
+.toast-icon-error {
+  @apply text-red-500;
+}
+
+.toast-icon-warning {
+  @apply text-yellow-500;
+}
+
+.toast-icon-info {
+  @apply text-blue-500;
+}
+
+/* Toast content */
+.toast-content {
+  @apply flex-1 min-w-0;
+}
+
+.toast-title {
+  @apply font-medium text-sm;
+}
+
+.toast-description {
+  @apply text-sm text-(--muted-foreground) mt-0.5;
+}
+
+/* Toast close button */
+.toast-close {
+  @apply shrink-0 p-1 rounded-md;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply hover:bg-(--muted) transition-colors;
+  @apply -mr-1 -mt-1;
+}
+
+.toast-close-icon {
+  @apply w-4 h-4;
+}
+
+/* Toast action */
+.toast-action {
+  @apply mt-2;
+}
+
+.toast-action-button {
+  @apply text-sm font-medium underline-offset-4 hover:underline;
+}

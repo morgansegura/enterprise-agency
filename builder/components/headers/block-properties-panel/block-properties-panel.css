@@ -1,0 +1,106 @@
+@reference "tailwindcss";
+
+/* Panel */
+.block-properties-panel {
+  @apply border-t-2 border-t-(--primary);
+}
+
+/* Header */
+.block-properties-header {
+  @apply pb-4;
+}
+
+.block-properties-header-content {
+  @apply flex items-start justify-between gap-4;
+}
+
+.block-properties-header-info {
+  @apply flex items-start gap-3;
+}
+
+.block-properties-header-icon {
+  @apply flex items-center justify-center size-8 rounded-md bg-(--muted);
+}
+
+.block-properties-title {
+  @apply text-base font-medium;
+}
+
+.block-properties-description {
+  @apply text-xs text-(--muted-foreground) mt-0.5;
+}
+
+.block-properties-header-actions {
+  @apply flex items-center gap-1;
+}
+
+.block-properties-delete {
+  @apply text-(--muted-foreground) hover:text-(--destructive);
+}
+
+/* Content */
+.block-properties-content {
+  @apply pt-0;
+}
+
+/* Tabs */
+.block-properties-tabs {
+  @apply flex flex-col gap-4;
+}
+
+.block-properties-tab-list {
+  @apply w-full justify-start;
+}
+
+.block-properties-tab-content {
+  @apply mt-2;
+}
+
+/* Section */
+.block-properties-section {
+  @apply flex flex-col gap-4;
+}
+
+/* Field */
+.block-properties-field {
+  @apply flex flex-col gap-2;
+}
+
+.block-properties-field > label {
+  @apply text-xs font-medium text-(--muted-foreground);
+}
+
+.block-properties-hint {
+  @apply text-xs text-(--muted-foreground) mt-1;
+}
+
+/* Divider */
+.block-properties-divider {
+  @apply flex items-center gap-4 my-2;
+}
+
+.block-properties-divider::before,
+.block-properties-divider::after {
+  @apply flex-1 h-px bg-(--border);
+  content: "";
+}
+
+.block-properties-divider span {
+  @apply text-xs text-(--muted-foreground);
+}
+
+/* SVG Input */
+.block-properties-svg-input {
+  @apply font-mono text-xs min-h-[80px] max-h-[120px];
+}
+
+/* SVG Preview */
+.block-properties-svg-preview {
+  @apply p-4 bg-(--muted) rounded-md flex items-center justify-center mt-2;
+  @apply border border-(--border);
+}
+
+.block-properties-svg-preview svg {
+  @apply h-10 w-auto max-w-full;
+  fill: currentColor;
+}

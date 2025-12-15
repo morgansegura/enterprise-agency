@@ -1,0 +1,183 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+   Editable Footer
+   ============================================================================= */
+
+.editable-footer {
+  @apply relative;
+}
+
+/* Locked state - subtle indicator */
+.editable-footer.is-locked .editable-footer-locked {
+  @apply opacity-0 transition-opacity duration-200;
+}
+
+.editable-footer.is-locked:hover .editable-footer-locked {
+  @apply opacity-100;
+}
+
+/* Unlocked state - show controls */
+.editable-footer.is-unlocked {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.editable-footer.is-editing {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+/* =============================================================================
+   Locked Indicator
+   ============================================================================= */
+
+.editable-footer-locked {
+  @apply absolute bottom-2 left-2 z-10;
+  @apply flex items-center gap-2 px-2 py-1;
+  @apply bg-(--background)/95 backdrop-blur-sm rounded-md shadow-sm;
+  @apply text-xs font-medium text-(--muted-foreground);
+  @apply border border-(--border);
+}
+
+.editable-footer-locked span {
+  @apply text-(--foreground);
+}
+
+.editable-footer-edit-btn {
+  @apply h-6 px-2 text-xs gap-1;
+}
+
+.editable-footer-change-btn {
+  @apply h-6 w-6 p-0;
+}
+
+/* =============================================================================
+   Unlocked Controls
+   ============================================================================= */
+
+.editable-footer-controls {
+  @apply absolute bottom-2 right-2 z-10;
+  @apply flex items-center gap-1 px-2 py-1.5;
+  @apply bg-(--background)/95 backdrop-blur-sm rounded-md shadow-lg;
+  @apply border border-(--border);
+}
+
+.editable-footer-panel-btn {
+  @apply h-7 px-2 text-xs gap-1.5 font-medium;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+}
+
+/* =============================================================================
+   Footer Content
+   ============================================================================= */
+
+.editable-footer-content {
+  @apply w-full;
+}
+
+.editable-footer-container {
+  @apply w-full;
+}
+
+.editable-footer-container.footer-width-full {
+  @apply max-w-none;
+}
+
+.editable-footer-container.footer-width-container {
+  @apply max-w-7xl;
+}
+
+.editable-footer-container.footer-width-narrow {
+  @apply max-w-5xl;
+}
+
+/* =============================================================================
+   Footer Layouts
+   ============================================================================= */
+
+.footer-layout-simple {
+  @apply flex items-center justify-between flex-wrap gap-4;
+}
+
+.footer-layout-columns {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8;
+}
+
+.footer-layout-columns .footer-bottom {
+  @apply col-span-full flex items-center justify-between pt-6 mt-6;
+  @apply border-t border-(--border);
+}
+
+.footer-layout-stacked {
+  @apply flex flex-col gap-6;
+}
+
+.footer-layout-stacked .footer-top {
+  @apply flex flex-col items-center gap-4;
+}
+
+.footer-layout-stacked .footer-bottom {
+  @apply flex items-center justify-between pt-6;
+  @apply border-t border-(--border);
+}
+
+.footer-layout-centered {
+  @apply flex flex-col items-center text-center gap-4;
+}
+
+.footer-layout-minimal {
+  @apply flex items-center justify-between flex-wrap gap-4;
+}
+
+/* =============================================================================
+   Footer Elements
+   ============================================================================= */
+
+.footer-logo {
+  @apply h-8 w-auto;
+}
+
+.footer-logo-link {
+  @apply flex items-center;
+}
+
+.footer-copyright {
+  @apply text-sm text-(--muted-foreground);
+}
+
+.footer-social-links {
+  @apply flex items-center gap-3;
+}
+
+.footer-social-link {
+  @apply w-8 h-8 flex items-center justify-center;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply transition-colors;
+}
+
+.footer-column {
+  @apply flex flex-col gap-3;
+}
+
+.footer-zone {
+  @apply flex flex-col gap-3;
+}
+
+.footer-block {
+  @apply text-sm;
+}
+
+/* =============================================================================
+   Empty State
+   ============================================================================= */
+
+.editable-footer-empty {
+  @apply min-h-32 flex items-center justify-center;
+  @apply border-2 border-dashed border-(--border) rounded-lg;
+  @apply bg-(--muted)/30;
+}
+
+.editable-footer-empty-content {
+  @apply flex items-center gap-4 text-sm text-(--muted-foreground);
+}

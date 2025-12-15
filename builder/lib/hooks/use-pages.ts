@@ -22,13 +22,82 @@ export interface PageSeo {
   structuredData?: Record<string, unknown>;
 }
 
+// =============================================================================
+// Section Background Types
+// =============================================================================
+
+export type BackgroundType = "none" | "color" | "gradient" | "image";
+
+export interface SectionBackground {
+  type: BackgroundType;
+  // Color background
+  color?: string;
+  // Gradient background
+  gradient?: {
+    type: "linear" | "radial";
+    angle?: number; // for linear gradients
+    stops: Array<{ color: string; position: number }>;
+  };
+  // Image background
+  image?: {
+    src: string;
+    alt?: string;
+    position?: string; // "center", "top", "bottom", etc.
+    size?: "cover" | "contain" | "auto";
+    repeat?: "no-repeat" | "repeat" | "repeat-x" | "repeat-y";
+    overlay?: string; // overlay color with opacity
+  };
+}
+
+// =============================================================================
+// Container Settings (inside section wrapper)
+// =============================================================================
+
+export interface ContainerSettings {
+  // Width
+  maxWidth?: "full" | "wide" | "container" | "narrow";
+  // Background
+  background?: string;
+  borderRadius?: string;
+  border?: string;
+  shadow?: string;
+  // Inner spacing
+  paddingX?: string;
+  paddingY?: string;
+  // Layout
+  layout?: {
+    type: "stack" | "flex" | "grid";
+    // Flex options
+    direction?: "row" | "column";
+    wrap?: boolean;
+    justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
+    align?: "start" | "center" | "end" | "stretch" | "baseline";
+    // Grid options
+    columns?: number | string; // number or "auto-fit"
+    rows?: number | string;
+    // Shared
+    gap?: string;
+  };
+}
+
+// =============================================================================
+// Section (Wrapper) Interface
+// =============================================================================
+
 export interface Section {
   _type: "section";
   _key: string;
-  background?: string;
-  spacing?: string;
+  // Wrapper settings
+  background?: string | SectionBackground; // string for legacy support
+  paddingTop?: string;
+  paddingBottom?: string;
+  spacing?: string; // legacy - maps to paddingY
+  // Content alignment (legacy)
   width?: string;
   align?: string;
+  // Container settings
+  container?: ContainerSettings;
+  // Blocks
   blocks: Block[];
 }
 
@@ -37,6 +106,20 @@ export interface Block {
   _key: string;
   data: Record<string, unknown>;
   [key: string]: unknown;
+}
+
+// Simplified header/footer info returned with pages
+export interface PageHeader {
+  id: string;
+  name: string;
+  slug: string;
+  behavior: string;
+}
+
+export interface PageFooter {
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export interface Page {
@@ -65,6 +148,11 @@ export interface Page {
   isHomePage?: boolean;
   pageType?: string;
   isSystemPage?: boolean;
+  // Header/Footer assignment
+  headerId?: string | null;
+  footerId?: string | null;
+  header?: PageHeader | null;
+  footer?: PageFooter | null;
   createdAt?: string;
   updatedAt?: string;
 }

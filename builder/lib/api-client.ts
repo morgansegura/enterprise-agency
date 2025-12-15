@@ -167,10 +167,7 @@ export class ApiClient {
     });
   }
 
-  async put<T, D = Record<string, unknown>>(
-    endpoint: string,
-    data?: D,
-  ): Promise<T> {
+  async put<T, D = unknown>(endpoint: string, data?: D): Promise<T> {
     return this.request<T>(endpoint, {
       method: "PUT",
       body: data ? JSON.stringify(data) : undefined,
@@ -182,10 +179,7 @@ export class ApiClient {
   }
 
   // Auth-specific methods (use auth base URL)
-  async authPost<T, D = Record<string, unknown>>(
-    endpoint: string,
-    data?: D,
-  ): Promise<T> {
+  async authPost<T, D = unknown>(endpoint: string, data?: D): Promise<T> {
     return this.request<T>(
       endpoint,
       {

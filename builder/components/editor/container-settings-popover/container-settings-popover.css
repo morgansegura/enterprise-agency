@@ -1,0 +1,76 @@
+@reference "tailwindcss";
+
+.container-settings-popover {
+  @apply w-80 p-0 max-w-[calc(100vw-2rem)];
+}
+
+/* Header with tabs */
+.container-popover-header {
+  @apply px-3 py-2 border-b border-(--border);
+}
+
+.container-popover-tabs {
+  @apply flex gap-0.5;
+}
+
+.container-popover-tab {
+  @apply px-3 py-1.5 text-xs font-medium rounded-md;
+  @apply text-(--muted-foreground) bg-transparent;
+  @apply transition-colors cursor-pointer;
+  @apply hover:text-(--foreground) hover:bg-(--muted)/50;
+}
+
+.container-popover-tab.active {
+  @apply text-(--foreground) bg-(--muted);
+}
+
+/* Content area */
+.container-settings-content {
+  @apply p-4 space-y-5 max-h-[400px] overflow-y-auto;
+}
+
+.container-settings-section {
+  @apply space-y-3;
+}
+
+.container-settings-section-title {
+  @apply text-xs font-semibold tracking-wide text-(--muted-foreground);
+}
+
+.container-settings-field {
+  @apply space-y-1.5;
+}
+
+.container-settings-label {
+  @apply text-xs font-medium text-(--muted-foreground);
+}
+
+.container-settings-field label {
+  @apply text-xs font-medium text-(--muted-foreground);
+}
+
+/* Two-column row */
+.container-settings-row {
+  @apply grid grid-cols-2 gap-3;
+}
+
+/* Layout type buttons */
+.container-settings-layout-types {
+  @apply flex gap-1;
+}
+
+.container-settings-layout-type {
+  @apply flex flex-col items-center gap-1;
+  @apply flex-1 py-2 rounded-md;
+  @apply bg-(--muted)/50 text-(--muted-foreground);
+  @apply transition-all cursor-pointer;
+  @apply hover:bg-(--muted) hover:text-(--foreground);
+}
+
+.container-settings-layout-type.active {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+
+.container-settings-layout-type span {
+  @apply text-xs font-medium;
+}

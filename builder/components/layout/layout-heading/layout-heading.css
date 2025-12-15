@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .layout-heading {
-  @apply mb-6 grid grid-cols-2;
+  @apply grid grid-cols-2;
 }
 
 .layout-heading-title {

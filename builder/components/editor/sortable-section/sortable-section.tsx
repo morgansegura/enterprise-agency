@@ -3,23 +3,13 @@
 import * as React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import {
-  Pencil,
-  LayoutGrid,
-  Copy,
-  Heart,
-  ChevronUp,
-  ChevronDown,
-  Trash2,
-  Layers,
-  Plus,
-} from "lucide-react";
+import { Layers, Settings2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Section } from "@/lib/hooks/use-pages";
-import { SectionSettingsPopover } from "../section-settings-popover";
-import { AddBlockPopover } from "../add-block-popover";
 import { LayersPopover } from "../layers-popover";
+import { SectionActionsPopover } from "../section-actions-popover";
+import { AddBlockPopover } from "../add-block-popover";
 
 import "./sortable-section.css";
 
@@ -66,7 +56,7 @@ export function SortableSection({
   onAddBlock,
   selectedBlockKey,
   onSelectBlock,
-  hoveredBlockKey,
+  hoveredBlockKey: _hoveredBlockKey,
   onHoverBlock,
   isFirst = false,
   isLast = false,
@@ -121,8 +111,14 @@ export function SortableSection({
     spacingClasses[section.spacing || "md"] || spacingClasses.md;
   const sectionWidth =
     widthClasses[section.width || "full"] || widthClasses.full;
-  const sectionBackground =
-    backgroundClasses[section.background || "none"] || "";
+  // Handle background - can be string or SectionBackground object
+  const bgValue =
+    typeof section.background === "string"
+      ? section.background
+      : section.background?.type === "color"
+        ? section.background.color
+        : "none";
+  const sectionBackground = backgroundClasses[bgValue || "none"] || "";
   const sectionAlign = alignClasses[section.align || "left"] || "";
 
   // Check if any block in this section is selected
@@ -130,8 +126,8 @@ export function SortableSection({
     ? section.blocks.some((block) => block._key === selectedBlockKey)
     : false;
 
-  // Track when settings popover is open to keep hover state visible
-  const [settingsOpen, setSettingsOpen] = React.useState(false);
+  // Track popover open state to keep buttons visible
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
   return (
     <div
@@ -141,25 +137,58 @@ export function SortableSection({
         "sortable-section",
         isDragging && "is-dragging",
         hasSelectedBlock && "has-selected-block",
-        settingsOpen && "is-settings-open",
+        isPopoverOpen && "is-popover-open",
         sectionBackground,
       )}
     >
       {/* Section Content with border */}
       <div className={cn("section-content", sectionAlign)}>
-        {/* Layers Button - Left side (always visible) */}
+        {/* Layers Button - Left side */}
         <LayersPopover
           blocks={section.blocks}
           selectedBlockKey={selectedBlockKey ?? null}
           onSelectBlock={onSelectBlock ?? (() => {})}
           onHoverBlock={onHoverBlock}
+          onOpenChange={setIsPopoverOpen}
         >
           <button className="section-drag-handle" aria-label="View layers">
-            <Layers className="h-5 w-5" />
+            <Layers className="h-4 w-4" />
           </button>
         </LayersPopover>
 
-        {/* Section controls - hidden when a block is selected */}
+        {/* Add Block Button - Left side, next to layers */}
+        {onAddBlock && !hasSelectedBlock && (
+          <div className="section-add-block">
+            <AddBlockPopover onAddBlock={onAddBlock}>
+              <Button variant="outline" size="sm">
+                <Plus className="h-4 w-4 mr-1" />
+                Add Block
+              </Button>
+            </AddBlockPopover>
+          </div>
+        )}
+
+        {/* Section Actions Button - Right side */}
+        <SectionActionsPopover
+          section={section}
+          onSectionChange={onSectionChange}
+          onDelete={onDelete}
+          onDuplicate={onDuplicate}
+          onMoveUp={onMoveUp}
+          onMoveDown={onMoveDown}
+          onOpenChange={setIsPopoverOpen}
+          isFirst={isFirst}
+          isLast={isLast}
+        >
+          <button
+            className="section-actions-handle"
+            aria-label="Section actions"
+          >
+            <Settings2 className="h-4 w-4" />
+          </button>
+        </SectionActionsPopover>
+
+        {/* Section boundary controls - only when no block selected */}
         {!hasSelectedBlock && (
           <>
             {/* ADD SECTION - Above (overlaid) - hidden for first section */}
@@ -189,88 +218,6 @@ export function SortableSection({
                 </Button>
               </div>
             ) : null}
-
-            {/* Add Block Button - Top left */}
-            <div className="section-add-block">
-              <AddBlockPopover onAddBlock={onAddBlock ?? (() => {})}>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Plus className="h-4 w-4" />
-                  ADD BLOCK
-                </Button>
-              </AddBlockPopover>
-            </div>
-
-            {/* Floating Action Panel - Right side */}
-            <div className="section-panel">
-              {/* Edit Section */}
-              <SectionSettingsPopover
-                section={section}
-                onChange={onSectionChange}
-                open={settingsOpen}
-                onOpenChange={setSettingsOpen}
-              >
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="section-panel-item"
-                >
-                  <Pencil className="h-4 w-4" />
-                  <span>EDIT SECTION</span>
-                </Button>
-              </SectionSettingsPopover>
-
-              {/* View Layouts */}
-              <Button variant="ghost" size="sm" className="section-panel-item">
-                <LayoutGrid className="h-4 w-4" />
-                <span>VIEW LAYOUTS</span>
-              </Button>
-
-              {/* Quick Actions Row */}
-              <div className="section-panel-row">
-                {onDuplicate && (
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={onDuplicate}
-                    title="Duplicate"
-                  >
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                )}
-                <Button variant="ghost" size="icon-sm" title="Favorite">
-                  <Heart className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={onMoveUp}
-                  title="Move up"
-                  disabled={isFirst}
-                >
-                  <ChevronUp className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={onMoveDown}
-                  title="Move down"
-                  disabled={isLast}
-                >
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </div>
-
-              {/* Remove */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onDelete}
-                className="section-panel-item section-panel-delete"
-              >
-                <Trash2 className="h-4 w-4" />
-                <span>REMOVE</span>
-              </Button>
-            </div>
           </>
         )}
 

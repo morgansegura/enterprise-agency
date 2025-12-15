@@ -63,7 +63,13 @@ export function SectionSettings({
       <FormItem className="space-y-2">
         <Label htmlFor="section-background">Background</Label>
         <Select
-          value={section.background || "none"}
+          value={
+            typeof section.background === "string"
+              ? section.background
+              : section.background?.type === "color"
+                ? section.background.color || "none"
+                : "none"
+          }
           onValueChange={(value) => handleChange("background", value)}
         >
           <SelectTrigger id="section-background">

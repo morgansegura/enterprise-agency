@@ -17,7 +17,7 @@ import {
 } from "@nestjs/swagger";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { TenantGuard } from "@/common/guards/tenant.guard";
-import { CurrentTenant } from "@/common/decorators/current-tenant.decorator";
+import { TenantId } from "@/common/decorators/tenant.decorator";
 import { MenusService } from "./menus.service";
 import { CreateMenuDto, UpdateMenuDto } from "./dto";
 
@@ -33,7 +33,7 @@ export class MenusController {
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 201, description: "Menu created successfully" })
   @ApiResponse({ status: 409, description: "Menu with slug already exists" })
-  async create(@CurrentTenant() tenantId: string, @Body() dto: CreateMenuDto) {
+  async create(@TenantId() tenantId: string, @Body() dto: CreateMenuDto) {
     return this.menusService.create(tenantId, dto);
   }
 
@@ -41,7 +41,7 @@ export class MenusController {
   @ApiOperation({ summary: "List all menus for tenant" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 200, description: "Menus retrieved successfully" })
-  async findAll(@CurrentTenant() tenantId: string) {
+  async findAll(@TenantId() tenantId: string) {
     return this.menusService.findAll(tenantId);
   }
 
@@ -49,7 +49,7 @@ export class MenusController {
   @ApiOperation({ summary: "Get the default menu for tenant" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 200, description: "Default menu retrieved" })
-  async findDefault(@CurrentTenant() tenantId: string) {
+  async findDefault(@TenantId() tenantId: string) {
     return this.menusService.findDefault(tenantId);
   }
 
@@ -59,7 +59,7 @@ export class MenusController {
   @ApiParam({ name: "id", description: "Menu ID" })
   @ApiResponse({ status: 200, description: "Menu retrieved successfully" })
   @ApiResponse({ status: 404, description: "Menu not found" })
-  async findOne(@CurrentTenant() tenantId: string, @Param("id") id: string) {
+  async findOne(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.menusService.findOne(tenantId, id);
   }
 
@@ -69,10 +69,7 @@ export class MenusController {
   @ApiParam({ name: "slug", description: "Menu slug" })
   @ApiResponse({ status: 200, description: "Menu retrieved successfully" })
   @ApiResponse({ status: 404, description: "Menu not found" })
-  async findBySlug(
-    @CurrentTenant() tenantId: string,
-    @Param("slug") slug: string,
-  ) {
+  async findBySlug(@TenantId() tenantId: string, @Param("slug") slug: string) {
     return this.menusService.findBySlug(tenantId, slug);
   }
 
@@ -84,7 +81,7 @@ export class MenusController {
   @ApiResponse({ status: 404, description: "Menu not found" })
   @ApiResponse({ status: 409, description: "Menu with slug already exists" })
   async update(
-    @CurrentTenant() tenantId: string,
+    @TenantId() tenantId: string,
     @Param("id") id: string,
     @Body() dto: UpdateMenuDto,
   ) {
@@ -97,7 +94,7 @@ export class MenusController {
   @ApiParam({ name: "id", description: "Menu ID" })
   @ApiResponse({ status: 200, description: "Menu deleted successfully" })
   @ApiResponse({ status: 404, description: "Menu not found" })
-  async remove(@CurrentTenant() tenantId: string, @Param("id") id: string) {
+  async remove(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.menusService.remove(tenantId, id);
   }
 
@@ -108,7 +105,7 @@ export class MenusController {
   @ApiResponse({ status: 201, description: "Menu duplicated successfully" })
   @ApiResponse({ status: 404, description: "Menu not found" })
   async duplicate(
-    @CurrentTenant() tenantId: string,
+    @TenantId() tenantId: string,
     @Param("id") id: string,
     @Body() body: { name?: string },
   ) {
@@ -122,7 +119,7 @@ export class MenusController {
   @ApiResponse({ status: 201, description: "Menu saved to library" })
   @ApiResponse({ status: 404, description: "Menu not found" })
   async saveToLibrary(
-    @CurrentTenant() tenantId: string,
+    @TenantId() tenantId: string,
     @Param("id") id: string,
     @Body() body: { name?: string; description?: string },
   ) {

@@ -101,7 +101,13 @@ export function SectionSettingsModal({
               <FormItem className="section-settings-modal-field">
                 <Label htmlFor="section-background">Background Style</Label>
                 <Select
-                  value={section.background || "none"}
+                  value={
+                    typeof section.background === "string"
+                      ? section.background
+                      : section.background?.type === "color"
+                        ? section.background.color || "none"
+                        : "none"
+                  }
                   onValueChange={(value) => handleChange("background", value)}
                 >
                   <SelectTrigger id="section-background">

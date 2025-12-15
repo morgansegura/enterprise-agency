@@ -1,0 +1,67 @@
+@reference "tailwindcss";
+
+.layout-presets-popover {
+  @apply w-[320px] p-4;
+  @apply bg-(--card) border border-(--border) rounded-xl shadow-xl;
+}
+
+.layout-presets-header {
+  @apply mb-4;
+}
+
+.layout-presets-title {
+  @apply text-sm font-semibold text-(--foreground);
+}
+
+.layout-presets-description {
+  @apply text-xs text-(--muted-foreground) mt-1;
+}
+
+.layout-presets-grid {
+  @apply grid grid-cols-4 gap-2;
+}
+
+.layout-preset-item {
+  @apply flex flex-col items-center gap-1.5;
+  @apply p-2 rounded-lg;
+  @apply border border-transparent;
+  @apply bg-(--muted)/30 hover:bg-(--muted);
+  @apply cursor-pointer;
+  @apply transition-all duration-150;
+}
+
+.layout-preset-item:hover {
+  @apply border-(--border);
+}
+
+.layout-preset-item.is-active {
+  @apply bg-(--primary)/10 border-(--primary);
+}
+
+.layout-preset-icon {
+  @apply w-8 h-8 flex items-center justify-center;
+}
+
+.layout-preset-icon svg {
+  @apply w-full h-full;
+}
+
+.preset-icon {
+  fill: currentColor;
+  @apply text-(--muted-foreground);
+}
+
+.layout-preset-item:hover .preset-icon,
+.layout-preset-item.is-active .preset-icon {
+  @apply text-(--foreground);
+}
+
+.layout-preset-name {
+  @apply text-[10px] font-medium text-(--muted-foreground);
+  @apply truncate max-w-full;
+}
+
+.layout-preset-item:hover .layout-preset-name,
+.layout-preset-item.is-active .layout-preset-name {
+  @apply text-(--foreground);
+}

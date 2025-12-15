@@ -237,6 +237,55 @@ export type {
 // Auto-Save
 export { useAutoSave } from "./use-auto-save";
 
+// Menus
+export {
+  useMenus,
+  useMenu,
+  useMenuBySlug,
+  useDefaultMenu,
+  useCreateMenu,
+  useUpdateMenu,
+  useDeleteMenu,
+  useDuplicateMenu,
+  useSaveMenuToLibrary,
+} from "./use-menus";
+
+export type {
+  Menu,
+  MenuItem,
+  MenuStyle,
+  MenuType,
+  CreateMenuInput,
+  UpdateMenuInput,
+} from "./use-menus";
+
+// Headers
+export {
+  useHeaders,
+  useHeader,
+  useHeaderBySlug,
+  useDefaultHeader,
+  useCreateHeader,
+  useUpdateHeader,
+  useDeleteHeader,
+  useDuplicateHeader,
+  useSaveHeaderToLibrary,
+} from "./use-headers";
+
+export type {
+  Header,
+  HeaderBehavior,
+  HeaderZone,
+  HeaderZones,
+  HeaderStyle,
+  TransparentStyle,
+  MobileMenu,
+  MobileMenuTrigger,
+  HeaderMenu,
+  CreateHeaderInput,
+  UpdateHeaderInput,
+} from "./use-headers";
+
 // E-Commerce: Payments
 export {
   usePaymentConfig,

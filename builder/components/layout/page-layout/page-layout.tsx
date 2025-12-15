@@ -1,34 +1,50 @@
 "use client";
 
 import * as React from "react";
+import { LayoutHeading } from "@/components/layout/layout-heading";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import "./page-layout.css";
 
+// =============================================================================
+// Types
+// =============================================================================
+
 export interface PageLayoutProps {
-  // Header
+  /** Page title */
   title: string;
+  /** Optional description below title */
   description?: string;
+  /** Action buttons in header */
   actions?: React.ReactNode;
 
-  // Back navigation
+  /** Back button - renders arrow button that goes back */
   backHref?: string;
   backLabel?: string;
   onBack?: () => void;
 
-  // Toolbar (optional - for filters, search, etc.)
+  /** Toolbar below header (filters, search, tabs, etc.) */
   toolbar?: React.ReactNode;
 
-  // Content
+  /** Main content */
   children: React.ReactNode;
 
-  // Layout options
+  /** Content max-width constraint */
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
+
+  /** Additional classes */
   className?: string;
   contentClassName?: string;
+
+  /** Remove default padding (for custom layouts) */
+  noPadding?: boolean;
 }
+
+// =============================================================================
+// Component
+// =============================================================================
 
 const maxWidthClasses = {
   sm: "page-layout-content-sm",
@@ -44,13 +60,14 @@ export function PageLayout({
   description,
   actions,
   backHref,
-  backLabel = "Back",
+  backLabel,
   onBack,
   toolbar,
   children,
   maxWidth,
   className,
   contentClassName,
+  noPadding = false,
 }: PageLayoutProps) {
   const handleBack = () => {
     if (onBack) {
@@ -62,45 +79,43 @@ export function PageLayout({
 
   const showBack = backHref || onBack;
 
-  return (
-    <div className={cn("page-layout", className)}>
-      <div className={cn("page-layout-inner")}>
-        {/* Page Title Row */}
-        <div className="page-layout-title-row">
-          {/* Back Navigation */}
-          {showBack ? (
-            <div className="page-layout-back">
-              <Button variant="ghost" size="sm" onClick={handleBack}>
-                <ArrowLeft className="h-4 w-4" />
-                {backLabel}
-              </Button>
-            </div>
-          ) : null}
+  const backButton = showBack ? (
+    <Button variant="outline" size="sm" onClick={handleBack}>
+      <ArrowLeft />
+      {backLabel}
+    </Button>
+  ) : undefined;
 
-          <div className="page-layout-title-content">
-            <h1 className="page-layout-title">{title}</h1>
-            {description && (
-              <p className="page-layout-description">{description}</p>
-            )}
-          </div>
-          {actions && <div className="page-layout-actions">{actions}</div>}
-        </div>
+  return (
+    <div
+      className={cn(
+        "page-layout",
+        noPadding && "page-layout-no-padding",
+        className,
+      )}
+    >
+      {/* Header */}
+      <div className="page-layout-header">
+        <LayoutHeading
+          title={title}
+          description={description}
+          actions={actions}
+          back={backButton}
+        />
       </div>
 
-      <div className="page-layout-inner">
-        {/* Toolbar (optional) */}
-        {toolbar ? <div className="page-layout-toolbar">{toolbar}</div> : null}
+      {/* Toolbar (optional) */}
+      {toolbar && <div className="page-layout-toolbar">{toolbar}</div>}
 
-        {/* Page Content */}
-        <div
-          className={cn(
-            "page-layout-content",
-            maxWidth && maxWidthClasses[maxWidth],
-            contentClassName,
-          )}
-        >
-          {children}
-        </div>
+      {/* Content */}
+      <div
+        className={cn(
+          "page-layout-content scrollbar-y",
+          maxWidth && maxWidthClasses[maxWidth],
+          contentClassName,
+        )}
+      >
+        {children}
       </div>
     </div>
   );

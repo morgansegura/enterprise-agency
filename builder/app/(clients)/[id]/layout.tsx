@@ -130,24 +130,29 @@ export default function ClientLayout({
         },
       ],
     },
+    // Settings group - after shop with divider
+    {
+      items: [
+        {
+          id: "page-settings",
+          icon: Settings,
+          label: "Page Settings",
+          onClick: () => setPageSettingsOpen(true),
+          isActive: pageSettingsOpen,
+        },
+        {
+          id: "global-settings",
+          icon: Globe,
+          label: "Global Settings",
+          onClick: () => setGlobalSettingsOpen(true),
+          isActive: globalSettingsOpen,
+        },
+      ],
+    },
   ];
 
-  const bottomNav: NavItem[] = [
-    {
-      id: "page-settings",
-      icon: Settings,
-      label: "Page Settings",
-      onClick: () => setPageSettingsOpen(true),
-      isActive: pageSettingsOpen,
-    },
-    {
-      id: "global-settings",
-      icon: Globe,
-      label: "Global Settings",
-      onClick: () => setGlobalSettingsOpen(true),
-      isActive: globalSettingsOpen,
-    },
-  ];
+  // Keep bottomNav empty for now - settings moved to navGroups
+  const bottomNav: NavItem[] = [];
 
   return (
     <TenantProvider>

@@ -1,0 +1,44 @@
+@reference "tailwindcss";
+
+.footer-settings-popover {
+  @apply w-[320px] p-0;
+  @apply bg-(--card) border border-(--border) rounded-xl shadow-xl;
+}
+
+.footer-settings-tabs {
+  @apply w-full;
+}
+
+.footer-settings-tabs-list {
+  @apply w-full grid grid-cols-3 p-1 h-auto gap-1;
+  @apply bg-(--muted)/50 rounded-t-xl;
+}
+
+.footer-settings-tabs-list button {
+  @apply text-xs py-1.5 px-2;
+  @apply data-[state=active]:bg-(--background) data-[state=active]:shadow-sm;
+}
+
+.footer-settings-content {
+  @apply p-4 space-y-4;
+}
+
+.footer-settings-section {
+  @apply space-y-2;
+}
+
+.footer-settings-section-title {
+  @apply text-xs font-semibold tracking-wide text-(--muted-foreground);
+}
+
+.footer-settings-field {
+  @apply space-y-1;
+}
+
+.footer-settings-field label {
+  @apply text-xs font-medium text-(--muted-foreground);
+}
+
+.footer-settings-hint {
+  @apply text-xs text-(--muted-foreground) mt-1;
+}

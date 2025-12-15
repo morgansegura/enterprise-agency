@@ -1,0 +1,79 @@
+@reference "tailwindcss";
+
+.resizable-preview-container {
+  @apply relative w-full;
+}
+
+.resizable-preview-frame {
+  @apply relative;
+  @apply rounded-lg;
+  @apply border border-(--border);
+  @apply bg-(--background);
+  @apply transition-shadow duration-150;
+  max-width: calc(100% - 24px); /* Account for resize handle */
+}
+
+.resizable-preview-frame.is-dragging {
+  @apply shadow-lg;
+  @apply select-none;
+}
+
+.resizable-preview-viewport {
+  @apply w-full rounded-lg;
+  overflow: hidden auto;
+  overscroll-behavior-y: contain;
+}
+
+/* Scroll content placeholder */
+.resizable-preview-scroll-content {
+  @apply flex flex-col gap-6 p-6;
+}
+
+.resizable-preview-placeholder-block {
+  @apply h-64 rounded-lg bg-(--muted)/30;
+}
+
+.resizable-preview-placeholder-lines {
+  @apply flex flex-col gap-3;
+}
+
+.resizable-preview-placeholder-line {
+  @apply h-4 rounded-full bg-(--muted)/40;
+}
+
+/* Resize Handle */
+.resizable-preview-handle {
+  @apply absolute top-0 bottom-0 -right-3 w-6;
+  @apply flex items-center justify-center;
+  @apply cursor-ew-resize;
+  @apply z-10;
+}
+
+.resizable-preview-handle-bar {
+  @apply w-1.5 h-16 max-h-[30%];
+  @apply rounded-full;
+  @apply bg-(--border);
+  @apply transition-all duration-150;
+}
+
+.resizable-preview-handle:hover .resizable-preview-handle-bar,
+.resizable-preview-frame.is-dragging .resizable-preview-handle-bar {
+  @apply bg-(--muted-foreground);
+  @apply h-20;
+}
+
+/* Width Indicator */
+.resizable-preview-indicator {
+  @apply flex items-center justify-center gap-2 mt-3;
+  @apply text-xs text-(--muted-foreground);
+}
+
+.resizable-preview-width {
+  @apply font-mono;
+}
+
+.resizable-preview-breakpoint {
+  @apply px-2 py-0.5;
+  @apply bg-(--muted) rounded-full;
+  @apply text-[10px] font-medium uppercase tracking-wide;
+}

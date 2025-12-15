@@ -1,0 +1,104 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+   Header Library Picker
+   ============================================================================= */
+
+.header-library-picker {
+  @apply max-w-lg;
+}
+
+.header-library-content {
+  @apply grid gap-2 py-4 max-h-[400px] overflow-y-auto;
+}
+
+.header-library-loading {
+  @apply text-sm text-(--muted-foreground) text-center py-8;
+}
+
+/* =============================================================================
+   Library Item
+   ============================================================================= */
+
+.header-library-item {
+  @apply flex items-center gap-3 p-2 rounded-lg;
+  @apply border border-(--border) bg-(--background);
+  @apply text-left transition-all cursor-pointer;
+  @apply hover:border-(--primary)/50 hover:bg-(--muted)/50;
+}
+
+.header-library-item.is-selected {
+  @apply border-(--primary) bg-(--primary)/5;
+}
+
+.header-library-item-create {
+  @apply border-dashed;
+}
+
+/* =============================================================================
+   Item Preview
+   ============================================================================= */
+
+.header-library-item-preview {
+  @apply w-24 h-12 rounded-md overflow-hidden;
+  @apply bg-(--muted) border border-(--border);
+  @apply flex items-center justify-center;
+}
+
+.header-library-item-none {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.header-library-item-new {
+  @apply text-(--muted-foreground);
+}
+
+.header-library-preview-bar {
+  @apply flex items-center justify-between w-full h-full px-2;
+}
+
+.header-library-preview-zone {
+  @apply flex items-center gap-1;
+}
+
+.header-library-preview-center {
+  @apply flex-1 justify-center;
+}
+
+.header-library-preview-logo {
+  @apply w-6 h-3 rounded-sm bg-(--foreground)/20;
+}
+
+.header-library-preview-menu {
+  @apply flex gap-1;
+}
+
+.header-library-preview-menu::before,
+.header-library-preview-menu::after {
+  content: "";
+  @apply w-4 h-1.5 rounded-sm bg-(--foreground)/15;
+}
+
+.header-library-preview-button {
+  @apply w-6 h-3 rounded-sm bg-(--primary)/30;
+}
+
+/* =============================================================================
+   Item Info
+   ============================================================================= */
+
+.header-library-item-info {
+  @apply flex-1 flex flex-col gap-0.5;
+}
+
+.header-library-item-name {
+  @apply text-sm font-medium flex items-center gap-1.5;
+}
+
+.header-library-item-desc {
+  @apply text-xs text-(--muted-foreground) capitalize;
+}
+
+.header-library-item-check {
+  @apply h-5 w-5 text-(--primary);
+}

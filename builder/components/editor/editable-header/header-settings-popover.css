@@ -1,0 +1,39 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+   Header Settings Popover
+   Matches section-settings-popover pattern
+   ============================================================================= */
+
+.header-settings-popover {
+  @apply w-72 p-0;
+}
+
+.header-settings-content {
+  @apply p-4 space-y-5 max-h-[450px] overflow-y-auto;
+}
+
+.header-settings-section {
+  @apply space-y-2;
+}
+
+.header-settings-section-title {
+  @apply text-xs font-semibold tracking-wide text-(--muted-foreground);
+}
+
+.header-settings-field {
+  @apply space-y-1.5;
+}
+
+.header-settings-field label {
+  @apply text-sm;
+}
+
+.header-settings-button-group {
+  @apply flex gap-1;
+}
+
+.header-settings-button.is-active {
+  @apply bg-(--primary) text-(--primary-foreground);
+  @apply hover:bg-(--primary) hover:text-(--primary-foreground);
+}

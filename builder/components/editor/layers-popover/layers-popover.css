@@ -5,12 +5,12 @@
 }
 
 .layers-title {
-  @apply text-base font-semibold text-(--foreground);
-  @apply px-4 py-3 border-b border-(--border);
+  @apply text-xs font-semibold uppercase text-(--foreground);
+  @apply px-3 py-2 border-b border-(--border);
 }
 
 .layers-list {
-  @apply max-h-[350px] overflow-y-auto p-2;
+  @apply max-h-[350px] overflow-y-auto p-1;
 }
 
 .layers-empty {

@@ -99,11 +99,16 @@ export function SettingsDrawerNav<T extends string>({
         return (
           <li key={item.id}>
             <button
+              type="button"
               className={cn(
                 "settings-drawer-nav-item",
                 activeTab === item.id && "is-active",
               )}
-              onClick={() => onTabChange(item.id)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onTabChange(item.id);
+              }}
             >
               <Icon className="h-5 w-5" />
               <div className="settings-drawer-nav-text">

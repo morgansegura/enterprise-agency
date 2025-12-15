@@ -459,6 +459,10 @@ model Header {
   // Default flag
   isDefault Boolean @default(false) @map("is_default")
 
+  // Mobile menu configuration (JSONB)
+  // Structure: { type, breakpoint, animation, trigger: { openIcon, closeIcon, ... }, ... }
+  mobileMenu Json? @default("{}") @map("mobile_menu") @db.JsonB
+
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

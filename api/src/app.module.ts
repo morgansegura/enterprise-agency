@@ -21,6 +21,8 @@ import { CustomersModule } from "./modules/customers/customers.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
 import { PreviewModule } from "./modules/preview/preview.module";
 import { MenusModule } from "./modules/menus/menus.module";
+import { HeadersModule } from "./modules/headers/headers.module";
+import { FootersModule } from "./modules/footers/footers.module";
 
 @Module({
   imports: [
@@ -62,6 +64,8 @@ import { MenusModule } from "./modules/menus/menus.module";
     PreviewModule,
     // Builder components
     MenusModule,
+    HeadersModule,
+    FootersModule,
     // Integrations
     WebhooksModule,
   ],

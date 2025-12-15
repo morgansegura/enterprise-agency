@@ -1,0 +1,253 @@
+@reference "tailwindcss";
+
+/* Canvas Container */
+.header-canvas {
+  @apply relative;
+}
+
+/* Header Structure */
+.header-canvas-header {
+  @apply flex items-center w-full cursor-default mt-6;
+}
+
+.header-canvas-container {
+  @apply flex items-center justify-between w-full mx-auto;
+}
+
+/* Height variants */
+.header-canvas-header.header-height-sm {
+  @apply h-14;
+}
+
+.header-canvas-header.header-height-md {
+  @apply h-16;
+}
+
+.header-canvas-header.header-height-lg {
+  @apply h-20;
+}
+
+.header-canvas-header.header-height-xl {
+  @apply h-24;
+}
+
+/* Container widths */
+.header-canvas-container.header-width-full {
+  @apply max-w-none;
+}
+
+.header-canvas-container.header-width-container {
+  @apply max-w-7xl;
+}
+
+.header-canvas-container.header-width-narrow {
+  @apply max-w-5xl;
+}
+
+/* Horizontal padding */
+.header-canvas-container.header-padding-sm {
+  @apply px-4;
+}
+
+.header-canvas-container.header-padding-md {
+  @apply px-6;
+}
+
+.header-canvas-container.header-padding-lg {
+  @apply px-8;
+}
+
+.header-canvas-container.header-padding-xl {
+  @apply px-12;
+}
+
+/* Zone Styles */
+.header-canvas-zone {
+  @apply relative flex items-center gap-2;
+  @apply rounded-md px-2 py-1;
+  @apply transition-all duration-150;
+  @apply border border-transparent;
+  min-height: 40px;
+  min-width: 60px;
+}
+
+.header-canvas-zone-left {
+  @apply shrink-0 justify-start;
+}
+
+.header-canvas-zone-center {
+  @apply flex-1 justify-center;
+}
+
+.header-canvas-zone-right {
+  @apply shrink-0 justify-end;
+}
+
+/* Zone hover state - show boundaries */
+.header-canvas-zone:hover {
+  @apply bg-(--muted)/20 border-dashed border-(--border);
+}
+
+.header-canvas-zone.is-empty {
+  @apply border border-dashed border-(--muted-foreground)/30;
+}
+
+.header-canvas-zone.is-empty:hover {
+  @apply border-(--primary)/50 bg-(--primary)/5;
+}
+
+/* Zone labels on hover */
+.header-canvas-zone::before {
+  @apply absolute -top-5 left-1/2 -translate-x-1/2;
+  @apply text-[10px] font-medium text-(--muted-foreground);
+  @apply opacity-0 transition-opacity;
+  @apply pointer-events-none;
+}
+
+.header-canvas-zone:hover::before {
+  @apply opacity-100;
+}
+
+.header-canvas-zone-left::before {
+  content: "Left";
+}
+
+.header-canvas-zone-center::before {
+  content: "Center";
+}
+
+.header-canvas-zone-right::before {
+  content: "Right";
+}
+
+/* Add button */
+.header-canvas-add-btn {
+  @apply absolute -right-1 top-1/2 -translate-y-1/2;
+  @apply flex items-center justify-center;
+  @apply size-5 rounded-full;
+  @apply bg-(--primary) text-(--primary-foreground);
+  @apply opacity-0 scale-75;
+  @apply transition-all duration-150;
+  @apply shadow-sm;
+  @apply z-10;
+}
+
+.header-canvas-zone:hover .header-canvas-add-btn {
+  @apply opacity-100 scale-100;
+}
+
+.header-canvas-zone-center .header-canvas-add-btn {
+  @apply -right-1;
+}
+
+.header-canvas-zone-right .header-canvas-add-btn {
+  @apply -left-1 right-auto;
+}
+
+/* Add popover */
+.header-canvas-add-popover {
+  @apply w-48 p-2;
+}
+
+.header-canvas-add-grid {
+  @apply grid grid-cols-2 gap-1;
+}
+
+.header-canvas-add-option {
+  @apply flex items-center gap-2 px-2 py-1.5;
+  @apply text-sm text-(--foreground);
+  @apply rounded-md cursor-pointer;
+  @apply hover:bg-(--muted);
+  @apply transition-colors;
+}
+
+/* Block Wrapper */
+.header-canvas-block {
+  @apply relative rounded-md cursor-pointer;
+  @apply transition-all duration-150;
+  @apply outline-2 outline-transparent outline-offset-2;
+}
+
+.header-canvas-block:hover {
+  @apply outline-dashed outline-(--primary)/50;
+}
+
+.header-canvas-block.is-selected {
+  @apply outline-solid outline-(--primary);
+}
+
+/* Placeholder style for unconfigured blocks */
+.header-canvas-placeholder {
+  @apply flex items-center gap-2 px-3 py-2;
+  @apply text-xs text-(--muted-foreground);
+  @apply bg-(--muted)/50 rounded-md;
+  @apply border border-dashed border-(--muted-foreground)/30;
+}
+
+/* Logo Styles */
+.header-canvas-logo-img {
+  @apply w-auto object-contain;
+}
+
+.header-canvas-logo-svg {
+  @apply flex items-center;
+}
+
+.header-canvas-logo-svg svg {
+  @apply h-full w-auto;
+  fill: currentColor;
+}
+
+/* Nav Styles */
+.header-canvas-nav {
+  @apply hidden sm:flex items-center gap-1;
+}
+
+.header-canvas-nav-item {
+  @apply text-sm font-medium px-3 py-2 rounded-md;
+  @apply hover:bg-(--muted) transition-colors cursor-pointer;
+}
+
+/* Button Styles */
+.header-canvas-btn {
+  @apply text-sm font-medium px-4 py-2 rounded-md transition-colors;
+}
+
+.header-canvas-btn-primary {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+
+.header-canvas-btn-secondary {
+  @apply bg-(--secondary) text-(--secondary-foreground);
+}
+
+.header-canvas-btn-outline {
+  @apply border border-(--border) bg-transparent;
+}
+
+.header-canvas-btn-ghost {
+  @apply bg-transparent hover:bg-(--muted);
+}
+
+/* Icon button */
+.header-canvas-icon-btn {
+  @apply p-2 rounded-md;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply hover:bg-(--muted) transition-colors;
+}
+
+/* Selection Info */
+.header-canvas-selection-info {
+  @apply inline-flex items-center gap-1.5 mt-3 px-2.5 py-1;
+  @apply text-xs;
+  @apply bg-(--primary)/10 text-(--primary) rounded-full;
+  @apply border border-(--primary)/20;
+}
+
+.header-canvas-selection-zone {
+  @apply opacity-70 capitalize;
+}
+
+.header-canvas-selection-type {
+  @apply font-medium capitalize;
+}

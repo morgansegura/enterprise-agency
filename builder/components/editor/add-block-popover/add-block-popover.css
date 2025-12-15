@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .add-block-popover {
-  @apply w-[400px] p-0;
+  @apply w-96 p-0;
 }
 
 .add-block-search {
@@ -9,12 +9,12 @@
 }
 
 .add-block-search-input {
-  @apply border-0 shadow-none focus-visible:ring-0 p-0 h-auto;
+  @apply border-0 shadow-none focus-visible:ring-0 py-1 px-2.5 rounded-xs h-auto;
   @apply text-base;
 }
 
 .add-block-content {
-  @apply max-h-[400px] overflow-y-auto p-4;
+  @apply max-h-96 overflow-y-auto p-3;
 }
 
 .add-block-category {
@@ -26,7 +26,7 @@
 }
 
 .add-block-category-title {
-  @apply text-sm font-semibold text-(--foreground) mb-3;
+  @apply text-sm font-semibold text-(--foreground) mb-3 ml-2;
 }
 
 .add-block-grid {

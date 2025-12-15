@@ -6,6 +6,7 @@ import { useState } from "react";
 import { createQueryClient } from "@/lib/query-client";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ToastProvider } from "@/components/ui/toast";
 
 /**
  * Global providers for the application
@@ -28,7 +29,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         disableTransitionOnChange
       >
         <AuthProvider>
-          {children}
+          <ToastProvider>{children}</ToastProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </AuthProvider>
       </ThemeProvider>

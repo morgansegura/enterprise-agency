@@ -1,61 +1,42 @@
 @reference "tailwindcss";
 
 .page-layout {
-  @apply relative;
+  @apply flex flex-col gap-6 p-6 h-full min-h-0;
 }
 
-.page-layout-inner {
-  @apply p-6;
+.page-layout-no-padding {
+  @apply p-0;
 }
 
-.page-layout-back {
-  @apply mb-4;
-}
-
-.page-layout-title-row {
-  @apply flex items-start justify-between;
-}
-
-.page-layout-title-content {
-  @apply flex flex-col;
-}
-
-.page-layout-title {
-  @apply text-2xl font-bold text-(--foreground);
-}
-
-.page-layout-description {
-  @apply text-sm text-(--muted-foreground) mt-1;
-}
-
-.page-layout-actions {
-  @apply flex items-center gap-2;
+.page-layout-header {
+  @apply shrink-0;
 }
 
 .page-layout-toolbar {
-  @apply flex items-center justify-between gap-4 mb-6;
+  @apply flex items-center justify-between gap-4 shrink-0;
 }
 
 .page-layout-content {
-  @apply relative;
+  @apply relative flex-1 min-h-0 overflow-y-auto pb-6;
 }
+
 /* Max width variants */
 .page-layout-content-sm {
-  @apply max-w-screen-sm mx-auto;
+  @apply max-w-screen-sm mx-auto w-full;
 }
 
 .page-layout-content-md {
-  @apply max-w-screen-md mx-auto;
+  @apply max-w-screen-md mx-auto w-full;
 }
 
 .page-layout-content-lg {
-  @apply max-w-screen-lg mx-auto;
+  @apply max-w-screen-lg mx-auto w-full;
 }
 
 .page-layout-content-xl {
-  @apply max-w-screen-xl mx-auto;
+  @apply max-w-screen-xl mx-auto w-full;
 }
 
 .page-layout-content-2xl {
-  @apply max-w-screen-2xl mx-auto;
+  @apply max-w-screen-2xl mx-auto w-full;
 }

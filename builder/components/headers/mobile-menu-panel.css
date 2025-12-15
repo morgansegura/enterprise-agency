@@ -1,0 +1,59 @@
+.mobile-menu-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+}
+
+.mobile-menu-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.mobile-menu-field > label {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-text-muted);
+}
+
+.mobile-menu-field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) 0;
+}
+
+.mobile-menu-field-row > label {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.mobile-menu-color-input {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.mobile-menu-color-picker {
+  width: var(--size-10);
+  height: var(--size-10);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.mobile-menu-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.mobile-menu-color-picker::-webkit-color-swatch {
+  border: none;
+  border-radius: var(--radius-sm);
+}

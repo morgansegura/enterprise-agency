@@ -1,0 +1,42 @@
+@reference "tailwindcss";
+
+.border-control {
+  @apply space-y-1.5;
+}
+
+.border-control-label {
+  @apply text-xs font-medium text-(--muted-foreground);
+}
+
+.border-control-row {
+  @apply flex items-center gap-2;
+}
+
+.border-control-width {
+  @apply relative flex items-center;
+}
+
+.border-control-width-input {
+  @apply w-16 pr-7 text-center;
+}
+
+.border-control-unit {
+  @apply absolute right-2 text-xs text-(--muted-foreground) pointer-events-none;
+}
+
+.border-control-style {
+  @apply flex-1;
+}
+
+.border-control-color {
+  @apply shrink-0;
+}
+
+/* Override color picker trigger width for compact display */
+.border-control-color .color-picker-trigger {
+  @apply w-auto px-2;
+}
+
+.border-control-color .color-picker-value {
+  @apply hidden;
+}

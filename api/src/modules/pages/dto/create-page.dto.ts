@@ -7,6 +7,7 @@ import {
   IsArray,
   ValidateNested,
   IsBoolean,
+  ValidateIf,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { SectionDto } from "./blocks/section.dto";
@@ -125,4 +126,14 @@ export class CreatePageDto {
   @IsOptional()
   @IsBoolean()
   isSystemPage?: boolean;
+
+  @IsOptional()
+  @ValidateIf((o) => o.headerId !== null)
+  @IsString()
+  headerId?: string | null;
+
+  @IsOptional()
+  @ValidateIf((o) => o.footerId !== null)
+  @IsString()
+  footerId?: string | null;
 }

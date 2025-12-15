@@ -1,0 +1,88 @@
+@reference "tailwindcss";
+
+.footer-library-dialog {
+  @apply max-w-2xl;
+}
+
+.footer-library-content {
+  @apply py-4;
+}
+
+.footer-library-grid {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.footer-library-item {
+  @apply relative flex flex-col;
+  @apply border border-(--border) rounded-lg overflow-hidden;
+  @apply bg-(--card) hover:border-(--primary)/50;
+  @apply cursor-pointer transition-all;
+}
+
+.footer-library-item.is-selected {
+  @apply border-(--primary) ring-2 ring-(--primary)/20;
+}
+
+.footer-library-preview {
+  @apply h-24 p-4;
+  @apply bg-(--muted)/50;
+  @apply flex items-center justify-center;
+}
+
+.footer-library-info {
+  @apply p-3;
+}
+
+.footer-library-name {
+  @apply flex items-center gap-1.5;
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.footer-library-layout {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.footer-library-check {
+  @apply absolute top-2 right-2;
+  @apply w-6 h-6 flex items-center justify-center;
+  @apply bg-(--primary) text-(--primary-foreground) rounded-full;
+}
+
+.footer-library-loading,
+.footer-library-empty {
+  @apply flex flex-col items-center justify-center gap-4 py-12;
+  @apply text-sm text-(--muted-foreground);
+}
+
+/* Preview Layouts */
+.footer-preview {
+  @apply w-full h-full flex items-center justify-center;
+}
+
+.footer-preview-block {
+  @apply h-2 bg-(--muted-foreground)/30 rounded;
+}
+
+.footer-preview-simple {
+  @apply w-full flex items-center justify-between;
+}
+
+.footer-preview-columns {
+  @apply w-full grid grid-cols-4 gap-2;
+}
+
+.footer-preview-col {
+  @apply h-8 bg-(--muted-foreground)/20 rounded;
+}
+
+.footer-preview-stacked {
+  @apply w-full flex flex-col items-center gap-1.5;
+}
+
+.footer-preview-centered {
+  @apply w-full flex flex-col items-center gap-1.5;
+}
+
+.footer-preview-minimal {
+  @apply w-full flex items-center justify-center;
+}

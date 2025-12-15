@@ -16,7 +16,8 @@
 }
 
 .sortable-section:hover .section-content,
-.sortable-section.is-settings-open .section-content {
+.sortable-section.is-settings-open .section-content,
+.sortable-section.is-popover-open .section-content {
   @apply border-(--primary);
 }
 
@@ -37,12 +38,29 @@
 }
 
 .sortable-section:hover .section-drag-handle,
-.sortable-section.is-settings-open .section-drag-handle {
+.sortable-section.is-settings-open .section-drag-handle,
+.sortable-section.is-popover-open .section-drag-handle {
   @apply opacity-100;
 }
 
 /* Keep layers button visible when a block is selected */
 .sortable-section.has-selected-block .section-drag-handle {
+  @apply opacity-100;
+}
+
+/* Actions handle - right side */
+.section-actions-handle {
+  @apply absolute right-2 top-2 z-10;
+  @apply p-2 rounded-lg;
+  @apply bg-(--card) border border-(--border) shadow-sm;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply cursor-pointer;
+  @apply opacity-0 transition-opacity;
+}
+
+.sortable-section:hover .section-actions-handle,
+.sortable-section.is-settings-open .section-actions-handle,
+.sortable-section.is-popover-open .section-actions-handle {
   @apply opacity-100;
 }
 
@@ -53,7 +71,8 @@
 }
 
 .sortable-section:hover .section-add-block,
-.sortable-section.is-settings-open .section-add-block {
+.sortable-section.is-settings-open .section-add-block,
+.sortable-section.is-popover-open .section-add-block {
   @apply opacity-100;
 }
 
@@ -81,7 +100,9 @@
 .sortable-section:hover .section-add-above,
 .sortable-section:hover .section-add-below,
 .sortable-section.is-settings-open .section-add-above,
-.sortable-section.is-settings-open .section-add-below {
+.sortable-section.is-settings-open .section-add-below,
+.sortable-section.is-popover-open .section-add-above,
+.sortable-section.is-popover-open .section-add-below {
   @apply opacity-100 pointer-events-auto;
 }
 

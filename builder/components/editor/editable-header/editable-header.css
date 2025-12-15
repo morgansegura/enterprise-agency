@@ -1,0 +1,163 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+   Editable Header
+   ============================================================================= */
+
+.editable-header {
+  @apply relative;
+}
+
+/* Locked state - subtle indicator */
+.editable-header.is-locked .editable-header-locked {
+  @apply opacity-0 transition-opacity duration-200;
+}
+
+.editable-header.is-locked:hover .editable-header-locked {
+  @apply opacity-100;
+}
+
+/* Unlocked state - show controls */
+.editable-header.is-unlocked {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.editable-header.is-editing {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+/* =============================================================================
+   Locked Indicator
+   ============================================================================= */
+
+.editable-header-locked {
+  @apply absolute top-2 left-2 z-10;
+  @apply flex items-center gap-2 px-2 py-1;
+  @apply bg-(--background)/95 backdrop-blur-sm rounded-md shadow-sm;
+  @apply text-xs font-medium text-(--muted-foreground);
+  @apply border border-(--border);
+}
+
+.editable-header-locked span {
+  @apply text-(--foreground);
+}
+
+.editable-header-edit-btn {
+  @apply h-6 px-2 text-xs gap-1;
+}
+
+.editable-header-change-btn {
+  @apply h-6 w-6 p-0;
+}
+
+/* =============================================================================
+   Unlocked Controls
+   ============================================================================= */
+
+.editable-header-controls {
+  @apply absolute top-2 right-2 z-10;
+  @apply flex items-center gap-1 px-2 py-1.5;
+  @apply bg-(--background)/95 backdrop-blur-sm rounded-md shadow-lg;
+  @apply border border-(--border);
+}
+
+.editable-header-panel-btn {
+  @apply h-7 px-2 text-xs gap-1.5 font-medium;
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+}
+
+/* =============================================================================
+   Header Content
+   ============================================================================= */
+
+.editable-header-content {
+  @apply flex items-center min-h-16;
+}
+
+.editable-header-container {
+  @apply flex items-center justify-between w-full mx-auto px-4;
+}
+
+.editable-header-container.header-width-full {
+  @apply max-w-none;
+}
+
+.editable-header-container.header-width-container {
+  @apply max-w-7xl;
+}
+
+.editable-header-container.header-width-narrow {
+  @apply max-w-5xl;
+}
+
+/* =============================================================================
+   Header Zones
+   ============================================================================= */
+
+.editable-header-zone {
+  @apply flex items-center gap-4;
+}
+
+.editable-header-zone.zone-left {
+  @apply justify-start;
+}
+
+.editable-header-zone.zone-center {
+  @apply flex-1 justify-center;
+}
+
+.editable-header-zone.zone-right {
+  @apply justify-end;
+}
+
+.editable-header-zone-placeholder {
+  @apply text-xs text-(--muted-foreground) opacity-50;
+}
+
+/* =============================================================================
+   Header Elements
+   ============================================================================= */
+
+.header-logo {
+  @apply flex items-center;
+}
+
+.header-logo-image {
+  @apply h-8 w-auto;
+}
+
+.header-button {
+  @apply px-4 py-2 text-sm font-medium rounded-md transition-colors;
+}
+
+.header-button-primary {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+
+.header-button-secondary {
+  @apply bg-(--secondary) text-(--secondary-foreground);
+}
+
+.header-button-outline {
+  @apply border border-(--border) bg-transparent;
+}
+
+.header-menu-placeholder {
+  @apply text-sm text-(--muted-foreground);
+}
+
+/* =============================================================================
+   Empty State
+   ============================================================================= */
+
+.editable-header-empty {
+  @apply min-h-16 flex items-center justify-center;
+  @apply border-2 border-dashed border-(--border) rounded-lg;
+  @apply bg-(--muted)/30;
+}
+
+.editable-header-empty-content {
+  @apply flex items-center gap-4 text-sm text-(--muted-foreground);
+}

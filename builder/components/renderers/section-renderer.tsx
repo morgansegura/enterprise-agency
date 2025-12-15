@@ -59,7 +59,14 @@ export function SectionRenderer({
     blocks = [],
   } = section;
 
-  const sectionBackground = backgroundClasses[background] || "";
+  // Handle background - can be string or SectionBackground object
+  const bgValue =
+    typeof background === "string"
+      ? background
+      : background?.type === "color"
+        ? background.color
+        : "none";
+  const sectionBackground = backgroundClasses[bgValue || "none"] || "";
   const sectionSpacing = spacingClasses[spacing] || spacingClasses.md;
   const sectionWidth = widthClasses[width] || widthClasses.full;
   const sectionAlign = alignClasses[align] || "";

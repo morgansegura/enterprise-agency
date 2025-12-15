@@ -1,0 +1,179 @@
+@reference "tailwindcss";
+
+.header-zone-editor {
+  @apply flex flex-col;
+}
+
+.header-zone-editor-panels {
+  @apply grid grid-cols-3 gap-4;
+}
+
+@media (max-width: 1024px) {
+  .header-zone-editor-panels {
+    @apply grid-cols-1;
+  }
+}
+
+/* Zone Panel */
+.zone-panel {
+  @apply flex flex-col border border-(--border) rounded-md overflow-hidden;
+}
+
+.zone-panel-header {
+  @apply flex items-center justify-between p-3;
+  @apply bg-(--muted)/50 border-b border-(--border);
+}
+
+.zone-panel-header h4 {
+  @apply text-sm font-medium m-0;
+}
+
+.zone-panel-content {
+  @apply p-3 min-h-[120px];
+}
+
+.zone-panel-empty {
+  @apply flex items-center justify-center h-full min-h-[80px];
+  @apply text-sm text-(--muted-foreground);
+}
+
+.zone-panel-blocks {
+  @apply flex flex-col gap-2;
+}
+
+/* Zone Block */
+.zone-block {
+  @apply border border-(--border) rounded-md overflow-hidden;
+}
+
+.zone-block-header {
+  @apply flex items-center justify-between px-3 py-2 bg-(--background);
+}
+
+.zone-block-info {
+  @apply flex items-center gap-2 text-sm font-medium;
+}
+
+.zone-block-info svg {
+  @apply size-4 text-(--muted-foreground);
+}
+
+.zone-block-actions {
+  @apply flex items-center gap-1;
+}
+
+.zone-block-actions button {
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+}
+
+.zone-block-actions svg {
+  @apply size-4;
+}
+
+/* Block Config Popover */
+.zone-block-popover {
+  @apply w-[280px];
+}
+
+.zone-block-popover-header {
+  @apply mb-3;
+}
+
+.zone-block-popover-header h4 {
+  @apply text-sm font-medium m-0;
+}
+
+.zone-block-config {
+  @apply flex flex-col gap-3;
+}
+
+.zone-block-field {
+  @apply flex flex-col gap-1;
+}
+
+.zone-block-field label {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.zone-block-svg-input {
+  @apply font-mono text-xs min-h-[80px] resize-y;
+}
+
+.zone-block-svg-preview {
+  @apply flex items-center justify-center p-3 mt-2;
+  @apply bg-(--muted)/50 border border-(--border) rounded-md;
+}
+
+.zone-block-svg-preview svg {
+  @apply max-w-full h-8 w-auto;
+  fill: currentColor;
+}
+
+/* Add Block Popover */
+.zone-add-popover {
+  @apply w-[200px] p-2;
+}
+
+.zone-add-grid {
+  @apply grid grid-cols-2 gap-1;
+}
+
+.zone-add-option {
+  @apply flex flex-col items-center gap-1 p-3;
+  @apply bg-transparent border border-transparent rounded-md;
+  @apply cursor-pointer transition-all duration-150;
+}
+
+.zone-add-option:hover {
+  @apply bg-(--muted)/50 border-(--border);
+}
+
+.zone-add-option svg {
+  @apply size-5 text-(--muted-foreground);
+}
+
+.zone-add-option span {
+  @apply text-xs text-(--foreground);
+}
+
+/* Header Behavior (used in new header page) */
+.header-behavior-icon {
+  @apply size-4 shrink-0;
+}
+
+.header-behavior-option {
+  @apply flex items-start gap-3;
+}
+
+.header-behavior-option-text {
+  @apply flex flex-col gap-0.5;
+}
+
+.header-behavior-option-label {
+  @apply font-medium;
+}
+
+.header-behavior-option-description {
+  @apply text-xs text-(--muted-foreground);
+}
+
+/* New Header Page */
+.new-header-form {
+  @apply flex flex-col gap-4 max-w-[600px];
+}
+
+.new-header-form-content {
+  @apply flex flex-col gap-4;
+}
+
+.new-header-default-field {
+  @apply flex items-center justify-between p-4 bg-(--muted)/50 rounded-md;
+}
+
+.new-header-default-field-content {
+  @apply flex flex-col gap-1;
+}
+
+.new-header-actions {
+  @apply flex gap-3;
+}
