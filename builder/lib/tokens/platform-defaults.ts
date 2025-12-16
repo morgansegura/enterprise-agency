@@ -80,6 +80,38 @@ export const platformDefaults: DesignTokens = {
     },
   },
 
+  // Font Configuration
+  fonts: {
+    definitions: [
+      {
+        id: "primary",
+        family: "Inter",
+        weights: [400, 500, 600, 700],
+        category: "sans-serif",
+      },
+      {
+        id: "secondary",
+        family: "Inter",
+        weights: [400, 500, 600],
+        category: "sans-serif",
+      },
+      {
+        id: "accent",
+        family: "Inter",
+        weights: [500, 600],
+        category: "sans-serif",
+      },
+    ],
+    roles: {
+      heading: "primary",
+      body: "secondary",
+      button: "accent",
+      link: "accent",
+      caption: "secondary",
+      navigation: "primary",
+    },
+  },
+
   typography: {
     fontFamily: {
       sans: [

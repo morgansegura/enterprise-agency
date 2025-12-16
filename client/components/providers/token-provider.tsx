@@ -8,6 +8,12 @@ import {
   type DesignTokens,
 } from "@/lib/tokens/design-system";
 import { logger } from "@/lib/logger";
+import {
+  buildGoogleFontsUrl,
+  generateFontCSS,
+  defaultFontConfig,
+  type FontConfig,
+} from "@/lib/fonts";
 
 interface TokenProviderProps {
   tenantSlug?: string;
@@ -53,7 +59,8 @@ interface TokenProviderProps {
  * ```
  */
 export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
-  let tenantTokens: TenantTokens & Partial<DesignTokens> = {};
+  let tenantTokens: TenantTokens &
+    Partial<DesignTokens> & { fonts?: FontConfig } = {};
 
   try {
     // Fetch tenant token overrides from API
@@ -62,7 +69,8 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
       ? await createPublicApiClientForTenant(tenantSlug)
       : publicApi;
     const apiTokens = await api.getTokens();
-    tenantTokens = apiTokens as TenantTokens & Partial<DesignTokens>;
+    tenantTokens = apiTokens as TenantTokens &
+      Partial<DesignTokens> & { fonts?: FontConfig };
   } catch (error) {
     // Graceful fallback: use platform defaults only
     logger.error(
@@ -79,6 +87,7 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
     borderRadius,
     shadows,
     transitions,
+    fonts,
     ...legacyTokens
   } = tenantTokens;
 
@@ -97,16 +106,43 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   };
   const newCSS = generateTenantCSS(newDesignTokens);
 
-  // Combine both CSS outputs
-  const combinedCSS = `${newCSS}\n\n${legacyCSS}`;
+  // Handle font configuration
+  const fontConfig = fonts || defaultFontConfig;
+  const googleFontsUrl = buildGoogleFontsUrl(fontConfig.definitions);
+  const fontCSS = generateFontCSS(fontConfig);
 
-  // Inject CSS into <head> via <style> tag
-  // This ensures tokens are available before any component renders
+  // Combine all CSS outputs
+  const combinedCSS = `${newCSS}\n\n/* Font Variables */\n:root {\n  ${fontCSS}\n}\n\n${legacyCSS}`;
+
+  // Inject CSS and Google Fonts into <head>
+  // This ensures tokens and fonts are available before any component renders
   return (
-    <style
-      id="design-tokens"
-      dangerouslySetInnerHTML={{ __html: combinedCSS }}
-      suppressHydrationWarning
-    />
+    <>
+      {/* Google Fonts preconnect for performance */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
+
+      {/* Google Fonts stylesheet */}
+      {googleFontsUrl && (
+        <link
+          rel="stylesheet"
+          href={googleFontsUrl}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore - fetchpriority is valid but not in types
+          fetchpriority="high"
+        />
+      )}
+
+      {/* Design tokens CSS */}
+      <style
+        id="design-tokens"
+        dangerouslySetInnerHTML={{ __html: combinedCSS }}
+        suppressHydrationWarning
+      />
+    </>
   );
 }

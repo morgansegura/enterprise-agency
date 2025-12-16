@@ -63,6 +63,20 @@ import {
   getBorderWidthValue,
   getShadowValue,
 } from "@/lib/tokens/design-system";
+import {
+  googleFonts,
+  findFont,
+  buildGoogleFontsUrl,
+  buildFontFamily,
+  type GoogleFont,
+} from "@/lib/fonts/google-fonts";
+import type {
+  FontDefinition,
+  FontRole,
+  FontRoles,
+  FontConfig,
+} from "@/lib/tokens/types";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type SettingsTab =
   | "site"
@@ -141,6 +155,8 @@ interface TypographySettings {
   fontFamily: { base: string; heading: string };
   fontSize: { base: string; heading: string };
   borderRadius: string;
+  // New font system
+  fontConfig: FontConfig;
 }
 
 interface ButtonSizeSettings {
@@ -248,10 +264,42 @@ const defaultColors: SemanticColors = {
   destructive: "#dc2626",
 };
 
+const defaultFontConfig: FontConfig = {
+  definitions: [
+    {
+      id: "primary",
+      family: "Inter",
+      weights: [400, 500, 600, 700],
+      category: "sans-serif",
+    },
+    {
+      id: "secondary",
+      family: "Open Sans",
+      weights: [400, 500, 600],
+      category: "sans-serif",
+    },
+    {
+      id: "accent",
+      family: "Roboto Condensed",
+      weights: [400, 700],
+      category: "sans-serif",
+    },
+  ],
+  roles: {
+    heading: "primary",
+    body: "secondary",
+    button: "accent",
+    link: "accent",
+    caption: "secondary",
+    navigation: "primary",
+  },
+};
+
 const defaultTypography: TypographySettings = {
   fontFamily: { base: "Open_Sans", heading: "Roboto_Slab" },
   fontSize: { base: "1rem", heading: "2rem" },
   borderRadius: "0.5rem",
+  fontConfig: defaultFontConfig,
 };
 
 const defaultButtons: ButtonSettings = {
@@ -455,6 +503,7 @@ export function GlobalSettingsDrawer({
           borderRadius:
             (tokens.borderRadius as { base?: string })?.base ||
             defaultTypography.borderRadius,
+          fontConfig: tokens.fonts || defaultFontConfig,
         },
         buttons: {
           sizes: {
@@ -623,6 +672,7 @@ export function GlobalSettingsDrawer({
         fontFamily: localTokens.typography.fontFamily,
         fontSize: localTokens.typography.fontSize,
       },
+      fonts: localTokens.typography.fontConfig,
       borderRadius: {
         none: "0",
         sm: "0.125rem",
@@ -951,47 +1001,6 @@ function ColorSettings({ colors, onChange }: ColorSettingsProps) {
 // TypographySettings panel
 // ============================================================================
 
-const googleFonts = [
-  { value: "Inter", label: "Inter", category: "sans" },
-  { value: "Open_Sans", label: "Open Sans", category: "sans" },
-  { value: "Roboto", label: "Roboto", category: "sans" },
-  { value: "Lato", label: "Lato", category: "sans" },
-  { value: "Poppins", label: "Poppins", category: "sans" },
-  { value: "Montserrat", label: "Montserrat", category: "sans" },
-  { value: "Source_Sans_3", label: "Source Sans 3", category: "sans" },
-  { value: "Nunito", label: "Nunito", category: "sans" },
-  { value: "Raleway", label: "Raleway", category: "sans" },
-  { value: "Work_Sans", label: "Work Sans", category: "sans" },
-  { value: "DM_Sans", label: "DM Sans", category: "sans" },
-  { value: "Plus_Jakarta_Sans", label: "Plus Jakarta Sans", category: "sans" },
-  { value: "Merriweather", label: "Merriweather", category: "serif" },
-  { value: "Playfair_Display", label: "Playfair Display", category: "serif" },
-  { value: "Lora", label: "Lora", category: "serif" },
-  { value: "PT_Serif", label: "PT Serif", category: "serif" },
-  { value: "Libre_Baskerville", label: "Libre Baskerville", category: "serif" },
-  { value: "Roboto_Slab", label: "Roboto Slab", category: "serif" },
-  { value: "Source_Serif_4", label: "Source Serif 4", category: "serif" },
-  { value: "Bitter", label: "Bitter", category: "serif" },
-  { value: "Crimson_Text", label: "Crimson Text", category: "serif" },
-  { value: "EB_Garamond", label: "EB Garamond", category: "serif" },
-];
-
-const fontSizeOptions = [
-  { value: "0.75rem", label: "12px (xs)" },
-  { value: "0.875rem", label: "14px (sm)" },
-  { value: "1rem", label: "16px (base)" },
-  { value: "1.125rem", label: "18px (lg)" },
-  { value: "1.25rem", label: "20px (xl)" },
-];
-
-const headingSizeOptions = [
-  { value: "1.5rem", label: "24px" },
-  { value: "1.875rem", label: "30px" },
-  { value: "2rem", label: "32px" },
-  { value: "2.25rem", label: "36px" },
-  { value: "3rem", label: "48px" },
-];
-
 const radiusOptions = [
   { value: "0", label: "None (Square)" },
   { value: "0.125rem", label: "Extra Small" },
@@ -1002,6 +1011,29 @@ const radiusOptions = [
   { value: "1rem", label: "2XL" },
   { value: "9999px", label: "Full (Pill)" },
 ];
+
+// Font slot labels
+const fontSlotLabels: Record<
+  FontDefinition["id"],
+  { name: string; description: string }
+> = {
+  primary: { name: "Primary Font", description: "Main heading font" },
+  secondary: { name: "Secondary Font", description: "Body text font" },
+  accent: { name: "Accent Font", description: "Buttons & highlights" },
+};
+
+// Font role labels
+const fontRoleLabels: Record<
+  keyof FontRoles,
+  { name: string; description: string }
+> = {
+  heading: { name: "Headings", description: "H1-H6 elements" },
+  body: { name: "Body Text", description: "Paragraphs & content" },
+  button: { name: "Buttons", description: "Button labels" },
+  link: { name: "Links", description: "Anchor text" },
+  caption: { name: "Captions", description: "Small text, labels" },
+  navigation: { name: "Navigation", description: "Menu items" },
+};
 
 interface TypographySettingsPanelProps {
   settings: TypographySettings;
@@ -1015,129 +1047,280 @@ function TypographySettingsPanel({
   settings,
   onChange,
 }: TypographySettingsPanelProps) {
+  const { fontConfig } = settings;
+
+  // Helper to update a font definition
+  const updateFontDefinition = (
+    id: FontDefinition["id"],
+    updates: Partial<FontDefinition>,
+  ) => {
+    const newDefinitions = fontConfig.definitions.map((def) =>
+      def.id === id ? { ...def, ...updates } : def,
+    );
+    onChange("fontConfig", { ...fontConfig, definitions: newDefinitions });
+  };
+
+  // Helper to update font roles
+  const updateFontRole = (role: keyof FontRoles, value: FontRole) => {
+    onChange("fontConfig", {
+      ...fontConfig,
+      roles: { ...fontConfig.roles, [role]: value },
+    });
+  };
+
+  // Helper to toggle a weight for a font definition
+  const toggleWeight = (id: FontDefinition["id"], weight: number) => {
+    const def = fontConfig.definitions.find((d) => d.id === id);
+    if (!def) return;
+
+    const hasWeight = def.weights.includes(weight);
+    const newWeights = hasWeight
+      ? def.weights.filter((w) => w !== weight)
+      : [...def.weights, weight].sort((a, b) => a - b);
+
+    // Ensure at least one weight is selected
+    if (newWeights.length === 0) return;
+
+    updateFontDefinition(id, { weights: newWeights });
+  };
+
+  // Get a font definition by ID
+  const getFontDefinition = (id: FontDefinition["id"]) =>
+    fontConfig.definitions.find((d) => d.id === id);
+
+  // Render a font slot selector
+  const renderFontSlot = (id: FontDefinition["id"]) => {
+    const def = getFontDefinition(id);
+    if (!def) return null;
+
+    const label = fontSlotLabels[id];
+    const selectedFont = findFont(def.family);
+    const availableWeights = selectedFont?.weights || [400, 700];
+
+    return (
+      <div key={id} className="space-y-3 p-4 rounded-lg border bg-card">
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="font-medium text-sm">{label.name}</h4>
+            <p className="text-xs text-muted-foreground">{label.description}</p>
+          </div>
+        </div>
+
+        <SettingsField>
+          <Label className="text-xs">Font Family</Label>
+          <Select
+            value={def.family}
+            onValueChange={(family) => {
+              const font = findFont(family);
+              updateFontDefinition(id, {
+                family,
+                category: font?.category || "sans-serif",
+                // Reset to default weights when changing font
+                weights: font?.weights.filter((w) =>
+                  [400, 700].includes(w),
+                ) || [400],
+              });
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="max-h-[300px]">
+              {/* Popular fonts */}
+              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                Popular
+              </div>
+              {googleFonts
+                .filter((f) => f.popular)
+                .map((font) => (
+                  <SelectItem key={font.family} value={font.family}>
+                    <span style={{ fontFamily: font.family }}>
+                      {font.family}
+                    </span>
+                  </SelectItem>
+                ))}
+
+              {/* Sans-serif */}
+              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                Sans-serif
+              </div>
+              {googleFonts
+                .filter((f) => f.category === "sans-serif" && !f.popular)
+                .map((font) => (
+                  <SelectItem key={font.family} value={font.family}>
+                    {font.family}
+                  </SelectItem>
+                ))}
+
+              {/* Serif */}
+              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                Serif
+              </div>
+              {googleFonts
+                .filter((f) => f.category === "serif")
+                .map((font) => (
+                  <SelectItem key={font.family} value={font.family}>
+                    {font.family}
+                  </SelectItem>
+                ))}
+
+              {/* Display */}
+              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                Display
+              </div>
+              {googleFonts
+                .filter((f) => f.category === "display")
+                .map((font) => (
+                  <SelectItem key={font.family} value={font.family}>
+                    {font.family}
+                  </SelectItem>
+                ))}
+
+              {/* Monospace */}
+              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                Monospace
+              </div>
+              {googleFonts
+                .filter((f) => f.category === "monospace")
+                .map((font) => (
+                  <SelectItem key={font.family} value={font.family}>
+                    {font.family}
+                  </SelectItem>
+                ))}
+
+              {/* Handwriting */}
+              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                Handwriting
+              </div>
+              {googleFonts
+                .filter((f) => f.category === "handwriting")
+                .map((font) => (
+                  <SelectItem key={font.family} value={font.family}>
+                    {font.family}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+        </SettingsField>
+
+        {/* Weight selection */}
+        <div className="space-y-2">
+          <Label className="text-xs">Font Weights</Label>
+          <div className="flex flex-wrap gap-2">
+            {availableWeights.map((weight) => (
+              <label
+                key={weight}
+                className={cn(
+                  "flex items-center gap-1.5 px-2 py-1 rounded border text-xs cursor-pointer transition-colors",
+                  def.weights.includes(weight)
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background hover:bg-muted",
+                )}
+              >
+                <Checkbox
+                  checked={def.weights.includes(weight)}
+                  onCheckedChange={() => toggleWeight(id, weight)}
+                  className="sr-only"
+                />
+                {weight}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Preview */}
+        <div className="pt-2 border-t">
+          <p
+            className="text-sm text-muted-foreground"
+            style={{
+              fontFamily: `'${def.family}', ${def.category || "sans-serif"}`,
+              fontWeight:
+                def.weights[Math.floor(def.weights.length / 2)] || 400,
+            }}
+          >
+            The quick brown fox jumps over the lazy dog
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <SettingsSection
-      title="Typography & Style"
-      description="Configure fonts, sizes, and border radius for your website."
+      title="Typography & Fonts"
+      description="Configure your site's font system with up to 3 fonts and assign them to different UI elements."
     >
-      <SettingsGridBlock title="Fonts">
-        <SettingsField>
-          <Label>Base Font (Body)</Label>
-          <Select
-            value={settings.fontFamily.base}
-            onValueChange={(v) =>
-              onChange("fontFamily", { ...settings.fontFamily, base: v })
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                Sans-serif
-              </div>
-              {googleFonts
-                .filter((f) => f.category === "sans")
-                .map((font) => (
-                  <SelectItem key={font.value} value={font.value}>
-                    {font.label}
-                  </SelectItem>
-                ))}
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
-                Serif
-              </div>
-              {googleFonts
-                .filter((f) => f.category === "serif")
-                .map((font) => (
-                  <SelectItem key={font.value} value={font.value}>
-                    {font.label}
-                  </SelectItem>
-                ))}
-            </SelectContent>
-          </Select>
-        </SettingsField>
-
-        <SettingsField>
-          <Label>Heading Font</Label>
-          <Select
-            value={settings.fontFamily.heading}
-            onValueChange={(v) =>
-              onChange("fontFamily", { ...settings.fontFamily, heading: v })
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                Sans-serif
-              </div>
-              {googleFonts
-                .filter((f) => f.category === "sans")
-                .map((font) => (
-                  <SelectItem key={font.value} value={font.value}>
-                    {font.label}
-                  </SelectItem>
-                ))}
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
-                Serif
-              </div>
-              {googleFonts
-                .filter((f) => f.category === "serif")
-                .map((font) => (
-                  <SelectItem key={font.value} value={font.value}>
-                    {font.label}
-                  </SelectItem>
-                ))}
-            </SelectContent>
-          </Select>
-        </SettingsField>
+      {/* Font Definitions */}
+      <SettingsGridBlock title="Font Definitions">
+        <div className="col-span-2 space-y-4">
+          <p className="text-sm text-muted-foreground mb-4">
+            Define up to 3 fonts that can be used across your site. Each font
+            can be assigned to different UI elements.
+          </p>
+          {(["primary", "secondary", "accent"] as const).map((id) =>
+            renderFontSlot(id),
+          )}
+        </div>
       </SettingsGridBlock>
 
-      <SettingsGridBlock title="Font Sizes">
-        <SettingsField>
-          <Label>Base Font Size</Label>
-          <Select
-            value={settings.fontSize.base}
-            onValueChange={(v) =>
-              onChange("fontSize", { ...settings.fontSize, base: v })
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {fontSizeOptions.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>
-                  {opt.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </SettingsField>
-
-        <SettingsField>
-          <Label>Heading Base Size</Label>
-          <Select
-            value={settings.fontSize.heading}
-            onValueChange={(v) =>
-              onChange("fontSize", { ...settings.fontSize, heading: v })
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {headingSizeOptions.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>
-                  {opt.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </SettingsField>
+      {/* Font Roles */}
+      <SettingsGridBlock title="Font Assignments">
+        <div className="col-span-2 space-y-4">
+          <p className="text-sm text-muted-foreground mb-4">
+            Assign fonts to different UI elements. Components will use these
+            defaults unless overridden.
+          </p>
+          <div className="grid gap-3">
+            {(Object.keys(fontRoleLabels) as (keyof FontRoles)[]).map(
+              (role) => {
+                const label = fontRoleLabels[role];
+                return (
+                  <div
+                    key={role}
+                    className="flex items-center justify-between p-3 rounded-lg border bg-card"
+                  >
+                    <div>
+                      <span className="font-medium text-sm">{label.name}</span>
+                      <span className="text-xs text-muted-foreground ml-2">
+                        {label.description}
+                      </span>
+                    </div>
+                    <Select
+                      value={fontConfig.roles[role]}
+                      onValueChange={(v) => updateFontRole(role, v as FontRole)}
+                    >
+                      <SelectTrigger className="w-[140px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="primary">
+                          Primary (
+                          {getFontDefinition("primary")?.family || "Inter"})
+                        </SelectItem>
+                        <SelectItem value="secondary">
+                          Secondary (
+                          {getFontDefinition("secondary")?.family ||
+                            "Open Sans"}
+                          )
+                        </SelectItem>
+                        <SelectItem value="accent">
+                          Accent (
+                          {getFontDefinition("accent")?.family ||
+                            "Roboto Condensed"}
+                          )
+                        </SelectItem>
+                        <SelectItem value="system">System Default</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                );
+              },
+            )}
+          </div>
+        </div>
       </SettingsGridBlock>
 
+      {/* Global Border Radius (kept from original) */}
       <SettingsGridBlock title="Global Border Radius">
         <SettingsField>
           <Label>Default Border Radius</Label>

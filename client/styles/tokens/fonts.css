@@ -2,40 +2,50 @@
  * Font Family Design Tokens
  * Typography font stack definitions
  *
- * Override these per client for custom font families
+ * ===== DYNAMIC FONT LOADING =====
+ * Font variables are dynamically injected by the TokenProvider component,
+ * which loads tenant-specific Google Fonts from the builder settings.
+ *
+ * The following variables are set dynamically:
+ * - --font-primary: First/heading font family (e.g., "Inter", "Roboto Condensed")
+ * - --font-secondary: Second/body font family (e.g., "Open Sans")
+ * - --font-accent: Third/accent font family (e.g., "Roboto Condensed")
+ * - --font-heading: Maps to a font role (primary/secondary/accent/system)
+ * - --font-body: Maps to a font role (primary/secondary/accent/system)
+ * - --font-button: Maps to a font role (primary/secondary/accent/system)
+ * - --font-link: Maps to a font role (primary/secondary/accent/system)
+ * - --font-caption: Maps to a font role (primary/secondary/accent/system)
+ * - --font-navigation: Maps to a font role (primary/secondary/accent/system)
+ *
+ * The defaults below are fallbacks if the API is unavailable.
  */
 
 :root {
-  /* ===== FONT FAMILIES ===== */
-  /* Heading font - used for h1-h6 elements */
-  --font-heading: var(--font-geist-sans);
+  /* ===== FALLBACK FONT FAMILIES ===== */
+  /* These are used if TokenProvider doesn't inject values */
 
-  /* Body font - used for paragraphs and general text */
-  --font-body: var(--font-geist-sans);
+  /* Primary font - typically used for headings */
+  --font-primary: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Secondary font - typically used for body text */
+  --font-secondary: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Accent font - typically used for buttons and highlights */
+  --font-accent: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* System font fallback */
+  --font-system: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* ===== ROLE-BASED FONT FAMILIES ===== */
+  /* These map to the font definitions above */
+  /* TokenProvider overrides these with tenant-specific assignments */
+  --font-heading: var(--font-primary);
+  --font-body: var(--font-secondary);
+  --font-button: var(--font-accent);
+  --font-link: var(--font-accent);
+  --font-caption: var(--font-secondary);
+  --font-navigation: var(--font-primary);
 
   /* Monospace font - used for code blocks */
-  --font-mono: var(--font-geist-mono);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-
-/* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
-/*
-  Example 1: Serif headings with sans-serif body
-  --font-heading: var(--font-serif);
-  --font-body: var(--font-sans);
-
-  Example 2: Custom brand fonts
-  --font-heading: "Helvetica Neue", sans-serif;
-  --font-body: "Georgia", serif;
-
-  Example 3: System font stack (faster loading)
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-
-  Example 4: Same font everywhere (consistency)
-  --font-heading: var(--font-geist-sans);
-  --font-body: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-
-  Example 5: Custom Google Fonts
-  --font-heading: "Playfair Display", serif;
-  --font-body: "Inter", sans-serif;
-*/
