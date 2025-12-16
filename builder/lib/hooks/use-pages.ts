@@ -92,6 +92,11 @@ export interface Section {
   paddingTop?: string;
   paddingBottom?: string;
   spacing?: string; // legacy - maps to paddingY
+  // Border settings
+  borderTop?: "none" | "thin" | "medium" | "thick";
+  borderBottom?: "none" | "thin" | "medium" | "thick";
+  // Shadow
+  shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
   // Content alignment (legacy)
   width?: string;
   align?: string;

@@ -42,6 +42,7 @@ const paddingTopClasses: Record<string, string> = {
   lg: "pt-12",
   xl: "pt-16",
   "2xl": "pt-24",
+  "3xl": "pt-32",
 };
 
 const paddingBottomClasses: Record<string, string> = {
@@ -52,6 +53,23 @@ const paddingBottomClasses: Record<string, string> = {
   lg: "pb-12",
   xl: "pb-16",
   "2xl": "pb-24",
+  "3xl": "pb-32",
+};
+
+const sectionBorderClasses: Record<string, string> = {
+  none: "",
+  thin: "border-[1px] border-gray-200",
+  medium: "border-[2px] border-gray-200",
+  thick: "border-[4px] border-gray-200",
+};
+
+const sectionShadowClasses: Record<string, string> = {
+  none: "",
+  sm: "shadow-sm",
+  md: "shadow-md",
+  lg: "shadow-lg",
+  xl: "shadow-xl",
+  inner: "shadow-inner",
 };
 
 const widthClasses: Record<string, string> = {
@@ -240,6 +258,17 @@ export function SortableSection({
     paddingBottomClasses[effectivePaddingBottom] || paddingBottomClasses.md;
   const sectionAlign = alignClasses[section.align || "left"] || "";
 
+  // Get section border and shadow classes
+  const sectionBorderTop =
+    section.borderTop && section.borderTop !== "none"
+      ? `border-t-[${section.borderTop === "thin" ? "1px" : section.borderTop === "medium" ? "2px" : "4px"}] border-t-gray-200`
+      : "";
+  const sectionBorderBottom =
+    section.borderBottom && section.borderBottom !== "none"
+      ? `border-b-[${section.borderBottom === "thin" ? "1px" : section.borderBottom === "medium" ? "2px" : "4px"}] border-b-gray-200`
+      : "";
+  const sectionShadow = sectionShadowClasses[section.shadow || "none"] || "";
+
   // Get background styles
   const { className: bgClassName, style: bgStyle } = getBackgroundStyles(
     section.background,
@@ -346,6 +375,9 @@ export function SortableSection({
         // Section wrapper styles
         sectionPaddingTop,
         sectionPaddingBottom,
+        sectionBorderTop,
+        sectionBorderBottom,
+        sectionShadow,
         bgClassName,
       )}
     >

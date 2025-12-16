@@ -35,15 +35,21 @@ type SectionProps = {
   /** Vertical spacing (padding top/bottom) - used when paddingTop/Bottom not set */
   spacing?: Spacing;
   /** Individual padding top */
-  paddingTop?: Spacing;
+  paddingTop?: Spacing | "3xl";
   /** Individual padding bottom */
-  paddingBottom?: Spacing;
+  paddingBottom?: Spacing | "3xl";
   /** Background style */
   background?: BackgroundVariant;
   /** Max width constraint */
   width?: Width | "container";
   /** Content alignment */
   align?: Exclude<TextAlign, "justify">;
+  /** Border top */
+  borderTop?: "none" | "thin" | "medium" | "thick";
+  /** Border bottom */
+  borderBottom?: "none" | "thin" | "medium" | "thick";
+  /** Section shadow */
+  shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
   /** Container settings */
   container?: ContainerSettings;
   /** Inline styles (for custom backgrounds) */
@@ -54,7 +60,7 @@ type SectionProps = {
 /**
  * Map spacing values to Tailwind classes
  */
-const spacingClasses: Record<Spacing, { top: string; bottom: string }> = {
+const spacingClasses: Record<string, { top: string; bottom: string }> = {
   none: { top: "pt-0", bottom: "pb-0" },
   xs: { top: "pt-2", bottom: "pb-2" },
   sm: { top: "pt-4", bottom: "pb-4" },
@@ -62,6 +68,36 @@ const spacingClasses: Record<Spacing, { top: string; bottom: string }> = {
   lg: { top: "pt-12", bottom: "pb-12" },
   xl: { top: "pt-16", bottom: "pb-16" },
   "2xl": { top: "pt-24", bottom: "pb-24" },
+  "3xl": { top: "pt-32", bottom: "pb-32" },
+};
+
+/**
+ * Map border values to Tailwind classes
+ */
+const borderTopClasses: Record<string, string> = {
+  none: "",
+  thin: "border-t border-gray-200",
+  medium: "border-t-2 border-gray-200",
+  thick: "border-t-4 border-gray-200",
+};
+
+const borderBottomClasses: Record<string, string> = {
+  none: "",
+  thin: "border-b border-gray-200",
+  medium: "border-b-2 border-gray-200",
+  thick: "border-b-4 border-gray-200",
+};
+
+/**
+ * Map section shadow values to Tailwind classes
+ */
+const sectionShadowClasses: Record<string, string> = {
+  none: "",
+  sm: "shadow-sm",
+  md: "shadow-md",
+  lg: "shadow-lg",
+  xl: "shadow-xl",
+  inner: "shadow-inner",
 };
 
 /**
@@ -120,6 +156,9 @@ export function Section({
   background = "none",
   width = "wide",
   align = "left",
+  borderTop = "none",
+  borderBottom = "none",
+  shadow = "none",
   container,
   style,
   className,
@@ -192,6 +231,9 @@ export function Section({
         "section",
         spacingClasses[effectivePaddingTop]?.top,
         spacingClasses[effectivePaddingBottom]?.bottom,
+        borderTopClasses[borderTop] || "",
+        borderBottomClasses[borderBottom] || "",
+        sectionShadowClasses[shadow] || "",
         className,
       )}
       data-background={background}

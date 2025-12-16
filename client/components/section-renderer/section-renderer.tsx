@@ -60,9 +60,15 @@ export type TypedSection = {
   /** Vertical spacing (padding top/bottom) - legacy */
   spacing?: Spacing;
   /** Individual padding top */
-  paddingTop?: Spacing;
+  paddingTop?: Spacing | "3xl";
   /** Individual padding bottom */
-  paddingBottom?: Spacing;
+  paddingBottom?: Spacing | "3xl";
+  /** Border top */
+  borderTop?: "none" | "thin" | "medium" | "thick";
+  /** Border bottom */
+  borderBottom?: "none" | "thin" | "medium" | "thick";
+  /** Section shadow */
+  shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
   /** Max width constraint */
   width?: Width;
   /** Content alignment */
@@ -187,6 +193,9 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             spacing={effectiveSpacing}
             paddingTop={section.paddingTop}
             paddingBottom={section.paddingBottom}
+            borderTop={section.borderTop}
+            borderBottom={section.borderBottom}
+            shadow={section.shadow}
             width={
               (section.container?.maxWidth || section.width) as
                 | Width

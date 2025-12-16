@@ -385,6 +385,7 @@ export function SectionSettingsPopover({
                     <SelectItem value="lg">Large</SelectItem>
                     <SelectItem value="xl">Extra Large</SelectItem>
                     <SelectItem value="2xl">2X Large</SelectItem>
+                    <SelectItem value="3xl">3X Large</SelectItem>
                   </SelectContent>
                 </Select>
               </ResponsiveField>
@@ -415,9 +416,78 @@ export function SectionSettingsPopover({
                     <SelectItem value="lg">Large</SelectItem>
                     <SelectItem value="xl">Extra Large</SelectItem>
                     <SelectItem value="2xl">2X Large</SelectItem>
+                    <SelectItem value="3xl">3X Large</SelectItem>
                   </SelectContent>
                 </Select>
               </ResponsiveField>
+            </div>
+          </div>
+
+          {/* Border */}
+          <div className="section-settings-section">
+            <h4 className="section-settings-section-title">BORDER</h4>
+            <div className="section-settings-row">
+              <div className="section-settings-field">
+                <Label className="section-settings-label">Top</Label>
+                <Select
+                  value={section.borderTop || "none"}
+                  onValueChange={(value) =>
+                    handleWrapperChange("borderTop", value)
+                  }
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">None</SelectItem>
+                    <SelectItem value="thin">Thin</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="thick">Thick</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="section-settings-field">
+                <Label className="section-settings-label">Bottom</Label>
+                <Select
+                  value={section.borderBottom || "none"}
+                  onValueChange={(value) =>
+                    handleWrapperChange("borderBottom", value)
+                  }
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">None</SelectItem>
+                    <SelectItem value="thin">Thin</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="thick">Thick</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+
+          {/* Shadow */}
+          <div className="section-settings-section">
+            <h4 className="section-settings-section-title">SHADOW</h4>
+            <div className="section-settings-field">
+              <Select
+                value={section.shadow || "none"}
+                onValueChange={(value) => handleWrapperChange("shadow", value)}
+              >
+                <SelectTrigger className="h-8">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">None</SelectItem>
+                  <SelectItem value="sm">Small</SelectItem>
+                  <SelectItem value="md">Medium</SelectItem>
+                  <SelectItem value="lg">Large</SelectItem>
+                  <SelectItem value="xl">Extra Large</SelectItem>
+                  <SelectItem value="inner">Inner</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
