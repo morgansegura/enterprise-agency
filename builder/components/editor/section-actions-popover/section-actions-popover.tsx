@@ -9,7 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Pencil,
-  LayoutGrid,
+  Plus,
+  Layers,
   Copy,
   Heart,
   ChevronUp,
@@ -17,9 +18,12 @@ import {
   Trash2,
   Box,
 } from "lucide-react";
-import type { Section } from "@/lib/hooks/use-pages";
+import { cn } from "@/lib/utils";
+import type { Section, Block } from "@/lib/hooks/use-pages";
 import { SectionSettingsPopover } from "../section-settings-popover";
 import { ContainerSettingsPopover } from "../container-settings-popover";
+import { AddBlockPopover } from "../add-block-popover";
+import { LayersPopover } from "../layers-popover";
 
 import "./section-actions-popover.css";
 
@@ -30,6 +34,10 @@ interface SectionActionsPopoverProps {
   onDuplicate?: () => void;
   onMoveUp?: () => void;
   onMoveDown?: () => void;
+  onAddBlock?: (blockType: string) => void;
+  selectedBlockKey?: string | null;
+  onSelectBlock?: (key: string | null) => void;
+  onHoverBlock?: (key: string | null) => void;
   onOpenChange?: (open: boolean) => void;
   isFirst?: boolean;
   isLast?: boolean;
@@ -43,6 +51,10 @@ export function SectionActionsPopover({
   onDuplicate,
   onMoveUp,
   onMoveDown,
+  onAddBlock,
+  selectedBlockKey,
+  onSelectBlock,
+  onHoverBlock,
   onOpenChange,
   isFirst = false,
   isLast = false,
@@ -51,11 +63,17 @@ export function SectionActionsPopover({
   const [open, setOpen] = React.useState(false);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [containerOpen, setContainerOpen] = React.useState(false);
+  const [addBlockOpen, setAddBlockOpen] = React.useState(false);
+  const [layersOpen, setLayersOpen] = React.useState(false);
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
     onOpenChange?.(isOpen);
   };
+
+  // Keep popover open while child popovers are open
+  const isChildOpen =
+    settingsOpen || containerOpen || addBlockOpen || layersOpen;
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
@@ -71,6 +89,52 @@ export function SectionActionsPopover({
         </div>
 
         <div className="section-actions-content">
+          {/* Add Block */}
+          {onAddBlock && (
+            <AddBlockPopover
+              onAddBlock={(blockType) => {
+                onAddBlock(blockType);
+                setAddBlockOpen(false);
+              }}
+              open={addBlockOpen}
+              onOpenChange={setAddBlockOpen}
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "section-actions-item",
+                  addBlockOpen && "is-active",
+                )}
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Block</span>
+              </Button>
+            </AddBlockPopover>
+          )}
+
+          {/* Layers */}
+          <LayersPopover
+            blocks={section.blocks}
+            selectedBlockKey={selectedBlockKey ?? null}
+            onSelectBlock={onSelectBlock ?? (() => {})}
+            onHoverBlock={onHoverBlock}
+            open={layersOpen}
+            onOpenChange={setLayersOpen}
+          >
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn("section-actions-item", layersOpen && "is-active")}
+            >
+              <Layers className="h-4 w-4" />
+              <span>Layers</span>
+            </Button>
+          </LayersPopover>
+
+          {/* Divider */}
+          <div className="section-actions-divider" />
+
           {/* Edit Section */}
           <SectionSettingsPopover
             section={section}
@@ -78,7 +142,14 @@ export function SectionActionsPopover({
             open={settingsOpen}
             onOpenChange={setSettingsOpen}
           >
-            <Button variant="ghost" size="sm" className="section-actions-item">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "section-actions-item",
+                settingsOpen && "is-active",
+              )}
+            >
               <Pencil className="h-4 w-4" />
               <span>Edit Section</span>
             </Button>
@@ -91,17 +162,18 @@ export function SectionActionsPopover({
             open={containerOpen}
             onOpenChange={setContainerOpen}
           >
-            <Button variant="ghost" size="sm" className="section-actions-item">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "section-actions-item",
+                containerOpen && "is-active",
+              )}
+            >
               <Box className="h-4 w-4" />
               <span>Edit Container</span>
             </Button>
           </ContainerSettingsPopover>
-
-          {/* View Layouts */}
-          <Button variant="ghost" size="sm" className="section-actions-item">
-            <LayoutGrid className="h-4 w-4" />
-            <span>View Layouts</span>
-          </Button>
 
           {/* Divider */}
           <div className="section-actions-divider" />

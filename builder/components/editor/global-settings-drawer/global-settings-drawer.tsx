@@ -32,6 +32,8 @@ import {
   RectangleHorizontal,
   FormInput,
   CreditCard,
+  Settings,
+  Home,
 } from "lucide-react";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { cn } from "@/lib/utils";
@@ -39,6 +41,7 @@ import {
   useTenantTokens,
   useUpdateTenantTokens,
 } from "@/lib/hooks/use-tenant-tokens";
+import { usePages, useUpdatePage, type Page } from "@/lib/hooks/use-pages";
 import { toast } from "sonner";
 import {
   spacingSelectOptions,
@@ -61,9 +64,21 @@ import {
   getShadowValue,
 } from "@/lib/tokens/design-system";
 
-type SettingsTab = "colors" | "typography" | "buttons" | "inputs" | "cards";
+type SettingsTab =
+  | "site"
+  | "colors"
+  | "typography"
+  | "buttons"
+  | "inputs"
+  | "cards";
 
 const navItems: SettingsNavItem<SettingsTab>[] = [
+  {
+    id: "site",
+    label: "Site",
+    icon: Home,
+    description: "Site settings",
+  },
   { id: "colors", label: "Colors", icon: Palette, description: "Brand colors" },
   {
     id: "typography",
@@ -369,7 +384,7 @@ export function GlobalSettingsDrawer({
   onOpenChange,
   tenantId,
 }: GlobalSettingsDrawerProps) {
-  const [activeTab, setActiveTab] = React.useState<SettingsTab>("colors");
+  const [activeTab, setActiveTab] = React.useState<SettingsTab>("site");
 
   const { data: tokens, isLoading } = useTenantTokens(tenantId);
   const updateTokens = useUpdateTenantTokens();
@@ -667,6 +682,7 @@ export function GlobalSettingsDrawer({
           />
         </SettingsDrawerActions>
 
+        {activeTab === "site" && <SiteSettingsPanel tenantId={tenantId} />}
         {activeTab === "colors" && (
           <ColorSettings colors={localTokens.colors} onChange={updateColors} />
         )}
@@ -1927,6 +1943,159 @@ function CardSettingsPanel({
           transitionDurationSelectOptions,
         )}
       </SettingsGridBlock>
+    </SettingsSection>
+  );
+}
+
+// ============================================================================
+// SiteSettings panel
+// ============================================================================
+
+interface SiteSettingsPanelProps {
+  tenantId: string;
+}
+
+function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
+  const { data: pages, isLoading: pagesLoading } = usePages(tenantId);
+  const updatePage = useUpdatePage(tenantId);
+
+  // Get current homepage
+  const currentHomePage = pages?.find((page) => page.isHomePage);
+  const [selectedHomePageId, setSelectedHomePageId] = React.useState<
+    string | null
+  >(null);
+
+  // Sync selection with current homepage
+  React.useEffect(() => {
+    if (currentHomePage && selectedHomePageId === null) {
+      setSelectedHomePageId(currentHomePage.id);
+    }
+  }, [currentHomePage, selectedHomePageId]);
+
+  const handleHomePageChange = async (pageId: string) => {
+    // If selecting "none", unset current homepage
+    if (pageId === "none") {
+      if (currentHomePage) {
+        try {
+          await updatePage.mutateAsync({
+            id: currentHomePage.id,
+            data: { isHomePage: false },
+          });
+          setSelectedHomePageId(null);
+          toast.success("Homepage removed - Coming Soon page will be shown");
+        } catch {
+          toast.error("Failed to remove homepage");
+        }
+      }
+      return;
+    }
+
+    // If same as current, do nothing
+    if (pageId === currentHomePage?.id) {
+      return;
+    }
+
+    try {
+      // API automatically unsets previous homepage when setting a new one
+      await updatePage.mutateAsync({
+        id: pageId,
+        data: { isHomePage: true },
+      });
+
+      setSelectedHomePageId(pageId);
+      toast.success("Homepage updated successfully");
+    } catch {
+      toast.error("Failed to update homepage");
+    }
+  };
+
+  // Filter to only show published pages as homepage options
+  const publishedPages =
+    pages?.filter((page) => page.status === "published") || [];
+
+  return (
+    <SettingsSection
+      title="Site Settings"
+      description="Configure global site settings including homepage and meta information."
+    >
+      <SettingsGridBlock title="Homepage">
+        <SettingsField>
+          <Label>Default Homepage</Label>
+          <Select
+            value={selectedHomePageId || currentHomePage?.id || "none"}
+            onValueChange={handleHomePageChange}
+            disabled={pagesLoading || updatePage.isPending}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a homepage" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">
+                <span className="text-muted-foreground">
+                  No homepage (Coming Soon page)
+                </span>
+              </SelectItem>
+              {publishedPages.map((page) => (
+                <SelectItem key={page.id} value={page.id}>
+                  <span className="flex items-center gap-2">
+                    <span>{page.title}</span>
+                    <span className="text-muted-foreground text-xs">
+                      /{page.slug}
+                    </span>
+                    {page.isHomePage && (
+                      <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                        Current
+                      </span>
+                    )}
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-xs text-muted-foreground mt-2">
+            The homepage is the default page visitors see when they visit your
+            site. Only published pages can be set as the homepage.
+          </p>
+        </SettingsField>
+      </SettingsGridBlock>
+
+      {/* All pages list for reference */}
+      {pages && pages.length > 0 && (
+        <SettingsGridBlock title="All Pages">
+          <div className="space-y-2">
+            {pages.map((page) => (
+              <div
+                key={page.id}
+                className="flex items-center justify-between p-2 rounded-md border bg-background"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-sm">{page.title}</span>
+                  <span className="text-xs text-muted-foreground">
+                    /{page.slug}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "text-xs px-2 py-0.5 rounded",
+                      page.status === "published"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+                    )}
+                  >
+                    {page.status === "published" ? "Published" : "Draft"}
+                  </span>
+                  {page.isHomePage && (
+                    <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
+                      Homepage
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </SettingsGridBlock>
+      )}
     </SettingsSection>
   );
 }

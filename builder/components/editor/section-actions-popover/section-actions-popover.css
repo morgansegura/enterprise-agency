@@ -21,6 +21,10 @@
   @apply text-(--foreground) hover:bg-(--muted);
 }
 
+.section-actions-item.is-active {
+  @apply bg-(--muted) text-(--foreground);
+}
+
 .section-actions-divider {
   @apply h-px bg-(--border) my-2;
 }

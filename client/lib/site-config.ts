@@ -78,8 +78,8 @@ export const churchInfo = {
  */
 export const theme: ThemeConfig = {
   fonts: {
-    heading: "var(--font-sans)",
-    body: "var(--font-sans)",
+    heading: "var(--font-heading)",
+    body: "var(--font-body)",
     mono: "var(--font-mono)",
   },
 

@@ -17,6 +17,9 @@ import { Label } from "@/components/ui/label";
 import { Rows3, Columns3, Grid3X3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ColorPicker } from "@/components/ui/color-picker";
+import { ResponsiveField, useResponsiveChange } from "../responsive-field";
+import { useCurrentBreakpoint } from "@/lib/responsive/context";
+import { getResponsiveValue } from "@/lib/responsive";
 import type { Section, ContainerSettings } from "@/lib/hooks/use-pages";
 
 import "./container-settings-popover.css";
@@ -47,8 +50,52 @@ export function ContainerSettingsPopover({
   onOpenChange,
 }: ContainerSettingsPopoverProps) {
   const [tab, setTab] = React.useState<ContainerTab>("size");
+  const breakpoint = useCurrentBreakpoint();
 
   const container = section.container || {};
+
+  // Container data for responsive handling
+  const containerData = container as unknown as Record<string, unknown>;
+
+  // Responsive change handler for container
+  const handleResponsiveChange = useResponsiveChange(containerData, (data) => {
+    onChange({
+      ...section,
+      container: data as unknown as ContainerSettings,
+    });
+  });
+
+  // Get responsive value for a container field
+  const getContainerValue = <T,>(field: string, defaultValue: T): T => {
+    return (
+      getResponsiveValue<T>(containerData, field, breakpoint) ?? defaultValue
+    );
+  };
+
+  // Layout data for responsive handling
+  const layoutData = (container.layout || {}) as unknown as Record<
+    string,
+    unknown
+  >;
+
+  // Responsive change handler for layout
+  const handleLayoutResponsiveChange = useResponsiveChange(
+    layoutData,
+    (data) => {
+      onChange({
+        ...section,
+        container: {
+          ...container,
+          layout: data as unknown as ContainerSettings["layout"],
+        },
+      });
+    },
+  );
+
+  // Get responsive value for a layout field
+  const getLayoutValue = <T,>(field: string, defaultValue: T): T => {
+    return getResponsiveValue<T>(layoutData, field, breakpoint) ?? defaultValue;
+  };
 
   const handleContainerChange = (updates: Partial<ContainerSettings>) => {
     onChange({
@@ -148,14 +195,22 @@ export function ContainerSettingsPopover({
                   INNER PADDING
                 </h4>
                 <div className="container-settings-row">
-                  <div className="container-settings-field">
-                    <Label className="container-settings-label">
-                      Horizontal
-                    </Label>
+                  <ResponsiveField
+                    fieldName="paddingX"
+                    data={containerData}
+                    onChange={(data) =>
+                      onChange({
+                        ...section,
+                        container: data as unknown as ContainerSettings,
+                      })
+                    }
+                    label="Horizontal"
+                    className="container-settings-field"
+                  >
                     <Select
-                      value={container.paddingX || "md"}
+                      value={getContainerValue("paddingX", "md")}
                       onValueChange={(value) =>
-                        handleContainerChange({ paddingX: value })
+                        handleResponsiveChange("paddingX", value)
                       }
                     >
                       <SelectTrigger className="h-9">
@@ -170,13 +225,23 @@ export function ContainerSettingsPopover({
                         <SelectItem value="xl">Extra Large</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
-                  <div className="container-settings-field">
-                    <Label className="container-settings-label">Vertical</Label>
+                  </ResponsiveField>
+                  <ResponsiveField
+                    fieldName="paddingY"
+                    data={containerData}
+                    onChange={(data) =>
+                      onChange({
+                        ...section,
+                        container: data as unknown as ContainerSettings,
+                      })
+                    }
+                    label="Vertical"
+                    className="container-settings-field"
+                  >
                     <Select
-                      value={container.paddingY || "none"}
+                      value={getContainerValue("paddingY", "none")}
                       onValueChange={(value) =>
-                        handleContainerChange({ paddingY: value })
+                        handleResponsiveChange("paddingY", value)
                       }
                     >
                       <SelectTrigger className="h-9">
@@ -191,7 +256,7 @@ export function ContainerSettingsPopover({
                         <SelectItem value="xl">Extra Large</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
+                  </ResponsiveField>
                 </div>
               </div>
             </>
@@ -316,14 +381,26 @@ export function ContainerSettingsPopover({
                     DIRECTION & GAP
                   </h4>
                   <div className="container-settings-row">
-                    <div className="container-settings-field">
-                      <Label className="container-settings-label">
-                        Direction
-                      </Label>
+                    <ResponsiveField
+                      fieldName="direction"
+                      data={layoutData}
+                      onChange={(data) =>
+                        onChange({
+                          ...section,
+                          container: {
+                            ...container,
+                            layout:
+                              data as unknown as ContainerSettings["layout"],
+                          },
+                        })
+                      }
+                      label="Direction"
+                      className="container-settings-field"
+                    >
                       <Select
-                        value={container.layout?.direction || "column"}
+                        value={getLayoutValue("direction", "column")}
                         onValueChange={(value) =>
-                          handleLayoutChange("direction", value)
+                          handleLayoutResponsiveChange("direction", value)
                         }
                       >
                         <SelectTrigger className="h-9">
@@ -334,13 +411,27 @@ export function ContainerSettingsPopover({
                           <SelectItem value="row">Horizontal</SelectItem>
                         </SelectContent>
                       </Select>
-                    </div>
-                    <div className="container-settings-field">
-                      <Label className="container-settings-label">Gap</Label>
+                    </ResponsiveField>
+                    <ResponsiveField
+                      fieldName="gap"
+                      data={layoutData}
+                      onChange={(data) =>
+                        onChange({
+                          ...section,
+                          container: {
+                            ...container,
+                            layout:
+                              data as unknown as ContainerSettings["layout"],
+                          },
+                        })
+                      }
+                      label="Gap"
+                      className="container-settings-field"
+                    >
                       <Select
-                        value={container.layout?.gap || "md"}
+                        value={getLayoutValue("gap", "md")}
                         onValueChange={(value) =>
-                          handleLayoutChange("gap", value)
+                          handleLayoutResponsiveChange("gap", value)
                         }
                       >
                         <SelectTrigger className="h-9">
@@ -355,7 +446,7 @@ export function ContainerSettingsPopover({
                           <SelectItem value="xl">Extra Large</SelectItem>
                         </SelectContent>
                       </Select>
-                    </div>
+                    </ResponsiveField>
                   </div>
                 </div>
               )}

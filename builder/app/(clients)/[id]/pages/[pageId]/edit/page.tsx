@@ -232,19 +232,34 @@ export default function EditPagePage({
   if (!page) return <div>Page not found</div>;
 
   const handleSave = () => {
-    updatePage.mutate({
-      id: pageId,
-      data: {
-        title: localPage.title,
-        slug: localPage.slug,
-        status: localPage.status,
-        template: localPage.template,
-        seo: localPage.seo,
-        headerId: localPage.headerId,
-        footerId: localPage.footerId,
-        sections,
+    updatePage.mutate(
+      {
+        id: pageId,
+        data: {
+          title: localPage.title,
+          slug: localPage.slug,
+          status: localPage.status,
+          template: localPage.template,
+          seo: localPage.seo,
+          headerId: localPage.headerId,
+          footerId: localPage.footerId,
+          sections,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          toast.success("Page saved successfully");
+          // Cancel any pending auto-save after manual save
+          autoSave.cancel();
+        },
+        onError: (error) => {
+          toast.error("Failed to save page", {
+            description:
+              error instanceof Error ? error.message : "Unknown error",
+          });
+        },
+      },
+    );
   };
 
   const handlePublish = async () => {
@@ -790,6 +805,18 @@ export default function EditPagePage({
                                           blockIndex,
                                         )
                                       }
+                                      onMoveUp={() =>
+                                        handleBlockMoveUp(
+                                          sectionIndex,
+                                          blockIndex,
+                                        )
+                                      }
+                                      onMoveDown={() =>
+                                        handleBlockMoveDown(
+                                          sectionIndex,
+                                          blockIndex,
+                                        )
+                                      }
                                       tenantId={id}
                                       isSelected={
                                         selectedBlockKey === block._key
@@ -797,6 +824,10 @@ export default function EditPagePage({
                                       isHovered={hoveredBlockKey === block._key}
                                       onSelect={() =>
                                         setSelectedBlockKey(block._key)
+                                      }
+                                      isFirst={blockIndex === 0}
+                                      isLast={
+                                        blockIndex === section.blocks.length - 1
                                       }
                                     />
                                   ))}

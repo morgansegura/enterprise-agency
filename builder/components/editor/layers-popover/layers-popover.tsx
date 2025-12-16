@@ -16,6 +16,7 @@ interface LayersPopoverProps {
   selectedBlockKey: string | null;
   onSelectBlock: (key: string | null) => void;
   onHoverBlock?: (key: string | null) => void;
+  open?: boolean;
   onOpenChange?: (open: boolean) => void;
   children: React.ReactNode;
 }
@@ -53,13 +54,23 @@ export function LayersPopover({
   selectedBlockKey,
   onSelectBlock,
   onHoverBlock,
+  open: controlledOpen,
   onOpenChange,
   children,
 }: LayersPopoverProps) {
-  const [open, setOpen] = React.useState(false);
+  const [internalOpen, setInternalOpen] = React.useState(false);
   const [localHoveredKey, setLocalHoveredKey] = React.useState<string | null>(
     null,
   );
+
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+  const setOpen = (value: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(value);
+    }
+    onOpenChange?.(value);
+  };
 
   const handleHover = (key: string | null) => {
     setLocalHoveredKey(key);
@@ -73,7 +84,6 @@ export function LayersPopover({
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
-    onOpenChange?.(isOpen);
     // Clear hover state when closing
     if (!isOpen) {
       setLocalHoveredKey(null);

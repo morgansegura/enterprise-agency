@@ -35,7 +35,9 @@ const alignClasses: Record<string, string> = {
  * Supports responsive overrides for size and alignment
  */
 export function TextBlock({ data }: TextBlockProps) {
-  const { content, size = "base", align = "left", variant = "default" } = data;
+  // Support both 'text' (builder format) and 'content' (legacy format)
+  const content = data.text ?? data.content ?? "";
+  const { size = "base", align = "left", variant = "default" } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

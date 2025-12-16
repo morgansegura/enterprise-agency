@@ -65,7 +65,10 @@ export type HeadingBlockData = {
 
 /** Text block data */
 export type TextBlockData = {
-  content: string;
+  /** Text content (builder format - preferred) */
+  text?: string;
+  /** Text content (legacy format) */
+  content?: string;
   size?:
     | "xs"
     | "sm"

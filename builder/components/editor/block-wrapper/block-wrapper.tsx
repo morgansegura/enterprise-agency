@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Trash2, Copy, MoveUp, Pencil, PaintBucket, Pin } from "lucide-react";
+import { Trash2, Copy, ChevronUp, ChevronDown, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import type { Block } from "@/lib/hooks/use-pages";
@@ -19,6 +19,10 @@ interface BlockWrapperProps {
   onSelect?: () => void;
   onDelete?: () => void;
   onDuplicate?: () => void;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  isFirst?: boolean;
+  isLast?: boolean;
   className?: string;
 }
 
@@ -40,6 +44,10 @@ export function BlockWrapper({
   onSelect,
   onDelete,
   onDuplicate,
+  onMoveUp,
+  onMoveDown,
+  isFirst = false,
+  isLast = false,
   className,
 }: BlockWrapperProps) {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
@@ -101,34 +109,32 @@ export function BlockWrapper({
           {/* Separator */}
           <div className="block-toolbar-separator" />
 
-          {/* Fill/Style */}
+          {/* Move Up */}
           <Button
             variant="ghost"
             size="icon-sm"
-            onClick={(e) => e.stopPropagation()}
-            title="Fill"
+            onClick={(e) => {
+              e.stopPropagation();
+              onMoveUp?.();
+            }}
+            disabled={isFirst}
+            title="Move Up"
           >
-            <PaintBucket className="h-4 w-4" />
+            <ChevronUp className="h-4 w-4" />
           </Button>
 
-          {/* Move */}
+          {/* Move Down */}
           <Button
             variant="ghost"
             size="icon-sm"
-            onClick={(e) => e.stopPropagation()}
-            title="Move"
+            onClick={(e) => {
+              e.stopPropagation();
+              onMoveDown?.();
+            }}
+            disabled={isLast}
+            title="Move Down"
           >
-            <MoveUp className="h-4 w-4" />
-          </Button>
-
-          {/* Pin */}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={(e) => e.stopPropagation()}
-            title="Pin"
-          >
-            <Pin className="h-4 w-4" />
+            <ChevronDown className="h-4 w-4" />
           </Button>
 
           {/* Separator */}

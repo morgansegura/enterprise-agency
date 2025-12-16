@@ -18,6 +18,9 @@ import { Label } from "@/components/ui/label";
 import { LayoutGrid, Image as ImageIcon, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ColorPicker } from "@/components/ui/color-picker";
+import { ResponsiveField, useResponsiveChange } from "../responsive-field";
+import { useCurrentBreakpoint } from "@/lib/responsive/context";
+import { getResponsiveValue } from "@/lib/responsive";
 import type { Section, SectionBackground } from "@/lib/hooks/use-pages";
 
 import "./section-settings-popover.css";
@@ -44,6 +47,8 @@ export function SectionSettingsPopover({
   open,
   onOpenChange,
 }: SectionSettingsPopoverProps) {
+  const breakpoint = useCurrentBreakpoint();
+
   // Get background as object (normalize from string if legacy)
   const getBackground = (): SectionBackground => {
     if (!section.background) return { type: "none" };
@@ -57,11 +62,26 @@ export function SectionSettingsPopover({
 
   const background = getBackground();
 
+  // Section data for responsive handling
+  const sectionData = section as unknown as Record<string, unknown>;
+
+  // Responsive change handler
+  const handleResponsiveChange = useResponsiveChange(sectionData, (data) => {
+    onChange(data as unknown as Section);
+  });
+
   const handleWrapperChange = (field: string, value: unknown) => {
     onChange({
       ...section,
       [field]: value,
     });
+  };
+
+  // Get responsive value for a field
+  const getFieldValue = <T,>(field: string, defaultValue: T): T => {
+    return (
+      getResponsiveValue<T>(sectionData, field, breakpoint) ?? defaultValue
+    );
   };
 
   const handleBackgroundChange = (bg: Partial<SectionBackground>) => {
@@ -341,12 +361,17 @@ export function SectionSettingsPopover({
           <div className="section-settings-section">
             <h4 className="section-settings-section-title">SPACING</h4>
             <div className="section-settings-row">
-              <div className="section-settings-field">
-                <Label className="section-settings-label">Padding Top</Label>
+              <ResponsiveField
+                fieldName="paddingTop"
+                data={sectionData}
+                onChange={(data) => onChange(data as unknown as Section)}
+                label="Padding Top"
+                className="section-settings-field"
+              >
                 <Select
-                  value={section.paddingTop || section.spacing || "md"}
+                  value={getFieldValue("paddingTop", section.spacing || "md")}
                   onValueChange={(value) =>
-                    handleWrapperChange("paddingTop", value)
+                    handleResponsiveChange("paddingTop", value)
                   }
                 >
                   <SelectTrigger className="h-8">
@@ -362,13 +387,21 @@ export function SectionSettingsPopover({
                     <SelectItem value="2xl">2X Large</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-              <div className="section-settings-field">
-                <Label className="section-settings-label">Padding Bottom</Label>
+              </ResponsiveField>
+              <ResponsiveField
+                fieldName="paddingBottom"
+                data={sectionData}
+                onChange={(data) => onChange(data as unknown as Section)}
+                label="Padding Bottom"
+                className="section-settings-field"
+              >
                 <Select
-                  value={section.paddingBottom || section.spacing || "md"}
+                  value={getFieldValue(
+                    "paddingBottom",
+                    section.spacing || "md",
+                  )}
                   onValueChange={(value) =>
-                    handleWrapperChange("paddingBottom", value)
+                    handleResponsiveChange("paddingBottom", value)
                   }
                 >
                   <SelectTrigger className="h-8">
@@ -384,7 +417,7 @@ export function SectionSettingsPopover({
                     <SelectItem value="2xl">2X Large</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </ResponsiveField>
             </div>
           </div>
         </div>

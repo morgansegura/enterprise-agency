@@ -155,7 +155,7 @@
   @apply text-(--destructive) hover:text-(--destructive) hover:bg-(--destructive)/10;
 }
 
-/* Section inner content - shows exactly like live site with spacing/width applied */
-.section-inner {
+/* Section container - applies container settings (width, layout, padding, etc.) */
+.section-container {
   @apply min-h-[40px];
 }

@@ -143,15 +143,28 @@ const BLOCK_TYPES: BlockType[] = [
 
 interface AddBlockPopoverProps {
   onAddBlock: (blockType: string) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   children: React.ReactNode;
 }
 
 export function AddBlockPopover({
   onAddBlock,
+  open: controlledOpen,
+  onOpenChange,
   children,
 }: AddBlockPopoverProps) {
-  const [open, setOpen] = React.useState(false);
+  const [internalOpen, setInternalOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
+
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+  const setOpen = (value: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(value);
+    }
+    onOpenChange?.(value);
+  };
 
   const filteredBlocks = BLOCK_TYPES.filter((block) =>
     block.label.toLowerCase().includes(search.toLowerCase()),

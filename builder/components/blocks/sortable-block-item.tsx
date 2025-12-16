@@ -13,10 +13,14 @@ interface SortableBlockItemProps {
   onChange: (block: Block) => void;
   onDelete: () => void;
   onDuplicate?: () => void;
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
   tenantId?: string;
   isSelected?: boolean;
   isHovered?: boolean;
   onSelect?: () => void;
+  isFirst?: boolean;
+  isLast?: boolean;
 }
 
 /**
@@ -35,10 +39,14 @@ export function SortableBlockItem({
   onChange,
   onDelete,
   onDuplicate,
+  onMoveUp,
+  onMoveDown,
   tenantId,
   isSelected = false,
   isHovered = false,
   onSelect,
+  isFirst = false,
+  isLast = false,
 }: SortableBlockItemProps) {
   const {
     attributes,
@@ -68,6 +76,10 @@ export function SortableBlockItem({
         onSelect={onSelect}
         onDelete={onDelete}
         onDuplicate={onDuplicate}
+        onMoveUp={onMoveUp}
+        onMoveDown={onMoveDown}
+        isFirst={isFirst}
+        isLast={isLast}
       >
         <BlockEditorRenderer
           block={block}

@@ -91,8 +91,10 @@ export function BlockSettingsPopover({
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         className="block-settings-popover"
+        side="left"
         align="start"
         sideOffset={8}
+        collisionPadding={16}
       >
         <div className="block-settings-header">
           <span className="block-settings-title">
@@ -162,20 +164,27 @@ export function BlockSettingsPopover({
           <FormItem className="block-settings-field">
             <Label>Size</Label>
             <Select
-              value={getBlockData<string>("size", "md")}
+              value={getBlockData<string>("size", "base")}
               onValueChange={(value) => handleDataChange("size", value)}
             >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="2xs">2XS</SelectItem>
                 <SelectItem value="xs">XS</SelectItem>
                 <SelectItem value="sm">SM</SelectItem>
-                <SelectItem value="md">MD</SelectItem>
+                <SelectItem value="base">Base</SelectItem>
                 <SelectItem value="lg">LG</SelectItem>
                 <SelectItem value="xl">XL</SelectItem>
                 <SelectItem value="2xl">2XL</SelectItem>
                 <SelectItem value="3xl">3XL</SelectItem>
+                <SelectItem value="4xl">4XL</SelectItem>
+                <SelectItem value="5xl">5XL</SelectItem>
+                <SelectItem value="6xl">6XL</SelectItem>
+                <SelectItem value="7xl">7XL</SelectItem>
+                <SelectItem value="8xl">8XL</SelectItem>
+                <SelectItem value="9xl">9XL</SelectItem>
               </SelectContent>
             </Select>
           </FormItem>
