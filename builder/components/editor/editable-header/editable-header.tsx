@@ -294,9 +294,7 @@ export function EditableHeader({
         </div>
 
         {/* Header name badge */}
-        <div className="header-name-badge">
-          {header.name}
-        </div>
+        <div className="header-name-badge">{header.name}</div>
       </div>
 
       {/* Library picker modal */}

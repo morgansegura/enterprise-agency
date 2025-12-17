@@ -25,6 +25,7 @@ export type SectionBackground =
         size?: "cover" | "contain" | "auto";
         position?: string;
         overlay?: string;
+        repeat?: "no-repeat" | "repeat" | "repeat-x" | "repeat-y";
       };
     };
 
@@ -35,9 +36,16 @@ export type ContainerSettings = {
   maxWidth?: "narrow" | "container" | "wide" | "full";
   paddingX?: string;
   paddingY?: string;
+  paddingTop?: string;
+  paddingBottom?: string;
   background?: string;
+  borderTop?: "none" | "thin" | "medium" | "thick";
+  borderBottom?: "none" | "thin" | "medium" | "thick";
   borderRadius?: string;
   shadow?: string;
+  minHeight?: string;
+  align?: string;
+  verticalAlign?: string;
   layout?: {
     type?: "stack" | "flex" | "grid";
     direction?: "column" | "row";
@@ -60,17 +68,21 @@ export type TypedSection = {
   /** Vertical spacing (padding top/bottom) - legacy */
   spacing?: Spacing;
   /** Individual padding top */
-  paddingTop?: Spacing | "3xl";
+  paddingTop?: Spacing | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
   /** Individual padding bottom */
-  paddingBottom?: Spacing | "3xl";
+  paddingBottom?: Spacing | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
   /** Border top */
   borderTop?: "none" | "thin" | "medium" | "thick";
   /** Border bottom */
   borderBottom?: "none" | "thin" | "medium" | "thick";
   /** Section shadow */
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
-  /** Max width constraint */
+  /** Section width constraint */
   width?: Width;
+  /** Min height */
+  minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
+  /** Vertical alignment (when minHeight is set) */
+  verticalAlign?: "top" | "center" | "bottom";
   /** Content alignment */
   align?: Exclude<TextAlign, "justify">;
   /** Container settings */
@@ -78,6 +90,20 @@ export type TypedSection = {
   /** Blocks to render inside this section */
   blocks: RootBlock[];
 };
+
+/**
+ * Background presets that map to data-background attribute values
+ */
+const backgroundPresets = [
+  "none",
+  "white",
+  "gray",
+  "dark",
+  "primary",
+  "secondary",
+  "muted",
+  "accent",
+];
 
 /**
  * Normalize background to data attribute and inline style
@@ -94,7 +120,11 @@ function normalizeBackground(
 
   // Legacy string format
   if (typeof background === "string") {
-    return { dataBackground: background };
+    if (backgroundPresets.includes(background)) {
+      return { dataBackground: background };
+    }
+    // Custom color string
+    return { dataBackground: "none", style: { backgroundColor: background } };
   }
 
   // New object format
@@ -103,14 +133,7 @@ function normalizeBackground(
       return { dataBackground: "none" };
     case "color": {
       // Check if it's a preset color name
-      const presetColors: BackgroundVariant[] = [
-        "white",
-        "gray",
-        "dark",
-        "primary",
-        "secondary",
-      ];
-      if (presetColors.includes(background.color as BackgroundVariant)) {
+      if (backgroundPresets.includes(background.color)) {
         return { dataBackground: background.color as BackgroundVariant };
       }
       // Custom color - use inline style
@@ -139,7 +162,7 @@ function normalizeBackground(
         backgroundImage: `url(${image.src})`,
         backgroundSize: image.size || "cover",
         backgroundPosition: image.position || "center",
-        backgroundRepeat: "no-repeat",
+        backgroundRepeat: image.repeat || "no-repeat",
       };
       return { dataBackground: "none", style };
     }
@@ -152,10 +175,12 @@ function normalizeBackground(
  * SectionRenderer - Renders an array of sections
  *
  * Each section is a layout container with:
- * - Background color
+ * - Background color/gradient/image
  * - Vertical spacing (padding)
  * - Width constraints
- * - Content alignment
+ * - Border and shadow
+ * - Min height and alignment
+ * - Container settings
  * - Array of blocks to render
  */
 type SectionRendererProps = {
@@ -180,30 +205,31 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
         const { dataBackground, style } = normalizeBackground(
           section.background,
         );
-        // Use individual padding if available, otherwise fallback to spacing
-        const effectiveSpacing =
-          section.paddingTop || section.paddingBottom
-            ? undefined // Will use data-padding-top/bottom instead
-            : section.spacing;
 
         return (
           <Section
             key={section._key}
+            // Background
             background={dataBackground}
-            spacing={effectiveSpacing}
+            style={style}
+            // Padding
+            spacing={section.spacing}
             paddingTop={section.paddingTop}
             paddingBottom={section.paddingBottom}
+            // Width
+            width={section.width}
+            // Borders
             borderTop={section.borderTop}
             borderBottom={section.borderBottom}
+            // Shadow
             shadow={section.shadow}
-            width={
-              (section.container?.maxWidth || section.width) as
-                | Width
-                | "container"
-            }
+            // Min height
+            minHeight={section.minHeight}
+            verticalAlign={section.verticalAlign}
+            // Alignment
             align={section.align}
+            // Container settings
             container={section.container}
-            style={style}
           >
             <BlockRenderer blocks={section.blocks} />
           </Section>

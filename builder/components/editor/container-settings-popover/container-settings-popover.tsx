@@ -159,7 +159,11 @@ export function ContainerSettingsPopover({
               <div className="container-settings-section">
                 <ColorPicker
                   label="Background"
-                  value={typeof container.background === "string" ? container.background : "transparent"}
+                  value={
+                    typeof container.background === "string"
+                      ? container.background
+                      : "transparent"
+                  }
                   onChange={(value) =>
                     handleContainerChange({ background: value })
                   }

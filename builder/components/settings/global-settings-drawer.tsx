@@ -60,10 +60,7 @@ import {
   getBorderWidthValue,
   getShadowValue,
 } from "@/lib/tokens/design-system";
-import {
-  googleFonts,
-  findFont,
-} from "@/lib/fonts/google-fonts";
+import { googleFonts, findFont } from "@/lib/fonts/google-fonts";
 import type {
   FontDefinition,
   FontRole,

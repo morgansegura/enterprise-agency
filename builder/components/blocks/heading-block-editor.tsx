@@ -27,8 +27,23 @@ interface HeadingBlockData {
       | "8xl"
       | "9xl";
     align?: "left" | "center" | "right";
-    weight?: "normal" | "medium" | "semibold" | "bold" | "thin" | "extralight" | "light" | "extrabold" | "black";
-    letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
+    weight?:
+      | "normal"
+      | "medium"
+      | "semibold"
+      | "bold"
+      | "thin"
+      | "extralight"
+      | "light"
+      | "extrabold"
+      | "black";
+    letterSpacing?:
+      | "tighter"
+      | "tight"
+      | "normal"
+      | "wide"
+      | "wider"
+      | "widest";
     lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
     color?: string; // Any color: preset name, hex, rgb, css var
     fontFamily?: string; // Font family: global preset var or custom font string
@@ -143,14 +158,22 @@ export function HeadingBlockEditor({
     getResponsiveValue<string>(block.data, "align", breakpoint) || "left";
   const weight =
     getResponsiveValue<string>(block.data, "weight", breakpoint) || "semibold";
-  const letterSpacing =
-    getResponsiveValue<string>(block.data, "letterSpacing", breakpoint);
-  const lineHeight =
-    getResponsiveValue<string>(block.data, "lineHeight", breakpoint);
-  const color =
-    getResponsiveValue<string>(block.data, "color", breakpoint);
-  const fontFamily =
-    getResponsiveValue<string>(block.data, "fontFamily", breakpoint);
+  const letterSpacing = getResponsiveValue<string>(
+    block.data,
+    "letterSpacing",
+    breakpoint,
+  );
+  const lineHeight = getResponsiveValue<string>(
+    block.data,
+    "lineHeight",
+    breakpoint,
+  );
+  const color = getResponsiveValue<string>(block.data, "color", breakpoint);
+  const fontFamily = getResponsiveValue<string>(
+    block.data,
+    "fontFamily",
+    breakpoint,
+  );
 
   const headingClasses = cn(
     sizeMap[size],

@@ -19,7 +19,16 @@ interface HeadingBlockData {
     | "8xl"
     | "9xl";
   align?: "left" | "center" | "right";
-  weight?: "thin" | "extralight" | "light" | "normal" | "medium" | "semibold" | "bold" | "extrabold" | "black";
+  weight?:
+    | "thin"
+    | "extralight"
+    | "light"
+    | "normal"
+    | "medium"
+    | "semibold"
+    | "bold"
+    | "extrabold"
+    | "black";
   letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
   lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
   color?: string; // Any color: preset name, hex, rgb, css var

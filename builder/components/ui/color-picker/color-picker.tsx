@@ -313,7 +313,11 @@ export type ShadeKey = keyof (typeof tailwindColors)["slate"];
 // The value uses "primary" etc. for the design (inside .design-preview context)
 // The preview uses --theme-* directly to show the configured theme color
 export const themeColors = [
-  { value: "var(--primary)", preview: "var(--theme-primary)", title: "Primary" },
+  {
+    value: "var(--primary)",
+    preview: "var(--theme-primary)",
+    title: "Primary",
+  },
   {
     value: "var(--secondary)",
     preview: "var(--theme-secondary)",

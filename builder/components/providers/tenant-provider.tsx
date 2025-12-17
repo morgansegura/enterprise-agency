@@ -46,10 +46,9 @@ function applyTokensToDOM(tokens: Record<string, unknown>) {
   }
 
   // Apply color scales
-  const colors = tokens.colors as Record<
-    string,
-    Record<string, string>
-  > | undefined;
+  const colors = tokens.colors as
+    | Record<string, Record<string, string>>
+    | undefined;
   if (colors) {
     for (const [colorName, scale] of Object.entries(colors)) {
       if (scale && typeof scale === "object") {
@@ -61,7 +60,9 @@ function applyTokensToDOM(tokens: Record<string, unknown>) {
   }
 
   // Apply border radius
-  const borderRadius = tokens.borderRadius as Record<string, string> | undefined;
+  const borderRadius = tokens.borderRadius as
+    | Record<string, string>
+    | undefined;
   if (borderRadius) {
     for (const [key, value] of Object.entries(borderRadius)) {
       root.style.setProperty(`--radius-${key}`, value);

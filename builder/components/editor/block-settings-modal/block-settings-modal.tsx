@@ -163,13 +163,17 @@ export function BlockSettingsModal({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="thin">Thin (100)</SelectItem>
-                      <SelectItem value="extralight">Extra Light (200)</SelectItem>
+                      <SelectItem value="extralight">
+                        Extra Light (200)
+                      </SelectItem>
                       <SelectItem value="light">Light (300)</SelectItem>
                       <SelectItem value="normal">Normal (400)</SelectItem>
                       <SelectItem value="medium">Medium (500)</SelectItem>
                       <SelectItem value="semibold">Semibold (600)</SelectItem>
                       <SelectItem value="bold">Bold (700)</SelectItem>
-                      <SelectItem value="extrabold">Extra Bold (800)</SelectItem>
+                      <SelectItem value="extrabold">
+                        Extra Bold (800)
+                      </SelectItem>
                       <SelectItem value="black">Black (900)</SelectItem>
                     </SelectContent>
                   </Select>

@@ -279,9 +279,7 @@ export function EditableFooter({
         </div>
 
         {/* Footer name badge */}
-        <div className="footer-name-badge">
-          {footer.name}
-        </div>
+        <div className="footer-name-badge">{footer.name}</div>
       </div>
 
       {/* Library picker modal */}

@@ -6,7 +6,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { Section, SectionBackground, ContainerSettings } from "@/lib/hooks/use-pages";
+import type {
+  Section,
+  SectionBackground,
+  ContainerSettings,
+} from "@/lib/hooks/use-pages";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
 import { SectionActionsPopover } from "../section-actions-popover";
@@ -32,180 +36,54 @@ interface SortableSectionProps {
   children: React.ReactNode;
 }
 
-// =============================================================================
-// Style Mappings (matches client/components/layout/section/section.tsx)
-// =============================================================================
-
-const paddingTopClasses: Record<string, string> = {
-  none: "pt-0",
-  xs: "pt-2",
-  sm: "pt-4",
-  md: "pt-8",
-  lg: "pt-12",
-  xl: "pt-16",
-  "2xl": "pt-24",
-  "3xl": "pt-32",
-  "4xl": "pt-40",
-  "5xl": "pt-48",
-  "6xl": "pt-56",
-  "7xl": "pt-64",
-};
-
-const paddingBottomClasses: Record<string, string> = {
-  none: "pb-0",
-  xs: "pb-2",
-  sm: "pb-4",
-  md: "pb-8",
-  lg: "pb-12",
-  xl: "pb-16",
-  "2xl": "pb-24",
-  "3xl": "pb-32",
-  "4xl": "pb-40",
-  "5xl": "pb-48",
-  "6xl": "pb-56",
-  "7xl": "pb-64",
-};
-
-const sectionBorderClasses: Record<string, string> = {
-  none: "",
-  thin: "border-[1px] border-gray-200",
-  medium: "border-[2px] border-gray-200",
-  thick: "border-[4px] border-gray-200",
-};
-
-const sectionShadowClasses: Record<string, string> = {
-  none: "",
-  sm: "shadow-sm",
-  md: "shadow-md",
-  lg: "shadow-lg",
-  xl: "shadow-xl",
-  inner: "shadow-inner",
-};
-
-const widthClasses: Record<string, string> = {
-  narrow: "max-w-3xl",
-  container: "max-w-5xl",
-  wide: "max-w-7xl",
-  full: "w-full",
-};
-
-const backgroundPresetClasses: Record<string, string> = {
-  none: "",
-  white: "bg-white",
-  gray: "bg-gray-100",
-  dark: "bg-gray-900 text-white",
-  primary: "bg-[var(--primary)] text-[var(--primary-foreground)]",
-  secondary: "bg-[var(--secondary)] text-[var(--secondary-foreground)]",
-};
-
-const alignClasses: Record<string, string> = {
-  left: "text-left",
-  center: "text-center",
-  right: "text-right",
-};
-
-const minHeightClasses: Record<string, string> = {
-  none: "",
-  sm: "min-h-[300px]",
-  md: "min-h-[400px]",
-  lg: "min-h-[500px]",
-  xl: "min-h-[600px]",
-  screen: "min-h-screen",
-};
-
-const verticalAlignClasses: Record<string, string> = {
-  top: "justify-start",
-  center: "justify-center",
-  bottom: "justify-end",
-};
-
-// Container style mappings
-const containerPaddingXClasses: Record<string, string> = {
-  none: "px-0",
-  xs: "px-2",
-  sm: "px-4",
-  md: "px-6",
-  lg: "px-8",
-  xl: "px-12",
-};
-
-const containerPaddingYClasses: Record<string, string> = {
-  none: "py-0",
-  xs: "py-2",
-  sm: "py-4",
-  md: "py-6",
-  lg: "py-8",
-  xl: "py-12",
-};
-
-const containerWidthClasses: Record<string, string> = {
-  narrow: "max-w-3xl",
-  container: "max-w-5xl",
-  wide: "max-w-7xl",
-  full: "w-full",
-};
-
-const gapClasses: Record<string, string> = {
-  none: "gap-0",
-  xs: "gap-2",
-  sm: "gap-4",
-  md: "gap-6",
-  lg: "gap-8",
-  xl: "gap-12",
-};
-
-const borderRadiusClasses: Record<string, string> = {
-  none: "rounded-none",
-  sm: "rounded-sm",
-  md: "rounded-md",
-  lg: "rounded-lg",
-  xl: "rounded-xl",
-  full: "rounded-full",
-};
-
-const shadowClasses: Record<string, string> = {
-  none: "shadow-none",
-  sm: "shadow-sm",
-  md: "shadow-md",
-  lg: "shadow-lg",
-  xl: "shadow-xl",
-};
+/**
+ * Background presets that map to data-background attribute values
+ */
+const backgroundPresets = [
+  "none",
+  "white",
+  "gray",
+  "dark",
+  "primary",
+  "secondary",
+  "muted",
+  "accent",
+];
 
 /**
  * Generate background styles from SectionBackground object
+ * Returns data attribute value and inline styles for custom backgrounds
  */
 function getBackgroundStyles(background?: string | SectionBackground): {
-  className: string;
+  dataBackground: string;
   style: React.CSSProperties;
 } {
   if (!background) {
-    return { className: "", style: {} };
+    return { dataBackground: "none", style: {} };
   }
 
-  // Legacy string format
+  // Legacy string format - check if it's a preset
   if (typeof background === "string") {
-    return {
-      className: backgroundPresetClasses[background] || "",
-      style: {},
-    };
+    if (backgroundPresets.includes(background)) {
+      return { dataBackground: background, style: {} };
+    }
+    // Custom color string
+    return { dataBackground: "none", style: { backgroundColor: background } };
   }
 
   // Object format
   switch (background.type) {
     case "none":
-      return { className: "", style: {} };
+      return { dataBackground: "none", style: {} };
 
     case "color":
       // Check if it's a preset color name
-      if (background.color && backgroundPresetClasses[background.color]) {
-        return {
-          className: backgroundPresetClasses[background.color],
-          style: {},
-        };
+      if (background.color && backgroundPresets.includes(background.color)) {
+        return { dataBackground: background.color, style: {} };
       }
       // Custom color
       return {
-        className: "",
+        dataBackground: "none",
         style: { backgroundColor: background.color || "transparent" },
       };
 
@@ -219,9 +97,9 @@ function getBackgroundStyles(background?: string | SectionBackground): {
           type === "linear"
             ? `linear-gradient(${angle || 180}deg, ${stopStr})`
             : `radial-gradient(circle, ${stopStr})`;
-        return { className: "", style: { background: gradientCss } };
+        return { dataBackground: "none", style: { background: gradientCss } };
       }
-      return { className: "", style: {} };
+      return { dataBackground: "none", style: {} };
 
     case "image":
       if (background.image?.src) {
@@ -231,12 +109,12 @@ function getBackgroundStyles(background?: string | SectionBackground): {
           backgroundPosition: background.image.position || "center",
           backgroundRepeat: background.image.repeat || "no-repeat",
         };
-        return { className: "", style: imageStyle };
+        return { dataBackground: "none", style: imageStyle };
       }
-      return { className: "", style: {} };
+      return { dataBackground: "none", style: {} };
 
     default:
-      return { className: "", style: {} };
+      return { dataBackground: "none", style: {} };
   }
 }
 
@@ -244,7 +122,14 @@ function getBackgroundStyles(background?: string | SectionBackground): {
  * Sortable Section Component
  *
  * Wraps a section with drag-and-drop functionality and section-level controls.
- * Renders content exactly as it will appear on the live site (WYSIWYG).
+ * Renders content using data-* attributes for WYSIWYG parity with client.
+ *
+ * Structure matches client Section component:
+ * <div.section-visual data-*>  <- Section wrapper (background, padding, border, shadow)
+ *   <div.section-container data-*>  <- Inner container (layout, container styles)
+ *     {blocks}
+ *   </div>
+ * </div>
  */
 export function SortableSection({
   section,
@@ -276,48 +161,35 @@ export function SortableSection({
     transition,
   };
 
-  // Get section wrapper styles (paddingTop, paddingBottom, background)
+  // Get effective padding values
   const effectivePaddingTop = section.paddingTop || section.spacing || "md";
   const effectivePaddingBottom =
     section.paddingBottom || section.spacing || "md";
-  const sectionPaddingTop =
-    paddingTopClasses[effectivePaddingTop] || paddingTopClasses.md;
-  const sectionPaddingBottom =
-    paddingBottomClasses[effectivePaddingBottom] || paddingBottomClasses.md;
-  const sectionAlign = alignClasses[section.align || "left"] || "";
-  const sectionMinHeight = minHeightClasses[section.minHeight || "none"] || "";
-  const sectionVerticalAlign =
-    section.minHeight && section.minHeight !== "none"
-      ? verticalAlignClasses[section.verticalAlign || "top"] || ""
-      : "";
-
-  // Get section border and shadow classes
-  const sectionBorderTop =
-    section.borderTop && section.borderTop !== "none"
-      ? `border-t-[${section.borderTop === "thin" ? "1px" : section.borderTop === "medium" ? "2px" : "4px"}] border-t-gray-200`
-      : "";
-  const sectionBorderBottom =
-    section.borderBottom && section.borderBottom !== "none"
-      ? `border-b-[${section.borderBottom === "thin" ? "1px" : section.borderBottom === "medium" ? "2px" : "4px"}] border-b-gray-200`
-      : "";
-  const sectionShadow = sectionShadowClasses[section.shadow || "none"] || "";
 
   // Get background styles
-  const { className: bgClassName, style: bgStyle } = getBackgroundStyles(
+  const { dataBackground, style: bgStyle } = getBackgroundStyles(
     section.background,
   );
 
   // Helper to get responsive container value
   const getContainerValue = <T,>(field: string, defaultValue: T): T => {
     if (!section.container) return defaultValue;
-    const containerData = section.container as unknown as Record<string, unknown>;
-    return getResponsiveValue<T>(containerData, field, breakpoint) ?? defaultValue;
+    const containerData = section.container as unknown as Record<
+      string,
+      unknown
+    >;
+    return (
+      getResponsiveValue<T>(containerData, field, breakpoint) ?? defaultValue
+    );
   };
 
   // Helper to get responsive layout value
   const getLayoutValue = <T,>(field: string, defaultValue: T): T => {
     if (!section.container?.layout) return defaultValue;
-    const layoutData = section.container.layout as unknown as Record<string, unknown>;
+    const layoutData = section.container.layout as unknown as Record<
+      string,
+      unknown
+    >;
     return getResponsiveValue<T>(layoutData, field, breakpoint) ?? defaultValue;
   };
 
@@ -329,66 +201,23 @@ export function SortableSection({
   // Track popover open state to keep buttons visible
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
-  // Get section width class (constrains entire section including background)
-  // Uses section.width (from Section Settings), not container.maxWidth
-  const sectionWidthClass = section.width && section.width !== "full"
-    ? widthClasses[section.width] || ""
-    : "";
-
-  // Build inner container classes (for layout only, not width)
-  const innerContainerClasses: string[] = [];
-
-  if (section.container?.layout) {
-    const type = getLayoutValue<string>("type", "stack");
-    const direction = getLayoutValue<string>("direction", "column");
-    const gap = getLayoutValue<string>("gap", "md");
-    const columns = section.container.layout.columns;
-    const justify = section.container.layout.justify;
-    const align = section.container.layout.align;
-
-    if (type === "flex") {
-      innerContainerClasses.push("flex");
-      innerContainerClasses.push(direction === "row" ? "flex-row" : "flex-col");
-    } else if (type === "grid") {
-      innerContainerClasses.push("grid");
-      if (typeof columns === "number") {
-        innerContainerClasses.push(`grid-cols-${columns}`);
-      } else if (columns === "auto-fit") {
-        innerContainerClasses.push(
-          "grid-cols-[repeat(auto-fit,minmax(250px,1fr))]",
-        );
-      }
-    } else {
-      // stack (default)
-      innerContainerClasses.push("flex flex-col");
-    }
-
-    if (gap) {
-      innerContainerClasses.push(gapClasses[gap] || "");
-    }
-    if (justify) {
-      innerContainerClasses.push(`justify-${justify}`);
-    }
-    if (align) {
-      innerContainerClasses.push(`items-${align}`);
-    }
-  }
-
-  // Get container padding (for inner container)
+  // Get container padding
   const containerPaddingX = section.container
-    ? getContainerValue<string>("paddingX", "sm")
-    : "sm";
+    ? getContainerValue<string>("paddingX", undefined)
+    : undefined;
   const containerPaddingY = section.container
     ? getContainerValue<string | undefined>("paddingY", undefined)
     : undefined;
 
-  // Build container style
+  // Build container inline style for custom background
   const containerInlineStyle: React.CSSProperties = {};
   if (section.container?.background) {
-    if (typeof section.container.background === "string" && section.container.background !== "transparent") {
+    if (
+      typeof section.container.background === "string" &&
+      section.container.background !== "transparent"
+    ) {
       containerInlineStyle.backgroundColor = section.container.background;
     }
-    // TODO: Support SectionBackground object for container (gradient/image)
   }
 
   return (
@@ -402,28 +231,24 @@ export function SortableSection({
         isPopoverOpen && "is-popover-open",
       )}
     >
-      {/* Section Visual - constrained width with SECTION background, padding, border */}
+      {/* Section Visual - renders with same data attributes as client Section component */}
       <div
-        className={cn(
-          "section-visual",
-          // Width constraint (constrains entire visible section)
-          sectionWidthClass,
-          sectionWidthClass && "mx-auto",
-          // SECTION Background
-          bgClassName,
-          // SECTION Padding (top/bottom only - from section settings)
-          sectionPaddingTop,
-          sectionPaddingBottom,
-          // SECTION Border & shadow
-          sectionBorderTop,
-          sectionBorderBottom,
-          sectionShadow,
-          // Min height & alignment
-          sectionMinHeight,
-          sectionMinHeight && "flex flex-col",
-          sectionVerticalAlign,
-          sectionAlign,
-        )}
+        className="section-visual section"
+        // Section-level data attributes (matches client/components/layout/section/section.tsx)
+        data-padding-top={effectivePaddingTop}
+        data-padding-bottom={effectivePaddingBottom}
+        data-background={dataBackground}
+        data-width={section.width || "full"}
+        data-align={section.align || "left"}
+        data-border-top={section.borderTop || "none"}
+        data-border-bottom={section.borderBottom || "none"}
+        data-shadow={section.shadow || "none"}
+        data-min-height={section.minHeight || "none"}
+        data-vertical-align={
+          section.minHeight && section.minHeight !== "none"
+            ? section.verticalAlign || "top"
+            : undefined
+        }
         style={bgStyle}
       >
         {/* Drag Handle - Left side */}
@@ -488,33 +313,33 @@ export function SortableSection({
           </>
         )}
 
-        {/* Inner Container - applies CONTAINER styles and layout */}
+        {/* Inner Container - renders with same data attributes as client */}
         <div
-          className={cn(
-            "section-container",
-            // Container padding
-            containerPaddingXClasses[containerPaddingX] || "px-4",
-            containerPaddingY && containerPaddingYClasses[containerPaddingY],
-            section.container?.paddingTop && paddingTopClasses[section.container.paddingTop],
-            section.container?.paddingBottom && paddingBottomClasses[section.container.paddingBottom],
-            // Container border
-            section.container?.borderTop && section.container.borderTop !== "none" &&
-              `border-t-[${section.container.borderTop === "thin" ? "1px" : section.container.borderTop === "medium" ? "2px" : "4px"}] border-t-gray-200`,
-            section.container?.borderBottom && section.container.borderBottom !== "none" &&
-              `border-b-[${section.container.borderBottom === "thin" ? "1px" : section.container.borderBottom === "medium" ? "2px" : "4px"}] border-b-gray-200`,
-            // Container effects
-            section.container?.borderRadius && borderRadiusClasses[section.container.borderRadius],
-            section.container?.shadow && shadowClasses[section.container.shadow],
-            // Container min height
-            section.container?.minHeight && minHeightClasses[section.container.minHeight],
-            section.container?.minHeight && section.container.minHeight !== "none" && "flex flex-col",
-            section.container?.verticalAlign && section.container.minHeight && verticalAlignClasses[section.container.verticalAlign],
-            // Container alignment
-            section.container?.align && alignClasses[section.container.align],
-            // Layout classes
-            ...innerContainerClasses,
-          )}
-          style={Object.keys(containerInlineStyle).length > 0 ? containerInlineStyle : undefined}
+          className="section-container"
+          // Container-level data attributes
+          data-container-padding-x={containerPaddingX}
+          data-container-padding-y={containerPaddingY}
+          data-container-padding-top={section.container?.paddingTop}
+          data-container-padding-bottom={section.container?.paddingBottom}
+          data-container-border-top={section.container?.borderTop}
+          data-container-border-bottom={section.container?.borderBottom}
+          data-container-border-radius={section.container?.borderRadius}
+          data-container-shadow={section.container?.shadow}
+          data-container-min-height={section.container?.minHeight}
+          data-container-align={section.container?.align}
+          data-container-vertical-align={section.container?.verticalAlign}
+          // Layout attributes
+          data-layout-type={section.container?.layout?.type || "stack"}
+          data-layout-direction={section.container?.layout?.direction}
+          data-layout-gap={getLayoutValue<string>("gap", undefined)}
+          data-layout-columns={section.container?.layout?.columns}
+          data-layout-justify={section.container?.layout?.justify}
+          data-layout-align={section.container?.layout?.align}
+          style={
+            Object.keys(containerInlineStyle).length > 0
+              ? containerInlineStyle
+              : undefined
+          }
           onClick={(e) => {
             // Only deselect if clicking directly on container, not on a child block
             if (e.target === e.currentTarget) {

@@ -46,8 +46,8 @@ export default function ForgotPasswordPage() {
         <div className="auth-form-header">
           <h2 className="auth-form-title">Reset Password</h2>
           <p className="auth-form-subtitle">
-            Enter your email address and we&apos;ll send you instructions to reset
-            your password
+            Enter your email address and we&apos;ll send you instructions to
+            reset your password
           </p>
         </div>
 

@@ -22,8 +22,8 @@ export function DesignTokensTab({ tenantId }: DesignTokensTabProps) {
       <CardHeader>
         <CardTitle>Design Tokens</CardTitle>
         <CardDescription>
-          Customize your site&apos;s complete design system with colors, typography,
-          spacing, and more.
+          Customize your site&apos;s complete design system with colors,
+          typography, spacing, and more.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">

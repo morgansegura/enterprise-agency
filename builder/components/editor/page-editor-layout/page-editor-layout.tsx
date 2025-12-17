@@ -112,7 +112,11 @@ export function PageEditorLayout({
           {versions.length > 0 && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-muted-foreground">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground"
+                >
                   <History className="h-4 w-4" />
                   History
                   <ChevronDown className="h-3 w-3 ml-1" />
@@ -140,7 +144,9 @@ export function PageEditorLayout({
                   <>
                     <div className="border-t my-1" />
                     <DropdownMenuItem onClick={onViewAllHistory}>
-                      <span className="text-sm text-primary">View all history</span>
+                      <span className="text-sm text-primary">
+                        View all history
+                      </span>
                     </DropdownMenuItem>
                   </>
                 )}
@@ -227,7 +233,9 @@ export function PageEditorLayout({
       <div className="page-editor-body">
         <main className="page-editor-canvas">
           {/* design-preview class maps legacy tokens to --theme-* values */}
-          <div className="page-editor-canvas-content design-preview">{children}</div>
+          <div className="page-editor-canvas-content design-preview">
+            {children}
+          </div>
         </main>
       </div>
     </div>

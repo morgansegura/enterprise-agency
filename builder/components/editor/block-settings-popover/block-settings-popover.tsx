@@ -257,7 +257,10 @@ export function BlockSettingsPopover({
                   </SelectTrigger>
                   <SelectContent>
                     {fontPresetOptions.map((opt) => (
-                      <SelectItem key={opt.value || "default"} value={opt.value || "default"}>
+                      <SelectItem
+                        key={opt.value || "default"}
+                        value={opt.value || "default"}
+                      >
                         {opt.label}
                       </SelectItem>
                     ))}
@@ -270,10 +273,19 @@ export function BlockSettingsPopover({
                 <FormItem className="block-settings-field">
                   <Label>Custom Font</Label>
                   <Select
-                    value={getBlockData<string>("fontFamily", "'Inter', sans-serif").replace(/'/g, "").split(",")[0].trim()}
+                    value={getBlockData<string>(
+                      "fontFamily",
+                      "'Inter', sans-serif",
+                    )
+                      .replace(/'/g, "")
+                      .split(",")[0]
+                      .trim()}
                     onValueChange={(value) => {
                       const font = googleFonts.find((f) => f.family === value);
-                      handleDataChange("fontFamily", `'${value}', ${font?.category || "sans-serif"}`);
+                      handleDataChange(
+                        "fontFamily",
+                        `'${value}', ${font?.category || "sans-serif"}`,
+                      );
                     }}
                   >
                     <SelectTrigger>
@@ -284,38 +296,50 @@ export function BlockSettingsPopover({
                       <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
                         Popular
                       </div>
-                      {googleFonts.filter((f) => f.popular).map((font) => (
-                        <SelectItem key={font.family} value={font.family}>
-                          <span style={{ fontFamily: font.family }}>{font.family}</span>
-                        </SelectItem>
-                      ))}
+                      {googleFonts
+                        .filter((f) => f.popular)
+                        .map((font) => (
+                          <SelectItem key={font.family} value={font.family}>
+                            <span style={{ fontFamily: font.family }}>
+                              {font.family}
+                            </span>
+                          </SelectItem>
+                        ))}
                       {/* Sans-serif */}
                       <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
                         Sans-serif
                       </div>
-                      {googleFonts.filter((f) => f.category === "sans-serif" && !f.popular).map((font) => (
-                        <SelectItem key={font.family} value={font.family}>
-                          {font.family}
-                        </SelectItem>
-                      ))}
+                      {googleFonts
+                        .filter(
+                          (f) => f.category === "sans-serif" && !f.popular,
+                        )
+                        .map((font) => (
+                          <SelectItem key={font.family} value={font.family}>
+                            {font.family}
+                          </SelectItem>
+                        ))}
                       {/* Serif */}
                       <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
                         Serif
                       </div>
-                      {googleFonts.filter((f) => f.category === "serif").map((font) => (
-                        <SelectItem key={font.family} value={font.family}>
-                          {font.family}
-                        </SelectItem>
-                      ))}
+                      {googleFonts
+                        .filter((f) => f.category === "serif")
+                        .map((font) => (
+                          <SelectItem key={font.family} value={font.family}>
+                            {font.family}
+                          </SelectItem>
+                        ))}
                       {/* Display */}
                       <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
                         Display
                       </div>
-                      {googleFonts.filter((f) => f.category === "display").map((font) => (
-                        <SelectItem key={font.family} value={font.family}>
-                          {font.family}
-                        </SelectItem>
-                      ))}
+                      {googleFonts
+                        .filter((f) => f.category === "display")
+                        .map((font) => (
+                          <SelectItem key={font.family} value={font.family}>
+                            {font.family}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -332,7 +356,9 @@ export function BlockSettingsPopover({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="thin">Thin (100)</SelectItem>
-                    <SelectItem value="extralight">Extra Light (200)</SelectItem>
+                    <SelectItem value="extralight">
+                      Extra Light (200)
+                    </SelectItem>
                     <SelectItem value="light">Light (300)</SelectItem>
                     <SelectItem value="normal">Normal (400)</SelectItem>
                     <SelectItem value="medium">Medium (500)</SelectItem>

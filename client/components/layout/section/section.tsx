@@ -15,9 +15,16 @@ type ContainerSettings = {
   maxWidth?: "narrow" | "container" | "wide" | "full";
   paddingX?: string;
   paddingY?: string;
+  paddingTop?: string;
+  paddingBottom?: string;
   background?: string;
+  borderTop?: "none" | "thin" | "medium" | "thick";
+  borderBottom?: "none" | "thin" | "medium" | "thick";
   borderRadius?: string;
   shadow?: string;
+  minHeight?: string;
+  align?: string;
+  verticalAlign?: string;
   layout?: {
     type?: "stack" | "flex" | "grid";
     direction?: "column" | "row";
@@ -35,12 +42,12 @@ type SectionProps = {
   /** Vertical spacing (padding top/bottom) - used when paddingTop/Bottom not set */
   spacing?: Spacing;
   /** Individual padding top */
-  paddingTop?: Spacing | "3xl";
+  paddingTop?: Spacing | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
   /** Individual padding bottom */
-  paddingBottom?: Spacing | "3xl";
+  paddingBottom?: Spacing | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
   /** Background style */
   background?: BackgroundVariant;
-  /** Max width constraint */
+  /** Section width constraint */
   width?: Width | "container";
   /** Content alignment */
   align?: Exclude<TextAlign, "justify">;
@@ -50,103 +57,30 @@ type SectionProps = {
   borderBottom?: "none" | "thin" | "medium" | "thick";
   /** Section shadow */
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
+  /** Min height */
+  minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
+  /** Vertical alignment (when minHeight is set) */
+  verticalAlign?: "top" | "center" | "bottom";
   /** Container settings */
   container?: ContainerSettings;
-  /** Inline styles (for custom backgrounds) */
+  /** Inline styles (for custom backgrounds like gradients/images) */
   style?: React.CSSProperties;
   className?: string;
 };
 
 /**
- * Map spacing values to Tailwind classes
+ * Section Component - Token-Driven
+ *
+ * All styling is controlled via data-* attributes and CSS custom properties.
+ * This ensures WYSIWYG parity between builder preview and client render.
+ *
+ * Structure:
+ * <section data-*>          <- Section wrapper (background, padding, border, shadow)
+ *   <div.section-container> <- Inner container (max-width, layout, container styles)
+ *     {children}
+ *   </div>
+ * </section>
  */
-const spacingClasses: Record<string, { top: string; bottom: string }> = {
-  none: { top: "pt-0", bottom: "pb-0" },
-  xs: { top: "pt-2", bottom: "pb-2" },
-  sm: { top: "pt-4", bottom: "pb-4" },
-  md: { top: "pt-8", bottom: "pb-8" },
-  lg: { top: "pt-12", bottom: "pb-12" },
-  xl: { top: "pt-16", bottom: "pb-16" },
-  "2xl": { top: "pt-24", bottom: "pb-24" },
-  "3xl": { top: "pt-32", bottom: "pb-32" },
-};
-
-/**
- * Map border values to Tailwind classes
- */
-const borderTopClasses: Record<string, string> = {
-  none: "",
-  thin: "border-t border-gray-200",
-  medium: "border-t-2 border-gray-200",
-  thick: "border-t-4 border-gray-200",
-};
-
-const borderBottomClasses: Record<string, string> = {
-  none: "",
-  thin: "border-b border-gray-200",
-  medium: "border-b-2 border-gray-200",
-  thick: "border-b-4 border-gray-200",
-};
-
-/**
- * Map section shadow values to Tailwind classes
- */
-const sectionShadowClasses: Record<string, string> = {
-  none: "",
-  sm: "shadow-sm",
-  md: "shadow-md",
-  lg: "shadow-lg",
-  xl: "shadow-xl",
-  inner: "shadow-inner",
-};
-
-/**
- * Map container padding to Tailwind classes
- */
-const paddingXClasses: Record<string, string> = {
-  none: "px-0",
-  xs: "px-2",
-  sm: "px-4",
-  md: "px-6",
-  lg: "px-8",
-  xl: "px-12",
-};
-
-const paddingYClasses: Record<string, string> = {
-  none: "py-0",
-  xs: "py-2",
-  sm: "py-4",
-  md: "py-6",
-  lg: "py-8",
-  xl: "py-12",
-};
-
-const gapClasses: Record<string, string> = {
-  none: "gap-0",
-  xs: "gap-2",
-  sm: "gap-4",
-  md: "gap-6",
-  lg: "gap-8",
-  xl: "gap-12",
-};
-
-const borderRadiusClasses: Record<string, string> = {
-  none: "rounded-none",
-  sm: "rounded-sm",
-  md: "rounded-md",
-  lg: "rounded-lg",
-  xl: "rounded-xl",
-  full: "rounded-full",
-};
-
-const shadowClasses: Record<string, string> = {
-  none: "shadow-none",
-  sm: "shadow-sm",
-  md: "shadow-md",
-  lg: "shadow-lg",
-  xl: "shadow-xl",
-};
-
 export function Section({
   children,
   as: Component = "section",
@@ -159,67 +93,17 @@ export function Section({
   borderTop = "none",
   borderBottom = "none",
   shadow = "none",
+  minHeight = "none",
+  verticalAlign = "top",
   container,
   style,
   className,
 }: SectionProps) {
-  // Handle individual padding or fallback to spacing
+  // Effective padding (individual values take precedence over spacing)
   const effectivePaddingTop = paddingTop || spacing || "md";
   const effectivePaddingBottom = paddingBottom || spacing || "md";
 
-  // Build container classes
-  const containerClasses: string[] = [];
-  if (container) {
-    // Padding
-    if (container.paddingX) {
-      containerClasses.push(paddingXClasses[container.paddingX] || "");
-    }
-    if (container.paddingY) {
-      containerClasses.push(paddingYClasses[container.paddingY] || "");
-    }
-    // Border radius
-    if (container.borderRadius) {
-      containerClasses.push(borderRadiusClasses[container.borderRadius] || "");
-    }
-    // Shadow
-    if (container.shadow) {
-      containerClasses.push(shadowClasses[container.shadow] || "");
-    }
-    // Layout
-    if (container.layout) {
-      const {
-        type,
-        direction,
-        gap,
-        columns,
-        justify,
-        align: layoutAlign,
-      } = container.layout;
-      if (type === "flex") {
-        containerClasses.push("flex");
-        containerClasses.push(direction === "row" ? "flex-row" : "flex-col");
-      } else if (type === "grid") {
-        containerClasses.push("grid");
-        if (typeof columns === "number") {
-          containerClasses.push(`grid-cols-${columns}`);
-        }
-      } else {
-        // stack
-        containerClasses.push("flex flex-col");
-      }
-      if (gap) {
-        containerClasses.push(gapClasses[gap] || "");
-      }
-      if (justify) {
-        containerClasses.push(`justify-${justify}`);
-      }
-      if (layoutAlign) {
-        containerClasses.push(`items-${layoutAlign}`);
-      }
-    }
-  }
-
-  // Build container style
+  // Build container inline style for custom background
   const containerStyle: React.CSSProperties = {};
   if (container?.background && container.background !== "transparent") {
     containerStyle.backgroundColor = container.background;
@@ -227,22 +111,41 @@ export function Section({
 
   return (
     <Component
-      className={cn(
-        "section",
-        spacingClasses[effectivePaddingTop]?.top,
-        spacingClasses[effectivePaddingBottom]?.bottom,
-        borderTopClasses[borderTop] || "",
-        borderBottomClasses[borderBottom] || "",
-        sectionShadowClasses[shadow] || "",
-        className,
-      )}
+      className={cn("section", className)}
+      // Section-level data attributes (all styling via CSS)
+      data-padding-top={effectivePaddingTop}
+      data-padding-bottom={effectivePaddingBottom}
       data-background={background}
       data-width={width}
       data-align={align}
+      data-border-top={borderTop}
+      data-border-bottom={borderBottom}
+      data-shadow={shadow}
+      data-min-height={minHeight}
+      data-vertical-align={minHeight !== "none" ? verticalAlign : undefined}
       style={style}
     >
       <div
-        className={cn("section-container", ...containerClasses)}
+        className="section-container"
+        // Container-level data attributes
+        data-container-padding-x={container?.paddingX}
+        data-container-padding-y={container?.paddingY}
+        data-container-padding-top={container?.paddingTop}
+        data-container-padding-bottom={container?.paddingBottom}
+        data-container-border-top={container?.borderTop}
+        data-container-border-bottom={container?.borderBottom}
+        data-container-border-radius={container?.borderRadius}
+        data-container-shadow={container?.shadow}
+        data-container-min-height={container?.minHeight}
+        data-container-align={container?.align}
+        data-container-vertical-align={container?.verticalAlign}
+        // Layout attributes
+        data-layout-type={container?.layout?.type || "stack"}
+        data-layout-direction={container?.layout?.direction}
+        data-layout-gap={container?.layout?.gap}
+        data-layout-columns={container?.layout?.columns}
+        data-layout-justify={container?.layout?.justify}
+        data-layout-align={container?.layout?.align}
         style={
           Object.keys(containerStyle).length > 0 ? containerStyle : undefined
         }

@@ -712,9 +712,10 @@ export default function EditPagePage({
           restoreVersion.mutate(
             { pageId, versionId },
             {
-              onSuccess: () => toast.success("Page restored to previous version"),
+              onSuccess: () =>
+                toast.success("Page restored to previous version"),
               onError: () => toast.error("Failed to restore version"),
-            }
+            },
           );
         }}
         onViewAllHistory={() => {
