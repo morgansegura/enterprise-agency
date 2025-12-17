@@ -8,31 +8,32 @@
   @apply opacity-50 cursor-grabbing;
 }
 
-/* Section content wrapper with border */
-.section-content {
+/* Section visual - the constrained, visible section with background */
+.section-visual {
   @apply relative;
   @apply border-2 border-transparent;
   @apply transition-all duration-200;
 }
 
-.sortable-section:hover .section-content,
-.sortable-section.is-settings-open .section-content,
-.sortable-section.is-popover-open .section-content {
-  @apply border-(--primary);
+/* Use builder-primary for the section hover border (builder UI) */
+.sortable-section:hover .section-visual,
+.sortable-section.is-settings-open .section-visual,
+.sortable-section.is-popover-open .section-visual {
+  @apply border-(--builder-primary);
 }
 
 /* Hide section border when a block inside is selected */
-.sortable-section.has-selected-block .section-content,
-.sortable-section.has-selected-block:hover .section-content {
+.sortable-section.has-selected-block .section-visual,
+.sortable-section.has-selected-block:hover .section-visual {
   @apply border-transparent;
 }
 
-/* Drag handle - left side */
+/* Drag handle - left side (builder UI - use builder tokens) */
 .section-drag-handle {
   @apply absolute left-2 top-2 z-10;
   @apply p-2 rounded-lg;
-  @apply bg-(--card) border border-(--border) shadow-sm;
-  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
+  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground);
   @apply cursor-grab active:cursor-grabbing;
   @apply opacity-0 transition-opacity;
 }
@@ -48,12 +49,12 @@
   @apply opacity-100;
 }
 
-/* Actions handle - right side */
+/* Actions handle - right side (builder UI - use builder tokens) */
 .section-actions-handle {
   @apply absolute right-2 top-2 z-10;
   @apply p-2 rounded-lg;
-  @apply bg-(--card) border border-(--border) shadow-sm;
-  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
+  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground);
   @apply cursor-pointer;
   @apply opacity-0 transition-opacity;
 }
@@ -64,7 +65,7 @@
   @apply opacity-100;
 }
 
-/* Add Block button - top left */
+/* Add Block button - top left (builder UI - use builder tokens) */
 .section-add-block {
   @apply absolute left-14 top-2 z-10;
   @apply opacity-0 transition-opacity;
@@ -77,9 +78,9 @@
 }
 
 .section-add-block button {
-  @apply bg-(--card) border border-(--border) shadow-sm;
-  @apply text-(--foreground) font-semibold;
-  @apply hover:bg-(--muted);
+  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
+  @apply text-(--builder-foreground) font-semibold;
+  @apply hover:bg-(--builder-muted);
 }
 
 /* ADD SECTION buttons - positioned as overlays at section boundaries */
@@ -106,18 +107,19 @@
   @apply opacity-100 pointer-events-auto;
 }
 
+/* ADD SECTION button (builder UI - use builder tokens) */
 .section-add-btn {
-  @apply bg-(--primary) text-(--primary-foreground);
+  @apply bg-(--builder-primary) text-(--builder-primary-foreground);
   @apply font-semibold uppercase tracking-wide text-sm;
   @apply px-4 py-1.5;
-  @apply hover:bg-(--primary)/90;
+  @apply hover:bg-(--builder-primary)/90;
   @apply shadow-md uppercase;
 }
 
-/* Floating Action Panel - right side (inside the section) */
+/* Floating Action Panel - right side (builder UI - use builder tokens) */
 .section-panel {
   @apply absolute top-2 right-2 z-20;
-  @apply bg-(--card) border border-(--border) rounded-lg shadow-lg;
+  @apply bg-(--builder-card) border border-(--builder-border) rounded-lg shadow-lg;
   @apply p-2 min-w-[180px];
   @apply opacity-0 pointer-events-none transition-all duration-200;
   @apply flex flex-col gap-1;
@@ -131,7 +133,7 @@
 /* Panel items - full width buttons with icon + text */
 .section-panel-item {
   @apply w-full justify-start gap-3 text-sm;
-  @apply text-(--foreground) hover:bg-(--muted)/50 rounded-sm;
+  @apply text-(--builder-foreground) hover:bg-(--builder-muted)/50 rounded-sm;
   @apply h-10 px-3;
 }
 
@@ -142,17 +144,17 @@
 /* Panel row - icon buttons in a row */
 .section-panel-row {
   @apply flex items-center justify-between;
-  @apply border-y border-(--border) py-2 my-1;
+  @apply border-y border-(--builder-border) py-2 my-1;
 }
 
 .section-panel-row button {
   @apply h-8 w-8;
-  @apply text-(--muted-foreground) hover:text-(--foreground) hover:bg-(--muted);
+  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground) hover:bg-(--builder-muted);
 }
 
 /* Delete item - red styling */
 .section-panel-delete {
-  @apply text-(--destructive) hover:text-(--destructive) hover:bg-(--destructive)/10;
+  @apply text-(--builder-destructive) hover:text-(--builder-destructive) hover:bg-(--builder-destructive)/10;
 }
 
 /* Section container - applies container settings (width, layout, padding, etc.) */

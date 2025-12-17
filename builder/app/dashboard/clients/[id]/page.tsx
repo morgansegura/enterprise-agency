@@ -64,7 +64,7 @@ export default function ClientDetailPage({
 
   const features = (tenant.enabledFeatures as Record<string, boolean>) || {};
   const enabledFeatures = Object.entries(features)
-    .filter(([_, enabled]) => enabled)
+    .filter(([, enabled]) => enabled)
     .map(([feature]) => feature);
 
   const onSubmit = (data: ClientForm) => {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -11,7 +10,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Trash2, MoveVertical } from "lucide-react";
-import { FormItem } from "@/components/ui/form";
 import {
   ResponsiveField,
   useResponsiveChange,

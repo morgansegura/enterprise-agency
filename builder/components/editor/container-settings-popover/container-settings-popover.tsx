@@ -24,7 +24,7 @@ import type { Section, ContainerSettings } from "@/lib/hooks/use-pages";
 
 import "./container-settings-popover.css";
 
-type ContainerTab = "size" | "style" | "layout";
+type ContainerTab = "style" | "layout";
 
 interface ContainerSettingsPopoverProps {
   section: Section;
@@ -49,7 +49,7 @@ export function ContainerSettingsPopover({
   open,
   onOpenChange,
 }: ContainerSettingsPopoverProps) {
-  const [tab, setTab] = React.useState<ContainerTab>("size");
+  const [tab, setTab] = React.useState<ContainerTab>("style");
   const breakpoint = useCurrentBreakpoint();
 
   const container = section.container || {};
@@ -133,15 +133,6 @@ export function ContainerSettingsPopover({
             <button
               className={cn(
                 "container-popover-tab",
-                tab === "size" && "active",
-              )}
-              onClick={() => setTab("size")}
-            >
-              Size
-            </button>
-            <button
-              className={cn(
-                "container-popover-tab",
                 tab === "style" && "active",
               )}
               onClick={() => setTab("style")}
@@ -161,39 +152,23 @@ export function ContainerSettingsPopover({
         </div>
 
         <div className="container-settings-content">
-          {/* Size Tab */}
-          {tab === "size" && (
+          {/* Style Tab */}
+          {tab === "style" && (
             <>
-              {/* Max Width */}
+              {/* Background */}
               <div className="container-settings-section">
-                <h4 className="container-settings-section-title">MAX WIDTH</h4>
-                <Select
-                  value={container.maxWidth || "container"}
-                  onValueChange={(value) =>
-                    handleContainerChange({
-                      maxWidth: value as ContainerSettings["maxWidth"],
-                    })
+                <ColorPicker
+                  label="Background"
+                  value={typeof container.background === "string" ? container.background : "transparent"}
+                  onChange={(value) =>
+                    handleContainerChange({ background: value })
                   }
-                >
-                  <SelectTrigger className="h-9">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="narrow">Narrow (768px)</SelectItem>
-                    <SelectItem value="container">
-                      Container (1280px)
-                    </SelectItem>
-                    <SelectItem value="wide">Wide (1536px)</SelectItem>
-                    <SelectItem value="full">Full Width</SelectItem>
-                  </SelectContent>
-                </Select>
+                />
               </div>
 
               {/* Inner Padding */}
               <div className="container-settings-section">
-                <h4 className="container-settings-section-title">
-                  INNER PADDING
-                </h4>
+                <h4 className="container-settings-section-title">PADDING</h4>
                 <div className="container-settings-row">
                   <ResponsiveField
                     fieldName="paddingX"
@@ -208,7 +183,7 @@ export function ContainerSettingsPopover({
                     className="container-settings-field"
                   >
                     <Select
-                      value={getContainerValue("paddingX", "md")}
+                      value={getContainerValue("paddingX", "sm")}
                       onValueChange={(value) =>
                         handleResponsiveChange("paddingX", value)
                       }
@@ -218,11 +193,11 @@ export function ContainerSettingsPopover({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="xs">Extra Small</SelectItem>
-                        <SelectItem value="sm">Small</SelectItem>
-                        <SelectItem value="md">Medium</SelectItem>
-                        <SelectItem value="lg">Large</SelectItem>
-                        <SelectItem value="xl">Extra Large</SelectItem>
+                        <SelectItem value="xs">XS</SelectItem>
+                        <SelectItem value="sm">SM</SelectItem>
+                        <SelectItem value="md">MD</SelectItem>
+                        <SelectItem value="lg">LG</SelectItem>
+                        <SelectItem value="xl">XL</SelectItem>
                       </SelectContent>
                     </Select>
                   </ResponsiveField>
@@ -249,31 +224,15 @@ export function ContainerSettingsPopover({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="xs">Extra Small</SelectItem>
-                        <SelectItem value="sm">Small</SelectItem>
-                        <SelectItem value="md">Medium</SelectItem>
-                        <SelectItem value="lg">Large</SelectItem>
-                        <SelectItem value="xl">Extra Large</SelectItem>
+                        <SelectItem value="xs">XS</SelectItem>
+                        <SelectItem value="sm">SM</SelectItem>
+                        <SelectItem value="md">MD</SelectItem>
+                        <SelectItem value="lg">LG</SelectItem>
+                        <SelectItem value="xl">XL</SelectItem>
                       </SelectContent>
                     </Select>
                   </ResponsiveField>
                 </div>
-              </div>
-            </>
-          )}
-
-          {/* Style Tab */}
-          {tab === "style" && (
-            <>
-              {/* Background */}
-              <div className="container-settings-section">
-                <ColorPicker
-                  label="Background"
-                  value={container.background || "transparent"}
-                  onChange={(value) =>
-                    handleContainerChange({ background: value })
-                  }
-                />
               </div>
 
               {/* Border & Shadow */}

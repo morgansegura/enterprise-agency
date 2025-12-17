@@ -10,6 +10,7 @@ interface InlineTextProps {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  style?: React.CSSProperties;
   as?: "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   multiline?: boolean;
   disabled?: boolean;
@@ -32,6 +33,7 @@ export function InlineText({
   onChange,
   placeholder = "Type here...",
   className,
+  style,
   as: Component = "p",
   multiline = false,
   disabled = false,
@@ -109,6 +111,7 @@ export function InlineText({
         disabled && "cursor-default",
         className,
       )}
+      style={style}
       data-placeholder={placeholder}
     />
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { forgotPassword } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/errors";
@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
         <div className="auth-form-header">
           <h2 className="auth-form-title">Reset Password</h2>
           <p className="auth-form-subtitle">
-            Enter your email address and we'll send you instructions to reset
+            Enter your email address and we&apos;ll send you instructions to reset
             your password
           </p>
         </div>

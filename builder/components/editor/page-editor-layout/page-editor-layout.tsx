@@ -14,10 +14,19 @@ import {
   Check,
   Link,
   ExternalLink,
+  History,
 } from "lucide-react";
 import { BreakpointSelector, type Breakpoint } from "../breakpoint-selector";
 import { formatDistanceToNow } from "date-fns";
 import "./page-editor-layout.css";
+
+interface PageVersion {
+  id: string;
+  version: number;
+  title: string;
+  createdAt: string;
+  changeNote: string | null;
+}
 
 interface PageEditorLayoutProps {
   pageId: string;
@@ -28,6 +37,9 @@ interface PageEditorLayoutProps {
   onUnpublish?: () => void;
   onPreview?: () => void;
   onGeneratePreviewLink?: () => void;
+  versions?: PageVersion[];
+  onRestoreVersion?: (versionId: string) => void;
+  onViewAllHistory?: () => void;
   previewMode?: boolean;
   isSaving?: boolean;
   isPublished?: boolean;
@@ -54,6 +66,9 @@ export function PageEditorLayout({
   onUnpublish,
   onPreview,
   onGeneratePreviewLink,
+  versions = [],
+  onRestoreVersion,
+  onViewAllHistory,
   previewMode = false,
   isSaving = false,
   isPublished = false,
@@ -71,6 +86,13 @@ export function PageEditorLayout({
       );
     }
     if (lastSaved) {
+      // Show "All changes saved" if saved within last 10 seconds
+      const secondsAgo = (Date.now() - lastSaved.getTime()) / 1000;
+      if (secondsAgo < 10) {
+        return (
+          <span className="page-editor-status saved">All changes saved</span>
+        );
+      }
       return (
         <span className="page-editor-status saved">
           Saved {formatDistanceToNow(lastSaved, { addSuffix: true })}
@@ -84,7 +106,48 @@ export function PageEditorLayout({
     <div className="page-editor-layout" data-preview-mode={previewMode}>
       {/* Editor Toolbar */}
       <div className="page-editor-toolbar">
-        <div className="page-editor-toolbar-left">{renderSaveStatus()}</div>
+        <div className="page-editor-toolbar-left">
+          {renderSaveStatus()}
+          {/* History Dropdown */}
+          {versions.length > 0 && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-muted-foreground">
+                  <History className="h-4 w-4" />
+                  History
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-64">
+                {versions.slice(0, 5).map((version) => (
+                  <DropdownMenuItem
+                    key={version.id}
+                    onClick={() => onRestoreVersion?.(version.id)}
+                    className="flex flex-col items-start gap-0.5"
+                  >
+                    <span className="font-medium text-sm">
+                      Version {version.version}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {formatDistanceToNow(new Date(version.createdAt), {
+                        addSuffix: true,
+                      })}
+                      {version.changeNote && ` · ${version.changeNote}`}
+                    </span>
+                  </DropdownMenuItem>
+                ))}
+                {onViewAllHistory && (
+                  <>
+                    <div className="border-t my-1" />
+                    <DropdownMenuItem onClick={onViewAllHistory}>
+                      <span className="text-sm text-primary">View all history</span>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
         <div className="page-editor-toolbar-center">
           {onBreakpointChange && (
             <BreakpointSelector
@@ -163,7 +226,8 @@ export function PageEditorLayout({
       {/* Editor Body - Full width canvas */}
       <div className="page-editor-body">
         <main className="page-editor-canvas">
-          <div className="page-editor-canvas-content">{children}</div>
+          {/* design-preview class maps legacy tokens to --theme-* values */}
+          <div className="page-editor-canvas-content design-preview">{children}</div>
         </main>
       </div>
     </div>

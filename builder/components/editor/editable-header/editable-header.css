@@ -1,75 +1,92 @@
 @reference "tailwindcss";
 
 /* =============================================================================
-   Editable Header
+   Editable Header - Section-like behavior
    ============================================================================= */
 
 .editable-header {
   @apply relative;
 }
 
-/* Locked state - subtle indicator */
-.editable-header.is-locked .editable-header-locked {
-  @apply opacity-0 transition-opacity duration-200;
+/* =============================================================================
+   Header Visual - with border on hover (like section-visual)
+   ============================================================================= */
+
+.editable-header-visual {
+  @apply relative;
+  @apply border-2 border-transparent;
+  @apply transition-all duration-200;
 }
 
-.editable-header.is-locked:hover .editable-header-locked {
+/* Border on hover - use builder-primary (builder UI) */
+.editable-header:hover .editable-header-visual,
+.editable-header.is-settings-open .editable-header-visual,
+.editable-header.is-popover-open .editable-header-visual {
+  @apply border-(--builder-primary);
+}
+
+/* =============================================================================
+   Settings Handle - Right side (like section-actions-handle)
+   ============================================================================= */
+
+.header-settings-handle {
+  @apply absolute right-2 top-2 z-10;
+  @apply p-2 rounded-lg;
+  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
+  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground);
+  @apply cursor-pointer;
+  @apply opacity-0 transition-opacity;
+}
+
+.editable-header:hover .header-settings-handle,
+.editable-header.is-settings-open .header-settings-handle,
+.editable-header.is-popover-open .header-settings-handle {
   @apply opacity-100;
 }
 
-/* Unlocked state - show controls */
-.editable-header.is-unlocked {
-  outline: 2px solid var(--primary);
-  outline-offset: -2px;
-}
-
-.editable-header.is-editing {
-  outline: 2px solid var(--primary);
-  outline-offset: -2px;
-}
-
 /* =============================================================================
-   Locked Indicator
+   Actions Row - bottom left (clone, change buttons)
    ============================================================================= */
 
-.editable-header-locked {
-  @apply absolute top-2 left-2 z-10;
-  @apply flex items-center gap-2 px-2 py-1;
-  @apply bg-(--background)/95 backdrop-blur-sm rounded-md shadow-sm;
-  @apply text-xs font-medium text-(--muted-foreground);
-  @apply border border-(--border);
+.header-actions-row {
+  @apply absolute left-2 bottom-2 z-10;
+  @apply flex items-center gap-2;
+  @apply opacity-0 transition-opacity;
 }
 
-.editable-header-locked span {
-  @apply text-(--foreground);
+.editable-header:hover .header-actions-row,
+.editable-header.is-settings-open .header-actions-row,
+.editable-header.is-popover-open .header-actions-row {
+  @apply opacity-100;
 }
 
-.editable-header-edit-btn {
-  @apply h-6 px-2 text-xs gap-1;
-}
-
-.editable-header-change-btn {
-  @apply h-6 w-6 p-0;
+.header-action-btn {
+  @apply h-7 px-2 text-xs gap-1.5;
+  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
+  @apply text-(--builder-foreground) font-medium;
+  @apply hover:bg-(--builder-muted);
 }
 
 /* =============================================================================
-   Unlocked Controls
+   Header Name Badge - bottom right
    ============================================================================= */
 
-.editable-header-controls {
-  @apply absolute top-2 right-2 z-10;
-  @apply flex items-center gap-1 px-2 py-1.5;
-  @apply bg-(--background)/95 backdrop-blur-sm rounded-md shadow-lg;
-  @apply border border-(--border);
+.header-name-badge {
+  @apply absolute right-2 bottom-2 z-10;
+  @apply px-2 py-1;
+  @apply bg-(--builder-card)/90 backdrop-blur-sm border border-(--builder-border) rounded-md shadow-sm;
+  @apply text-xs font-medium text-(--builder-muted-foreground);
+  @apply opacity-0 transition-opacity;
 }
 
-.editable-header-panel-btn {
-  @apply h-7 px-2 text-xs gap-1.5 font-medium;
-  @apply text-(--muted-foreground) hover:text-(--foreground);
+.editable-header:hover .header-name-badge,
+.editable-header.is-settings-open .header-name-badge,
+.editable-header.is-popover-open .header-name-badge {
+  @apply opacity-100;
 }
 
 /* =============================================================================
-   Header Content
+   Header Content (the actual header - design preview)
    ============================================================================= */
 
 .editable-header-content {
@@ -93,7 +110,7 @@
 }
 
 /* =============================================================================
-   Header Zones
+   Header Zones (design content)
    ============================================================================= */
 
 .editable-header-zone {
@@ -113,11 +130,11 @@
 }
 
 .editable-header-zone-placeholder {
-  @apply text-xs text-(--muted-foreground) opacity-50;
+  @apply text-xs text-(--builder-muted-foreground) opacity-50;
 }
 
 /* =============================================================================
-   Header Elements
+   Header Elements (design content - uses design tokens)
    ============================================================================= */
 
 .header-logo {
@@ -154,10 +171,10 @@
 
 .editable-header-empty {
   @apply min-h-16 flex items-center justify-center;
-  @apply border-2 border-dashed border-(--border) rounded-lg;
-  @apply bg-(--muted)/30;
+  @apply border-2 border-dashed border-(--builder-border) rounded-lg;
+  @apply bg-(--builder-muted)/30;
 }
 
 .editable-header-empty-content {
-  @apply flex items-center gap-4 text-sm text-(--muted-foreground);
+  @apply flex items-center gap-4 text-sm text-(--builder-muted-foreground);
 }

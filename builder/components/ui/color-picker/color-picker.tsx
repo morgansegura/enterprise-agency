@@ -309,18 +309,21 @@ export type ShadeKey = keyof (typeof tailwindColors)["slate"];
 // Semantic & Basic colors
 // ============================================================================
 
+// Theme colors use --theme-* variables which are set from Global Settings
+// The value uses "primary" etc. for the design (inside .design-preview context)
+// The preview uses --theme-* directly to show the configured theme color
 export const themeColors = [
-  { value: "var(--primary)", preview: "var(--primary)", title: "Primary" },
+  { value: "var(--primary)", preview: "var(--theme-primary)", title: "Primary" },
   {
     value: "var(--secondary)",
-    preview: "var(--secondary)",
+    preview: "var(--theme-secondary)",
     title: "Secondary",
   },
-  { value: "var(--accent)", preview: "var(--accent)", title: "Accent" },
-  { value: "var(--muted)", preview: "var(--muted)", title: "Muted" },
+  { value: "var(--accent)", preview: "var(--theme-accent)", title: "Accent" },
+  { value: "var(--muted)", preview: "var(--theme-muted)", title: "Muted" },
   {
     value: "var(--destructive)",
-    preview: "var(--destructive)",
+    preview: "var(--theme-destructive)",
     title: "Destructive",
   },
 ];

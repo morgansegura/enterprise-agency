@@ -24,8 +24,7 @@ export default function ManageClientsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const resolvedParams = React.use(params);
-  const { id } = resolvedParams;
+  React.use(params);
   const router = useRouter();
 
   // Queries

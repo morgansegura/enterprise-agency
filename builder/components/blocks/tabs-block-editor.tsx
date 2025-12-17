@@ -247,7 +247,7 @@ export function TabsBlockEditor({
 
           {block.data.tabs.length === 0 && (
             <p className="text-sm text-muted-foreground text-center py-4">
-              No tabs yet. Click "Add Tab" to start.
+              No tabs yet. Click &quot;Add Tab&quot; to start.
             </p>
           )}
         </div>

@@ -43,7 +43,6 @@ import {
   Star,
   MapPin,
   ShoppingCart,
-  Mail,
 } from "lucide-react";
 import { toast } from "sonner";
 import { FormItem } from "@/components/ui/form";

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Lock, Unlock, Pencil, Copy, ArrowRightLeft } from "lucide-react";
+import { Settings2, Copy, ArrowRightLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   useFooter,
@@ -119,18 +119,16 @@ interface EditableFooterProps {
 /**
  * Editable Footer Component
  *
- * Wraps a footer for in-page editing with:
- * - Locked state by default (prevents accidental edits)
- * - Unlock to edit → shows settings popover
- * - Change footer → opens library picker
- * - Clone → duplicate and use the copy
+ * Wraps a footer for in-page editing with section-like behavior:
+ * - Controls appear on hover (settings, clone, change)
+ * - Border appears on hover
+ * - No lock/unlock - always editable
  */
 export function EditableFooter({
   tenantId,
   footerId,
   onFooterChange,
 }: EditableFooterProps) {
-  const [isLocked, setIsLocked] = React.useState(true);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [libraryOpen, setLibraryOpen] = React.useState(false);
 
@@ -193,12 +191,6 @@ export function EditableFooter({
     );
   };
 
-  // Handle unlock
-  const handleUnlock = () => {
-    setIsLocked(false);
-    setSettingsOpen(true);
-  };
-
   // Handle footer selection from library
   const handleSelectFooter = (selectedFooterId: string | null) => {
     onFooterChange?.(selectedFooterId);
@@ -235,97 +227,62 @@ export function EditableFooter({
     <div
       className={cn(
         "editable-footer",
-        isLocked && "is-locked",
-        !isLocked && "is-unlocked",
-        settingsOpen && "is-editing",
+        settingsOpen && "is-settings-open",
+        libraryOpen && "is-popover-open",
       )}
     >
-      {/* Footer Content */}
-      <FooterContent footer={footer} />
+      {/* Footer Visual - with border on hover */}
+      <div className="editable-footer-visual">
+        {/* Footer Content */}
+        <FooterContent footer={footer} />
 
-      {/* Locked indicator */}
-      {isLocked && (
-        <div className="editable-footer-locked">
-          <Lock className="h-3.5 w-3.5" />
-          <span>{footer.name}</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleUnlock}
-            className="editable-footer-edit-btn"
+        {/* Settings Handle - Right side (like section-actions-handle) */}
+        <FooterSettingsPopover
+          footer={footer}
+          open={settingsOpen}
+          onOpenChange={setSettingsOpen}
+          onStyleChange={handleStyleChange}
+          onFooterChange={handleFooterChange}
+        >
+          <button
+            className="footer-settings-handle"
+            aria-label="Footer settings"
           >
-            <Pencil className="h-3.5 w-3.5" />
-            Edit
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setLibraryOpen(true)}
-            className="editable-footer-change-btn"
-          >
-            <ArrowRightLeft className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-      )}
+            <Settings2 className="h-4 w-4" />
+          </button>
+        </FooterSettingsPopover>
 
-      {/* Unlocked controls */}
-      {!isLocked && (
-        <div className="editable-footer-controls">
-          {/* Settings popover trigger */}
-          <FooterSettingsPopover
-            footer={footer}
-            open={settingsOpen}
-            onOpenChange={(open) => {
-              setSettingsOpen(open);
-              if (!open) setIsLocked(true);
-            }}
-            onStyleChange={handleStyleChange}
-            onFooterChange={handleFooterChange}
-          >
-            <Button
-              variant="ghost"
-              size="sm"
-              className="editable-footer-panel-btn"
-            >
-              <Pencil className="h-4 w-4" />
-              <span>EDIT FOOTER</span>
-            </Button>
-          </FooterSettingsPopover>
-
+        {/* Actions row - shows on hover */}
+        <div className="footer-actions-row">
           {/* Clone */}
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={handleClone}
-            className="editable-footer-panel-btn"
+            className="footer-action-btn"
             disabled={duplicateFooter.isPending}
           >
-            <Copy className="h-4 w-4" />
-            <span>CLONE</span>
+            <Copy className="h-3.5 w-3.5" />
+            <span>Clone</span>
           </Button>
 
           {/* Change footer */}
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => setLibraryOpen(true)}
-            className="editable-footer-panel-btn"
+            className="footer-action-btn"
           >
-            <ArrowRightLeft className="h-4 w-4" />
-            <span>CHANGE</span>
-          </Button>
-
-          {/* Lock button */}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={() => setIsLocked(true)}
-            title="Lock footer"
-          >
-            <Unlock className="h-4 w-4" />
+            <ArrowRightLeft className="h-3.5 w-3.5" />
+            <span>Change</span>
           </Button>
         </div>
-      )}
+
+        {/* Footer name badge */}
+        <div className="footer-name-badge">
+          {footer.name}
+        </div>
+      </div>
 
       {/* Library picker modal */}
       <FooterLibraryPicker

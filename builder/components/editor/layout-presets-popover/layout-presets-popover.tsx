@@ -152,7 +152,6 @@ const layoutPresets: LayoutPreset[] = [
         type: "stack",
         gap: "md",
       },
-      maxWidth: "narrow",
     },
   },
   {

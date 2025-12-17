@@ -6,7 +6,9 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { Section, SectionBackground } from "@/lib/hooks/use-pages";
+import type { Section, SectionBackground, ContainerSettings } from "@/lib/hooks/use-pages";
+import { useCurrentBreakpoint } from "@/lib/responsive/context";
+import { getResponsiveValue } from "@/lib/responsive";
 import { SectionActionsPopover } from "../section-actions-popover";
 
 import "./sortable-section.css";
@@ -43,6 +45,10 @@ const paddingTopClasses: Record<string, string> = {
   xl: "pt-16",
   "2xl": "pt-24",
   "3xl": "pt-32",
+  "4xl": "pt-40",
+  "5xl": "pt-48",
+  "6xl": "pt-56",
+  "7xl": "pt-64",
 };
 
 const paddingBottomClasses: Record<string, string> = {
@@ -54,6 +60,10 @@ const paddingBottomClasses: Record<string, string> = {
   xl: "pb-16",
   "2xl": "pb-24",
   "3xl": "pb-32",
+  "4xl": "pb-40",
+  "5xl": "pb-48",
+  "6xl": "pb-56",
+  "7xl": "pb-64",
 };
 
 const sectionBorderClasses: Record<string, string> = {
@@ -92,6 +102,21 @@ const alignClasses: Record<string, string> = {
   left: "text-left",
   center: "text-center",
   right: "text-right",
+};
+
+const minHeightClasses: Record<string, string> = {
+  none: "",
+  sm: "min-h-[300px]",
+  md: "min-h-[400px]",
+  lg: "min-h-[500px]",
+  xl: "min-h-[600px]",
+  screen: "min-h-screen",
+};
+
+const verticalAlignClasses: Record<string, string> = {
+  top: "justify-start",
+  center: "justify-center",
+  bottom: "justify-end",
 };
 
 // Container style mappings
@@ -243,6 +268,9 @@ export function SortableSection({
     id: section._key,
   });
 
+  // Get current breakpoint for responsive values
+  const breakpoint = useCurrentBreakpoint();
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -257,6 +285,11 @@ export function SortableSection({
   const sectionPaddingBottom =
     paddingBottomClasses[effectivePaddingBottom] || paddingBottomClasses.md;
   const sectionAlign = alignClasses[section.align || "left"] || "";
+  const sectionMinHeight = minHeightClasses[section.minHeight || "none"] || "";
+  const sectionVerticalAlign =
+    section.minHeight && section.minHeight !== "none"
+      ? verticalAlignClasses[section.verticalAlign || "top"] || ""
+      : "";
 
   // Get section border and shadow classes
   const sectionBorderTop =
@@ -274,80 +307,19 @@ export function SortableSection({
     section.background,
   );
 
-  // Build container classes
-  const containerClasses: string[] = ["mx-auto px-4"];
-  const containerStyle: React.CSSProperties = {};
+  // Helper to get responsive container value
+  const getContainerValue = <T,>(field: string, defaultValue: T): T => {
+    if (!section.container) return defaultValue;
+    const containerData = section.container as unknown as Record<string, unknown>;
+    return getResponsiveValue<T>(containerData, field, breakpoint) ?? defaultValue;
+  };
 
-  if (section.container) {
-    const { container } = section;
-
-    // Max width
-    if (container.maxWidth) {
-      containerClasses.push(containerWidthClasses[container.maxWidth] || "");
-    } else {
-      containerClasses.push("max-w-7xl"); // Default wide
-    }
-
-    // Padding
-    if (container.paddingX) {
-      containerClasses.push(containerPaddingXClasses[container.paddingX] || "");
-    }
-    if (container.paddingY) {
-      containerClasses.push(containerPaddingYClasses[container.paddingY] || "");
-    }
-
-    // Border radius
-    if (container.borderRadius) {
-      containerClasses.push(borderRadiusClasses[container.borderRadius] || "");
-    }
-
-    // Shadow
-    if (container.shadow) {
-      containerClasses.push(shadowClasses[container.shadow] || "");
-    }
-
-    // Background color
-    if (container.background && container.background !== "transparent") {
-      containerStyle.backgroundColor = container.background;
-    }
-
-    // Layout
-    if (container.layout) {
-      const { type, direction, gap, columns, justify, align } =
-        container.layout;
-
-      if (type === "flex") {
-        containerClasses.push("flex");
-        containerClasses.push(direction === "row" ? "flex-row" : "flex-col");
-      } else if (type === "grid") {
-        containerClasses.push("grid");
-        if (typeof columns === "number") {
-          containerClasses.push(`grid-cols-${columns}`);
-        } else if (columns === "auto-fit") {
-          containerClasses.push(
-            "grid-cols-[repeat(auto-fit,minmax(250px,1fr))]",
-          );
-        }
-      } else {
-        // stack (default)
-        containerClasses.push("flex flex-col");
-      }
-
-      if (gap) {
-        containerClasses.push(gapClasses[gap] || "");
-      }
-      if (justify) {
-        containerClasses.push(`justify-${justify}`);
-      }
-      if (align) {
-        containerClasses.push(`items-${align}`);
-      }
-    }
-  } else {
-    // Default container width
-    const defaultWidth = section.width || "wide";
-    containerClasses.push(widthClasses[defaultWidth] || widthClasses.wide);
-  }
+  // Helper to get responsive layout value
+  const getLayoutValue = <T,>(field: string, defaultValue: T): T => {
+    if (!section.container?.layout) return defaultValue;
+    const layoutData = section.container.layout as unknown as Record<string, unknown>;
+    return getResponsiveValue<T>(layoutData, field, breakpoint) ?? defaultValue;
+  };
 
   // Check if any block in this section is selected
   const hasSelectedBlock = selectedBlockKey
@@ -357,32 +329,103 @@ export function SortableSection({
   // Track popover open state to keep buttons visible
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
-  // Combine section styles
-  const sectionStyle: React.CSSProperties = {
-    ...bgStyle,
-    ...style,
-  };
+  // Get section width class (constrains entire section including background)
+  // Uses section.width (from Section Settings), not container.maxWidth
+  const sectionWidthClass = section.width && section.width !== "full"
+    ? widthClasses[section.width] || ""
+    : "";
+
+  // Build inner container classes (for layout only, not width)
+  const innerContainerClasses: string[] = [];
+
+  if (section.container?.layout) {
+    const type = getLayoutValue<string>("type", "stack");
+    const direction = getLayoutValue<string>("direction", "column");
+    const gap = getLayoutValue<string>("gap", "md");
+    const columns = section.container.layout.columns;
+    const justify = section.container.layout.justify;
+    const align = section.container.layout.align;
+
+    if (type === "flex") {
+      innerContainerClasses.push("flex");
+      innerContainerClasses.push(direction === "row" ? "flex-row" : "flex-col");
+    } else if (type === "grid") {
+      innerContainerClasses.push("grid");
+      if (typeof columns === "number") {
+        innerContainerClasses.push(`grid-cols-${columns}`);
+      } else if (columns === "auto-fit") {
+        innerContainerClasses.push(
+          "grid-cols-[repeat(auto-fit,minmax(250px,1fr))]",
+        );
+      }
+    } else {
+      // stack (default)
+      innerContainerClasses.push("flex flex-col");
+    }
+
+    if (gap) {
+      innerContainerClasses.push(gapClasses[gap] || "");
+    }
+    if (justify) {
+      innerContainerClasses.push(`justify-${justify}`);
+    }
+    if (align) {
+      innerContainerClasses.push(`items-${align}`);
+    }
+  }
+
+  // Get container padding (for inner container)
+  const containerPaddingX = section.container
+    ? getContainerValue<string>("paddingX", "sm")
+    : "sm";
+  const containerPaddingY = section.container
+    ? getContainerValue<string | undefined>("paddingY", undefined)
+    : undefined;
+
+  // Build container style
+  const containerInlineStyle: React.CSSProperties = {};
+  if (section.container?.background) {
+    if (typeof section.container.background === "string" && section.container.background !== "transparent") {
+      containerInlineStyle.backgroundColor = section.container.background;
+    }
+    // TODO: Support SectionBackground object for container (gradient/image)
+  }
 
   return (
     <div
       ref={setNodeRef}
-      style={sectionStyle}
+      style={style}
       className={cn(
         "sortable-section",
         isDragging && "is-dragging",
         hasSelectedBlock && "has-selected-block",
         isPopoverOpen && "is-popover-open",
-        // Section wrapper styles
-        sectionPaddingTop,
-        sectionPaddingBottom,
-        sectionBorderTop,
-        sectionBorderBottom,
-        sectionShadow,
-        bgClassName,
       )}
     >
-      {/* Section Content with border */}
-      <div className={cn("section-content", sectionAlign)}>
+      {/* Section Visual - constrained width with SECTION background, padding, border */}
+      <div
+        className={cn(
+          "section-visual",
+          // Width constraint (constrains entire visible section)
+          sectionWidthClass,
+          sectionWidthClass && "mx-auto",
+          // SECTION Background
+          bgClassName,
+          // SECTION Padding (top/bottom only - from section settings)
+          sectionPaddingTop,
+          sectionPaddingBottom,
+          // SECTION Border & shadow
+          sectionBorderTop,
+          sectionBorderBottom,
+          sectionShadow,
+          // Min height & alignment
+          sectionMinHeight,
+          sectionMinHeight && "flex flex-col",
+          sectionVerticalAlign,
+          sectionAlign,
+        )}
+        style={bgStyle}
+      >
         {/* Drag Handle - Left side */}
         <button className="section-drag-handle" aria-label="Drag section">
           <GripVertical className="h-4 w-4" />
@@ -445,12 +488,33 @@ export function SortableSection({
           </>
         )}
 
-        {/* Container - applies container settings */}
+        {/* Inner Container - applies CONTAINER styles and layout */}
         <div
-          className={cn("section-container", ...containerClasses)}
-          style={
-            Object.keys(containerStyle).length > 0 ? containerStyle : undefined
-          }
+          className={cn(
+            "section-container",
+            // Container padding
+            containerPaddingXClasses[containerPaddingX] || "px-4",
+            containerPaddingY && containerPaddingYClasses[containerPaddingY],
+            section.container?.paddingTop && paddingTopClasses[section.container.paddingTop],
+            section.container?.paddingBottom && paddingBottomClasses[section.container.paddingBottom],
+            // Container border
+            section.container?.borderTop && section.container.borderTop !== "none" &&
+              `border-t-[${section.container.borderTop === "thin" ? "1px" : section.container.borderTop === "medium" ? "2px" : "4px"}] border-t-gray-200`,
+            section.container?.borderBottom && section.container.borderBottom !== "none" &&
+              `border-b-[${section.container.borderBottom === "thin" ? "1px" : section.container.borderBottom === "medium" ? "2px" : "4px"}] border-b-gray-200`,
+            // Container effects
+            section.container?.borderRadius && borderRadiusClasses[section.container.borderRadius],
+            section.container?.shadow && shadowClasses[section.container.shadow],
+            // Container min height
+            section.container?.minHeight && minHeightClasses[section.container.minHeight],
+            section.container?.minHeight && section.container.minHeight !== "none" && "flex flex-col",
+            section.container?.verticalAlign && section.container.minHeight && verticalAlignClasses[section.container.verticalAlign],
+            // Container alignment
+            section.container?.align && alignClasses[section.container.align],
+            // Layout classes
+            ...innerContainerClasses,
+          )}
+          style={Object.keys(containerInlineStyle).length > 0 ? containerInlineStyle : undefined}
           onClick={(e) => {
             // Only deselect if clicking directly on container, not on a child block
             if (e.target === e.currentTarget) {

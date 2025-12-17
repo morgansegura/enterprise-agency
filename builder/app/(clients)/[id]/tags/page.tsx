@@ -1,12 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  useTagsWithCounts,
-  useRenameTag,
-  useDeleteTag,
-  type Tag,
-} from "@/lib/hooks";
+import { useTagsWithCounts, useRenameTag, useDeleteTag } from "@/lib/hooks";
 import { ContentList } from "@/components/layout/content-list";
 import {
   Dialog,

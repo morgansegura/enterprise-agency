@@ -26,19 +26,17 @@
 }
 
 .page-editor-status {
-  @apply text-xs;
+  @apply text-xs text-(--muted-foreground);
+  @apply whitespace-nowrap;
+  @apply min-w-[180px]; /* Prevent layout shift */
 }
 
 .page-editor-status.saving {
-  @apply text-(--muted-foreground);
+  @apply animate-pulse;
 }
 
 .page-editor-status.unsaved {
-  @apply text-(--warning);
-}
-
-.page-editor-status.saved {
-  @apply text-(--muted-foreground);
+  @apply text-amber-500;
 }
 
 /* Editor Body */

@@ -5,7 +5,6 @@ import { blockRegistry, type BlockEditorProps } from "@/lib/editor";
 import type { Block } from "@/lib/hooks/use-pages";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { useIsBuilder } from "@/lib/hooks/use-tier";
 import { toast } from "sonner";
 import { logger } from "@/lib/logger";
 
@@ -13,7 +12,6 @@ interface BlockEditorRendererProps {
   block: Block;
   onChange: (block: Block) => void;
   onDelete: () => void;
-  tenantId?: string;
   isSelected?: boolean;
 }
 
@@ -29,7 +27,6 @@ export function BlockEditorRenderer({
   block,
   onChange,
   onDelete,
-  tenantId,
   isSelected = false,
 }: BlockEditorRendererProps) {
   const [EditorComponent, setEditorComponent] =
@@ -38,7 +35,7 @@ export function BlockEditorRenderer({
     > | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const isBuilder = tenantId ? useIsBuilder(tenantId) : true;
+  const isBuilder = true;
 
   // Lazy load the editor component
   React.useEffect(() => {

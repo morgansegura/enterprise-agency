@@ -296,7 +296,7 @@ export function StatsBlockEditor({
             ))}
             {block.data.stats.length === 0 && (
               <p className="text-sm text-muted-foreground text-center py-4">
-                No stats yet. Click "Add Stat" to start.
+                No stats yet. Click &quot;Add Stat&quot; to start.
               </p>
             )}
           </div>

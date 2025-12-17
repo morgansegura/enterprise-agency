@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Lock, Unlock, Pencil, Copy, ArrowRightLeft } from "lucide-react";
+import { Settings2, ArrowRightLeft, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   useHeader,
@@ -134,18 +134,16 @@ interface EditableHeaderProps {
 /**
  * Editable Header Component
  *
- * Wraps a header for in-page editing with:
- * - Locked state by default (prevents accidental edits)
- * - Unlock to edit → shows settings popover
- * - Change header → opens library picker
- * - Clone → duplicate and use the copy
+ * Wraps a header for in-page editing with section-like behavior:
+ * - Controls appear on hover (settings, clone, change)
+ * - Border appears on hover
+ * - No lock/unlock - always editable
  */
 export function EditableHeader({
   tenantId,
   headerId,
   onHeaderChange,
 }: EditableHeaderProps) {
-  const [isLocked, setIsLocked] = React.useState(true);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [libraryOpen, setLibraryOpen] = React.useState(false);
 
@@ -208,12 +206,6 @@ export function EditableHeader({
     );
   };
 
-  // Handle unlock
-  const handleUnlock = () => {
-    setIsLocked(false);
-    setSettingsOpen(true);
-  };
-
   // Handle header selection from library
   const handleSelectHeader = (selectedHeaderId: string | null) => {
     onHeaderChange?.(selectedHeaderId);
@@ -250,97 +242,62 @@ export function EditableHeader({
     <div
       className={cn(
         "editable-header",
-        isLocked && "is-locked",
-        !isLocked && "is-unlocked",
-        settingsOpen && "is-editing",
+        settingsOpen && "is-settings-open",
+        libraryOpen && "is-popover-open",
       )}
     >
-      {/* Header Content */}
-      <HeaderContent header={header} tenantId={tenantId} />
+      {/* Header Visual - with border on hover */}
+      <div className="editable-header-visual">
+        {/* Header Content */}
+        <HeaderContent header={header} tenantId={tenantId} />
 
-      {/* Locked indicator */}
-      {isLocked && (
-        <div className="editable-header-locked">
-          <Lock className="h-3.5 w-3.5" />
-          <span>{header.name}</span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleUnlock}
-            className="editable-header-edit-btn"
+        {/* Settings Handle - Right side (like section-actions-handle) */}
+        <HeaderSettingsPopover
+          header={header}
+          open={settingsOpen}
+          onOpenChange={setSettingsOpen}
+          onStyleChange={handleStyleChange}
+          onHeaderChange={handleHeaderChange}
+        >
+          <button
+            className="header-settings-handle"
+            aria-label="Header settings"
           >
-            <Pencil className="h-3.5 w-3.5" />
-            Edit
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setLibraryOpen(true)}
-            className="editable-header-change-btn"
-          >
-            <ArrowRightLeft className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-      )}
+            <Settings2 className="h-4 w-4" />
+          </button>
+        </HeaderSettingsPopover>
 
-      {/* Unlocked controls */}
-      {!isLocked && (
-        <div className="editable-header-controls">
-          {/* Settings popover trigger */}
-          <HeaderSettingsPopover
-            header={header}
-            open={settingsOpen}
-            onOpenChange={(open) => {
-              setSettingsOpen(open);
-              if (!open) setIsLocked(true);
-            }}
-            onStyleChange={handleStyleChange}
-            onHeaderChange={handleHeaderChange}
-          >
-            <Button
-              variant="ghost"
-              size="sm"
-              className="editable-header-panel-btn"
-            >
-              <Pencil className="h-4 w-4" />
-              <span>EDIT HEADER</span>
-            </Button>
-          </HeaderSettingsPopover>
-
+        {/* Actions row - shows on hover */}
+        <div className="header-actions-row">
           {/* Clone */}
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={handleClone}
-            className="editable-header-panel-btn"
+            className="header-action-btn"
             disabled={duplicateHeader.isPending}
           >
-            <Copy className="h-4 w-4" />
-            <span>CLONE</span>
+            <Copy className="h-3.5 w-3.5" />
+            <span>Clone</span>
           </Button>
 
           {/* Change header */}
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => setLibraryOpen(true)}
-            className="editable-header-panel-btn"
+            className="header-action-btn"
           >
-            <ArrowRightLeft className="h-4 w-4" />
-            <span>CHANGE</span>
-          </Button>
-
-          {/* Lock button */}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={() => setIsLocked(true)}
-            title="Lock header"
-          >
-            <Unlock className="h-4 w-4" />
+            <ArrowRightLeft className="h-3.5 w-3.5" />
+            <span>Change</span>
           </Button>
         </div>
-      )}
+
+        {/* Header name badge */}
+        <div className="header-name-badge">
+          {header.name}
+        </div>
+      </div>
 
       {/* Library picker modal */}
       <HeaderLibraryPicker

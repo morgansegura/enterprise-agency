@@ -102,8 +102,8 @@ export function PostEditorLayout({
           )}
         </aside>
 
-        {/* Canvas */}
-        <main className="page-editor-canvas">{children}</main>
+        {/* Canvas - design-preview class maps legacy tokens to --theme-* values */}
+        <main className="page-editor-canvas design-preview">{children}</main>
 
         {/* Right Sidebar - Settings & Layers */}
         <aside

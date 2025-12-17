@@ -1,7 +1,10 @@
 "use client";
 
 import { useAuthStore } from "@/lib/stores/auth-store";
-import { useTenantsHealth, TenantHealthData } from "@/lib/hooks/use-tenants";
+import {
+  useTenantsHealth,
+  type TenantHealthData,
+} from "@/lib/hooks/use-tenants";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";

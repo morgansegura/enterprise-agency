@@ -1,5 +1,5 @@
 import {
-  publicApi,
+  createPublicApiClient,
   createPublicApiClientForTenant,
 } from "@/lib/public-api-client";
 import { mergeTokens, generateCSS, type TenantTokens } from "@/lib/tokens";
@@ -14,6 +14,71 @@ import {
   defaultFontConfig,
   type FontConfig,
 } from "@/lib/fonts";
+
+// Semantic color tokens saved from Global Settings
+interface SemanticColors {
+  primary?: string;
+  primaryForeground?: string;
+  secondary?: string;
+  secondaryForeground?: string;
+  accent?: string;
+  accentForeground?: string;
+  background?: string;
+  foreground?: string;
+  card?: string;
+  cardForeground?: string;
+  popover?: string;
+  popoverForeground?: string;
+  muted?: string;
+  mutedForeground?: string;
+  border?: string;
+  input?: string;
+  ring?: string;
+  destructive?: string;
+}
+
+/**
+ * Generate CSS from semantic colors
+ * Maps Global Settings semantic colors to CSS custom properties
+ */
+function generateSemanticCSS(semantic: SemanticColors): string {
+  const cssVars: string[] = [];
+
+  // Map camelCase keys to kebab-case CSS variable names
+  const keyMap: Record<keyof SemanticColors, string> = {
+    primary: "--primary",
+    primaryForeground: "--primary-foreground",
+    secondary: "--secondary",
+    secondaryForeground: "--secondary-foreground",
+    accent: "--accent",
+    accentForeground: "--accent-foreground",
+    background: "--background",
+    foreground: "--foreground",
+    card: "--card",
+    cardForeground: "--card-foreground",
+    popover: "--popover",
+    popoverForeground: "--popover-foreground",
+    muted: "--muted",
+    mutedForeground: "--muted-foreground",
+    border: "--border",
+    input: "--input",
+    ring: "--ring",
+    destructive: "--destructive",
+  };
+
+  for (const [key, cssVar] of Object.entries(keyMap)) {
+    const value = semantic[key as keyof SemanticColors];
+    if (value) {
+      cssVars.push(`${cssVar}: ${value};`);
+    }
+  }
+
+  if (cssVars.length === 0) {
+    return "";
+  }
+
+  return `:root {\n  ${cssVars.join("\n  ")}\n}`;
+}
 
 interface TokenProviderProps {
   tenantSlug?: string;
@@ -60,17 +125,18 @@ interface TokenProviderProps {
  */
 export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   let tenantTokens: TenantTokens &
-    Partial<DesignTokens> & { fonts?: FontConfig } = {};
+    Partial<DesignTokens> & { fonts?: FontConfig; semantic?: SemanticColors } =
+    {};
 
   try {
     // Fetch tenant token overrides from API
-    // Use tenant-specific client if slug provided, otherwise use default
+    // Use tenant-specific client if slug provided, otherwise resolve dynamically
     const api = tenantSlug
       ? await createPublicApiClientForTenant(tenantSlug)
-      : publicApi;
+      : await createPublicApiClient();
     const apiTokens = await api.getTokens();
     tenantTokens = apiTokens as TenantTokens &
-      Partial<DesignTokens> & { fonts?: FontConfig };
+      Partial<DesignTokens> & { fonts?: FontConfig; semantic?: SemanticColors };
   } catch (error) {
     // Graceful fallback: use platform defaults only
     logger.error(
@@ -88,8 +154,13 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
     shadows,
     transitions,
     fonts,
+    semantic,
     ...legacyTokens
   } = tenantTokens;
+
+  // Generate CSS for semantic colors (primary, secondary, background, etc.)
+  // These come from Global Settings and override the base colors
+  const semanticCSS = semantic ? generateSemanticCSS(semantic) : "";
 
   // Generate CSS for legacy token system (header, menu, footer, section)
   const mergedLegacyTokens = mergeTokens(legacyTokens as TenantTokens);
@@ -112,7 +183,8 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   const fontCSS = generateFontCSS(fontConfig);
 
   // Combine all CSS outputs
-  const combinedCSS = `${newCSS}\n\n/* Font Variables */\n:root {\n  ${fontCSS}\n}\n\n${legacyCSS}`;
+  // Semantic CSS comes last to override any defaults
+  const combinedCSS = `${newCSS}\n\n/* Font Variables */\n:root {\n  ${fontCSS}\n}\n\n${legacyCSS}\n\n/* Semantic Colors (Global Settings) */\n${semanticCSS}`;
 
   // Inject CSS and Google Fonts into <head>
   // This ensures tokens and fonts are available before any component renders
@@ -128,13 +200,7 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
 
       {/* Google Fonts stylesheet */}
       {googleFontsUrl && (
-        <link
-          rel="stylesheet"
-          href={googleFontsUrl}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore - fetchpriority is valid but not in types
-          fetchpriority="high"
-        />
+        <link rel="stylesheet" href={googleFontsUrl} fetchPriority="high" />
       )}
 
       {/* Design tokens CSS */}

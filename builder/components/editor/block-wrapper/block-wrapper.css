@@ -4,20 +4,20 @@
   @apply relative;
 }
 
-/* Selected state - blue outline */
+/* Selected state - blue outline (builder UI - use builder tokens) */
 .block-wrapper.is-selected {
-  @apply outline outline-2 outline-(--primary);
+  @apply outline outline-2 outline-(--builder-primary);
 }
 
 /* Hovered state (from layers popover) - dashed outline */
 .block-wrapper.is-hovered {
-  @apply outline outline-2 outline-dashed outline-(--primary);
+  @apply outline outline-2 outline-dashed outline-(--builder-primary);
 }
 
-/* Floating Toolbar - positioned above the block */
+/* Floating Toolbar - positioned above the block (builder UI) */
 .block-toolbar {
   @apply absolute -top-12 left-1/2 -translate-x-1/2;
-  @apply bg-(--card) border border-(--border) rounded-lg shadow-lg;
+  @apply bg-(--builder-card) border border-(--builder-border) rounded-lg shadow-lg;
   @apply px-2 py-1;
   @apply flex items-center gap-1;
   @apply z-20;
@@ -25,21 +25,21 @@
 
 .block-toolbar button {
   @apply h-8 w-8;
-  @apply text-(--muted-foreground) hover:text-(--foreground) hover:bg-(--muted);
+  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground) hover:bg-(--builder-muted);
   @apply rounded;
 }
 
 .block-toolbar-separator {
-  @apply w-px h-5 bg-(--border) mx-1;
+  @apply w-px h-5 bg-(--builder-border) mx-1;
 }
 
 .block-toolbar-delete {
-  @apply text-(--destructive) hover:text-(--destructive) hover:bg-(--destructive)/10;
+  @apply text-(--builder-destructive) hover:text-(--builder-destructive) hover:bg-(--builder-destructive)/10;
 }
 
-/* Selection handles - corner and edge squares */
+/* Selection handles - corner and edge squares (builder UI) */
 .block-handle {
-  @apply absolute w-2 h-2 bg-white border-2 border-(--primary);
+  @apply absolute w-2 h-2 bg-white border-2 border-(--builder-primary);
   @apply z-10;
 }
 

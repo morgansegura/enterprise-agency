@@ -3,6 +3,7 @@
 /* =============================================================================
    Header Settings Popover
    Matches section-settings-popover pattern
+   Uses --builder-* tokens (builder UI)
    ============================================================================= */
 
 .header-settings-popover {
@@ -18,7 +19,7 @@
 }
 
 .header-settings-section-title {
-  @apply text-xs font-semibold tracking-wide text-(--muted-foreground);
+  @apply text-xs font-semibold tracking-wide text-(--builder-muted-foreground);
 }
 
 .header-settings-field {
@@ -34,6 +35,6 @@
 }
 
 .header-settings-button.is-active {
-  @apply bg-(--primary) text-(--primary-foreground);
-  @apply hover:bg-(--primary) hover:text-(--primary-foreground);
+  @apply bg-(--builder-primary) text-(--builder-primary-foreground);
+  @apply hover:bg-(--builder-primary) hover:text-(--builder-primary-foreground);
 }

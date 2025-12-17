@@ -5,7 +5,6 @@ import {
   useAssets,
   useUploadAsset,
   useDeleteAsset,
-  type Asset,
 } from "@/lib/hooks/use-assets";
 import { ContentList } from "@/components/layout/content-list";
 import { Button } from "@/components/ui/button";
@@ -18,7 +17,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Image, Upload, Trash2, Copy, ExternalLink } from "lucide-react";
+import { Image, Trash2, Copy, ExternalLink } from "lucide-react";
 
 // Asset type for ContentList
 interface AssetItem {

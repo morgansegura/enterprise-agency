@@ -186,7 +186,7 @@ export default function EditPostPage({
             toast.error("Failed to publish post");
           },
         });
-      } catch (error) {
+      } catch {
         toast.error("Failed to save changes");
       }
     }

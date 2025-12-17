@@ -247,7 +247,7 @@ export function AccordionBlockEditor({
             ))}
             {block.data.items.length === 0 && (
               <p className="text-sm text-muted-foreground text-center py-4">
-                No items yet. Click "Add Item" to start.
+                No items yet. Click &quot;Add Item&quot; to start.
               </p>
             )}
           </div>

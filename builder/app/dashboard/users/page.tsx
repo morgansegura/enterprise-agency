@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAdminUsers, useDeleteUser, useUpdateUser } from "@/lib/hooks";
+import { useAdminUsers, useDeleteUser } from "@/lib/hooks";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,7 +31,6 @@ import {
   MoreHorizontal,
   Pencil,
   Trash2,
-  Shield,
   ShieldCheck,
   Mail,
   Circle,
@@ -84,7 +83,6 @@ export default function UsersPage() {
   const router = useRouter();
   const { data: users, isLoading, error } = useAdminUsers();
   const deleteUser = useDeleteUser();
-  const updateUser = useUpdateUser();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");

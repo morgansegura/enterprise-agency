@@ -48,14 +48,9 @@ export function SortableBlockItem({
   isFirst = false,
   isLast = false,
 }: SortableBlockItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: block._key });
+  const { setNodeRef, transform, transition, isDragging } = useSortable({
+    id: block._key,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -85,7 +80,6 @@ export function SortableBlockItem({
           block={block}
           onChange={onChange}
           onDelete={onDelete}
-          tenantId={tenantId}
           isSelected={isSelected}
         />
       </BlockWrapper>

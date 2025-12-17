@@ -8,8 +8,11 @@ import {
   usePublishPage,
   useUnpublishPage,
   useCreatePreviewToken,
+  usePageVersions,
+  useRestorePageVersion,
   type Section,
   type Block,
+  type PageSeo,
 } from "@/lib/hooks/use-pages";
 import { useAutoSave } from "@/lib/hooks/use-auto-save";
 import {
@@ -24,7 +27,6 @@ import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
 import { SortableSection } from "@/components/editor/sortable-section";
-import { GlobalSettingsDrawer } from "@/components/editor/global-settings-drawer";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
 import { blockRegistry } from "@/lib/editor";
@@ -63,6 +65,8 @@ export default function EditPagePage({
   const publishPage = usePublishPage(id);
   const unpublishPage = useUnpublishPage(id);
   const createPreviewToken = useCreatePreviewToken(id);
+  const { data: versions = [] } = usePageVersions(id, pageId);
+  const restoreVersion = useRestorePageVersion(id);
 
   // Drag-and-drop sensors
   const sensors = useSensors(
@@ -80,7 +84,6 @@ export default function EditPagePage({
 
   // Modal states
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
-  const [globalSettingsOpen, setGlobalSettingsOpen] = React.useState(false);
 
   // Preview mode from context (controls parent layout visibility)
   const {
@@ -105,9 +108,10 @@ export default function EditPagePage({
     slug: "",
     status: "draft",
     template: "default",
-    seo: undefined as import("@/lib/hooks/use-pages").PageSeo | undefined,
+    seo: undefined as PageSeo | undefined,
     headerId: null as string | null,
     footerId: null as string | null,
+    isHomePage: false,
   });
 
   // Auto-save hook
@@ -147,6 +151,7 @@ export default function EditPagePage({
         seo: page.seo,
         headerId: page.headerId || null,
         footerId: page.footerId || null,
+        isHomePage: page.isHomePage || false,
       });
     }
   }, [page]);
@@ -163,6 +168,36 @@ export default function EditPagePage({
   // Track if initial load is complete to avoid auto-saving on mount
   const initialLoadRef = React.useRef(true);
 
+  // Store autoSave functions in refs to avoid stale closures
+  const saveRef = React.useRef(autoSave.save);
+  const saveNowRef = React.useRef(autoSave.saveNow);
+  React.useEffect(() => {
+    saveRef.current = autoSave.save;
+    saveNowRef.current = autoSave.saveNow;
+  }, [autoSave.save, autoSave.saveNow]);
+
+  // Keyboard shortcut: Cmd+S / Ctrl+S to save
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+        e.preventDefault();
+        saveNowRef.current({
+          title: localPage.title,
+          slug: localPage.slug,
+          template: localPage.template,
+          seo: localPage.seo,
+          headerId: localPage.headerId,
+          footerId: localPage.footerId,
+          isHomePage: localPage.isHomePage,
+          sections,
+        });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [localPage, sections]);
+
   // Trigger auto-save when content changes (after initial load)
   React.useEffect(() => {
     if (initialLoadRef.current) {
@@ -171,13 +206,14 @@ export default function EditPagePage({
     }
 
     // Debounced save of current page state
-    autoSave.save({
+    saveRef.current({
       title: localPage.title,
       slug: localPage.slug,
       template: localPage.template,
       seo: localPage.seo,
       headerId: localPage.headerId,
       footerId: localPage.footerId,
+      isHomePage: localPage.isHomePage,
       sections,
     });
   }, [
@@ -188,6 +224,7 @@ export default function EditPagePage({
     localPage.seo,
     localPage.headerId,
     localPage.footerId,
+    localPage.isHomePage,
   ]);
 
   // Listen for block additions from BlocksLibrary
@@ -232,34 +269,17 @@ export default function EditPagePage({
   if (!page) return <div>Page not found</div>;
 
   const handleSave = () => {
-    updatePage.mutate(
-      {
-        id: pageId,
-        data: {
-          title: localPage.title,
-          slug: localPage.slug,
-          status: localPage.status,
-          template: localPage.template,
-          seo: localPage.seo,
-          headerId: localPage.headerId,
-          footerId: localPage.footerId,
-          sections,
-        },
-      },
-      {
-        onSuccess: () => {
-          toast.success("Page saved successfully");
-          // Cancel any pending auto-save after manual save
-          autoSave.cancel();
-        },
-        onError: (error) => {
-          toast.error("Failed to save page", {
-            description:
-              error instanceof Error ? error.message : "Unknown error",
-          });
-        },
-      },
-    );
+    // Use autoSave.saveNow to ensure lastSaved timestamp is updated
+    autoSave.saveNow({
+      title: localPage.title,
+      slug: localPage.slug,
+      template: localPage.template,
+      seo: localPage.seo,
+      headerId: localPage.headerId,
+      footerId: localPage.footerId,
+      isHomePage: localPage.isHomePage,
+      sections,
+    });
   };
 
   const handlePublish = async () => {
@@ -298,6 +318,7 @@ export default function EditPagePage({
             seo: localPage.seo,
             headerId: localPage.headerId,
             footerId: localPage.footerId,
+            isHomePage: localPage.isHomePage,
             sections,
           },
         });
@@ -311,7 +332,7 @@ export default function EditPagePage({
             toast.error("Failed to publish page");
           },
         });
-      } catch (error) {
+      } catch {
         toast.error("Failed to save changes");
       }
     }
@@ -543,17 +564,6 @@ export default function EditPagePage({
     toast.success("Section deleted");
   };
 
-  const handleAddSection = () => {
-    const newSection: Section = {
-      _type: "section",
-      _key: `section-${Date.now()}`,
-      blocks: [],
-    };
-
-    setSections((prevSections) => [...prevSections, newSection]);
-    toast.success("Section added");
-  };
-
   const handleAddSectionAt = (index: number) => {
     const newSection: Section = {
       _type: "section",
@@ -688,13 +698,6 @@ export default function EditPagePage({
         onSave={handleSave}
       />
 
-      {/* Global Settings Drawer */}
-      <GlobalSettingsDrawer
-        open={globalSettingsOpen}
-        onOpenChange={setGlobalSettingsOpen}
-        tenantId={id}
-      />
-
       <PageEditorLayout
         pageId={pageId}
         breakpoint={breakpoint}
@@ -704,6 +707,20 @@ export default function EditPagePage({
         onUnpublish={handleUnpublish}
         onPreview={handlePreview}
         onGeneratePreviewLink={handleGeneratePreviewLink}
+        versions={versions}
+        onRestoreVersion={(versionId) => {
+          restoreVersion.mutate(
+            { pageId, versionId },
+            {
+              onSuccess: () => toast.success("Page restored to previous version"),
+              onError: () => toast.error("Failed to restore version"),
+            }
+          );
+        }}
+        onViewAllHistory={() => {
+          // TODO: Open full history modal/drawer
+          toast.info("Full history view coming soon");
+        }}
         isSaving={autoSave.isSaving || updatePage.isPending}
         isPublished={localPage.status === "published"}
         hasUnsavedChanges={autoSave.hasUnsavedChanges}

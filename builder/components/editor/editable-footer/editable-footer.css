@@ -1,75 +1,92 @@
 @reference "tailwindcss";
 
 /* =============================================================================
-   Editable Footer
+   Editable Footer - Section-like behavior
    ============================================================================= */
 
 .editable-footer {
   @apply relative;
 }
 
-/* Locked state - subtle indicator */
-.editable-footer.is-locked .editable-footer-locked {
-  @apply opacity-0 transition-opacity duration-200;
+/* =============================================================================
+   Footer Visual - with border on hover (like section-visual)
+   ============================================================================= */
+
+.editable-footer-visual {
+  @apply relative;
+  @apply border-2 border-transparent;
+  @apply transition-all duration-200;
 }
 
-.editable-footer.is-locked:hover .editable-footer-locked {
+/* Border on hover - use builder-primary (builder UI) */
+.editable-footer:hover .editable-footer-visual,
+.editable-footer.is-settings-open .editable-footer-visual,
+.editable-footer.is-popover-open .editable-footer-visual {
+  @apply border-(--builder-primary);
+}
+
+/* =============================================================================
+   Settings Handle - Right side (like section-actions-handle)
+   ============================================================================= */
+
+.footer-settings-handle {
+  @apply absolute right-2 top-2 z-10;
+  @apply p-2 rounded-lg;
+  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
+  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground);
+  @apply cursor-pointer;
+  @apply opacity-0 transition-opacity;
+}
+
+.editable-footer:hover .footer-settings-handle,
+.editable-footer.is-settings-open .footer-settings-handle,
+.editable-footer.is-popover-open .footer-settings-handle {
   @apply opacity-100;
 }
 
-/* Unlocked state - show controls */
-.editable-footer.is-unlocked {
-  outline: 2px solid var(--primary);
-  outline-offset: -2px;
-}
-
-.editable-footer.is-editing {
-  outline: 2px solid var(--primary);
-  outline-offset: -2px;
-}
-
 /* =============================================================================
-   Locked Indicator
+   Actions Row - top left (clone, change buttons)
    ============================================================================= */
 
-.editable-footer-locked {
-  @apply absolute bottom-2 left-2 z-10;
-  @apply flex items-center gap-2 px-2 py-1;
-  @apply bg-(--background)/95 backdrop-blur-sm rounded-md shadow-sm;
-  @apply text-xs font-medium text-(--muted-foreground);
-  @apply border border-(--border);
+.footer-actions-row {
+  @apply absolute left-2 top-2 z-10;
+  @apply flex items-center gap-2;
+  @apply opacity-0 transition-opacity;
 }
 
-.editable-footer-locked span {
-  @apply text-(--foreground);
+.editable-footer:hover .footer-actions-row,
+.editable-footer.is-settings-open .footer-actions-row,
+.editable-footer.is-popover-open .footer-actions-row {
+  @apply opacity-100;
 }
 
-.editable-footer-edit-btn {
-  @apply h-6 px-2 text-xs gap-1;
-}
-
-.editable-footer-change-btn {
-  @apply h-6 w-6 p-0;
+.footer-action-btn {
+  @apply h-7 px-2 text-xs gap-1.5;
+  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
+  @apply text-(--builder-foreground) font-medium;
+  @apply hover:bg-(--builder-muted);
 }
 
 /* =============================================================================
-   Unlocked Controls
+   Footer Name Badge - bottom right
    ============================================================================= */
 
-.editable-footer-controls {
-  @apply absolute bottom-2 right-2 z-10;
-  @apply flex items-center gap-1 px-2 py-1.5;
-  @apply bg-(--background)/95 backdrop-blur-sm rounded-md shadow-lg;
-  @apply border border-(--border);
+.footer-name-badge {
+  @apply absolute right-2 bottom-2 z-10;
+  @apply px-2 py-1;
+  @apply bg-(--builder-card)/90 backdrop-blur-sm border border-(--builder-border) rounded-md shadow-sm;
+  @apply text-xs font-medium text-(--builder-muted-foreground);
+  @apply opacity-0 transition-opacity;
 }
 
-.editable-footer-panel-btn {
-  @apply h-7 px-2 text-xs gap-1.5 font-medium;
-  @apply text-(--muted-foreground) hover:text-(--foreground);
+.editable-footer:hover .footer-name-badge,
+.editable-footer.is-settings-open .footer-name-badge,
+.editable-footer.is-popover-open .footer-name-badge {
+  @apply opacity-100;
 }
 
 /* =============================================================================
-   Footer Content
+   Footer Content (the actual footer - design preview)
    ============================================================================= */
 
 .editable-footer-content {
@@ -93,7 +110,7 @@
 }
 
 /* =============================================================================
-   Footer Layouts
+   Footer Layouts (design content)
    ============================================================================= */
 
 .footer-layout-simple {
@@ -131,7 +148,7 @@
 }
 
 /* =============================================================================
-   Footer Elements
+   Footer Elements (design content - uses design tokens)
    ============================================================================= */
 
 .footer-logo {
@@ -174,10 +191,10 @@
 
 .editable-footer-empty {
   @apply min-h-32 flex items-center justify-center;
-  @apply border-2 border-dashed border-(--border) rounded-lg;
-  @apply bg-(--muted)/30;
+  @apply border-2 border-dashed border-(--builder-border) rounded-lg;
+  @apply bg-(--builder-muted)/30;
 }
 
 .editable-footer-empty-content {
-  @apply flex items-center gap-4 text-sm text-(--muted-foreground);
+  @apply flex items-center gap-4 text-sm text-(--builder-muted-foreground);
 }

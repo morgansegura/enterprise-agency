@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { login } from "@/lib/auth";
 import { AuthError, getErrorMessage } from "@/lib/errors";
 import { Input } from "@/components/ui/input";
@@ -105,9 +106,9 @@ export function LoginForm() {
             </button>
 
             <div className="login-form-forgot">
-              <a href="/forgot-password" className="login-form-forgot-link">
+              <Link href="/forgot-password" className="login-form-forgot-link">
                 Forgot your password?
-              </a>
+              </Link>
             </div>
           </div>
         </form>

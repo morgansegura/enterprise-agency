@@ -336,7 +336,7 @@ export function ContainerBlockEditor({
 
           {block.data.blocks.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-8 border-2 border-dashed rounded">
-              No blocks yet. Click "Add Block" to add content.
+              No blocks yet. Click &quot;Add Block&quot; to add content.
             </p>
           ) : (
             <div className="space-y-3">

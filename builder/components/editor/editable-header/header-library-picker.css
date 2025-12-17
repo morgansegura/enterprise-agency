@@ -2,6 +2,7 @@
 
 /* =============================================================================
    Header Library Picker
+   Uses --builder-* tokens (builder UI)
    ============================================================================= */
 
 .header-library-picker {
@@ -13,7 +14,7 @@
 }
 
 .header-library-loading {
-  @apply text-sm text-(--muted-foreground) text-center py-8;
+  @apply text-sm text-(--builder-muted-foreground) text-center py-8;
 }
 
 /* =============================================================================
@@ -22,13 +23,13 @@
 
 .header-library-item {
   @apply flex items-center gap-3 p-2 rounded-lg;
-  @apply border border-(--border) bg-(--background);
+  @apply border border-(--builder-border) bg-(--builder-background);
   @apply text-left transition-all cursor-pointer;
-  @apply hover:border-(--primary)/50 hover:bg-(--muted)/50;
+  @apply hover:border-(--builder-primary)/50 hover:bg-(--builder-muted)/50;
 }
 
 .header-library-item.is-selected {
-  @apply border-(--primary) bg-(--primary)/5;
+  @apply border-(--builder-primary) bg-(--builder-primary)/5;
 }
 
 .header-library-item-create {
@@ -41,16 +42,16 @@
 
 .header-library-item-preview {
   @apply w-24 h-12 rounded-md overflow-hidden;
-  @apply bg-(--muted) border border-(--border);
+  @apply bg-(--builder-muted) border border-(--builder-border);
   @apply flex items-center justify-center;
 }
 
 .header-library-item-none {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--builder-muted-foreground);
 }
 
 .header-library-item-new {
-  @apply text-(--muted-foreground);
+  @apply text-(--builder-muted-foreground);
 }
 
 .header-library-preview-bar {
@@ -66,7 +67,7 @@
 }
 
 .header-library-preview-logo {
-  @apply w-6 h-3 rounded-sm bg-(--foreground)/20;
+  @apply w-6 h-3 rounded-sm bg-(--builder-foreground)/20;
 }
 
 .header-library-preview-menu {
@@ -76,11 +77,11 @@
 .header-library-preview-menu::before,
 .header-library-preview-menu::after {
   content: "";
-  @apply w-4 h-1.5 rounded-sm bg-(--foreground)/15;
+  @apply w-4 h-1.5 rounded-sm bg-(--builder-foreground)/15;
 }
 
 .header-library-preview-button {
-  @apply w-6 h-3 rounded-sm bg-(--primary)/30;
+  @apply w-6 h-3 rounded-sm bg-(--builder-primary)/30;
 }
 
 /* =============================================================================
@@ -96,9 +97,9 @@
 }
 
 .header-library-item-desc {
-  @apply text-xs text-(--muted-foreground) capitalize;
+  @apply text-xs text-(--builder-muted-foreground) capitalize;
 }
 
 .header-library-item-check {
-  @apply h-5 w-5 text-(--primary);
+  @apply h-5 w-5 text-(--builder-primary);
 }

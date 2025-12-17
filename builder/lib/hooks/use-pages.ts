@@ -54,16 +54,24 @@ export interface SectionBackground {
 // =============================================================================
 
 export interface ContainerSettings {
-  // Width
-  maxWidth?: "full" | "wide" | "container" | "narrow";
-  // Background
-  background?: string;
-  borderRadius?: string;
-  border?: string;
-  shadow?: string;
-  // Inner spacing
+  // Background (same as section - color, gradient, or image)
+  background?: string | SectionBackground;
+  // Padding
+  paddingTop?: string;
+  paddingBottom?: string;
   paddingX?: string;
   paddingY?: string;
+  // Border
+  borderTop?: "none" | "thin" | "medium" | "thick";
+  borderBottom?: "none" | "thin" | "medium" | "thick";
+  borderRadius?: string;
+  // Shadow
+  shadow?: string;
+  // Min height
+  minHeight?: "none" | "sm" | "md" | "lg" | "xl";
+  // Content alignment
+  align?: "left" | "center" | "right";
+  verticalAlign?: "top" | "center" | "bottom";
   // Layout
   layout?: {
     type: "stack" | "flex" | "grid";
@@ -97,9 +105,13 @@ export interface Section {
   borderBottom?: "none" | "thin" | "medium" | "thick";
   // Shadow
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
-  // Content alignment (legacy)
-  width?: string;
-  align?: string;
+  // Width
+  width?: "narrow" | "container" | "wide" | "full";
+  // Min height (for hero sections)
+  minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
+  // Content alignment
+  align?: "left" | "center" | "right";
+  verticalAlign?: "top" | "center" | "bottom";
   // Container settings
   container?: ContainerSettings;
   // Blocks

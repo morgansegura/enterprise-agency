@@ -19,8 +19,19 @@ import {
 import { FormItem } from "@/components/ui/form";
 import { Type, Palette, Box } from "lucide-react";
 import type { Block } from "@/lib/hooks/use-pages";
+import { ColorPicker } from "@/components/ui/color-picker/color-picker";
+import { googleFonts } from "@/lib/fonts/google-fonts";
 
 import "./block-settings-popover.css";
+
+// Font preset options for blocks
+const fontPresetOptions = [
+  { value: "", label: "Global Default" },
+  { value: "var(--font-heading)", label: "Heading Font" },
+  { value: "var(--font-body)", label: "Body Font" },
+  { value: "var(--font-accent)", label: "Accent Font" },
+  { value: "custom", label: "Custom Font..." },
+];
 
 interface BlockSettingsPopoverProps {
   block: Block;
@@ -229,6 +240,88 @@ export function BlockSettingsPopover({
           {block._type === "heading-block" && (
             <>
               <FormItem className="block-settings-field">
+                <Label>Font Family</Label>
+                <Select
+                  value={getBlockData<string>("fontFamily", "")}
+                  onValueChange={(value) => {
+                    if (value === "custom") {
+                      // Set to first Google font when switching to custom
+                      handleDataChange("fontFamily", "'Inter', sans-serif");
+                    } else {
+                      handleDataChange("fontFamily", value);
+                    }
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Global Default" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fontPresetOptions.map((opt) => (
+                      <SelectItem key={opt.value || "default"} value={opt.value || "default"}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+
+              {/* Show Google Fonts picker when custom is selected */}
+              {getBlockData<string>("fontFamily", "").includes("'") && (
+                <FormItem className="block-settings-field">
+                  <Label>Custom Font</Label>
+                  <Select
+                    value={getBlockData<string>("fontFamily", "'Inter', sans-serif").replace(/'/g, "").split(",")[0].trim()}
+                    onValueChange={(value) => {
+                      const font = googleFonts.find((f) => f.family === value);
+                      handleDataChange("fontFamily", `'${value}', ${font?.category || "sans-serif"}`);
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {/* Popular fonts */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                        Popular
+                      </div>
+                      {googleFonts.filter((f) => f.popular).map((font) => (
+                        <SelectItem key={font.family} value={font.family}>
+                          <span style={{ fontFamily: font.family }}>{font.family}</span>
+                        </SelectItem>
+                      ))}
+                      {/* Sans-serif */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                        Sans-serif
+                      </div>
+                      {googleFonts.filter((f) => f.category === "sans-serif" && !f.popular).map((font) => (
+                        <SelectItem key={font.family} value={font.family}>
+                          {font.family}
+                        </SelectItem>
+                      ))}
+                      {/* Serif */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                        Serif
+                      </div>
+                      {googleFonts.filter((f) => f.category === "serif").map((font) => (
+                        <SelectItem key={font.family} value={font.family}>
+                          {font.family}
+                        </SelectItem>
+                      ))}
+                      {/* Display */}
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                        Display
+                      </div>
+                      {googleFonts.filter((f) => f.category === "display").map((font) => (
+                        <SelectItem key={font.family} value={font.family}>
+                          {font.family}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+
+              <FormItem className="block-settings-field">
                 <Label>Weight</Label>
                 <Select
                   value={getBlockData<string>("weight", "semibold")}
@@ -238,30 +331,25 @@ export function BlockSettingsPopover({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="normal">Normal</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="semibold">Semibold</SelectItem>
-                    <SelectItem value="bold">Bold</SelectItem>
+                    <SelectItem value="thin">Thin (100)</SelectItem>
+                    <SelectItem value="extralight">Extra Light (200)</SelectItem>
+                    <SelectItem value="light">Light (300)</SelectItem>
+                    <SelectItem value="normal">Normal (400)</SelectItem>
+                    <SelectItem value="medium">Medium (500)</SelectItem>
+                    <SelectItem value="semibold">Semibold (600)</SelectItem>
+                    <SelectItem value="bold">Bold (700)</SelectItem>
+                    <SelectItem value="extrabold">Extra Bold (800)</SelectItem>
+                    <SelectItem value="black">Black (900)</SelectItem>
                   </SelectContent>
                 </Select>
               </FormItem>
 
               <FormItem className="block-settings-field">
                 <Label>Color</Label>
-                <Select
-                  value={getBlockData<string>("color", "default")}
-                  onValueChange={(value) => handleDataChange("color", value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="default">Default</SelectItem>
-                    <SelectItem value="muted">Muted</SelectItem>
-                    <SelectItem value="primary">Primary</SelectItem>
-                    <SelectItem value="accent">Accent</SelectItem>
-                  </SelectContent>
-                </Select>
+                <ColorPicker
+                  value={getBlockData<string>("color", "var(--foreground)")}
+                  onChange={(value) => handleDataChange("color", value)}
+                />
               </FormItem>
             </>
           )}

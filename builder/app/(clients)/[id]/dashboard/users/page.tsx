@@ -49,8 +49,7 @@ export default function ManageUsersPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const resolvedParams = React.use(params);
-  const { id } = resolvedParams;
+  React.use(params);
 
   // State
   const [inviteDialogOpen, setInviteDialogOpen] = React.useState(false);
@@ -86,7 +85,7 @@ export default function ManageUsersPage({
     setInviteDialogOpen(true);
   };
 
-  const handleEdit = (user: UserItem) => {
+  const handleEdit = () => {
     toast.info("User editing coming soon");
   };
 

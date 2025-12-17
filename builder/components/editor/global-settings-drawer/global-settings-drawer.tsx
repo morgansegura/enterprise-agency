@@ -813,25 +813,28 @@ function darkenColor(hex: string, amount: number): string {
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 }
 
+// Map semantic color keys to --theme-* CSS variables
+// Theme tokens are used in the design preview canvas
+// Builder UI uses separate --builder-* tokens that stay consistent
 const semanticToCssVar: Record<string, string> = {
-  primary: "--primary",
-  primaryForeground: "--primary-foreground",
-  secondary: "--secondary",
-  secondaryForeground: "--secondary-foreground",
-  accent: "--accent",
-  accentForeground: "--accent-foreground",
-  background: "--background",
-  foreground: "--foreground",
-  card: "--card",
-  cardForeground: "--card-foreground",
-  popover: "--popover",
-  popoverForeground: "--popover-foreground",
-  muted: "--muted",
-  mutedForeground: "--muted-foreground",
-  border: "--border",
-  input: "--input",
-  ring: "--ring",
-  destructive: "--destructive",
+  primary: "--theme-primary",
+  primaryForeground: "--theme-primary-foreground",
+  secondary: "--theme-secondary",
+  secondaryForeground: "--theme-secondary-foreground",
+  accent: "--theme-accent",
+  accentForeground: "--theme-accent-foreground",
+  background: "--theme-background",
+  foreground: "--theme-foreground",
+  card: "--theme-card",
+  cardForeground: "--theme-card-foreground",
+  popover: "--theme-popover",
+  popoverForeground: "--theme-popover-foreground",
+  muted: "--theme-muted",
+  mutedForeground: "--theme-muted-foreground",
+  border: "--theme-border",
+  input: "--theme-input",
+  ring: "--theme-ring",
+  destructive: "--theme-destructive",
 };
 
 function applyTokensToDOM(tokens: Record<string, unknown>) {

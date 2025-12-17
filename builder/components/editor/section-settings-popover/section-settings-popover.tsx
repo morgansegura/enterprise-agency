@@ -378,14 +378,18 @@ export function SectionSettingsPopover({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="xs">Extra Small</SelectItem>
-                    <SelectItem value="sm">Small</SelectItem>
-                    <SelectItem value="md">Medium</SelectItem>
-                    <SelectItem value="lg">Large</SelectItem>
-                    <SelectItem value="xl">Extra Large</SelectItem>
-                    <SelectItem value="2xl">2X Large</SelectItem>
-                    <SelectItem value="3xl">3X Large</SelectItem>
+                    <SelectItem value="none">None (0)</SelectItem>
+                    <SelectItem value="xs">XS (8px)</SelectItem>
+                    <SelectItem value="sm">SM (16px)</SelectItem>
+                    <SelectItem value="md">MD (32px)</SelectItem>
+                    <SelectItem value="lg">LG (48px)</SelectItem>
+                    <SelectItem value="xl">XL (64px)</SelectItem>
+                    <SelectItem value="2xl">2XL (96px)</SelectItem>
+                    <SelectItem value="3xl">3XL (128px)</SelectItem>
+                    <SelectItem value="4xl">4XL (160px)</SelectItem>
+                    <SelectItem value="5xl">5XL (192px)</SelectItem>
+                    <SelectItem value="6xl">6XL (224px)</SelectItem>
+                    <SelectItem value="7xl">7XL (256px)</SelectItem>
                   </SelectContent>
                 </Select>
               </ResponsiveField>
@@ -409,14 +413,18 @@ export function SectionSettingsPopover({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="xs">Extra Small</SelectItem>
-                    <SelectItem value="sm">Small</SelectItem>
-                    <SelectItem value="md">Medium</SelectItem>
-                    <SelectItem value="lg">Large</SelectItem>
-                    <SelectItem value="xl">Extra Large</SelectItem>
-                    <SelectItem value="2xl">2X Large</SelectItem>
-                    <SelectItem value="3xl">3X Large</SelectItem>
+                    <SelectItem value="none">None (0)</SelectItem>
+                    <SelectItem value="xs">XS (8px)</SelectItem>
+                    <SelectItem value="sm">SM (16px)</SelectItem>
+                    <SelectItem value="md">MD (32px)</SelectItem>
+                    <SelectItem value="lg">LG (48px)</SelectItem>
+                    <SelectItem value="xl">XL (64px)</SelectItem>
+                    <SelectItem value="2xl">2XL (96px)</SelectItem>
+                    <SelectItem value="3xl">3XL (128px)</SelectItem>
+                    <SelectItem value="4xl">4XL (160px)</SelectItem>
+                    <SelectItem value="5xl">5XL (192px)</SelectItem>
+                    <SelectItem value="6xl">6XL (224px)</SelectItem>
+                    <SelectItem value="7xl">7XL (256px)</SelectItem>
                   </SelectContent>
                 </Select>
               </ResponsiveField>
@@ -488,6 +496,93 @@ export function SectionSettingsPopover({
                   <SelectItem value="inner">Inner</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+          </div>
+
+          {/* Width */}
+          <div className="section-settings-section">
+            <h4 className="section-settings-section-title">WIDTH</h4>
+            <div className="section-settings-field">
+              <Select
+                value={section.width || "wide"}
+                onValueChange={(value) => handleWrapperChange("width", value)}
+              >
+                <SelectTrigger className="h-8">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="narrow">Narrow (768px)</SelectItem>
+                  <SelectItem value="container">Container (1280px)</SelectItem>
+                  <SelectItem value="wide">Wide (1536px)</SelectItem>
+                  <SelectItem value="full">Full Width</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Min Height */}
+          <div className="section-settings-section">
+            <h4 className="section-settings-section-title">MIN HEIGHT</h4>
+            <div className="section-settings-field">
+              <Select
+                value={section.minHeight || "none"}
+                onValueChange={(value) =>
+                  handleWrapperChange("minHeight", value)
+                }
+              >
+                <SelectTrigger className="h-8">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Auto</SelectItem>
+                  <SelectItem value="sm">Small (300px)</SelectItem>
+                  <SelectItem value="md">Medium (400px)</SelectItem>
+                  <SelectItem value="lg">Large (500px)</SelectItem>
+                  <SelectItem value="xl">Extra Large (600px)</SelectItem>
+                  <SelectItem value="screen">Full Screen</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Content Alignment */}
+          <div className="section-settings-section">
+            <h4 className="section-settings-section-title">ALIGNMENT</h4>
+            <div className="section-settings-row">
+              <div className="section-settings-field">
+                <Label className="section-settings-label">Horizontal</Label>
+                <Select
+                  value={section.align || "left"}
+                  onValueChange={(value) => handleWrapperChange("align", value)}
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="left">Left</SelectItem>
+                    <SelectItem value="center">Center</SelectItem>
+                    <SelectItem value="right">Right</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="section-settings-field">
+                <Label className="section-settings-label">Vertical</Label>
+                <Select
+                  value={section.verticalAlign || "top"}
+                  onValueChange={(value) =>
+                    handleWrapperChange("verticalAlign", value)
+                  }
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="top">Top</SelectItem>
+                    <SelectItem value="center">Center</SelectItem>
+                    <SelectItem value="bottom">Bottom</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </div>
