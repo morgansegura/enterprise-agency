@@ -27,29 +27,35 @@ const alignClasses: Record<string, string> = {
   justify: "text-align-justify",
 };
 
+// Variant class maps
+const variantClasses: Record<string, string> = {
+  default: "text-foreground",
+  muted: "text-muted-foreground",
+  lead: "text-muted-foreground text-lg",
+  subtle: "text-muted-foreground/80",
+};
+
 /**
  * TextBlock - Data adapter for Text UI component
  * Content block (leaf node) - cannot have children
  * Wraps ui/Text component with CMS data
  *
- * Supports responsive overrides for size and alignment
+ * Supports:
+ * - HTML content from TipTap (preferred)
+ * - Plain text content (legacy)
+ * - Responsive overrides for size and alignment
  */
 export function TextBlock({ data }: TextBlockProps) {
-  // Support both 'text' (builder format) and 'content' (legacy format)
-  const content = data.text ?? data.content ?? "";
   const { size = "base", align = "left", variant = "default" } = data;
+
+  // Check if we have HTML content (from TipTap editor)
+  const hasHtml = Boolean(data.html);
+
+  // Get plain text content for fallback
+  const plainContent = data.text ?? data.content ?? "";
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);
-
-  // If no responsive overrides, use simple rendering
-  if (!hasOverrides) {
-    return (
-      <Text as="p" size={size} align={align} variant={variant}>
-        {content}
-      </Text>
-    );
-  }
 
   // Get responsive values
   const sizeValues = getResponsiveValues<string>(
@@ -62,14 +68,45 @@ export function TextBlock({ data }: TextBlockProps) {
   );
 
   // Generate responsive classes
-  const responsiveClasses = cn(
-    generateResponsiveClasses(sizeClasses, sizeValues, size),
-    generateResponsiveClasses(alignClasses, alignValues, align),
-  );
+  const responsiveClasses = hasOverrides
+    ? cn(
+        generateResponsiveClasses(sizeClasses, sizeValues, size),
+        generateResponsiveClasses(alignClasses, alignValues, align),
+      )
+    : cn(
+        sizeClasses[size] || sizeClasses.base,
+        alignClasses[align] || alignClasses.left,
+      );
+
+  // Get variant class
+  const variantClass = variantClasses[variant] || variantClasses.default;
+
+  // Render HTML content if available
+  if (hasHtml) {
+    return (
+      <div
+        className={cn(
+          "text-block prose prose-sm max-w-none",
+          responsiveClasses,
+          variantClass,
+        )}
+        dangerouslySetInnerHTML={{ __html: data.html! }}
+      />
+    );
+  }
+
+  // Fallback to plain text rendering
+  if (!hasOverrides) {
+    return (
+      <Text as="p" size={size} align={align} variant={variant}>
+        {plainContent}
+      </Text>
+    );
+  }
 
   return (
     <Text as="p" variant={variant} className={responsiveClasses}>
-      {content}
+      {plainContent}
     </Text>
   );
 }

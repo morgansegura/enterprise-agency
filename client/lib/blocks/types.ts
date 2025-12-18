@@ -65,10 +65,12 @@ export type HeadingBlockData = {
 
 /** Text block data */
 export type TextBlockData = {
-  /** Text content (builder format - preferred) */
+  /** Plain text content (legacy format) */
   text?: string;
   /** Text content (legacy format) */
   content?: string;
+  /** HTML content from TipTap editor (preferred) */
+  html?: string;
   size?:
     | "xs"
     | "sm"
