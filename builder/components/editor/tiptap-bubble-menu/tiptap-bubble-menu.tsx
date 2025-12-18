@@ -84,6 +84,8 @@ export function TiptapBubbleMenu({
       ref={menuRef}
       className={className}
       style={{
+        position: "absolute",
+        zIndex: 50,
         visibility: isVisible ? "visible" : "hidden",
         opacity: isVisible ? 1 : 0,
         transition: "opacity 100ms ease-in-out",
