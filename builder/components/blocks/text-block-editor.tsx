@@ -5,13 +5,11 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
-import { TiptapBubbleMenu } from "@/components/editor/tiptap-bubble-menu";
+import { useBlockEditor } from "@/components/editor/block-editor-context";
 import { useResponsiveChange } from "@/components/editor/responsive-field";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Bold, Italic, Link as LinkIcon, Unlink } from "lucide-react";
 
 interface TextBlockData {
   _key: string;
@@ -64,11 +62,12 @@ const variantMap: Record<string, string> = {
  * TextBlockEditor - WYSIWYG Version with TipTap
  *
  * Renders paragraph text exactly as it will appear on the live site.
- * Supports inline formatting (bold, italic, links) via bubble menu.
+ * Supports inline formatting (bold, italic, links) via block toolbar.
  * Block-level styling (size, align, variant) applied to wrapper.
  */
-export function TextBlockEditor({ block, onChange }: TextBlockEditorProps) {
+export function TextBlockEditor({ block, onChange, isSelected }: TextBlockEditorProps) {
   const breakpoint = useCurrentBreakpoint();
+  const { setActiveEditor, setHasSelection } = useBlockEditor();
 
   const handleDataChange = useResponsiveChange(block.data, (newData) =>
     onChange({ ...block, data: newData as TextBlockData["data"] }),
@@ -128,12 +127,41 @@ export function TextBlockEditor({ block, onChange }: TextBlockEditorProps) {
       // Store as html, clear legacy text field
       handleDataChange("html", html);
     },
+    onSelectionUpdate: ({ editor }) => {
+      // Update selection state for toolbar
+      const { from, to } = editor.state.selection;
+      setHasSelection(from !== to);
+    },
+    onFocus: () => {
+      // Register this editor as active when focused
+      if (editor) {
+        setActiveEditor(editor);
+      }
+    },
+    onBlur: () => {
+      // Clear active editor when blurred
+      setActiveEditor(null);
+      setHasSelection(false);
+    },
     editorProps: {
       attributes: {
         class: cn("text-block-editor outline-none", textClasses),
       },
     },
   });
+
+  // Register editor when block is selected
+  useEffect(() => {
+    if (isSelected && editor) {
+      setActiveEditor(editor);
+    }
+    return () => {
+      if (isSelected) {
+        setActiveEditor(null);
+        setHasSelection(false);
+      }
+    };
+  }, [isSelected, editor, setActiveEditor, setHasSelection]);
 
   // Update editor content when block changes externally
   useEffect(() => {
@@ -159,22 +187,6 @@ export function TextBlockEditor({ block, onChange }: TextBlockEditorProps) {
     }
   }, [editor, textClasses]);
 
-  const setLink = useCallback(() => {
-    if (!editor) return;
-
-    const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt("URL", previousUrl || "https://");
-
-    if (url === null) return;
-
-    if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-      return;
-    }
-
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
-  }, [editor]);
-
   return (
     <div
       style={{
@@ -182,51 +194,6 @@ export function TextBlockEditor({ block, onChange }: TextBlockEditorProps) {
         margin: align === "center" ? "0 auto" : undefined,
       }}
     >
-      <TiptapBubbleMenu
-        editor={editor}
-        className="flex items-center gap-1 rounded-md border bg-background p-1 shadow-md"
-      >
-        <Button
-          type="button"
-          variant={editor?.isActive("bold") ? "default" : "ghost"}
-          size="icon-sm"
-          onClick={() => editor?.chain().focus().toggleBold().run()}
-          title="Bold (Ctrl+B)"
-        >
-          <Bold className="h-4 w-4" />
-        </Button>
-        <Button
-          type="button"
-          variant={editor?.isActive("italic") ? "default" : "ghost"}
-          size="icon-sm"
-          onClick={() => editor?.chain().focus().toggleItalic().run()}
-          title="Italic (Ctrl+I)"
-        >
-          <Italic className="h-4 w-4" />
-        </Button>
-        <div className="w-px h-4 bg-border mx-0.5" />
-        {editor?.isActive("link") ? (
-          <Button
-            type="button"
-            variant="default"
-            size="icon-sm"
-            onClick={() => editor?.chain().focus().unsetLink().run()}
-            title="Remove link"
-          >
-            <Unlink className="h-4 w-4" />
-          </Button>
-        ) : (
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            onClick={setLink}
-            title="Add link"
-          >
-            <LinkIcon className="h-4 w-4" />
-          </Button>
-        )}
-      </TiptapBubbleMenu>
       <EditorContent editor={editor} />
     </div>
   );

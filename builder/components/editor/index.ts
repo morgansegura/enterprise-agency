@@ -1,5 +1,6 @@
 export * from "./add-block-popover";
 export * from "./block-editor";
+export * from "./block-editor-context";
 export * from "./block-settings-modal";
 export * from "./block-settings-popover";
 export * from "./block-wrapper";

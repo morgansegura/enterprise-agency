@@ -2,8 +2,19 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Trash2, Copy, ChevronUp, ChevronDown, Pencil } from "lucide-react";
+import {
+  Trash2,
+  Copy,
+  ChevronUp,
+  ChevronDown,
+  Pencil,
+  Bold,
+  Italic,
+  Link as LinkIcon,
+  Unlink,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTextFormatting } from "../block-editor-context";
 
 import type { Block } from "@/lib/hooks/use-pages";
 
@@ -53,6 +64,18 @@ export function BlockWrapper({
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const [showSettings, setShowSettings] = React.useState(false);
   const [isLocalHovered, setIsLocalHovered] = React.useState(false);
+
+  // Get text formatting functions from context
+  const {
+    canFormat,
+    toggleBold,
+    toggleItalic,
+    setLink,
+    removeLink,
+    isBold,
+    isItalic,
+    isLink,
+  } = useTextFormatting();
 
   // Show hover state from either direct hover or layers popover hover
   const showHoverState = (isLocalHovered || isHovered) && !isSelected;
@@ -136,6 +159,60 @@ export function BlockWrapper({
           >
             <ChevronDown className="h-4 w-4" />
           </Button>
+
+          {/* Text Formatting - only shown for text blocks with selection */}
+          {canFormat && (
+            <>
+              <div className="block-toolbar-separator" />
+              <Button
+                variant={isBold ? "default" : "ghost"}
+                size="icon-sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleBold();
+                }}
+                title="Bold (Ctrl+B)"
+              >
+                <Bold className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={isItalic ? "default" : "ghost"}
+                size="icon-sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleItalic();
+                }}
+                title="Italic (Ctrl+I)"
+              >
+                <Italic className="h-4 w-4" />
+              </Button>
+              {isLink ? (
+                <Button
+                  variant="default"
+                  size="icon-sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeLink();
+                  }}
+                  title="Remove link"
+                >
+                  <Unlink className="h-4 w-4" />
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLink();
+                  }}
+                  title="Add link"
+                >
+                  <LinkIcon className="h-4 w-4" />
+                </Button>
+              )}
+            </>
+          )}
 
           {/* Separator */}
           <div className="block-toolbar-separator" />

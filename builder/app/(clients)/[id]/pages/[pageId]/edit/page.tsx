@@ -35,6 +35,7 @@ import { toast } from "sonner";
 import { ResponsiveProvider } from "@/lib/responsive/context";
 import { useIsBuilder } from "@/lib/hooks/use-tier";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
+import { BlockEditorProvider } from "@/components/editor/block-editor-context";
 import {
   DndContext,
   closestCenter,
@@ -728,8 +729,9 @@ export default function EditPagePage({
         lastSaved={autoSave.lastSaved}
       >
         {/* Canvas Content */}
-        <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
-          <ResponsivePreview breakpoint={breakpoint} className="h-full">
+        <BlockEditorProvider>
+          <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
+            <ResponsivePreview breakpoint={breakpoint} className="h-full">
             <Card
               className="page-editor-canvas-content"
               onClick={handleCanvasClick}
@@ -870,8 +872,9 @@ export default function EditPagePage({
                 </details>
               </CardContent>
             </Card>
-          </ResponsivePreview>
-        </ResponsiveProvider>
+            </ResponsivePreview>
+          </ResponsiveProvider>
+        </BlockEditorProvider>
       </PageEditorLayout>
     </>
   );
