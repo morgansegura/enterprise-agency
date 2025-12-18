@@ -50,43 +50,74 @@ export interface SectionBackground {
 }
 
 // =============================================================================
-// Container Settings (inside section wrapper)
+// Container Layout Types
 // =============================================================================
 
-export interface ContainerSettings {
+export interface ContainerLayout {
+  type: "stack" | "flex" | "grid";
+  // Stack/Flex options
+  direction?: "row" | "column";
+  wrap?: boolean;
+  justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
+  align?: "start" | "center" | "end" | "stretch" | "baseline";
+  // Grid options
+  columns?: number | string; // number or "auto-fit"
+  rows?: number | string;
+  // Shared
+  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+}
+
+// =============================================================================
+// Container (Layout wrapper inside Section)
+// =============================================================================
+
+export interface Container {
+  _type: "container";
+  _key: string;
+  // Layout mode
+  layout: ContainerLayout;
+  // Size
+  maxWidth?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  minHeight?: "none" | "sm" | "md" | "lg" | "xl";
   // Background (same as section - color, gradient, or image)
   background?: string | SectionBackground;
   // Padding
-  paddingTop?: string;
-  paddingBottom?: string;
-  paddingX?: string;
-  paddingY?: string;
+  paddingX?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
   // Border
+  border?: "none" | "thin" | "medium" | "thick";
   borderTop?: "none" | "thin" | "medium" | "thick";
   borderBottom?: "none" | "thin" | "medium" | "thick";
-  borderRadius?: string;
+  borderLeft?: "none" | "thin" | "medium" | "thick";
+  borderRight?: "none" | "thin" | "medium" | "thick";
+  borderColor?: string;
+  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "full";
   // Shadow
-  shadow?: string;
-  // Min height
-  minHeight?: "none" | "sm" | "md" | "lg" | "xl";
-  // Content alignment
+  shadow?: "none" | "sm" | "md" | "lg" | "xl";
+  // Content alignment (for positioning content within container)
   align?: "left" | "center" | "right";
   verticalAlign?: "top" | "center" | "bottom";
-  // Layout
-  layout?: {
-    type: "stack" | "flex" | "grid";
-    // Flex options
-    direction?: "row" | "column";
-    wrap?: boolean;
-    justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
-    align?: "start" | "center" | "end" | "stretch" | "baseline";
-    // Grid options
-    columns?: number | string; // number or "auto-fit"
-    rows?: number | string;
-    // Shared
-    gap?: string;
+  // Overflow
+  overflow?: "visible" | "hidden" | "scroll" | "auto";
+  // Visibility
+  hideOn?: {
+    desktop?: boolean;
+    tablet?: boolean;
+    mobile?: boolean;
   };
+  // Custom classes
+  customClasses?: string;
+  // Responsive overrides
+  _responsive?: {
+    tablet?: Partial<Omit<Container, "_type" | "_key" | "blocks" | "_responsive">>;
+    mobile?: Partial<Omit<Container, "_type" | "_key" | "blocks" | "_responsive">>;
+  };
+  // Content
+  blocks: Block[];
 }
+
+// Legacy alias for backwards compatibility
+export type ContainerSettings = Omit<Container, "_type" | "_key" | "blocks">;
 
 // =============================================================================
 // Section (Wrapper) Interface
@@ -95,27 +126,46 @@ export interface ContainerSettings {
 export interface Section {
   _type: "section";
   _key: string;
-  // Wrapper settings
+  // Semantic HTML element
+  as?: "section" | "div" | "article" | "aside" | "header" | "footer";
+  // Background
   background?: string | SectionBackground; // string for legacy support
+  // Spacing
+  paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  gapY?: "none" | "xs" | "sm" | "md" | "lg" | "xl"; // gap between containers
+  // Legacy spacing (maps to paddingY)
   paddingTop?: string;
   paddingBottom?: string;
-  spacing?: string; // legacy - maps to paddingY
+  spacing?: string;
   // Border settings
   borderTop?: "none" | "thin" | "medium" | "thick";
   borderBottom?: "none" | "thin" | "medium" | "thick";
+  borderColor?: string;
   // Shadow
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
   // Width
   width?: "narrow" | "container" | "wide" | "full";
   // Min height (for hero sections)
   minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
-  // Content alignment
+  // Content alignment (default position for containers)
   align?: "left" | "center" | "right";
   verticalAlign?: "top" | "center" | "bottom";
-  // Container settings
-  container?: ContainerSettings;
-  // Blocks
-  blocks: Block[];
+  // Advanced settings
+  anchorId?: string; // for in-page linking (#anchor)
+  overflow?: "visible" | "hidden" | "scroll" | "auto";
+  hideOn?: {
+    desktop?: boolean;
+    tablet?: boolean;
+    mobile?: boolean;
+  };
+  customClasses?: string;
+  // Responsive overrides
+  _responsive?: {
+    tablet?: Partial<Omit<Section, "_type" | "_key" | "containers" | "_responsive">>;
+    mobile?: Partial<Omit<Section, "_type" | "_key" | "containers" | "_responsive">>;
+  };
+  // Content - array of containers
+  containers: Container[];
 }
 
 export interface Block {

@@ -1,0 +1,37 @@
+@reference "tailwindcss";
+
+.position-picker {
+  @apply inline-block;
+}
+
+.position-picker-grid {
+  @apply grid grid-cols-3 gap-1 p-1;
+  @apply bg-(--builder-muted) rounded-md;
+  @apply border border-(--builder-border);
+}
+
+.position-picker-cell {
+  @apply w-6 h-6 rounded;
+  @apply flex items-center justify-center;
+  @apply bg-(--builder-card) hover:bg-(--builder-accent);
+  @apply transition-colors duration-100;
+  @apply cursor-pointer;
+}
+
+.position-picker-cell.is-selected {
+  @apply bg-(--builder-primary);
+}
+
+.position-picker-dot {
+  @apply w-2 h-2 rounded-full;
+  @apply bg-(--builder-muted-foreground);
+  @apply transition-colors duration-100;
+}
+
+.position-picker-cell:hover .position-picker-dot {
+  @apply bg-(--builder-foreground);
+}
+
+.position-picker-cell.is-selected .position-picker-dot {
+  @apply bg-(--builder-primary-foreground);
+}

@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.visibility-toggles {
+  @apply flex items-center gap-1;
+}
+
+.visibility-toggle {
+  @apply relative w-8 h-8 rounded;
+  @apply flex items-center justify-center;
+  @apply bg-(--builder-muted) hover:bg-(--builder-accent);
+  @apply text-(--builder-muted-foreground);
+  @apply border border-(--builder-border);
+  @apply transition-colors duration-100;
+  @apply cursor-pointer;
+}
+
+.visibility-toggle:hover {
+  @apply text-(--builder-foreground);
+}
+
+.visibility-toggle.is-hidden {
+  @apply bg-(--builder-destructive)/10 border-(--builder-destructive)/30;
+  @apply text-(--builder-destructive);
+}
+
+.visibility-toggle.is-hidden:hover {
+  @apply bg-(--builder-destructive)/20;
+}
+
+.visibility-toggle-strike {
+  @apply absolute inset-0;
+  @apply pointer-events-none;
+}
+
+.visibility-toggle-strike::after {
+  content: "";
+  @apply absolute top-1/2 left-0 right-0;
+  @apply h-0.5 bg-(--builder-destructive);
+  @apply -rotate-45;
+  @apply transform -translate-y-1/2;
+}

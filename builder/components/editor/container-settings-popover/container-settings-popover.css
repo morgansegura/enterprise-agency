@@ -74,3 +74,38 @@
 .container-settings-layout-type span {
   @apply text-xs font-medium;
 }
+
+/* Background type buttons */
+.container-settings-bg-types {
+  @apply flex gap-1;
+}
+
+.container-settings-bg-type {
+  @apply w-10 h-10 rounded-md;
+  @apply flex items-center justify-center;
+  @apply bg-(--muted)/50 text-(--muted-foreground);
+  @apply transition-all cursor-pointer;
+  @apply hover:bg-(--muted) hover:text-(--foreground);
+}
+
+.container-settings-bg-type.active {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+
+.container-settings-bg-type-icon {
+  @apply text-base;
+}
+
+/* Position picker row */
+.container-settings-position-row {
+  @apply flex items-center gap-3;
+}
+
+.container-settings-position-labels {
+  @apply flex flex-col;
+}
+
+/* Help text */
+.container-settings-help {
+  @apply text-xs text-(--muted-foreground) mt-1.5;
+}
