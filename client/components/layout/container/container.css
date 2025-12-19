@@ -1,31 +1,364 @@
 @reference "tailwindcss";
 
+/* =============================================================================
+ * Container Component
+ * Layout wrapper inside Section with data-attribute driven styling
+ * ============================================================================= */
+
 .container {
-  @apply relative;
+  @apply w-full relative;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-  &[data-width="full"] {
-    @apply w-full
-  }
+/* =============================================================================
+ * Layout Type
+ * ============================================================================= */
 
-  &[data-width="narrow"] {
-    @apply max-w-5xl w-full mx-auto;
-  }
-  
-  &[data-width="wide"] {
-    @apply max-w-7xl w-full mx-auto;
+.container[data-layout-type="stack"] {
+  @apply flex flex-col;
+}
 
-  }
+.container[data-layout-type="flex"] {
+  @apply flex;
+}
 
-  &[data-spacing="sm"] {
-    @apply px-4 2xl:px-none;
-  }
+.container[data-layout-type="grid"] {
+  @apply grid;
+}
 
-  &[data-spacing="md"] {
-    @apply px-6 lg:px-8 2xl:px-none;
-  }
-  
-  &[data-spacing="lg"] {
-    @apply px-8 lg:px-12 2xl:px-none;
+/* =============================================================================
+ * Layout Direction (for flex)
+ * ============================================================================= */
 
-  }
+.container[data-layout-direction="row"] {
+  @apply flex-row;
+}
+
+.container[data-layout-direction="column"] {
+  @apply flex-col;
+}
+
+/* =============================================================================
+ * Layout Wrap
+ * ============================================================================= */
+
+.container[data-layout-wrap="true"] {
+  @apply flex-wrap;
+}
+
+/* =============================================================================
+ * Layout Gap
+ * ============================================================================= */
+
+.container[data-layout-gap="none"] {
+  @apply gap-0;
+}
+.container[data-layout-gap="xs"] {
+  @apply gap-1;
+}
+.container[data-layout-gap="sm"] {
+  @apply gap-2;
+}
+.container[data-layout-gap="md"] {
+  @apply gap-4;
+}
+.container[data-layout-gap="lg"] {
+  @apply gap-6;
+}
+.container[data-layout-gap="xl"] {
+  @apply gap-8;
+}
+
+/* =============================================================================
+ * Grid Columns
+ * ============================================================================= */
+
+.container[data-layout-columns="1"] {
+  @apply grid-cols-1;
+}
+.container[data-layout-columns="2"] {
+  @apply grid-cols-2;
+}
+.container[data-layout-columns="3"] {
+  @apply grid-cols-3;
+}
+.container[data-layout-columns="4"] {
+  @apply grid-cols-4;
+}
+.container[data-layout-columns="auto-fit"] {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* =============================================================================
+ * Justify Content
+ * ============================================================================= */
+
+.container[data-layout-justify="start"] {
+  @apply justify-start;
+}
+.container[data-layout-justify="center"] {
+  @apply justify-center;
+}
+.container[data-layout-justify="end"] {
+  @apply justify-end;
+}
+.container[data-layout-justify="between"] {
+  @apply justify-between;
+}
+.container[data-layout-justify="around"] {
+  @apply justify-around;
+}
+.container[data-layout-justify="evenly"] {
+  @apply justify-evenly;
+}
+
+/* =============================================================================
+ * Align Items
+ * ============================================================================= */
+
+.container[data-layout-align="start"] {
+  @apply items-start;
+}
+.container[data-layout-align="center"] {
+  @apply items-center;
+}
+.container[data-layout-align="end"] {
+  @apply items-end;
+}
+.container[data-layout-align="stretch"] {
+  @apply items-stretch;
+}
+.container[data-layout-align="baseline"] {
+  @apply items-baseline;
+}
+
+/* =============================================================================
+ * Max Width
+ * ============================================================================= */
+
+.container[data-max-width="none"] {
+  @apply max-w-none;
+}
+.container[data-max-width="xs"] {
+  @apply max-w-[480px];
+}
+.container[data-max-width="sm"] {
+  @apply max-w-[640px];
+}
+.container[data-max-width="md"] {
+  @apply max-w-[768px];
+}
+.container[data-max-width="lg"] {
+  @apply max-w-[1024px];
+}
+.container[data-max-width="xl"] {
+  @apply max-w-[1280px];
+}
+.container[data-max-width="full"] {
+  @apply max-w-full;
+}
+
+/* =============================================================================
+ * Min Height
+ * ============================================================================= */
+
+.container[data-min-height="none"] {
+  @apply min-h-0;
+}
+.container[data-min-height="sm"] {
+  @apply min-h-[200px];
+}
+.container[data-min-height="md"] {
+  @apply min-h-[300px];
+}
+.container[data-min-height="lg"] {
+  @apply min-h-[400px];
+}
+.container[data-min-height="xl"] {
+  @apply min-h-[500px];
+}
+
+/* =============================================================================
+ * Padding X
+ * ============================================================================= */
+
+.container[data-padding-x="none"] {
+  @apply px-0;
+}
+.container[data-padding-x="xs"] {
+  @apply px-2;
+}
+.container[data-padding-x="sm"] {
+  @apply px-4;
+}
+.container[data-padding-x="md"] {
+  @apply px-6;
+}
+.container[data-padding-x="lg"] {
+  @apply px-8;
+}
+.container[data-padding-x="xl"] {
+  @apply px-12;
+}
+
+/* =============================================================================
+ * Padding Y
+ * ============================================================================= */
+
+.container[data-padding-y="none"] {
+  @apply py-0;
+}
+.container[data-padding-y="xs"] {
+  @apply py-2;
+}
+.container[data-padding-y="sm"] {
+  @apply py-4;
+}
+.container[data-padding-y="md"] {
+  @apply py-6;
+}
+.container[data-padding-y="lg"] {
+  @apply py-8;
+}
+.container[data-padding-y="xl"] {
+  @apply py-12;
+}
+
+/* =============================================================================
+ * Border
+ * ============================================================================= */
+
+.container[data-border-top="thin"] {
+  @apply border-t border-border;
+}
+.container[data-border-top="medium"] {
+  @apply border-t-2 border-border;
+}
+.container[data-border-top="thick"] {
+  @apply border-t-4 border-border;
+}
+
+.container[data-border-bottom="thin"] {
+  @apply border-b border-border;
+}
+.container[data-border-bottom="medium"] {
+  @apply border-b-2 border-border;
+}
+.container[data-border-bottom="thick"] {
+  @apply border-b-4 border-border;
+}
+
+.container[data-border-left="thin"] {
+  @apply border-l border-border;
+}
+.container[data-border-left="medium"] {
+  @apply border-l-2 border-border;
+}
+.container[data-border-left="thick"] {
+  @apply border-l-4 border-border;
+}
+
+.container[data-border-right="thin"] {
+  @apply border-r border-border;
+}
+.container[data-border-right="medium"] {
+  @apply border-r-2 border-border;
+}
+.container[data-border-right="thick"] {
+  @apply border-r-4 border-border;
+}
+
+/* =============================================================================
+ * Border Radius
+ * ============================================================================= */
+
+.container[data-border-radius="none"] {
+  @apply rounded-none;
+}
+.container[data-border-radius="sm"] {
+  @apply rounded-sm;
+}
+.container[data-border-radius="md"] {
+  @apply rounded-md;
+}
+.container[data-border-radius="lg"] {
+  @apply rounded-lg;
+}
+.container[data-border-radius="xl"] {
+  @apply rounded-xl;
+}
+.container[data-border-radius="full"] {
+  @apply rounded-full;
+}
+
+/* =============================================================================
+ * Shadow
+ * ============================================================================= */
+
+.container[data-shadow="none"] {
+  @apply shadow-none;
+}
+.container[data-shadow="sm"] {
+  @apply shadow-sm;
+}
+.container[data-shadow="md"] {
+  @apply shadow-md;
+}
+.container[data-shadow="lg"] {
+  @apply shadow-lg;
+}
+.container[data-shadow="xl"] {
+  @apply shadow-xl;
+}
+
+/* =============================================================================
+ * Content Alignment (horizontal)
+ * ============================================================================= */
+
+.container[data-align="left"] {
+  @apply text-left;
+}
+.container[data-align="center"] {
+  @apply text-center;
+}
+.container[data-align="right"] {
+  @apply text-right;
+}
+
+/* =============================================================================
+ * Vertical Alignment (when min-height is set)
+ * ============================================================================= */
+
+.container[data-vertical-align="top"] {
+  @apply justify-start;
+}
+.container[data-vertical-align="center"] {
+  @apply justify-center;
+}
+.container[data-vertical-align="bottom"] {
+  @apply justify-end;
+}
+
+/* =============================================================================
+ * Legacy Support (backwards compatibility)
+ * ============================================================================= */
+
+.container[data-width="full"] {
+  @apply w-full;
+}
+.container[data-width="narrow"] {
+  @apply max-w-5xl w-full mx-auto;
+}
+.container[data-width="wide"] {
+  @apply max-w-7xl w-full mx-auto;
+}
+.container[data-spacing="sm"] {
+  @apply px-4 2xl:px-0;
+}
+.container[data-spacing="md"] {
+  @apply px-6 lg:px-8 2xl:px-0;
+}
+.container[data-spacing="lg"] {
+  @apply px-8 lg:px-12 2xl:px-0;
 }

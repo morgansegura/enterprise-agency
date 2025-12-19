@@ -260,6 +260,17 @@
 .section[data-vertical-align="bottom"] { justify-content: flex-end; }
 
 /* ==========================================
+ * SECTION GAP-Y (gap between containers)
+ * ========================================== */
+
+.section[data-gap-y="none"] { gap: var(--section-gap-none); }
+.section[data-gap-y="xs"] { gap: var(--section-gap-xs); }
+.section[data-gap-y="sm"] { gap: var(--section-gap-sm); }
+.section[data-gap-y="md"] { gap: var(--section-gap-md); }
+.section[data-gap-y="lg"] { gap: var(--section-gap-lg); }
+.section[data-gap-y="xl"] { gap: var(--section-gap-xl); }
+
+/* ==========================================
  * SECTION CONTAINER (Inner wrapper)
  * ========================================== */
 

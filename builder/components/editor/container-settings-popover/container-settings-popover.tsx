@@ -33,7 +33,8 @@ import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
 import type {
   Section,
-  ContainerSettings,
+  Container,
+  ContainerLayout,
   SectionBackground,
 } from "@/lib/hooks/use-pages";
 
@@ -67,11 +68,12 @@ export function ContainerSettingsPopover({
   const [tab, setTab] = React.useState<ContainerTab>("layout");
   const breakpoint = useCurrentBreakpoint();
 
-  const container = section.container || {};
+  // Get the first container (primary container for editing)
+  const container = section.containers?.[0];
 
   // Get background as object (normalize from string if legacy)
   const getBackground = (): SectionBackground => {
-    if (!container.background) return { type: "none" };
+    if (!container?.background) return { type: "none" };
     if (typeof container.background === "string") {
       if (
         container.background === "none" ||
@@ -86,13 +88,17 @@ export function ContainerSettingsPopover({
   const background = getBackground();
 
   // Container data for responsive handling
-  const containerData = container as unknown as Record<string, unknown>;
+  const containerData = (container || {}) as unknown as Record<string, unknown>;
 
   // Responsive change handler for container
   const handleResponsiveChange = useResponsiveChange(containerData, (data) => {
+    if (!container) return;
     onChange({
       ...section,
-      container: data as unknown as ContainerSettings,
+      containers: [
+        { ...container, ...(data as Partial<Container>) },
+        ...section.containers.slice(1),
+      ],
     });
   });
 
@@ -104,7 +110,7 @@ export function ContainerSettingsPopover({
   };
 
   // Layout data for responsive handling
-  const layoutData = (container.layout || {}) as unknown as Record<
+  const layoutData = (container?.layout || {}) as unknown as Record<
     string,
     unknown
   >;
@@ -113,12 +119,13 @@ export function ContainerSettingsPopover({
   const handleLayoutResponsiveChange = useResponsiveChange(
     layoutData,
     (data) => {
+      if (!container) return;
       onChange({
         ...section,
-        container: {
-          ...container,
-          layout: data as unknown as ContainerSettings["layout"],
-        },
+        containers: [
+          { ...container, layout: data as unknown as ContainerLayout },
+          ...section.containers.slice(1),
+        ],
       });
     },
   );
@@ -128,30 +135,57 @@ export function ContainerSettingsPopover({
     return getResponsiveValue<T>(layoutData, field, breakpoint) ?? defaultValue;
   };
 
-  const handleContainerChange = (updates: Partial<ContainerSettings>) => {
+  const handleContainerChange = (updates: Partial<Container>) => {
+    if (!container) return;
     onChange({
       ...section,
-      container: { ...container, ...updates },
+      containers: [
+        { ...container, ...updates },
+        ...section.containers.slice(1),
+      ],
     });
   };
 
   const handleLayoutChange = (field: string, value: unknown) => {
+    if (!container) return;
     onChange({
       ...section,
-      container: {
-        ...container,
-        layout: {
-          ...container.layout,
-          [field]: value,
+      containers: [
+        {
+          ...container,
+          layout: {
+            ...container.layout,
+            [field]: value,
+          },
         },
-      },
+        ...section.containers.slice(1),
+      ],
     });
   };
 
   const handleBackgroundChange = (bg: Partial<SectionBackground>) => {
-    const newBg = { ...background, ...bg };
+    const newBg = { ...background, ...bg } as SectionBackground;
     handleContainerChange({ background: newBg });
   };
+
+  // If no container exists, show a message
+  if (!container) {
+    return (
+      <Popover open={open} onOpenChange={onOpenChange}>
+        <PopoverTrigger asChild>{children}</PopoverTrigger>
+        <PopoverContent
+          className="container-settings-popover"
+          side="left"
+          align="start"
+          sideOffset={8}
+        >
+          <div className="p-4 text-center text-sm text-muted-foreground">
+            No container found. Add a container to configure settings.
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  }
 
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
@@ -209,7 +243,7 @@ export function ContainerSettingsPopover({
                     <Select
                       value={container.maxWidth || "none"}
                       onValueChange={(value) =>
-                        handleContainerChange({ maxWidth: value as ContainerSettings["maxWidth"] })
+                        handleContainerChange({ maxWidth: value as Container["maxWidth"] })
                       }
                     >
                       <SelectTrigger className="h-8">
@@ -231,7 +265,7 @@ export function ContainerSettingsPopover({
                     <Select
                       value={container.minHeight || "none"}
                       onValueChange={(value) =>
-                        handleContainerChange({ minHeight: value as ContainerSettings["minHeight"] })
+                        handleContainerChange({ minHeight: value as Container["minHeight"] })
                       }
                     >
                       <SelectTrigger className="h-8">
@@ -326,11 +360,10 @@ export function ContainerSettingsPopover({
                       onChange={(data) =>
                         onChange({
                           ...section,
-                          container: {
-                            ...container,
-                            layout:
-                              data as unknown as ContainerSettings["layout"],
-                          },
+                          containers: [
+                            { ...container, layout: data as unknown as ContainerLayout },
+                            ...section.containers.slice(1),
+                          ],
                         })
                       }
                       label="Direction"
@@ -357,11 +390,10 @@ export function ContainerSettingsPopover({
                       onChange={(data) =>
                         onChange({
                           ...section,
-                          container: {
-                            ...container,
-                            layout:
-                              data as unknown as ContainerSettings["layout"],
-                          },
+                          containers: [
+                            { ...container, layout: data as unknown as ContainerLayout },
+                            ...section.containers.slice(1),
+                          ],
                         })
                       }
                       label="Gap"
@@ -438,11 +470,10 @@ export function ContainerSettingsPopover({
                       onChange={(data) =>
                         onChange({
                           ...section,
-                          container: {
-                            ...container,
-                            layout:
-                              data as unknown as ContainerSettings["layout"],
-                          },
+                          containers: [
+                            { ...container, layout: data as unknown as ContainerLayout },
+                            ...section.containers.slice(1),
+                          ],
                         })
                       }
                       label="Gap"
@@ -781,7 +812,10 @@ export function ContainerSettingsPopover({
                     onChange={(data) =>
                       onChange({
                         ...section,
-                        container: data as unknown as ContainerSettings,
+                        containers: [
+                          { ...container, ...(data as Partial<Container>) },
+                          ...section.containers.slice(1),
+                        ],
                       })
                     }
                     label="Horizontal"
@@ -812,7 +846,10 @@ export function ContainerSettingsPopover({
                     onChange={(data) =>
                       onChange({
                         ...section,
-                        container: data as unknown as ContainerSettings,
+                        containers: [
+                          { ...container, ...(data as Partial<Container>) },
+                          ...section.containers.slice(1),
+                        ],
                       })
                     }
                     label="Vertical"
@@ -850,11 +887,11 @@ export function ContainerSettingsPopover({
                       value={container.border || "none"}
                       onValueChange={(value) =>
                         handleContainerChange({
-                          border: value as ContainerSettings["border"],
-                          borderTop: value as ContainerSettings["borderTop"],
-                          borderBottom: value as ContainerSettings["borderBottom"],
-                          borderLeft: value as ContainerSettings["borderLeft"],
-                          borderRight: value as ContainerSettings["borderRight"],
+                          border: value as Container["border"],
+                          borderTop: value as Container["borderTop"],
+                          borderBottom: value as Container["borderBottom"],
+                          borderLeft: value as Container["borderLeft"],
+                          borderRight: value as Container["borderRight"],
                         })
                       }
                     >
@@ -874,7 +911,7 @@ export function ContainerSettingsPopover({
                     <Select
                       value={container.borderRadius || "none"}
                       onValueChange={(value) =>
-                        handleContainerChange({ borderRadius: value })
+                        handleContainerChange({ borderRadius: value as Container["borderRadius"] })
                       }
                     >
                       <SelectTrigger className="h-8">
@@ -914,7 +951,7 @@ export function ContainerSettingsPopover({
                 <Select
                   value={container.shadow || "none"}
                   onValueChange={(value) =>
-                    handleContainerChange({ shadow: value })
+                    handleContainerChange({ shadow: value as Container["shadow"] })
                   }
                 >
                   <SelectTrigger className="h-8">
@@ -953,7 +990,7 @@ export function ContainerSettingsPopover({
                 <Select
                   value={container.overflow || "visible"}
                   onValueChange={(value) =>
-                    handleContainerChange({ overflow: value as ContainerSettings["overflow"] })
+                    handleContainerChange({ overflow: value as Container["overflow"] })
                   }
                 >
                   <SelectTrigger className="h-8">

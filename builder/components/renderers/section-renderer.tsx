@@ -40,10 +40,10 @@ const alignClasses: Record<string, string> = {
 };
 
 /**
- * SectionRenderer - Renders a page section with its blocks
+ * SectionRenderer - Renders a page section with its containers and blocks
  *
  * Applies section-level styling (background, spacing, width, alignment)
- * and renders all child blocks.
+ * and renders all containers with their child blocks.
  *
  * Matches the editor's SortableSection component exactly for WYSIWYG parity.
  */
@@ -53,10 +53,10 @@ export function SectionRenderer({
 }: SectionRendererProps) {
   const {
     background = "none",
-    spacing = "md",
+    paddingY = "md",
     width = "full",
     align = "left",
-    blocks = [],
+    containers = [],
   } = section;
 
   // Handle background - can be string or SectionBackground object
@@ -67,22 +67,24 @@ export function SectionRenderer({
         ? background.color
         : "none";
   const sectionBackground = backgroundClasses[bgValue || "none"] || "";
-  const sectionSpacing = spacingClasses[spacing] || spacingClasses.md;
+  const sectionSpacing = spacingClasses[paddingY] || spacingClasses.md;
   const sectionWidth = widthClasses[width] || widthClasses.full;
   const sectionAlign = alignClasses[align] || "";
 
   return (
     <section className={cn(sectionBackground, sectionAlign)}>
       <div className={cn(sectionSpacing, sectionWidth)}>
-        <div className="space-y-4">
-          {blocks.map((block) => (
-            <BlockRenderer
-              key={block._key}
-              block={block}
-              breakpoint={breakpoint}
-            />
-          ))}
-        </div>
+        {containers.map((container) => (
+          <div key={container._key} className="space-y-4">
+            {container.blocks?.map((block) => (
+              <BlockRenderer
+                key={block._key}
+                block={block}
+                breakpoint={breakpoint}
+              />
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   );

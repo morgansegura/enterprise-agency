@@ -115,7 +115,7 @@ export function SectionActionsPopover({
 
           {/* Layers */}
           <LayersPopover
-            blocks={section.blocks}
+            blocks={section.containers?.[0]?.blocks ?? []}
             selectedBlockKey={selectedBlockKey ?? null}
             onSelectBlock={onSelectBlock ?? (() => {})}
             onHoverBlock={onHoverBlock}

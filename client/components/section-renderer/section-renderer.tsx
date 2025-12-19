@@ -1,7 +1,12 @@
 import { Section } from "@/components/layout/section";
+import { Container, type ContainerLayout } from "@/components/layout/container";
 import { BlockRenderer } from "@/components/block-renderer/block-renderer";
 import type { BackgroundVariant, Spacing, Width, TextAlign } from "@/lib/types";
 import type { RootBlock } from "@/lib/blocks";
+
+// =============================================================================
+// Background Types
+// =============================================================================
 
 /**
  * Section background configuration
@@ -29,66 +34,83 @@ export type SectionBackground =
       };
     };
 
+// =============================================================================
+// Container Type
+// =============================================================================
+
 /**
- * Container settings for inner content
+ * Container data structure
+ * Containers handle layout and contain blocks
  */
-export type ContainerSettings = {
-  maxWidth?: "narrow" | "container" | "wide" | "full";
-  paddingX?: string;
-  paddingY?: string;
-  paddingTop?: string;
-  paddingBottom?: string;
-  background?: string;
+export type TypedContainer = {
+  _key: string;
+  _type: "container";
+  // Layout mode
+  layout: ContainerLayout;
+  // Size
+  maxWidth?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  minHeight?: "none" | "sm" | "md" | "lg" | "xl";
+  // Background
+  background?: string | SectionBackground;
+  // Padding
+  paddingX?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  // Border
+  border?: "none" | "thin" | "medium" | "thick";
   borderTop?: "none" | "thin" | "medium" | "thick";
   borderBottom?: "none" | "thin" | "medium" | "thick";
-  borderRadius?: string;
-  shadow?: string;
-  minHeight?: string;
-  align?: string;
-  verticalAlign?: string;
-  layout?: {
-    type?: "stack" | "flex" | "grid";
-    direction?: "column" | "row";
-    gap?: string;
-    columns?: number | string;
-    justify?: string;
-    align?: string;
-  };
+  borderLeft?: "none" | "thin" | "medium" | "thick";
+  borderRight?: "none" | "thin" | "medium" | "thick";
+  borderColor?: string;
+  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "full";
+  // Shadow
+  shadow?: "none" | "sm" | "md" | "lg" | "xl";
+  // Content alignment
+  align?: "left" | "center" | "right";
+  verticalAlign?: "top" | "center" | "bottom";
+  // Blocks
+  blocks: RootBlock[];
 };
+
+// =============================================================================
+// Section Type
+// =============================================================================
 
 /**
  * Section data structure
- * Sections contain blocks and handle all layout concerns
+ * Sections are semantic wrappers that contain containers
  */
 export type TypedSection = {
   _key: string;
   _type: "section";
-  /** Background - can be string (legacy) or object (new) */
-  background?: BackgroundVariant | SectionBackground;
-  /** Vertical spacing (padding top/bottom) - legacy */
+  // Semantic HTML element
+  as?: "section" | "div" | "article" | "aside" | "header" | "footer";
+  // Background
+  background?: BackgroundVariant | string | SectionBackground;
+  // Spacing
+  paddingY?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
+  paddingTop?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
+  paddingBottom?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
+  gapY?: Spacing | "none"; // Gap between containers
+  // Legacy
   spacing?: Spacing;
-  /** Individual padding top */
-  paddingTop?: Spacing | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
-  /** Individual padding bottom */
-  paddingBottom?: Spacing | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
-  /** Border top */
+  // Width
+  width?: Width | "container" | "narrow";
+  // Border
   borderTop?: "none" | "thin" | "medium" | "thick";
-  /** Border bottom */
   borderBottom?: "none" | "thin" | "medium" | "thick";
-  /** Section shadow */
+  borderColor?: string;
+  // Shadow
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
-  /** Section width constraint */
-  width?: Width;
-  /** Min height */
+  // Min height
   minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
-  /** Vertical alignment (when minHeight is set) */
   verticalAlign?: "top" | "center" | "bottom";
-  /** Content alignment */
+  // Alignment
   align?: Exclude<TextAlign, "justify">;
-  /** Container settings */
-  container?: ContainerSettings;
-  /** Blocks to render inside this section */
-  blocks: RootBlock[];
+  // Anchor
+  anchorId?: string;
+  // Content
+  containers: TypedContainer[];
 };
 
 /**
@@ -109,7 +131,7 @@ const backgroundPresets = [
  * Normalize background to data attribute and inline style
  */
 function normalizeBackground(
-  background?: BackgroundVariant | SectionBackground,
+  background?: BackgroundVariant | string | SectionBackground,
 ): {
   dataBackground: BackgroundVariant;
   style?: React.CSSProperties;
@@ -121,7 +143,7 @@ function normalizeBackground(
   // Legacy string format
   if (typeof background === "string") {
     if (backgroundPresets.includes(background)) {
-      return { dataBackground: background };
+      return { dataBackground: background as BackgroundVariant };
     }
     // Custom color string
     return { dataBackground: "none", style: { backgroundColor: background } };
@@ -132,11 +154,9 @@ function normalizeBackground(
     case "none":
       return { dataBackground: "none" };
     case "color": {
-      // Check if it's a preset color name
       if (backgroundPresets.includes(background.color)) {
         return { dataBackground: background.color as BackgroundVariant };
       }
-      // Custom color - use inline style
       return {
         dataBackground: "none",
         style: { backgroundColor: background.color },
@@ -172,22 +192,66 @@ function normalizeBackground(
 }
 
 /**
- * SectionRenderer - Renders an array of sections
- *
- * Each section is a layout container with:
- * - Background color/gradient/image
- * - Vertical spacing (padding)
- * - Width constraints
- * - Border and shadow
- * - Min height and alignment
- * - Container settings
- * - Array of blocks to render
+ * Get container background style
  */
+function getContainerBackgroundStyle(
+  background?: string | SectionBackground,
+): React.CSSProperties | undefined {
+  if (!background) return undefined;
+
+  if (typeof background === "string") {
+    if (background === "none" || background === "transparent") return undefined;
+    return { backgroundColor: background };
+  }
+
+  if (background.type === "color" && background.color) {
+    return { backgroundColor: background.color };
+  }
+
+  if (background.type === "gradient" && background.gradient) {
+    const { gradient } = background;
+    const stops = gradient.stops
+      .map((s) => `${s.color} ${s.position}%`)
+      .join(", ");
+    const gradientCss =
+      gradient.type === "linear"
+        ? `linear-gradient(${gradient.angle || 180}deg, ${stops})`
+        : `radial-gradient(circle, ${stops})`;
+    return { background: gradientCss };
+  }
+
+  if (background.type === "image" && background.image) {
+    return {
+      backgroundImage: `url(${background.image.src})`,
+      backgroundSize: background.image.size || "cover",
+      backgroundPosition: background.image.position || "center",
+      backgroundRepeat: background.image.repeat || "no-repeat",
+    };
+  }
+
+  return undefined;
+}
+
+// =============================================================================
+// Section Renderer
+// =============================================================================
+
 type SectionRendererProps = {
   sections: TypedSection[];
   className?: string;
 };
 
+/**
+ * SectionRenderer - Renders an array of sections
+ *
+ * Structure:
+ * Section (semantic wrapper)
+ * ├── Container 1 (layout wrapper)
+ * │   └── Blocks
+ * ├── Container 2 (layout wrapper)
+ * │   └── Blocks
+ * └── ...
+ */
 export function SectionRenderer({ sections, className }: SectionRendererProps) {
   if (!sections || sections.length === 0) {
     return (
@@ -202,25 +266,36 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
   return (
     <div className={className}>
       {sections.map((section) => {
-        const { dataBackground, style } = normalizeBackground(
+        const { dataBackground, style: sectionStyle } = normalizeBackground(
           section.background,
         );
+
+        // Build section inline style
+        const combinedStyle: React.CSSProperties = { ...sectionStyle };
+        if (section.borderColor) {
+          combinedStyle.borderColor = section.borderColor;
+        }
 
         return (
           <Section
             key={section._key}
+            as={section.as}
             // Background
             background={dataBackground}
-            style={style}
+            style={Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined}
             // Padding
-            spacing={section.spacing}
+            paddingY={section.paddingY}
             paddingTop={section.paddingTop}
             paddingBottom={section.paddingBottom}
+            spacing={section.spacing}
+            // Gap between containers
+            gapY={section.gapY}
             // Width
             width={section.width}
             // Borders
             borderTop={section.borderTop}
             borderBottom={section.borderBottom}
+            borderColor={section.borderColor}
             // Shadow
             shadow={section.shadow}
             // Min height
@@ -228,10 +303,39 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             verticalAlign={section.verticalAlign}
             // Alignment
             align={section.align}
-            // Container settings
-            container={section.container}
+            // Anchor
+            anchorId={section.anchorId}
           >
-            <BlockRenderer blocks={section.blocks} />
+            {section.containers?.map((container) => (
+              <Container
+                key={container._key}
+                // Layout
+                layout={container.layout}
+                // Size
+                maxWidth={container.maxWidth}
+                minHeight={container.minHeight}
+                // Padding
+                paddingX={container.paddingX}
+                paddingY={container.paddingY}
+                // Border
+                border={container.border}
+                borderTop={container.borderTop}
+                borderBottom={container.borderBottom}
+                borderLeft={container.borderLeft}
+                borderRight={container.borderRight}
+                borderColor={container.borderColor}
+                borderRadius={container.borderRadius}
+                // Shadow
+                shadow={container.shadow}
+                // Alignment
+                align={container.align}
+                verticalAlign={container.verticalAlign}
+                // Background
+                style={getContainerBackgroundStyle(container.background)}
+              >
+                <BlockRenderer blocks={container.blocks} />
+              </Container>
+            ))}
           </Section>
         );
       })}

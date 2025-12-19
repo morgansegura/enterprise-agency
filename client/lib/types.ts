@@ -73,7 +73,14 @@ export type BackgroundVariant =
   | "secondary";
 
 /** Common HTML container elements */
-export type ContainerElement = "div" | "section" | "article" | "aside" | "main";
+export type ContainerElement =
+  | "div"
+  | "section"
+  | "article"
+  | "aside"
+  | "main"
+  | "header"
+  | "footer";
 
 /** Text elements */
 export type TextElement = "p" | "span" | "div";

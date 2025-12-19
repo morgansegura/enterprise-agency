@@ -6,11 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type {
-  Section,
-  SectionBackground,
-  ContainerSettings,
-} from "@/lib/hooks/use-pages";
+import type { Section, SectionBackground } from "@/lib/hooks/use-pages";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
 import { SectionActionsPopover } from "../section-actions-popover";
@@ -119,6 +115,45 @@ function getBackgroundStyles(background?: string | SectionBackground): {
 }
 
 /**
+ * Get container background style
+ */
+function getContainerBackgroundStyle(
+  background?: string | SectionBackground,
+): React.CSSProperties | undefined {
+  if (!background) return undefined;
+
+  if (typeof background === "string") {
+    if (background === "transparent" || background === "none") return undefined;
+    return { backgroundColor: background };
+  }
+
+  if (background.type === "color" && background.color) {
+    return { backgroundColor: background.color };
+  }
+
+  if (background.type === "gradient" && background.gradient) {
+    const { type, angle, stops } = background.gradient;
+    const stopStr = stops.map((s) => `${s.color} ${s.position}%`).join(", ");
+    const gradientCss =
+      type === "linear"
+        ? `linear-gradient(${angle || 180}deg, ${stopStr})`
+        : `radial-gradient(circle, ${stopStr})`;
+    return { background: gradientCss };
+  }
+
+  if (background.type === "image" && background.image?.src) {
+    return {
+      backgroundImage: `url(${background.image.src})`,
+      backgroundSize: background.image.size || "cover",
+      backgroundPosition: background.image.position || "center",
+      backgroundRepeat: background.image.repeat || "no-repeat",
+    };
+  }
+
+  return undefined;
+}
+
+/**
  * Sortable Section Component
  *
  * Wraps a section with drag-and-drop functionality and section-level controls.
@@ -126,7 +161,7 @@ function getBackgroundStyles(background?: string | SectionBackground): {
  *
  * Structure matches client Section component:
  * <div.section-visual data-*>  <- Section wrapper (background, padding, border, shadow)
- *   <div.section-container data-*>  <- Inner container (layout, container styles)
+ *   <div.section-container data-*>[]  <- Container(s) with layout and blocks
  *     {blocks}
  *   </div>
  * </div>
@@ -162,63 +197,38 @@ export function SortableSection({
   };
 
   // Get effective padding values
-  const effectivePaddingTop = section.paddingTop || section.spacing || "md";
+  const effectivePaddingTop = section.paddingTop || section.paddingY || "md";
   const effectivePaddingBottom =
-    section.paddingBottom || section.spacing || "md";
+    section.paddingBottom || section.paddingY || "md";
 
   // Get background styles
   const { dataBackground, style: bgStyle } = getBackgroundStyles(
     section.background,
   );
 
-  // Helper to get responsive container value
-  const getContainerValue = <T,>(field: string, defaultValue: T): T => {
-    if (!section.container) return defaultValue;
-    const containerData = section.container as unknown as Record<
-      string,
-      unknown
-    >;
-    return (
-      getResponsiveValue<T>(containerData, field, breakpoint) ?? defaultValue
-    );
-  };
+  // Get first container for backwards compatibility
+  // Future: support rendering multiple containers
+  const primaryContainer = section.containers?.[0];
 
   // Helper to get responsive layout value
   const getLayoutValue = <T,>(field: string, defaultValue: T): T => {
-    if (!section.container?.layout) return defaultValue;
-    const layoutData = section.container.layout as unknown as Record<
+    if (!primaryContainer?.layout) return defaultValue;
+    const layoutData = primaryContainer.layout as unknown as Record<
       string,
       unknown
     >;
     return getResponsiveValue<T>(layoutData, field, breakpoint) ?? defaultValue;
   };
 
-  // Check if any block in this section is selected
+  // Check if any block in any container is selected
   const hasSelectedBlock = selectedBlockKey
-    ? section.blocks.some((block) => block._key === selectedBlockKey)
+    ? section.containers?.some((container) =>
+        container.blocks?.some((block) => block._key === selectedBlockKey),
+      )
     : false;
 
   // Track popover open state to keep buttons visible
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-
-  // Get container padding
-  const containerPaddingX = section.container
-    ? getContainerValue<string>("paddingX", undefined)
-    : undefined;
-  const containerPaddingY = section.container
-    ? getContainerValue<string | undefined>("paddingY", undefined)
-    : undefined;
-
-  // Build container inline style for custom background
-  const containerInlineStyle: React.CSSProperties = {};
-  if (section.container?.background) {
-    if (
-      typeof section.container.background === "string" &&
-      section.container.background !== "transparent"
-    ) {
-      containerInlineStyle.backgroundColor = section.container.background;
-    }
-  }
 
   return (
     <div
@@ -237,6 +247,7 @@ export function SortableSection({
         // Section-level data attributes (matches client/components/layout/section/section.tsx)
         data-padding-top={effectivePaddingTop}
         data-padding-bottom={effectivePaddingBottom}
+        data-gap-y={section.gapY}
         data-background={dataBackground}
         data-width={section.width || "full"}
         data-align={section.align || "left"}
@@ -313,42 +324,62 @@ export function SortableSection({
           </>
         )}
 
-        {/* Inner Container - renders with same data attributes as client */}
-        <div
-          className="section-container"
-          // Container-level data attributes
-          data-container-padding-x={containerPaddingX}
-          data-container-padding-y={containerPaddingY}
-          data-container-padding-top={section.container?.paddingTop}
-          data-container-padding-bottom={section.container?.paddingBottom}
-          data-container-border-top={section.container?.borderTop}
-          data-container-border-bottom={section.container?.borderBottom}
-          data-container-border-radius={section.container?.borderRadius}
-          data-container-shadow={section.container?.shadow}
-          data-container-min-height={section.container?.minHeight}
-          data-container-align={section.container?.align}
-          data-container-vertical-align={section.container?.verticalAlign}
-          // Layout attributes
-          data-layout-type={section.container?.layout?.type || "stack"}
-          data-layout-direction={section.container?.layout?.direction}
-          data-layout-gap={getLayoutValue<string>("gap", undefined)}
-          data-layout-columns={section.container?.layout?.columns}
-          data-layout-justify={section.container?.layout?.justify}
-          data-layout-align={section.container?.layout?.align}
-          style={
-            Object.keys(containerInlineStyle).length > 0
-              ? containerInlineStyle
-              : undefined
-          }
-          onClick={(e) => {
-            // Only deselect if clicking directly on container, not on a child block
-            if (e.target === e.currentTarget) {
-              onSelectBlock?.(null);
-            }
-          }}
-        >
-          {children}
-        </div>
+        {/* Render containers - for now, render first container for backwards compatibility */}
+        {primaryContainer && (
+          <div
+            className="section-container container"
+            // Layout attributes
+            data-layout-type={primaryContainer.layout?.type || "stack"}
+            data-layout-direction={primaryContainer.layout?.direction}
+            data-layout-wrap={primaryContainer.layout?.wrap}
+            data-layout-gap={getLayoutValue<string>("gap", "md")}
+            data-layout-columns={primaryContainer.layout?.columns}
+            data-layout-justify={primaryContainer.layout?.justify}
+            data-layout-align={primaryContainer.layout?.align}
+            // Size attributes
+            data-max-width={primaryContainer.maxWidth || "none"}
+            data-min-height={primaryContainer.minHeight || "none"}
+            // Padding attributes
+            data-padding-x={primaryContainer.paddingX}
+            data-padding-y={primaryContainer.paddingY}
+            // Border attributes
+            data-border-top={primaryContainer.borderTop || "none"}
+            data-border-bottom={primaryContainer.borderBottom || "none"}
+            data-border-left={primaryContainer.borderLeft || "none"}
+            data-border-right={primaryContainer.borderRight || "none"}
+            data-border-radius={primaryContainer.borderRadius || "none"}
+            // Shadow
+            data-shadow={primaryContainer.shadow || "none"}
+            // Content alignment
+            data-align={primaryContainer.align || "left"}
+            data-vertical-align={primaryContainer.verticalAlign || "top"}
+            style={getContainerBackgroundStyle(primaryContainer.background)}
+            onClick={(e) => {
+              // Only deselect if clicking directly on container, not on a child block
+              if (e.target === e.currentTarget) {
+                onSelectBlock?.(null);
+              }
+            }}
+          >
+            {children}
+          </div>
+        )}
+
+        {/* Fallback if no containers */}
+        {!primaryContainer && (
+          <div
+            className="section-container container"
+            data-layout-type="stack"
+            data-layout-gap="md"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                onSelectBlock?.(null);
+              }
+            }}
+          >
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );

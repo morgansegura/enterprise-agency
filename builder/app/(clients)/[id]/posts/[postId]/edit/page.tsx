@@ -9,7 +9,7 @@ import {
   useUnpublishPost,
   type Post,
 } from "@/lib/hooks/use-posts";
-import { type Section, type Block } from "@/lib/hooks/use-pages";
+import { type Section, type Block, type Container } from "@/lib/hooks/use-pages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -45,6 +45,50 @@ import {
 } from "lucide-react";
 import { PostEditorLayout } from "@/components/editor/post-editor-layout";
 
+/**
+ * Create a default container with empty blocks
+ */
+function createDefaultContainer(): Container {
+  return {
+    _type: "container",
+    _key: `container-${Date.now()}`,
+    layout: { type: "stack", gap: "md" },
+    blocks: [],
+  };
+}
+
+/**
+ * Create a default section with one container
+ */
+function createDefaultSection(): Section {
+  return {
+    _type: "section",
+    _key: `section-${Date.now()}`,
+    containers: [createDefaultContainer()],
+  };
+}
+
+/**
+ * Get blocks from a section's first container (with fallback)
+ */
+function getSectionBlocks(section: Section): Block[] {
+  return section.containers?.[0]?.blocks ?? [];
+}
+
+/**
+ * Update blocks in a section's first container
+ */
+function updateSectionBlocks(section: Section, blocks: Block[]): Section {
+  const containers = section.containers ?? [createDefaultContainer()];
+  return {
+    ...section,
+    containers: [
+      { ...containers[0], blocks },
+      ...containers.slice(1),
+    ],
+  };
+}
+
 export default function EditPostPage({
   params,
 }: {
@@ -78,13 +122,7 @@ export default function EditPostPage({
       setSections(post.content.sections as Section[]);
     } else {
       // Create default section if none exists
-      setSections([
-        {
-          _type: "section",
-          _key: `section-${Date.now()}`,
-          blocks: [],
-        },
-      ]);
+      setSections([createDefaultSection()]);
     }
   }, [post]);
 
@@ -100,20 +138,19 @@ export default function EditPostPage({
       // Create new block based on type
       const newBlock = createDefaultBlock(blockType);
 
-      // Add to first section (for now)
+      // Add to first section's first container
       setSections((prevSections) => {
         const updatedSections = [...prevSections];
         if (updatedSections.length === 0) {
-          updatedSections.push({
-            _type: "section",
-            _key: `section-${Date.now()}`,
-            blocks: [newBlock],
-          });
+          const newSection = createDefaultSection();
+          newSection.containers[0].blocks = [newBlock];
+          updatedSections.push(newSection);
         } else {
-          updatedSections[0] = {
-            ...updatedSections[0],
-            blocks: [...updatedSections[0].blocks, newBlock],
-          };
+          const blocks = getSectionBlocks(updatedSections[0]);
+          updatedSections[0] = updateSectionBlocks(updatedSections[0], [
+            ...blocks,
+            newBlock,
+          ]);
         }
         return updatedSections;
       });
@@ -204,12 +241,14 @@ export default function EditPostPage({
   ) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      updatedSections[sectionIndex] = {
-        ...updatedSections[sectionIndex],
-        blocks: updatedSections[sectionIndex].blocks.map((block, idx) =>
-          idx === blockIndex ? updatedBlock : block,
-        ),
-      };
+      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
+      const newBlocks = blocks.map((block, idx) =>
+        idx === blockIndex ? updatedBlock : block,
+      );
+      updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex],
+        newBlocks,
+      );
       return updatedSections;
     });
   };
@@ -217,12 +256,12 @@ export default function EditPostPage({
   const handleBlockDelete = (sectionIndex: number, blockIndex: number) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      updatedSections[sectionIndex] = {
-        ...updatedSections[sectionIndex],
-        blocks: updatedSections[sectionIndex].blocks.filter(
-          (_, idx) => idx !== blockIndex,
-        ),
-      };
+      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
+      const newBlocks = blocks.filter((_, idx) => idx !== blockIndex);
+      updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex],
+        newBlocks,
+      );
       return updatedSections;
     });
     toast.success("Block deleted");
@@ -237,20 +276,17 @@ export default function EditPostPage({
 
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const section = updatedSections[sectionIndex];
+      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
 
-      const oldIndex = section.blocks.findIndex(
-        (block) => block._key === active.id,
-      );
-      const newIndex = section.blocks.findIndex(
-        (block) => block._key === over.id,
-      );
+      const oldIndex = blocks.findIndex((block) => block._key === active.id);
+      const newIndex = blocks.findIndex((block) => block._key === over.id);
 
       if (oldIndex !== -1 && newIndex !== -1) {
-        updatedSections[sectionIndex] = {
-          ...section,
-          blocks: arrayMove(section.blocks, oldIndex, newIndex),
-        };
+        const newBlocks = arrayMove(blocks, oldIndex, newIndex);
+        updatedSections[sectionIndex] = updateSectionBlocks(
+          updatedSections[sectionIndex],
+          newBlocks,
+        );
       }
 
       return updatedSections;
@@ -299,12 +335,7 @@ export default function EditPostPage({
   };
 
   const handleAddSection = () => {
-    const newSection: Section = {
-      _type: "section",
-      _key: `section-${Date.now()}`,
-      blocks: [],
-    };
-
+    const newSection = createDefaultSection();
     setSections((prevSections) => [...prevSections, newSection]);
     toast.success("Section added");
   };
@@ -408,63 +439,66 @@ export default function EditPostPage({
                   strategy={verticalListSortingStrategy}
                 >
                   <div>
-                    {sections.map((section, sectionIndex) => (
-                      <SortableSection
-                        key={section._key}
-                        section={section}
-                        onSectionChange={(updatedSection) =>
-                          handleSectionChange(sectionIndex, updatedSection)
-                        }
-                        onDelete={() => handleSectionDelete(sectionIndex)}
-                        isFirst={sectionIndex === 0}
-                        isLast={sectionIndex === sections.length - 1}
-                      >
-                        {section.blocks.length === 0 ? (
-                          <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                            <p className="text-muted-foreground">
-                              Click a block from the left sidebar to add content
-                              to this section.
-                            </p>
-                          </div>
-                        ) : (
-                          <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={(event) =>
-                              handleBlockDragEnd(event, sectionIndex)
-                            }
-                          >
-                            <SortableContext
-                              items={section.blocks.map((block) => block._key)}
-                              strategy={verticalListSortingStrategy}
+                    {sections.map((section, sectionIndex) => {
+                      const blocks = getSectionBlocks(section);
+                      return (
+                        <SortableSection
+                          key={section._key}
+                          section={section}
+                          onSectionChange={(updatedSection) =>
+                            handleSectionChange(sectionIndex, updatedSection)
+                          }
+                          onDelete={() => handleSectionDelete(sectionIndex)}
+                          isFirst={sectionIndex === 0}
+                          isLast={sectionIndex === sections.length - 1}
+                        >
+                          {blocks.length === 0 ? (
+                            <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
+                              <p className="text-muted-foreground">
+                                Click a block from the left sidebar to add content
+                                to this section.
+                              </p>
+                            </div>
+                          ) : (
+                            <DndContext
+                              sensors={sensors}
+                              collisionDetection={closestCenter}
+                              onDragEnd={(event) =>
+                                handleBlockDragEnd(event, sectionIndex)
+                              }
                             >
-                              <div className="space-y-4">
-                                {section.blocks.map((block, blockIndex) => (
-                                  <SortableBlockItem
-                                    key={block._key}
-                                    block={block}
-                                    onChange={(updatedBlock) =>
-                                      handleBlockChange(
-                                        sectionIndex,
-                                        blockIndex,
-                                        updatedBlock,
-                                      )
-                                    }
-                                    onDelete={() =>
-                                      handleBlockDelete(
-                                        sectionIndex,
-                                        blockIndex,
-                                      )
-                                    }
-                                    tenantId={id}
-                                  />
-                                ))}
-                              </div>
-                            </SortableContext>
-                          </DndContext>
-                        )}
-                      </SortableSection>
-                    ))}
+                              <SortableContext
+                                items={blocks.map((block) => block._key)}
+                                strategy={verticalListSortingStrategy}
+                              >
+                                <div className="space-y-4">
+                                  {blocks.map((block, blockIndex) => (
+                                    <SortableBlockItem
+                                      key={block._key}
+                                      block={block}
+                                      onChange={(updatedBlock) =>
+                                        handleBlockChange(
+                                          sectionIndex,
+                                          blockIndex,
+                                          updatedBlock,
+                                        )
+                                      }
+                                      onDelete={() =>
+                                        handleBlockDelete(
+                                          sectionIndex,
+                                          blockIndex,
+                                        )
+                                      }
+                                      tenantId={id}
+                                    />
+                                  ))}
+                                </div>
+                              </SortableContext>
+                            </DndContext>
+                          )}
+                        </SortableSection>
+                      );
+                    })}
 
                     {/* Add Section Button */}
                     <Button

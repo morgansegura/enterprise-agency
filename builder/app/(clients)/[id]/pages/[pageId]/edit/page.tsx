@@ -12,6 +12,7 @@ import {
   useRestorePageVersion,
   type Section,
   type Block,
+  type Container,
   type PageSeo,
 } from "@/lib/hooks/use-pages";
 import { useAutoSave } from "@/lib/hooks/use-auto-save";
@@ -51,6 +52,50 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+
+/**
+ * Create a default container with empty blocks
+ */
+function createDefaultContainer(): Container {
+  return {
+    _type: "container",
+    _key: `container-${Date.now()}`,
+    layout: { type: "stack", gap: "md" },
+    blocks: [],
+  };
+}
+
+/**
+ * Create a default section with one container
+ */
+function createDefaultSection(): Section {
+  return {
+    _type: "section",
+    _key: `section-${Date.now()}`,
+    containers: [createDefaultContainer()],
+  };
+}
+
+/**
+ * Get blocks from a section's first container (with fallback)
+ */
+function getSectionBlocks(section: Section): Block[] {
+  return section.containers?.[0]?.blocks ?? [];
+}
+
+/**
+ * Update blocks in a section's first container
+ */
+function updateSectionBlocks(section: Section, blocks: Block[]): Section {
+  const containers = section.containers ?? [createDefaultContainer()];
+  return {
+    ...section,
+    containers: [
+      { ...containers[0], blocks },
+      ...containers.slice(1),
+    ],
+  };
+}
 
 export default function EditPagePage({
   params,
@@ -131,13 +176,7 @@ export default function EditPagePage({
       setSections(page.content.sections as Section[]);
     } else {
       // Create default section if none exists
-      setSections([
-        {
-          _type: "section",
-          _key: `section-${Date.now()}`,
-          blocks: [],
-        },
-      ]);
+      setSections([createDefaultSection()]);
     }
   }, [page]);
 
@@ -240,20 +279,19 @@ export default function EditPagePage({
       // Create new block based on type
       const newBlock = createDefaultBlock(blockType);
 
-      // Add to first section (for now)
+      // Add to first section's first container
       setSections((prevSections) => {
         const updatedSections = [...prevSections];
         if (updatedSections.length === 0) {
-          updatedSections.push({
-            _type: "section",
-            _key: `section-${Date.now()}`,
-            blocks: [newBlock],
-          });
+          const newSection = createDefaultSection();
+          newSection.containers[0].blocks = [newBlock];
+          updatedSections.push(newSection);
         } else {
-          updatedSections[0] = {
-            ...updatedSections[0],
-            blocks: [...updatedSections[0].blocks, newBlock],
-          };
+          const blocks = getSectionBlocks(updatedSections[0]);
+          updatedSections[0] = updateSectionBlocks(updatedSections[0], [
+            ...blocks,
+            newBlock,
+          ]);
         }
         return updatedSections;
       });
@@ -397,12 +435,14 @@ export default function EditPagePage({
   ) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      updatedSections[sectionIndex] = {
-        ...updatedSections[sectionIndex],
-        blocks: updatedSections[sectionIndex].blocks.map((block, idx) =>
-          idx === blockIndex ? updatedBlock : block,
-        ),
-      };
+      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
+      const newBlocks = blocks.map((block, idx) =>
+        idx === blockIndex ? updatedBlock : block,
+      );
+      updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex],
+        newBlocks,
+      );
       return updatedSections;
     });
   };
@@ -410,12 +450,12 @@ export default function EditPagePage({
   const handleBlockDelete = (sectionIndex: number, blockIndex: number) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      updatedSections[sectionIndex] = {
-        ...updatedSections[sectionIndex],
-        blocks: updatedSections[sectionIndex].blocks.filter(
-          (_, idx) => idx !== blockIndex,
-        ),
-      };
+      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
+      const newBlocks = blocks.filter((_, idx) => idx !== blockIndex);
+      updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex],
+        newBlocks,
+      );
       return updatedSections;
     });
     setSelectedBlockKey(null);
@@ -425,19 +465,21 @@ export default function EditPagePage({
   const handleBlockDuplicate = (sectionIndex: number, blockIndex: number) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const block = updatedSections[sectionIndex].blocks[blockIndex];
+      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
+      const block = blocks[blockIndex];
       const duplicatedBlock = {
         ...block,
         _key: `block-${Date.now()}`,
       };
-      updatedSections[sectionIndex] = {
-        ...updatedSections[sectionIndex],
-        blocks: [
-          ...updatedSections[sectionIndex].blocks.slice(0, blockIndex + 1),
-          duplicatedBlock,
-          ...updatedSections[sectionIndex].blocks.slice(blockIndex + 1),
-        ],
-      };
+      const newBlocks = [
+        ...blocks.slice(0, blockIndex + 1),
+        duplicatedBlock,
+        ...blocks.slice(blockIndex + 1),
+      ];
+      updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex],
+        newBlocks,
+      );
       return updatedSections;
     });
     toast.success("Block duplicated");
@@ -447,33 +489,33 @@ export default function EditPagePage({
     if (blockIndex === 0) return;
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = [...updatedSections[sectionIndex].blocks];
+      const blocks = [...getSectionBlocks(updatedSections[sectionIndex])];
       [blocks[blockIndex - 1], blocks[blockIndex]] = [
         blocks[blockIndex],
         blocks[blockIndex - 1],
       ];
-      updatedSections[sectionIndex] = {
-        ...updatedSections[sectionIndex],
+      updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex],
         blocks,
-      };
+      );
       return updatedSections;
     });
   };
 
   const handleBlockMoveDown = (sectionIndex: number, blockIndex: number) => {
     setSections((prevSections) => {
-      const section = prevSections[sectionIndex];
-      if (blockIndex >= section.blocks.length - 1) return prevSections;
+      const blocks = getSectionBlocks(prevSections[sectionIndex]);
+      if (blockIndex >= blocks.length - 1) return prevSections;
       const updatedSections = [...prevSections];
-      const blocks = [...section.blocks];
-      [blocks[blockIndex], blocks[blockIndex + 1]] = [
-        blocks[blockIndex + 1],
-        blocks[blockIndex],
+      const newBlocks = [...blocks];
+      [newBlocks[blockIndex], newBlocks[blockIndex + 1]] = [
+        newBlocks[blockIndex + 1],
+        newBlocks[blockIndex],
       ];
-      updatedSections[sectionIndex] = {
-        ...updatedSections[sectionIndex],
-        blocks,
-      };
+      updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex],
+        newBlocks,
+      );
       return updatedSections;
     });
   };
@@ -504,20 +546,17 @@ export default function EditPagePage({
 
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const section = updatedSections[sectionIndex];
+      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
 
-      const oldIndex = section.blocks.findIndex(
-        (block) => block._key === active.id,
-      );
-      const newIndex = section.blocks.findIndex(
-        (block) => block._key === over.id,
-      );
+      const oldIndex = blocks.findIndex((block) => block._key === active.id);
+      const newIndex = blocks.findIndex((block) => block._key === over.id);
 
       if (oldIndex !== -1 && newIndex !== -1) {
-        updatedSections[sectionIndex] = {
-          ...section,
-          blocks: arrayMove(section.blocks, oldIndex, newIndex),
-        };
+        const newBlocks = arrayMove(blocks, oldIndex, newIndex);
+        updatedSections[sectionIndex] = updateSectionBlocks(
+          updatedSections[sectionIndex],
+          newBlocks,
+        );
       }
 
       return updatedSections;
@@ -566,11 +605,7 @@ export default function EditPagePage({
   };
 
   const handleAddSectionAt = (index: number) => {
-    const newSection: Section = {
-      _type: "section",
-      _key: `section-${Date.now()}`,
-      blocks: [],
-    };
+    const newSection = createDefaultSection();
 
     setSections((prevSections) => {
       const updated = [...prevSections];
@@ -583,13 +618,19 @@ export default function EditPagePage({
   const handleSectionDuplicate = (sectionIndex: number) => {
     setSections((prevSections) => {
       const section = prevSections[sectionIndex];
-      const duplicated: Section = {
-        ...section,
-        _key: `section-${Date.now()}`,
-        blocks: section.blocks.map((block) => ({
+      const blocks = getSectionBlocks(section);
+      const duplicatedContainer: Container = {
+        ...section.containers[0],
+        _key: `container-${Date.now()}`,
+        blocks: blocks.map((block) => ({
           ...block,
           _key: `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         })),
+      };
+      const duplicated: Section = {
+        ...section,
+        _key: `section-${Date.now()}`,
+        containers: [duplicatedContainer, ...section.containers.slice(1)],
       };
       const updated = [...prevSections];
       updated.splice(sectionIndex + 1, 0, duplicated);
@@ -626,10 +667,11 @@ export default function EditPagePage({
     const newBlock = createDefaultBlock(blockType);
     setSections((prevSections) => {
       const updated = [...prevSections];
-      updated[sectionIndex] = {
-        ...updated[sectionIndex],
-        blocks: [...updated[sectionIndex].blocks, newBlock],
-      };
+      const blocks = getSectionBlocks(updated[sectionIndex]);
+      updated[sectionIndex] = updateSectionBlocks(updated[sectionIndex], [
+        ...blocks,
+        newBlock,
+      ]);
       return updated;
     });
     toast.success("Block added!");
@@ -756,107 +798,106 @@ export default function EditPagePage({
                     strategy={verticalListSortingStrategy}
                   >
                     <div>
-                      {sections.map((section, sectionIndex) => (
-                        <SortableSection
-                          key={section._key}
-                          section={section}
-                          onSectionChange={(updatedSection) =>
-                            handleSectionChange(sectionIndex, updatedSection)
-                          }
-                          onDelete={() => handleSectionDelete(sectionIndex)}
-                          onAddSectionAbove={() =>
-                            handleAddSectionAt(sectionIndex)
-                          }
-                          onAddSectionBelow={() =>
-                            handleAddSectionAt(sectionIndex + 1)
-                          }
-                          onDuplicate={() =>
-                            handleSectionDuplicate(sectionIndex)
-                          }
-                          onMoveUp={() => handleSectionMoveUp(sectionIndex)}
-                          onMoveDown={() => handleSectionMoveDown(sectionIndex)}
-                          onAddBlock={(blockType) =>
-                            handleAddBlockToSection(sectionIndex, blockType)
-                          }
-                          selectedBlockKey={selectedBlockKey}
-                          onSelectBlock={setSelectedBlockKey}
-                          hoveredBlockKey={hoveredBlockKey}
-                          onHoverBlock={setHoveredBlockKey}
-                          isFirst={sectionIndex === 0}
-                          isLast={sectionIndex === sections.length - 1}
-                        >
-                          {section.blocks.length === 0 ? (
-                            <div className="min-h-[60px]" />
-                          ) : (
-                            <DndContext
-                              sensors={sensors}
-                              collisionDetection={closestCenter}
-                              onDragEnd={(event) =>
-                                handleBlockDragEnd(event, sectionIndex)
-                              }
-                            >
-                              <SortableContext
-                                items={section.blocks.map(
-                                  (block) => block._key,
-                                )}
-                                strategy={verticalListSortingStrategy}
+                      {sections.map((section, sectionIndex) => {
+                        const blocks = getSectionBlocks(section);
+                        return (
+                          <SortableSection
+                            key={section._key}
+                            section={section}
+                            onSectionChange={(updatedSection) =>
+                              handleSectionChange(sectionIndex, updatedSection)
+                            }
+                            onDelete={() => handleSectionDelete(sectionIndex)}
+                            onAddSectionAbove={() =>
+                              handleAddSectionAt(sectionIndex)
+                            }
+                            onAddSectionBelow={() =>
+                              handleAddSectionAt(sectionIndex + 1)
+                            }
+                            onDuplicate={() =>
+                              handleSectionDuplicate(sectionIndex)
+                            }
+                            onMoveUp={() => handleSectionMoveUp(sectionIndex)}
+                            onMoveDown={() => handleSectionMoveDown(sectionIndex)}
+                            onAddBlock={(blockType) =>
+                              handleAddBlockToSection(sectionIndex, blockType)
+                            }
+                            selectedBlockKey={selectedBlockKey}
+                            onSelectBlock={setSelectedBlockKey}
+                            hoveredBlockKey={hoveredBlockKey}
+                            onHoverBlock={setHoveredBlockKey}
+                            isFirst={sectionIndex === 0}
+                            isLast={sectionIndex === sections.length - 1}
+                          >
+                            {blocks.length === 0 ? (
+                              <div className="min-h-[60px]" />
+                            ) : (
+                              <DndContext
+                                sensors={sensors}
+                                collisionDetection={closestCenter}
+                                onDragEnd={(event) =>
+                                  handleBlockDragEnd(event, sectionIndex)
+                                }
                               >
-                                <div className="space-y-4">
-                                  {section.blocks.map((block, blockIndex) => (
-                                    <SortableBlockItem
-                                      key={block._key}
-                                      block={block}
-                                      onChange={(updatedBlock) =>
-                                        handleBlockChange(
-                                          sectionIndex,
-                                          blockIndex,
-                                          updatedBlock,
-                                        )
-                                      }
-                                      onDelete={() =>
-                                        handleBlockDelete(
-                                          sectionIndex,
-                                          blockIndex,
-                                        )
-                                      }
-                                      onDuplicate={() =>
-                                        handleBlockDuplicate(
-                                          sectionIndex,
-                                          blockIndex,
-                                        )
-                                      }
-                                      onMoveUp={() =>
-                                        handleBlockMoveUp(
-                                          sectionIndex,
-                                          blockIndex,
-                                        )
-                                      }
-                                      onMoveDown={() =>
-                                        handleBlockMoveDown(
-                                          sectionIndex,
-                                          blockIndex,
-                                        )
-                                      }
-                                      tenantId={id}
-                                      isSelected={
-                                        selectedBlockKey === block._key
-                                      }
-                                      isHovered={hoveredBlockKey === block._key}
-                                      onSelect={() =>
-                                        setSelectedBlockKey(block._key)
-                                      }
-                                      isFirst={blockIndex === 0}
-                                      isLast={
-                                        blockIndex === section.blocks.length - 1
-                                      }
-                                    />
-                                  ))}
-                                </div>
-                              </SortableContext>
-                            </DndContext>
-                          )}
-                        </SortableSection>
-                      ))}
+                                <SortableContext
+                                  items={blocks.map((block) => block._key)}
+                                  strategy={verticalListSortingStrategy}
+                                >
+                                  <div className="space-y-4">
+                                    {blocks.map((block, blockIndex) => (
+                                      <SortableBlockItem
+                                        key={block._key}
+                                        block={block}
+                                        onChange={(updatedBlock) =>
+                                          handleBlockChange(
+                                            sectionIndex,
+                                            blockIndex,
+                                            updatedBlock,
+                                          )
+                                        }
+                                        onDelete={() =>
+                                          handleBlockDelete(
+                                            sectionIndex,
+                                            blockIndex,
+                                          )
+                                        }
+                                        onDuplicate={() =>
+                                          handleBlockDuplicate(
+                                            sectionIndex,
+                                            blockIndex,
+                                          )
+                                        }
+                                        onMoveUp={() =>
+                                          handleBlockMoveUp(
+                                            sectionIndex,
+                                            blockIndex,
+                                          )
+                                        }
+                                        onMoveDown={() =>
+                                          handleBlockMoveDown(
+                                            sectionIndex,
+                                            blockIndex,
+                                          )
+                                        }
+                                        tenantId={id}
+                                        isSelected={
+                                          selectedBlockKey === block._key
+                                        }
+                                        isHovered={hoveredBlockKey === block._key}
+                                        onSelect={() =>
+                                          setSelectedBlockKey(block._key)
+                                        }
+                                        isFirst={blockIndex === 0}
+                                        isLast={blockIndex === blocks.length - 1}
+                                      />
+                                    ))}
+                                  </div>
+                                </SortableContext>
+                              </DndContext>
+                            )}
+                          </SortableSection>
+                        );
+                      })}
                     </div>
                   </SortableContext>
                 </DndContext>

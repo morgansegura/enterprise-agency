@@ -28,17 +28,20 @@ export const homePageMock = {
       _key: "section_hero",
       _type: "section" as const,
       background: "primary" as const,
-      spacing: "2xl" as const,
+      paddingY: "2xl" as const,
       width: "full" as const,
       align: "center" as const,
-      blocks: [
+      containers: [
         {
-          _key: "hero-stack",
-          _type: "stack-block" as const,
-          data: {
+          _key: "hero-content",
+          _type: "container" as const,
+          layout: {
+            type: "stack" as const,
             gap: "lg" as const,
             align: "center" as const,
           },
+          maxWidth: "lg" as const,
+          align: "center" as const,
           blocks: [
             {
               _key: "hero-heading",
@@ -62,36 +65,37 @@ export const homePageMock = {
                 variant: "lead" as const,
               },
             },
+          ],
+        },
+        {
+          _key: "hero-buttons",
+          _type: "container" as const,
+          layout: {
+            type: "flex" as const,
+            gap: "md" as const,
+            justify: "center" as const,
+            wrap: true,
+          },
+          blocks: [
             {
-              _key: "hero-buttons",
-              _type: "flex-block" as const,
+              _key: "hero-btn-1",
+              _type: "button-block" as const,
               data: {
-                gap: "md" as const,
-                justify: "center" as const,
-                wrap: true,
+                text: "Plan Your Visit",
+                url: "/visit",
+                variant: "default" as const,
+                size: "lg" as const,
               },
-              blocks: [
-                {
-                  _key: "hero-btn-1",
-                  _type: "button-block" as const,
-                  data: {
-                    text: "Plan Your Visit",
-                    url: "/visit",
-                    variant: "default" as const,
-                    size: "lg" as const,
-                  },
-                },
-                {
-                  _key: "hero-btn-2",
-                  _type: "button-block" as const,
-                  data: {
-                    text: "Watch Online",
-                    url: "/watch",
-                    variant: "outline" as const,
-                    size: "lg" as const,
-                  },
-                },
-              ],
+            },
+            {
+              _key: "hero-btn-2",
+              _type: "button-block" as const,
+              data: {
+                text: "Watch Online",
+                url: "/watch",
+                variant: "outline" as const,
+                size: "lg" as const,
+              },
             },
           ],
         },
@@ -103,14 +107,15 @@ export const homePageMock = {
       _key: "section_service_times",
       _type: "section" as const,
       background: "white" as const,
-      spacing: "xl" as const,
+      paddingY: "xl" as const,
       width: "wide" as const,
       align: "center" as const,
-      blocks: [
+      containers: [
         {
-          _key: "service-times-stack",
-          _type: "stack-block" as const,
-          data: {
+          _key: "service-times-content",
+          _type: "container" as const,
+          layout: {
+            type: "stack" as const,
             gap: "lg" as const,
           },
           blocks: [
@@ -154,24 +159,21 @@ export const homePageMock = {
       ],
     },
 
-    // Welcome Section
+    // Welcome Section - Two column layout
     {
       _key: "section_welcome",
       _type: "section" as const,
       background: "gray" as const,
-      spacing: "xl" as const,
+      paddingY: "xl" as const,
       width: "wide" as const,
       align: "center" as const,
-      blocks: [
+      containers: [
         {
           _key: "welcome-grid",
-          _type: "grid-block" as const,
-          data: {
-            columns: {
-              mobile: 1,
-              tablet: 2,
-              desktop: 2,
-            },
+          _type: "container" as const,
+          layout: {
+            type: "grid" as const,
+            columns: 2,
             gap: "xl" as const,
             align: "center" as const,
           },
@@ -189,7 +191,7 @@ export const homePageMock = {
               },
             },
             {
-              _key: "welcome-content",
+              _key: "welcome-content-stack",
               _type: "stack-block" as const,
               data: {
                 gap: "md" as const,
@@ -244,16 +246,19 @@ export const homePageMock = {
       _key: "section_ministries",
       _type: "section" as const,
       background: "white" as const,
-      spacing: "xl" as const,
+      paddingY: "xl" as const,
       width: "wide" as const,
       align: "center" as const,
-      blocks: [
+      gapY: "xl" as const,
+      containers: [
         {
-          _key: "ministries-stack",
-          _type: "stack-block" as const,
-          data: {
-            gap: "xl" as const,
+          _key: "ministries-header",
+          _type: "container" as const,
+          layout: {
+            type: "stack" as const,
+            gap: "md" as const,
           },
+          align: "center" as const,
           blocks: [
             {
               _key: "ministries-heading",
@@ -266,70 +271,67 @@ export const homePageMock = {
                 weight: "bold" as const,
               },
             },
+          ],
+        },
+        {
+          _key: "ministries-cards",
+          _type: "container" as const,
+          layout: {
+            type: "grid" as const,
+            columns: 3,
+            gap: "lg" as const,
+          },
+          blocks: [
             {
-              _key: "ministries-grid",
-              _type: "grid-block" as const,
+              _key: "ministry-card-1",
+              _type: "card-block" as const,
               data: {
-                columns: {
-                  mobile: 1,
-                  tablet: 2,
-                  desktop: 3,
+                title: "Youth Ministry",
+                description:
+                  "Building strong foundations in faith for the next generation. Weekly meetings, events, and service projects.",
+                image: {
+                  url: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=400",
+                  alt: "Youth group",
                 },
-                gap: "lg" as const,
+                link: {
+                  text: "Learn More",
+                  url: "/ministries/youth",
+                },
               },
-              blocks: [
-                {
-                  _key: "ministry-card-1",
-                  _type: "card-block" as const,
-                  data: {
-                    title: "Youth Ministry",
-                    description:
-                      "Building strong foundations in faith for the next generation. Weekly meetings, events, and service projects.",
-                    image: {
-                      url: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=400",
-                      alt: "Youth group",
-                    },
-                    link: {
-                      text: "Learn More",
-                      url: "/ministries/youth",
-                    },
-                  },
+            },
+            {
+              _key: "ministry-card-2",
+              _type: "card-block" as const,
+              data: {
+                title: "Women's Ministry",
+                description:
+                  "Fellowship, Bible study, and encouragement for women of all ages. Monthly gatherings and small groups.",
+                image: {
+                  url: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400",
+                  alt: "Women's Bible study",
                 },
-                {
-                  _key: "ministry-card-2",
-                  _type: "card-block" as const,
-                  data: {
-                    title: "Women's Ministry",
-                    description:
-                      "Fellowship, Bible study, and encouragement for women of all ages. Monthly gatherings and small groups.",
-                    image: {
-                      url: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400",
-                      alt: "Women's Bible study",
-                    },
-                    link: {
-                      text: "Learn More",
-                      url: "/ministries/women",
-                    },
-                  },
+                link: {
+                  text: "Learn More",
+                  url: "/ministries/women",
                 },
-                {
-                  _key: "ministry-card-3",
-                  _type: "card-block" as const,
-                  data: {
-                    title: "Community Outreach",
-                    description:
-                      "Serving our neighbors and sharing God's love through action. Food bank, home repairs, and community events.",
-                    image: {
-                      url: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400",
-                      alt: "Community service",
-                    },
-                    link: {
-                      text: "Learn More",
-                      url: "/ministries/outreach",
-                    },
-                  },
+              },
+            },
+            {
+              _key: "ministry-card-3",
+              _type: "card-block" as const,
+              data: {
+                title: "Community Outreach",
+                description:
+                  "Serving our neighbors and sharing God's love through action. Food bank, home repairs, and community events.",
+                image: {
+                  url: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400",
+                  alt: "Community service",
                 },
-              ],
+                link: {
+                  text: "Learn More",
+                  url: "/ministries/outreach",
+                },
+              },
             },
           ],
         },
@@ -341,20 +343,29 @@ export const homePageMock = {
       _key: "section_verse",
       _type: "section" as const,
       background: "gray" as const,
-      spacing: "xl" as const,
+      paddingY: "xl" as const,
       width: "narrow" as const,
       align: "center" as const,
-      blocks: [
+      containers: [
         {
-          _key: "verse-quote",
-          _type: "quote-block" as const,
-          data: {
-            quote:
-              "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
-            author: "John 3:16",
-            size: "lg" as const,
-            align: "center" as const,
+          _key: "verse-container",
+          _type: "container" as const,
+          layout: {
+            type: "stack" as const,
           },
+          blocks: [
+            {
+              _key: "verse-quote",
+              _type: "quote-block" as const,
+              data: {
+                quote:
+                  "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+                author: "John 3:16",
+                size: "lg" as const,
+                align: "center" as const,
+              },
+            },
+          ],
         },
       ],
     },
@@ -364,15 +375,16 @@ export const homePageMock = {
       _key: "section_events",
       _type: "section" as const,
       background: "white" as const,
-      spacing: "xl" as const,
+      paddingY: "xl" as const,
       width: "wide" as const,
       align: "center" as const,
-      blocks: [
+      gapY: "lg" as const,
+      containers: [
         {
-          _key: "events-stack",
-          _type: "stack-block" as const,
-          data: {
-            gap: "lg" as const,
+          _key: "events-header",
+          _type: "container" as const,
+          layout: {
+            type: "stack" as const,
           },
           blocks: [
             {
@@ -386,48 +398,56 @@ export const homePageMock = {
                 weight: "bold" as const,
               },
             },
+          ],
+        },
+        {
+          _key: "events-cards",
+          _type: "container" as const,
+          layout: {
+            type: "grid" as const,
+            columns: 2,
+            gap: "lg" as const,
+          },
+          blocks: [
             {
-              _key: "events-grid",
-              _type: "grid-block" as const,
+              _key: "event-card-1",
+              _type: "card-block" as const,
               data: {
-                columns: {
-                  mobile: 1,
-                  tablet: 2,
-                  desktop: 2,
+                title: "Easter Sunday Service",
+                description:
+                  "Join us for a special celebration of the resurrection. Service begins at 10:00 AM followed by fellowship lunch.",
+                badge: "This Sunday",
+                link: {
+                  text: "Get Details",
+                  url: "/events/easter",
                 },
-                gap: "lg" as const,
               },
-              blocks: [
-                {
-                  _key: "event-card-1",
-                  _type: "card-block" as const,
-                  data: {
-                    title: "Easter Sunday Service",
-                    description:
-                      "Join us for a special celebration of the resurrection. Service begins at 10:00 AM followed by fellowship lunch.",
-                    badge: "This Sunday",
-                    link: {
-                      text: "Get Details",
-                      url: "/events/easter",
-                    },
-                  },
-                },
-                {
-                  _key: "event-card-2",
-                  _type: "card-block" as const,
-                  data: {
-                    title: "Community BBQ",
-                    description:
-                      "Free community meal and fun activities for the whole family. Everyone welcome!",
-                    badge: "Next Week",
-                    link: {
-                      text: "RSVP Now",
-                      url: "/events/bbq",
-                    },
-                  },
-                },
-              ],
             },
+            {
+              _key: "event-card-2",
+              _type: "card-block" as const,
+              data: {
+                title: "Community BBQ",
+                description:
+                  "Free community meal and fun activities for the whole family. Everyone welcome!",
+                badge: "Next Week",
+                link: {
+                  text: "RSVP Now",
+                  url: "/events/bbq",
+                },
+              },
+            },
+          ],
+        },
+        {
+          _key: "events-cta",
+          _type: "container" as const,
+          layout: {
+            type: "stack" as const,
+            align: "center" as const,
+          },
+          align: "center" as const,
+          blocks: [
             {
               _key: "events-btn",
               _type: "button-block" as const,
@@ -447,17 +467,20 @@ export const homePageMock = {
       _key: "section_cta",
       _type: "section" as const,
       background: "primary" as const,
-      spacing: "2xl" as const,
+      paddingY: "2xl" as const,
       width: "full" as const,
       align: "center" as const,
-      blocks: [
+      containers: [
         {
-          _key: "cta-stack",
-          _type: "stack-block" as const,
-          data: {
+          _key: "cta-content",
+          _type: "container" as const,
+          layout: {
+            type: "stack" as const,
             gap: "lg" as const,
             align: "center" as const,
           },
+          maxWidth: "lg" as const,
+          align: "center" as const,
           blocks: [
             {
               _key: "cta-heading",
@@ -480,36 +503,37 @@ export const homePageMock = {
                 align: "center" as const,
               },
             },
+          ],
+        },
+        {
+          _key: "cta-buttons",
+          _type: "container" as const,
+          layout: {
+            type: "flex" as const,
+            gap: "md" as const,
+            justify: "center" as const,
+            wrap: true,
+          },
+          blocks: [
             {
-              _key: "cta-buttons",
-              _type: "flex-block" as const,
+              _key: "cta-btn-1",
+              _type: "button-block" as const,
               data: {
-                gap: "md" as const,
-                justify: "center" as const,
-                wrap: true,
+                text: "Plan Your Visit",
+                url: "/visit",
+                variant: "default" as const,
+                size: "lg" as const,
               },
-              blocks: [
-                {
-                  _key: "cta-btn-1",
-                  _type: "button-block" as const,
-                  data: {
-                    text: "Plan Your Visit",
-                    url: "/visit",
-                    variant: "default" as const,
-                    size: "lg" as const,
-                  },
-                },
-                {
-                  _key: "cta-btn-2",
-                  _type: "button-block" as const,
-                  data: {
-                    text: "Contact Us",
-                    url: "/contact",
-                    variant: "outline" as const,
-                    size: "lg" as const,
-                  },
-                },
-              ],
+            },
+            {
+              _key: "cta-btn-2",
+              _type: "button-block" as const,
+              data: {
+                text: "Contact Us",
+                url: "/contact",
+                variant: "outline" as const,
+                size: "lg" as const,
+              },
             },
           ],
         },
