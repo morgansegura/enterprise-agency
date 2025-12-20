@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 /**
- * Tenant Detection Middleware
+ * Tenant Detection Proxy
  *
  * Resolves the tenant based on:
  * 1. Subdomain (e.g., demo.example.com -> demo)
@@ -46,7 +46,7 @@ async function resolveTenant(
       return data;
     }
   } catch {
-    console.error("[Middleware] Failed to resolve tenant for domain:", domain);
+    console.error("[Proxy] Failed to resolve tenant for domain:", domain);
   }
 
   // Fall back to env-based tenant slug or default
@@ -87,7 +87,7 @@ function extractSubdomain(host: string): string | null {
   return subdomain;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const host = request.headers.get("host") || "";
   const response = NextResponse.next();
 
@@ -119,7 +119,7 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
-// Only run middleware on pages, not on static files or API routes
+// Only run proxy on pages, not on static files or API routes
 export const config = {
   matcher: [
     /*
