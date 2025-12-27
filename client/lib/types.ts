@@ -31,11 +31,15 @@ export type HeadingSize = TextSize;
 
 /** Font weight options */
 export type FontWeight =
+  | "thin"
+  | "extralight"
+  | "light"
   | "normal"
   | "medium"
   | "semibold"
   | "bold"
-  | "extrabold";
+  | "extrabold"
+  | "black";
 
 /** HTML heading levels */
 export type HeadingLevel = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";

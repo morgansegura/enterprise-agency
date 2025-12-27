@@ -42,8 +42,11 @@ export type JustifyContent =
 
 /** Heading block data */
 export type HeadingBlockData = {
+  // Content
   text: string;
   level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+
+  // Typography - Size & Spacing
   size?:
     | "xs"
     | "sm"
@@ -58,35 +61,118 @@ export type HeadingBlockData = {
     | "7xl"
     | "8xl"
     | "9xl";
-  align?: "left" | "center" | "right";
-  weight?: "normal" | "medium" | "semibold" | "bold" | "extrabold";
+  letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
+  lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
+
+  // Typography - Style
+  weight?:
+    | "thin"
+    | "extralight"
+    | "light"
+    | "normal"
+    | "medium"
+    | "semibold"
+    | "bold"
+    | "extrabold"
+    | "black";
+  fontStyle?: "normal" | "italic";
+  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+  textDecoration?: "none" | "underline" | "line-through";
   variant?: "default" | "primary" | "muted";
+
+  // Typography - Color (preset only)
+  color?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "accent"
+    | "destructive";
+
+  // Layout
+  align?: "left" | "center" | "right";
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "prose" | "none";
+  whiteSpace?: "normal" | "nowrap" | "pre-wrap";
+
+  // Effects
+  opacity?: number; // 0-100, mapped to preset (10, 25, 50, 75, 90, 100)
+
+  // Responsive overrides
+  _responsive?: {
+    tablet?: Partial<Omit<HeadingBlockData, "_responsive">>;
+    mobile?: Partial<Omit<HeadingBlockData, "_responsive">>;
+  };
 };
 
 /** Text block data */
 export type TextBlockData = {
+  // Content
   /** Plain text content (legacy format) */
   text?: string;
   /** Text content (legacy format) */
   content?: string;
   /** HTML content from TipTap editor (preferred) */
   html?: string;
+
+  // Typography - Size & Spacing
   size?:
     | "xs"
     | "sm"
     | "base"
+    | "md"
     | "lg"
     | "xl"
     | "2xl"
     | "3xl"
     | "4xl"
     | "5xl"
-    | "6xl"
-    | "7xl"
-    | "8xl"
-    | "9xl";
+    | "6xl";
+  letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
+  lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
+
+  // Typography - Style
+  weight?:
+    | "thin"
+    | "extralight"
+    | "light"
+    | "normal"
+    | "medium"
+    | "semibold"
+    | "bold"
+    | "extrabold"
+    | "black";
+  fontStyle?: "normal" | "italic";
+  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+  textDecoration?: "none" | "underline" | "line-through";
+  variant?: "default" | "muted" | "lead" | "subtle" | "caption";
+
+  // Typography - Color (preset only)
+  color?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "accent"
+    | "destructive";
+
+  // Layout
   align?: "left" | "center" | "right" | "justify";
-  variant?: "default" | "muted" | "lead" | "subtle";
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "prose" | "none";
+  whiteSpace?: "normal" | "nowrap" | "pre-wrap";
+
+  // Multi-column
+  columns?: 1 | 2 | 3 | 4;
+  columnGap?: "sm" | "md" | "lg" | "xl";
+
+  // Effects
+  opacity?: number; // 0-100, mapped to preset (10, 25, 50, 75, 90, 100)
+  dropCap?: boolean;
+
+  // Responsive overrides
+  _responsive?: {
+    tablet?: Partial<Omit<TextBlockData, "_responsive">>;
+    mobile?: Partial<Omit<TextBlockData, "_responsive">>;
+  };
 };
 
 /** Rich text block data (TipTap HTML output) */

@@ -6,10 +6,17 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { Section, SectionBackground } from "@/lib/hooks/use-pages";
-import { useCurrentBreakpoint } from "@/lib/responsive/context";
-import { getResponsiveValue } from "@/lib/responsive";
+import type {
+  Section,
+  Container,
+  SectionBackground,
+} from "@/lib/hooks/use-pages";
 import { SectionActionsPopover } from "../section-actions-popover";
+import { SortableContainer } from "../sortable-container";
+import { toast } from "sonner";
+
+// Re-export for use by page editor
+export type { Container };
 
 import "./sortable-section.css";
 
@@ -22,14 +29,20 @@ interface SortableSectionProps {
   onDuplicate?: () => void;
   onMoveUp?: () => void;
   onMoveDown?: () => void;
-  onAddBlock?: (blockType: string) => void;
+  onAddContainer?: () => void;
   selectedBlockKey?: string | null;
   onSelectBlock?: (key: string | null) => void;
   hoveredBlockKey?: string | null;
   onHoverBlock?: (key: string | null) => void;
   isFirst?: boolean;
   isLast?: boolean;
-  children: React.ReactNode;
+  /** Render blocks for a specific container */
+  renderContainerBlocks: (
+    containerIndex: number,
+    container: Container,
+  ) => React.ReactNode;
+  /** Called when a block is added to a container */
+  onAddBlockToContainer: (containerIndex: number, blockType: string) => void;
 }
 
 /**
@@ -115,45 +128,6 @@ function getBackgroundStyles(background?: string | SectionBackground): {
 }
 
 /**
- * Get container background style
- */
-function getContainerBackgroundStyle(
-  background?: string | SectionBackground,
-): React.CSSProperties | undefined {
-  if (!background) return undefined;
-
-  if (typeof background === "string") {
-    if (background === "transparent" || background === "none") return undefined;
-    return { backgroundColor: background };
-  }
-
-  if (background.type === "color" && background.color) {
-    return { backgroundColor: background.color };
-  }
-
-  if (background.type === "gradient" && background.gradient) {
-    const { type, angle, stops } = background.gradient;
-    const stopStr = stops.map((s) => `${s.color} ${s.position}%`).join(", ");
-    const gradientCss =
-      type === "linear"
-        ? `linear-gradient(${angle || 180}deg, ${stopStr})`
-        : `radial-gradient(circle, ${stopStr})`;
-    return { background: gradientCss };
-  }
-
-  if (background.type === "image" && background.image?.src) {
-    return {
-      backgroundImage: `url(${background.image.src})`,
-      backgroundSize: background.image.size || "cover",
-      backgroundPosition: background.image.position || "center",
-      backgroundRepeat: background.image.repeat || "no-repeat",
-    };
-  }
-
-  return undefined;
-}
-
-/**
  * Sortable Section Component
  *
  * Wraps a section with drag-and-drop functionality and section-level controls.
@@ -175,21 +149,19 @@ export function SortableSection({
   onDuplicate,
   onMoveUp,
   onMoveDown,
-  onAddBlock,
+  onAddContainer,
   selectedBlockKey,
   onSelectBlock,
   hoveredBlockKey: _hoveredBlockKey,
   onHoverBlock,
   isFirst = false,
   isLast = false,
-  children,
+  renderContainerBlocks,
+  onAddBlockToContainer,
 }: SortableSectionProps) {
   const { setNodeRef, transform, transition, isDragging } = useSortable({
     id: section._key,
   });
-
-  // Get current breakpoint for responsive values
-  const breakpoint = useCurrentBreakpoint();
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -205,20 +177,6 @@ export function SortableSection({
   const { dataBackground, style: bgStyle } = getBackgroundStyles(
     section.background,
   );
-
-  // Get first container for backwards compatibility
-  // Future: support rendering multiple containers
-  const primaryContainer = section.containers?.[0];
-
-  // Helper to get responsive layout value
-  const getLayoutValue = <T,>(field: string, defaultValue: T): T => {
-    if (!primaryContainer?.layout) return defaultValue;
-    const layoutData = primaryContainer.layout as unknown as Record<
-      string,
-      unknown
-    >;
-    return getResponsiveValue<T>(layoutData, field, breakpoint) ?? defaultValue;
-  };
 
   // Check if any block in any container is selected
   const hasSelectedBlock = selectedBlockKey
@@ -275,7 +233,7 @@ export function SortableSection({
           onDuplicate={onDuplicate}
           onMoveUp={onMoveUp}
           onMoveDown={onMoveDown}
-          onAddBlock={onAddBlock}
+          onAddContainer={onAddContainer}
           selectedBlockKey={selectedBlockKey}
           onSelectBlock={onSelectBlock}
           onHoverBlock={onHoverBlock}
@@ -324,62 +282,36 @@ export function SortableSection({
           </>
         )}
 
-        {/* Render containers - for now, render first container for backwards compatibility */}
-        {primaryContainer && (
-          <div
-            className="section-container container"
-            // Layout attributes
-            data-layout-type={primaryContainer.layout?.type || "stack"}
-            data-layout-direction={primaryContainer.layout?.direction}
-            data-layout-wrap={primaryContainer.layout?.wrap}
-            data-layout-gap={getLayoutValue<string>("gap", "md")}
-            data-layout-columns={primaryContainer.layout?.columns}
-            data-layout-justify={primaryContainer.layout?.justify}
-            data-layout-align={primaryContainer.layout?.align}
-            // Size attributes
-            data-max-width={primaryContainer.maxWidth || "none"}
-            data-min-height={primaryContainer.minHeight || "none"}
-            // Padding attributes
-            data-padding-x={primaryContainer.paddingX}
-            data-padding-y={primaryContainer.paddingY}
-            // Border attributes
-            data-border-top={primaryContainer.borderTop || "none"}
-            data-border-bottom={primaryContainer.borderBottom || "none"}
-            data-border-left={primaryContainer.borderLeft || "none"}
-            data-border-right={primaryContainer.borderRight || "none"}
-            data-border-radius={primaryContainer.borderRadius || "none"}
-            // Shadow
-            data-shadow={primaryContainer.shadow || "none"}
-            // Content alignment
-            data-align={primaryContainer.align || "left"}
-            data-vertical-align={primaryContainer.verticalAlign || "top"}
-            style={getContainerBackgroundStyle(primaryContainer.background)}
-            onClick={(e) => {
-              // Only deselect if clicking directly on container, not on a child block
-              if (e.target === e.currentTarget) {
-                onSelectBlock?.(null);
+        {/* Render all containers */}
+        <div className="section-containers">
+          {(section.containers ?? []).map((container, containerIndex) => (
+            <SortableContainer
+              key={container._key}
+              container={container}
+              containerIndex={containerIndex}
+              onContainerChange={(updatedContainer) => {
+                const newContainers = [...(section.containers ?? [])];
+                newContainers[containerIndex] = updatedContainer;
+                onSectionChange({ ...section, containers: newContainers });
+              }}
+              onDelete={() => {
+                const newContainers = (section.containers ?? []).filter(
+                  (_, idx) => idx !== containerIndex,
+                );
+                onSectionChange({ ...section, containers: newContainers });
+                toast.success("Container deleted");
+              }}
+              onAddBlock={(blockType) =>
+                onAddBlockToContainer(containerIndex, blockType)
               }
-            }}
-          >
-            {children}
-          </div>
-        )}
-
-        {/* Fallback if no containers */}
-        {!primaryContainer && (
-          <div
-            className="section-container container"
-            data-layout-type="stack"
-            data-layout-gap="md"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                onSelectBlock?.(null);
-              }
-            }}
-          >
-            {children}
-          </div>
-        )}
+              selectedBlockKey={selectedBlockKey}
+              onSelectBlock={onSelectBlock}
+              isOnly={(section.containers ?? []).length === 1}
+            >
+              {renderContainerBlocks(containerIndex, container)}
+            </SortableContainer>
+          ))}
+        </div>
       </div>
     </div>
   );

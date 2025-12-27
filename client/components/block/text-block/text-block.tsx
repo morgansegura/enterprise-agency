@@ -7,19 +7,22 @@ type TextBlockProps = {
   data: TextBlockData;
 };
 
-// Size class maps for responsive
+// Size class maps for responsive overrides
 const sizeClasses: Record<string, string> = {
   xs: "text-size-xs",
   sm: "text-size-sm",
   base: "text-size-base",
+  md: "text-size-base",
   lg: "text-size-lg",
   xl: "text-size-xl",
   "2xl": "text-size-2xl",
   "3xl": "text-size-3xl",
   "4xl": "text-size-4xl",
+  "5xl": "text-size-5xl",
+  "6xl": "text-size-6xl",
 };
 
-// Align class maps for responsive
+// Align class maps for responsive overrides
 const alignClasses: Record<string, string> = {
   left: "text-align-left",
   center: "text-align-center",
@@ -27,26 +30,50 @@ const alignClasses: Record<string, string> = {
   justify: "text-align-justify",
 };
 
-// Variant class maps
-const variantClasses: Record<string, string> = {
-  default: "text-foreground",
-  muted: "text-muted-foreground",
-  lead: "text-muted-foreground text-lg",
-  subtle: "text-muted-foreground/80",
-};
+// Map opacity number to preset string
+function getOpacityPreset(opacity: number | undefined): string | undefined {
+  if (opacity === undefined) return undefined;
+  if (opacity <= 10) return "10";
+  if (opacity <= 25) return "25";
+  if (opacity <= 50) return "50";
+  if (opacity <= 75) return "75";
+  if (opacity <= 90) return "90";
+  return "100";
+}
 
 /**
  * TextBlock - Data adapter for Text UI component
  * Content block (leaf node) - cannot have children
  * Wraps ui/Text component with CMS data
  *
- * Supports:
- * - HTML content from TipTap (preferred)
- * - Plain text content (legacy)
- * - Responsive overrides for size and alignment
+ * Supports comprehensive typography properties via data-* attributes:
+ * - Size & Spacing: size, letterSpacing, lineHeight
+ * - Style: weight, fontStyle, textTransform, textDecoration, variant
+ * - Font: color (presets only)
+ * - Layout: align, maxWidth, whiteSpace
+ * - Multi-column: columns, columnGap
+ * - Effects: opacity, dropCap
+ * - Responsive overrides for size and align
  */
 export function TextBlock({ data }: TextBlockProps) {
-  const { size = "base", align = "left", variant = "default" } = data;
+  const {
+    size = "base",
+    align = "left",
+    variant = "default",
+    weight,
+    letterSpacing,
+    lineHeight,
+    fontStyle,
+    textTransform,
+    textDecoration,
+    color,
+    maxWidth,
+    whiteSpace,
+    columns,
+    columnGap,
+    opacity,
+    dropCap,
+  } = data;
 
   // Check if we have HTML content (from TipTap editor)
   const hasHtml = Boolean(data.html);
@@ -57,7 +84,56 @@ export function TextBlock({ data }: TextBlockProps) {
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);
 
-  // Get responsive values
+  // Convert opacity number to preset string
+  const opacityPreset = getOpacityPreset(opacity);
+
+  // Render HTML content if available (uses data-* attributes on wrapper div)
+  if (hasHtml) {
+    // Get responsive values for HTML rendering
+    const sizeValues = getResponsiveValues<string>(
+      data as Record<string, unknown>,
+      "size",
+    );
+    const alignValues = getResponsiveValues<string>(
+      data as Record<string, unknown>,
+      "align",
+    );
+
+    const responsiveClasses = hasOverrides
+      ? cn(
+          generateResponsiveClasses(sizeClasses, sizeValues, size),
+          generateResponsiveClasses(alignClasses, alignValues, align),
+        )
+      : "";
+
+    return (
+      <div
+        className={cn(
+          "text text-block prose prose-sm max-w-none",
+          responsiveClasses,
+        )}
+        data-size={!hasOverrides ? size : undefined}
+        data-align={!hasOverrides ? align : undefined}
+        data-variant={variant}
+        data-weight={weight}
+        data-letter-spacing={letterSpacing}
+        data-line-height={lineHeight}
+        data-font-style={fontStyle}
+        data-text-transform={textTransform}
+        data-text-decoration={textDecoration}
+        data-white-space={whiteSpace}
+        data-max-width={maxWidth}
+        data-columns={columns}
+        data-column-gap={columnGap}
+        data-opacity={opacityPreset}
+        data-color={color}
+        data-drop-cap={dropCap}
+        dangerouslySetInnerHTML={{ __html: data.html! }}
+      />
+    );
+  }
+
+  // Get responsive values for plain text
   const sizeValues = getResponsiveValues<string>(
     data as Record<string, unknown>,
     "size",
@@ -67,45 +143,58 @@ export function TextBlock({ data }: TextBlockProps) {
     "align",
   );
 
-  // Generate responsive classes
   const responsiveClasses = hasOverrides
     ? cn(
         generateResponsiveClasses(sizeClasses, sizeValues, size),
         generateResponsiveClasses(alignClasses, alignValues, align),
       )
-    : cn(
-        sizeClasses[size] || sizeClasses.base,
-        alignClasses[align] || alignClasses.left,
-      );
-
-  // Get variant class
-  const variantClass = variantClasses[variant] || variantClasses.default;
-
-  // Render HTML content if available
-  if (hasHtml) {
-    return (
-      <div
-        className={cn(
-          "text-block prose prose-sm max-w-none",
-          responsiveClasses,
-          variantClass,
-        )}
-        dangerouslySetInnerHTML={{ __html: data.html! }}
-      />
-    );
-  }
-
-  // Fallback to plain text rendering
-  if (!hasOverrides) {
-    return (
-      <Text as="p" size={size} align={align} variant={variant}>
-        {plainContent}
-      </Text>
-    );
-  }
+    : "";
 
   return (
-    <Text as="p" variant={variant} className={responsiveClasses}>
+    <Text
+      as="p"
+      size={
+        !hasOverrides ? (size as "base" | "xs" | "sm" | "lg" | "xl") : undefined
+      }
+      align={!hasOverrides ? align : undefined}
+      variant={variant as "default" | "muted" | "lead" | "subtle"}
+      weight={weight}
+      letterSpacing={letterSpacing}
+      lineHeight={lineHeight}
+      fontStyle={fontStyle}
+      textTransform={textTransform}
+      textDecoration={textDecoration}
+      whiteSpace={whiteSpace}
+      maxWidth={
+        maxWidth as
+          | "xs"
+          | "sm"
+          | "md"
+          | "lg"
+          | "xl"
+          | "2xl"
+          | "prose"
+          | "none"
+          | undefined
+      }
+      columns={columns}
+      columnGap={columnGap}
+      opacity={
+        opacityPreset as "10" | "25" | "50" | "75" | "90" | "100" | undefined
+      }
+      color={
+        color as
+          | "default"
+          | "primary"
+          | "secondary"
+          | "muted"
+          | "accent"
+          | "destructive"
+          | undefined
+      }
+      dropCap={dropCap}
+      className={responsiveClasses}
+    >
       {plainContent}
     </Text>
   );

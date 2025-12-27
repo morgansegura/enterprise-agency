@@ -323,7 +323,7 @@ function HeaderContent({
   header: Header;
   tenantId: string;
 }) {
-  const behaviorClass = `header-${header.behavior.toLowerCase()}`;
+  const behaviorClass = `header-${header?.behavior?.toLowerCase()}`;
   const style = header.style || {};
 
   // Wrapper (bar) styles

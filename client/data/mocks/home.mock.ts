@@ -82,7 +82,7 @@ export const homePageMock = {
               _type: "button-block" as const,
               data: {
                 text: "Plan Your Visit",
-                url: "/visit",
+                href: "/visit",
                 variant: "default" as const,
                 size: "lg" as const,
               },
@@ -92,7 +92,7 @@ export const homePageMock = {
               _type: "button-block" as const,
               data: {
                 text: "Watch Online",
-                url: "/watch",
+                href: "/watch",
                 variant: "outline" as const,
                 size: "lg" as const,
               },
@@ -230,7 +230,7 @@ export const homePageMock = {
                   _type: "button-block" as const,
                   data: {
                     text: "Learn More About Us",
-                    url: "/about",
+                    href: "/about",
                     variant: "default" as const,
                   },
                 },
@@ -295,7 +295,7 @@ export const homePageMock = {
                 },
                 link: {
                   text: "Learn More",
-                  url: "/ministries/youth",
+                  href: "/ministries/youth",
                 },
               },
             },
@@ -312,7 +312,7 @@ export const homePageMock = {
                 },
                 link: {
                   text: "Learn More",
-                  url: "/ministries/women",
+                  href: "/ministries/women",
                 },
               },
             },
@@ -329,7 +329,7 @@ export const homePageMock = {
                 },
                 link: {
                   text: "Learn More",
-                  url: "/ministries/outreach",
+                  href: "/ministries/outreach",
                 },
               },
             },
@@ -419,7 +419,7 @@ export const homePageMock = {
                 badge: "This Sunday",
                 link: {
                   text: "Get Details",
-                  url: "/events/easter",
+                  href: "/events/easter",
                 },
               },
             },
@@ -433,7 +433,7 @@ export const homePageMock = {
                 badge: "Next Week",
                 link: {
                   text: "RSVP Now",
-                  url: "/events/bbq",
+                  href: "/events/bbq",
                 },
               },
             },
@@ -453,7 +453,7 @@ export const homePageMock = {
               _type: "button-block" as const,
               data: {
                 text: "View All Events",
-                url: "/events",
+                href: "/events",
                 variant: "outline" as const,
               },
             },
@@ -520,7 +520,7 @@ export const homePageMock = {
               _type: "button-block" as const,
               data: {
                 text: "Plan Your Visit",
-                url: "/visit",
+                href: "/visit",
                 variant: "default" as const,
                 size: "lg" as const,
               },
@@ -530,7 +530,7 @@ export const homePageMock = {
               _type: "button-block" as const,
               data: {
                 text: "Contact Us",
-                url: "/contact",
+                href: "/contact",
                 variant: "outline" as const,
                 size: "lg" as const,
               },

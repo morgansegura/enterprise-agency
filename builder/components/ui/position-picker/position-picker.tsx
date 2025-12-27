@@ -9,7 +9,10 @@ type VerticalPosition = "top" | "center" | "bottom";
 interface PositionPickerProps {
   horizontal: HorizontalPosition;
   vertical: VerticalPosition;
-  onChange: (horizontal: HorizontalPosition, vertical: VerticalPosition) => void;
+  onChange: (
+    horizontal: HorizontalPosition,
+    vertical: VerticalPosition,
+  ) => void;
   className?: string;
 }
 
@@ -46,7 +49,10 @@ export function PositionPicker({
             <button
               key={`${h}-${v}`}
               type="button"
-              className={cn("position-picker-cell", isSelected && "is-selected")}
+              className={cn(
+                "position-picker-cell",
+                isSelected && "is-selected",
+              )}
               onClick={() => onChange(h, v)}
               title={`${v} ${h}`}
             >

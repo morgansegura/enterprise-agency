@@ -16,13 +16,10 @@ import {
   ChevronUp,
   ChevronDown,
   Trash2,
-  Box,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Section, Block } from "@/lib/hooks/use-pages";
 import { SectionSettingsPopover } from "../section-settings-popover";
-import { ContainerSettingsPopover } from "../container-settings-popover";
-import { AddBlockPopover } from "../add-block-popover";
 import { LayersPopover } from "../layers-popover";
 
 import "./section-actions-popover.css";
@@ -34,7 +31,7 @@ interface SectionActionsPopoverProps {
   onDuplicate?: () => void;
   onMoveUp?: () => void;
   onMoveDown?: () => void;
-  onAddBlock?: (blockType: string) => void;
+  onAddContainer?: () => void;
   selectedBlockKey?: string | null;
   onSelectBlock?: (key: string | null) => void;
   onHoverBlock?: (key: string | null) => void;
@@ -51,7 +48,7 @@ export function SectionActionsPopover({
   onDuplicate,
   onMoveUp,
   onMoveDown,
-  onAddBlock,
+  onAddContainer,
   selectedBlockKey,
   onSelectBlock,
   onHoverBlock,
@@ -62,8 +59,6 @@ export function SectionActionsPopover({
 }: SectionActionsPopoverProps) {
   const [open, setOpen] = React.useState(false);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
-  const [containerOpen, setContainerOpen] = React.useState(false);
-  const [addBlockOpen, setAddBlockOpen] = React.useState(false);
   const [layersOpen, setLayersOpen] = React.useState(false);
 
   const handleOpenChange = (isOpen: boolean) => {
@@ -71,9 +66,9 @@ export function SectionActionsPopover({
     onOpenChange?.(isOpen);
   };
 
-  // Keep popover open while child popovers are open
-  const isChildOpen =
-    settingsOpen || containerOpen || addBlockOpen || layersOpen;
+  // Get all blocks from all containers for the layers panel
+  const allBlocks: Block[] =
+    section.containers?.flatMap((c) => c.blocks ?? []) ?? [];
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
@@ -89,33 +84,25 @@ export function SectionActionsPopover({
         </div>
 
         <div className="section-actions-content">
-          {/* Add Block */}
-          {onAddBlock && (
-            <AddBlockPopover
-              onAddBlock={(blockType) => {
-                onAddBlock(blockType);
-                setAddBlockOpen(false);
+          {/* Add Container */}
+          {onAddContainer && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="section-actions-item"
+              onClick={() => {
+                onAddContainer();
+                setOpen(false);
               }}
-              open={addBlockOpen}
-              onOpenChange={setAddBlockOpen}
             >
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "section-actions-item",
-                  addBlockOpen && "is-active",
-                )}
-              >
-                <Plus className="h-4 w-4" />
-                <span>Add Block</span>
-              </Button>
-            </AddBlockPopover>
+              <Plus className="h-4 w-4" />
+              <span>Add Container</span>
+            </Button>
           )}
 
           {/* Layers */}
           <LayersPopover
-            blocks={section.containers?.[0]?.blocks ?? []}
+            blocks={allBlocks}
             selectedBlockKey={selectedBlockKey ?? null}
             onSelectBlock={onSelectBlock ?? (() => {})}
             onHoverBlock={onHoverBlock}
@@ -154,26 +141,6 @@ export function SectionActionsPopover({
               <span>Edit Section</span>
             </Button>
           </SectionSettingsPopover>
-
-          {/* Edit Container */}
-          <ContainerSettingsPopover
-            section={section}
-            onChange={onSectionChange}
-            open={containerOpen}
-            onOpenChange={setContainerOpen}
-          >
-            <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "section-actions-item",
-                containerOpen && "is-active",
-              )}
-            >
-              <Box className="h-4 w-4" />
-              <span>Edit Container</span>
-            </Button>
-          </ContainerSettingsPopover>
 
           {/* Divider */}
           <div className="section-actions-divider" />

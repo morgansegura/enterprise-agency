@@ -76,7 +76,7 @@
 
 /* Settings sections */
 .settings-section {
-  @apply max-w-3xl;
+  /* @apply max-w-3xl; */
 }
 
 .settings-grid-block {

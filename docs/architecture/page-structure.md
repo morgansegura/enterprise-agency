@@ -85,7 +85,7 @@ interface Section {
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
 
   // Advanced
-  anchorId?: string;        // for #anchor linking
+  anchorId?: string; // for #anchor linking
   overflow?: "visible" | "hidden" | "scroll" | "auto";
   hideOn?: {
     desktop?: boolean;
@@ -217,7 +217,7 @@ Content blocks are leaf nodes. They render actual content and cannot have childr
 
 ```typescript
 interface Block {
-  _type: string;  // "heading-block", "text-block", etc.
+  _type: string; // "heading-block", "text-block", etc.
   _key: string;
   data: Record<string, unknown>;
 }
@@ -227,38 +227,38 @@ interface Block {
 
 All blocks that render content (not layout):
 
-| Block Type | Description |
-|------------|-------------|
-| `heading-block` | Semantic headings (h1-h6) |
-| `text-block` | Rich text with TipTap |
-| `button-block` | CTA buttons with variants |
-| `image-block` | Images with captions |
-| `video-block` | YouTube, Vimeo, or direct video |
-| `audio-block` | Audio player |
-| `card-block` | Cards with image, title, description |
-| `quote-block` | Blockquotes with attribution |
-| `list-block` | Ordered/unordered lists |
-| `icon-block` | Icons with optional labels |
-| `stats-block` | Statistics display |
-| `accordion-block` | Collapsible content |
-| `tabs-block` | Tabbed content |
-| `divider-block` | Horizontal dividers |
-| `spacer-block` | Vertical spacing |
-| `embed-block` | External embeds (iframe) |
-| `logo-block` | Logo display |
-| `map-block` | Google Maps embed |
+| Block Type        | Description                          |
+| ----------------- | ------------------------------------ |
+| `heading-block`   | Semantic headings (h1-h6)            |
+| `text-block`      | Rich text with TipTap                |
+| `button-block`    | CTA buttons with variants            |
+| `image-block`     | Images with captions                 |
+| `video-block`     | YouTube, Vimeo, or direct video      |
+| `audio-block`     | Audio player                         |
+| `card-block`      | Cards with image, title, description |
+| `quote-block`     | Blockquotes with attribution         |
+| `list-block`      | Ordered/unordered lists              |
+| `icon-block`      | Icons with optional labels           |
+| `stats-block`     | Statistics display                   |
+| `accordion-block` | Collapsible content                  |
+| `tabs-block`      | Tabbed content                       |
+| `divider-block`   | Horizontal dividers                  |
+| `spacer-block`    | Vertical spacing                     |
+| `embed-block`     | External embeds (iframe)             |
+| `logo-block`      | Logo display                         |
+| `map-block`       | Google Maps embed                    |
 
 ## Deprecated Patterns
 
 The following block types are **deprecated** in favor of Container layout modes:
 
-| Old Block | New Approach |
-|-----------|--------------|
-| `grid-block` | Container with `layout.type: "grid"` |
-| `flex-block` | Container with `layout.type: "flex"` |
-| `stack-block` | Container with `layout.type: "stack"` |
-| `container-block` | Use Container directly |
-| `columns-block` | Container with `layout.type: "grid"` |
+| Old Block         | New Approach                          |
+| ----------------- | ------------------------------------- |
+| `grid-block`      | Container with `layout.type: "grid"`  |
+| `flex-block`      | Container with `layout.type: "flex"`  |
+| `stack-block`     | Container with `layout.type: "stack"` |
+| `container-block` | Use Container directly                |
+| `columns-block`   | Container with `layout.type: "grid"`  |
 
 ## Example: Hero Section
 
@@ -360,17 +360,11 @@ function SectionRenderer({ section }: { section: Section }) {
   return (
     <Tag
       id={section.anchorId}
-      className={cn(
-        getSectionStyles(section),
-        section.customClasses
-      )}
+      className={cn(getSectionStyles(section), section.customClasses)}
       style={getSectionBackground(section.background)}
     >
-      {section.containers.map(container => (
-        <ContainerRenderer
-          key={container._key}
-          container={container}
-        />
+      {section.containers.map((container) => (
+        <ContainerRenderer key={container._key} container={container} />
       ))}
     </Tag>
   );
@@ -386,11 +380,11 @@ function ContainerRenderer({ container }: { container: Container }) {
       className={cn(
         getContainerStyles(container),
         getLayoutStyles(container.layout),
-        container.customClasses
+        container.customClasses,
       )}
       style={getContainerBackground(container.background)}
     >
-      {container.blocks.map(block => (
+      {container.blocks.map((block) => (
         <BlockRenderer key={block._key} block={block} />
       ))}
     </div>

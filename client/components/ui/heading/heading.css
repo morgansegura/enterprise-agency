@@ -85,6 +85,204 @@
   font-weight: var(--font-weight-black);
 }
 
+/* Weight - additional variants */
+.heading[data-weight="thin"] {
+  font-weight: var(--font-weight-thin, 100);
+}
+
+.heading[data-weight="extralight"] {
+  font-weight: var(--font-weight-extralight, 200);
+}
+
+.heading[data-weight="light"] {
+  font-weight: var(--font-weight-light, 300);
+}
+
+/* Letter Spacing */
+.heading[data-letter-spacing="tighter"] {
+  @apply tracking-tighter;
+}
+
+.heading[data-letter-spacing="tight"] {
+  @apply tracking-tight;
+}
+
+.heading[data-letter-spacing="normal"] {
+  @apply tracking-normal;
+}
+
+.heading[data-letter-spacing="wide"] {
+  @apply tracking-wide;
+}
+
+.heading[data-letter-spacing="wider"] {
+  @apply tracking-wider;
+}
+
+.heading[data-letter-spacing="widest"] {
+  @apply tracking-widest;
+}
+
+/* Line Height */
+.heading[data-line-height="none"] {
+  @apply leading-none;
+}
+
+.heading[data-line-height="tight"] {
+  @apply leading-tight;
+}
+
+.heading[data-line-height="snug"] {
+  @apply leading-snug;
+}
+
+.heading[data-line-height="normal"] {
+  @apply leading-normal;
+}
+
+.heading[data-line-height="relaxed"] {
+  @apply leading-relaxed;
+}
+
+.heading[data-line-height="loose"] {
+  @apply leading-loose;
+}
+
+/* Font Style */
+.heading[data-font-style="normal"] {
+  @apply not-italic;
+}
+
+.heading[data-font-style="italic"] {
+  @apply italic;
+}
+
+/* Text Transform */
+.heading[data-text-transform="none"] {
+  @apply normal-case;
+}
+
+.heading[data-text-transform="uppercase"] {
+  @apply uppercase;
+}
+
+.heading[data-text-transform="lowercase"] {
+  @apply lowercase;
+}
+
+.heading[data-text-transform="capitalize"] {
+  @apply capitalize;
+}
+
+/* Text Decoration */
+.heading[data-text-decoration="none"] {
+  @apply no-underline;
+}
+
+.heading[data-text-decoration="underline"] {
+  @apply underline;
+}
+
+.heading[data-text-decoration="line-through"] {
+  @apply line-through;
+}
+
+/* White Space */
+.heading[data-white-space="normal"] {
+  @apply whitespace-normal;
+}
+
+.heading[data-white-space="nowrap"] {
+  @apply whitespace-nowrap;
+}
+
+.heading[data-white-space="pre-wrap"] {
+  @apply whitespace-pre-wrap;
+}
+
+/* Max Width Presets */
+.heading[data-max-width="xs"] {
+  @apply max-w-xs;
+}
+
+.heading[data-max-width="sm"] {
+  @apply max-w-sm;
+}
+
+.heading[data-max-width="md"] {
+  @apply max-w-md;
+}
+
+.heading[data-max-width="lg"] {
+  @apply max-w-lg;
+}
+
+.heading[data-max-width="xl"] {
+  @apply max-w-xl;
+}
+
+.heading[data-max-width="2xl"] {
+  @apply max-w-2xl;
+}
+
+.heading[data-max-width="prose"] {
+  @apply max-w-prose;
+}
+
+.heading[data-max-width="none"] {
+  @apply max-w-none;
+}
+
+/* Opacity Presets */
+.heading[data-opacity="10"] {
+  @apply opacity-10;
+}
+
+.heading[data-opacity="25"] {
+  @apply opacity-25;
+}
+
+.heading[data-opacity="50"] {
+  @apply opacity-50;
+}
+
+.heading[data-opacity="75"] {
+  @apply opacity-75;
+}
+
+.heading[data-opacity="90"] {
+  @apply opacity-90;
+}
+
+.heading[data-opacity="100"] {
+  @apply opacity-100;
+}
+
+/* Color Presets */
+.heading[data-color="default"] {
+  @apply text-(--foreground);
+}
+
+.heading[data-color="primary"] {
+  @apply text-(--primary);
+}
+
+.heading[data-color="secondary"] {
+  @apply text-(--secondary);
+}
+
+.heading[data-color="muted"] {
+  @apply text-(--muted-foreground);
+}
+
+.heading[data-color="accent"] {
+  @apply text-(--accent);
+}
+
+.heading[data-color="destructive"] {
+  @apply text-(--destructive);
+}
+
 /* Alignment */
 .heading[data-align="left"] {
   @apply text-left;

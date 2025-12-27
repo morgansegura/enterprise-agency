@@ -60,6 +60,18 @@
 }
 
 /* Weight - using typography tokens */
+.text[data-weight="thin"] {
+  font-weight: var(--font-weight-thin, 100);
+}
+
+.text[data-weight="extralight"] {
+  font-weight: var(--font-weight-extralight, 200);
+}
+
+.text[data-weight="light"] {
+  font-weight: var(--font-weight-light, 300);
+}
+
 .text[data-weight="normal"] {
   font-weight: var(--font-weight-normal);
 }
@@ -74,6 +86,234 @@
 
 .text[data-weight="bold"] {
   font-weight: var(--font-weight-bold);
+}
+
+.text[data-weight="extrabold"] {
+  font-weight: var(--font-weight-extrabold, 800);
+}
+
+.text[data-weight="black"] {
+  font-weight: var(--font-weight-black, 900);
+}
+
+/* Letter Spacing */
+.text[data-letter-spacing="tighter"] {
+  @apply tracking-tighter;
+}
+
+.text[data-letter-spacing="tight"] {
+  @apply tracking-tight;
+}
+
+.text[data-letter-spacing="normal"] {
+  @apply tracking-normal;
+}
+
+.text[data-letter-spacing="wide"] {
+  @apply tracking-wide;
+}
+
+.text[data-letter-spacing="wider"] {
+  @apply tracking-wider;
+}
+
+.text[data-letter-spacing="widest"] {
+  @apply tracking-widest;
+}
+
+/* Line Height */
+.text[data-line-height="none"] {
+  @apply leading-none;
+}
+
+.text[data-line-height="tight"] {
+  @apply leading-tight;
+}
+
+.text[data-line-height="snug"] {
+  @apply leading-snug;
+}
+
+.text[data-line-height="normal"] {
+  @apply leading-normal;
+}
+
+.text[data-line-height="relaxed"] {
+  @apply leading-relaxed;
+}
+
+.text[data-line-height="loose"] {
+  @apply leading-loose;
+}
+
+/* Font Style */
+.text[data-font-style="normal"] {
+  @apply not-italic;
+}
+
+.text[data-font-style="italic"] {
+  @apply italic;
+}
+
+/* Text Transform */
+.text[data-text-transform="none"] {
+  @apply normal-case;
+}
+
+.text[data-text-transform="uppercase"] {
+  @apply uppercase;
+}
+
+.text[data-text-transform="lowercase"] {
+  @apply lowercase;
+}
+
+.text[data-text-transform="capitalize"] {
+  @apply capitalize;
+}
+
+/* Text Decoration */
+.text[data-text-decoration="none"] {
+  @apply no-underline;
+}
+
+.text[data-text-decoration="underline"] {
+  @apply underline;
+}
+
+.text[data-text-decoration="line-through"] {
+  @apply line-through;
+}
+
+/* White Space */
+.text[data-white-space="normal"] {
+  @apply whitespace-normal;
+}
+
+.text[data-white-space="nowrap"] {
+  @apply whitespace-nowrap;
+}
+
+.text[data-white-space="pre-wrap"] {
+  @apply whitespace-pre-wrap;
+}
+
+/* Max Width Presets */
+.text[data-max-width="xs"] {
+  @apply max-w-xs;
+}
+
+.text[data-max-width="sm"] {
+  @apply max-w-sm;
+}
+
+.text[data-max-width="md"] {
+  @apply max-w-md;
+}
+
+.text[data-max-width="lg"] {
+  @apply max-w-lg;
+}
+
+.text[data-max-width="xl"] {
+  @apply max-w-xl;
+}
+
+.text[data-max-width="2xl"] {
+  @apply max-w-2xl;
+}
+
+.text[data-max-width="prose"] {
+  @apply max-w-prose;
+}
+
+.text[data-max-width="none"] {
+  @apply max-w-none;
+}
+
+/* Columns */
+.text[data-columns="2"] {
+  column-count: 2;
+}
+
+.text[data-columns="3"] {
+  column-count: 3;
+}
+
+.text[data-columns="4"] {
+  column-count: 4;
+}
+
+/* Column Gap */
+.text[data-column-gap="sm"] {
+  @apply gap-2;
+}
+
+.text[data-column-gap="md"] {
+  @apply gap-4;
+}
+
+.text[data-column-gap="lg"] {
+  @apply gap-6;
+}
+
+.text[data-column-gap="xl"] {
+  @apply gap-8;
+}
+
+/* Opacity Presets */
+.text[data-opacity="10"] {
+  @apply opacity-10;
+}
+
+.text[data-opacity="25"] {
+  @apply opacity-25;
+}
+
+.text[data-opacity="50"] {
+  @apply opacity-50;
+}
+
+.text[data-opacity="75"] {
+  @apply opacity-75;
+}
+
+.text[data-opacity="90"] {
+  @apply opacity-90;
+}
+
+.text[data-opacity="100"] {
+  @apply opacity-100;
+}
+
+/* Color Presets */
+.text[data-color="default"] {
+  @apply text-(--foreground);
+}
+
+.text[data-color="primary"] {
+  @apply text-(--primary);
+}
+
+.text[data-color="secondary"] {
+  @apply text-(--secondary);
+}
+
+.text[data-color="muted"] {
+  @apply text-(--muted-foreground);
+}
+
+.text[data-color="accent"] {
+  @apply text-(--accent);
+}
+
+.text[data-color="destructive"] {
+  @apply text-(--destructive);
+}
+
+/* Drop Cap */
+.text[data-drop-cap="true"]::first-letter {
+  @apply text-5xl font-bold float-left mr-2 leading-none;
 }
 
 /* Alignment */
@@ -143,6 +383,12 @@
 }
 .text-size-4xl {
   font-size: var(--text-size-4xl);
+}
+.text-size-5xl {
+  font-size: var(--text-size-5xl);
+}
+.text-size-6xl {
+  font-size: var(--text-size-6xl);
 }
 
 /* Align classes (for responsive override support) */

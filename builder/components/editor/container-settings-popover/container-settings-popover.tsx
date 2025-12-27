@@ -43,11 +43,15 @@ import "./container-settings-popover.css";
 type ContainerTab = "layout" | "style" | "advanced";
 
 interface ContainerSettingsPopoverProps {
-  section: Section;
-  onChange: (section: Section) => void;
+  /** Container to edit */
+  container: Container;
+  /** Called when container changes */
+  onChange: (container: Container) => void;
   children: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** @deprecated Use container prop instead */
+  section?: Section;
 }
 
 /**
@@ -59,7 +63,7 @@ interface ContainerSettingsPopoverProps {
  * - Advanced: Visibility, Overflow, CSS Classes
  */
 export function ContainerSettingsPopover({
-  section,
+  container,
   onChange,
   children,
   open,
@@ -67,9 +71,6 @@ export function ContainerSettingsPopover({
 }: ContainerSettingsPopoverProps) {
   const [tab, setTab] = React.useState<ContainerTab>("layout");
   const breakpoint = useCurrentBreakpoint();
-
-  // Get the first container (primary container for editing)
-  const container = section.containers?.[0];
 
   // Get background as object (normalize from string if legacy)
   const getBackground = (): SectionBackground => {
@@ -92,14 +93,7 @@ export function ContainerSettingsPopover({
 
   // Responsive change handler for container
   const handleResponsiveChange = useResponsiveChange(containerData, (data) => {
-    if (!container) return;
-    onChange({
-      ...section,
-      containers: [
-        { ...container, ...(data as Partial<Container>) },
-        ...section.containers.slice(1),
-      ],
-    });
+    onChange({ ...container, ...(data as Partial<Container>) });
   });
 
   // Get responsive value for a container field
@@ -119,14 +113,7 @@ export function ContainerSettingsPopover({
   const handleLayoutResponsiveChange = useResponsiveChange(
     layoutData,
     (data) => {
-      if (!container) return;
-      onChange({
-        ...section,
-        containers: [
-          { ...container, layout: data as unknown as ContainerLayout },
-          ...section.containers.slice(1),
-        ],
-      });
+      onChange({ ...container, layout: data as unknown as ContainerLayout });
     },
   );
 
@@ -136,30 +123,16 @@ export function ContainerSettingsPopover({
   };
 
   const handleContainerChange = (updates: Partial<Container>) => {
-    if (!container) return;
-    onChange({
-      ...section,
-      containers: [
-        { ...container, ...updates },
-        ...section.containers.slice(1),
-      ],
-    });
+    onChange({ ...container, ...updates });
   };
 
   const handleLayoutChange = (field: string, value: unknown) => {
-    if (!container) return;
     onChange({
-      ...section,
-      containers: [
-        {
-          ...container,
-          layout: {
-            ...container.layout,
-            [field]: value,
-          },
-        },
-        ...section.containers.slice(1),
-      ],
+      ...container,
+      layout: {
+        ...container.layout,
+        [field]: value,
+      },
     });
   };
 
@@ -167,25 +140,6 @@ export function ContainerSettingsPopover({
     const newBg = { ...background, ...bg } as SectionBackground;
     handleContainerChange({ background: newBg });
   };
-
-  // If no container exists, show a message
-  if (!container) {
-    return (
-      <Popover open={open} onOpenChange={onOpenChange}>
-        <PopoverTrigger asChild>{children}</PopoverTrigger>
-        <PopoverContent
-          className="container-settings-popover"
-          side="left"
-          align="start"
-          sideOffset={8}
-        >
-          <div className="p-4 text-center text-sm text-muted-foreground">
-            No container found. Add a container to configure settings.
-          </div>
-        </PopoverContent>
-      </Popover>
-    );
-  }
 
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
@@ -239,11 +193,15 @@ export function ContainerSettingsPopover({
                 <h4 className="container-settings-section-title">SIZE</h4>
                 <div className="container-settings-row">
                   <div className="container-settings-field">
-                    <Label className="container-settings-label">Max Width</Label>
+                    <Label className="container-settings-label">
+                      Max Width
+                    </Label>
                     <Select
                       value={container.maxWidth || "none"}
                       onValueChange={(value) =>
-                        handleContainerChange({ maxWidth: value as Container["maxWidth"] })
+                        handleContainerChange({
+                          maxWidth: value as Container["maxWidth"],
+                        })
                       }
                     >
                       <SelectTrigger className="h-8">
@@ -261,11 +219,15 @@ export function ContainerSettingsPopover({
                     </Select>
                   </div>
                   <div className="container-settings-field">
-                    <Label className="container-settings-label">Min Height</Label>
+                    <Label className="container-settings-label">
+                      Min Height
+                    </Label>
                     <Select
                       value={container.minHeight || "none"}
                       onValueChange={(value) =>
-                        handleContainerChange({ minHeight: value as Container["minHeight"] })
+                        handleContainerChange({
+                          minHeight: value as Container["minHeight"],
+                        })
                       }
                     >
                       <SelectTrigger className="h-8">
@@ -285,11 +247,20 @@ export function ContainerSettingsPopover({
 
               {/* Content Position */}
               <div className="container-settings-section">
-                <h4 className="container-settings-section-title">CONTENT POSITION</h4>
+                <h4 className="container-settings-section-title">
+                  CONTENT POSITION
+                </h4>
                 <div className="container-settings-position-row">
                   <PositionPicker
-                    horizontal={(container.align as "left" | "center" | "right") || "left"}
-                    vertical={(container.verticalAlign as "top" | "center" | "bottom") || "top"}
+                    horizontal={
+                      (container.align as "left" | "center" | "right") || "left"
+                    }
+                    vertical={
+                      (container.verticalAlign as
+                        | "top"
+                        | "center"
+                        | "bottom") || "top"
+                    }
                     onChange={(h, v) => {
                       handleContainerChange({
                         align: h,
@@ -299,7 +270,8 @@ export function ContainerSettingsPopover({
                   />
                   <div className="container-settings-position-labels">
                     <span className="text-xs text-(--builder-muted-foreground)">
-                      {container.verticalAlign || "top"} {container.align || "left"}
+                      {container.verticalAlign || "top"}{" "}
+                      {container.align || "left"}
                     </span>
                   </div>
                 </div>
@@ -307,12 +279,15 @@ export function ContainerSettingsPopover({
 
               {/* Layout Type */}
               <div className="container-settings-section">
-                <h4 className="container-settings-section-title">LAYOUT TYPE</h4>
+                <h4 className="container-settings-section-title">
+                  LAYOUT TYPE
+                </h4>
                 <div className="container-settings-layout-types">
                   <button
                     className={cn(
                       "container-settings-layout-type",
-                      (container.layout?.type || "stack") === "stack" && "active",
+                      (container.layout?.type || "stack") === "stack" &&
+                        "active",
                     )}
                     onClick={() => handleLayoutChange("type", "stack")}
                     title="Stack (vertical)"
@@ -359,11 +334,8 @@ export function ContainerSettingsPopover({
                       data={layoutData}
                       onChange={(data) =>
                         onChange({
-                          ...section,
-                          containers: [
-                            { ...container, layout: data as unknown as ContainerLayout },
-                            ...section.containers.slice(1),
-                          ],
+                          ...container,
+                          layout: data as unknown as ContainerLayout,
                         })
                       }
                       label="Direction"
@@ -389,11 +361,8 @@ export function ContainerSettingsPopover({
                       data={layoutData}
                       onChange={(data) =>
                         onChange({
-                          ...section,
-                          containers: [
-                            { ...container, layout: data as unknown as ContainerLayout },
-                            ...section.containers.slice(1),
-                          ],
+                          ...container,
+                          layout: data as unknown as ContainerLayout,
                         })
                       }
                       label="Gap"
@@ -423,7 +392,9 @@ export function ContainerSettingsPopover({
                   {container.layout?.type === "flex" && (
                     <div className="container-settings-field mt-3">
                       <div className="flex items-center justify-between">
-                        <Label className="container-settings-label">Wrap Items</Label>
+                        <Label className="container-settings-label">
+                          Wrap Items
+                        </Label>
                         <Switch
                           checked={container.layout?.wrap || false}
                           onCheckedChange={(checked) =>
@@ -442,7 +413,9 @@ export function ContainerSettingsPopover({
                   <h4 className="container-settings-section-title">GRID</h4>
                   <div className="container-settings-row">
                     <div className="container-settings-field">
-                      <Label className="container-settings-label">Columns</Label>
+                      <Label className="container-settings-label">
+                        Columns
+                      </Label>
                       <Select
                         value={String(container.layout?.columns || 2)}
                         onValueChange={(value) =>
@@ -469,11 +442,8 @@ export function ContainerSettingsPopover({
                       data={layoutData}
                       onChange={(data) =>
                         onChange({
-                          ...section,
-                          containers: [
-                            { ...container, layout: data as unknown as ContainerLayout },
-                            ...section.containers.slice(1),
-                          ],
+                          ...container,
+                          layout: data as unknown as ContainerLayout,
                         })
                       }
                       label="Gap"
@@ -505,10 +475,14 @@ export function ContainerSettingsPopover({
               {/* Alignment (for flex and grid) */}
               {container.layout?.type && container.layout.type !== "stack" && (
                 <div className="container-settings-section">
-                  <h4 className="container-settings-section-title">ALIGNMENT</h4>
+                  <h4 className="container-settings-section-title">
+                    ALIGNMENT
+                  </h4>
                   <div className="container-settings-row">
                     <div className="container-settings-field">
-                      <Label className="container-settings-label">Justify</Label>
+                      <Label className="container-settings-label">
+                        Justify
+                      </Label>
                       <Select
                         value={container.layout?.justify || "start"}
                         onValueChange={(value) =>
@@ -635,7 +609,9 @@ export function ContainerSettingsPopover({
                     <ColorPicker
                       label="Color"
                       value={background.color || "#f5f5f5"}
-                      onChange={(value) => handleBackgroundChange({ color: value })}
+                      onChange={(value) =>
+                        handleBackgroundChange({ color: value })
+                      }
                     />
                   </div>
                 )}
@@ -668,7 +644,9 @@ export function ContainerSettingsPopover({
                       </div>
                       {background.gradient.type === "linear" && (
                         <div className="container-settings-field">
-                          <Label className="container-settings-label">Angle</Label>
+                          <Label className="container-settings-label">
+                            Angle
+                          </Label>
                           <Input
                             type="number"
                             className="h-8"
@@ -732,7 +710,9 @@ export function ContainerSettingsPopover({
                 {background.type === "image" && (
                   <div className="container-settings-field mt-3 space-y-3">
                     <div className="container-settings-field">
-                      <Label className="container-settings-label">Image URL</Label>
+                      <Label className="container-settings-label">
+                        Image URL
+                      </Label>
                       <Input
                         placeholder="https://..."
                         className="h-8"
@@ -769,7 +749,9 @@ export function ContainerSettingsPopover({
                         </Select>
                       </div>
                       <div className="container-settings-field">
-                        <Label className="container-settings-label">Position</Label>
+                        <Label className="container-settings-label">
+                          Position
+                        </Label>
                         <Select
                           value={background.image?.position || "center"}
                           onValueChange={(value) =>
@@ -811,11 +793,8 @@ export function ContainerSettingsPopover({
                     data={containerData}
                     onChange={(data) =>
                       onChange({
-                        ...section,
-                        containers: [
-                          { ...container, ...(data as Partial<Container>) },
-                          ...section.containers.slice(1),
-                        ],
+                        ...container,
+                        ...(data as Partial<Container>),
                       })
                     }
                     label="Horizontal"
@@ -845,11 +824,8 @@ export function ContainerSettingsPopover({
                     data={containerData}
                     onChange={(data) =>
                       onChange({
-                        ...section,
-                        containers: [
-                          { ...container, ...(data as Partial<Container>) },
-                          ...section.containers.slice(1),
-                        ],
+                        ...container,
+                        ...(data as Partial<Container>),
                       })
                     }
                     label="Vertical"
@@ -882,7 +858,9 @@ export function ContainerSettingsPopover({
                 <h4 className="container-settings-section-title">BORDER</h4>
                 <div className="container-settings-row">
                   <div className="container-settings-field">
-                    <Label className="container-settings-label">All Sides</Label>
+                    <Label className="container-settings-label">
+                      All Sides
+                    </Label>
                     <Select
                       value={container.border || "none"}
                       onValueChange={(value) =>
@@ -911,7 +889,9 @@ export function ContainerSettingsPopover({
                     <Select
                       value={container.borderRadius || "none"}
                       onValueChange={(value) =>
-                        handleContainerChange({ borderRadius: value as Container["borderRadius"] })
+                        handleContainerChange({
+                          borderRadius: value as Container["borderRadius"],
+                        })
                       }
                     >
                       <SelectTrigger className="h-8">
@@ -951,7 +931,9 @@ export function ContainerSettingsPopover({
                 <Select
                   value={container.shadow || "none"}
                   onValueChange={(value) =>
-                    handleContainerChange({ shadow: value as Container["shadow"] })
+                    handleContainerChange({
+                      shadow: value as Container["shadow"],
+                    })
                   }
                 >
                   <SelectTrigger className="h-8">
@@ -990,7 +972,9 @@ export function ContainerSettingsPopover({
                 <Select
                   value={container.overflow || "visible"}
                   onValueChange={(value) =>
-                    handleContainerChange({ overflow: value as Container["overflow"] })
+                    handleContainerChange({
+                      overflow: value as Container["overflow"],
+                    })
                   }
                 >
                   <SelectTrigger className="h-8">
@@ -1007,7 +991,9 @@ export function ContainerSettingsPopover({
 
               {/* Custom CSS Classes */}
               <div className="container-settings-section">
-                <h4 className="container-settings-section-title">CSS CLASSES</h4>
+                <h4 className="container-settings-section-title">
+                  CSS CLASSES
+                </h4>
                 <Input
                   placeholder="e.g. my-custom-class"
                   className="h-8"

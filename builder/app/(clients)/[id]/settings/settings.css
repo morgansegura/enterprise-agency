@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .settings-container {
-  @apply p-6 max-w-3xl;
+  @apply p-6 w-full;
 }
 
 .settings-header {

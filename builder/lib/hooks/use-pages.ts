@@ -109,8 +109,12 @@ export interface Container {
   customClasses?: string;
   // Responsive overrides
   _responsive?: {
-    tablet?: Partial<Omit<Container, "_type" | "_key" | "blocks" | "_responsive">>;
-    mobile?: Partial<Omit<Container, "_type" | "_key" | "blocks" | "_responsive">>;
+    tablet?: Partial<
+      Omit<Container, "_type" | "_key" | "blocks" | "_responsive">
+    >;
+    mobile?: Partial<
+      Omit<Container, "_type" | "_key" | "blocks" | "_responsive">
+    >;
   };
   // Content
   blocks: Block[];
@@ -161,8 +165,12 @@ export interface Section {
   customClasses?: string;
   // Responsive overrides
   _responsive?: {
-    tablet?: Partial<Omit<Section, "_type" | "_key" | "containers" | "_responsive">>;
-    mobile?: Partial<Omit<Section, "_type" | "_key" | "containers" | "_responsive">>;
+    tablet?: Partial<
+      Omit<Section, "_type" | "_key" | "containers" | "_responsive">
+    >;
+    mobile?: Partial<
+      Omit<Section, "_type" | "_key" | "containers" | "_responsive">
+    >;
   };
   // Content - array of containers
   containers: Container[];

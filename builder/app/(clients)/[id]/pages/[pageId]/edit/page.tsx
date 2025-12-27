@@ -59,7 +59,7 @@ import {
 function createDefaultContainer(): Container {
   return {
     _type: "container",
-    _key: `container-${Date.now()}`,
+    _key: `container-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     layout: { type: "stack", gap: "md" },
     blocks: [],
   };
@@ -77,24 +77,29 @@ function createDefaultSection(): Section {
 }
 
 /**
- * Get blocks from a section's first container (with fallback)
+ * Get blocks from a specific container in a section
  */
-function getSectionBlocks(section: Section): Block[] {
-  return section.containers?.[0]?.blocks ?? [];
+function getContainerBlocks(section: Section, containerIndex: number): Block[] {
+  return section.containers?.[containerIndex]?.blocks ?? [];
 }
 
 /**
- * Update blocks in a section's first container
+ * Update blocks in a specific container
  */
-function updateSectionBlocks(section: Section, blocks: Block[]): Section {
+function updateContainerBlocks(
+  section: Section,
+  containerIndex: number,
+  blocks: Block[],
+): Section {
   const containers = section.containers ?? [createDefaultContainer()];
-  return {
-    ...section,
-    containers: [
-      { ...containers[0], blocks },
-      ...containers.slice(1),
-    ],
-  };
+  const newContainers = [...containers];
+  if (newContainers[containerIndex]) {
+    newContainers[containerIndex] = {
+      ...newContainers[containerIndex],
+      blocks,
+    };
+  }
+  return { ...section, containers: newContainers };
 }
 
 export default function EditPagePage({
@@ -167,6 +172,9 @@ export default function EditPagePage({
     debounceMs: 3000,
     onSaveSuccess: () => {
       toast.success("Changes saved", { duration: 2000 });
+    },
+    onSaveError: (error) => {
+      toast.error(`Failed to save: ${error.message}`);
     },
   });
 
@@ -287,8 +295,9 @@ export default function EditPagePage({
           newSection.containers[0].blocks = [newBlock];
           updatedSections.push(newSection);
         } else {
-          const blocks = getSectionBlocks(updatedSections[0]);
-          updatedSections[0] = updateSectionBlocks(updatedSections[0], [
+          // Add to first section's first container
+          const blocks = getContainerBlocks(updatedSections[0], 0);
+          updatedSections[0] = updateContainerBlocks(updatedSections[0], 0, [
             ...blocks,
             newBlock,
           ]);
@@ -346,13 +355,12 @@ export default function EditPagePage({
       if (!confirmed) return;
 
       try {
-        // Save current changes
+        // Save current changes (don't send status - publish will set it)
         await updatePage.mutateAsync({
           id: pageId,
           data: {
             title: localPage.title,
             slug: localPage.slug,
-            status: localPage.status,
             template: localPage.template,
             seo: localPage.seo,
             headerId: localPage.headerId,
@@ -362,17 +370,11 @@ export default function EditPagePage({
           },
         });
 
-        // Then publish
-        publishPage.mutate(pageId, {
-          onSuccess: () => {
-            toast.success("Page published successfully!");
-          },
-          onError: () => {
-            toast.error("Failed to publish page");
-          },
-        });
+        // Then publish (await to ensure it completes)
+        await publishPage.mutateAsync(pageId);
+        toast.success("Page published successfully!");
       } catch {
-        toast.error("Failed to save changes");
+        toast.error("Failed to publish page");
       }
     }
   };
@@ -430,30 +432,45 @@ export default function EditPagePage({
 
   const handleBlockChange = (
     sectionIndex: number,
+    containerIndex: number,
     blockIndex: number,
     updatedBlock: Block,
   ) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
-      const newBlocks = blocks.map((block, idx) =>
+      const blocks = getContainerBlocks(
+        updatedSections[sectionIndex],
+        containerIndex,
+      );
+      const newBlocks = blocks.map((block: Block, idx: number) =>
         idx === blockIndex ? updatedBlock : block,
       );
-      updatedSections[sectionIndex] = updateSectionBlocks(
+      updatedSections[sectionIndex] = updateContainerBlocks(
         updatedSections[sectionIndex],
+        containerIndex,
         newBlocks,
       );
       return updatedSections;
     });
   };
 
-  const handleBlockDelete = (sectionIndex: number, blockIndex: number) => {
+  const handleBlockDelete = (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
-      const newBlocks = blocks.filter((_, idx) => idx !== blockIndex);
-      updatedSections[sectionIndex] = updateSectionBlocks(
+      const blocks = getContainerBlocks(
         updatedSections[sectionIndex],
+        containerIndex,
+      );
+      const newBlocks = blocks.filter(
+        (_: Block, idx: number) => idx !== blockIndex,
+      );
+      updatedSections[sectionIndex] = updateContainerBlocks(
+        updatedSections[sectionIndex],
+        containerIndex,
         newBlocks,
       );
       return updatedSections;
@@ -462,10 +479,17 @@ export default function EditPagePage({
     toast.success("Block deleted");
   };
 
-  const handleBlockDuplicate = (sectionIndex: number, blockIndex: number) => {
+  const handleBlockDuplicate = (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
+      const blocks = getContainerBlocks(
+        updatedSections[sectionIndex],
+        containerIndex,
+      );
       const block = blocks[blockIndex];
       const duplicatedBlock = {
         ...block,
@@ -476,8 +500,9 @@ export default function EditPagePage({
         duplicatedBlock,
         ...blocks.slice(blockIndex + 1),
       ];
-      updatedSections[sectionIndex] = updateSectionBlocks(
+      updatedSections[sectionIndex] = updateContainerBlocks(
         updatedSections[sectionIndex],
+        containerIndex,
         newBlocks,
       );
       return updatedSections;
@@ -485,26 +510,40 @@ export default function EditPagePage({
     toast.success("Block duplicated");
   };
 
-  const handleBlockMoveUp = (sectionIndex: number, blockIndex: number) => {
+  const handleBlockMoveUp = (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => {
     if (blockIndex === 0) return;
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = [...getSectionBlocks(updatedSections[sectionIndex])];
+      const blocks = [
+        ...getContainerBlocks(updatedSections[sectionIndex], containerIndex),
+      ];
       [blocks[blockIndex - 1], blocks[blockIndex]] = [
         blocks[blockIndex],
         blocks[blockIndex - 1],
       ];
-      updatedSections[sectionIndex] = updateSectionBlocks(
+      updatedSections[sectionIndex] = updateContainerBlocks(
         updatedSections[sectionIndex],
+        containerIndex,
         blocks,
       );
       return updatedSections;
     });
   };
 
-  const handleBlockMoveDown = (sectionIndex: number, blockIndex: number) => {
+  const handleBlockMoveDown = (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => {
     setSections((prevSections) => {
-      const blocks = getSectionBlocks(prevSections[sectionIndex]);
+      const blocks = getContainerBlocks(
+        prevSections[sectionIndex],
+        containerIndex,
+      );
       if (blockIndex >= blocks.length - 1) return prevSections;
       const updatedSections = [...prevSections];
       const newBlocks = [...blocks];
@@ -512,8 +551,9 @@ export default function EditPagePage({
         newBlocks[blockIndex + 1],
         newBlocks[blockIndex],
       ];
-      updatedSections[sectionIndex] = updateSectionBlocks(
+      updatedSections[sectionIndex] = updateContainerBlocks(
         updatedSections[sectionIndex],
+        containerIndex,
         newBlocks,
       );
       return updatedSections;
@@ -537,7 +577,11 @@ export default function EditPagePage({
     }
   };
 
-  const handleBlockDragEnd = (event: DragEndEvent, sectionIndex: number) => {
+  const handleBlockDragEnd = (
+    event: DragEndEvent,
+    sectionIndex: number,
+    containerIndex: number,
+  ) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) {
@@ -546,15 +590,23 @@ export default function EditPagePage({
 
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
+      const blocks = getContainerBlocks(
+        updatedSections[sectionIndex],
+        containerIndex,
+      );
 
-      const oldIndex = blocks.findIndex((block) => block._key === active.id);
-      const newIndex = blocks.findIndex((block) => block._key === over.id);
+      const oldIndex = blocks.findIndex(
+        (block: Block) => block._key === active.id,
+      );
+      const newIndex = blocks.findIndex(
+        (block: Block) => block._key === over.id,
+      );
 
       if (oldIndex !== -1 && newIndex !== -1) {
         const newBlocks = arrayMove(blocks, oldIndex, newIndex);
-        updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex] = updateContainerBlocks(
           updatedSections[sectionIndex],
+          containerIndex,
           newBlocks,
         );
       }
@@ -618,19 +670,21 @@ export default function EditPagePage({
   const handleSectionDuplicate = (sectionIndex: number) => {
     setSections((prevSections) => {
       const section = prevSections[sectionIndex];
-      const blocks = getSectionBlocks(section);
-      const duplicatedContainer: Container = {
-        ...section.containers[0],
-        _key: `container-${Date.now()}`,
-        blocks: blocks.map((block) => ({
-          ...block,
-          _key: `block-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        })),
-      };
+      // Duplicate all containers with new keys
+      const duplicatedContainers = (section.containers ?? []).map(
+        (container, idx) => ({
+          ...container,
+          _key: `container-${Date.now()}-${idx}`,
+          blocks: (container.blocks ?? []).map((block: Block) => ({
+            ...block,
+            _key: `block-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+          })),
+        }),
+      );
       const duplicated: Section = {
         ...section,
         _key: `section-${Date.now()}`,
-        containers: [duplicatedContainer, ...section.containers.slice(1)],
+        containers: duplicatedContainers,
       };
       const updated = [...prevSections];
       updated.splice(sectionIndex + 1, 0, duplicated);
@@ -663,18 +717,37 @@ export default function EditPagePage({
     });
   };
 
-  const handleAddBlockToSection = (sectionIndex: number, blockType: string) => {
+  const handleAddBlockToContainer = (
+    sectionIndex: number,
+    containerIndex: number,
+    blockType: string,
+  ) => {
     const newBlock = createDefaultBlock(blockType);
     setSections((prevSections) => {
       const updated = [...prevSections];
-      const blocks = getSectionBlocks(updated[sectionIndex]);
-      updated[sectionIndex] = updateSectionBlocks(updated[sectionIndex], [
-        ...blocks,
-        newBlock,
-      ]);
+      const blocks = getContainerBlocks(updated[sectionIndex], containerIndex);
+      updated[sectionIndex] = updateContainerBlocks(
+        updated[sectionIndex],
+        containerIndex,
+        [...blocks, newBlock],
+      );
       return updated;
     });
     toast.success("Block added!");
+  };
+
+  const handleAddContainerToSection = (sectionIndex: number) => {
+    const newContainer = createDefaultContainer();
+    setSections((prevSections) => {
+      const updated = [...prevSections];
+      const containers = updated[sectionIndex].containers ?? [];
+      updated[sectionIndex] = {
+        ...updated[sectionIndex],
+        containers: [...containers, newContainer],
+      };
+      return updated;
+    });
+    toast.success("Container added!");
   };
 
   function createDefaultBlock(blockType: string): Block {
@@ -774,33 +847,31 @@ export default function EditPagePage({
         <BlockEditorProvider>
           <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
             <ResponsivePreview breakpoint={breakpoint} className="h-full">
-            <Card
-              className="page-editor-canvas-content"
-              onClick={handleCanvasClick}
-            >
-              <CardContent>
-                {/* Editable Header */}
-                <EditableHeader
-                  tenantId={id}
-                  headerId={localPage.headerId}
-                  onHeaderChange={(headerId) =>
-                    handlePageChange("headerId", headerId)
-                  }
-                />
+              <Card
+                className="page-editor-canvas-content"
+                onClick={handleCanvasClick}
+              >
+                <CardContent>
+                  {/* Editable Header */}
+                  <EditableHeader
+                    tenantId={id}
+                    headerId={localPage.headerId}
+                    onHeaderChange={(headerId) =>
+                      handlePageChange("headerId", headerId)
+                    }
+                  />
 
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={handleSectionDragEnd}
-                >
-                  <SortableContext
-                    items={sections.map((section) => section._key)}
-                    strategy={verticalListSortingStrategy}
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleSectionDragEnd}
                   >
-                    <div>
-                      {sections.map((section, sectionIndex) => {
-                        const blocks = getSectionBlocks(section);
-                        return (
+                    <SortableContext
+                      items={sections.map((section) => section._key)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      <div>
+                        {sections.map((section, sectionIndex) => (
                           <SortableSection
                             key={section._key}
                             section={section}
@@ -818,9 +889,11 @@ export default function EditPagePage({
                               handleSectionDuplicate(sectionIndex)
                             }
                             onMoveUp={() => handleSectionMoveUp(sectionIndex)}
-                            onMoveDown={() => handleSectionMoveDown(sectionIndex)}
-                            onAddBlock={(blockType) =>
-                              handleAddBlockToSection(sectionIndex, blockType)
+                            onMoveDown={() =>
+                              handleSectionMoveDown(sectionIndex)
+                            }
+                            onAddContainer={() =>
+                              handleAddContainerToSection(sectionIndex)
                             }
                             selectedBlockKey={selectedBlockKey}
                             onSelectBlock={setSelectedBlockKey}
@@ -828,91 +901,123 @@ export default function EditPagePage({
                             onHoverBlock={setHoveredBlockKey}
                             isFirst={sectionIndex === 0}
                             isLast={sectionIndex === sections.length - 1}
-                          >
-                            {blocks.length === 0 ? (
-                              <div className="min-h-[60px]" />
-                            ) : (
-                              <DndContext
-                                sensors={sensors}
-                                collisionDetection={closestCenter}
-                                onDragEnd={(event) =>
-                                  handleBlockDragEnd(event, sectionIndex)
-                                }
-                              >
-                                <SortableContext
-                                  items={blocks.map((block) => block._key)}
-                                  strategy={verticalListSortingStrategy}
+                            onAddBlockToContainer={(
+                              containerIndex: number,
+                              blockType: string,
+                            ) =>
+                              handleAddBlockToContainer(
+                                sectionIndex,
+                                containerIndex,
+                                blockType,
+                              )
+                            }
+                            renderContainerBlocks={(
+                              containerIndex: number,
+                              container: Container,
+                            ) => {
+                              const blocks = container.blocks ?? [];
+                              if (blocks.length === 0) {
+                                return null;
+                              }
+                              return (
+                                <DndContext
+                                  sensors={sensors}
+                                  collisionDetection={closestCenter}
+                                  onDragEnd={(event) =>
+                                    handleBlockDragEnd(
+                                      event,
+                                      sectionIndex,
+                                      containerIndex,
+                                    )
+                                  }
                                 >
-                                  <div className="space-y-4">
-                                    {blocks.map((block, blockIndex) => (
-                                      <SortableBlockItem
-                                        key={block._key}
-                                        block={block}
-                                        onChange={(updatedBlock) =>
-                                          handleBlockChange(
-                                            sectionIndex,
-                                            blockIndex,
-                                            updatedBlock,
-                                          )
-                                        }
-                                        onDelete={() =>
-                                          handleBlockDelete(
-                                            sectionIndex,
-                                            blockIndex,
-                                          )
-                                        }
-                                        onDuplicate={() =>
-                                          handleBlockDuplicate(
-                                            sectionIndex,
-                                            blockIndex,
-                                          )
-                                        }
-                                        onMoveUp={() =>
-                                          handleBlockMoveUp(
-                                            sectionIndex,
-                                            blockIndex,
-                                          )
-                                        }
-                                        onMoveDown={() =>
-                                          handleBlockMoveDown(
-                                            sectionIndex,
-                                            blockIndex,
-                                          )
-                                        }
-                                        tenantId={id}
-                                        isSelected={
-                                          selectedBlockKey === block._key
-                                        }
-                                        isHovered={hoveredBlockKey === block._key}
-                                        onSelect={() =>
-                                          setSelectedBlockKey(block._key)
-                                        }
-                                        isFirst={blockIndex === 0}
-                                        isLast={blockIndex === blocks.length - 1}
-                                      />
-                                    ))}
-                                  </div>
-                                </SortableContext>
-                              </DndContext>
-                            )}
-                          </SortableSection>
-                        );
-                      })}
-                    </div>
-                  </SortableContext>
-                </DndContext>
+                                  <SortableContext
+                                    items={blocks.map(
+                                      (block: Block) => block._key,
+                                    )}
+                                    strategy={verticalListSortingStrategy}
+                                  >
+                                    <div className="space-y-4">
+                                      {blocks.map(
+                                        (block: Block, blockIndex: number) => (
+                                          <SortableBlockItem
+                                            key={block._key}
+                                            block={block}
+                                            onChange={(updatedBlock: Block) =>
+                                              handleBlockChange(
+                                                sectionIndex,
+                                                containerIndex,
+                                                blockIndex,
+                                                updatedBlock,
+                                              )
+                                            }
+                                            onDelete={() =>
+                                              handleBlockDelete(
+                                                sectionIndex,
+                                                containerIndex,
+                                                blockIndex,
+                                              )
+                                            }
+                                            onDuplicate={() =>
+                                              handleBlockDuplicate(
+                                                sectionIndex,
+                                                containerIndex,
+                                                blockIndex,
+                                              )
+                                            }
+                                            onMoveUp={() =>
+                                              handleBlockMoveUp(
+                                                sectionIndex,
+                                                containerIndex,
+                                                blockIndex,
+                                              )
+                                            }
+                                            onMoveDown={() =>
+                                              handleBlockMoveDown(
+                                                sectionIndex,
+                                                containerIndex,
+                                                blockIndex,
+                                              )
+                                            }
+                                            tenantId={id}
+                                            isSelected={
+                                              selectedBlockKey === block._key
+                                            }
+                                            isHovered={
+                                              hoveredBlockKey === block._key
+                                            }
+                                            onSelect={() =>
+                                              setSelectedBlockKey(block._key)
+                                            }
+                                            isFirst={blockIndex === 0}
+                                            isLast={
+                                              blockIndex === blocks.length - 1
+                                            }
+                                          />
+                                        ),
+                                      )}
+                                    </div>
+                                  </SortableContext>
+                                </DndContext>
+                              );
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </SortableContext>
+                  </DndContext>
 
-                {/* Debug: Show content data */}
-                <details className="fixed bottom-8 left-18 flex">
-                  <pre className="absolute bottom-11 left-0 w-screen max-w-6xl mt-2 p-4 bg-muted text-xs overflow-auto max-h-96 rounded-md">
-                    {JSON.stringify({ sections }, null, 2)}
-                  </pre>
-                  <summary className="cursor-pointer text-sm font-medium border p-2 rounded-md">
-                    Content Data (Debug)
-                  </summary>
-                </details>
-              </CardContent>
-            </Card>
+                  {/* Debug: Show content data */}
+                  <details className="fixed bottom-8 left-18 flex">
+                    <pre className="absolute bottom-11 left-0 w-screen max-w-6xl mt-2 p-4 bg-muted text-xs overflow-auto max-h-96 rounded-md">
+                      {JSON.stringify({ sections }, null, 2)}
+                    </pre>
+                    <summary className="cursor-pointer text-sm font-medium border p-2 rounded-md">
+                      Content Data (Debug)
+                    </summary>
+                  </details>
+                </CardContent>
+              </Card>
             </ResponsivePreview>
           </ResponsiveProvider>
         </BlockEditorProvider>

@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  type ReactNode,
+} from "react";
 import type { Editor } from "@tiptap/core";
 
 interface BlockEditorContextValue {
@@ -76,7 +82,12 @@ export function useTextFormatting() {
       return;
     }
 
-    activeEditor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+    activeEditor
+      .chain()
+      .focus()
+      .extendMarkRange("link")
+      .setLink({ href: url })
+      .run();
   }, [activeEditor]);
 
   const removeLink = useCallback(() => {

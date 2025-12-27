@@ -14,9 +14,10 @@ Every block has this base structure:
 
 ```typescript
 interface Block {
-  _type: string;   // Block type identifier
-  _key: string;    // Unique key within page
-  data: {          // Block-specific data
+  _type: string; // Block type identifier
+  _key: string; // Unique key within page
+  data: {
+    // Block-specific data
     [key: string]: unknown;
   };
 }
@@ -26,38 +27,97 @@ interface Block {
 
 ### 1. Heading Block
 
-Semantic headings with visual customization.
+Semantic headings with comprehensive typography controls.
 
 ```typescript
 {
   _type: "heading-block",
   _key: string,
   data: {
+    // Content
     text: string;                    // Required
     level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-    size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
+
+    // Typography - Size & Spacing
+    size?: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "8xl" | "9xl";
+    letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
+    lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
+
+    // Typography - Style
+    weight?: "thin" | "extralight" | "light" | "normal" | "medium" | "semibold" | "bold" | "extrabold" | "black";
+    fontStyle?: "normal" | "italic";
+    textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+    textDecoration?: "none" | "underline" | "line-through";
+
+    // Typography - Font
+    fontFamily?: string;             // CSS font-family value or CSS variable
+    color?: string;                  // Preset name, hex, rgb, or CSS variable
+
+    // Layout
     align?: "left" | "center" | "right";
-    weight?: "normal" | "medium" | "semibold" | "bold";
-    color?: string;
+    maxWidth?: string;               // e.g., "600px", "80%", "40ch"
+    whiteSpace?: "normal" | "nowrap" | "pre-wrap";
+
+    // Effects
+    opacity?: number;                // 0-100
+    textShadow?: string;             // CSS text-shadow value
+
+    // Responsive overrides
+    _responsive?: {
+      tablet?: Partial<HeadingBlockData>;
+      mobile?: Partial<HeadingBlockData>;
+    };
   }
 }
 ```
 
 ### 2. Text Block
 
-Rich text content using TipTap editor.
+Rich text content with comprehensive typography controls. Uses TipTap editor for inline formatting.
 
 ```typescript
 {
   _type: "text-block",
   _key: string,
   data: {
+    // Content
     text?: string;                   // Plain text (legacy)
-    html?: string;                   // Rich text HTML
-    size?: "xs" | "sm" | "md" | "lg" | "xl";
+    html?: string;                   // Rich text HTML from TipTap
+
+    // Typography - Size & Spacing
+    size?: "xs" | "sm" | "base" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
+    letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
+    lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
+
+    // Typography - Style
+    weight?: "thin" | "extralight" | "light" | "normal" | "medium" | "semibold" | "bold" | "extrabold" | "black";
+    fontStyle?: "normal" | "italic";
+    textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+    textDecoration?: "none" | "underline" | "line-through";
+    variant?: "body" | "muted" | "caption" | "lead";
+
+    // Typography - Font
+    fontFamily?: string;             // CSS font-family value or CSS variable
+    color?: string;                  // Preset name, hex, rgb, or CSS variable
+
+    // Layout
     align?: "left" | "center" | "right" | "justify";
-    variant?: "body" | "muted" | "caption";
-    maxWidth?: string;
+    maxWidth?: string;               // e.g., "600px", "80%", "65ch"
+    whiteSpace?: "normal" | "nowrap" | "pre-wrap";
+
+    // Multi-column
+    columns?: 1 | 2 | 3 | 4;         // Number of text columns
+    columnGap?: "sm" | "md" | "lg" | "xl";
+
+    // Effects
+    opacity?: number;                // 0-100
+    dropCap?: boolean;               // First letter styling
+
+    // Responsive overrides
+    _responsive?: {
+      tablet?: Partial<TextBlockData>;
+      mobile?: Partial<TextBlockData>;
+    };
   }
 }
 ```
@@ -385,13 +445,13 @@ Map embeds.
 
 The following layout block types are **deprecated**. Use Container layout modes instead.
 
-| Deprecated | Replacement |
-|------------|-------------|
-| `grid-block` | Container with `layout.type: "grid"` |
-| `flex-block` | Container with `layout.type: "flex"` |
-| `stack-block` | Container with `layout.type: "stack"` |
-| `container-block` | Use Container entity directly |
-| `columns-block` | Container with `layout.type: "grid"` |
+| Deprecated        | Replacement                           |
+| ----------------- | ------------------------------------- |
+| `grid-block`      | Container with `layout.type: "grid"`  |
+| `flex-block`      | Container with `layout.type: "flex"`  |
+| `stack-block`     | Container with `layout.type: "stack"` |
+| `container-block` | Use Container entity directly         |
+| `columns-block`   | Container with `layout.type: "grid"`  |
 
 See [Page Structure Architecture](/docs/architecture/page-structure.md) for the new Section → Container → Block hierarchy.
 
@@ -405,4 +465,4 @@ See [Page Structure Architecture](/docs/architecture/page-structure.md) for the 
 
 ---
 
-**Last Updated:** 2025-12-18
+**Last Updated:** 2025-12-21

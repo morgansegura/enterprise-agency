@@ -10,6 +10,7 @@ import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
 import { CreateDomainDto } from "./dto/create-domain.dto";
 import { UpdateDesignTokensDto } from "./dto/update-design-tokens.dto";
+import { generateDefaultPages } from "./default-pages";
 
 @Injectable()
 export class TenantsService {
@@ -91,7 +92,13 @@ export class TenantsService {
       }
     }
 
-    // Create tenant with creator as owner and default Coming Soon page
+    // Generate default pages for the new tenant
+    const defaultPages = generateDefaultPages(
+      createData.businessName,
+      creatorUserId,
+    );
+
+    // Create tenant with creator as owner and all default pages
     const tenant = await this.prisma.tenant.create({
       data: {
         slug: createData.slug,
@@ -119,56 +126,12 @@ export class TenantsService {
             },
           },
         },
-        // Create default Coming Soon page as the home page
+        // Create all default pages
         pages: {
-          create: {
-            slug: "coming-soon",
-            title: "Coming Soon",
-            authorId: creatorUserId,
-            status: "published",
-            publishedAt: new Date(),
-            isHomePage: true,
-            pageType: "coming-soon",
-            isSystemPage: true,
-            metaTitle: `Coming Soon - ${createData.businessName}`,
-            metaDescription: `${createData.businessName} website is coming soon. Check back for updates.`,
-            content: {
-              sections: [
-                {
-                  _type: "section",
-                  _key: "coming-soon-hero",
-                  background: "default",
-                  spacing: "2xl",
-                  width: "narrow",
-                  align: "center",
-                  blocks: [
-                    {
-                      _type: "heading",
-                      _key: "coming-soon-title",
-                      level: "h1",
-                      text: createData.businessName,
-                      size: "5xl",
-                      align: "center",
-                    },
-                    {
-                      _type: "text",
-                      _key: "coming-soon-subtitle",
-                      text: "We're working on something amazing. Check back soon!",
-                      variant: "lead",
-                      align: "center",
-                    },
-                    {
-                      _type: "text",
-                      _key: "coming-soon-body",
-                      text: "Our website is currently under construction. We're putting the finishing touches on a great experience for you.",
-                      variant: "muted",
-                      align: "center",
-                    },
-                  ],
-                },
-              ],
-            } as Prisma.InputJsonValue,
-          },
+          create: defaultPages.map((page) => ({
+            ...page,
+            content: page.content as Prisma.InputJsonValue,
+          })),
         },
       },
       include: {

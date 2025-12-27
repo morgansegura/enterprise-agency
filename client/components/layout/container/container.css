@@ -230,43 +230,43 @@
  * ============================================================================= */
 
 .container[data-border-top="thin"] {
-  @apply border-t border-border;
+  @apply border-t border-(--border);
 }
 .container[data-border-top="medium"] {
-  @apply border-t-2 border-border;
+  @apply border-t-2 border-(--border);
 }
 .container[data-border-top="thick"] {
-  @apply border-t-4 border-border;
+  @apply border-t-4 border-(--border);
 }
 
 .container[data-border-bottom="thin"] {
-  @apply border-b border-border;
+  @apply border-b border-(--border);
 }
 .container[data-border-bottom="medium"] {
-  @apply border-b-2 border-border;
+  @apply border-b-2 border-(--border);
 }
 .container[data-border-bottom="thick"] {
-  @apply border-b-4 border-border;
+  @apply border-b-4 border-(--border);
 }
 
 .container[data-border-left="thin"] {
-  @apply border-l border-border;
+  @apply border-l border-(--border);
 }
 .container[data-border-left="medium"] {
-  @apply border-l-2 border-border;
+  @apply border-l-2 border-(--border);
 }
 .container[data-border-left="thick"] {
-  @apply border-l-4 border-border;
+  @apply border-l-4 border-(--border);
 }
 
 .container[data-border-right="thin"] {
-  @apply border-r border-border;
+  @apply border-r border-(--border);
 }
 .container[data-border-right="medium"] {
-  @apply border-r-2 border-border;
+  @apply border-r-2 border-(--border);
 }
 .container[data-border-right="thick"] {
-  @apply border-r-4 border-border;
+  @apply border-r-4 border-(--border);
 }
 
 /* =============================================================================

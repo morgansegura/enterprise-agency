@@ -126,7 +126,9 @@ export function Container({
       // Content alignment
       data-align={align}
       data-vertical-align={verticalAlign}
-      style={Object.keys(containerStyle).length > 0 ? containerStyle : undefined}
+      style={
+        Object.keys(containerStyle).length > 0 ? containerStyle : undefined
+      }
     >
       {children}
     </div>

@@ -40,7 +40,7 @@ export const aboutPageMock = {
               _key: "block_about_heading",
               _type: "heading-block" as const,
               data: {
-                title: "About MH Bible Baptist Church",
+                text: "About MH Bible Baptist Church",
                 level: "h1" as const,
                 size: "4xl" as const,
                 align: "left" as const,
@@ -50,7 +50,7 @@ export const aboutPageMock = {
               _key: "block_mission_heading",
               _type: "heading-block" as const,
               data: {
-                title: "Our Mission",
+                text: "Our Mission",
                 level: "h2" as const,
                 size: "2xl" as const,
                 align: "left" as const,
@@ -70,7 +70,7 @@ export const aboutPageMock = {
               _key: "block_beliefs_heading",
               _type: "heading-block" as const,
               data: {
-                title: "What We Believe",
+                text: "What We Believe",
                 level: "h2" as const,
                 size: "2xl" as const,
                 align: "left" as const,

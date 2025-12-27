@@ -9,7 +9,11 @@ import {
   useUnpublishPost,
   type Post,
 } from "@/lib/hooks/use-posts";
-import { type Section, type Block, type Container } from "@/lib/hooks/use-pages";
+import {
+  type Section,
+  type Block,
+  type Container,
+} from "@/lib/hooks/use-pages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -51,7 +55,7 @@ import { PostEditorLayout } from "@/components/editor/post-editor-layout";
 function createDefaultContainer(): Container {
   return {
     _type: "container",
-    _key: `container-${Date.now()}`,
+    _key: `container-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     layout: { type: "stack", gap: "md" },
     blocks: [],
   };
@@ -69,24 +73,29 @@ function createDefaultSection(): Section {
 }
 
 /**
- * Get blocks from a section's first container (with fallback)
+ * Get blocks from a specific container in a section
  */
-function getSectionBlocks(section: Section): Block[] {
-  return section.containers?.[0]?.blocks ?? [];
+function getContainerBlocks(section: Section, containerIndex: number): Block[] {
+  return section.containers?.[containerIndex]?.blocks ?? [];
 }
 
 /**
- * Update blocks in a section's first container
+ * Update blocks in a specific container
  */
-function updateSectionBlocks(section: Section, blocks: Block[]): Section {
+function updateContainerBlocks(
+  section: Section,
+  containerIndex: number,
+  blocks: Block[],
+): Section {
   const containers = section.containers ?? [createDefaultContainer()];
-  return {
-    ...section,
-    containers: [
-      { ...containers[0], blocks },
-      ...containers.slice(1),
-    ],
-  };
+  const newContainers = [...containers];
+  if (newContainers[containerIndex]) {
+    newContainers[containerIndex] = {
+      ...newContainers[containerIndex],
+      blocks,
+    };
+  }
+  return { ...section, containers: newContainers };
 }
 
 export default function EditPostPage({
@@ -146,8 +155,8 @@ export default function EditPostPage({
           newSection.containers[0].blocks = [newBlock];
           updatedSections.push(newSection);
         } else {
-          const blocks = getSectionBlocks(updatedSections[0]);
-          updatedSections[0] = updateSectionBlocks(updatedSections[0], [
+          const blocks = getContainerBlocks(updatedSections[0], 0);
+          updatedSections[0] = updateContainerBlocks(updatedSections[0], 0, [
             ...blocks,
             newBlock,
           ]);
@@ -236,30 +245,45 @@ export default function EditPostPage({
 
   const handleBlockChange = (
     sectionIndex: number,
+    containerIndex: number,
     blockIndex: number,
     updatedBlock: Block,
   ) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
-      const newBlocks = blocks.map((block, idx) =>
+      const blocks = getContainerBlocks(
+        updatedSections[sectionIndex],
+        containerIndex,
+      );
+      const newBlocks = blocks.map((block: Block, idx: number) =>
         idx === blockIndex ? updatedBlock : block,
       );
-      updatedSections[sectionIndex] = updateSectionBlocks(
+      updatedSections[sectionIndex] = updateContainerBlocks(
         updatedSections[sectionIndex],
+        containerIndex,
         newBlocks,
       );
       return updatedSections;
     });
   };
 
-  const handleBlockDelete = (sectionIndex: number, blockIndex: number) => {
+  const handleBlockDelete = (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => {
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
-      const newBlocks = blocks.filter((_, idx) => idx !== blockIndex);
-      updatedSections[sectionIndex] = updateSectionBlocks(
+      const blocks = getContainerBlocks(
         updatedSections[sectionIndex],
+        containerIndex,
+      );
+      const newBlocks = blocks.filter(
+        (_: Block, idx: number) => idx !== blockIndex,
+      );
+      updatedSections[sectionIndex] = updateContainerBlocks(
+        updatedSections[sectionIndex],
+        containerIndex,
         newBlocks,
       );
       return updatedSections;
@@ -267,7 +291,11 @@ export default function EditPostPage({
     toast.success("Block deleted");
   };
 
-  const handleBlockDragEnd = (event: DragEndEvent, sectionIndex: number) => {
+  const handleBlockDragEnd = (
+    event: DragEndEvent,
+    sectionIndex: number,
+    containerIndex: number,
+  ) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) {
@@ -276,21 +304,62 @@ export default function EditPostPage({
 
     setSections((prevSections) => {
       const updatedSections = [...prevSections];
-      const blocks = getSectionBlocks(updatedSections[sectionIndex]);
+      const blocks = getContainerBlocks(
+        updatedSections[sectionIndex],
+        containerIndex,
+      );
 
-      const oldIndex = blocks.findIndex((block) => block._key === active.id);
-      const newIndex = blocks.findIndex((block) => block._key === over.id);
+      const oldIndex = blocks.findIndex(
+        (block: Block) => block._key === active.id,
+      );
+      const newIndex = blocks.findIndex(
+        (block: Block) => block._key === over.id,
+      );
 
       if (oldIndex !== -1 && newIndex !== -1) {
         const newBlocks = arrayMove(blocks, oldIndex, newIndex);
-        updatedSections[sectionIndex] = updateSectionBlocks(
+        updatedSections[sectionIndex] = updateContainerBlocks(
           updatedSections[sectionIndex],
+          containerIndex,
           newBlocks,
         );
       }
 
       return updatedSections;
     });
+  };
+
+  const handleAddBlockToContainer = (
+    sectionIndex: number,
+    containerIndex: number,
+    blockType: string,
+  ) => {
+    const newBlock = createDefaultBlock(blockType);
+    setSections((prevSections) => {
+      const updated = [...prevSections];
+      const blocks = getContainerBlocks(updated[sectionIndex], containerIndex);
+      updated[sectionIndex] = updateContainerBlocks(
+        updated[sectionIndex],
+        containerIndex,
+        [...blocks, newBlock],
+      );
+      return updated;
+    });
+    toast.success("Block added!");
+  };
+
+  const handleAddContainerToSection = (sectionIndex: number) => {
+    const newContainer = createDefaultContainer();
+    setSections((prevSections) => {
+      const updated = [...prevSections];
+      const containers = updated[sectionIndex].containers ?? [];
+      updated[sectionIndex] = {
+        ...updated[sectionIndex],
+        containers: [...containers, newContainer],
+      };
+      return updated;
+    });
+    toast.success("Container added!");
   };
 
   const handleSectionDragEnd = (event: DragEndEvent) => {
@@ -439,66 +508,85 @@ export default function EditPostPage({
                   strategy={verticalListSortingStrategy}
                 >
                   <div>
-                    {sections.map((section, sectionIndex) => {
-                      const blocks = getSectionBlocks(section);
-                      return (
-                        <SortableSection
-                          key={section._key}
-                          section={section}
-                          onSectionChange={(updatedSection) =>
-                            handleSectionChange(sectionIndex, updatedSection)
+                    {sections.map((section, sectionIndex) => (
+                      <SortableSection
+                        key={section._key}
+                        section={section}
+                        onSectionChange={(updatedSection) =>
+                          handleSectionChange(sectionIndex, updatedSection)
+                        }
+                        onDelete={() => handleSectionDelete(sectionIndex)}
+                        onAddContainer={() =>
+                          handleAddContainerToSection(sectionIndex)
+                        }
+                        isFirst={sectionIndex === 0}
+                        isLast={sectionIndex === sections.length - 1}
+                        onAddBlockToContainer={(
+                          containerIndex: number,
+                          blockType: string,
+                        ) =>
+                          handleAddBlockToContainer(
+                            sectionIndex,
+                            containerIndex,
+                            blockType,
+                          )
+                        }
+                        renderContainerBlocks={(
+                          containerIndex: number,
+                          container: Container,
+                        ) => {
+                          const blocks = container.blocks ?? [];
+                          if (blocks.length === 0) {
+                            return null;
                           }
-                          onDelete={() => handleSectionDelete(sectionIndex)}
-                          isFirst={sectionIndex === 0}
-                          isLast={sectionIndex === sections.length - 1}
-                        >
-                          {blocks.length === 0 ? (
-                            <div className="border-2 border-dashed border-border rounded-lg p-12 text-center">
-                              <p className="text-muted-foreground">
-                                Click a block from the left sidebar to add content
-                                to this section.
-                              </p>
-                            </div>
-                          ) : (
+                          return (
                             <DndContext
                               sensors={sensors}
                               collisionDetection={closestCenter}
                               onDragEnd={(event) =>
-                                handleBlockDragEnd(event, sectionIndex)
+                                handleBlockDragEnd(
+                                  event,
+                                  sectionIndex,
+                                  containerIndex,
+                                )
                               }
                             >
                               <SortableContext
-                                items={blocks.map((block) => block._key)}
+                                items={blocks.map((block: Block) => block._key)}
                                 strategy={verticalListSortingStrategy}
                               >
                                 <div className="space-y-4">
-                                  {blocks.map((block, blockIndex) => (
-                                    <SortableBlockItem
-                                      key={block._key}
-                                      block={block}
-                                      onChange={(updatedBlock) =>
-                                        handleBlockChange(
-                                          sectionIndex,
-                                          blockIndex,
-                                          updatedBlock,
-                                        )
-                                      }
-                                      onDelete={() =>
-                                        handleBlockDelete(
-                                          sectionIndex,
-                                          blockIndex,
-                                        )
-                                      }
-                                      tenantId={id}
-                                    />
-                                  ))}
+                                  {blocks.map(
+                                    (block: Block, blockIndex: number) => (
+                                      <SortableBlockItem
+                                        key={block._key}
+                                        block={block}
+                                        onChange={(updatedBlock: Block) =>
+                                          handleBlockChange(
+                                            sectionIndex,
+                                            containerIndex,
+                                            blockIndex,
+                                            updatedBlock,
+                                          )
+                                        }
+                                        onDelete={() =>
+                                          handleBlockDelete(
+                                            sectionIndex,
+                                            containerIndex,
+                                            blockIndex,
+                                          )
+                                        }
+                                        tenantId={id}
+                                      />
+                                    ),
+                                  )}
                                 </div>
                               </SortableContext>
                             </DndContext>
-                          )}
-                        </SortableSection>
-                      );
-                    })}
+                          );
+                        }}
+                      />
+                    ))}
 
                     {/* Add Section Button */}
                     <Button

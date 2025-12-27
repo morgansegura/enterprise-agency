@@ -9,7 +9,7 @@
 }
 
 .editor-shell-main {
-  @apply flex flex-col min-h-0;
+  @apply min-h-0 overflow-y-auto h-[calc(100%-44px)];
 }
 
 .editor-shell-header {
@@ -25,7 +25,7 @@
 }
 
 .editor-shell-content {
-  @apply flex-1 min-h-0 overflow-hidden;
+  @apply flex-1 flex flex-col;
 }
 
 .editor-shell-loading {

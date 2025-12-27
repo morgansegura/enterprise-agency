@@ -86,7 +86,109 @@ class ContainerLayoutDto {
 }
 
 /**
- * Container settings DTO (inner wrapper in section)
+ * Container DTO (layout wrapper inside section)
+ * New architecture: Section → Container[] → Block[]
+ */
+class ContainerDto {
+  @IsEnum(["container"])
+  _type: "container";
+
+  @IsString()
+  _key: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ContainerLayoutDto)
+  layout?: ContainerLayoutDto;
+
+  @IsOptional()
+  @IsEnum(["none", "xs", "sm", "md", "lg", "xl", "full"])
+  maxWidth?: string;
+
+  @IsOptional()
+  @IsEnum(["none", "sm", "md", "lg", "xl"])
+  minHeight?: string;
+
+  @IsOptional()
+  background?: string | Record<string, unknown>;
+
+  @IsOptional()
+  @IsEnum(SPACING_SIZES)
+  paddingX?: string;
+
+  @IsOptional()
+  @IsEnum(SPACING_SIZES)
+  paddingY?: string;
+
+  @IsOptional()
+  @IsEnum(BORDER_SIZES)
+  border?: string;
+
+  @IsOptional()
+  @IsEnum(BORDER_SIZES)
+  borderTop?: string;
+
+  @IsOptional()
+  @IsEnum(BORDER_SIZES)
+  borderBottom?: string;
+
+  @IsOptional()
+  @IsEnum(BORDER_SIZES)
+  borderLeft?: string;
+
+  @IsOptional()
+  @IsEnum(BORDER_SIZES)
+  borderRight?: string;
+
+  @IsOptional()
+  @IsString()
+  borderColor?: string;
+
+  @IsOptional()
+  @IsEnum(["none", "sm", "md", "lg", "xl", "full"])
+  borderRadius?: string;
+
+  @IsOptional()
+  @IsEnum(SHADOW_SIZES)
+  shadow?: string;
+
+  @IsOptional()
+  @IsEnum(ALIGN_OPTIONS)
+  align?: string;
+
+  @IsOptional()
+  @IsEnum(VERTICAL_ALIGN_OPTIONS)
+  verticalAlign?: string;
+
+  @IsOptional()
+  @IsEnum(["visible", "hidden", "scroll", "auto"])
+  overflow?: string;
+
+  @IsOptional()
+  @IsObject()
+  hideOn?: {
+    desktop?: boolean;
+    tablet?: boolean;
+    mobile?: boolean;
+  };
+
+  @IsOptional()
+  @IsString()
+  customClasses?: string;
+
+  @IsOptional()
+  @IsObject()
+  _responsive?: Record<string, unknown>;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ContentBlockDto)
+  blocks: ContentBlockDto[];
+}
+
+/**
+ * Legacy container settings DTO (inner wrapper in section)
+ * @deprecated Use ContainerDto with containers array instead
  */
 class ContainerSettingsDto {
   @IsOptional()
@@ -130,12 +232,27 @@ export class SectionDto {
   @IsString()
   _key: string;
 
+  // Semantic HTML element
+  @IsOptional()
+  @IsEnum(["section", "div", "article", "aside", "header", "footer"])
+  as?: string;
+
   // Background can be a simple string (legacy) or an object (new format)
   // Stored as JSONB, so we accept any value here
   @IsOptional()
   background?: string | Record<string, unknown>;
 
-  // Padding (vertical)
+  // Padding (vertical) - new unified property
+  @IsOptional()
+  @IsEnum(SPACING_SIZES)
+  paddingY?: string;
+
+  // Gap between containers
+  @IsOptional()
+  @IsEnum(SPACING_SIZES)
+  gapY?: string;
+
+  // Legacy padding (for backwards compatibility)
   @IsOptional()
   @IsEnum(SPACING_SIZES)
   paddingTop?: string;
@@ -156,6 +273,10 @@ export class SectionDto {
   @IsOptional()
   @IsEnum(BORDER_SIZES)
   borderBottom?: string;
+
+  @IsOptional()
+  @IsString()
+  borderColor?: string;
 
   // Shadow
   @IsOptional()
@@ -181,13 +302,51 @@ export class SectionDto {
   @IsEnum(VERTICAL_ALIGN_OPTIONS)
   verticalAlign?: string;
 
-  // Container settings (inner wrapper)
+  // Advanced settings
+  @IsOptional()
+  @IsString()
+  anchorId?: string;
+
+  @IsOptional()
+  @IsEnum(["visible", "hidden", "scroll", "auto"])
+  overflow?: string;
+
+  @IsOptional()
+  @IsObject()
+  hideOn?: {
+    desktop?: boolean;
+    tablet?: boolean;
+    mobile?: boolean;
+  };
+
+  @IsOptional()
+  @IsString()
+  customClasses?: string;
+
+  // Responsive overrides
+  @IsOptional()
+  @IsObject()
+  _responsive?: Record<string, unknown>;
+
+  // Legacy: Container settings (single inner wrapper)
+  // @deprecated Use containers array instead
   @IsOptional()
   @IsObject()
   container?: ContainerSettingsDto;
 
+  // New architecture: Array of containers
+  // Section → Container[] → Block[]
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ContainerDto)
+  containers?: ContainerDto[];
+
+  // Legacy: Direct blocks array (for backwards compatibility)
+  // @deprecated Use containers array instead
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ContentBlockDto)
-  blocks: ContentBlockDto[];
+  blocks?: ContentBlockDto[];
 }

@@ -111,7 +111,10 @@ export function SectionSettingsPopover({
         <div className="section-popover-header">
           <div className="section-popover-tabs">
             <button
-              className={cn("section-popover-tab", tab === "layout" && "active")}
+              className={cn(
+                "section-popover-tab",
+                tab === "layout" && "active",
+              )}
               onClick={() => setTab("layout")}
             >
               Layout
@@ -123,7 +126,10 @@ export function SectionSettingsPopover({
               Style
             </button>
             <button
-              className={cn("section-popover-tab", tab === "advanced" && "active")}
+              className={cn(
+                "section-popover-tab",
+                tab === "advanced" && "active",
+              )}
               onClick={() => setTab("advanced")}
             >
               Advanced
@@ -147,7 +153,9 @@ export function SectionSettingsPopover({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="narrow">Narrow (768px)</SelectItem>
-                    <SelectItem value="container">Container (1280px)</SelectItem>
+                    <SelectItem value="container">
+                      Container (1280px)
+                    </SelectItem>
                     <SelectItem value="wide">Wide (1536px)</SelectItem>
                     <SelectItem value="full">Full Width</SelectItem>
                   </SelectContent>
@@ -177,11 +185,18 @@ export function SectionSettingsPopover({
 
               {/* Content Position */}
               <div className="section-settings-section">
-                <h4 className="section-settings-section-title">CONTENT POSITION</h4>
+                <h4 className="section-settings-section-title">
+                  CONTENT POSITION
+                </h4>
                 <div className="section-settings-position-row">
                   <PositionPicker
-                    horizontal={(section.align as "left" | "center" | "right") || "left"}
-                    vertical={(section.verticalAlign as "top" | "center" | "bottom") || "top"}
+                    horizontal={
+                      (section.align as "left" | "center" | "right") || "left"
+                    }
+                    vertical={
+                      (section.verticalAlign as "top" | "center" | "bottom") ||
+                      "top"
+                    }
                     onChange={(h, v) => {
                       onChange({
                         ...section,
@@ -281,7 +296,9 @@ export function SectionSettingsPopover({
                     <ColorPicker
                       label="Color"
                       value={background.color || "#f5f5f5"}
-                      onChange={(value) => handleBackgroundChange({ color: value })}
+                      onChange={(value) =>
+                        handleBackgroundChange({ color: value })
+                      }
                     />
                   </div>
                 )}
@@ -314,7 +331,9 @@ export function SectionSettingsPopover({
                       </div>
                       {background.gradient.type === "linear" && (
                         <div className="section-settings-field">
-                          <Label className="section-settings-label">Angle</Label>
+                          <Label className="section-settings-label">
+                            Angle
+                          </Label>
                           <Input
                             type="number"
                             className="h-8"
@@ -378,7 +397,9 @@ export function SectionSettingsPopover({
                 {background.type === "image" && (
                   <div className="section-settings-field mt-3 space-y-3">
                     <div className="section-settings-field">
-                      <Label className="section-settings-label">Image URL</Label>
+                      <Label className="section-settings-label">
+                        Image URL
+                      </Label>
                       <Input
                         placeholder="https://..."
                         className="h-8"
@@ -415,7 +436,9 @@ export function SectionSettingsPopover({
                         </Select>
                       </div>
                       <div className="section-settings-field">
-                        <Label className="section-settings-label">Position</Label>
+                        <Label className="section-settings-label">
+                          Position
+                        </Label>
                         <Select
                           value={background.image?.position || "center"}
                           onValueChange={(value) =>
@@ -460,7 +483,10 @@ export function SectionSettingsPopover({
                     className="section-settings-field"
                   >
                     <Select
-                      value={getFieldValue("paddingTop", section.spacing || "md")}
+                      value={getFieldValue(
+                        "paddingTop",
+                        section.spacing || "md",
+                      )}
                       onValueChange={(value) =>
                         handleResponsiveChange("paddingTop", value)
                       }
@@ -488,7 +514,10 @@ export function SectionSettingsPopover({
                     className="section-settings-field"
                   >
                     <Select
-                      value={getFieldValue("paddingBottom", section.spacing || "md")}
+                      value={getFieldValue(
+                        "paddingBottom",
+                        section.spacing || "md",
+                      )}
                       onValueChange={(value) =>
                         handleResponsiveChange("paddingBottom", value)
                       }
@@ -519,7 +548,9 @@ export function SectionSettingsPopover({
                     <Label className="section-settings-label">Top</Label>
                     <Select
                       value={section.borderTop || "none"}
-                      onValueChange={(value) => handleChange("borderTop", value)}
+                      onValueChange={(value) =>
+                        handleChange("borderTop", value)
+                      }
                     >
                       <SelectTrigger className="h-8">
                         <SelectValue />
@@ -536,7 +567,9 @@ export function SectionSettingsPopover({
                     <Label className="section-settings-label">Bottom</Label>
                     <Select
                       value={section.borderBottom || "none"}
-                      onValueChange={(value) => handleChange("borderBottom", value)}
+                      onValueChange={(value) =>
+                        handleChange("borderBottom", value)
+                      }
                     >
                       <SelectTrigger className="h-8">
                         <SelectValue />
@@ -550,7 +583,8 @@ export function SectionSettingsPopover({
                     </Select>
                   </div>
                 </div>
-                {(section.borderTop !== "none" || section.borderBottom !== "none") && (
+                {(section.borderTop !== "none" ||
+                  section.borderBottom !== "none") && (
                   <div className="section-settings-field mt-2">
                     <ColorPicker
                       label="Border Color"
@@ -639,7 +673,9 @@ export function SectionSettingsPopover({
                   placeholder="e.g. my-custom-class"
                   className="h-8"
                   value={section.customClasses || ""}
-                  onChange={(e) => handleChange("customClasses", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("customClasses", e.target.value)
+                  }
                 />
                 <p className="section-settings-help">
                   Add custom Tailwind or CSS classes

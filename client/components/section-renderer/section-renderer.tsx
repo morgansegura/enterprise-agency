@@ -282,7 +282,9 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             as={section.as}
             // Background
             background={dataBackground}
-            style={Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined}
+            style={
+              Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined
+            }
             // Padding
             paddingY={section.paddingY}
             paddingTop={section.paddingTop}
