@@ -265,6 +265,15 @@ export class SectionDto {
   @IsEnum(SPACING_SIZES)
   spacing?: string; // Legacy - maps to paddingY
 
+  // Spacing - Margin
+  @IsOptional()
+  @IsEnum(SPACING_SIZES)
+  marginTop?: string;
+
+  @IsOptional()
+  @IsEnum(SPACING_SIZES)
+  marginBottom?: string;
+
   // Border settings
   @IsOptional()
   @IsEnum(BORDER_SIZES)
@@ -275,8 +284,20 @@ export class SectionDto {
   borderBottom?: string;
 
   @IsOptional()
+  @IsEnum(BORDER_SIZES)
+  borderLeft?: string;
+
+  @IsOptional()
+  @IsEnum(BORDER_SIZES)
+  borderRight?: string;
+
+  @IsOptional()
   @IsString()
   borderColor?: string;
+
+  @IsOptional()
+  @IsEnum(["none", "sm", "md", "lg", "xl", "2xl", "full"])
+  borderRadius?: string;
 
   // Shadow
   @IsOptional()
@@ -310,6 +331,14 @@ export class SectionDto {
   @IsOptional()
   @IsEnum(["visible", "hidden", "scroll", "auto"])
   overflow?: string;
+
+  @IsOptional()
+  @IsEnum(["visible", "hidden", "scroll", "auto"])
+  overflowX?: string;
+
+  @IsOptional()
+  @IsEnum(["visible", "hidden", "scroll", "auto"])
+  overflowY?: string;
 
   @IsOptional()
   @IsObject()

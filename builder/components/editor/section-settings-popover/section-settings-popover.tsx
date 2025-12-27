@@ -27,7 +27,7 @@ import type { Section, SectionBackground } from "@/lib/hooks/use-pages";
 
 import "./section-settings-popover.css";
 
-type SectionTab = "layout" | "style" | "advanced";
+type SectionTab = "spacing" | "background" | "border" | "layout" | "advanced";
 
 interface SectionSettingsPopoverProps {
   section: Section;
@@ -37,13 +37,64 @@ interface SectionSettingsPopoverProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+// Spacing size options
+const SPACING_OPTIONS = [
+  { value: "none", label: "None" },
+  { value: "xs", label: "XS" },
+  { value: "sm", label: "SM" },
+  { value: "md", label: "MD" },
+  { value: "lg", label: "LG" },
+  { value: "xl", label: "XL" },
+  { value: "2xl", label: "2XL" },
+  { value: "3xl", label: "3XL" },
+];
+
+// Border size options
+const BORDER_OPTIONS = [
+  { value: "none", label: "None" },
+  { value: "thin", label: "Thin" },
+  { value: "medium", label: "Medium" },
+  { value: "thick", label: "Thick" },
+];
+
+// Border radius options
+const RADIUS_OPTIONS = [
+  { value: "none", label: "None" },
+  { value: "sm", label: "SM" },
+  { value: "md", label: "MD" },
+  { value: "lg", label: "LG" },
+  { value: "xl", label: "XL" },
+  { value: "2xl", label: "2XL" },
+  { value: "full", label: "Full" },
+];
+
+// Shadow options
+const SHADOW_OPTIONS = [
+  { value: "none", label: "None" },
+  { value: "sm", label: "Small" },
+  { value: "md", label: "Medium" },
+  { value: "lg", label: "Large" },
+  { value: "xl", label: "X-Large" },
+  { value: "inner", label: "Inner" },
+];
+
+// Overflow options
+const OVERFLOW_OPTIONS = [
+  { value: "visible", label: "Visible" },
+  { value: "hidden", label: "Hidden" },
+  { value: "scroll", label: "Scroll" },
+  { value: "auto", label: "Auto" },
+];
+
 /**
  * Section Settings Popover
  *
- * Three-tab settings panel:
+ * Five-tab settings panel:
+ * - Spacing: Padding, Margin, Gap
+ * - Background: Color, Gradient, Image
+ * - Border: Sides, Color, Radius, Shadow
  * - Layout: Width, Min Height, Content Position
- * - Style: Background, Spacing, Border, Shadow
- * - Advanced: Anchor ID, Visibility, Overflow, CSS Classes
+ * - Advanced: Overflow, Anchor ID, Visibility, CSS Classes
  */
 export function SectionSettingsPopover({
   section,
@@ -52,7 +103,7 @@ export function SectionSettingsPopover({
   open,
   onOpenChange,
 }: SectionSettingsPopoverProps) {
-  const [tab, setTab] = React.useState<SectionTab>("layout");
+  const [tab, setTab] = React.useState<SectionTab>("spacing");
   const breakpoint = useCurrentBreakpoint();
 
   // Get background as object (normalize from string if legacy)
@@ -97,6 +148,13 @@ export function SectionSettingsPopover({
     });
   };
 
+  // Check if any border is set
+  const hasBorder =
+    (section.borderTop && section.borderTop !== "none") ||
+    (section.borderBottom && section.borderBottom !== "none") ||
+    (section.borderLeft && section.borderLeft !== "none") ||
+    (section.borderRight && section.borderRight !== "none");
+
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
@@ -113,17 +171,38 @@ export function SectionSettingsPopover({
             <button
               className={cn(
                 "section-popover-tab",
+                tab === "spacing" && "active",
+              )}
+              onClick={() => setTab("spacing")}
+            >
+              Spacing
+            </button>
+            <button
+              className={cn(
+                "section-popover-tab",
+                tab === "background" && "active",
+              )}
+              onClick={() => setTab("background")}
+            >
+              BG
+            </button>
+            <button
+              className={cn(
+                "section-popover-tab",
+                tab === "border" && "active",
+              )}
+              onClick={() => setTab("border")}
+            >
+              Border
+            </button>
+            <button
+              className={cn(
+                "section-popover-tab",
                 tab === "layout" && "active",
               )}
               onClick={() => setTab("layout")}
             >
               Layout
-            </button>
-            <button
-              className={cn("section-popover-tab", tab === "style" && "active")}
-              onClick={() => setTab("style")}
-            >
-              Style
             </button>
             <button
               className={cn(
@@ -132,95 +211,165 @@ export function SectionSettingsPopover({
               )}
               onClick={() => setTab("advanced")}
             >
-              Advanced
+              Adv
             </button>
           </div>
         </div>
 
         <div className="section-settings-content">
-          {/* ===================== LAYOUT TAB ===================== */}
-          {tab === "layout" && (
+          {/* ===================== SPACING TAB ===================== */}
+          {tab === "spacing" && (
             <>
-              {/* Width */}
+              {/* Padding */}
               <div className="section-settings-section">
-                <h4 className="section-settings-section-title">WIDTH</h4>
-                <Select
-                  value={section.width || "wide"}
-                  onValueChange={(value) => handleChange("width", value)}
-                >
-                  <SelectTrigger className="h-8">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="narrow">Narrow (768px)</SelectItem>
-                    <SelectItem value="container">
-                      Container (1280px)
-                    </SelectItem>
-                    <SelectItem value="wide">Wide (1536px)</SelectItem>
-                    <SelectItem value="full">Full Width</SelectItem>
-                  </SelectContent>
-                </Select>
+                <h4 className="section-settings-section-title">PADDING</h4>
+                <div className="section-settings-row">
+                  <ResponsiveField
+                    fieldName="paddingTop"
+                    data={sectionData}
+                    onChange={(data) => onChange(data as unknown as Section)}
+                    label="Top"
+                    className="section-settings-field"
+                  >
+                    <Select
+                      value={getFieldValue(
+                        "paddingTop",
+                        section.spacing || "md",
+                      )}
+                      onValueChange={(value) =>
+                        handleResponsiveChange("paddingTop", value)
+                      }
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {SPACING_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </ResponsiveField>
+                  <ResponsiveField
+                    fieldName="paddingBottom"
+                    data={sectionData}
+                    onChange={(data) => onChange(data as unknown as Section)}
+                    label="Bottom"
+                    className="section-settings-field"
+                  >
+                    <Select
+                      value={getFieldValue(
+                        "paddingBottom",
+                        section.spacing || "md",
+                      )}
+                      onValueChange={(value) =>
+                        handleResponsiveChange("paddingBottom", value)
+                      }
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {SPACING_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </ResponsiveField>
+                </div>
               </div>
 
-              {/* Min Height */}
+              {/* Margin */}
               <div className="section-settings-section">
-                <h4 className="section-settings-section-title">MIN HEIGHT</h4>
-                <Select
-                  value={section.minHeight || "none"}
-                  onValueChange={(value) => handleChange("minHeight", value)}
-                >
-                  <SelectTrigger className="h-8">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">Auto</SelectItem>
-                    <SelectItem value="sm">Small (300px)</SelectItem>
-                    <SelectItem value="md">Medium (400px)</SelectItem>
-                    <SelectItem value="lg">Large (500px)</SelectItem>
-                    <SelectItem value="xl">Extra Large (600px)</SelectItem>
-                    <SelectItem value="screen">Full Screen (100vh)</SelectItem>
-                  </SelectContent>
-                </Select>
+                <h4 className="section-settings-section-title">MARGIN</h4>
+                <div className="section-settings-row">
+                  <ResponsiveField
+                    fieldName="marginTop"
+                    data={sectionData}
+                    onChange={(data) => onChange(data as unknown as Section)}
+                    label="Top"
+                    className="section-settings-field"
+                  >
+                    <Select
+                      value={getFieldValue("marginTop", "none")}
+                      onValueChange={(value) =>
+                        handleResponsiveChange("marginTop", value)
+                      }
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {SPACING_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </ResponsiveField>
+                  <ResponsiveField
+                    fieldName="marginBottom"
+                    data={sectionData}
+                    onChange={(data) => onChange(data as unknown as Section)}
+                    label="Bottom"
+                    className="section-settings-field"
+                  >
+                    <Select
+                      value={getFieldValue("marginBottom", "none")}
+                      onValueChange={(value) =>
+                        handleResponsiveChange("marginBottom", value)
+                      }
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {SPACING_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </ResponsiveField>
+                </div>
               </div>
 
-              {/* Content Position */}
+              {/* Gap */}
               <div className="section-settings-section">
                 <h4 className="section-settings-section-title">
-                  CONTENT POSITION
+                  GAP (BETWEEN CONTAINERS)
                 </h4>
-                <div className="section-settings-position-row">
-                  <PositionPicker
-                    horizontal={
-                      (section.align as "left" | "center" | "right") || "left"
-                    }
-                    vertical={
-                      (section.verticalAlign as "top" | "center" | "bottom") ||
-                      "top"
-                    }
-                    onChange={(h, v) => {
-                      onChange({
-                        ...section,
-                        align: h,
-                        verticalAlign: v,
-                      });
-                    }}
-                  />
-                  <div className="section-settings-position-labels">
-                    <span className="text-xs text-(--builder-muted-foreground)">
-                      {section.verticalAlign || "top"} {section.align || "left"}
-                    </span>
-                  </div>
-                </div>
+                <Select
+                  value={section.gapY || "md"}
+                  onValueChange={(value) => handleChange("gapY", value)}
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SPACING_OPTIONS.slice(0, 7).map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </>
           )}
 
-          {/* ===================== STYLE TAB ===================== */}
-          {tab === "style" && (
+          {/* ===================== BACKGROUND TAB ===================== */}
+          {tab === "background" && (
             <>
               {/* Background Type */}
               <div className="section-settings-section">
-                <h4 className="section-settings-section-title">BACKGROUND</h4>
+                <h4 className="section-settings-section-title">TYPE</h4>
                 <div className="section-settings-bg-types">
                   <button
                     className={cn(
@@ -470,77 +619,13 @@ export function SectionSettingsPopover({
                   </div>
                 )}
               </div>
+            </>
+          )}
 
-              {/* Spacing */}
-              <div className="section-settings-section">
-                <h4 className="section-settings-section-title">SPACING</h4>
-                <div className="section-settings-row">
-                  <ResponsiveField
-                    fieldName="paddingTop"
-                    data={sectionData}
-                    onChange={(data) => onChange(data as unknown as Section)}
-                    label="Top"
-                    className="section-settings-field"
-                  >
-                    <Select
-                      value={getFieldValue(
-                        "paddingTop",
-                        section.spacing || "md",
-                      )}
-                      onValueChange={(value) =>
-                        handleResponsiveChange("paddingTop", value)
-                      }
-                    >
-                      <SelectTrigger className="h-8">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="xs">XS</SelectItem>
-                        <SelectItem value="sm">SM</SelectItem>
-                        <SelectItem value="md">MD</SelectItem>
-                        <SelectItem value="lg">LG</SelectItem>
-                        <SelectItem value="xl">XL</SelectItem>
-                        <SelectItem value="2xl">2XL</SelectItem>
-                        <SelectItem value="3xl">3XL</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </ResponsiveField>
-                  <ResponsiveField
-                    fieldName="paddingBottom"
-                    data={sectionData}
-                    onChange={(data) => onChange(data as unknown as Section)}
-                    label="Bottom"
-                    className="section-settings-field"
-                  >
-                    <Select
-                      value={getFieldValue(
-                        "paddingBottom",
-                        section.spacing || "md",
-                      )}
-                      onValueChange={(value) =>
-                        handleResponsiveChange("paddingBottom", value)
-                      }
-                    >
-                      <SelectTrigger className="h-8">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="xs">XS</SelectItem>
-                        <SelectItem value="sm">SM</SelectItem>
-                        <SelectItem value="md">MD</SelectItem>
-                        <SelectItem value="lg">LG</SelectItem>
-                        <SelectItem value="xl">XL</SelectItem>
-                        <SelectItem value="2xl">2XL</SelectItem>
-                        <SelectItem value="3xl">3XL</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </ResponsiveField>
-                </div>
-              </div>
-
-              {/* Border */}
+          {/* ===================== BORDER TAB ===================== */}
+          {tab === "border" && (
+            <>
+              {/* Border Sides */}
               <div className="section-settings-section">
                 <h4 className="section-settings-section-title">BORDER</h4>
                 <div className="section-settings-row">
@@ -556,10 +641,11 @@ export function SectionSettingsPopover({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="thin">Thin</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="thick">Thick</SelectItem>
+                        {BORDER_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -575,16 +661,58 @@ export function SectionSettingsPopover({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="thin">Thin</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="thick">Thick</SelectItem>
+                        {BORDER_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
-                {(section.borderTop !== "none" ||
-                  section.borderBottom !== "none") && (
+                <div className="section-settings-row mt-2">
+                  <div className="section-settings-field">
+                    <Label className="section-settings-label">Left</Label>
+                    <Select
+                      value={section.borderLeft || "none"}
+                      onValueChange={(value) =>
+                        handleChange("borderLeft", value)
+                      }
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {BORDER_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="section-settings-field">
+                    <Label className="section-settings-label">Right</Label>
+                    <Select
+                      value={section.borderRight || "none"}
+                      onValueChange={(value) =>
+                        handleChange("borderRight", value)
+                      }
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {BORDER_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                {hasBorder && (
                   <div className="section-settings-field mt-2">
                     <ColorPicker
                       label="Border Color"
@@ -593,6 +721,26 @@ export function SectionSettingsPopover({
                     />
                   </div>
                 )}
+              </div>
+
+              {/* Border Radius */}
+              <div className="section-settings-section">
+                <h4 className="section-settings-section-title">ROUNDED</h4>
+                <Select
+                  value={section.borderRadius || "none"}
+                  onValueChange={(value) => handleChange("borderRadius", value)}
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {RADIUS_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Shadow */}
@@ -606,21 +754,145 @@ export function SectionSettingsPopover({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="sm">Small</SelectItem>
-                    <SelectItem value="md">Medium</SelectItem>
-                    <SelectItem value="lg">Large</SelectItem>
-                    <SelectItem value="xl">Extra Large</SelectItem>
-                    <SelectItem value="inner">Inner</SelectItem>
+                    {SHADOW_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
             </>
           )}
 
+          {/* ===================== LAYOUT TAB ===================== */}
+          {tab === "layout" && (
+            <>
+              {/* Width */}
+              <div className="section-settings-section">
+                <h4 className="section-settings-section-title">MAX WIDTH</h4>
+                <Select
+                  value={section.width || "wide"}
+                  onValueChange={(value) => handleChange("width", value)}
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="narrow">Narrow (768px)</SelectItem>
+                    <SelectItem value="container">Container (1280px)</SelectItem>
+                    <SelectItem value="wide">Wide (1536px)</SelectItem>
+                    <SelectItem value="full">Full Width</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Min Height */}
+              <div className="section-settings-section">
+                <h4 className="section-settings-section-title">MIN HEIGHT</h4>
+                <Select
+                  value={section.minHeight || "none"}
+                  onValueChange={(value) => handleChange("minHeight", value)}
+                >
+                  <SelectTrigger className="h-8">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">Auto</SelectItem>
+                    <SelectItem value="sm">Small (300px)</SelectItem>
+                    <SelectItem value="md">Medium (400px)</SelectItem>
+                    <SelectItem value="lg">Large (500px)</SelectItem>
+                    <SelectItem value="xl">X-Large (600px)</SelectItem>
+                    <SelectItem value="screen">Full Screen (100vh)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Content Position - only show when minHeight is set */}
+              {section.minHeight && section.minHeight !== "none" && (
+                <div className="section-settings-section">
+                  <h4 className="section-settings-section-title">
+                    CONTENT POSITION
+                  </h4>
+                  <div className="section-settings-position-row">
+                    <PositionPicker
+                      horizontal={
+                        (section.align as "left" | "center" | "right") || "left"
+                      }
+                      vertical={
+                        (section.verticalAlign as "top" | "center" | "bottom") ||
+                        "top"
+                      }
+                      onChange={(h, v) => {
+                        onChange({
+                          ...section,
+                          align: h,
+                          verticalAlign: v,
+                        });
+                      }}
+                    />
+                    <div className="section-settings-position-labels">
+                      <span className="text-xs text-(--builder-muted-foreground)">
+                        {section.verticalAlign || "top"}{" "}
+                        {section.align || "left"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
           {/* ===================== ADVANCED TAB ===================== */}
           {tab === "advanced" && (
             <>
+              {/* Overflow */}
+              <div className="section-settings-section">
+                <h4 className="section-settings-section-title">OVERFLOW</h4>
+                <div className="section-settings-row">
+                  <div className="section-settings-field">
+                    <Label className="section-settings-label">X</Label>
+                    <Select
+                      value={section.overflowX || section.overflow || "visible"}
+                      onValueChange={(value) =>
+                        handleChange("overflowX", value)
+                      }
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {OVERFLOW_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="section-settings-field">
+                    <Label className="section-settings-label">Y</Label>
+                    <Select
+                      value={section.overflowY || section.overflow || "visible"}
+                      onValueChange={(value) =>
+                        handleChange("overflowY", value)
+                      }
+                    >
+                      <SelectTrigger className="h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {OVERFLOW_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+
               {/* Anchor ID */}
               <div className="section-settings-section">
                 <h4 className="section-settings-section-title">ANCHOR ID</h4>
@@ -645,25 +917,6 @@ export function SectionSettingsPopover({
                   hideOn={section.hideOn}
                   onChange={(hideOn) => handleChange("hideOn", hideOn)}
                 />
-              </div>
-
-              {/* Overflow */}
-              <div className="section-settings-section">
-                <h4 className="section-settings-section-title">OVERFLOW</h4>
-                <Select
-                  value={section.overflow || "visible"}
-                  onValueChange={(value) => handleChange("overflow", value)}
-                >
-                  <SelectTrigger className="h-8">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="visible">Visible</SelectItem>
-                    <SelectItem value="hidden">Hidden</SelectItem>
-                    <SelectItem value="scroll">Scroll</SelectItem>
-                    <SelectItem value="auto">Auto</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
 
               {/* Custom CSS Classes */}

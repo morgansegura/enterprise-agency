@@ -134,17 +134,24 @@ export interface Section {
   as?: "section" | "div" | "article" | "aside" | "header" | "footer";
   // Background
   background?: string | SectionBackground; // string for legacy support
-  // Spacing
+  // Spacing - Padding
   paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-  gapY?: "none" | "xs" | "sm" | "md" | "lg" | "xl"; // gap between containers
-  // Legacy spacing (maps to paddingY)
   paddingTop?: string;
   paddingBottom?: string;
+  // Spacing - Margin
+  marginTop?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  marginBottom?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  // Spacing - Gap between containers
+  gapY?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  // Legacy spacing (maps to paddingY)
   spacing?: string;
   // Border settings
   borderTop?: "none" | "thin" | "medium" | "thick";
   borderBottom?: "none" | "thin" | "medium" | "thick";
+  borderLeft?: "none" | "thin" | "medium" | "thick";
+  borderRight?: "none" | "thin" | "medium" | "thick";
   borderColor?: string;
+  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
   // Shadow
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
   // Width
@@ -157,6 +164,8 @@ export interface Section {
   // Advanced settings
   anchorId?: string; // for in-page linking (#anchor)
   overflow?: "visible" | "hidden" | "scroll" | "auto";
+  overflowX?: "visible" | "hidden" | "scroll" | "auto";
+  overflowY?: "visible" | "hidden" | "scroll" | "auto";
   hideOn?: {
     desktop?: boolean;
     tablet?: boolean;

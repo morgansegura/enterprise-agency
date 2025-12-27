@@ -1,0 +1,130 @@
+/* Inline Toolbar - Reusable toolbar for sections, containers, blocks */
+
+.inline-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px;
+  background: var(--builder-background);
+  border: 1px solid var(--builder-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  z-index: 10;
+}
+
+/* Position variants */
+.inline-toolbar--top {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+
+.inline-toolbar--bottom {
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translate(-50%, 100%);
+}
+
+.inline-toolbar--left {
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  flex-direction: column;
+}
+
+.inline-toolbar--right {
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translate(100%, -50%);
+  flex-direction: column;
+}
+
+/* Show on hover variant */
+.inline-toolbar--hover {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+/* Parent must have group class for hover to work */
+.group:hover > .inline-toolbar--hover,
+.group:focus-within > .inline-toolbar--hover,
+[data-selected="true"] > .inline-toolbar--hover {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Element label */
+.inline-toolbar-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--builder-muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+/* Drag handle */
+.inline-toolbar-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  cursor: grab;
+  color: var(--builder-muted-foreground);
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.inline-toolbar-drag-handle:hover {
+  color: var(--builder-foreground);
+  background: var(--builder-accent);
+}
+
+.inline-toolbar-drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Divider between action groups */
+.inline-toolbar-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--builder-border);
+  margin: 0 2px;
+}
+
+.inline-toolbar--left .inline-toolbar-divider,
+.inline-toolbar--right .inline-toolbar-divider {
+  width: 16px;
+  height: 1px;
+}
+
+/* Toolbar button */
+.inline-toolbar-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--builder-muted-foreground);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.inline-toolbar-button:hover:not(:disabled) {
+  color: var(--builder-foreground);
+  background: var(--builder-accent);
+}
+
+.inline-toolbar-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Destructive variant */
+.inline-toolbar-button--destructive:hover:not(:disabled) {
+  color: var(--builder-destructive);
+  background: hsl(var(--builder-destructive-hsl) / 0.1);
+}
