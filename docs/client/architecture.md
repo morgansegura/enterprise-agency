@@ -21,31 +21,33 @@ This platform is built on a **composable block system** designed for maximum fle
 └──────────────┬──────────────────────────┘
                │
       ┌────────▼────────┐
-      │    Sections     │ ◄── Background, Spacing, Width
+      │    Sections     │ ◄── Semantic wrapper, background, paddingY
       │ (Layout Layer)  │
       └────────┬────────┘
                │
       ┌────────▼────────┐
-      │     Blocks      │ ◄── Content OR Layout
-      │  (Level 1-4)    │
+      │   Containers    │ ◄── Layout (stack/flex/grid), maxWidth, padding
+      │ (Layout Layer)  │
+      └────────┬────────┘
+               │
+      ┌────────▼────────┐
+      │     Blocks      │ ◄── Content only (leaf nodes)
+      │  (Content)      │
       └─────────────────┘
 ```
 
 ### 1. Sections
 
-**Purpose**: Handle all layout concerns - background, spacing, width, alignment.
+**Purpose**: Semantic HTML wrapper with section-level styling.
 
 **Responsibilities**:
 
-- Background colors/patterns
-- Vertical spacing (padding)
-- Content width constraints
-- Horizontal alignment
-
-**Does NOT**:
-
-- Render content directly
-- Handle internal layout of blocks
+- Semantic element (`<section>`, `<article>`, `<aside>`, etc.)
+- Background (color, gradient, image)
+- Vertical padding (`paddingY`)
+- Gap between containers (`gapY`)
+- Border and shadow
+- Anchor IDs for navigation
 
 **Example**:
 
@@ -53,98 +55,114 @@ This platform is built on a **composable block system** designed for maximum fle
 {
   _type: "section",
   _key: "hero",
-  background: "gray",
-  spacing: "xl",
-  width: "wide",
-  blocks: [...]  // Can contain any RootBlock
+  as: "section",
+  background: { type: "gradient", ... },
+  paddingY: "2xl",
+  gapY: "lg",
+  containers: [...]  // Array of containers
 }
 ```
 
-### 2. Blocks
+### 2. Containers
 
-Blocks are the core content/layout primitives. There are two categories:
+**Purpose**: Layout wrapper inside sections. Controls how blocks are arranged.
 
-#### Content Blocks (Leaf Nodes)
+**Responsibilities**:
 
-These blocks **cannot have children**. They render actual content.
+- Layout mode (stack, flex, grid)
+- Max width constraints
+- Internal padding
+- Gap between blocks
+- Border, shadow, background
 
-- `heading-block` - Text headings (h1-h6)
-- `text-block` - Paragraph text with formatting
+**Example**:
+
+```typescript
+{
+  _type: "container",
+  _key: "hero-grid",
+  layout: { type: "grid", columns: 2, gap: "lg" },
+  maxWidth: "xl",
+  blocks: [...]  // Array of content blocks
+}
+```
+
+### 3. Blocks
+
+Blocks are **content-only leaf nodes**. They render actual content and cannot have children.
+
+- `heading-block` - Text headings (h1-h6) with comprehensive typography
+- `text-block` - Rich text with TipTap HTML support
 - `image-block` - Images with captions
 - `button-block` - Call-to-action buttons
 - `card-block` - Cards with title/description/image/actions
+- `video-block`, `audio-block`, `embed-block` - Media blocks
+- `quote-block`, `list-block`, `icon-block`, `stats-block` - Content blocks
+- `accordion-block`, `tabs-block` - Interactive blocks
+- `divider-block`, `spacer-block` - Utility blocks
 
-#### Container Blocks
-
-These blocks **contain other blocks** and handle layout arrangement.
-
-- `grid-block` - CSS Grid layout with responsive columns
-- `flex-block` - Flexbox layout with direction control
-- `stack-block` - Vertical stacking (simplified flex column)
+**Note**: Layout blocks (`grid-block`, `flex-block`, `stack-block`) are **deprecated**. Use Container layout modes instead.
 
 ## Nesting Strategy
 
-**Maximum Depth: 4 Levels**
+**Fixed 3-Level Hierarchy:**
 
 ```
-Level 1: Section
-├─ Level 2: Container Block (grid/flex/stack)
-   ├─ Level 3: Container Block OR Content Block
-      ├─ Level 4: Content Block ONLY
+Level 1: Section (semantic wrapper)
+└─ Level 2: Container[] (layout wrappers)
+   └─ Level 3: Block[] (content only)
 ```
 
-### Nesting Rules
+### Rules
 
-1. **Sections** contain `RootBlock[]` (any block type)
-2. **DeepContainerBlock** (Level 2) can contain `ContentBlock | ShallowContainerBlock`
-3. **ShallowContainerBlock** (Level 3) can contain `ContentBlock` only
-4. **ContentBlock** (Level 4) cannot have children
+1. **Sections** contain an array of `Container[]`
+2. **Containers** contain an array of `Block[]` (content blocks only)
+3. **Blocks** are leaf nodes - they cannot have children
 
-### Type Enforcement
-
-TypeScript enforces these rules at compile time:
+### Example
 
 ```typescript
-// ✅ Valid - 3 levels
 {
   _type: "section",
-  blocks: [
+  _key: "hero",
+  as: "section",
+  paddingY: "2xl",
+  containers: [
     {
-      _type: "grid-block",  // Level 2
+      _type: "container",
+      _key: "hero-content",
+      layout: { type: "grid", columns: 2, gap: "lg" },
+      maxWidth: "xl",
       blocks: [
         {
-          _type: "stack-block",  // Level 3
-          blocks: [
-            { _type: "heading-block" },  // Level 4
-            { _type: "text-block" }
-          ]
+          _type: "heading-block",
+          _key: "h1",
+          data: { text: "Welcome", level: "h1", size: "5xl" }
+        },
+        {
+          _type: "image-block",
+          _key: "img1",
+          data: { src: "/hero.jpg", alt: "Hero image" }
         }
       ]
-    }
-  ]
-}
-
-// ❌ Invalid - Would be 5 levels (TypeScript error)
-{
-  _type: "section",
-  blocks: [
+    },
     {
-      _type: "grid-block",
+      _type: "container",
+      _key: "hero-cta",
+      layout: { type: "flex", justify: "center", gap: "md" },
       blocks: [
         {
-          _type: "flex-block",
-          blocks: [
-            {
-              _type: "stack-block",  // ❌ Can't nest container here
-              blocks: [...]
-            }
-          ]
+          _type: "button-block",
+          _key: "btn1",
+          data: { text: "Get Started", href: "/signup" }
         }
       ]
     }
   ]
 }
 ```
+
+This structure allows multiple layout regions within a single semantic section.
 
 ## Data Structure Examples
 
@@ -153,25 +171,34 @@ TypeScript enforces these rules at compile time:
 ```typescript
 {
   _type: "section",
-  background: "white",
-  spacing: "lg",
-  blocks: [
+  _key: "intro",
+  paddingY: "lg",
+  containers: [
     {
-      _type: "heading-block",
-      _key: "h1",
-      data: {
-        text: "Welcome",
-        level: "h1",
-        align: "center"
-      }
-    },
-    {
-      _type: "text-block",
-      _key: "p1",
-      data: {
-        content: "This is some text",
-        align: "center"
-      }
+      _type: "container",
+      _key: "intro-content",
+      layout: { type: "stack", gap: "md" },
+      maxWidth: "lg",
+      blocks: [
+        {
+          _type: "heading-block",
+          _key: "h1",
+          data: {
+            text: "Welcome",
+            level: "h1",
+            align: "center",
+            size: "4xl"
+          }
+        },
+        {
+          _type: "text-block",
+          _key: "p1",
+          data: {
+            html: "<p>This is some text content.</p>",
+            align: "center"
+          }
+        }
+      ]
     }
   ]
 }
@@ -182,16 +209,15 @@ TypeScript enforces these rules at compile time:
 ```typescript
 {
   _type: "section",
-  background: "gray",
-  spacing: "xl",
-  blocks: [
+  _key: "features",
+  paddingY: "xl",
+  background: { type: "color", color: "var(--muted)" },
+  containers: [
     {
-      _type: "grid-block",
-      _key: "features",
-      data: {
-        columns: { mobile: 1, tablet: 2, desktop: 3 },
-        gap: "lg"
-      },
+      _type: "container",
+      _key: "features-grid",
+      layout: { type: "grid", columns: 3, gap: "lg" },
+      maxWidth: "xl",
       blocks: [
         {
           _type: "card-block",
@@ -202,48 +228,86 @@ TypeScript enforces these rules at compile time:
             variant: "elevated"
           }
         },
-        // ... more cards
+        {
+          _type: "card-block",
+          _key: "f2",
+          data: {
+            title: "Feature 2",
+            description: "Another feature",
+            variant: "elevated"
+          }
+        },
+        {
+          _type: "card-block",
+          _key: "f3",
+          data: {
+            title: "Feature 3",
+            description: "Third feature",
+            variant: "elevated"
+          }
+        }
       ]
     }
   ]
 }
 ```
 
-### Complex: Nested Layout
+### Complex: Multiple Containers in One Section
 
 ```typescript
 {
   _type: "section",
-  background: "white",
-  spacing: "2xl",
-  blocks: [
+  _key: "hero",
+  as: "section",
+  paddingY: "2xl",
+  gapY: "xl",
+  background: {
+    type: "gradient",
+    gradient: {
+      type: "linear",
+      angle: 180,
+      stops: [
+        { color: "#1e40af", position: 0 },
+        { color: "#3b82f6", position: 100 }
+      ]
+    }
+  },
+  containers: [
+    // Container 1: Two-column grid for headline + image
     {
-      _type: "grid-block",  // Level 2
-      _key: "main-grid",
-      data: {
-        columns: { mobile: 1, desktop: 3 },
-        gap: "md"
-      },
+      _type: "container",
+      _key: "hero-main",
+      layout: { type: "grid", columns: 2, gap: "xl", align: "center" },
+      maxWidth: "xl",
       blocks: [
-        // Each grid item contains its own layout
         {
-          _type: "stack-block",  // Level 3
-          _key: "item-1",
-          data: { gap: "sm" },
-          blocks: [
-            {
-              _type: "heading-block",  // Level 4
-              _key: "h1",
-              data: { text: "Item 1" }
-            },
-            {
-              _type: "text-block",  // Level 4
-              _key: "p1",
-              data: { content: "Details" }
-            }
-          ]
+          _type: "heading-block",
+          _key: "h1",
+          data: { text: "Build Amazing Websites", level: "h1", size: "5xl" }
         },
-        // Repeat for items 2 and 3...
+        {
+          _type: "image-block",
+          _key: "hero-img",
+          data: { src: "/hero.jpg", alt: "Hero illustration" }
+        }
+      ]
+    },
+    // Container 2: Centered CTA buttons
+    {
+      _type: "container",
+      _key: "hero-cta",
+      layout: { type: "flex", justify: "center", gap: "md" },
+      blocks: [
+        {
+          _type: "button-block",
+          _key: "btn1",
+          data: { text: "Get Started", href: "/signup", variant: "primary" }
+        },
+        {
+          _type: "button-block",
+          _key: "btn2",
+          data: { text: "Learn More", href: "/features", variant: "outline" }
+        }
       ]
     }
   ]
@@ -353,17 +417,17 @@ Follow the same pattern but ensure it fits within nesting limits.
 5. **Enforce limits**: 3-4 levels maximum, enforced by types
 6. **Document variants**: Each block's data shape is its API
 
-## Migration Path
+## Current State
 
-Current state → Target state:
-
-1. ✅ Basic content blocks (heading, text)
-2. ✅ Section-based layout
-3. 🔄 Container blocks (grid, flex, stack)
-4. ⏳ Rich content blocks (card, button, image)
-5. ⏳ Platform parity (React Native)
-6. ⏳ CMS integration
+1. ✅ Section → Container → Block architecture
+2. ✅ Container layout modes (stack, flex, grid)
+3. ✅ Heading block with comprehensive typography
+4. ✅ Text block with TipTap rich text
+5. ✅ Builder ↔ Frontend sync working
+6. ✅ Save and publish flow
 
 ---
 
-**Next**: See `blocks.md` for detailed block documentation.
+**Reference**: See [Page Structure](/docs/architecture/page-structure.md) for full architecture details.
+
+**Last Updated:** 2025-12-27

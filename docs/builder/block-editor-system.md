@@ -400,23 +400,68 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 
 **Features:**
 
-- Textarea for content
-- Size selector (xs, sm, md, lg, xl)
+- TipTap WYSIWYG editor with bubble menu toolbar
+- Inline formatting: bold, italic, underline, strike, code
+- Size selector (xs through 6xl)
 - Alignment selector (left, center, right, justify)
-- Variant selector (body, small, large, lead)
-- Optional max-width for readability
+- Comprehensive typography controls:
+  - Weight (thin through black)
+  - Letter spacing (tighter through widest)
+  - Line height (none through loose)
+  - Font style (normal, italic)
+  - Text transform (none, uppercase, lowercase, capitalize)
+  - Text decoration (none, underline, line-through)
+- Color presets (default, primary, secondary, muted, accent, destructive)
+- Layout controls (maxWidth, whiteSpace)
+- Multi-column support (1-4 columns with gap options)
+- Effects (opacity, dropCap)
+- Responsive overrides for tablet/mobile
 
 **Data Structure:**
 
 ```typescript
 {
-  text: string;
-  size: "xs" | "sm" | "md" | "lg" | "xl";
-  align: "left" | "center" | "right" | "justify";
-  variant: "body" | "small" | "large" | "lead";
-  maxWidth?: "none" | "prose" | "narrow";
+  // Content
+  text?: string;     // Plain text (legacy)
+  html?: string;     // Rich text HTML from TipTap (preferred)
+
+  // Typography - Size & Spacing
+  size?: "xs" | "sm" | "base" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl";
+  letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
+  lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
+
+  // Typography - Style
+  weight?: "thin" | "extralight" | "light" | "normal" | "medium" | "semibold" | "bold" | "extrabold" | "black";
+  fontStyle?: "normal" | "italic";
+  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+  textDecoration?: "none" | "underline" | "line-through";
+  variant?: "default" | "muted" | "lead" | "subtle" | "caption";
+
+  // Typography - Color (presets only)
+  color?: "default" | "primary" | "secondary" | "muted" | "accent" | "destructive";
+
+  // Layout
+  align?: "left" | "center" | "right" | "justify";
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "prose" | "none";
+  whiteSpace?: "normal" | "nowrap" | "pre-wrap";
+
+  // Multi-column
+  columns?: 1 | 2 | 3 | 4;
+  columnGap?: "sm" | "md" | "lg" | "xl";
+
+  // Effects
+  opacity?: number; // 0-100, mapped to presets
+  dropCap?: boolean;
+
+  // Responsive overrides
+  _responsive?: {
+    tablet?: Partial<TextBlockData>;
+    mobile?: Partial<TextBlockData>;
+  };
 }
 ```
+
+**Implementation Note:** Uses CSS classes for all styling (no inline styles). The TipTap editor stores rich text as HTML in the `html` field.
 
 #### 5. Heading Block Editor
 
@@ -424,34 +469,60 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 
 - Text input
 - Semantic level selector (h1-h6)
-- Visual size customization (xs-6xl) - independent of semantic level
+- Visual size customization (xs-9xl) - independent of semantic level
 - Alignment selector (left, center, right)
-- Weight selector (normal, medium, semibold, bold)
-- Color selector (default, primary, secondary, muted)
+- Comprehensive typography controls:
+  - Weight (thin through black)
+  - Letter spacing (tighter through widest)
+  - Line height (none through loose)
+  - Font style (normal, italic)
+  - Text transform (none, uppercase, lowercase, capitalize)
+  - Text decoration (none, underline, line-through)
+- Color presets (default, primary, secondary, muted, accent, destructive)
+- Layout controls (maxWidth, whiteSpace)
+- Effects (opacity)
+- Responsive overrides for tablet/mobile
 
 **Data Structure:**
 
 ```typescript
 {
+  // Content
   text: string;
   level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  size: "xs" |
-    "sm" |
-    "md" |
-    "lg" |
-    "xl" |
-    "2xl" |
-    "3xl" |
-    "4xl" |
-    "5xl" |
-    "6xl";
-  align: "left" | "center" | "right";
-  weight: "normal" | "medium" | "semibold" | "bold";
-  color: "default" | "primary" | "secondary" | "muted";
+
+  // Typography - Size & Spacing
+  size?: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl" | "8xl" | "9xl";
+  letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
+  lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
+
+  // Typography - Style
+  weight?: "thin" | "extralight" | "light" | "normal" | "medium" | "semibold" | "bold" | "extrabold" | "black";
+  fontStyle?: "normal" | "italic";
+  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+  textDecoration?: "none" | "underline" | "line-through";
+  variant?: "default" | "primary" | "muted";
+
+  // Typography - Color (presets only, no arbitrary values)
+  color?: "default" | "primary" | "secondary" | "muted" | "accent" | "destructive";
+
+  // Layout
+  align?: "left" | "center" | "right";
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "prose" | "none";
+  whiteSpace?: "normal" | "nowrap" | "pre-wrap";
+
+  // Effects
+  opacity?: number; // 0-100, mapped to presets (10, 25, 50, 75, 90, 100)
+
+  // Responsive overrides
+  _responsive?: {
+    tablet?: Partial<HeadingBlockData>;
+    mobile?: Partial<HeadingBlockData>;
+  };
 }
 ```
 
-**Implementation Note:** Uses explicit conditional rendering for type safety instead of dynamic JSX component.
+**Implementation Note:** Uses data-* attributes and CSS classes for styling (no inline styles). Responsive overrides generate Tailwind-prefixed classes (md:, lg:).
 
 #### 6. Image Block Editor
 
@@ -946,5 +1017,12 @@ Requires nested block support infrastructure.
 
 ---
 
-**Last Updated:** 2025-01-25
+**Last Updated:** 2025-12-27
 **Status:** Phases 1-3 Complete (17/24 editors)
+
+## Key Implementation Notes
+
+- **No inline styles**: All styling uses data-* attributes and CSS classes
+- **Preset-based values**: Typography properties use preset values (not arbitrary strings)
+- **TipTap for rich text**: TextBlock uses TipTap editor, stores HTML in `data.html`
+- **Responsive overrides**: Blocks support `_responsive.tablet` and `_responsive.mobile` overrides
