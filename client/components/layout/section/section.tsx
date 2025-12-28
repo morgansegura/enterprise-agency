@@ -120,6 +120,10 @@ type SectionProps = {
   paddingTop?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
   /** Individual padding bottom */
   paddingBottom?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
+  /** Margin top */
+  marginTop?: Spacing | "2xl" | "none";
+  /** Margin bottom */
+  marginBottom?: Spacing | "2xl" | "none";
   /** Gap between containers */
   gapY?: Spacing | "none";
   /** Background style */
@@ -132,14 +136,24 @@ type SectionProps = {
   borderTop?: "none" | "thin" | "medium" | "thick";
   /** Border bottom */
   borderBottom?: "none" | "thin" | "medium" | "thick";
+  /** Border left */
+  borderLeft?: "none" | "thin" | "medium" | "thick";
+  /** Border right */
+  borderRight?: "none" | "thin" | "medium" | "thick";
   /** Border color */
   borderColor?: string;
+  /** Border radius */
+  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
   /** Section shadow */
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
   /** Min height */
   minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
   /** Vertical alignment (when minHeight is set) */
   verticalAlign?: "top" | "center" | "bottom";
+  /** Overflow X */
+  overflowX?: "visible" | "hidden" | "scroll" | "auto";
+  /** Overflow Y */
+  overflowY?: "visible" | "hidden" | "scroll" | "auto";
   /** Anchor ID for in-page linking */
   anchorId?: string;
   /** Inline styles (for custom backgrounds) */
@@ -165,16 +179,23 @@ export function Section({
   paddingY,
   paddingTop,
   paddingBottom,
+  marginTop,
+  marginBottom,
   gapY,
   background = "none",
   width = "full",
   align = "left",
   borderTop = "none",
   borderBottom = "none",
+  borderLeft = "none",
+  borderRight = "none",
   borderColor,
+  borderRadius = "none",
   shadow = "none",
   minHeight = "none",
   verticalAlign = "top",
+  overflowX,
+  overflowY,
   anchorId,
   style,
   className,
@@ -202,15 +223,22 @@ export function Section({
       // Section-level data attributes (all styling via CSS)
       data-padding-top={effectivePaddingTop}
       data-padding-bottom={effectivePaddingBottom}
+      data-margin-top={marginTop}
+      data-margin-bottom={marginBottom}
       data-gap-y={gapY}
       data-background={dataBackground}
       data-width={width}
       data-align={align}
       data-border-top={borderTop}
       data-border-bottom={borderBottom}
+      data-border-left={borderLeft}
+      data-border-right={borderRight}
+      data-border-radius={borderRadius}
       data-shadow={shadow}
       data-min-height={minHeight}
       data-vertical-align={minHeight !== "none" ? verticalAlign : undefined}
+      data-overflow-x={overflowX}
+      data-overflow-y={overflowY}
       style={Object.keys(sectionStyle).length > 0 ? sectionStyle : undefined}
     >
       {children}

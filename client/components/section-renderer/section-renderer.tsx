@@ -87,11 +87,15 @@ export type TypedSection = {
   as?: "section" | "div" | "article" | "aside" | "header" | "footer";
   // Background
   background?: BackgroundVariant | string | SectionBackground;
-  // Spacing
+  // Spacing - Padding
   paddingY?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
   paddingTop?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
   paddingBottom?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
-  gapY?: Spacing | "none"; // Gap between containers
+  // Spacing - Margin
+  marginTop?: Spacing | "2xl" | "none";
+  marginBottom?: Spacing | "2xl" | "none";
+  // Gap between containers
+  gapY?: Spacing | "none";
   // Legacy
   spacing?: Spacing;
   // Width
@@ -99,7 +103,10 @@ export type TypedSection = {
   // Border
   borderTop?: "none" | "thin" | "medium" | "thick";
   borderBottom?: "none" | "thin" | "medium" | "thick";
+  borderLeft?: "none" | "thin" | "medium" | "thick";
+  borderRight?: "none" | "thin" | "medium" | "thick";
   borderColor?: string;
+  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
   // Shadow
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
   // Min height
@@ -107,6 +114,10 @@ export type TypedSection = {
   verticalAlign?: "top" | "center" | "bottom";
   // Alignment
   align?: Exclude<TextAlign, "justify">;
+  // Advanced
+  overflow?: "visible" | "hidden" | "scroll" | "auto";
+  overflowX?: "visible" | "hidden" | "scroll" | "auto";
+  overflowY?: "visible" | "hidden" | "scroll" | "auto";
   // Anchor
   anchorId?: string;
   // Content
@@ -290,6 +301,9 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             paddingTop={section.paddingTop}
             paddingBottom={section.paddingBottom}
             spacing={section.spacing}
+            // Margin
+            marginTop={section.marginTop}
+            marginBottom={section.marginBottom}
             // Gap between containers
             gapY={section.gapY}
             // Width
@@ -297,7 +311,10 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             // Borders
             borderTop={section.borderTop}
             borderBottom={section.borderBottom}
+            borderLeft={section.borderLeft}
+            borderRight={section.borderRight}
             borderColor={section.borderColor}
+            borderRadius={section.borderRadius}
             // Shadow
             shadow={section.shadow}
             // Min height
@@ -305,6 +322,9 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             verticalAlign={section.verticalAlign}
             // Alignment
             align={section.align}
+            // Overflow
+            overflowX={section.overflowX}
+            overflowY={section.overflowY}
             // Anchor
             anchorId={section.anchorId}
           >
