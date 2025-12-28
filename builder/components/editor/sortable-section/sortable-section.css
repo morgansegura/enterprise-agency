@@ -28,6 +28,11 @@
   @apply border-transparent;
 }
 
+/* Selected state for sidebar editing */
+.section-visual.is-selected {
+  @apply border-blue-500 bg-blue-500/5;
+}
+
 /* Drag handle - left side (builder UI - use builder tokens) */
 .section-drag-handle {
   @apply absolute left-2 top-2 z-10;

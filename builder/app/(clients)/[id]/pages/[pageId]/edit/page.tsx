@@ -909,6 +909,7 @@ export default function EditPagePage({
                           <SortableSection
                             key={section._key}
                             section={section}
+                            sectionIndex={sectionIndex}
                             onSectionChange={(updatedSection) =>
                               handleSectionChange(sectionIndex, updatedSection)
                             }

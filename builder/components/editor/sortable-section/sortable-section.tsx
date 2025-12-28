@@ -14,6 +14,7 @@ import type {
 import { SectionActionsPopover } from "../section-actions-popover";
 import { SortableContainer } from "../sortable-container";
 import { toast } from "sonner";
+import { useUIStore } from "@/lib/stores/ui-store";
 
 // Re-export for use by page editor
 export type { Container };
@@ -22,6 +23,8 @@ import "./sortable-section.css";
 
 interface SortableSectionProps {
   section: Section;
+  /** Index of this section in the sections array */
+  sectionIndex: number;
   onSectionChange: (section: Section) => void;
   onDelete: () => void;
   onAddSectionAbove?: () => void;
@@ -142,6 +145,7 @@ function getBackgroundStyles(background?: string | SectionBackground): {
  */
 export function SortableSection({
   section,
+  sectionIndex,
   onSectionChange,
   onDelete,
   onAddSectionAbove,
@@ -162,6 +166,9 @@ export function SortableSection({
   const { setNodeRef, transform, transition, isDragging } = useSortable({
     id: section._key,
   });
+
+  // UI Store for section/container selection
+  const { selectedElement, selectSection, selectContainer } = useUIStore();
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -188,6 +195,27 @@ export function SortableSection({
   // Track popover open state to keep buttons visible
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
+  // Check if this section is selected in the right panel
+  const isSectionSelected =
+    selectedElement?.type === "section" &&
+    selectedElement?.sectionIndex === sectionIndex;
+
+  // Handle section click - select it for the right panel
+  const handleSectionClick = (e: React.MouseEvent) => {
+    // Only select if clicking directly on section (not on nested elements)
+    const target = e.target as HTMLElement;
+    if (
+      target.closest(".section-container") ||
+      target.closest("button") ||
+      target.closest('[role="dialog"]') ||
+      target.closest("[data-radix-popper-content-wrapper]")
+    ) {
+      return;
+    }
+    e.stopPropagation();
+    selectSection(sectionIndex, section._key);
+  };
+
   return (
     <div
       ref={setNodeRef}
@@ -201,7 +229,8 @@ export function SortableSection({
     >
       {/* Section Visual - renders with same data attributes as client Section component */}
       <div
-        className="section-visual section"
+        className={cn("section-visual section", isSectionSelected && "is-selected")}
+        onClick={handleSectionClick}
         // Section-level data attributes (matches client/components/layout/section/section.tsx)
         data-padding-top={effectivePaddingTop}
         data-padding-bottom={effectivePaddingBottom}
@@ -289,6 +318,7 @@ export function SortableSection({
               key={container._key}
               container={container}
               containerIndex={containerIndex}
+              sectionIndex={sectionIndex}
               onContainerChange={(updatedContainer) => {
                 const newContainers = [...(section.containers ?? [])];
                 newContainers[containerIndex] = updatedContainer;

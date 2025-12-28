@@ -14,12 +14,14 @@ import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
 import { ContainerSettingsPopover } from "../container-settings-popover";
 import { AddBlockPopover } from "../add-block-popover";
+import { useUIStore } from "@/lib/stores/ui-store";
 
 import "./sortable-container.css";
 
 interface SortableContainerProps {
   container: Container;
   containerIndex: number;
+  sectionIndex: number;
   onContainerChange: (container: Container) => void;
   onDelete: () => void;
   onAddBlock: (blockType: string) => void;
@@ -80,6 +82,7 @@ function getContainerBackgroundStyle(
 export function SortableContainer({
   container,
   containerIndex,
+  sectionIndex,
   onContainerChange,
   onDelete,
   onAddBlock,
@@ -93,10 +96,35 @@ export function SortableContainer({
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [addBlockOpen, setAddBlockOpen] = React.useState(false);
 
+  // UI Store for container selection
+  const { selectedElement, selectContainer } = useUIStore();
+
   // Check if any block in this container is selected
   const hasSelectedBlock = selectedBlockKey
     ? container.blocks?.some((block) => block._key === selectedBlockKey)
     : false;
+
+  // Check if this container is selected in the right panel
+  const isContainerSelected =
+    selectedElement?.type === "container" &&
+    selectedElement?.sectionIndex === sectionIndex &&
+    selectedElement?.containerIndex === containerIndex;
+
+  // Handle container click - select it for the right panel
+  const handleContainerClick = (e: React.MouseEvent) => {
+    // Only select if clicking directly on container (not on a child block or button)
+    const target = e.target as HTMLElement;
+    if (
+      target.closest(".block-wrapper") ||
+      target.closest("button") ||
+      target.closest('[role="dialog"]') ||
+      target.closest("[data-radix-popper-content-wrapper]")
+    ) {
+      return;
+    }
+    e.stopPropagation();
+    selectContainer(sectionIndex, containerIndex, container._key);
+  };
 
   // Helper to get responsive layout value
   const getLayoutValue = <T,>(field: string, defaultValue: T): T => {
@@ -119,7 +147,8 @@ export function SortableContainer({
     >
       {/* Container Visual */}
       <div
-        className="container-visual container"
+        className={cn("container-visual container", isContainerSelected && "is-selected")}
+        onClick={handleContainerClick}
         // Layout attributes
         data-layout-type={container.layout?.type || "stack"}
         data-layout-direction={container.layout?.direction}
@@ -146,12 +175,6 @@ export function SortableContainer({
         data-align={container.align || "left"}
         data-vertical-align={container.verticalAlign || "top"}
         style={getContainerBackgroundStyle(container.background)}
-        onClick={(e) => {
-          // Only deselect if clicking directly on container, not on a child block
-          if (e.target === e.currentTarget) {
-            onSelectBlock?.(null);
-          }
-        }}
       >
         {children}
 
