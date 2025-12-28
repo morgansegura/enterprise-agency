@@ -1,128 +1,21 @@
 import { Section } from "@/components/layout/section";
-import { Container, type ContainerLayout } from "@/components/layout/container";
+import { Container } from "@/components/layout/container";
 import { BlockRenderer } from "@/components/block-renderer/block-renderer";
-import type { BackgroundVariant, Spacing, Width, TextAlign } from "@/lib/types";
-import type { RootBlock } from "@/lib/blocks";
+import type { BackgroundVariant } from "@/lib/types";
+import type {
+  Section as SectionType,
+  Container as ContainerType,
+  SectionBackground,
+} from "@/lib/types/section";
 
-// =============================================================================
-// Background Types
-// =============================================================================
+// Re-export types for external use
+export type { SectionBackground };
 
-/**
- * Section background configuration
- * Supports solid colors, gradients, and images
- */
-export type SectionBackground =
-  | { type: "none" }
-  | { type: "color"; color: string }
-  | {
-      type: "gradient";
-      gradient: {
-        type: "linear" | "radial";
-        angle?: number;
-        stops: Array<{ color: string; position: number }>;
-      };
-    }
-  | {
-      type: "image";
-      image: {
-        src: string;
-        size?: "cover" | "contain" | "auto";
-        position?: string;
-        overlay?: string;
-        repeat?: "no-repeat" | "repeat" | "repeat-x" | "repeat-y";
-      };
-    };
+/** @deprecated Use Section from @/lib/types/section instead */
+export type TypedSection = SectionType;
 
-// =============================================================================
-// Container Type
-// =============================================================================
-
-/**
- * Container data structure
- * Containers handle layout and contain blocks
- */
-export type TypedContainer = {
-  _key: string;
-  _type: "container";
-  // Layout mode
-  layout: ContainerLayout;
-  // Size
-  maxWidth?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "full";
-  minHeight?: "none" | "sm" | "md" | "lg" | "xl";
-  // Background
-  background?: string | SectionBackground;
-  // Padding
-  paddingX?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-  paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-  // Border
-  border?: "none" | "thin" | "medium" | "thick";
-  borderTop?: "none" | "thin" | "medium" | "thick";
-  borderBottom?: "none" | "thin" | "medium" | "thick";
-  borderLeft?: "none" | "thin" | "medium" | "thick";
-  borderRight?: "none" | "thin" | "medium" | "thick";
-  borderColor?: string;
-  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "full";
-  // Shadow
-  shadow?: "none" | "sm" | "md" | "lg" | "xl";
-  // Content alignment
-  align?: "left" | "center" | "right";
-  verticalAlign?: "top" | "center" | "bottom";
-  // Blocks
-  blocks: RootBlock[];
-};
-
-// =============================================================================
-// Section Type
-// =============================================================================
-
-/**
- * Section data structure
- * Sections are semantic wrappers that contain containers
- */
-export type TypedSection = {
-  _key: string;
-  _type: "section";
-  // Semantic HTML element
-  as?: "section" | "div" | "article" | "aside" | "header" | "footer";
-  // Background
-  background?: BackgroundVariant | string | SectionBackground;
-  // Spacing - Padding
-  paddingY?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
-  paddingTop?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
-  paddingBottom?: Spacing | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
-  // Spacing - Margin
-  marginTop?: Spacing | "2xl" | "none";
-  marginBottom?: Spacing | "2xl" | "none";
-  // Gap between containers
-  gapY?: Spacing | "none";
-  // Legacy
-  spacing?: Spacing;
-  // Width
-  width?: Width | "container" | "narrow";
-  // Border
-  borderTop?: "none" | "thin" | "medium" | "thick";
-  borderBottom?: "none" | "thin" | "medium" | "thick";
-  borderLeft?: "none" | "thin" | "medium" | "thick";
-  borderRight?: "none" | "thin" | "medium" | "thick";
-  borderColor?: string;
-  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
-  // Shadow
-  shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
-  // Min height
-  minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
-  verticalAlign?: "top" | "center" | "bottom";
-  // Alignment
-  align?: Exclude<TextAlign, "justify">;
-  // Advanced
-  overflow?: "visible" | "hidden" | "scroll" | "auto";
-  overflowX?: "visible" | "hidden" | "scroll" | "auto";
-  overflowY?: "visible" | "hidden" | "scroll" | "auto";
-  // Anchor
-  anchorId?: string;
-  // Content
-  containers: TypedContainer[];
-};
+/** @deprecated Use Container from @/lib/types/section instead */
+export type TypedContainer = ContainerType;
 
 /**
  * Background presets that map to data-background attribute values

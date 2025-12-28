@@ -1,20 +1,18 @@
 import { cn } from "@/lib/utils";
+import type {
+  ContainerLayout,
+  ContainerMaxWidth,
+  BorderSize,
+  BorderRadius,
+  ShadowSize,
+  HorizontalAlign,
+  VerticalAlign,
+  Spacing,
+} from "@/lib/types/section";
 import "./container.css";
 
-// =============================================================================
-// Container Layout Types
-// =============================================================================
-
-export interface ContainerLayout {
-  type?: "stack" | "flex" | "grid";
-  direction?: "row" | "column";
-  wrap?: boolean;
-  justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
-  align?: "start" | "center" | "end" | "stretch" | "baseline";
-  columns?: number | string;
-  rows?: number | string;
-  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-}
+// Re-export ContainerLayout for external use
+export type { ContainerLayout };
 
 // =============================================================================
 // Container Props
@@ -23,30 +21,36 @@ export interface ContainerLayout {
 export interface ContainerProps {
   children?: React.ReactNode;
   className?: string;
-  // Layout mode
+  /** Layout mode configuration */
   layout?: ContainerLayout;
-  // Size
-  maxWidth?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Max width constraint */
+  maxWidth?: ContainerMaxWidth;
+  /** Min height */
   minHeight?: "none" | "sm" | "md" | "lg" | "xl";
-  // Padding
-  paddingX?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-  paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-  // Border
-  border?: "none" | "thin" | "medium" | "thick";
-  borderTop?: "none" | "thin" | "medium" | "thick";
-  borderBottom?: "none" | "thin" | "medium" | "thick";
-  borderLeft?: "none" | "thin" | "medium" | "thick";
-  borderRight?: "none" | "thin" | "medium" | "thick";
+  /** Horizontal padding */
+  paddingX?: Spacing;
+  /** Vertical padding */
+  paddingY?: Spacing;
+  /** All borders */
+  border?: BorderSize;
+  /** Individual border sides */
+  borderTop?: BorderSize;
+  borderBottom?: BorderSize;
+  borderLeft?: BorderSize;
+  borderRight?: BorderSize;
+  /** Border color */
   borderColor?: string;
-  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "full";
-  // Shadow
-  shadow?: "none" | "sm" | "md" | "lg" | "xl";
-  // Content alignment
-  align?: "left" | "center" | "right";
-  verticalAlign?: "top" | "center" | "bottom";
-  // Background
+  /** Border radius */
+  borderRadius?: BorderRadius;
+  /** Box shadow */
+  shadow?: ShadowSize;
+  /** Content horizontal alignment */
+  align?: HorizontalAlign;
+  /** Content vertical alignment */
+  verticalAlign?: VerticalAlign;
+  /** Background color */
   background?: string;
-  // Inline styles for custom backgrounds
+  /** Inline styles for custom backgrounds */
   style?: React.CSSProperties;
 }
 
