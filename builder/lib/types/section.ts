@@ -2,20 +2,17 @@
  * Section & Container Type Definitions
  *
  * These types define the Section → Container → Block architecture.
- * This is the single source of truth for section/container structure.
+ * This is the single source of truth for section/container structure in the builder.
  *
  * @see /docs/architecture/page-structure.md
  */
 
-import type { RootBlock } from "@/lib/blocks";
-import type { Spacing, Width, TextAlign, BackgroundVariant } from "@/lib/types";
-
-// Re-export Spacing from base types for convenience
-export type { Spacing };
-
 // =============================================================================
 // Spacing & Size Types
 // =============================================================================
+
+/** Base spacing scale */
+export type Spacing = "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 /** Extended spacing scale including larger values */
 export type ExtendedSpacing = Spacing | "3xl" | "4xl" | "5xl" | "6xl" | "7xl";
@@ -46,33 +43,22 @@ export type ContainerMaxWidth =
   | "full";
 
 /** Section width options */
-export type SectionWidth = Width | "container" | "narrow";
-
-// =============================================================================
-// Alignment Types
-// =============================================================================
-
-/** Horizontal alignment */
-export type HorizontalAlign = "left" | "center" | "right";
-
-/** Vertical alignment */
-export type VerticalAlign = "top" | "center" | "bottom";
-
-/** Flex/Grid justify options */
-export type JustifyContent =
-  | "start"
-  | "center"
-  | "end"
-  | "between"
-  | "around"
-  | "evenly";
-
-/** Flex/Grid align items options */
-export type AlignItems = "start" | "center" | "end" | "stretch" | "baseline";
+export type SectionWidth = "narrow" | "container" | "wide" | "full";
 
 // =============================================================================
 // Background Types
 // =============================================================================
+
+/** Background preset variants */
+export type BackgroundVariant =
+  | "none"
+  | "white"
+  | "gray"
+  | "dark"
+  | "primary"
+  | "secondary"
+  | "muted"
+  | "accent";
 
 /** Gradient stop for gradient backgrounds */
 export type GradientStop = {
@@ -97,12 +83,44 @@ export type ImageBackgroundConfig = {
   overlay?: string;
 };
 
-/** Section background configuration - supports solid, gradient, and image */
-export type SectionBackground =
-  | { type: "none" }
-  | { type: "color"; color: string }
-  | { type: "gradient"; gradient: GradientConfig }
-  | { type: "image"; image: ImageBackgroundConfig };
+/**
+ * Section background configuration - supports solid, gradient, and image
+ *
+ * Note: This uses a flat structure with optional properties for easier
+ * manipulation in the builder. The `type` field determines which properties
+ * are relevant.
+ */
+export interface SectionBackground {
+  type: "none" | "color" | "gradient" | "image";
+  /** Color value (when type is "color") */
+  color?: string;
+  /** Gradient configuration (when type is "gradient") */
+  gradient?: GradientConfig;
+  /** Image configuration (when type is "image") */
+  image?: ImageBackgroundConfig;
+}
+
+// =============================================================================
+// Alignment Types
+// =============================================================================
+
+/** Horizontal alignment */
+export type HorizontalAlign = "left" | "center" | "right";
+
+/** Vertical alignment */
+export type VerticalAlign = "top" | "center" | "bottom";
+
+/** Flex/Grid justify options */
+export type JustifyContent =
+  | "start"
+  | "center"
+  | "end"
+  | "between"
+  | "around"
+  | "evenly";
+
+/** Flex/Grid align items options */
+export type AlignItems = "start" | "center" | "end" | "stretch" | "baseline";
 
 // =============================================================================
 // Visibility Types
@@ -138,6 +156,18 @@ export type ContainerLayout = {
 };
 
 // =============================================================================
+// Block Type
+// =============================================================================
+
+/** Base block structure */
+export interface Block {
+  _type: string;
+  _key: string;
+  data: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
+// =============================================================================
 // Container Type
 // =============================================================================
 
@@ -147,7 +177,7 @@ export type ContainerLayout = {
  * Containers handle layout arrangement and contain blocks.
  * Structure: Section → Container[] → Block[]
  */
-export type Container = {
+export interface Container {
   _type: "container";
   _key: string;
   /** Layout mode configuration */
@@ -195,8 +225,8 @@ export type Container = {
     >;
   };
   /** Content blocks */
-  blocks: RootBlock[];
-};
+  blocks: Block[];
+}
 
 // =============================================================================
 // Section Type
@@ -220,27 +250,27 @@ export type SectionElement =
  *
  * Structure: Page → Section[] → Container[] → Block[]
  */
-export type Section = {
+export interface Section {
   _type: "section";
   _key: string;
   /** Semantic HTML element */
   as?: SectionElement;
   /** Background (preset, color, gradient, or image) */
-  background?: BackgroundVariant | string | SectionBackground;
+  background?: string | SectionBackground;
   /** Vertical padding (shorthand) */
   paddingY?: ExtendedSpacing;
   /** Individual padding top */
-  paddingTop?: ExtendedSpacing;
+  paddingTop?: string;
   /** Individual padding bottom */
-  paddingBottom?: ExtendedSpacing;
+  paddingBottom?: string;
   /** Margin top */
-  marginTop?: Spacing | "2xl" | "none";
+  marginTop?: Spacing | "none";
   /** Margin bottom */
-  marginBottom?: Spacing | "2xl" | "none";
+  marginBottom?: Spacing | "none";
   /** Gap between containers */
   gapY?: Spacing | "none";
   /** Legacy spacing (maps to paddingY) */
-  spacing?: Spacing;
+  spacing?: string;
   /** Section width constraint */
   width?: SectionWidth;
   /** Border sides */
@@ -257,13 +287,15 @@ export type Section = {
   /** Min height (for hero sections) */
   minHeight?: MinHeight;
   /** Content horizontal alignment */
-  align?: Exclude<TextAlign, "justify">;
+  align?: HorizontalAlign;
   /** Content vertical alignment (when minHeight is set) */
   verticalAlign?: VerticalAlign;
   /** Overflow X */
   overflowX?: Overflow;
   /** Overflow Y */
   overflowY?: Overflow;
+  /** Overflow (legacy, combined) */
+  overflow?: Overflow;
   /** Anchor ID for in-page navigation */
   anchorId?: string;
   /** Responsive visibility */
@@ -281,10 +313,10 @@ export type Section = {
   };
   /** Child containers */
   containers: Container[];
-};
+}
 
 // =============================================================================
-// Type Guards
+// Type Guards & Utilities
 // =============================================================================
 
 /**
@@ -307,10 +339,50 @@ export function isSectionBackgroundObject(
  * Normalize background to SectionBackground object
  */
 export function normalizeBackground(
-  background?: BackgroundVariant | string | SectionBackground,
+  background?: string | SectionBackground,
 ): SectionBackground {
   if (!background) return { type: "none" };
   if (isSectionBackgroundObject(background)) return background;
   if (background === "none") return { type: "none" };
   return { type: "color", color: background };
+}
+
+/**
+ * Get background value for data attribute (preset or "none")
+ */
+export function getBackgroundDataValue(
+  background?: string | SectionBackground,
+): BackgroundVariant {
+  if (!background) return "none";
+  if (typeof background === "string") {
+    const presets: BackgroundVariant[] = [
+      "none",
+      "white",
+      "gray",
+      "dark",
+      "primary",
+      "secondary",
+      "muted",
+      "accent",
+    ];
+    return presets.includes(background as BackgroundVariant)
+      ? (background as BackgroundVariant)
+      : "none";
+  }
+  if (background.type === "color" && background.color) {
+    const presets: BackgroundVariant[] = [
+      "none",
+      "white",
+      "gray",
+      "dark",
+      "primary",
+      "secondary",
+      "muted",
+      "accent",
+    ];
+    return presets.includes(background.color as BackgroundVariant)
+      ? (background.color as BackgroundVariant)
+      : "none";
+  }
+  return "none";
 }

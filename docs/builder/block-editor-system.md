@@ -522,7 +522,7 @@ export function BlockEditor({ block, onChange, onDelete }: BlockEditorProps) {
 }
 ```
 
-**Implementation Note:** Uses data-* attributes and CSS classes for styling (no inline styles). Responsive overrides generate Tailwind-prefixed classes (md:, lg:).
+**Implementation Note:** Uses data-\* attributes and CSS classes for styling (no inline styles). Responsive overrides generate Tailwind-prefixed classes (md:, lg:).
 
 #### 6. Image Block Editor
 
@@ -1022,7 +1022,7 @@ Requires nested block support infrastructure.
 
 ## Key Implementation Notes
 
-- **No inline styles**: All styling uses data-* attributes and CSS classes
+- **No inline styles**: All styling uses data-\* attributes and CSS classes
 - **Preset-based values**: Typography properties use preset values (not arbitrary strings)
 - **TipTap for rich text**: TextBlock uses TipTap editor, stores HTML in `data.html`
 - **Responsive overrides**: Blocks support `_responsive.tablet` and `_responsive.mobile` overrides

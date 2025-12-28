@@ -199,9 +199,7 @@ export function InlineToolbar({
       {onFavorite && (
         <ToolbarButton
           icon={
-            <Star
-              className={cn("h-3.5 w-3.5", isFavorite && "fill-current")}
-            />
+            <Star className={cn("h-3.5 w-3.5", isFavorite && "fill-current")} />
           }
           label={isFavorite ? "Remove from favorites" : "Add to favorites"}
           onClick={onFavorite}

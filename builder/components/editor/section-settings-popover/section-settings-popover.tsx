@@ -780,7 +780,9 @@ export function SectionSettingsPopover({
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="narrow">Narrow (768px)</SelectItem>
-                    <SelectItem value="container">Container (1280px)</SelectItem>
+                    <SelectItem value="container">
+                      Container (1280px)
+                    </SelectItem>
                     <SelectItem value="wide">Wide (1536px)</SelectItem>
                     <SelectItem value="full">Full Width</SelectItem>
                   </SelectContent>
@@ -820,8 +822,10 @@ export function SectionSettingsPopover({
                         (section.align as "left" | "center" | "right") || "left"
                       }
                       vertical={
-                        (section.verticalAlign as "top" | "center" | "bottom") ||
-                        "top"
+                        (section.verticalAlign as
+                          | "top"
+                          | "center"
+                          | "bottom") || "top"
                       }
                       onChange={(h, v) => {
                         onChange({

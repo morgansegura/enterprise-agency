@@ -2,6 +2,39 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
 
+// Re-export types from shared types file
+export type {
+  Section,
+  Container,
+  ContainerLayout,
+  SectionBackground,
+  Block,
+  Spacing,
+  BorderSize,
+  BorderRadius,
+  ShadowSize,
+  MinHeight,
+  Overflow,
+  ContainerMaxWidth,
+  SectionWidth,
+  HorizontalAlign,
+  VerticalAlign,
+  BreakpointVisibility,
+  BackgroundVariant,
+  GradientStop,
+  GradientConfig,
+  ImageBackgroundConfig,
+} from "@/lib/types/section";
+
+// Import types for internal use
+import type { Section, Container } from "@/lib/types/section";
+
+/** @deprecated Use SectionBackground from @/lib/types/section instead */
+export type BackgroundType = "none" | "color" | "gradient" | "image";
+
+/** @deprecated Use Container from @/lib/types/section instead */
+export type ContainerSettings = Omit<Container, "_type" | "_key" | "blocks">;
+
 export interface PageSeo {
   metaTitle?: string;
   metaDescription?: string;
@@ -20,176 +53,6 @@ export interface PageSeo {
     image?: string;
   };
   structuredData?: Record<string, unknown>;
-}
-
-// =============================================================================
-// Section Background Types
-// =============================================================================
-
-export type BackgroundType = "none" | "color" | "gradient" | "image";
-
-export interface SectionBackground {
-  type: BackgroundType;
-  // Color background
-  color?: string;
-  // Gradient background
-  gradient?: {
-    type: "linear" | "radial";
-    angle?: number; // for linear gradients
-    stops: Array<{ color: string; position: number }>;
-  };
-  // Image background
-  image?: {
-    src: string;
-    alt?: string;
-    position?: string; // "center", "top", "bottom", etc.
-    size?: "cover" | "contain" | "auto";
-    repeat?: "no-repeat" | "repeat" | "repeat-x" | "repeat-y";
-    overlay?: string; // overlay color with opacity
-  };
-}
-
-// =============================================================================
-// Container Layout Types
-// =============================================================================
-
-export interface ContainerLayout {
-  type: "stack" | "flex" | "grid";
-  // Stack/Flex options
-  direction?: "row" | "column";
-  wrap?: boolean;
-  justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
-  align?: "start" | "center" | "end" | "stretch" | "baseline";
-  // Grid options
-  columns?: number | string; // number or "auto-fit"
-  rows?: number | string;
-  // Shared
-  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-}
-
-// =============================================================================
-// Container (Layout wrapper inside Section)
-// =============================================================================
-
-export interface Container {
-  _type: "container";
-  _key: string;
-  // Layout mode
-  layout: ContainerLayout;
-  // Size
-  maxWidth?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "full";
-  minHeight?: "none" | "sm" | "md" | "lg" | "xl";
-  // Background (same as section - color, gradient, or image)
-  background?: string | SectionBackground;
-  // Padding
-  paddingX?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-  paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-  // Border
-  border?: "none" | "thin" | "medium" | "thick";
-  borderTop?: "none" | "thin" | "medium" | "thick";
-  borderBottom?: "none" | "thin" | "medium" | "thick";
-  borderLeft?: "none" | "thin" | "medium" | "thick";
-  borderRight?: "none" | "thin" | "medium" | "thick";
-  borderColor?: string;
-  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "full";
-  // Shadow
-  shadow?: "none" | "sm" | "md" | "lg" | "xl";
-  // Content alignment (for positioning content within container)
-  align?: "left" | "center" | "right";
-  verticalAlign?: "top" | "center" | "bottom";
-  // Overflow
-  overflow?: "visible" | "hidden" | "scroll" | "auto";
-  // Visibility
-  hideOn?: {
-    desktop?: boolean;
-    tablet?: boolean;
-    mobile?: boolean;
-  };
-  // Custom classes
-  customClasses?: string;
-  // Responsive overrides
-  _responsive?: {
-    tablet?: Partial<
-      Omit<Container, "_type" | "_key" | "blocks" | "_responsive">
-    >;
-    mobile?: Partial<
-      Omit<Container, "_type" | "_key" | "blocks" | "_responsive">
-    >;
-  };
-  // Content
-  blocks: Block[];
-}
-
-// Legacy alias for backwards compatibility
-export type ContainerSettings = Omit<Container, "_type" | "_key" | "blocks">;
-
-// =============================================================================
-// Section (Wrapper) Interface
-// =============================================================================
-
-export interface Section {
-  _type: "section";
-  _key: string;
-  // Semantic HTML element
-  as?: "section" | "div" | "article" | "aside" | "header" | "footer";
-  // Background
-  background?: string | SectionBackground; // string for legacy support
-  // Spacing - Padding
-  paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-  paddingTop?: string;
-  paddingBottom?: string;
-  // Spacing - Margin
-  marginTop?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-  marginBottom?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-  // Spacing - Gap between containers
-  gapY?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-  // Legacy spacing (maps to paddingY)
-  spacing?: string;
-  // Border settings
-  borderTop?: "none" | "thin" | "medium" | "thick";
-  borderBottom?: "none" | "thin" | "medium" | "thick";
-  borderLeft?: "none" | "thin" | "medium" | "thick";
-  borderRight?: "none" | "thin" | "medium" | "thick";
-  borderColor?: string;
-  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
-  // Shadow
-  shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
-  // Width
-  width?: "narrow" | "container" | "wide" | "full";
-  // Min height (for hero sections)
-  minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
-  // Content alignment (default position for containers)
-  align?: "left" | "center" | "right";
-  verticalAlign?: "top" | "center" | "bottom";
-  // Advanced settings
-  anchorId?: string; // for in-page linking (#anchor)
-  overflow?: "visible" | "hidden" | "scroll" | "auto";
-  overflowX?: "visible" | "hidden" | "scroll" | "auto";
-  overflowY?: "visible" | "hidden" | "scroll" | "auto";
-  hideOn?: {
-    desktop?: boolean;
-    tablet?: boolean;
-    mobile?: boolean;
-  };
-  customClasses?: string;
-  // Responsive overrides
-  _responsive?: {
-    tablet?: Partial<
-      Omit<Section, "_type" | "_key" | "containers" | "_responsive">
-    >;
-    mobile?: Partial<
-      Omit<Section, "_type" | "_key" | "containers" | "_responsive">
-    >;
-  };
-  // Content - array of containers
-  containers: Container[];
-}
-
-export interface Block {
-  _type: string;
-  _key: string;
-  data: Record<string, unknown>;
-  [key: string]: unknown;
 }
 
 // Simplified header/footer info returned with pages
