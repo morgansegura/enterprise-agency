@@ -54,6 +54,12 @@ Previously required:
 
 ## Data Types
 
+> **Type Definitions Location:**
+> - **Builder:** `builder/lib/types/section.ts`
+> - **Client:** `client/lib/types/section.ts`
+>
+> Import types: `import type { Section, Container, Block } from "@/lib/types/section"`
+
 ### Section
 
 The semantic wrapper. Always renders as a landmark element.
@@ -70,23 +76,36 @@ interface Section {
   background?: SectionBackground;
 
   // Spacing
-  paddingY?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-  gapY?: "none" | "xs" | "sm" | "md" | "lg" | "xl"; // gap between containers
+  paddingY?: ExtendedSpacing; // "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl" | "5xl" | "6xl" | "7xl"
+  paddingTop?: ExtendedSpacing;
+  paddingBottom?: ExtendedSpacing;
+  marginTop?: Spacing | "none";
+  marginBottom?: Spacing | "none";
+  gapY?: Spacing | "none"; // gap between containers
 
   // Size
+  width?: "narrow" | "container" | "wide" | "full";
   minHeight?: "none" | "sm" | "md" | "lg" | "xl" | "screen";
 
-  // Border
+  // Content alignment (for hero sections with minHeight)
+  align?: "left" | "center" | "right";
+  verticalAlign?: "top" | "center" | "bottom";
+
+  // Border (all 4 sides)
   borderTop?: "none" | "thin" | "medium" | "thick";
   borderBottom?: "none" | "thin" | "medium" | "thick";
+  borderLeft?: "none" | "thin" | "medium" | "thick";
+  borderRight?: "none" | "thin" | "medium" | "thick";
   borderColor?: string;
+  borderRadius?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 
   // Shadow
   shadow?: "none" | "sm" | "md" | "lg" | "xl" | "inner";
 
   // Advanced
   anchorId?: string; // for #anchor linking
-  overflow?: "visible" | "hidden" | "scroll" | "auto";
+  overflowX?: "visible" | "hidden" | "scroll" | "auto";
+  overflowY?: "visible" | "hidden" | "scroll" | "auto";
   hideOn?: {
     desktop?: boolean;
     tablet?: boolean;
@@ -184,31 +203,33 @@ interface Container {
 Shared background type for sections and containers.
 
 ```typescript
-type BackgroundType = "none" | "color" | "gradient" | "image";
+// Background variants for preset colors
+type BackgroundVariant = "none" | "white" | "gray" | "dark" | "primary" | "secondary" | "muted" | "accent";
 
 interface SectionBackground {
-  type: BackgroundType;
-
-  // Color
-  color?: string;
-
-  // Gradient
-  gradient?: {
-    type: "linear" | "radial";
-    angle?: number;
-    stops: Array<{ color: string; position: number }>;
-  };
-
-  // Image
-  image?: {
-    src: string;
-    alt?: string;
-    position?: string;
-    size?: "cover" | "contain" | "auto";
-    repeat?: "no-repeat" | "repeat" | "repeat-x" | "repeat-y";
-    overlay?: string;
-  };
+  type: "none" | "color" | "gradient" | "image";
+  color?: string;         // when type is "color"
+  gradient?: GradientConfig; // when type is "gradient"
+  image?: ImageBackgroundConfig; // when type is "image"
 }
+
+interface GradientConfig {
+  type: "linear" | "radial";
+  angle?: number;
+  stops: Array<{ color: string; position: number }>;
+}
+
+interface ImageBackgroundConfig {
+  src: string;
+  alt?: string;
+  position?: string; // e.g., "center center"
+  size?: "cover" | "contain" | "auto";
+  repeat?: "no-repeat" | "repeat" | "repeat-x" | "repeat-y";
+  overlay?: string; // overlay color with opacity
+}
+
+// Usage: background can be a preset string or full config
+// background?: BackgroundVariant | string | SectionBackground
 ```
 
 ### Block
