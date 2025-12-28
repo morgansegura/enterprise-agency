@@ -1,0 +1,43 @@
+/* =============================================================================
+ * Border Editor
+ * ============================================================================= */
+
+.border-editor {
+  /* Container */
+}
+
+.border-editor-section {
+  margin-bottom: 1rem;
+}
+
+.border-editor-section:last-child {
+  margin-bottom: 0;
+}
+
+.border-editor-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  margin-bottom: 0.5rem;
+}
+
+/* Row layout */
+.border-editor-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Field layout */
+.border-editor-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.border-editor-label {
+  font-size: 0.75rem;
+  color: var(--foreground);
+}

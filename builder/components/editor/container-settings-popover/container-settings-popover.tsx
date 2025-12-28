@@ -16,27 +16,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import {
-  Rows3,
-  Columns3,
-  Grid3X3,
-  Palette,
-  LayoutGrid,
-  Image as ImageIcon,
-} from "lucide-react";
+import { Rows3, Columns3, Grid3X3 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ColorPicker } from "@/components/ui/color-picker";
 import { PositionPicker } from "@/components/ui/position-picker";
 import { VisibilityToggles } from "@/components/ui/visibility-toggles";
 import { ResponsiveField, useResponsiveChange } from "../responsive-field";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
+import { BackgroundEditor, BorderEditor, type BorderValues } from "@/components/editors";
 import type {
   Section,
   Container,
   ContainerLayout,
   SectionBackground,
 } from "@/lib/hooks/use-pages";
+import {
+  SPACING_OPTIONS,
+  OVERFLOW_OPTIONS,
+  CONTAINER_WIDTH_OPTIONS,
+  CONTAINER_MIN_HEIGHT_OPTIONS,
+} from "@/lib/constants";
 
 import "./container-settings-popover.css";
 
@@ -136,10 +135,6 @@ export function ContainerSettingsPopover({
     });
   };
 
-  const handleBackgroundChange = (bg: Partial<SectionBackground>) => {
-    const newBg = { ...background, ...bg } as SectionBackground;
-    handleContainerChange({ background: newBg });
-  };
 
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
@@ -208,13 +203,11 @@ export function ContainerSettingsPopover({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="xs">XS (480px)</SelectItem>
-                        <SelectItem value="sm">SM (640px)</SelectItem>
-                        <SelectItem value="md">MD (768px)</SelectItem>
-                        <SelectItem value="lg">LG (1024px)</SelectItem>
-                        <SelectItem value="xl">XL (1280px)</SelectItem>
-                        <SelectItem value="full">Full Width</SelectItem>
+                        {CONTAINER_WIDTH_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -234,11 +227,11 @@ export function ContainerSettingsPopover({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">Auto</SelectItem>
-                        <SelectItem value="sm">Small (200px)</SelectItem>
-                        <SelectItem value="md">Medium (300px)</SelectItem>
-                        <SelectItem value="lg">Large (400px)</SelectItem>
-                        <SelectItem value="xl">Extra Large (500px)</SelectItem>
+                        {CONTAINER_MIN_HEIGHT_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -531,257 +524,13 @@ export function ContainerSettingsPopover({
           {/* ===================== STYLE TAB ===================== */}
           {tab === "style" && (
             <>
-              {/* Background Type */}
+              {/* Background */}
               <div className="container-settings-section">
-                <h4 className="container-settings-section-title">BACKGROUND</h4>
-                <div className="container-settings-bg-types">
-                  <button
-                    className={cn(
-                      "container-settings-bg-type",
-                      background.type === "none" && "active",
-                    )}
-                    onClick={() => handleBackgroundChange({ type: "none" })}
-                    title="None"
-                  >
-                    <span className="container-settings-bg-type-icon">∅</span>
-                  </button>
-                  <button
-                    className={cn(
-                      "container-settings-bg-type",
-                      background.type === "color" && "active",
-                    )}
-                    onClick={() =>
-                      handleBackgroundChange({
-                        type: "color",
-                        color: background.color || "#f5f5f5",
-                      })
-                    }
-                    title="Color"
-                  >
-                    <Palette className="h-4 w-4" />
-                  </button>
-                  <button
-                    className={cn(
-                      "container-settings-bg-type",
-                      background.type === "gradient" && "active",
-                    )}
-                    onClick={() =>
-                      handleBackgroundChange({
-                        type: "gradient",
-                        gradient: background.gradient || {
-                          type: "linear",
-                          angle: 180,
-                          stops: [
-                            { color: "#f5f5f5", position: 0 },
-                            { color: "#e5e5e5", position: 100 },
-                          ],
-                        },
-                      })
-                    }
-                    title="Gradient"
-                  >
-                    <LayoutGrid className="h-4 w-4" />
-                  </button>
-                  <button
-                    className={cn(
-                      "container-settings-bg-type",
-                      background.type === "image" && "active",
-                    )}
-                    onClick={() =>
-                      handleBackgroundChange({
-                        type: "image",
-                        image: background.image || {
-                          src: "",
-                          size: "cover",
-                          position: "center",
-                        },
-                      })
-                    }
-                    title="Image"
-                  >
-                    <ImageIcon className="h-4 w-4" />
-                  </button>
-                </div>
-
-                {/* Color Background */}
-                {background.type === "color" && (
-                  <div className="container-settings-field mt-3">
-                    <ColorPicker
-                      label="Color"
-                      value={background.color || "#f5f5f5"}
-                      onChange={(value) =>
-                        handleBackgroundChange({ color: value })
-                      }
-                    />
-                  </div>
-                )}
-
-                {/* Gradient Background */}
-                {background.type === "gradient" && background.gradient && (
-                  <div className="container-settings-field mt-3 space-y-3">
-                    <div className="container-settings-row">
-                      <div className="container-settings-field">
-                        <Label className="container-settings-label">Type</Label>
-                        <Select
-                          value={background.gradient.type}
-                          onValueChange={(value) =>
-                            handleBackgroundChange({
-                              gradient: {
-                                ...background.gradient!,
-                                type: value as "linear" | "radial",
-                              },
-                            })
-                          }
-                        >
-                          <SelectTrigger className="h-8">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="linear">Linear</SelectItem>
-                            <SelectItem value="radial">Radial</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      {background.gradient.type === "linear" && (
-                        <div className="container-settings-field">
-                          <Label className="container-settings-label">
-                            Angle
-                          </Label>
-                          <Input
-                            type="number"
-                            className="h-8"
-                            value={background.gradient.angle || 180}
-                            onChange={(e) =>
-                              handleBackgroundChange({
-                                gradient: {
-                                  ...background.gradient!,
-                                  angle: parseInt(e.target.value) || 0,
-                                },
-                              })
-                            }
-                            min={0}
-                            max={360}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className="container-settings-row">
-                      <ColorPicker
-                        label="Start"
-                        value={background.gradient.stops[0]?.color || "#f5f5f5"}
-                        onChange={(value) =>
-                          handleBackgroundChange({
-                            gradient: {
-                              ...background.gradient!,
-                              stops: [
-                                { color: value, position: 0 },
-                                background.gradient!.stops[1] || {
-                                  color: "#e5e5e5",
-                                  position: 100,
-                                },
-                              ],
-                            },
-                          })
-                        }
-                      />
-                      <ColorPicker
-                        label="End"
-                        value={background.gradient.stops[1]?.color || "#e5e5e5"}
-                        onChange={(value) =>
-                          handleBackgroundChange({
-                            gradient: {
-                              ...background.gradient!,
-                              stops: [
-                                background.gradient!.stops[0] || {
-                                  color: "#f5f5f5",
-                                  position: 0,
-                                },
-                                { color: value, position: 100 },
-                              ],
-                            },
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Image Background */}
-                {background.type === "image" && (
-                  <div className="container-settings-field mt-3 space-y-3">
-                    <div className="container-settings-field">
-                      <Label className="container-settings-label">
-                        Image URL
-                      </Label>
-                      <Input
-                        placeholder="https://..."
-                        className="h-8"
-                        value={background.image?.src || ""}
-                        onChange={(e) =>
-                          handleBackgroundChange({
-                            image: { ...background.image, src: e.target.value },
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="container-settings-row">
-                      <div className="container-settings-field">
-                        <Label className="container-settings-label">Size</Label>
-                        <Select
-                          value={background.image?.size || "cover"}
-                          onValueChange={(value) =>
-                            handleBackgroundChange({
-                              image: {
-                                ...background.image!,
-                                size: value as "cover" | "contain" | "auto",
-                              },
-                            })
-                          }
-                        >
-                          <SelectTrigger className="h-8">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="cover">Cover</SelectItem>
-                            <SelectItem value="contain">Contain</SelectItem>
-                            <SelectItem value="auto">Auto</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="container-settings-field">
-                        <Label className="container-settings-label">
-                          Position
-                        </Label>
-                        <Select
-                          value={background.image?.position || "center"}
-                          onValueChange={(value) =>
-                            handleBackgroundChange({
-                              image: { ...background.image!, position: value },
-                            })
-                          }
-                        >
-                          <SelectTrigger className="h-8">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="center">Center</SelectItem>
-                            <SelectItem value="top">Top</SelectItem>
-                            <SelectItem value="bottom">Bottom</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <ColorPicker
-                      label="Overlay"
-                      value={background.image?.overlay || "transparent"}
-                      onChange={(value) =>
-                        handleBackgroundChange({
-                          image: { ...background.image!, overlay: value },
-                        })
-                      }
-                    />
-                  </div>
-                )}
+                <BackgroundEditor
+                  value={background}
+                  onChange={(bg) => handleContainerChange({ background: bg as SectionBackground })}
+                  showTitle={true}
+                />
               </div>
 
               {/* Padding */}
@@ -810,12 +559,11 @@ export function ContainerSettingsPopover({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="xs">XS</SelectItem>
-                        <SelectItem value="sm">SM</SelectItem>
-                        <SelectItem value="md">MD</SelectItem>
-                        <SelectItem value="lg">LG</SelectItem>
-                        <SelectItem value="xl">XL</SelectItem>
+                        {SPACING_OPTIONS.slice(0, 7).map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </ResponsiveField>
@@ -841,12 +589,11 @@ export function ContainerSettingsPopover({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="xs">XS</SelectItem>
-                        <SelectItem value="sm">SM</SelectItem>
-                        <SelectItem value="md">MD</SelectItem>
-                        <SelectItem value="lg">LG</SelectItem>
-                        <SelectItem value="xl">XL</SelectItem>
+                        {SPACING_OPTIONS.slice(0, 7).map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </ResponsiveField>
@@ -855,98 +602,26 @@ export function ContainerSettingsPopover({
 
               {/* Border */}
               <div className="container-settings-section">
-                <h4 className="container-settings-section-title">BORDER</h4>
-                <div className="container-settings-row">
-                  <div className="container-settings-field">
-                    <Label className="container-settings-label">
-                      All Sides
-                    </Label>
-                    <Select
-                      value={container.border || "none"}
-                      onValueChange={(value) =>
-                        handleContainerChange({
-                          border: value as Container["border"],
-                          borderTop: value as Container["borderTop"],
-                          borderBottom: value as Container["borderBottom"],
-                          borderLeft: value as Container["borderLeft"],
-                          borderRight: value as Container["borderRight"],
-                        })
-                      }
-                    >
-                      <SelectTrigger className="h-8">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="thin">Thin</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="thick">Thick</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="container-settings-field">
-                    <Label className="container-settings-label">Radius</Label>
-                    <Select
-                      value={container.borderRadius || "none"}
-                      onValueChange={(value) =>
-                        handleContainerChange({
-                          borderRadius: value as Container["borderRadius"],
-                        })
-                      }
-                    >
-                      <SelectTrigger className="h-8">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="none">None</SelectItem>
-                        <SelectItem value="sm">Small</SelectItem>
-                        <SelectItem value="md">Medium</SelectItem>
-                        <SelectItem value="lg">Large</SelectItem>
-                        <SelectItem value="xl">Extra Large</SelectItem>
-                        <SelectItem value="full">Full</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                {(container.border !== "none" ||
-                  container.borderTop !== "none" ||
-                  container.borderBottom !== "none" ||
-                  container.borderLeft !== "none" ||
-                  container.borderRight !== "none") && (
-                  <div className="container-settings-field mt-2">
-                    <ColorPicker
-                      label="Border Color"
-                      value={container.borderColor || "#e5e5e5"}
-                      onChange={(value) =>
-                        handleContainerChange({ borderColor: value })
-                      }
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Shadow */}
-              <div className="container-settings-section">
-                <h4 className="container-settings-section-title">SHADOW</h4>
-                <Select
-                  value={container.shadow || "none"}
-                  onValueChange={(value) =>
-                    handleContainerChange({
-                      shadow: value as Container["shadow"],
-                    })
-                  }
-                >
-                  <SelectTrigger className="h-8">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="sm">Small</SelectItem>
-                    <SelectItem value="md">Medium</SelectItem>
-                    <SelectItem value="lg">Large</SelectItem>
-                    <SelectItem value="xl">Extra Large</SelectItem>
-                  </SelectContent>
-                </Select>
+                <BorderEditor
+                  value={{
+                    borderTop: container.borderTop,
+                    borderBottom: container.borderBottom,
+                    borderLeft: container.borderLeft,
+                    borderRight: container.borderRight,
+                    borderStyle: container.borderStyle,
+                    borderColor: container.borderColor,
+                    borderRadius: container.borderRadius,
+                    shadow: container.shadow,
+                  }}
+                  onChange={(values: Partial<BorderValues>) => {
+                    Object.entries(values).forEach(([key, value]) => {
+                      handleContainerChange({ [key]: value } as Partial<Container>);
+                    });
+                  }}
+                  mode="all"
+                  showShadow={true}
+                  showTitles={true}
+                />
               </div>
             </>
           )}
@@ -981,10 +656,11 @@ export function ContainerSettingsPopover({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="visible">Visible</SelectItem>
-                    <SelectItem value="hidden">Hidden</SelectItem>
-                    <SelectItem value="scroll">Scroll</SelectItem>
-                    <SelectItem value="auto">Auto</SelectItem>
+                    {OVERFLOW_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

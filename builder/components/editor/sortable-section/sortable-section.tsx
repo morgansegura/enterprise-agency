@@ -101,7 +101,17 @@ function getBackgroundStyles(background?: string | SectionBackground): {
 
     case "gradient":
       if (background.gradient) {
-        const { type, angle, stops } = background.gradient;
+        const gradient = background.gradient;
+
+        // Check if it's a Tailwind gradient (has 'direction' property)
+        if ("direction" in gradient) {
+          // Tailwind gradient - apply via class names, return undefined for inline
+          // The section-renderer will handle the Tailwind classes
+          return { dataBackground: "none", style: {} };
+        }
+
+        // Legacy CSS gradient
+        const { type, angle, stops } = gradient;
         const stopStr = stops
           .map((s) => `${s.color} ${s.position}%`)
           .join(", ");

@@ -9,7 +9,7 @@
 }
 
 .editor-shell-main {
-  @apply min-h-0 overflow-y-auto h-[calc(100%-44px)];
+  @apply min-h-0;
 }
 
 .editor-shell-header {

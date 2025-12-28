@@ -33,64 +33,17 @@ import {
 } from "lucide-react";
 import { useUIStore } from "@/lib/stores/ui-store";
 import type { Section, Container, Block } from "@/lib/types/section";
+import {
+  SPACING_OPTIONS,
+  EXTENDED_SPACING_OPTIONS,
+  BACKGROUND_PRESET_OPTIONS,
+  BORDER_WIDTH_OPTIONS,
+  BORDER_RADIUS_OPTIONS,
+  SHADOW_OPTIONS,
+  CONTAINER_WIDTH_OPTIONS,
+  SECTION_MIN_HEIGHT_OPTIONS,
+} from "@/lib/constants";
 import "./settings-panel.css";
-
-// =============================================================================
-// Tailwind Token Options (matches our design tokens)
-// =============================================================================
-
-const SPACING_OPTIONS = [
-  { value: "none", label: "None" },
-  { value: "xs", label: "XS" },
-  { value: "sm", label: "SM" },
-  { value: "md", label: "MD" },
-  { value: "lg", label: "LG" },
-  { value: "xl", label: "XL" },
-  { value: "2xl", label: "2XL" },
-];
-
-const EXTENDED_SPACING_OPTIONS = [
-  ...SPACING_OPTIONS,
-  { value: "3xl", label: "3XL" },
-  { value: "4xl", label: "4XL" },
-  { value: "5xl", label: "5XL" },
-];
-
-const BACKGROUND_PRESETS = [
-  { value: "none", label: "None" },
-  { value: "white", label: "White" },
-  { value: "gray", label: "Gray" },
-  { value: "dark", label: "Dark" },
-  { value: "primary", label: "Primary" },
-  { value: "secondary", label: "Secondary" },
-  { value: "muted", label: "Muted" },
-  { value: "accent", label: "Accent" },
-];
-
-const BORDER_SIZE_OPTIONS = [
-  { value: "none", label: "None" },
-  { value: "thin", label: "Thin" },
-  { value: "medium", label: "Medium" },
-  { value: "thick", label: "Thick" },
-];
-
-const BORDER_RADIUS_OPTIONS = [
-  { value: "none", label: "None" },
-  { value: "sm", label: "SM" },
-  { value: "md", label: "MD" },
-  { value: "lg", label: "LG" },
-  { value: "xl", label: "XL" },
-  { value: "2xl", label: "2XL" },
-  { value: "full", label: "Full" },
-];
-
-const SHADOW_OPTIONS = [
-  { value: "none", label: "None" },
-  { value: "sm", label: "SM" },
-  { value: "md", label: "MD" },
-  { value: "lg", label: "LG" },
-  { value: "xl", label: "XL" },
-];
 
 // =============================================================================
 // Types
@@ -408,84 +361,6 @@ function ToggleGroup({ value, options, onChange }: ToggleGroupProps) {
 }
 
 // =============================================================================
-// Spacing Box (Webflow-style margin/padding editor)
-// =============================================================================
-
-interface SpacingBoxProps {
-  marginTop?: string;
-  marginBottom?: string;
-  paddingTop?: string;
-  paddingBottom?: string;
-  onChange: (field: string, value: string) => void;
-}
-
-function SpacingBox({
-  marginTop = "none",
-  marginBottom = "none",
-  paddingTop = "md",
-  paddingBottom = "md",
-  onChange,
-}: SpacingBoxProps) {
-  return (
-    <div className="spacing-box">
-      <span className="spacing-box-label-margin">MARGIN</span>
-      <div className="spacing-box-margin-top">
-        <Select value={marginTop} onValueChange={(v) => onChange("marginTop", v)}>
-          <SelectTrigger className="spacing-select">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {SPACING_OPTIONS.map((opt) => (
-              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="spacing-box-margin-bottom">
-        <Select value={marginBottom} onValueChange={(v) => onChange("marginBottom", v)}>
-          <SelectTrigger className="spacing-select">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {SPACING_OPTIONS.map((opt) => (
-              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="spacing-box-padding">
-        <span className="spacing-box-label-padding">PADDING</span>
-        <div className="spacing-box-padding-top">
-          <Select value={paddingTop} onValueChange={(v) => onChange("paddingTop", v)}>
-            <SelectTrigger className="spacing-select">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {EXTENDED_SPACING_OPTIONS.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="spacing-box-padding-bottom">
-          <Select value={paddingBottom} onValueChange={(v) => onChange("paddingBottom", v)}>
-            <SelectTrigger className="spacing-select">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {EXTENDED_SPACING_OPTIONS.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="spacing-box-content" />
-      </div>
-    </div>
-  );
-}
-
-// =============================================================================
 // Section Style Settings
 // =============================================================================
 
@@ -547,14 +422,7 @@ function SectionStyleSettings({
         <InlineSelect
           label="Min Height"
           value={section.minHeight || "none"}
-          options={[
-            { value: "none", label: "Auto" },
-            { value: "sm", label: "Small" },
-            { value: "md", label: "Medium" },
-            { value: "lg", label: "Large" },
-            { value: "xl", label: "X-Large" },
-            { value: "screen", label: "Full Screen" },
-          ]}
+          options={SECTION_MIN_HEIGHT_OPTIONS}
           onChange={(v) => handleChange("minHeight", v)}
         />
         {section.minHeight && section.minHeight !== "none" && (
@@ -575,15 +443,32 @@ function SectionStyleSettings({
 
       {/* Spacing */}
       <SettingsSection title="Spacing" icon={<Move className="h-4 w-4" />}>
-        <SpacingBox
-          marginTop={section.marginTop || "none"}
-          marginBottom={section.marginBottom || "none"}
-          paddingTop={section.paddingTop || section.paddingY || "md"}
-          paddingBottom={section.paddingBottom || section.paddingY || "md"}
-          onChange={(field, value) => handleChange(field, value)}
+        <InlineSelect
+          label="Padding Top"
+          value={section.paddingTop || section.paddingY || "md"}
+          options={EXTENDED_SPACING_OPTIONS}
+          onChange={(v) => handleChange("paddingTop", v)}
         />
         <InlineSelect
-          label="Container Gap"
+          label="Padding Bottom"
+          value={section.paddingBottom || section.paddingY || "md"}
+          options={EXTENDED_SPACING_OPTIONS}
+          onChange={(v) => handleChange("paddingBottom", v)}
+        />
+        <InlineSelect
+          label="Margin Top"
+          value={section.marginTop || "none"}
+          options={SPACING_OPTIONS}
+          onChange={(v) => handleChange("marginTop", v)}
+        />
+        <InlineSelect
+          label="Margin Bottom"
+          value={section.marginBottom || "none"}
+          options={SPACING_OPTIONS}
+          onChange={(v) => handleChange("marginBottom", v)}
+        />
+        <InlineSelect
+          label="Gap Y"
           value={section.gapY || "none"}
           options={SPACING_OPTIONS}
           onChange={(v) => handleChange("gapY", v)}
@@ -595,7 +480,7 @@ function SectionStyleSettings({
         <InlineSelect
           label="Preset"
           value={typeof section.background === "string" ? section.background : "none"}
-          options={BACKGROUND_PRESETS}
+          options={BACKGROUND_PRESET_OPTIONS}
           onChange={(v) => handleChange("background", v)}
         />
       </SettingsSection>
@@ -605,13 +490,13 @@ function SectionStyleSettings({
         <InlineSelect
           label="Top"
           value={section.borderTop || "none"}
-          options={BORDER_SIZE_OPTIONS}
+          options={BORDER_WIDTH_OPTIONS}
           onChange={(v) => handleChange("borderTop", v)}
         />
         <InlineSelect
           label="Bottom"
           value={section.borderBottom || "none"}
-          options={BORDER_SIZE_OPTIONS}
+          options={BORDER_WIDTH_OPTIONS}
           onChange={(v) => handleChange("borderBottom", v)}
         />
         <InlineSelect
@@ -750,14 +635,7 @@ function ContainerStyleSettings({
         <InlineSelect
           label="Max Width"
           value={container.maxWidth || "none"}
-          options={[
-            { value: "none", label: "None" },
-            { value: "sm", label: "Small" },
-            { value: "md", label: "Medium" },
-            { value: "lg", label: "Large" },
-            { value: "xl", label: "X-Large" },
-            { value: "full", label: "Full" },
-          ]}
+          options={CONTAINER_WIDTH_OPTIONS}
           onChange={(v) => handleChange("maxWidth", v)}
         />
       </SettingsSection>

@@ -38,6 +38,7 @@ import { ResponsiveProvider } from "@/lib/responsive/context";
 import { useIsBuilder } from "@/lib/hooks/use-tier";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import { BlockEditorProvider } from "@/components/editor/block-editor-context";
+import { useUIStore } from "@/lib/stores/ui-store";
 import {
   DndContext,
   closestCenter,
@@ -153,6 +154,9 @@ export default function EditPagePage({
   const [hoveredBlockKey, setHoveredBlockKey] = React.useState<string | null>(
     null,
   );
+
+  // UI Store for block selection in sidebar
+  const { selectBlock } = useUIStore();
 
   // Local page state for editing
   const [localPage, setLocalPage] = React.useState({
@@ -1021,9 +1025,15 @@ export default function EditPagePage({
                                             isHovered={
                                               hoveredBlockKey === block._key
                                             }
-                                            onSelect={() =>
-                                              setSelectedBlockKey(block._key)
-                                            }
+                                            onSelect={() => {
+                                              setSelectedBlockKey(block._key);
+                                              selectBlock(
+                                                sectionIndex,
+                                                containerIndex,
+                                                blockIndex,
+                                                block._key,
+                                              );
+                                            }}
                                             isFirst={blockIndex === 0}
                                             isLast={
                                               blockIndex === blocks.length - 1

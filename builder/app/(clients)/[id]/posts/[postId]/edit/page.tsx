@@ -48,6 +48,7 @@ import {
   Plus,
 } from "lucide-react";
 import { PostEditorLayout } from "@/components/editor/post-editor-layout";
+import { useUIStore } from "@/lib/stores/ui-store";
 
 /**
  * Create a default container with empty blocks
@@ -124,6 +125,12 @@ export default function EditPostPage({
 
   // Breakpoint state for responsive preview
   const [breakpoint, setBreakpoint] = React.useState<Breakpoint>("desktop");
+
+  // Selection state for blocks
+  const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(null);
+
+  // UI Store for block selection in sidebar
+  const { selectBlock } = useUIStore();
 
   // Sync sections with post data
   React.useEffect(() => {
@@ -578,6 +585,18 @@ export default function EditPostPage({
                                           )
                                         }
                                         tenantId={id}
+                                        isSelected={selectedBlockKey === block._key}
+                                        onSelect={() => {
+                                          setSelectedBlockKey(block._key);
+                                          selectBlock(
+                                            sectionIndex,
+                                            containerIndex,
+                                            blockIndex,
+                                            block._key,
+                                          );
+                                        }}
+                                        isFirst={blockIndex === 0}
+                                        isLast={blockIndex === blocks.length - 1}
                                       />
                                     ),
                                   )}

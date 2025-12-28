@@ -1,0 +1,133 @@
+/* =============================================================================
+ * Global Settings Drawer
+ * ============================================================================= */
+
+.global-settings-drawer {
+  display: flex;
+  height: 100%;
+}
+
+/* Navigation sidebar */
+.global-settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 0;
+  border-right: 1px solid var(--border);
+  min-width: 180px;
+}
+
+.global-settings-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.global-settings-nav-item:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.global-settings-nav-item.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.global-settings-nav-item-icon {
+  flex-shrink: 0;
+}
+
+.global-settings-nav-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.global-settings-nav-item-label {
+  font-weight: 500;
+}
+
+.global-settings-nav-item-desc {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Content area */
+.global-settings-content {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  overflow-y: auto;
+}
+
+.global-settings-section {
+  margin-bottom: 1.5rem;
+}
+
+.global-settings-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  margin-bottom: 0.75rem;
+}
+
+.global-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.global-settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.global-settings-label {
+  font-size: 0.75rem;
+  color: var(--foreground);
+}
+
+/* Color swatches */
+.global-settings-color-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+}
+
+.global-settings-color-swatch {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.global-settings-color-value {
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: var(--muted-foreground);
+}
+
+/* Footer */
+.global-settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+}

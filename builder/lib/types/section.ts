@@ -66,11 +66,19 @@ export type GradientStop = {
   position: number;
 };
 
-/** Gradient configuration */
+/** Legacy CSS gradient configuration */
 export type GradientConfig = {
   type: "linear" | "radial";
   angle?: number;
   stops: GradientStop[];
+};
+
+/** Tailwind-native gradient configuration */
+export type TailwindGradientConfig = {
+  direction: string; // 'to-t', 'to-r', 'to-b', 'to-l', 'to-tr', 'to-br', 'to-bl', 'to-tl'
+  from: string; // Tailwind color like 'blue-500'
+  via?: string; // Optional middle color
+  to: string; // Tailwind color like 'pink-500'
 };
 
 /** Image background configuration */
@@ -94,8 +102,8 @@ export interface SectionBackground {
   type: "none" | "color" | "gradient" | "image";
   /** Color value (when type is "color") */
   color?: string;
-  /** Gradient configuration (when type is "gradient") */
-  gradient?: GradientConfig;
+  /** Gradient configuration (when type is "gradient") - supports both legacy CSS and Tailwind formats */
+  gradient?: GradientConfig | TailwindGradientConfig;
   /** Image configuration (when type is "image") */
   image?: ImageBackgroundConfig;
 }
@@ -199,6 +207,8 @@ export interface Container {
   borderBottom?: BorderSize;
   borderLeft?: BorderSize;
   borderRight?: BorderSize;
+  /** Border style */
+  borderStyle?: "solid" | "dashed" | "dotted" | "double";
   /** Border color */
   borderColor?: string;
   /** Border radius */
@@ -278,6 +288,8 @@ export interface Section {
   borderBottom?: BorderSize;
   borderLeft?: BorderSize;
   borderRight?: BorderSize;
+  /** Border style */
+  borderStyle?: "solid" | "dashed" | "dotted" | "double";
   /** Border color */
   borderColor?: string;
   /** Border radius */

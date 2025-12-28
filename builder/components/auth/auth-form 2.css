@@ -1,0 +1,73 @@
+@reference "tailwindcss";
+
+.auth-form-container {
+  @apply min-h-screen flex items-center justify-center bg-(--muted);
+}
+
+.auth-form-card {
+  @apply max-w-md w-full space-y-8 p-8 bg-(--card) rounded-lg shadow;
+}
+
+.auth-form-header {
+  @apply space-y-2;
+}
+
+.auth-form-title {
+  @apply text-center text-3xl font-bold text-(--card-foreground);
+}
+
+.auth-form-subtitle {
+  @apply text-center text-sm text-(--muted-foreground);
+}
+
+.auth-form {
+  @apply mt-8 space-y-6;
+}
+
+.auth-form-error {
+  @apply rounded-md bg-(--destructive)/10 p-4 border border-(--destructive);
+}
+
+.auth-form-error-text {
+  @apply text-sm text-(--destructive);
+}
+
+.auth-form-success {
+  @apply rounded-md bg-green-500/10 p-4 border border-green-500;
+}
+
+.auth-form-success-text {
+  @apply text-sm text-green-600;
+}
+
+.auth-form-success-subtext {
+  @apply text-xs text-green-500 mt-1;
+}
+
+.auth-form-fields {
+  @apply space-y-4;
+}
+
+.auth-form-label {
+  @apply block text-sm font-medium text-(--foreground);
+}
+
+.auth-form-input {
+  @apply mt-1 block w-full px-3 py-2 border border-(--input) rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-(--ring) focus:border-(--ring);
+}
+
+.auth-form-actions {
+  @apply space-y-4;
+}
+
+.auth-form-submit {
+  @apply w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-(--primary-foreground) bg-(--primary) hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-(--ring) disabled:opacity-50;
+}
+
+.auth-form-link-container {
+  @apply text-center;
+}
+
+.auth-form-link {
+  @apply text-sm text-(--primary) hover:underline;
+}
