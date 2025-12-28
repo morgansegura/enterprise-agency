@@ -26,4 +26,5 @@ export * from "./section-settings";
 export * from "./section-settings-modal";
 export * from "./section-settings-popover";
 export * from "./seo-editor";
+export * from "./settings-panel";
 export * from "./sortable-section";

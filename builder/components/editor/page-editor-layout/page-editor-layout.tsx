@@ -15,9 +15,11 @@ import {
   Link,
   ExternalLink,
   History,
+  PanelRightOpen,
 } from "lucide-react";
 import { BreakpointSelector, type Breakpoint } from "../breakpoint-selector";
 import { formatDistanceToNow } from "date-fns";
+import { useUIStore } from "@/lib/stores/ui-store";
 import "./page-editor-layout.css";
 
 interface PageVersion {
@@ -45,6 +47,8 @@ interface PageEditorLayoutProps {
   isPublished?: boolean;
   hasUnsavedChanges?: boolean;
   lastSaved?: Date | null;
+  /** Right panel content (SettingsPanel) */
+  rightPanel?: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -74,8 +78,10 @@ export function PageEditorLayout({
   isPublished = false,
   hasUnsavedChanges = false,
   lastSaved,
+  rightPanel,
   children,
 }: PageEditorLayoutProps) {
+  const { rightPanelOpen, toggleRightPanel } = useUIStore();
   const renderSaveStatus = () => {
     if (isSaving) {
       return <span className="page-editor-status saving">Saving...</span>;
@@ -226,10 +232,22 @@ export function PageEditorLayout({
               Publish
             </Button>
           )}
+
+          {/* Right Panel Toggle */}
+          {rightPanel && !rightPanelOpen && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleRightPanel}
+              title="Open settings panel"
+            >
+              <PanelRightOpen className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </div>
 
-      {/* Editor Body - Full width canvas */}
+      {/* Editor Body - Canvas + Right Panel */}
       <div className="page-editor-body">
         <main className="page-editor-canvas">
           {/* design-preview class maps legacy tokens to --theme-* values */}
@@ -237,6 +255,9 @@ export function PageEditorLayout({
             {children}
           </div>
         </main>
+
+        {/* Right Panel (Settings) */}
+        {rightPanel}
       </div>
     </div>
   );

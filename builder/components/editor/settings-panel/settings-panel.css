@@ -1,0 +1,158 @@
+/* =============================================================================
+ * Settings Panel - Right sidebar for editing element settings
+ * ============================================================================= */
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background);
+  border-left: 1px solid var(--border);
+  transition: width 0.2s ease-out, transform 0.2s ease-out;
+  overflow: hidden;
+}
+
+/* Toggle button when panel is closed */
+.settings-panel-toggle {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: var(--radius) 0 0 var(--radius);
+  padding: 0.25rem;
+}
+
+/* =============================================================================
+ * Header
+ * ============================================================================= */
+
+.settings-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--muted);
+  min-height: 48px;
+}
+
+.settings-panel-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.settings-panel-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* =============================================================================
+ * Content
+ * ============================================================================= */
+
+.settings-panel-content {
+  flex: 1;
+  overflow: auto;
+}
+
+.settings-panel-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.settings-panel-form {
+  /* Form content container */
+}
+
+/* =============================================================================
+ * Form Elements
+ * ============================================================================= */
+
+.settings-panel .settings-group {
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-panel .settings-group:last-child {
+  border-bottom: none;
+}
+
+.settings-panel .settings-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  user-select: none;
+}
+
+.settings-panel .settings-group-header:hover {
+  background: var(--muted);
+}
+
+.settings-panel .settings-group-content {
+  padding: 0 1rem 1rem;
+}
+
+.settings-panel .settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.settings-panel .settings-row label {
+  font-size: 0.8125rem;
+  color: var(--foreground);
+}
+
+.settings-panel .settings-row-full {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.settings-panel .settings-row-full label {
+  font-size: 0.8125rem;
+  color: var(--foreground);
+}
+
+/* =============================================================================
+ * Responsive
+ * ============================================================================= */
+
+@media (max-width: 1024px) {
+  .settings-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 50;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .settings-panel:not(.open) {
+    transform: translateX(100%);
+  }
+}
