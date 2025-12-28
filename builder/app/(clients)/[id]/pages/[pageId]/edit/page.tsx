@@ -20,6 +20,7 @@ import {
   PageEditorLayout,
   PageSettingsDrawer,
   EditableHeader,
+  SettingsPanel,
 } from "@/components/editor";
 import { PageRenderer } from "@/components/renderers/page-renderer";
 import { HeaderRenderer } from "@/components/headers";
@@ -842,6 +843,39 @@ export default function EditPagePage({
         isPublished={localPage.status === "published"}
         hasUnsavedChanges={autoSave.hasUnsavedChanges}
         lastSaved={autoSave.lastSaved}
+        rightPanel={
+          <SettingsPanel
+            sections={sections}
+            onSectionChange={handleSectionChange}
+            onContainerChange={(sectionIndex, containerIndex, container) => {
+              setSections((prevSections) => {
+                const updated = [...prevSections];
+                const containers = [
+                  ...(updated[sectionIndex].containers ?? []),
+                ];
+                containers[containerIndex] = container;
+                updated[sectionIndex] = {
+                  ...updated[sectionIndex],
+                  containers,
+                };
+                return updated;
+              });
+            }}
+            onBlockChange={(
+              sectionIndex,
+              containerIndex,
+              blockIndex,
+              block,
+            ) => {
+              handleBlockChange(
+                sectionIndex,
+                containerIndex,
+                blockIndex,
+                block,
+              );
+            }}
+          />
+        }
       >
         {/* Canvas Content */}
         <BlockEditorProvider>

@@ -25,13 +25,13 @@ interface SettingsPanelProps {
   onContainerChange?: (
     sectionIndex: number,
     containerIndex: number,
-    container: Container
+    container: Container,
   ) => void;
   onBlockChange?: (
     sectionIndex: number,
     containerIndex: number,
     blockIndex: number,
-    block: Block
+    block: Block,
   ) => void;
 }
 
@@ -198,7 +198,7 @@ export function SettingsPanel({
                   onContainerChange?.(
                     selectedElement.sectionIndex,
                     selectedElement.containerIndex!,
-                    updated
+                    updated,
                   )
                 }
               />
@@ -211,7 +211,7 @@ export function SettingsPanel({
                     selectedElement.sectionIndex,
                     selectedElement.containerIndex!,
                     selectedElement.blockIndex!,
-                    updated
+                    updated,
                   )
                 }
               />

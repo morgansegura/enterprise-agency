@@ -43,8 +43,17 @@ interface UIActions {
   setRightPanelWidth: (width: number) => void;
   setSelectedElement: (element: SelectedElement | null) => void;
   selectSection: (sectionIndex: number, key: string) => void;
-  selectContainer: (sectionIndex: number, containerIndex: number, key: string) => void;
-  selectBlock: (sectionIndex: number, containerIndex: number, blockIndex: number, key: string) => void;
+  selectContainer: (
+    sectionIndex: number,
+    containerIndex: number,
+    key: string,
+  ) => void;
+  selectBlock: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+    key: string,
+  ) => void;
   clearSelection: () => void;
   // Theme
   setTheme: (theme: "light" | "dark" | "system") => void;

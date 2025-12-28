@@ -55,6 +55,7 @@ Previously required:
 ## Data Types
 
 > **Type Definitions Location:**
+>
 > - **Builder:** `builder/lib/types/section.ts`
 > - **Client:** `client/lib/types/section.ts`
 >
@@ -204,11 +205,19 @@ Shared background type for sections and containers.
 
 ```typescript
 // Background variants for preset colors
-type BackgroundVariant = "none" | "white" | "gray" | "dark" | "primary" | "secondary" | "muted" | "accent";
+type BackgroundVariant =
+  | "none"
+  | "white"
+  | "gray"
+  | "dark"
+  | "primary"
+  | "secondary"
+  | "muted"
+  | "accent";
 
 interface SectionBackground {
   type: "none" | "color" | "gradient" | "image";
-  color?: string;         // when type is "color"
+  color?: string; // when type is "color"
   gradient?: GradientConfig; // when type is "gradient"
   image?: ImageBackgroundConfig; // when type is "image"
 }
