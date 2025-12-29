@@ -6,6 +6,7 @@ export default defineConfig({
     "primitives/index": "src/primitives/index.ts",
     "semantic/index": "src/semantic/index.ts",
     "components/index": "src/components/index.ts",
+    "ui/index": "src/ui/index.ts",
   },
   format: ["cjs", "esm"],
   dts: true,
