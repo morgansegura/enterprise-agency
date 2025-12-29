@@ -6,5 +6,5 @@ packages:
   # Backend API
   - 'api'
 
-  # Future: Shared packages (if needed)
-  # - 'packages/*'
+  # Shared packages
+  - 'packages/*'
