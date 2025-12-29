@@ -85,7 +85,7 @@ export function TailwindColorPicker({
                     type="button"
                     className={cn(
                       "color-swatch is-transparent",
-                      value === "transparent" && "is-selected"
+                      value === "transparent" && "is-selected",
                     )}
                     onClick={() => {
                       onChange("transparent");
@@ -97,7 +97,7 @@ export function TailwindColorPicker({
                     type="button"
                     className={cn(
                       "color-swatch",
-                      value === "white" && "is-selected"
+                      value === "white" && "is-selected",
                     )}
                     style={{ backgroundColor: "#ffffff" }}
                     onClick={() => {
@@ -110,7 +110,7 @@ export function TailwindColorPicker({
                     type="button"
                     className={cn(
                       "color-swatch",
-                      value === "black" && "is-selected"
+                      value === "black" && "is-selected",
                     )}
                     style={{ backgroundColor: "#000000" }}
                     onClick={() => {
@@ -133,7 +133,7 @@ export function TailwindColorPicker({
                 <div className="color-row-shades">
                   {(
                     Object.keys(
-                      tailwindColors[colorName]
+                      tailwindColors[colorName],
                     ) as unknown as ShadeKey[]
                   ).map((shade) => {
                     const hex = tailwindColors[colorName][shade];
@@ -144,7 +144,7 @@ export function TailwindColorPicker({
                         type="button"
                         className={cn(
                           "color-swatch",
-                          value === twClass && "is-selected"
+                          value === twClass && "is-selected",
                         )}
                         style={{ backgroundColor: hex }}
                         onClick={() => {

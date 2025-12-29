@@ -11,7 +11,7 @@ Validates Clerk JWT tokens and attaches user to request.
 **Usage:**
 
 ```typescript
-@Controller('products')
+@Controller("products")
 @UseGuards(AuthGuard)
 export class ProductsController {
   @Get()
@@ -28,7 +28,7 @@ Ensures authenticated user is a member of the current tenant.
 **Usage:**
 
 ```typescript
-@Controller('products')
+@Controller("products")
 @UseGuards(AuthGuard, TenantMemberGuard)
 export class ProductsController {
   @Get()
@@ -45,12 +45,12 @@ Checks if user has required role(s) in the current tenant.
 **Usage:**
 
 ```typescript
-@Controller('products')
+@Controller("products")
 @UseGuards(AuthGuard, RolesGuard)
 export class ProductsController {
-  @Delete(':id')
-  @Roles('owner', 'admin')
-  deleteProduct(@Param('id') id: string) {
+  @Delete(":id")
+  @Roles("owner", "admin")
+  deleteProduct(@Param("id") id: string) {
     // Only owners and admins can delete
   }
 }
@@ -136,9 +136,9 @@ deleteTenant() {
 ### Protect entire controller
 
 ```typescript
-@Controller('settings')
+@Controller("settings")
 @UseGuards(AuthGuard, RolesGuard)
-@Roles('owner', 'admin')
+@Roles("owner", "admin")
 export class SettingsController {
   // All routes require owner or admin role
 }
@@ -147,25 +147,25 @@ export class SettingsController {
 ### Mix public and protected routes
 
 ```typescript
-@Controller('products')
+@Controller("products")
 export class ProductsController {
   @Get() // Public - no auth required
   getAll() {
-    return this.productsService.findAll()
+    return this.productsService.findAll();
   }
 
   @Post()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles('editor', 'admin', 'owner')
+  @Roles("editor", "admin", "owner")
   create(@Body() dto: CreateProductDto) {
-    return this.productsService.create(dto)
+    return this.productsService.create(dto);
   }
 
-  @Delete(':id')
+  @Delete(":id")
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles('admin', 'owner')
-  delete(@Param('id') id: string) {
-    return this.productsService.delete(id)
+  @Roles("admin", "owner")
+  delete(@Param("id") id: string) {
+    return this.productsService.delete(id);
   }
 }
 ```

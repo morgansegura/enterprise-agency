@@ -198,10 +198,7 @@ export function BorderEditor({
           <div className="border-editor-row">
             <div className="border-editor-field">
               <Label className="border-editor-label">All Sides</Label>
-              <Select
-                value={borderTop}
-                onValueChange={handleAllSidesChange}
-              >
+              <Select value={borderTop} onValueChange={handleAllSidesChange}>
                 <SelectTrigger className="h-8">
                   <SelectValue />
                 </SelectTrigger>

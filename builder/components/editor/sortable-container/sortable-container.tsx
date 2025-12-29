@@ -157,7 +157,10 @@ export function SortableContainer({
     >
       {/* Container Visual */}
       <div
-        className={cn("container-visual container", isContainerSelected && "is-selected")}
+        className={cn(
+          "container-visual container",
+          isContainerSelected && "is-selected",
+        )}
         onClick={handleContainerClick}
         // Layout attributes
         data-layout-type={container.layout?.type || "stack"}

@@ -23,7 +23,11 @@ import { VisibilityToggles } from "@/components/ui/visibility-toggles";
 import { ResponsiveField, useResponsiveChange } from "../responsive-field";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
-import { BackgroundEditor, BorderEditor, type BorderValues } from "@/components/editors";
+import {
+  BackgroundEditor,
+  BorderEditor,
+  type BorderValues,
+} from "@/components/editors";
 import type {
   Section,
   Container,
@@ -134,7 +138,6 @@ export function ContainerSettingsPopover({
       },
     });
   };
-
 
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
@@ -528,7 +531,11 @@ export function ContainerSettingsPopover({
               <div className="container-settings-section">
                 <BackgroundEditor
                   value={background}
-                  onChange={(bg) => handleContainerChange({ background: bg as SectionBackground })}
+                  onChange={(bg) =>
+                    handleContainerChange({
+                      background: bg as SectionBackground,
+                    })
+                  }
                   showTitle={true}
                 />
               </div>
@@ -615,7 +622,9 @@ export function ContainerSettingsPopover({
                   }}
                   onChange={(values: Partial<BorderValues>) => {
                     Object.entries(values).forEach(([key, value]) => {
-                      handleContainerChange({ [key]: value } as Partial<Container>);
+                      handleContainerChange({
+                        [key]: value,
+                      } as Partial<Container>);
                     });
                   }}
                   mode="all"

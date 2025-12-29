@@ -55,13 +55,13 @@ interface SettingsPanelProps {
   onContainerChange?: (
     sectionIndex: number,
     containerIndex: number,
-    container: Container
+    container: Container,
   ) => void;
   onBlockChange?: (
     sectionIndex: number,
     containerIndex: number,
     blockIndex: number,
-    block: Block
+    block: Block,
   ) => void;
 }
 
@@ -77,12 +77,8 @@ export function SettingsPanel({
   onContainerChange,
   onBlockChange,
 }: SettingsPanelProps) {
-  const {
-    rightPanelOpen,
-    rightPanelWidth,
-    selectedElement,
-    toggleRightPanel,
-  } = useUIStore();
+  const { rightPanelOpen, rightPanelWidth, selectedElement, toggleRightPanel } =
+    useUIStore();
 
   const [activeTab, setActiveTab] = React.useState<PanelTab>("style");
 
@@ -132,7 +128,10 @@ export function SettingsPanel({
 
     switch (selectedElement.type) {
       case "section":
-        return { icon: <LayoutTemplate className="h-4 w-4" />, title: "Section" };
+        return {
+          icon: <LayoutTemplate className="h-4 w-4" />,
+          title: "Section",
+        };
       case "container":
         return { icon: <Box className="h-4 w-4" />, title: "Container" };
       case "block":
@@ -191,13 +190,19 @@ export function SettingsPanel({
       {/* Tabs */}
       <div className="settings-panel-tabs">
         <button
-          className={cn("settings-panel-tab", activeTab === "style" && "active")}
+          className={cn(
+            "settings-panel-tab",
+            activeTab === "style" && "active",
+          )}
           onClick={() => setActiveTab("style")}
         >
           Style
         </button>
         <button
-          className={cn("settings-panel-tab", activeTab === "settings" && "active")}
+          className={cn(
+            "settings-panel-tab",
+            activeTab === "settings" && "active",
+          )}
           onClick={() => setActiveTab("settings")}
         >
           Settings
@@ -231,7 +236,7 @@ export function SettingsPanel({
                   onContainerChange?.(
                     selectedElement.sectionIndex,
                     selectedElement.containerIndex!,
-                    updated
+                    updated,
                   )
                 }
                 tab={activeTab}
@@ -245,7 +250,7 @@ export function SettingsPanel({
                     selectedElement.sectionIndex,
                     selectedElement.containerIndex!,
                     selectedElement.blockIndex!,
-                    updated
+                    updated,
                   )
                 }
                 tab={activeTab}
@@ -282,7 +287,11 @@ function SettingsSection({
   const [isOpen, setIsOpen] = React.useState(defaultOpen);
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="settings-section">
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="settings-section"
+    >
       <CollapsibleTrigger className="settings-section-trigger">
         <div className="settings-section-trigger-left">
           {icon}
@@ -291,7 +300,7 @@ function SettingsSection({
         <ChevronDown
           className={cn(
             "h-4 w-4 text-muted-foreground transition-transform",
-            isOpen && "rotate-180"
+            isOpen && "rotate-180",
           )}
         />
       </CollapsibleTrigger>
@@ -379,7 +388,10 @@ function SectionStyleSettings({
 
   if (tab === "settings") {
     return (
-      <SettingsSection title="Advanced" icon={<Settings2 className="h-4 w-4" />}>
+      <SettingsSection
+        title="Advanced"
+        icon={<Settings2 className="h-4 w-4" />}
+      >
         <div className="settings-row-full">
           <Label className="settings-label">Anchor ID</Label>
           <Input
@@ -476,17 +488,27 @@ function SectionStyleSettings({
       </SettingsSection>
 
       {/* Background */}
-      <SettingsSection title="Background" icon={<Palette className="h-4 w-4" />} defaultOpen={false}>
+      <SettingsSection
+        title="Background"
+        icon={<Palette className="h-4 w-4" />}
+        defaultOpen={false}
+      >
         <InlineSelect
           label="Preset"
-          value={typeof section.background === "string" ? section.background : "none"}
+          value={
+            typeof section.background === "string" ? section.background : "none"
+          }
           options={BACKGROUND_PRESET_OPTIONS}
           onChange={(v) => handleChange("background", v)}
         />
       </SettingsSection>
 
       {/* Borders */}
-      <SettingsSection title="Borders" icon={<Box className="h-4 w-4" />} defaultOpen={false}>
+      <SettingsSection
+        title="Borders"
+        icon={<Box className="h-4 w-4" />}
+        defaultOpen={false}
+      >
         <InlineSelect
           label="Top"
           value={section.borderTop || "none"}
@@ -542,7 +564,10 @@ function ContainerStyleSettings({
 
   if (tab === "settings") {
     return (
-      <SettingsSection title="Advanced" icon={<Settings2 className="h-4 w-4" />}>
+      <SettingsSection
+        title="Advanced"
+        icon={<Settings2 className="h-4 w-4" />}
+      >
         <div className="settings-row-full">
           <Label className="settings-label">Custom Classes</Label>
           <Input
@@ -620,7 +645,9 @@ function ContainerStyleSettings({
               min={1}
               max={12}
               value={container.layout?.columns || 2}
-              onChange={(e) => handleLayoutChange("columns", parseInt(e.target.value) || 2)}
+              onChange={(e) =>
+                handleLayoutChange("columns", parseInt(e.target.value) || 2)
+              }
               className="settings-input-sm"
             />
           </div>
@@ -657,7 +684,11 @@ function ContainerStyleSettings({
       </SettingsSection>
 
       {/* Alignment */}
-      <SettingsSection title="Alignment" icon={<AlignLeft className="h-4 w-4" />} defaultOpen={false}>
+      <SettingsSection
+        title="Alignment"
+        icon={<AlignLeft className="h-4 w-4" />}
+        defaultOpen={false}
+      >
         <div className="settings-row">
           <Label className="settings-label">Horizontal</Label>
           <ToggleGroup
@@ -693,14 +724,19 @@ function BlockStyleSettings({
 
   if (tab === "settings") {
     return (
-      <SettingsSection title="Block Info" icon={<Settings2 className="h-4 w-4" />}>
+      <SettingsSection
+        title="Block Info"
+        icon={<Settings2 className="h-4 w-4" />}
+      >
         <div className="settings-row">
           <Label className="settings-label">Type</Label>
           <span className="text-sm text-muted-foreground">{blockType}</span>
         </div>
         <div className="settings-row">
           <Label className="settings-label">Key</Label>
-          <span className="text-xs text-muted-foreground font-mono">{block._key}</span>
+          <span className="text-xs text-muted-foreground font-mono">
+            {block._key}
+          </span>
         </div>
       </SettingsSection>
     );

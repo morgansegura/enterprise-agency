@@ -11,7 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Palette, LayoutGrid, Image as ImageIcon, Ban, Plus, X } from "lucide-react";
+import {
+  Palette,
+  LayoutGrid,
+  Image as ImageIcon,
+  Ban,
+  Plus,
+  X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { TailwindColorPicker } from "@/components/ui/color-picker";
@@ -44,14 +51,14 @@ const GRADIENT_DIRECTION_OPTIONS = [
 
 export interface TailwindGradient {
   direction: string; // 'to-t', 'to-r', 'to-b', 'to-l', 'to-tr', 'to-br', 'to-bl', 'to-tl'
-  from: string;      // Tailwind color like 'blue-500'
-  via?: string;      // Optional middle color
-  to: string;        // Tailwind color like 'pink-500'
+  from: string; // Tailwind color like 'blue-500'
+  via?: string; // Optional middle color
+  to: string; // Tailwind color like 'pink-500'
 }
 
 export interface BackgroundValue {
   type: "none" | "color" | "gradient" | "image";
-  color?: string;           // Hex color for solid backgrounds
+  color?: string; // Hex color for solid backgrounds
   gradient?: TailwindGradient;
   image?: {
     src: string;
@@ -94,7 +101,9 @@ const DEFAULT_IMAGE: BackgroundValue["image"] = {
 // Normalize legacy SectionBackground to new BackgroundValue
 // =============================================================================
 
-function normalizeBackground(bg: BackgroundValue | SectionBackground | undefined): BackgroundValue {
+function normalizeBackground(
+  bg: BackgroundValue | SectionBackground | undefined,
+): BackgroundValue {
   if (!bg) return { type: "none" };
 
   // Already in new format
@@ -184,7 +193,9 @@ export function BackgroundEditor({
     });
   };
 
-  const handleImageChange = (updates: Partial<NonNullable<BackgroundValue["image"]>>) => {
+  const handleImageChange = (
+    updates: Partial<NonNullable<BackgroundValue["image"]>>,
+  ) => {
     onChange({
       ...background,
       type: "image",
@@ -216,7 +227,7 @@ export function BackgroundEditor({
           type="button"
           className={cn(
             "background-editor-type-btn",
-            background.type === "none" && "active"
+            background.type === "none" && "active",
           )}
           onClick={() => handleTypeChange("none")}
           title="None"
@@ -227,7 +238,7 @@ export function BackgroundEditor({
           type="button"
           className={cn(
             "background-editor-type-btn",
-            background.type === "color" && "active"
+            background.type === "color" && "active",
           )}
           onClick={() => handleTypeChange("color")}
           title="Color"
@@ -238,7 +249,7 @@ export function BackgroundEditor({
           type="button"
           className={cn(
             "background-editor-type-btn",
-            background.type === "gradient" && "active"
+            background.type === "gradient" && "active",
           )}
           onClick={() => handleTypeChange("gradient")}
           title="Gradient"
@@ -249,7 +260,7 @@ export function BackgroundEditor({
           type="button"
           className={cn(
             "background-editor-type-btn",
-            background.type === "image" && "active"
+            background.type === "image" && "active",
           )}
           onClick={() => handleTypeChange("image")}
           title="Image"
@@ -347,12 +358,15 @@ export function BackgroundEditor({
                 `bg-gradient-${background.gradient?.direction || "to-r"}`,
                 `from-${background.gradient?.from || "blue-500"}`,
                 background.gradient?.via && `via-${background.gradient.via}`,
-                `to-${background.gradient?.to || "pink-500"}`
+                `to-${background.gradient?.to || "pink-500"}`,
               )}
             />
             <span className="background-editor-gradient-classes">
-              bg-gradient-{background.gradient?.direction || "to-r"} from-{background.gradient?.from || "blue-500"}
-              {background.gradient?.via && ` via-${background.gradient.via}`} to-{background.gradient?.to || "pink-500"}
+              bg-gradient-{background.gradient?.direction || "to-r"} from-
+              {background.gradient?.from || "blue-500"}
+              {background.gradient?.via &&
+                ` via-${background.gradient.via}`}{" "}
+              to-{background.gradient?.to || "pink-500"}
             </span>
           </div>
         </div>

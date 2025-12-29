@@ -239,7 +239,10 @@ export function SortableSection({
     >
       {/* Section Visual - renders with same data attributes as client Section component */}
       <div
-        className={cn("section-visual section", isSectionSelected && "is-selected")}
+        className={cn(
+          "section-visual section",
+          isSectionSelected && "is-selected",
+        )}
         onClick={handleSectionClick}
         // Section-level data attributes (matches client/components/layout/section/section.tsx)
         data-padding-top={effectivePaddingTop}

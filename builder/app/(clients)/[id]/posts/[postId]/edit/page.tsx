@@ -127,7 +127,9 @@ export default function EditPostPage({
   const [breakpoint, setBreakpoint] = React.useState<Breakpoint>("desktop");
 
   // Selection state for blocks
-  const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(null);
+  const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(
+    null,
+  );
 
   // UI Store for block selection in sidebar
   const { selectBlock } = useUIStore();
@@ -585,7 +587,9 @@ export default function EditPostPage({
                                           )
                                         }
                                         tenantId={id}
-                                        isSelected={selectedBlockKey === block._key}
+                                        isSelected={
+                                          selectedBlockKey === block._key
+                                        }
                                         onSelect={() => {
                                           setSelectedBlockKey(block._key);
                                           selectBlock(
@@ -596,7 +600,9 @@ export default function EditPostPage({
                                           );
                                         }}
                                         isFirst={blockIndex === 0}
-                                        isLast={blockIndex === blocks.length - 1}
+                                        isLast={
+                                          blockIndex === blocks.length - 1
+                                        }
                                       />
                                     ),
                                   )}
