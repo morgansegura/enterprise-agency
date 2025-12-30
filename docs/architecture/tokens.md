@@ -9,6 +9,7 @@ packages/tokens/
 ├── src/
 │   ├── architecture/    # Section → Container → Block types
 │   │   ├── types.ts     # Core architecture types
+│   │   ├── blocks.ts    # Block type definitions
 │   │   └── index.ts     # Exports
 │   ├── primitives/      # Raw Tailwind CSS values
 │   │   ├── colors.ts    # 22 color palettes (~240 colors)
@@ -34,6 +35,17 @@ packages/tokens/
 │   ├── ui/              # UI utilities
 │   │   ├── select-options.ts  # Option generators
 │   │   └── index.ts
+│   ├── design-system/   # Platform default tokens
+│   │   ├── platform-defaults.ts
+│   │   └── index.ts
+│   ├── fonts/           # Google Fonts utilities
+│   │   └── index.ts     # Font list and utilities
+│   ├── logger/          # Unified logging utility
+│   │   └── index.ts     # Logger class and helpers
+│   ├── utils/           # Shared utility functions
+│   │   └── index.ts     # cn() and other utilities
+│   ├── responsive/      # Responsive override types
+│   │   └── index.ts     # Breakpoint types and utilities
 │   └── index.ts         # Main exports
 ├── package.json
 ├── tsconfig.json
@@ -84,6 +96,71 @@ import {
 } from "@enterprise/tokens/semantic";
 ```
 
+### Importing Design System Defaults
+
+```typescript
+import { platformDefaults } from "@enterprise/tokens";
+
+// Access default color palette, typography, spacing
+const { colors, typography, spacing } = platformDefaults;
+```
+
+### Importing Font Utilities
+
+```typescript
+import {
+  googleFonts,
+  buildFontFamily,
+  buildGoogleFontsUrl,
+  getFallbackStack,
+} from "@enterprise/tokens";
+
+// Build font-family string with fallbacks
+const fontFamily = buildFontFamily("Inter"); // "Inter, ui-sans-serif, system-ui, ..."
+
+// Generate Google Fonts URL for loading
+const fontsUrl = buildGoogleFontsUrl(["Inter", "Playfair Display"]);
+```
+
+### Importing Logger
+
+```typescript
+import { logger, createLogger, type LogLevel } from "@enterprise/tokens";
+
+// Use default logger
+logger.info("Something happened", { context: "MyComponent" });
+logger.error("Failed to load", error, { meta: { userId: 123 } });
+
+// Create custom logger
+const customLogger = createLogger({ minLevel: "warn" });
+```
+
+### Importing Utilities
+
+```typescript
+import { cn } from "@enterprise/tokens";
+
+// Combine class names with Tailwind merge
+const className = cn("px-4 py-2", isActive && "bg-blue-500", className);
+```
+
+### Importing Responsive Types
+
+```typescript
+import {
+  type Breakpoint,
+  type ResponsiveOverrides,
+  type ResponsiveBlockData,
+  BREAKPOINT_WIDTHS,
+  hasResponsiveOverrides,
+} from "@enterprise/tokens";
+
+// Check if data has responsive overrides
+if (hasResponsiveOverrides(blockData)) {
+  // Handle responsive data
+}
+```
+
 ## Architecture Types
 
 The core page structure follows `Section → Container → Block`:
@@ -109,7 +186,7 @@ interface Container<TBlock = Block> {
 interface Block {
   _type: string;
   _key: string;
-  data?: Record<string, unknown>;
+  data: Record<string, unknown>;
 }
 ```
 
@@ -248,3 +325,27 @@ export {
   // ... re-exports from tokens
 } from "@enterprise/tokens";
 ```
+
+## Consolidated Modules
+
+The following modules have been consolidated into `@enterprise/tokens` to eliminate code duplication between builder and client apps:
+
+| Module                | Description                                           | Lines Saved |
+| --------------------- | ----------------------------------------------------- | ----------- |
+| `architecture/`       | Section, Container, Block types                       | ~700        |
+| `design-system/`      | Platform default tokens (colors, typography, spacing) | ~450        |
+| `architecture/blocks` | Block type definitions (Heading, Text, Image, etc.)   | ~520        |
+| `fonts/`              | Google Fonts list and utilities                       | ~300        |
+| `logger/`             | Unified logging with environment detection            | ~150        |
+| `utils/`              | cn() className utility                                | ~10         |
+| `responsive/`         | Breakpoint types and responsive overrides             | ~40         |
+| **Total**             |                                                       | **~2,170**  |
+
+Each app (builder, client) re-exports from `@enterprise/tokens` for backward compatibility:
+
+```typescript
+// builder/lib/logger.ts or client/lib/logger.ts
+export { logger, createLogger, type LogLevel } from "@enterprise/tokens";
+```
+
+This pattern allows gradual migration - existing imports continue to work while new code can import directly from `@enterprise/tokens`.
