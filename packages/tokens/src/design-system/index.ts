@@ -1,8 +1,7 @@
 /**
- * Design Token System Types
+ * Design System Types
  *
- * Re-exports from @enterprise/tokens for backward compatibility.
- * All design token types are now in the shared tokens package.
+ * Complete type definitions for the token-based design system.
  */
 
 export {
@@ -37,4 +36,4 @@ export {
   // Complete system
   type DesignTokens,
   type TenantTokenConfig,
-} from "@enterprise/tokens";
+} from "./types";

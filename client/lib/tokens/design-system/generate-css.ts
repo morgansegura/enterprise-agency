@@ -39,15 +39,16 @@ export function generateTokenCSS(tokens: Partial<DesignTokens> = {}): string {
   cssVars.push(`--color-info: ${mergedTokens.colors.semantic.info};`);
 
   // Typography - Font Family
-  cssVars.push(
-    `--font-sans: ${mergedTokens.typography.fontFamily.sans.join(", ")};`,
-  );
-  cssVars.push(
-    `--font-serif: ${mergedTokens.typography.fontFamily.serif.join(", ")};`,
-  );
-  cssVars.push(
-    `--font-mono: ${mergedTokens.typography.fontFamily.mono.join(", ")};`,
-  );
+  const { fontFamily } = mergedTokens.typography;
+  if (fontFamily.sans) {
+    cssVars.push(`--font-sans: ${fontFamily.sans.join(", ")};`);
+  }
+  if (fontFamily.serif) {
+    cssVars.push(`--font-serif: ${fontFamily.serif.join(", ")};`);
+  }
+  if (fontFamily.mono) {
+    cssVars.push(`--font-mono: ${fontFamily.mono.join(", ")};`);
+  }
 
   // Typography - Font Size
   Object.entries(mergedTokens.typography.fontSize).forEach(([key, value]) => {

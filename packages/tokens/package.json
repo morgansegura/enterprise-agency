@@ -35,6 +35,11 @@
       "types": "./dist/ui/index.d.ts",
       "import": "./dist/ui/index.mjs",
       "require": "./dist/ui/index.js"
+    },
+    "./design-system": {
+      "types": "./dist/design-system/index.d.ts",
+      "import": "./dist/design-system/index.mjs",
+      "require": "./dist/design-system/index.js"
     }
   },
   "scripts": {

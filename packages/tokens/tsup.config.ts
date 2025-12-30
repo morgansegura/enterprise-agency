@@ -8,6 +8,7 @@ export default defineConfig({
     "semantic/index": "src/semantic/index.ts",
     "components/index": "src/components/index.ts",
     "ui/index": "src/ui/index.ts",
+    "design-system/index": "src/design-system/index.ts",
   },
   format: ["cjs", "esm"],
   dts: true,
