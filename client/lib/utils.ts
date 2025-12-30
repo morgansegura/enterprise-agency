@@ -1,6 +1,7 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+/**
+ * Utility Functions for Client
+ *
+ * Re-exports from @enterprise/tokens for backward compatibility.
+ */
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+export { cn, type ClassValue } from "@enterprise/tokens";

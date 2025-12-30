@@ -52,6 +52,10 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.0"
+  },
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.0.0"
