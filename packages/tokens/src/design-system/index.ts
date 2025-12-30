@@ -1,7 +1,7 @@
 /**
- * Design System Types
+ * Design System Types & Defaults
  *
- * Complete type definitions for the token-based design system.
+ * Complete type definitions and platform defaults for the token-based design system.
  */
 
 export {
@@ -37,3 +37,6 @@ export {
   type DesignTokens,
   type TenantTokenConfig,
 } from "./types";
+
+// Platform defaults
+export { platformDefaults } from "./platform-defaults";
