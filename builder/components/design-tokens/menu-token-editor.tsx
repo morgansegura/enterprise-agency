@@ -1,8 +1,6 @@
-// @ts-nocheck
 "use client";
 
-import * as React from "react";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, FieldValues } from "react-hook-form";
 import {
   FormField,
   FormItem,
@@ -11,10 +9,11 @@ import {
   FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TenantTokens } from "@/lib/hooks";
 
+// Menu token form fields use nested paths that aren't in DesignTokens yet
+// Using FieldValues allows dynamic nested paths until menu tokens are properly typed
 interface MenuTokenEditorProps {
-  form: UseFormReturn<TenantTokens>;
+  form: UseFormReturn<FieldValues>;
 }
 
 export function MenuTokenEditor({ form }: MenuTokenEditorProps) {

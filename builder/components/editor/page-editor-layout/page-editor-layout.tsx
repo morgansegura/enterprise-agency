@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -82,7 +83,9 @@ export function PageEditorLayout({
   children,
 }: PageEditorLayoutProps) {
   const { rightPanelOpen, toggleRightPanel } = useUIStore();
-  const renderSaveStatus = () => {
+
+  // Memoize save status to avoid Date.now() calls during render
+  const saveStatusElement = React.useMemo(() => {
     if (isSaving) {
       return <span className="page-editor-status saving">Saving...</span>;
     }
@@ -106,14 +109,14 @@ export function PageEditorLayout({
       );
     }
     return null;
-  };
+  }, [isSaving, hasUnsavedChanges, lastSaved]);
 
   return (
     <div className="page-editor-layout" data-preview-mode={previewMode}>
       {/* Editor Toolbar */}
       <div className="page-editor-toolbar">
         <div className="page-editor-toolbar-left">
-          {renderSaveStatus()}
+          {saveStatusElement}
           {/* History Dropdown */}
           {versions.length > 0 && (
             <DropdownMenu>

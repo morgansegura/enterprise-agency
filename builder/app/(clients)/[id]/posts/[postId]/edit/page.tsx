@@ -99,6 +99,28 @@ function updateContainerBlocks(
   return { ...section, containers: newContainers };
 }
 
+/**
+ * Create a default block using the block registry
+ */
+function createDefaultBlock(blockType: string): Block {
+  // Use block registry to create default block
+  const defaultBlock = blockRegistry.createDefault(blockType);
+
+  if (!defaultBlock) {
+    // Fallback if block type not registered
+    logger.warn(
+      `Block type "${blockType}" not found in registry, using fallback`,
+    );
+    return {
+      _key: `block-${Date.now()}`,
+      _type: blockType,
+      data: {},
+    };
+  }
+
+  return defaultBlock;
+}
+
 export default function EditPostPage({
   params,
 }: {
@@ -417,25 +439,6 @@ export default function EditPostPage({
     setSections((prevSections) => [...prevSections, newSection]);
     toast.success("Section added");
   };
-
-  function createDefaultBlock(blockType: string): Block {
-    // Use block registry to create default block
-    const defaultBlock = blockRegistry.createDefault(blockType);
-
-    if (!defaultBlock) {
-      // Fallback if block type not registered
-      logger.warn(
-        `Block type "${blockType}" not found in registry, using fallback`,
-      );
-      return {
-        _key: `block-${Date.now()}`,
-        _type: blockType,
-        data: {},
-      };
-    }
-
-    return defaultBlock;
-  }
 
   return (
     <div className="flex">

@@ -72,21 +72,18 @@ export function ToastProvider({ children }: ToastProviderProps) {
   }, []);
 
   const toast = React.useMemo(() => {
-    const fn = (options: Omit<Toast, "id">) => addToast(options);
-
-    fn.success = (title: string, description?: string) =>
-      addToast({ title, description, variant: "success" });
-
-    fn.error = (title: string, description?: string) =>
-      addToast({ title, description, variant: "error" });
-
-    fn.warning = (title: string, description?: string) =>
-      addToast({ title, description, variant: "warning" });
-
-    fn.info = (title: string, description?: string) =>
-      addToast({ title, description, variant: "info" });
-
-    return fn;
+    // Create the toast function with all methods as properties
+    // Using Object.assign to avoid mutation warnings from React compiler
+    return Object.assign((options: Omit<Toast, "id">) => addToast(options), {
+      success: (title: string, description?: string) =>
+        addToast({ title, description, variant: "success" }),
+      error: (title: string, description?: string) =>
+        addToast({ title, description, variant: "error" }),
+      warning: (title: string, description?: string) =>
+        addToast({ title, description, variant: "warning" }),
+      info: (title: string, description?: string) =>
+        addToast({ title, description, variant: "info" }),
+    });
   }, [addToast]);
 
   const value = React.useMemo(
@@ -119,6 +116,38 @@ function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
   );
 }
 
+// Extracted to module level to avoid "creating components during render" warning
+function ToastIcon({ variant }: { variant?: ToastVariant }) {
+  switch (variant) {
+    case "success":
+      return (
+        <div className="toast-icon toast-icon-success">
+          <CheckCircle className="w-5 h-5" />
+        </div>
+      );
+    case "error":
+      return (
+        <div className="toast-icon toast-icon-error">
+          <XCircle className="w-5 h-5" />
+        </div>
+      );
+    case "warning":
+      return (
+        <div className="toast-icon toast-icon-warning">
+          <AlertTriangle className="w-5 h-5" />
+        </div>
+      );
+    case "info":
+      return (
+        <div className="toast-icon toast-icon-info">
+          <Info className="w-5 h-5" />
+        </div>
+      );
+    default:
+      return null;
+  }
+}
+
 interface ToastItemProps {
   toast: Toast;
   onRemove: (id: string) => void;
@@ -132,18 +161,12 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
     setTimeout(() => onRemove(toast.id), 150);
   };
 
-  const Icon = getToastIcon(toast.variant);
-
   return (
     <div
       className={`toast toast-${toast.variant || "default"} ${isExiting ? "toast-exiting" : ""}`}
       role="alert"
     >
-      {Icon && (
-        <div className={`toast-icon toast-icon-${toast.variant}`}>
-          <Icon className="w-5 h-5" />
-        </div>
-      )}
+      <ToastIcon variant={toast.variant} />
 
       <div className="toast-content">
         {toast.title && <div className="toast-title">{toast.title}</div>}
@@ -173,19 +196,4 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
       </button>
     </div>
   );
-}
-
-function getToastIcon(variant?: ToastVariant) {
-  switch (variant) {
-    case "success":
-      return CheckCircle;
-    case "error":
-      return XCircle;
-    case "warning":
-      return AlertTriangle;
-    case "info":
-      return Info;
-    default:
-      return null;
-  }
 }

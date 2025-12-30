@@ -1,8 +1,6 @@
-// @ts-nocheck
 "use client";
 
-import * as React from "react";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, FieldValues } from "react-hook-form";
 import {
   FormField,
   FormItem,
@@ -11,10 +9,11 @@ import {
   FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TenantTokens } from "@/lib/hooks";
 
+// Section token form fields use nested paths that aren't in DesignTokens yet
+// Using FieldValues allows dynamic nested paths until section tokens are properly typed
 interface SectionTokenEditorProps {
-  form: UseFormReturn<TenantTokens>;
+  form: UseFormReturn<FieldValues>;
 }
 
 export function SectionTokenEditor({ form }: SectionTokenEditorProps) {

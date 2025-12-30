@@ -20,6 +20,56 @@ import {
 
 import "./inline-toolbar.css";
 
+// ToolbarButton component - extracted to avoid creating components during render
+interface ToolbarButtonProps {
+  icon: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  variant?: "default" | "destructive";
+  compact?: boolean;
+}
+
+function ToolbarButton({
+  icon,
+  label,
+  onClick,
+  disabled = false,
+  variant = "default",
+  compact = false,
+}: ToolbarButtonProps) {
+  const button = (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
+      disabled={disabled || !onClick}
+      className={cn(
+        "inline-toolbar-button",
+        variant === "destructive" && "inline-toolbar-button--destructive",
+      )}
+    >
+      {icon}
+    </Button>
+  );
+
+  if (compact) {
+    return button;
+  }
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent side="bottom" className="text-xs">
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
 export interface InlineToolbarAction {
   id: string;
   icon: React.ReactNode;
@@ -94,51 +144,6 @@ export function InlineToolbar({
   className,
   dragHandleProps,
 }: InlineToolbarProps) {
-  const ToolbarButton = ({
-    icon,
-    label,
-    onClick,
-    disabled = false,
-    variant = "default",
-  }: {
-    icon: React.ReactNode;
-    label: string;
-    onClick?: () => void;
-    disabled?: boolean;
-    variant?: "default" | "destructive";
-  }) => {
-    const button = (
-      <Button
-        variant="ghost"
-        size="icon-sm"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClick?.();
-        }}
-        disabled={disabled || !onClick}
-        className={cn(
-          "inline-toolbar-button",
-          variant === "destructive" && "inline-toolbar-button--destructive",
-        )}
-      >
-        {icon}
-      </Button>
-    );
-
-    if (compact) {
-      return button;
-    }
-
-    return (
-      <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
-        <TooltipContent side="bottom" className="text-xs">
-          {label}
-        </TooltipContent>
-      </Tooltip>
-    );
-  };
-
   return (
     <div
       className={cn(
@@ -175,12 +180,14 @@ export function InlineToolbar({
             label="Move up"
             onClick={onMoveUp}
             disabled={!canMoveUp}
+            compact={compact}
           />
           <ToolbarButton
             icon={<ChevronDown className="h-3.5 w-3.5" />}
             label="Move down"
             onClick={onMoveDown}
             disabled={!canMoveDown}
+            compact={compact}
           />
           <div className="inline-toolbar-divider" />
         </>
@@ -192,6 +199,7 @@ export function InlineToolbar({
           icon={<Copy className="h-3.5 w-3.5" />}
           label="Duplicate"
           onClick={onClone}
+          compact={compact}
         />
       )}
 
@@ -203,6 +211,7 @@ export function InlineToolbar({
           }
           label={isFavorite ? "Remove from favorites" : "Add to favorites"}
           onClick={onFavorite}
+          compact={compact}
         />
       )}
 
@@ -215,6 +224,7 @@ export function InlineToolbar({
           onClick={action.onClick}
           disabled={action.disabled}
           variant={action.variant}
+          compact={compact}
         />
       ))}
 
@@ -226,6 +236,7 @@ export function InlineToolbar({
             icon={<Settings className="h-3.5 w-3.5" />}
             label="Settings"
             onClick={onSettings}
+            compact={compact}
           />
         </>
       )}
@@ -239,6 +250,7 @@ export function InlineToolbar({
             label="Delete"
             onClick={onDelete}
             variant="destructive"
+            compact={compact}
           />
         </>
       )}

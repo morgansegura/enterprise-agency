@@ -104,6 +104,28 @@ function updateContainerBlocks(
   return { ...section, containers: newContainers };
 }
 
+/**
+ * Create a default block using the block registry
+ */
+function createDefaultBlock(blockType: string): Block {
+  // Use block registry to create default block
+  const defaultBlock = blockRegistry.createDefault(blockType);
+
+  if (!defaultBlock) {
+    // Fallback if block type not registered
+    logger.warn(
+      `Block type "${blockType}" not found in registry, using fallback`,
+    );
+    return {
+      _key: `block-${Date.now()}`,
+      _type: blockType,
+      data: {},
+    };
+  }
+
+  return defaultBlock;
+}
+
 export default function EditPagePage({
   params,
 }: {
@@ -754,25 +776,6 @@ export default function EditPagePage({
     });
     toast.success("Container added!");
   };
-
-  function createDefaultBlock(blockType: string): Block {
-    // Use block registry to create default block
-    const defaultBlock = blockRegistry.createDefault(blockType);
-
-    if (!defaultBlock) {
-      // Fallback if block type not registered
-      logger.warn(
-        `Block type "${blockType}" not found in registry, using fallback`,
-      );
-      return {
-        _key: `block-${Date.now()}`,
-        _type: blockType,
-        data: {},
-      };
-    }
-
-    return defaultBlock;
-  }
 
   // Preview mode - show rendered page without any editor chrome
   if (previewMode) {
