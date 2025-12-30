@@ -17,22 +17,21 @@
  * ```
  */
 
-import type { Breakpoint } from "@/components/editor/breakpoint-selector";
+// Re-export types from @enterprise/tokens
+export type {
+  Breakpoint,
+  BreakpointConfig,
+  ResponsiveOverrides,
+  ResponsiveBlockData,
+} from "@enterprise/tokens";
 
-/**
- * Responsive overrides for block data
- */
-export type ResponsiveOverrides<T extends Record<string, unknown>> = {
-  tablet?: Partial<T>;
-  mobile?: Partial<T>;
-};
+export {
+  BREAKPOINT_WIDTHS,
+  hasResponsiveOverrides,
+  isBreakpoint,
+} from "@enterprise/tokens";
 
-/**
- * Block data with optional responsive overrides
- */
-export type ResponsiveBlockData<T extends Record<string, unknown>> = T & {
-  _responsive?: ResponsiveOverrides<T>;
-};
+import type { Breakpoint, ResponsiveOverrides } from "@enterprise/tokens";
 
 /**
  * Get the effective value for a property at a given breakpoint

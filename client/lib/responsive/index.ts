@@ -5,9 +5,21 @@
  * that apply at different breakpoints using Tailwind's responsive prefixes.
  */
 
-import type { ResponsiveOverrides } from "./types";
+import type { ResponsiveOverrides } from "@enterprise/tokens";
 
-export type { ResponsiveOverrides } from "./types";
+// Re-export types from @enterprise/tokens
+export type {
+  Breakpoint,
+  BreakpointConfig,
+  ResponsiveOverrides,
+  ResponsiveBlockData,
+} from "@enterprise/tokens";
+
+export {
+  BREAKPOINT_WIDTHS,
+  hasResponsiveOverrides,
+  isBreakpoint,
+} from "@enterprise/tokens";
 
 /**
  * Get the base value and responsive overrides from block data
@@ -82,11 +94,4 @@ export function getResponsiveClass<T extends string>(
   }
 
   return classes.join(" ");
-}
-
-/**
- * Type guard to check if data has responsive overrides
- */
-export function hasResponsiveOverrides(data: Record<string, unknown>): boolean {
-  return "_responsive" in data && data._responsive !== undefined;
 }
