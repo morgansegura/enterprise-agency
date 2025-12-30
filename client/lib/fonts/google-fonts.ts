@@ -2,59 +2,19 @@
  * Google Fonts Utilities
  *
  * Utilities for dynamically loading Google Fonts based on tenant configuration.
+ * Core font utilities are from @enterprise/tokens.
  */
 
-import type { FontConfig, FontDefinition, FontRole } from "./types";
+import type { FontConfig, FontRole } from "@enterprise/tokens";
+import { buildFontFamily as buildFontFamilyFn } from "@enterprise/tokens";
 
-/**
- * Get fallback stack for a font category
- */
-export function getFallbackStack(
-  category: FontDefinition["category"] = "sans-serif",
-): string {
-  switch (category) {
-    case "sans-serif":
-      return "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
-    case "serif":
-      return "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif";
-    case "monospace":
-      return "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace";
-    case "display":
-      return "ui-sans-serif, system-ui, sans-serif";
-    case "handwriting":
-      return "cursive, ui-sans-serif, sans-serif";
-    default:
-      return "sans-serif";
-  }
-}
-
-/**
- * Build full font-family value with fallbacks
- */
-export function buildFontFamily(
-  family: string,
-  category: FontDefinition["category"] = "sans-serif",
-): string {
-  const fallback = getFallbackStack(category);
-  return `'${family}', ${fallback}`;
-}
-
-/**
- * Build Google Fonts URL for loading multiple fonts
- */
-export function buildGoogleFontsUrl(definitions: FontDefinition[]): string {
-  if (definitions.length === 0) return "";
-
-  const families = definitions
-    .map((def) => {
-      const family = def.family.replace(/ /g, "+");
-      const weights = def.weights.join(";");
-      return `family=${family}:wght@${weights}`;
-    })
-    .join("&");
-
-  return `https://fonts.googleapis.com/css2?${families}&display=swap`;
-}
+// Re-export core utilities from tokens
+export {
+  getFallbackStack,
+  buildFontFamily,
+  buildGoogleFontsUrl,
+  getGoogleFontsPreconnectLinks,
+} from "@enterprise/tokens";
 
 /**
  * Generate CSS variables for font configuration
@@ -64,7 +24,7 @@ export function generateFontCSS(fontConfig: FontConfig): string {
 
   // Generate font-family variables for each definition
   fontConfig.definitions.forEach((def) => {
-    const fontFamily = buildFontFamily(def.family, def.category);
+    const fontFamily = buildFontFamilyFn(def.family, def.category);
     cssVars.push(`--font-${def.id}: ${fontFamily};`);
   });
 
@@ -89,17 +49,6 @@ export function generateFontCSS(fontConfig: FontConfig): string {
   );
 
   return cssVars.join("\n  ");
-}
-
-/**
- * Generate Google Fonts preconnect links
- * These improve loading performance
- */
-export function getGoogleFontsPreconnectLinks(): string {
-  return `
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-`;
 }
 
 /**
