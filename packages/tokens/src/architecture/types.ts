@@ -109,6 +109,24 @@ export type TailwindGradientConfig = {
   to: string; // Tailwind color like 'pink-500'
 };
 
+/**
+ * Check if gradient config is legacy CSS format (has stops)
+ */
+export function isLegacyGradientConfig(
+  config: GradientConfig | TailwindGradientConfig,
+): config is GradientConfig {
+  return "stops" in config && Array.isArray(config.stops);
+}
+
+/**
+ * Check if gradient config is Tailwind format (has from/to)
+ */
+export function isTailwindGradientConfig(
+  config: GradientConfig | TailwindGradientConfig,
+): config is TailwindGradientConfig {
+  return "from" in config && "to" in config;
+}
+
 /** Image background configuration */
 export type ImageBackgroundConfig = {
   src: string;
@@ -177,7 +195,7 @@ export type ContainerLayout = {
 export interface Block {
   _type: string;
   _key: string;
-  data?: Record<string, unknown>;
+  data: Record<string, unknown>;
   [key: string]: unknown;
 }
 

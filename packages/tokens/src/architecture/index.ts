@@ -51,4 +51,6 @@ export {
   isSectionBackgroundObject,
   normalizeBackground,
   getBackgroundDataValue,
+  isLegacyGradientConfig,
+  isTailwindGradientConfig,
 } from "./types";

@@ -6,7 +6,14 @@ import type {
   Section as SectionType,
   Container as ContainerType,
   SectionBackground,
+  GradientConfig,
+  TailwindGradientConfig,
 } from "@/lib/types/section";
+import {
+  isLegacyGradientConfig,
+  isTailwindGradientConfig,
+} from "@/lib/types/section";
+import type { RootBlock } from "@/lib/blocks";
 
 // Re-export types for external use
 export type { SectionBackground };
@@ -30,6 +37,43 @@ const backgroundPresets = [
   "muted",
   "accent",
 ];
+
+/**
+ * Generate CSS gradient string from gradient config
+ */
+function generateGradientCss(
+  gradient: GradientConfig | TailwindGradientConfig,
+): string {
+  if (isLegacyGradientConfig(gradient)) {
+    const stops = gradient.stops
+      .map((s) => `${s.color} ${s.position}%`)
+      .join(", ");
+    return gradient.type === "linear"
+      ? `linear-gradient(${gradient.angle || 180}deg, ${stops})`
+      : `radial-gradient(circle, ${stops})`;
+  }
+
+  if (isTailwindGradientConfig(gradient)) {
+    // Convert Tailwind direction to CSS angle
+    const directionMap: Record<string, string> = {
+      "to-t": "0deg",
+      "to-tr": "45deg",
+      "to-r": "90deg",
+      "to-br": "135deg",
+      "to-b": "180deg",
+      "to-bl": "225deg",
+      "to-l": "270deg",
+      "to-tl": "315deg",
+    };
+    const angle = directionMap[gradient.direction] || "180deg";
+    const stops = gradient.via
+      ? `var(--color-${gradient.from}), var(--color-${gradient.via}), var(--color-${gradient.to})`
+      : `var(--color-${gradient.from}), var(--color-${gradient.to})`;
+    return `linear-gradient(${angle}, ${stops})`;
+  }
+
+  return "";
+}
 
 /**
  * Normalize background to data attribute and inline style
@@ -58,30 +102,28 @@ function normalizeBackground(
     case "none":
       return { dataBackground: "none" };
     case "color": {
-      if (backgroundPresets.includes(background.color)) {
-        return { dataBackground: background.color as BackgroundVariant };
+      const color = background.color;
+      if (!color) return { dataBackground: "none" };
+      if (backgroundPresets.includes(color)) {
+        return { dataBackground: color as BackgroundVariant };
       }
       return {
         dataBackground: "none",
-        style: { backgroundColor: background.color },
+        style: { backgroundColor: color },
       };
     }
     case "gradient": {
-      const { gradient } = background;
-      const stops = gradient.stops
-        .map((s) => `${s.color} ${s.position}%`)
-        .join(", ");
-      const gradientCss =
-        gradient.type === "linear"
-          ? `linear-gradient(${gradient.angle || 180}deg, ${stops})`
-          : `radial-gradient(circle, ${stops})`;
+      const gradientCss = background.gradient
+        ? generateGradientCss(background.gradient)
+        : "";
       return {
         dataBackground: "none",
-        style: { background: gradientCss },
+        style: gradientCss ? { background: gradientCss } : undefined,
       };
     }
     case "image": {
       const { image } = background;
+      if (!image) return { dataBackground: "none" };
       const style: React.CSSProperties = {
         backgroundImage: `url(${image.src})`,
         backgroundSize: image.size || "cover",
@@ -113,15 +155,8 @@ function getContainerBackgroundStyle(
   }
 
   if (background.type === "gradient" && background.gradient) {
-    const { gradient } = background;
-    const stops = gradient.stops
-      .map((s) => `${s.color} ${s.position}%`)
-      .join(", ");
-    const gradientCss =
-      gradient.type === "linear"
-        ? `linear-gradient(${gradient.angle || 180}deg, ${stops})`
-        : `radial-gradient(circle, ${stops})`;
-    return { background: gradientCss };
+    const gradientCss = generateGradientCss(background.gradient);
+    return gradientCss ? { background: gradientCss } : undefined;
   }
 
   if (background.type === "image" && background.image) {
@@ -248,7 +283,7 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
                 // Background
                 style={getContainerBackgroundStyle(container.background)}
               >
-                <BlockRenderer blocks={container.blocks} />
+                <BlockRenderer blocks={container.blocks as RootBlock[]} />
               </Container>
             ))}
           </Section>
