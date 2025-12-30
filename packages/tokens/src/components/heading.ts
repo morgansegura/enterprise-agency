@@ -16,11 +16,12 @@ import type { VisibilityProperties, MarginProperties } from "./base-properties";
 // Heading-Specific Properties
 // =============================================================================
 
-export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+/** Numeric heading level (1-6) for component properties */
+export type HeadingLevelNumber = 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface HeadingTypographyProperties {
   /** Heading level (H1-H6) */
-  level?: HeadingLevel;
+  level?: HeadingLevelNumber;
   /** Font size (can override default for level) */
   fontSize?: HeadingSizeScaleKey;
   /** Font weight */
@@ -82,7 +83,10 @@ export interface HeadingProperties
 // Default Font Size by Heading Level
 // =============================================================================
 
-export const headingLevelDefaults: Record<HeadingLevel, HeadingSizeScaleKey> = {
+export const headingLevelDefaults: Record<
+  HeadingLevelNumber,
+  HeadingSizeScaleKey
+> = {
   1: "4xl",
   2: "3xl",
   3: "2xl",

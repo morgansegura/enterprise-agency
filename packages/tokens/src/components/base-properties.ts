@@ -101,7 +101,8 @@ export type GradientDirection =
   | "to-l"
   | "to-tl";
 
-export interface GradientStop {
+/** Gradient stop with optional position (0-100) for component backgrounds */
+export interface ComponentGradientStop {
   color: string;
   position?: number; // 0-100
 }

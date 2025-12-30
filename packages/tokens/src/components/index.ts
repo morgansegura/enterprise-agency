@@ -57,7 +57,7 @@ export {
   type GapProperties,
   type BackgroundType,
   type GradientDirection,
-  type GradientStop,
+  type ComponentGradientStop,
   type BackgroundProperties,
   type BorderProperties,
   type ShadowProperties,
@@ -104,7 +104,7 @@ export {
 
 // Heading
 export {
-  type HeadingLevel,
+  type HeadingLevelNumber,
   type HeadingTypographyProperties,
   type HeadingLayoutProperties,
   type HeadingProperties,
