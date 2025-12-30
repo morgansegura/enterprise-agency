@@ -54,3 +54,48 @@ export {
   isLegacyGradientConfig,
   isTailwindGradientConfig,
 } from "./types";
+
+// Block types
+export {
+  // Responsive
+  type ResponsiveColumns,
+  type BlockAlignItems,
+  type BlockJustifyContent,
+  // Content block data
+  type HeadingBlockData,
+  type TextBlockData,
+  type RichTextBlockData,
+  type ImageBlockData,
+  type ButtonBlockData,
+  type CardBlockData,
+  type VideoBlockData,
+  type AudioBlockData,
+  type ListBlockData,
+  type QuoteBlockData,
+  type AccordionBlockData,
+  type TabsBlockData,
+  type DividerBlockData,
+  type SpacerBlockData,
+  type EmbedBlockData,
+  type IconBlockData,
+  type StatsBlockData,
+  type MapBlockData,
+  // E-commerce block data
+  type ProductGridBlockData,
+  type ProductDetailBlockData,
+  type CartBlockData,
+  type CheckoutBlockData,
+  // Container block data
+  type GridLayoutData,
+  type FlexLayoutData,
+  type StackLayoutData,
+  type ContainerLayoutData,
+  // Block unions
+  type ContentBlock,
+  type ShallowContainerBlock,
+  type DeepContainerBlock,
+  type RootBlock,
+  // Type guards
+  isContainerBlock,
+  isContentBlock,
+} from "./blocks";
