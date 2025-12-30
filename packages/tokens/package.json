@@ -11,6 +11,11 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
+    "./architecture": {
+      "types": "./dist/architecture/index.d.ts",
+      "import": "./dist/architecture/index.mjs",
+      "require": "./dist/architecture/index.js"
+    },
     "./primitives": {
       "types": "./dist/primitives/index.d.ts",
       "import": "./dist/primitives/index.mjs",
@@ -25,6 +30,11 @@
       "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.mjs",
       "require": "./dist/components/index.js"
+    },
+    "./ui": {
+      "types": "./dist/ui/index.d.ts",
+      "import": "./dist/ui/index.mjs",
+      "require": "./dist/ui/index.js"
     }
   },
   "scripts": {

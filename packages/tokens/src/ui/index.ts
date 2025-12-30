@@ -1,8 +1,7 @@
 /**
- * Shared Settings Options
+ * UI Utilities
  *
- * Re-exports from @enterprise/tokens for backward compatibility.
- * All option arrays are now generated from token scales.
+ * SelectOption generators and pre-built option arrays for UI components.
  */
 
 export {
@@ -43,4 +42,4 @@ export {
   TEXT_ALIGN_OPTIONS,
   FONT_SIZE_OPTIONS,
   FONT_WEIGHT_OPTIONS,
-} from "@enterprise/tokens";
+} from "./select-options";
