@@ -15,6 +15,7 @@ import {
   ShoppingCart,
   ArrowRight,
   Plus,
+  PlusCircle,
 } from "lucide-react";
 
 export default function ShopPage({
@@ -61,7 +62,7 @@ export default function ShopPage({
       actions={
         <Button asChild>
           <Link href={`/${id}/shop/products/new`}>
-            <Plus className="h-4 w-4" />
+            <PlusCircle className="h-4 w-4" />
             Add Product
           </Link>
         </Button>

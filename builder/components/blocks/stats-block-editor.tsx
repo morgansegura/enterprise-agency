@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Trash2, BarChart3, Plus, X } from "lucide-react";
+import { Trash2, BarChart3, Plus, X, PlusCircle } from "lucide-react";
 import { FormItem } from "@/components/ui/form";
 import {
   ResponsiveField,
@@ -199,7 +199,7 @@ export function StatsBlockEditor({
               variant="outline"
               onClick={handleAddStat}
             >
-              <Plus className="h-3 w-3 mr-1" />
+              <PlusCircle className="h-3 w-3 mr-1" />
               Add Stat
             </Button>
           </FormItem>

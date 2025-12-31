@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Trash2, LayoutGrid, Plus, X } from "lucide-react";
+import { Trash2, LayoutGrid, Plus, X, PlusCircle } from "lucide-react";
 import { FormItem } from "@/components/ui/form";
 
 interface TabItem {
@@ -158,7 +158,7 @@ export function TabsBlockEditor({
               variant="outline"
               onClick={handleAddTab}
             >
-              <Plus className="h-3 w-3 mr-1" />
+              <PlusCircle className="h-3 w-3 mr-1" />
               Add Tab
             </Button>
           </div>

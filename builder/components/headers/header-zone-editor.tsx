@@ -31,6 +31,7 @@ import {
   Search,
   ShoppingCart,
   User,
+  PlusCircle,
 } from "lucide-react";
 
 import "./header-zone-editor.css";
@@ -452,7 +453,7 @@ function ZonePanel({ position, zone, menus, onUpdate }: ZonePanelProps) {
         <Popover open={isAddOpen} onOpenChange={setIsAddOpen}>
           <PopoverTrigger asChild>
             <Button variant="outline" size="sm">
-              <Plus />
+              <PlusCircle />
               Add
             </Button>
           </PopoverTrigger>

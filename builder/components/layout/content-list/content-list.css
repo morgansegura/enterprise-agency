@@ -22,7 +22,7 @@
 }
 
 .content-list-view-toggle {
-  @apply flex items-center border border-(--border) rounded-md;
+  @apply flex items-center p-0.5 bg-(--border) rounded-md gap-0.5;
 }
 
 /* Grid View */

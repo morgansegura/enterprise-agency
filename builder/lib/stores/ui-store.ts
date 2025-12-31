@@ -20,6 +20,9 @@ interface UIState {
   rightPanelOpen: boolean;
   rightPanelWidth: number;
   selectedElement: SelectedElement | null;
+  // Settings drawers
+  pageSettingsOpen: boolean;
+  globalSettingsOpen: boolean;
   // Theme
   theme: "light" | "dark" | "system";
   notifications: Notification[];
@@ -55,6 +58,11 @@ interface UIActions {
     key: string,
   ) => void;
   clearSelection: () => void;
+  // Settings drawers
+  setPageSettingsOpen: (open: boolean) => void;
+  setGlobalSettingsOpen: (open: boolean) => void;
+  openPageSettings: () => void;
+  openGlobalSettings: () => void;
   // Theme
   setTheme: (theme: "light" | "dark" | "system") => void;
   // Notifications
@@ -68,8 +76,10 @@ type UIStore = UIState & UIActions;
 const initialState: UIState = {
   sidebarOpen: true,
   rightPanelOpen: true,
-  rightPanelWidth: 320,
+  rightPanelWidth: 280,
   selectedElement: null,
+  pageSettingsOpen: false,
+  globalSettingsOpen: false,
   theme: "system",
   notifications: [],
 };
@@ -149,6 +159,19 @@ export const useUIStore = create<UIStore>()(
 
       clearSelection: () =>
         set({ selectedElement: null }, false, "ui/clearSelection"),
+
+      // Settings drawers
+      setPageSettingsOpen: (open) =>
+        set({ pageSettingsOpen: open }, false, "ui/setPageSettingsOpen"),
+
+      setGlobalSettingsOpen: (open) =>
+        set({ globalSettingsOpen: open }, false, "ui/setGlobalSettingsOpen"),
+
+      openPageSettings: () =>
+        set({ pageSettingsOpen: true }, false, "ui/openPageSettings"),
+
+      openGlobalSettings: () =>
+        set({ globalSettingsOpen: true }, false, "ui/openGlobalSettings"),
 
       // Theme
       setTheme: (theme) => set({ theme }, false, "ui/setTheme"),

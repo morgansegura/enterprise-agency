@@ -18,6 +18,7 @@ import {
   Ban,
   Plus,
   X,
+  PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ColorPicker } from "@/components/ui/color-picker";
@@ -345,7 +346,7 @@ export function BackgroundEditor({
               className="w-full"
               onClick={toggleVia}
             >
-              <Plus className="h-3 w-3 mr-1" />
+              <PlusCircle className="h-3 w-3 mr-1" />
               Add Middle Color
             </Button>
           )}
@@ -385,7 +386,7 @@ export function BackgroundEditor({
                 className="w-full"
                 onClick={onSelectImage}
               >
-                <ImageIcon className="h-4 w-4 mr-2" />
+                <ImageIcon className="h-4 w-4 " />
                 {background.image?.src ? "Change Image" : "Select from Library"}
               </Button>
             ) : (

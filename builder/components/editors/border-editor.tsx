@@ -63,7 +63,7 @@ export interface BorderEditorProps {
  * - Border radius
  * - Shadow (optional)
  *
- * Used by SectionSettingsPopover, ContainerSettingsPopover, and SettingsPanel.
+ * Used by SettingsPanel and ContainerSettingsPopover.
  */
 export function BorderEditor({
   value,

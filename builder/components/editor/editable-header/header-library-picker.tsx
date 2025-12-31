@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useHeaders, type Header } from "@/lib/hooks/use-headers";
-import { Check, Plus, Star } from "lucide-react";
+import { Check, Plus, PlusCircle, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import "./header-library-picker.css";
@@ -138,7 +138,7 @@ export function HeaderLibraryPicker({
                 }}
               >
                 <div className="header-library-item-preview header-library-item-new">
-                  <Plus className="h-5 w-5" />
+                  <PlusCircle className="h-5 w-5" />
                 </div>
                 <div className="header-library-item-info">
                   <span className="header-library-item-name">Create New</span>

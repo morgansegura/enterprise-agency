@@ -46,6 +46,7 @@ import {
   LayoutPanelTop,
   Layers,
   Plus,
+  PlusCircle,
 } from "lucide-react";
 import { PostEditorLayout } from "@/components/editor/post-editor-layout";
 import { useUIStore } from "@/lib/stores/ui-store";
@@ -624,7 +625,7 @@ export default function EditPostPage({
                       onClick={handleAddSection}
                       className="w-full border-2 border-dashed hover:border-primary hover:bg-primary/5"
                     >
-                      <Plus className="h-4 w-4 mr-2" />
+                      <PlusCircle className="h-4 w-4 " />
                       Add Section
                     </Button>
                   </div>

@@ -1,18 +1,25 @@
-/* Inline Toolbar - Reusable toolbar for sections, containers, blocks */
+/* =============================================================================
+ * Inline Toolbar - Webflow-style smooth interactions
+ * ============================================================================= */
 
 .inline-toolbar {
   display: flex;
   align-items: center;
   gap: 2px;
-  padding: 2px 4px;
-  background: var(--builder-background);
+  padding: 3px 4px;
+  background: var(--builder-card);
   border: 1px solid var(--builder-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  border-radius: 0.5rem;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.04);
   z-index: 10;
 }
 
-/* Position variants */
+/* =============================================================================
+ * Position Variants
+ * ============================================================================= */
+
 .inline-toolbar--top {
   position: absolute;
   top: -1px;
@@ -43,11 +50,25 @@
   flex-direction: column;
 }
 
-/* Show on hover variant */
+/* =============================================================================
+ * Show on Hover - smooth fade
+ * ============================================================================= */
+
 .inline-toolbar--hover {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s ease;
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
+}
+
+/* Add transform based on position */
+.inline-toolbar--hover.inline-toolbar--top {
+  transform: translate(-50%, calc(-100% + 4px));
+}
+
+.inline-toolbar--hover.inline-toolbar--bottom {
+  transform: translate(-50%, calc(100% - 4px));
 }
 
 /* Parent must have group class for hover to work */
@@ -58,64 +79,97 @@
   pointer-events: auto;
 }
 
-/* Element label */
+.group:hover > .inline-toolbar--hover.inline-toolbar--top,
+.group:focus-within > .inline-toolbar--hover.inline-toolbar--top,
+[data-selected="true"] > .inline-toolbar--hover.inline-toolbar--top {
+  transform: translate(-50%, -100%);
+}
+
+.group:hover > .inline-toolbar--hover.inline-toolbar--bottom,
+.group:focus-within > .inline-toolbar--hover.inline-toolbar--bottom,
+[data-selected="true"] > .inline-toolbar--hover.inline-toolbar--bottom {
+  transform: translate(-50%, 100%);
+}
+
+/* =============================================================================
+ * Element Label
+ * ============================================================================= */
+
 .inline-toolbar-label {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 500;
   color: var(--builder-muted-foreground);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0 4px;
+  letter-spacing: 0.04em;
+  padding: 0 6px;
   white-space: nowrap;
 }
 
-/* Drag handle */
+/* =============================================================================
+ * Drag Handle
+ * ============================================================================= */
+
 .inline-toolbar-drag-handle {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2px;
+  padding: 4px;
   cursor: grab;
   color: var(--builder-muted-foreground);
-  border-radius: var(--radius-sm);
-  transition: color 0.15s ease, background-color 0.15s ease;
+  border-radius: 0.25rem;
+  transition: all 100ms ease-out;
 }
 
 .inline-toolbar-drag-handle:hover {
   color: var(--builder-foreground);
-  background: var(--builder-accent);
+  background: var(--builder-muted);
 }
 
 .inline-toolbar-drag-handle:active {
   cursor: grabbing;
+  transform: scale(0.95);
 }
 
-/* Divider between action groups */
+/* =============================================================================
+ * Divider
+ * ============================================================================= */
+
 .inline-toolbar-divider {
   width: 1px;
-  height: 16px;
+  height: 14px;
   background: var(--builder-border);
   margin: 0 2px;
 }
 
 .inline-toolbar--left .inline-toolbar-divider,
 .inline-toolbar--right .inline-toolbar-divider {
-  width: 16px;
+  width: 14px;
   height: 1px;
 }
 
-/* Toolbar button */
+/* =============================================================================
+ * Toolbar Button
+ * ============================================================================= */
+
 .inline-toolbar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 24px;
   height: 24px;
   padding: 0;
   color: var(--builder-muted-foreground);
-  transition: color 0.15s ease, background-color 0.15s ease;
+  border-radius: 0.25rem;
+  transition: all 100ms ease-out;
 }
 
 .inline-toolbar-button:hover:not(:disabled) {
   color: var(--builder-foreground);
-  background: var(--builder-accent);
+  background: var(--builder-muted);
+}
+
+.inline-toolbar-button:active:not(:disabled) {
+  transform: scale(0.9);
 }
 
 .inline-toolbar-button:disabled {
@@ -123,8 +177,21 @@
   cursor: not-allowed;
 }
 
-/* Destructive variant */
+/* Active state */
+.inline-toolbar-button.is-active {
+  color: var(--builder-primary);
+  background: color-mix(in srgb, var(--builder-primary) 10%, transparent);
+}
+
+/* =============================================================================
+ * Destructive Variant
+ * ============================================================================= */
+
+.inline-toolbar-button--destructive {
+  color: var(--builder-muted-foreground);
+}
+
 .inline-toolbar-button--destructive:hover:not(:disabled) {
   color: var(--builder-destructive);
-  background: hsl(var(--builder-destructive-hsl) / 0.1);
+  background: color-mix(in srgb, var(--builder-destructive) 10%, transparent);
 }

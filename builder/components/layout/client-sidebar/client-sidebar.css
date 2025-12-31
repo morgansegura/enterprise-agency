@@ -1,11 +1,11 @@
 @reference "tailwindcss";
 
 .client-sidebar-logo {
-  @apply flex aspect-square size-8 items-center justify-center rounded-lg bg-(--primary) text-(--primary-foreground);
+  @apply flex aspect-square size-8 items-center justify-center rounded-sm bg-(--primary) text-(--primary-foreground) shrink-0;
 }
 
 .client-sidebar-header-text {
-  @apply grid flex-1 text-left text-sm leading-tight;
+  @apply grid flex-1 text-left text-sm leading-tight overflow-hidden;
 }
 
 .client-sidebar-title {
@@ -18,4 +18,54 @@
 
 .client-sidebar-back {
   @apply text-(--muted-foreground) hover:text-(--foreground);
+}
+
+/* Icon mode - hide text elements when collapsed */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-header-text {
+  @apply hidden;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-back
+  span {
+  @apply hidden;
+}
+
+/* Header container */
+.client-sidebar-header {
+  @apply overflow-hidden;
+}
+
+/* Center header menu in icon mode - maintain full width */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-header
+  [data-sidebar="menu"] {
+  @apply w-full items-center;
+}
+
+/* Center logo menu item in icon mode - maintain full width */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-header
+  [data-sidebar="menu-item"] {
+  @apply w-full justify-center;
+}
+
+/* Center logo button in icon mode */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-header
+  [data-sidebar="menu-button"] {
+  @apply justify-center p-0 size-10;
+}
+
+/* Center logo in icon mode */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-logo {
+  @apply mx-auto;
+}
+
+/* Center back button in footer when collapsed */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-back {
+  @apply justify-center;
 }

@@ -338,7 +338,7 @@ export function GlobalSettingsDrawer({
                 disabled={!hasChanges || updateTokens.isPending}
               >
                 {updateTokens.isPending && (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-4 w-4  animate-spin" />
                 )}
                 {hasChanges ? "Save Changes" : "Saved"}
               </Button>

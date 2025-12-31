@@ -6,8 +6,6 @@ import {
   SettingsDrawerSidebar,
   SettingsDrawerNav,
   SettingsDrawerContent,
-  SettingsDrawerActions,
-  SettingsDrawerSaveButton,
   SettingsSection,
   SettingsGridBlock,
   SettingsField,
@@ -37,7 +35,11 @@ import {
   Search,
 } from "lucide-react";
 import { ColorPicker } from "@/components/ui/color-picker";
-import { PageList, type PageCardData, type PageCardActions } from "@/components/ui/page-card";
+import {
+  PageList,
+  type PageCardData,
+  type PageCardActions,
+} from "@/components/ui/page-card";
 import { cn } from "@/lib/utils";
 import {
   useTenantTokens,
@@ -49,7 +51,7 @@ import {
   usePublishPage,
   useUnpublishPage,
   useDuplicatePage,
-  useDeletePage
+  useDeletePage,
 } from "@/lib/hooks/use-pages";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -103,10 +105,7 @@ import {
   type ComponentSettingsData,
   defaultComponentSettings,
 } from "./component-settings-panel";
-import {
-  ThemePresets,
-  type ThemePreset,
-} from "./theme-presets";
+import { ThemePresets, type ThemePreset } from "./theme-presets";
 import {
   LoadingSettingsPanel,
   type LoadingSettingsData,
@@ -117,6 +116,7 @@ import {
   type SEOSettingsData,
   defaultSEOSettings,
 } from "./seo-settings-panel";
+import { applyTokensToDOM, type TokensToApply } from "@/lib/tokens/apply-tokens";
 
 type SettingsTab =
   | "presets"
@@ -151,7 +151,12 @@ const navItems: SettingsNavItem<SettingsTab>[] = [
     icon: Search,
     description: "Search & analytics",
   },
-  { id: "colors", label: "Colors", icon: Palette, description: "Brand & UI colors" },
+  {
+    id: "colors",
+    label: "Colors",
+    icon: Palette,
+    description: "Brand & UI colors",
+  },
   {
     id: "typography",
     label: "Typography",
@@ -669,13 +674,30 @@ export function GlobalSettingsDrawer({
             defaultCards.transitionDuration,
         },
         // New comprehensive settings from stored tokens (cast to any for extended properties)
-        colorSettings: (tokens as Record<string, unknown>).colorSettings as ColorSettingsData || defaultColorSettings,
-        typographySettings: (tokens as Record<string, unknown>).typographySettings as TypographySettingsData || defaultTypographySettings,
-        animationSettings: (tokens as Record<string, unknown>).animationSettings as AnimationSettingsData || defaultAnimationSettings,
-        componentSettings: (tokens as Record<string, unknown>).componentSettings as ComponentSettingsData || defaultComponentSettings,
-        loadingSettings: (tokens as Record<string, unknown>).loadingSettings as LoadingSettingsData || defaultLoadingSettings,
-        seoSettings: (tokens as Record<string, unknown>).seoSettings as SEOSettingsData || defaultSEOSettings,
-        activeThemeId: (tokens as Record<string, unknown>).activeThemeId as string | undefined,
+        colorSettings:
+          ((tokens as Record<string, unknown>)
+            .colorSettings as ColorSettingsData) || defaultColorSettings,
+        typographySettings:
+          ((tokens as Record<string, unknown>)
+            .typographySettings as TypographySettingsData) ||
+          defaultTypographySettings,
+        animationSettings:
+          ((tokens as Record<string, unknown>)
+            .animationSettings as AnimationSettingsData) ||
+          defaultAnimationSettings,
+        componentSettings:
+          ((tokens as Record<string, unknown>)
+            .componentSettings as ComponentSettingsData) ||
+          defaultComponentSettings,
+        loadingSettings:
+          ((tokens as Record<string, unknown>)
+            .loadingSettings as LoadingSettingsData) || defaultLoadingSettings,
+        seoSettings:
+          ((tokens as Record<string, unknown>)
+            .seoSettings as SEOSettingsData) || defaultSEOSettings,
+        activeThemeId: (tokens as Record<string, unknown>).activeThemeId as
+          | string
+          | undefined,
       };
       setLocalTokens(initial);
       setOriginalTokens(initial);
@@ -685,6 +707,82 @@ export function GlobalSettingsDrawer({
   const hasChanges = React.useMemo(() => {
     return JSON.stringify(localTokens) !== JSON.stringify(originalTokens);
   }, [localTokens, originalTokens]);
+
+  // Auto-save with debounce
+  const saveTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [isSaving, setIsSaving] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!tenantId || !hasChanges) return;
+
+    // Clear any existing timeout
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Debounce save by 800ms
+    saveTimeoutRef.current = setTimeout(() => {
+      setIsSaving(true);
+
+      const tokensToSave = {
+        semantic: localTokens.colors,
+        colors: {
+          primary: generateColorScale(localTokens.colors.primary),
+          secondary: generateColorScale(localTokens.colors.secondary),
+          accent: generateColorScale(localTokens.colors.accent),
+        },
+        typography: {
+          fontFamily: localTokens.typography.fontFamily,
+          fontSize: localTokens.typography.fontSize,
+        },
+        fonts: localTokens.typography.fontConfig,
+        borderRadius: {
+          none: "0",
+          sm: "0.125rem",
+          base: localTokens.typography.borderRadius,
+          md: "0.375rem",
+          lg: "0.5rem",
+          xl: "0.75rem",
+          "2xl": "1rem",
+          "3xl": "1.5rem",
+          full: "9999px",
+        },
+        components: {
+          buttons: localTokens.buttons,
+          inputs: localTokens.inputs,
+          cards: localTokens.cards,
+        },
+        colorSettings: localTokens.colorSettings,
+        typographySettings: localTokens.typographySettings,
+        animationSettings: localTokens.animationSettings,
+        componentSettings: localTokens.componentSettings,
+        loadingSettings: localTokens.loadingSettings,
+        seoSettings: localTokens.seoSettings,
+        activeThemeId: localTokens.activeThemeId,
+      };
+
+      updateTokens.mutate(
+        { tenantId, tokens: tokensToSave as Record<string, unknown> },
+        {
+          onSuccess: () => {
+            applyTokensToDOM(tokensToSave as unknown as TokensToApply);
+            setOriginalTokens(localTokens);
+            setIsSaving(false);
+          },
+          onError: () => {
+            toast.error("Failed to save settings");
+            setIsSaving(false);
+          },
+        },
+      );
+    }, 800);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [localTokens, tenantId, hasChanges, updateTokens]);
 
   // Update handlers
   const updateColors = (key: keyof SemanticColors, value: string) => {
@@ -789,62 +887,6 @@ export function GlobalSettingsDrawer({
     toast.success(`Applied "${preset.name}" theme`);
   };
 
-  const handleSave = () => {
-    if (!tenantId) return;
-
-    const tokensToSave = {
-      semantic: localTokens.colors,
-      colors: {
-        primary: generateColorScale(localTokens.colors.primary),
-        secondary: generateColorScale(localTokens.colors.secondary),
-        accent: generateColorScale(localTokens.colors.accent),
-      },
-      typography: {
-        fontFamily: localTokens.typography.fontFamily,
-        fontSize: localTokens.typography.fontSize,
-      },
-      fonts: localTokens.typography.fontConfig,
-      borderRadius: {
-        none: "0",
-        sm: "0.125rem",
-        base: localTokens.typography.borderRadius,
-        md: "0.375rem",
-        lg: "0.5rem",
-        xl: "0.75rem",
-        "2xl": "1rem",
-        "3xl": "1.5rem",
-        full: "9999px",
-      },
-      components: {
-        buttons: localTokens.buttons,
-        inputs: localTokens.inputs,
-        cards: localTokens.cards,
-      },
-      // New comprehensive settings
-      colorSettings: localTokens.colorSettings,
-      typographySettings: localTokens.typographySettings,
-      animationSettings: localTokens.animationSettings,
-      componentSettings: localTokens.componentSettings,
-      loadingSettings: localTokens.loadingSettings,
-      seoSettings: localTokens.seoSettings,
-      activeThemeId: localTokens.activeThemeId,
-    };
-
-    updateTokens.mutate(
-      { tenantId, tokens: tokensToSave as Record<string, unknown> },
-      {
-        onSuccess: () => {
-          toast.success("Settings saved!");
-          applyTokensToDOM(tokensToSave);
-          setOriginalTokens(localTokens);
-        },
-        onError: () => {
-          toast.error("Failed to save settings");
-        },
-      },
-    );
-  };
-
   return (
     <SettingsDrawer
       open={open}
@@ -863,13 +905,13 @@ export function GlobalSettingsDrawer({
       </SettingsDrawerSidebar>
 
       <SettingsDrawerContent isLoading={isLoading}>
-        <SettingsDrawerActions>
-          <SettingsDrawerSaveButton
-            onClick={handleSave}
-            isPending={updateTokens.isPending}
-            hasChanges={hasChanges}
-          />
-        </SettingsDrawerActions>
+        {/* Auto-save indicator */}
+        {isSaving && (
+          <div className="fixed top-3 right-14 flex items-center gap-2 text-xs text-muted-foreground bg-background/80 backdrop-blur-sm px-3 py-1.5 rounded-full border">
+            <Loader2 className="h-3 w-3 animate-spin" />
+            Saving...
+          </div>
+        )}
 
         {/* Site Settings - Pages management */}
         {activeTab === "site" && tenantId && (
@@ -1000,66 +1042,7 @@ function darkenColor(hex: string, amount: number): string {
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 }
 
-const semanticToCssVar: Record<string, string> = {
-  primary: "--primary",
-  primaryForeground: "--primary-foreground",
-  secondary: "--secondary",
-  secondaryForeground: "--secondary-foreground",
-  accent: "--accent",
-  accentForeground: "--accent-foreground",
-  background: "--background",
-  foreground: "--foreground",
-  card: "--card",
-  cardForeground: "--card-foreground",
-  popover: "--popover",
-  popoverForeground: "--popover-foreground",
-  muted: "--muted",
-  mutedForeground: "--muted-foreground",
-  border: "--border",
-  input: "--input",
-  ring: "--ring",
-  destructive: "--destructive",
-};
-
-function applyTokensToDOM(tokens: Record<string, unknown>) {
-  const root = document.documentElement;
-
-  if (tokens.semantic) {
-    const semantic = tokens.semantic as Record<string, string>;
-    Object.entries(semantic).forEach(([key, value]) => {
-      const cssVar = semanticToCssVar[key];
-      if (cssVar) root.style.setProperty(cssVar, value);
-    });
-  }
-
-  if (tokens.colors) {
-    const colors = tokens.colors as Record<string, Record<string, string>>;
-    Object.entries(colors).forEach(([colorName, scale]) => {
-      Object.entries(scale).forEach(([shade, value]) => {
-        root.style.setProperty(`--color-${colorName}-${shade}`, value);
-      });
-    });
-  }
-
-  if (tokens.borderRadius) {
-    const radius = tokens.borderRadius as Record<string, string>;
-    Object.entries(radius).forEach(([key, value]) => {
-      root.style.setProperty(`--radius-${key}`, value);
-    });
-  }
-
-  if (tokens.components) {
-    const components = tokens.components as Record<
-      string,
-      Record<string, string>
-    >;
-    Object.entries(components).forEach(([component, settings]) => {
-      Object.entries(settings).forEach(([key, value]) => {
-        root.style.setProperty(`--${component}-${key}`, String(value));
-      });
-    });
-  }
-}
+// applyTokensToDOM is imported from @/lib/tokens/apply-tokens
 
 // ============================================================================
 // ColorSettings panel
@@ -2247,17 +2230,41 @@ function CardSettingsPanel({
       <SettingsGridBlock title="Title Typography">
         <div className="settings-grid-compact">
           {renderSelect("Font Size", "titleFontSize", fontSizeSelectOptions)}
-          {renderSelect("Font Weight", "titleFontWeight", fontWeightSelectOptions)}
-          {renderSelect("Line Height", "titleLineHeight", lineHeightSelectOptions)}
-          {renderSelect("Letter Spacing", "titleLetterSpacing", letterSpacingSelectOptions)}
+          {renderSelect(
+            "Font Weight",
+            "titleFontWeight",
+            fontWeightSelectOptions,
+          )}
+          {renderSelect(
+            "Line Height",
+            "titleLineHeight",
+            lineHeightSelectOptions,
+          )}
+          {renderSelect(
+            "Letter Spacing",
+            "titleLetterSpacing",
+            letterSpacingSelectOptions,
+          )}
         </div>
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Description Typography">
         <div className="settings-grid-compact">
-          {renderSelect("Font Size", "descriptionFontSize", fontSizeSelectOptions.slice(0, 5))}
-          {renderSelect("Font Weight", "descriptionFontWeight", fontWeightSelectOptions)}
-          {renderSelect("Line Height", "descriptionLineHeight", lineHeightSelectOptions)}
+          {renderSelect(
+            "Font Size",
+            "descriptionFontSize",
+            fontSizeSelectOptions.slice(0, 5),
+          )}
+          {renderSelect(
+            "Font Weight",
+            "descriptionFontWeight",
+            fontWeightSelectOptions,
+          )}
+          {renderSelect(
+            "Line Height",
+            "descriptionLineHeight",
+            lineHeightSelectOptions,
+          )}
         </div>
       </SettingsGridBlock>
 
@@ -2324,7 +2331,9 @@ function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
     },
     onDelete: async (page) => {
       if (page.isHomePage) {
-        toast.error("Cannot delete the homepage. Set another page as homepage first.");
+        toast.error(
+          "Cannot delete the homepage. Set another page as homepage first.",
+        );
         return;
       }
       setUpdatingIds((prev) => [...prev, page.id]);
@@ -2348,7 +2357,9 @@ function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
           toast.success(`"${page.title}" unpublished`);
         }
       } catch {
-        toast.error(`Failed to ${newStatus === "published" ? "publish" : "unpublish"} page`);
+        toast.error(
+          `Failed to ${newStatus === "published" ? "publish" : "unpublish"} page`,
+        );
       } finally {
         setUpdatingIds((prev) => prev.filter((id) => id !== page.id));
       }

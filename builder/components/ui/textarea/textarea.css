@@ -1,34 +1,13 @@
+@reference "tailwindcss";
+
 [data-slot="textarea"] {
-  width: 100%;
-  min-height: 80px;
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--font-size-sm);
+  @apply flex w-full min-h-[80px] rounded-md border border-(--input) bg-(--background) px-3 py-2;
+  @apply text-sm text-(--foreground);
+  @apply ring-offset-(--background);
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply disabled:cursor-not-allowed disabled:opacity-50;
+  @apply placeholder:text-(--muted-foreground);
+  @apply resize-y;
   font-family: inherit;
   line-height: 1.5;
-  font-size: var(--size-sm);
-  color: var(--color-text);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  outline: none;
-  transition: border-color 0.15s ease;
-  resize: vertical;
-}
-
-[data-slot="textarea"]:hover {
-  border-color: var(--color-border-hover);
-}
-
-[data-slot="textarea"]:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-alpha);
-}
-
-[data-slot="textarea"]:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-[data-slot="textarea"]::placeholder {
-  color: var(--color-text-tertiary);
 }

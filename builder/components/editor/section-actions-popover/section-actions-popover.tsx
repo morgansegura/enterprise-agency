@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import {
-  Pencil,
   Plus,
   Layers,
   Copy,
@@ -16,17 +15,16 @@ import {
   ChevronUp,
   ChevronDown,
   Trash2,
+  PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Section, Block } from "@/lib/hooks/use-pages";
-import { SectionSettingsPopover } from "../section-settings-popover";
 import { LayersPopover } from "../layers-popover";
 
 import "./section-actions-popover.css";
 
 interface SectionActionsPopoverProps {
   section: Section;
-  onSectionChange: (section: Section) => void;
   onDelete: () => void;
   onDuplicate?: () => void;
   onMoveUp?: () => void;
@@ -43,7 +41,6 @@ interface SectionActionsPopoverProps {
 
 export function SectionActionsPopover({
   section,
-  onSectionChange,
   onDelete,
   onDuplicate,
   onMoveUp,
@@ -58,7 +55,6 @@ export function SectionActionsPopover({
   children,
 }: SectionActionsPopoverProps) {
   const [open, setOpen] = React.useState(false);
-  const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [layersOpen, setLayersOpen] = React.useState(false);
 
   const handleOpenChange = (isOpen: boolean) => {
@@ -95,7 +91,7 @@ export function SectionActionsPopover({
                 setOpen(false);
               }}
             >
-              <Plus className="h-4 w-4" />
+              <PlusCircle className="h-4 w-4" />
               <span>Add Container</span>
             </Button>
           )}
@@ -118,29 +114,6 @@ export function SectionActionsPopover({
               <span>Layers</span>
             </Button>
           </LayersPopover>
-
-          {/* Divider */}
-          <div className="section-actions-divider" />
-
-          {/* Edit Section */}
-          <SectionSettingsPopover
-            section={section}
-            onChange={onSectionChange}
-            open={settingsOpen}
-            onOpenChange={setSettingsOpen}
-          >
-            <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "section-actions-item",
-                settingsOpen && "is-active",
-              )}
-            >
-              <Pencil className="h-4 w-4" />
-              <span>Edit Section</span>
-            </Button>
-          </SectionSettingsPopover>
 
           {/* Divider */}
           <div className="section-actions-divider" />

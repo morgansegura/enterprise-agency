@@ -69,6 +69,7 @@ import {
   Minus,
   EyeOff,
   Layers,
+  PlusCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -1635,7 +1636,7 @@ function HeaderCanvas({
               className="canvas-zone-add"
               onClick={(e) => e.stopPropagation()}
             >
-              <Plus className="size-3" />
+              <PlusCircle className="size-3" />
             </button>
           </PopoverTrigger>
           <PopoverContent className="add-block-menu" align="start">

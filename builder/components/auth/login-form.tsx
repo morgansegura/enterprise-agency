@@ -29,7 +29,7 @@ export function LoginForm() {
       logger.log("Login attempt", { email });
       await login(email, password);
       logger.log("Login successful, redirecting to dashboard");
-      router.push("/dashboard");
+      router.push("/clients");
     } catch (err) {
       const message = getErrorMessage(err);
 

@@ -19,6 +19,7 @@ import {
   ChevronDown,
   ExternalLink,
   Link,
+  PlusCircle,
 } from "lucide-react";
 
 import "./menu-item-tree.css";
@@ -206,7 +207,7 @@ function MenuItemRow({
               onClick={onAddChild}
               title="Add sub-item"
             >
-              <Plus />
+              <PlusCircle />
             </Button>
           )}
           {onMoveUp && (
@@ -333,7 +334,7 @@ export function MenuItemTree({
           size="sm"
           onClick={handleAddItem}
         >
-          <Plus />
+          <PlusCircle />
           Add Item
         </Button>
       </div>
@@ -342,7 +343,7 @@ export function MenuItemTree({
         <div className="menu-item-tree-empty">
           <p>No menu items yet.</p>
           <Button type="button" variant="outline" onClick={handleAddItem}>
-            <Plus />
+            <PlusCircle />
             Add your first item
           </Button>
         </div>

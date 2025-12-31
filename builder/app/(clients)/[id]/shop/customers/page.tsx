@@ -44,6 +44,7 @@ import {
   Mail,
   TrendingUp,
   Plus,
+  PlusCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -128,7 +129,7 @@ export default function CustomersPage({
             variant="outline"
             onClick={() => router.push(`/${id}/shop/customers/new`)}
           >
-            <Plus className="mr-2 h-4 w-4" />
+            <PlusCircle className="mr-2 h-4 w-4" />
             Add Customer
           </Button>
         }

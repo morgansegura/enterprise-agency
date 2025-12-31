@@ -3,20 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   PanelRightClose,
   PanelRightOpen,
@@ -30,19 +17,33 @@ import {
   Grid3X3,
   AlignLeft,
   Settings2,
+  EyeOff,
 } from "lucide-react";
 import { useUIStore } from "@/lib/stores/ui-store";
-import type { Section, Container, Block } from "@/lib/types/section";
+import type {
+  Section,
+  Container,
+  Block,
+  SectionBackground,
+} from "@/lib/types/section";
 import {
   SPACING_OPTIONS,
   EXTENDED_SPACING_OPTIONS,
-  BACKGROUND_PRESET_OPTIONS,
-  BORDER_WIDTH_OPTIONS,
-  BORDER_RADIUS_OPTIONS,
-  SHADOW_OPTIONS,
   CONTAINER_WIDTH_OPTIONS,
   SECTION_MIN_HEIGHT_OPTIONS,
+  OVERFLOW_OPTIONS,
+  SECTION_WIDTH_OPTIONS,
 } from "@/lib/constants";
+import { BackgroundEditor } from "@/components/editors";
+import { BorderEditor, type BorderValues } from "@/components/editors";
+import { VisibilityToggles } from "@/components/ui/visibility-toggles";
+import { PositionPicker } from "@/components/ui/position-picker";
+import {
+  PropertySection,
+  PropertyRow,
+  PropertyToggle,
+  PropertySelect,
+} from "./components";
 import "./settings-panel.css";
 
 // =============================================================================
@@ -146,27 +147,26 @@ export function SettingsPanel({
 
   const { icon, title } = getElementInfo();
 
-  // Toggle button when panel is closed
-  if (!rightPanelOpen) {
-    return (
-      <div className="settings-panel-toggle">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleRightPanel}
-          title="Open settings panel"
-        >
-          <PanelRightOpen className="h-4 w-4" />
-        </Button>
-      </div>
-    );
-  }
-
   return (
-    <aside
-      className={cn("settings-panel", rightPanelOpen && "open")}
-      style={{ width: rightPanelWidth }}
-    >
+    <div className={cn("settings-panel-wrapper", !rightPanelOpen && "collapsed")}>
+      {/* Toggle button when panel is closed */}
+      {!rightPanelOpen && (
+        <div className="settings-panel-toggle">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleRightPanel}
+            title="Open settings panel"
+          >
+            <PanelRightOpen className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      <aside
+        className={cn("settings-panel", rightPanelOpen && "open")}
+        style={{ width: rightPanelWidth }}
+      >
       {/* Panel Header */}
       <div className="settings-panel-header">
         <div className="settings-panel-selector">
@@ -264,113 +264,12 @@ export function SettingsPanel({
         )}
       </div>
     </aside>
-  );
-}
-
-// =============================================================================
-// Collapsible Section Component
-// =============================================================================
-
-interface SettingsSectionProps {
-  title: string;
-  icon?: React.ReactNode;
-  defaultOpen?: boolean;
-  children: React.ReactNode;
-}
-
-function SettingsSection({
-  title,
-  icon,
-  defaultOpen = true,
-  children,
-}: SettingsSectionProps) {
-  const [isOpen, setIsOpen] = React.useState(defaultOpen);
-
-  return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="settings-section"
-    >
-      <CollapsibleTrigger className="settings-section-trigger">
-        <div className="settings-section-trigger-left">
-          {icon}
-          <span>{title}</span>
-        </div>
-        <ChevronDown
-          className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform",
-            isOpen && "rotate-180",
-          )}
-        />
-      </CollapsibleTrigger>
-      <CollapsibleContent>
-        <div className="settings-section-content">{children}</div>
-      </CollapsibleContent>
-    </Collapsible>
-  );
-}
-
-// =============================================================================
-// Inline Select Component (Label + Select in row)
-// =============================================================================
-
-interface InlineSelectProps {
-  label: string;
-  value: string;
-  options: { value: string; label: string }[];
-  onChange: (value: string) => void;
-}
-
-function InlineSelect({ label, value, options, onChange }: InlineSelectProps) {
-  return (
-    <div className="settings-row">
-      <Label className="settings-label">{label}</Label>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="settings-select">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((opt) => (
-            <SelectItem key={opt.value} value={opt.value}>
-              {opt.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
     </div>
   );
 }
 
 // =============================================================================
-// Toggle Button Group (Webflow-style)
-// =============================================================================
-
-interface ToggleGroupProps {
-  value: string;
-  options: { value: string; label: string }[];
-  onChange: (value: string) => void;
-}
-
-function ToggleGroup({ value, options, onChange }: ToggleGroupProps) {
-  return (
-    <div className="toggle-group">
-      {options.map((opt) => (
-        <button
-          key={opt.value}
-          type="button"
-          className={cn("toggle-group-btn", value === opt.value && "active")}
-          onClick={() => onChange(opt.value)}
-        >
-          {opt.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// =============================================================================
-// Section Style Settings
+// Section Style Settings - Webflow-style
 // =============================================================================
 
 function SectionStyleSettings({
@@ -386,160 +285,215 @@ function SectionStyleSettings({
     onChange({ ...section, [field]: value });
   };
 
+  // Get background as object (normalize from string if legacy)
+  const getBackground = (): SectionBackground => {
+    if (!section.background) return { type: "none" };
+    if (typeof section.background === "string") {
+      if (section.background === "none") return { type: "none" };
+      return { type: "color", color: section.background };
+    }
+    return section.background;
+  };
+
+  const background = getBackground();
+
+  // Width options for toggle
+  const widthOptions = [
+    { value: "narrow", label: "Narrow" },
+    { value: "container", label: "Container" },
+    { value: "wide", label: "Wide" },
+    { value: "full", label: "Full" },
+  ];
+
+  // Settings Tab
   if (tab === "settings") {
     return (
-      <SettingsSection
-        title="Advanced"
-        icon={<Settings2 className="h-4 w-4" />}
-      >
-        <div className="settings-row-full">
-          <Label className="settings-label">Anchor ID</Label>
-          <Input
-            value={section.anchorId || ""}
-            onChange={(e) => handleChange("anchorId", e.target.value)}
-            placeholder="section-id"
-            className="settings-input"
+      <>
+        {/* Advanced */}
+        <PropertySection
+          title="Advanced"
+          icon={<Settings2 className="h-3.5 w-3.5" />}
+        >
+          <PropertyRow label="Overflow X">
+            <PropertySelect
+              value={section.overflowX || section.overflow || "visible"}
+              options={OVERFLOW_OPTIONS}
+              onChange={(v) => handleChange("overflowX", v)}
+            />
+          </PropertyRow>
+          <PropertyRow label="Overflow Y">
+            <PropertySelect
+              value={section.overflowY || section.overflow || "visible"}
+              options={OVERFLOW_OPTIONS}
+              onChange={(v) => handleChange("overflowY", v)}
+            />
+          </PropertyRow>
+          <PropertyRow label="Anchor ID" stacked>
+            <Input
+              value={section.anchorId || ""}
+              onChange={(e) => handleChange("anchorId", e.target.value)}
+              placeholder="e.g. hero, features"
+              className="settings-input"
+            />
+          </PropertyRow>
+          <PropertyRow label="CSS Classes" stacked>
+            <Input
+              value={section.customClasses || ""}
+              onChange={(e) => handleChange("customClasses", e.target.value)}
+              placeholder="e.g. my-class"
+              className="settings-input"
+            />
+          </PropertyRow>
+        </PropertySection>
+
+        {/* Visibility */}
+        <PropertySection
+          title="Visibility"
+          icon={<EyeOff className="h-3.5 w-3.5" />}
+        >
+          <VisibilityToggles
+            hideOn={section.hideOn}
+            onChange={(hideOn) => handleChange("hideOn", hideOn)}
           />
-        </div>
-        <div className="settings-row-full">
-          <Label className="settings-label">Custom Classes</Label>
-          <Input
-            value={section.customClasses || ""}
-            onChange={(e) => handleChange("customClasses", e.target.value)}
-            placeholder="my-class another-class"
-            className="settings-input"
-          />
-        </div>
-      </SettingsSection>
+        </PropertySection>
+      </>
     );
   }
 
+  // Style Tab
   return (
     <>
       {/* Layout */}
-      <SettingsSection title="Layout" icon={<Grid3X3 className="h-4 w-4" />}>
-        <div className="settings-row">
-          <Label className="settings-label">Width</Label>
-          <ToggleGroup
-            value={section.width || "full"}
-            options={[
-              { value: "narrow", label: "Narrow" },
-              { value: "container", label: "Container" },
-              { value: "wide", label: "Wide" },
-              { value: "full", label: "Full" },
-            ]}
+      <PropertySection
+        title="Layout"
+        icon={<Grid3X3 className="h-3.5 w-3.5" />}
+      >
+        <PropertyRow label="Width" stacked>
+          <PropertyToggle
+            value={section.width || "wide"}
+            options={widthOptions}
             onChange={(v) => handleChange("width", v)}
+            fullWidth
           />
-        </div>
-        <InlineSelect
-          label="Min Height"
-          value={section.minHeight || "none"}
-          options={SECTION_MIN_HEIGHT_OPTIONS}
-          onChange={(v) => handleChange("minHeight", v)}
-        />
+        </PropertyRow>
+        <PropertyRow label="Min Height">
+          <PropertySelect
+            value={section.minHeight || "none"}
+            options={SECTION_MIN_HEIGHT_OPTIONS}
+            onChange={(v) => handleChange("minHeight", v)}
+          />
+        </PropertyRow>
         {section.minHeight && section.minHeight !== "none" && (
-          <div className="settings-row">
-            <Label className="settings-label">Vertical Align</Label>
-            <ToggleGroup
-              value={section.verticalAlign || "top"}
-              options={[
-                { value: "top", label: "Top" },
-                { value: "center", label: "Center" },
-                { value: "bottom", label: "Bottom" },
-              ]}
-              onChange={(v) => handleChange("verticalAlign", v)}
-            />
-          </div>
+          <PropertyRow label="Position" stacked>
+            <div className="flex items-center gap-3">
+              <PositionPicker
+                horizontal={
+                  (section.align as "left" | "center" | "right") || "left"
+                }
+                vertical={
+                  (section.verticalAlign as "top" | "center" | "bottom") ||
+                  "top"
+                }
+                onChange={(h, v) => {
+                  onChange({
+                    ...section,
+                    align: h,
+                    verticalAlign: v,
+                  });
+                }}
+              />
+              <span className="text-xs text-muted-foreground">
+                {section.verticalAlign || "top"} / {section.align || "left"}
+              </span>
+            </div>
+          </PropertyRow>
         )}
-      </SettingsSection>
+      </PropertySection>
 
       {/* Spacing */}
-      <SettingsSection title="Spacing" icon={<Move className="h-4 w-4" />}>
-        <InlineSelect
-          label="Padding Top"
-          value={section.paddingTop || section.paddingY || "md"}
-          options={EXTENDED_SPACING_OPTIONS}
-          onChange={(v) => handleChange("paddingTop", v)}
-        />
-        <InlineSelect
-          label="Padding Bottom"
-          value={section.paddingBottom || section.paddingY || "md"}
-          options={EXTENDED_SPACING_OPTIONS}
-          onChange={(v) => handleChange("paddingBottom", v)}
-        />
-        <InlineSelect
-          label="Margin Top"
-          value={section.marginTop || "none"}
-          options={SPACING_OPTIONS}
-          onChange={(v) => handleChange("marginTop", v)}
-        />
-        <InlineSelect
-          label="Margin Bottom"
-          value={section.marginBottom || "none"}
-          options={SPACING_OPTIONS}
-          onChange={(v) => handleChange("marginBottom", v)}
-        />
-        <InlineSelect
-          label="Gap Y"
-          value={section.gapY || "none"}
-          options={SPACING_OPTIONS}
-          onChange={(v) => handleChange("gapY", v)}
-        />
-      </SettingsSection>
+      <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
+        <PropertyRow label="Pad Top">
+          <PropertySelect
+            value={section.paddingTop || section.paddingY || "md"}
+            options={EXTENDED_SPACING_OPTIONS}
+            onChange={(v) => handleChange("paddingTop", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Pad Bottom">
+          <PropertySelect
+            value={section.paddingBottom || section.paddingY || "md"}
+            options={EXTENDED_SPACING_OPTIONS}
+            onChange={(v) => handleChange("paddingBottom", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Margin Top">
+          <PropertySelect
+            value={section.marginTop || "none"}
+            options={SPACING_OPTIONS}
+            onChange={(v) => handleChange("marginTop", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Margin Bot">
+          <PropertySelect
+            value={section.marginBottom || "none"}
+            options={SPACING_OPTIONS}
+            onChange={(v) => handleChange("marginBottom", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Gap">
+          <PropertySelect
+            value={section.gapY || "md"}
+            options={SPACING_OPTIONS.slice(0, 7)}
+            onChange={(v) => handleChange("gapY", v)}
+          />
+        </PropertyRow>
+      </PropertySection>
 
       {/* Background */}
-      <SettingsSection
+      <PropertySection
         title="Background"
-        icon={<Palette className="h-4 w-4" />}
+        icon={<Palette className="h-3.5 w-3.5" />}
         defaultOpen={false}
       >
-        <InlineSelect
-          label="Preset"
-          value={
-            typeof section.background === "string" ? section.background : "none"
-          }
-          options={BACKGROUND_PRESET_OPTIONS}
-          onChange={(v) => handleChange("background", v)}
+        <BackgroundEditor
+          value={background}
+          onChange={(bg) => handleChange("background", bg)}
+          showTitle={false}
         />
-      </SettingsSection>
+      </PropertySection>
 
-      {/* Borders */}
-      <SettingsSection
+      {/* Borders & Effects */}
+      <PropertySection
         title="Borders"
-        icon={<Box className="h-4 w-4" />}
+        icon={<Box className="h-3.5 w-3.5" />}
         defaultOpen={false}
       >
-        <InlineSelect
-          label="Top"
-          value={section.borderTop || "none"}
-          options={BORDER_WIDTH_OPTIONS}
-          onChange={(v) => handleChange("borderTop", v)}
+        <BorderEditor
+          value={{
+            borderTop: section.borderTop,
+            borderBottom: section.borderBottom,
+            borderLeft: section.borderLeft,
+            borderRight: section.borderRight,
+            borderColor: section.borderColor,
+            borderRadius: section.borderRadius,
+            shadow: section.shadow,
+          }}
+          onChange={(values: Partial<BorderValues>) => {
+            Object.entries(values).forEach(([key, value]) => {
+              handleChange(key, value);
+            });
+          }}
+          mode="all"
+          showShadow={true}
+          showTitles={false}
         />
-        <InlineSelect
-          label="Bottom"
-          value={section.borderBottom || "none"}
-          options={BORDER_WIDTH_OPTIONS}
-          onChange={(v) => handleChange("borderBottom", v)}
-        />
-        <InlineSelect
-          label="Radius"
-          value={section.borderRadius || "none"}
-          options={BORDER_RADIUS_OPTIONS}
-          onChange={(v) => handleChange("borderRadius", v)}
-        />
-        <InlineSelect
-          label="Shadow"
-          value={section.shadow || "none"}
-          options={SHADOW_OPTIONS}
-          onChange={(v) => handleChange("shadow", v)}
-        />
-      </SettingsSection>
+      </PropertySection>
     </>
   );
 }
 
 // =============================================================================
-// Container Style Settings
+// Container Style Settings - Webflow-style
 // =============================================================================
 
 function ContainerStyleSettings({
@@ -562,84 +516,102 @@ function ContainerStyleSettings({
     });
   };
 
+  // Display type options for toggle
+  const displayOptions = [
+    { value: "stack", label: "Stack" },
+    { value: "flex", label: "Flex" },
+    { value: "grid", label: "Grid" },
+  ];
+
+  // Direction options for toggle
+  const directionOptions = [
+    { value: "row", label: "Row" },
+    { value: "column", label: "Column" },
+  ];
+
+  // Alignment options for toggle
+  const alignOptions = [
+    { value: "left", label: "Left" },
+    { value: "center", label: "Center" },
+    { value: "right", label: "Right" },
+  ];
+
+  // Settings Tab
   if (tab === "settings") {
     return (
-      <SettingsSection
+      <PropertySection
         title="Advanced"
-        icon={<Settings2 className="h-4 w-4" />}
+        icon={<Settings2 className="h-3.5 w-3.5" />}
       >
-        <div className="settings-row-full">
-          <Label className="settings-label">Custom Classes</Label>
+        <PropertyRow label="Custom Classes" stacked>
           <Input
             value={container.customClasses || ""}
             onChange={(e) => handleChange("customClasses", e.target.value)}
-            placeholder="my-class"
+            placeholder="e.g. my-class"
             className="settings-input"
           />
-        </div>
-      </SettingsSection>
+        </PropertyRow>
+      </PropertySection>
     );
   }
 
+  // Style Tab
   return (
     <>
       {/* Layout */}
-      <SettingsSection title="Layout" icon={<Grid3X3 className="h-4 w-4" />}>
-        <div className="settings-row">
-          <Label className="settings-label">Display</Label>
-          <ToggleGroup
+      <PropertySection
+        title="Layout"
+        icon={<Grid3X3 className="h-3.5 w-3.5" />}
+      >
+        <PropertyRow label="Display" stacked>
+          <PropertyToggle
             value={container.layout?.type || "stack"}
-            options={[
-              { value: "stack", label: "Stack" },
-              { value: "flex", label: "Flex" },
-              { value: "grid", label: "Grid" },
-            ]}
+            options={displayOptions}
             onChange={(v) => handleLayoutChange("type", v)}
+            fullWidth
           />
-        </div>
+        </PropertyRow>
 
         {container.layout?.type === "flex" && (
           <>
-            <div className="settings-row">
-              <Label className="settings-label">Direction</Label>
-              <ToggleGroup
+            <PropertyRow label="Direction" stacked>
+              <PropertyToggle
                 value={container.layout?.direction || "column"}
-                options={[
-                  { value: "row", label: "Row" },
-                  { value: "column", label: "Column" },
-                ]}
+                options={directionOptions}
                 onChange={(v) => handleLayoutChange("direction", v)}
+                fullWidth
               />
-            </div>
-            <InlineSelect
-              label="Justify"
-              value={container.layout?.justify || "start"}
-              options={[
-                { value: "start", label: "Start" },
-                { value: "center", label: "Center" },
-                { value: "end", label: "End" },
-                { value: "between", label: "Space Between" },
-                { value: "around", label: "Space Around" },
-              ]}
-              onChange={(v) => handleLayoutChange("justify", v)}
-            />
-            <InlineSelect
-              label="Align"
-              value={container.layout?.align || "stretch"}
-              options={[
-                { value: "start", label: "Start" },
-                { value: "center", label: "Center" },
-                { value: "end", label: "End" },
-                { value: "stretch", label: "Stretch" },
-              ]}
-              onChange={(v) => handleLayoutChange("align", v)}
-            />
+            </PropertyRow>
+            <PropertyRow label="Justify">
+              <PropertySelect
+                value={container.layout?.justify || "start"}
+                options={[
+                  { value: "start", label: "Start" },
+                  { value: "center", label: "Center" },
+                  { value: "end", label: "End" },
+                  { value: "between", label: "Between" },
+                  { value: "around", label: "Around" },
+                ]}
+                onChange={(v) => handleLayoutChange("justify", v)}
+              />
+            </PropertyRow>
+            <PropertyRow label="Align">
+              <PropertySelect
+                value={container.layout?.align || "stretch"}
+                options={[
+                  { value: "start", label: "Start" },
+                  { value: "center", label: "Center" },
+                  { value: "end", label: "End" },
+                  { value: "stretch", label: "Stretch" },
+                ]}
+                onChange={(v) => handleLayoutChange("align", v)}
+              />
+            </PropertyRow>
           </>
         )}
 
         {container.layout?.type === "grid" && (
-          <div className="settings-row">
-            <Label className="settings-label">Columns</Label>
+          <PropertyRow label="Columns">
             <Input
               type="number"
               min={1}
@@ -650,64 +622,64 @@ function ContainerStyleSettings({
               }
               className="settings-input-sm"
             />
-          </div>
+          </PropertyRow>
         )}
 
-        <InlineSelect
-          label="Gap"
-          value={container.layout?.gap || "md"}
-          options={SPACING_OPTIONS}
-          onChange={(v) => handleLayoutChange("gap", v)}
-        />
-        <InlineSelect
-          label="Max Width"
-          value={container.maxWidth || "none"}
-          options={CONTAINER_WIDTH_OPTIONS}
-          onChange={(v) => handleChange("maxWidth", v)}
-        />
-      </SettingsSection>
+        <PropertyRow label="Gap">
+          <PropertySelect
+            value={container.layout?.gap || "md"}
+            options={SPACING_OPTIONS}
+            onChange={(v) => handleLayoutChange("gap", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Max Width">
+          <PropertySelect
+            value={container.maxWidth || "none"}
+            options={CONTAINER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("maxWidth", v)}
+          />
+        </PropertyRow>
+      </PropertySection>
 
       {/* Spacing */}
-      <SettingsSection title="Spacing" icon={<Move className="h-4 w-4" />}>
-        <InlineSelect
-          label="Padding X"
-          value={container.paddingX || "none"}
-          options={SPACING_OPTIONS}
-          onChange={(v) => handleChange("paddingX", v)}
-        />
-        <InlineSelect
-          label="Padding Y"
-          value={container.paddingY || "none"}
-          options={SPACING_OPTIONS}
-          onChange={(v) => handleChange("paddingY", v)}
-        />
-      </SettingsSection>
+      <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
+        <PropertyRow label="Padding X">
+          <PropertySelect
+            value={container.paddingX || "none"}
+            options={SPACING_OPTIONS}
+            onChange={(v) => handleChange("paddingX", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Padding Y">
+          <PropertySelect
+            value={container.paddingY || "none"}
+            options={SPACING_OPTIONS}
+            onChange={(v) => handleChange("paddingY", v)}
+          />
+        </PropertyRow>
+      </PropertySection>
 
       {/* Alignment */}
-      <SettingsSection
+      <PropertySection
         title="Alignment"
-        icon={<AlignLeft className="h-4 w-4" />}
+        icon={<AlignLeft className="h-3.5 w-3.5" />}
         defaultOpen={false}
       >
-        <div className="settings-row">
-          <Label className="settings-label">Horizontal</Label>
-          <ToggleGroup
+        <PropertyRow label="Horizontal" stacked>
+          <PropertyToggle
             value={container.align || "left"}
-            options={[
-              { value: "left", label: "Left" },
-              { value: "center", label: "Center" },
-              { value: "right", label: "Right" },
-            ]}
+            options={alignOptions}
             onChange={(v) => handleChange("align", v)}
+            fullWidth
           />
-        </div>
-      </SettingsSection>
+        </PropertyRow>
+      </PropertySection>
     </>
   );
 }
 
 // =============================================================================
-// Block Style Settings (Component-centric - different per block type)
+// Block Style Settings - Webflow-style (Component-centric - different per block type)
 // =============================================================================
 
 function BlockStyleSettings({
@@ -724,21 +696,19 @@ function BlockStyleSettings({
 
   if (tab === "settings") {
     return (
-      <SettingsSection
+      <PropertySection
         title="Block Info"
-        icon={<Settings2 className="h-4 w-4" />}
+        icon={<Settings2 className="h-3.5 w-3.5" />}
       >
-        <div className="settings-row">
-          <Label className="settings-label">Type</Label>
+        <PropertyRow label="Type">
           <span className="text-sm text-muted-foreground">{blockType}</span>
-        </div>
-        <div className="settings-row">
-          <Label className="settings-label">Key</Label>
+        </PropertyRow>
+        <PropertyRow label="Key">
           <span className="text-xs text-muted-foreground font-mono">
             {block._key}
           </span>
-        </div>
-      </SettingsSection>
+        </PropertyRow>
+      </PropertySection>
     );
   }
 
@@ -756,7 +726,7 @@ function BlockStyleSettings({
 }
 
 // =============================================================================
-// Block Type-Specific Settings
+// Block Type-Specific Settings - Webflow-style
 // =============================================================================
 
 function HeadingBlockSettings({
@@ -770,47 +740,58 @@ function HeadingBlockSettings({
     onChange({ ...block, data: { ...block.data, [field]: value } });
   };
 
+  // Heading level options for toggle
+  const levelOptions = [
+    { value: "h1", label: "H1" },
+    { value: "h2", label: "H2" },
+    { value: "h3", label: "H3" },
+    { value: "h4", label: "H4" },
+    { value: "h5", label: "H5" },
+    { value: "h6", label: "H6" },
+  ];
+
+  // Alignment options for toggle
+  const alignOptions = [
+    { value: "left", label: "Left" },
+    { value: "center", label: "Center" },
+    { value: "right", label: "Right" },
+  ];
+
   return (
-    <SettingsSection title="Heading" icon={<Type className="h-4 w-4" />}>
-      <InlineSelect
-        label="Level"
-        value={(block.data?.level as string) || "h2"}
-        options={[
-          { value: "h1", label: "H1" },
-          { value: "h2", label: "H2" },
-          { value: "h3", label: "H3" },
-          { value: "h4", label: "H4" },
-          { value: "h5", label: "H5" },
-          { value: "h6", label: "H6" },
-        ]}
-        onChange={(v) => handleDataChange("level", v)}
-      />
-      <InlineSelect
-        label="Size"
-        value={(block.data?.size as string) || "default"}
-        options={[
-          { value: "xs", label: "XS" },
-          { value: "sm", label: "SM" },
-          { value: "default", label: "Default" },
-          { value: "lg", label: "LG" },
-          { value: "xl", label: "XL" },
-          { value: "2xl", label: "2XL" },
-          { value: "3xl", label: "3XL" },
-          { value: "4xl", label: "4XL" },
-        ]}
-        onChange={(v) => handleDataChange("size", v)}
-      />
-      <InlineSelect
-        label="Align"
-        value={(block.data?.align as string) || "left"}
-        options={[
-          { value: "left", label: "Left" },
-          { value: "center", label: "Center" },
-          { value: "right", label: "Right" },
-        ]}
-        onChange={(v) => handleDataChange("align", v)}
-      />
-    </SettingsSection>
+    <PropertySection title="Heading" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Level" stacked>
+        <PropertyToggle
+          value={(block.data?.level as string) || "h2"}
+          options={levelOptions}
+          onChange={(v) => handleDataChange("level", v)}
+          fullWidth
+        />
+      </PropertyRow>
+      <PropertyRow label="Size">
+        <PropertySelect
+          value={(block.data?.size as string) || "default"}
+          options={[
+            { value: "xs", label: "XS" },
+            { value: "sm", label: "SM" },
+            { value: "default", label: "Default" },
+            { value: "lg", label: "LG" },
+            { value: "xl", label: "XL" },
+            { value: "2xl", label: "2XL" },
+            { value: "3xl", label: "3XL" },
+            { value: "4xl", label: "4XL" },
+          ]}
+          onChange={(v) => handleDataChange("size", v)}
+        />
+      </PropertyRow>
+      <PropertyRow label="Align" stacked>
+        <PropertyToggle
+          value={(block.data?.align as string) || "left"}
+          options={alignOptions}
+          onChange={(v) => handleDataChange("align", v)}
+          fullWidth
+        />
+      </PropertyRow>
+    </PropertySection>
   );
 }
 
@@ -825,32 +806,38 @@ function TextBlockSettings({
     onChange({ ...block, data: { ...block.data, [field]: value } });
   };
 
+  // Alignment options for toggle
+  const alignOptions = [
+    { value: "left", label: "Left" },
+    { value: "center", label: "Center" },
+    { value: "right", label: "Right" },
+    { value: "justify", label: "Justify" },
+  ];
+
   return (
-    <SettingsSection title="Text" icon={<Type className="h-4 w-4" />}>
-      <InlineSelect
-        label="Size"
-        value={(block.data?.size as string) || "default"}
-        options={[
-          { value: "xs", label: "XS" },
-          { value: "sm", label: "SM" },
-          { value: "default", label: "Default" },
-          { value: "lg", label: "LG" },
-          { value: "xl", label: "XL" },
-        ]}
-        onChange={(v) => handleDataChange("size", v)}
-      />
-      <InlineSelect
-        label="Align"
-        value={(block.data?.align as string) || "left"}
-        options={[
-          { value: "left", label: "Left" },
-          { value: "center", label: "Center" },
-          { value: "right", label: "Right" },
-          { value: "justify", label: "Justify" },
-        ]}
-        onChange={(v) => handleDataChange("align", v)}
-      />
-    </SettingsSection>
+    <PropertySection title="Text" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Size">
+        <PropertySelect
+          value={(block.data?.size as string) || "default"}
+          options={[
+            { value: "xs", label: "XS" },
+            { value: "sm", label: "SM" },
+            { value: "default", label: "Default" },
+            { value: "lg", label: "LG" },
+            { value: "xl", label: "XL" },
+          ]}
+          onChange={(v) => handleDataChange("size", v)}
+        />
+      </PropertyRow>
+      <PropertyRow label="Align" stacked>
+        <PropertyToggle
+          value={(block.data?.align as string) || "left"}
+          options={alignOptions}
+          onChange={(v) => handleDataChange("align", v)}
+          fullWidth
+        />
+      </PropertyRow>
+    </PropertySection>
   );
 }
 
@@ -865,40 +852,45 @@ function ButtonBlockSettings({
     onChange({ ...block, data: { ...block.data, [field]: value } });
   };
 
+  // Size options for toggle
+  const sizeOptions = [
+    { value: "sm", label: "SM" },
+    { value: "default", label: "Default" },
+    { value: "lg", label: "LG" },
+  ];
+
   return (
-    <SettingsSection title="Button" icon={<Box className="h-4 w-4" />}>
-      <InlineSelect
-        label="Variant"
-        value={(block.data?.variant as string) || "default"}
-        options={[
-          { value: "default", label: "Default" },
-          { value: "secondary", label: "Secondary" },
-          { value: "outline", label: "Outline" },
-          { value: "ghost", label: "Ghost" },
-          { value: "link", label: "Link" },
-        ]}
-        onChange={(v) => handleDataChange("variant", v)}
-      />
-      <InlineSelect
-        label="Size"
-        value={(block.data?.size as string) || "default"}
-        options={[
-          { value: "sm", label: "Small" },
-          { value: "default", label: "Default" },
-          { value: "lg", label: "Large" },
-        ]}
-        onChange={(v) => handleDataChange("size", v)}
-      />
-      <div className="settings-row-full">
-        <Label className="settings-label">URL</Label>
+    <PropertySection title="Button" icon={<Box className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Variant">
+        <PropertySelect
+          value={(block.data?.variant as string) || "default"}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "secondary", label: "Secondary" },
+            { value: "outline", label: "Outline" },
+            { value: "ghost", label: "Ghost" },
+            { value: "link", label: "Link" },
+          ]}
+          onChange={(v) => handleDataChange("variant", v)}
+        />
+      </PropertyRow>
+      <PropertyRow label="Size" stacked>
+        <PropertyToggle
+          value={(block.data?.size as string) || "default"}
+          options={sizeOptions}
+          onChange={(v) => handleDataChange("size", v)}
+          fullWidth
+        />
+      </PropertyRow>
+      <PropertyRow label="URL" stacked>
         <Input
           value={(block.data?.href as string) || ""}
           onChange={(e) => handleDataChange("href", e.target.value)}
           placeholder="https://..."
           className="settings-input"
         />
-      </div>
-    </SettingsSection>
+      </PropertyRow>
+    </PropertySection>
   );
 }
 
@@ -910,10 +902,10 @@ function GenericBlockSettings({
   onChange: (block: Block) => void;
 }) {
   return (
-    <SettingsSection title="Block Data" icon={<Box className="h-4 w-4" />}>
+    <PropertySection title="Block Data" icon={<Box className="h-3.5 w-3.5" />}>
       <pre className="text-xs bg-muted p-2 rounded overflow-auto max-h-40">
         {JSON.stringify(block.data, null, 2)}
       </pre>
-    </SettingsSection>
+    </PropertySection>
   );
 }

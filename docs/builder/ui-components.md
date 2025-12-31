@@ -66,11 +66,11 @@ Multi-line text placeholder:
 <SkeletonText lines={3} lastLineWidth="60%" animation="shimmer" />
 ```
 
-| Prop            | Type                | Default    | Description                 |
-| --------------- | ------------------- | ---------- | --------------------------- |
-| `lines`         | `number`            | `3`        | Number of text lines        |
-| `lastLineWidth` | `string`            | `"60%"`    | Width of last line          |
-| `animation`     | `SkeletonAnimation` | `"shimmer"` | Animation type             |
+| Prop            | Type                | Default     | Description          |
+| --------------- | ------------------- | ----------- | -------------------- |
+| `lines`         | `number`            | `3`         | Number of text lines |
+| `lastLineWidth` | `string`            | `"60%"`     | Width of last line   |
+| `animation`     | `SkeletonAnimation` | `"shimmer"` | Animation type       |
 
 #### SkeletonHeading
 
@@ -88,9 +88,9 @@ Circular avatar placeholder:
 <SkeletonAvatar size={40} animation="shimmer" />
 ```
 
-| Prop   | Type              | Default | Description        |
-| ------ | ----------------- | ------- | ------------------ |
-| `size` | `number | string` | `40`    | Diameter in pixels |
+| Prop   | Type    | Default | Description |
+| ------ | ------- | ------- | ----------- | ------------------ |
+| `size` | `number | string` | `40`        | Diameter in pixels |
 
 #### SkeletonButton
 
@@ -113,13 +113,15 @@ Image placeholder with video aspect ratio:
 Full card skeleton (image + heading + text):
 
 ```tsx
-<SkeletonCard animation="shimmer" />
+<SkeletonCard animation="shimmer" />;
 
-{/* Or with custom children */}
+{
+  /* Or with custom children */
+}
 <SkeletonCard animation="shimmer">
   <SkeletonImage />
   <SkeletonHeading />
-</SkeletonCard>
+</SkeletonCard>;
 ```
 
 ### Composite Skeletons
@@ -148,10 +150,10 @@ Table skeleton with configurable rows/columns:
 <SkeletonTable rows={5} columns={4} animation="shimmer" />
 ```
 
-| Prop      | Type     | Default | Description        |
-| --------- | -------- | ------- | ------------------ |
-| `rows`    | `number` | `5`     | Number of rows     |
-| `columns` | `number` | `4`     | Number of columns  |
+| Prop      | Type     | Default | Description       |
+| --------- | -------- | ------- | ----------------- |
+| `rows`    | `number` | `5`     | Number of rows    |
+| `columns` | `number` | `4`     | Number of columns |
 
 #### SkeletonGrid
 
@@ -161,10 +163,10 @@ Grid of card skeletons:
 <SkeletonGrid items={6} columns={3} animation="shimmer" />
 ```
 
-| Prop      | Type     | Default | Description        |
-| --------- | -------- | ------- | ------------------ |
-| `items`   | `number` | `6`     | Number of cards    |
-| `columns` | `number` | `3`     | Grid columns       |
+| Prop      | Type     | Default | Description     |
+| --------- | -------- | ------- | --------------- |
+| `items`   | `number` | `6`     | Number of cards |
+| `columns` | `number` | `3`     | Grid columns    |
 
 ### Image Placeholder
 
@@ -179,12 +181,12 @@ Image placeholder with optional icon:
 />
 ```
 
-| Prop          | Type                                        | Default    | Description            |
-| ------------- | ------------------------------------------- | ---------- | ---------------------- |
-| `animation`   | `SkeletonAnimation`                         | `"shimmer"` | Animation type        |
-| `icon`        | `"image" | "video" | "document" | "user" | "none"` | `"image"` | Placeholder icon |
-| `aspectRatio` | `"square" | "video" | "portrait" | "auto"` | `"video"`  | Aspect ratio          |
-| `iconSize`    | `number`                                    | `48`       | Icon size in pixels    |
+| Prop          | Type                | Default     | Description         |
+| ------------- | ------------------- | ----------- | ------------------- | ------- | --------- | ------------ | ---------------- |
+| `animation`   | `SkeletonAnimation` | `"shimmer"` | Animation type      |
+| `icon`        | `"image"            | "video"     | "document"          | "user"  | "none"`   | `"image"`    | Placeholder icon |
+| `aspectRatio` | `"square"           | "video"     | "portrait"          | "auto"` | `"video"` | Aspect ratio |
+| `iconSize`    | `number`            | `48`        | Icon size in pixels |
 
 ### Loaders
 
@@ -196,10 +198,10 @@ Small loading indicators for buttons and inline elements:
 <Loader variant="spinner" size="md" />
 ```
 
-| Prop      | Type                                           | Default     | Description   |
-| --------- | ---------------------------------------------- | ----------- | ------------- |
-| `variant` | `"spinner" | "dots" | "bars" | "progress"`    | `"spinner"` | Loader style  |
-| `size`    | `"sm" | "md" | "lg"`                          | `"md"`      | Loader size   |
+| Prop      | Type       | Default | Description |
+| --------- | ---------- | ------- | ----------- | ----------- | ----------- | ------------ |
+| `variant` | `"spinner" | "dots"  | "bars"      | "progress"` | `"spinner"` | Loader style |
+| `size`    | `"sm"      | "md"    | "lg"`       | `"md"`      | Loader size |
 
 **Variants:**
 
@@ -218,19 +220,21 @@ Full-page loading overlay:
   size="md"
   fullscreen={false}
   label="Loading..."
-/>
+/>;
 
-{/* With custom logo */}
-<PageLoader logo={<YourLogo />} label="Loading..." />
+{
+  /* With custom logo */
+}
+<PageLoader logo={<YourLogo />} label="Loading..." />;
 ```
 
-| Prop         | Type             | Default     | Description                 |
-| ------------ | ---------------- | ----------- | --------------------------- |
-| `variant`    | `LoaderVariant`  | `"spinner"` | Loader style                |
-| `size`       | `LoaderSize`     | `"md"`      | Loader size                 |
-| `fullscreen` | `boolean`        | `false`     | Solid background vs blur    |
-| `label`      | `string`         | -           | Loading text                |
-| `logo`       | `React.ReactNode` | -          | Custom logo (replaces loader)|
+| Prop         | Type              | Default     | Description                   |
+| ------------ | ----------------- | ----------- | ----------------------------- |
+| `variant`    | `LoaderVariant`   | `"spinner"` | Loader style                  |
+| `size`       | `LoaderSize`      | `"md"`      | Loader size                   |
+| `fullscreen` | `boolean`         | `false`     | Solid background vs blur      |
+| `label`      | `string`          | -           | Loading text                  |
+| `logo`       | `React.ReactNode` | -           | Custom logo (replaces loader) |
 
 ### CSS Classes
 
@@ -282,24 +286,25 @@ The builder includes comprehensive global settings accessible via the Settings d
 
 ### Available Panels
 
-| Panel        | Description                                    |
-| ------------ | ---------------------------------------------- |
-| Site         | Page management, homepage settings             |
-| SEO          | Meta tags, schema, analytics, redirects        |
-| Colors       | Brand colors, UI colors, color scales          |
-| Typography   | Font families, scales, role assignments        |
-| Animations   | Motion preferences, transition timing          |
-| Components   | Dropdowns, modals, drawers styling             |
-| Loading      | Skeletons, placeholders, loaders               |
-| Buttons      | Button sizes and styling per size              |
-| Inputs       | Form input styling                             |
-| Cards        | Card component styling                         |
+| Panel      | Description                             |
+| ---------- | --------------------------------------- |
+| Site       | Page management, homepage settings      |
+| SEO        | Meta tags, schema, analytics, redirects |
+| Colors     | Brand colors, UI colors, color scales   |
+| Typography | Font families, scales, role assignments |
+| Animations | Motion preferences, transition timing   |
+| Components | Dropdowns, modals, drawers styling      |
+| Loading    | Skeletons, placeholders, loaders        |
+| Buttons    | Button sizes and styling per size       |
+| Inputs     | Form input styling                      |
+| Cards      | Card component styling                  |
 
 ### SEO Settings
 
 Configure search engine optimization and analytics:
 
 **Meta & Social Tab:**
+
 - Title template and separator
 - Default meta description (with character counter)
 - Default keywords (tag-based input)
@@ -307,18 +312,21 @@ Configure search engine optimization and analytics:
 - Twitter card settings
 
 **Schema Tab:**
+
 - Organization type (Organization, LocalBusiness, Corporation, ProfessionalService)
 - Organization name and logo
 - Contact information (phone, email)
 - Address for local SEO
 
 **Analytics Tab:**
+
 - Google Analytics ID (G-XXXXXXXXXX)
 - Google Tag Manager ID (GTM-XXXXXXX)
 - Facebook Pixel ID
 - Custom head/body scripts
 
 **Redirects Tab:**
+
 - 301/302 redirect management
 - Enable/disable individual rules
 - From/to URL configuration
@@ -328,20 +336,24 @@ Configure search engine optimization and analytics:
 Configure loading and placeholder behavior:
 
 **Skeleton Animation:**
+
 - Default animation style
 - Text skeleton line count
 
 **Image Placeholder:**
+
 - Animation style
 - Default aspect ratio
 - Icon visibility and size
 
 **Page Loader:**
+
 - Loader variant (spinner, dots, bars, progress)
 - Loading text
 - Fullscreen overlay option
 
 **Inline Loader:**
+
 - Default variant
 - Default size
 

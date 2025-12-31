@@ -19,6 +19,7 @@ import {
   Trash2,
   Package,
   ArrowRight,
+  PlusCircle,
 } from "lucide-react";
 import "./cart-block.css";
 
@@ -216,7 +217,7 @@ export function CartBlock({
                           handleQuantityChange(item.id, 1, item.quantity)
                         }
                       >
-                        <Plus className="w-4 h-4" />
+                        <PlusCircle className="w-4 h-4" />
                       </Button>
                     </div>
 

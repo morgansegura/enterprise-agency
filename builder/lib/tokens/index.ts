@@ -21,3 +21,4 @@
 export * from "./types";
 export * from "./platform-defaults";
 export * from "./generate-css";
+export * from "./apply-tokens";

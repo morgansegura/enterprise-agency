@@ -553,7 +553,9 @@ const SidebarMenuSkeleton = React.forwardRef<
   // Deterministic width between 50 to 90% based on component id
   const id = React.useId();
   const width = React.useMemo(() => {
-    const hash = id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const hash = id
+      .split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return `${(hash % 40) + 50}%`;
   }, [id]);
 

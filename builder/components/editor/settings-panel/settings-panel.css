@@ -1,15 +1,41 @@
 /* =============================================================================
- * Settings Panel - Right sidebar for editing element settings
+ * Settings Panel - Webflow-style right sidebar (280px compact)
  * ============================================================================= */
 
 .settings-panel {
+  position: relative;
   display: flex;
   flex-direction: column;
+  width: 280px;
   height: 100%;
   background: var(--background);
   border-left: 1px solid var(--border);
-  transition: width 0.2s ease-out, transform 0.2s ease-out;
   overflow: hidden;
+  /* Smooth slide transition */
+  transform: translateX(0);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease-out;
+}
+
+/* Panel closed state - slide out to the right */
+.settings-panel:not(.open) {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Panel wrapper to maintain layout space */
+.settings-panel-wrapper {
+  position: relative;
+  width: 280px;
+  height: 100%;
+  flex-shrink: 0;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.settings-panel-wrapper.collapsed {
+  width: 0;
 }
 
 /* Toggle button when panel is closed */
@@ -24,10 +50,11 @@
   border-right: none;
   border-radius: var(--radius) 0 0 var(--radius);
   padding: 0.25rem;
+  transition: opacity 0.2s ease-out;
 }
 
 /* =============================================================================
- * Header
+ * Header (40px)
  * ============================================================================= */
 
 .settings-panel-header {
@@ -35,10 +62,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0 0.75rem;
+  height: 40px;
   border-bottom: 1px solid var(--border);
   background: var(--muted);
-  min-height: 44px;
 }
 
 .settings-panel-selector {
@@ -47,7 +74,7 @@
   gap: 0.5rem;
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--foreground);
   cursor: pointer;
@@ -63,12 +90,12 @@
 }
 
 /* =============================================================================
- * Tabs
+ * Tabs (32px)
  * ============================================================================= */
 
 .settings-panel-tabs {
   display: flex;
-  gap: 0;
+  height: 32px;
   border-bottom: 1px solid var(--border);
   background: var(--muted);
 }
@@ -78,11 +105,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.625rem 1rem;
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.6875rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--muted-foreground);
   background: transparent;
   border: none;
@@ -122,12 +148,249 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 3rem 2rem;
+  padding: 3rem 1.5rem;
   text-align: center;
 }
 
 /* =============================================================================
- * Settings Section (Collapsible)
+ * Property Section (Collapsible) - New Webflow-style
+ * ============================================================================= */
+
+.property-section {
+  border-bottom: 1px solid var(--border);
+}
+
+.property-section:last-child {
+  border-bottom: none;
+}
+
+.property-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.property-section-header:hover {
+  background: var(--muted);
+}
+
+.property-section-chevron {
+  width: 12px;
+  height: 12px;
+  color: var(--muted-foreground);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.property-section-chevron--open {
+  transform: rotate(90deg);
+}
+
+.property-section-icon {
+  display: flex;
+  align-items: center;
+  color: var(--muted-foreground);
+}
+
+.property-section-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.property-section-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+}
+
+.property-section-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.15s ease;
+}
+
+.property-section-content--open {
+  grid-template-rows: 1fr;
+}
+
+.property-section-content--closed {
+  grid-template-rows: 0fr;
+}
+
+.property-section-inner {
+  overflow: hidden;
+  padding: 0 0.75rem 0.75rem;
+}
+
+.property-section-content--closed .property-section-inner {
+  padding-bottom: 0;
+}
+
+/* =============================================================================
+ * Property Row
+ * ============================================================================= */
+
+.property-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+  min-height: 28px;
+}
+
+.property-row--stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+}
+
+.property-row-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+.property-row-responsive {
+  width: 5px;
+  height: 5px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+.property-row-control {
+  flex-shrink: 0;
+  width: 100px;
+}
+
+.property-row--stacked .property-row-control {
+  width: 100%;
+}
+
+.property-row-help {
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+  margin-top: 0.25rem;
+}
+
+/* =============================================================================
+ * Property Grid
+ * ============================================================================= */
+
+.property-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.property-grid--cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.property-grid--cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.property-grid--cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* =============================================================================
+ * Property Toggle (Webflow-style)
+ * ============================================================================= */
+
+.property-toggle {
+  display: inline-flex;
+  background: var(--muted);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.property-toggle--full {
+  display: flex;
+  width: 100%;
+}
+
+.property-toggle--full .property-toggle-btn {
+  flex: 1;
+}
+
+.property-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  white-space: nowrap;
+}
+
+.property-toggle-btn:hover {
+  color: var(--foreground);
+}
+
+.property-toggle-btn--active {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.property-toggle-icon {
+  display: flex;
+  align-items: center;
+}
+
+.property-toggle-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.property-toggle-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+/* =============================================================================
+ * Property Select
+ * ============================================================================= */
+
+.property-select {
+  height: 28px;
+  font-size: 0.8125rem;
+  padding: 0 0.5rem;
+}
+
+.property-select-option {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.property-select-description {
+  color: var(--muted-foreground);
+  margin-left: 0.5rem;
+}
+
+/* =============================================================================
+ * Legacy Settings Section (Collapsible) - Keep for backwards compat
  * ============================================================================= */
 
 .settings-section {
@@ -143,8 +406,8 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -152,7 +415,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.1s ease;
 }
 
 .settings-section-trigger:hover {
@@ -167,11 +430,11 @@
 }
 
 .settings-section-content {
-  padding: 0 1rem 1rem;
+  padding: 0 0.75rem 0.75rem;
 }
 
 /* =============================================================================
- * Form Elements
+ * Legacy Form Elements
  * ============================================================================= */
 
 .settings-row {
@@ -179,19 +442,19 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: 0.375rem 0;
+  padding: 0.25rem 0;
 }
 
 .settings-row-full {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
-  padding: 0.375rem 0;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
 }
 
 .settings-label {
-  font-size: 0.8125rem;
-  font-weight: 400;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: var(--foreground);
   white-space: nowrap;
 }
@@ -199,32 +462,32 @@
 .settings-select {
   width: auto;
   min-width: 100px;
-  height: 32px;
+  height: 28px;
   font-size: 0.8125rem;
 }
 
 .settings-input {
-  height: 32px;
+  height: 28px;
   font-size: 0.8125rem;
 }
 
 .settings-input-sm {
-  width: 60px;
-  height: 32px;
+  width: 56px;
+  height: 28px;
   font-size: 0.8125rem;
   text-align: center;
 }
 
 /* =============================================================================
- * Toggle Group (Webflow-style buttons)
+ * Legacy Toggle Group
  * ============================================================================= */
 
 .toggle-group {
   display: inline-flex;
   background: var(--muted);
-  border-radius: var(--radius);
+  border-radius: 6px;
   padding: 2px;
-  gap: 2px;
+  gap: 1px;
 }
 
 .toggle-group-btn {
@@ -234,9 +497,9 @@
   color: var(--muted-foreground);
   background: transparent;
   border: none;
-  border-radius: calc(var(--radius) - 2px);
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.1s ease;
   white-space: nowrap;
 }
 
@@ -247,24 +510,36 @@
 .toggle-group-btn.active {
   background: var(--background);
   color: var(--foreground);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 /* =============================================================================
- * Responsive
+ * Responsive (Mobile overlay)
  * ============================================================================= */
 
 @media (max-width: 1024px) {
-  .settings-panel {
+  .settings-panel-wrapper {
     position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
+    width: 280px;
     z-index: 50;
-    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
   }
 
-  .settings-panel:not(.open) {
-    transform: translateX(100%);
+  .settings-panel-wrapper.collapsed {
+    width: 280px; /* Keep width on mobile, just slide */
+    pointer-events: none;
+  }
+
+  .settings-panel-wrapper.collapsed .settings-panel-toggle {
+    pointer-events: auto;
+  }
+
+  .settings-panel {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
   }
 }

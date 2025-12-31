@@ -1,5 +1,9 @@
 @reference "tailwindcss";
 
+/* =============================================================================
+ * Sortable Section - Webflow-style smooth interactions
+ * ============================================================================= */
+
 .sortable-section {
   @apply relative;
 }
@@ -8,99 +12,169 @@
   @apply opacity-50 cursor-grabbing;
 }
 
-/* Section visual - the constrained, visible section with background */
+/* =============================================================================
+ * Section Visual - refined hover states
+ * ============================================================================= */
+
 .section-visual {
   @apply relative;
-  @apply border-2 border-transparent;
-  @apply transition-all duration-200;
+  /* Use box-shadow for smoother transitions than border */
+  box-shadow: inset 0 0 0 0 transparent;
+  transition: box-shadow 200ms ease-out;
 }
 
-/* Use builder-primary for the section hover border (builder UI) */
+/* Subtle hover state - refined border */
 .sortable-section:hover .section-visual,
 .sortable-section.is-settings-open .section-visual,
 .sortable-section.is-popover-open .section-visual {
-  @apply border-(--builder-primary);
+  box-shadow: inset 0 0 0 1.5px var(--builder-primary);
 }
 
 /* Hide section border when a block inside is selected */
 .sortable-section.has-selected-block .section-visual,
 .sortable-section.has-selected-block:hover .section-visual {
-  @apply border-transparent;
+  box-shadow: inset 0 0 0 0 transparent;
 }
 
-/* Selected state for sidebar editing */
+/* Selected state for sidebar editing - subtle glow */
 .section-visual.is-selected {
-  @apply border-blue-500 bg-blue-500/5;
+  box-shadow:
+    inset 0 0 0 1.5px var(--builder-primary),
+    0 0 0 3px color-mix(in srgb, var(--builder-primary) 10%, transparent);
+  background: color-mix(in srgb, var(--builder-primary) 3%, transparent);
 }
 
-/* Drag handle - left side (builder UI - use builder tokens) */
-.section-drag-handle {
-  @apply absolute left-2 top-2 z-10;
-  @apply p-2 rounded-lg;
-  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
-  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground);
-  @apply cursor-grab active:cursor-grabbing;
-  @apply opacity-0 transition-opacity;
-}
+/* =============================================================================
+ * Control Buttons - smooth fade in/out
+ * ============================================================================= */
 
-.sortable-section:hover .section-drag-handle,
-.sortable-section.is-settings-open .section-drag-handle,
-.sortable-section.is-popover-open .section-drag-handle {
-  @apply opacity-100;
-}
-
-/* Keep layers button visible when a block is selected */
-.sortable-section.has-selected-block .section-drag-handle {
-  @apply opacity-100;
-}
-
-/* Actions handle - right side (builder UI - use builder tokens) */
-.section-actions-handle {
-  @apply absolute right-2 top-2 z-10;
-  @apply p-2 rounded-lg;
-  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
-  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground);
-  @apply cursor-pointer;
-  @apply opacity-0 transition-opacity;
-}
-
-.sortable-section:hover .section-actions-handle,
-.sortable-section.is-settings-open .section-actions-handle,
-.sortable-section.is-popover-open .section-actions-handle {
-  @apply opacity-100;
-}
-
-/* Add Block button - top left (builder UI - use builder tokens) */
+/* Shared control button styles */
+.section-drag-handle,
+.section-actions-handle,
 .section-add-block {
-  @apply absolute left-14 top-2 z-10;
-  @apply opacity-0 transition-opacity;
+  @apply absolute z-10;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
+  pointer-events: none;
 }
 
+/* Show controls on section hover */
+.sortable-section:hover .section-drag-handle,
+.sortable-section:hover .section-actions-handle,
 .sortable-section:hover .section-add-block,
+.sortable-section.is-settings-open .section-drag-handle,
+.sortable-section.is-settings-open .section-actions-handle,
 .sortable-section.is-settings-open .section-add-block,
+.sortable-section.is-popover-open .section-drag-handle,
+.sortable-section.is-popover-open .section-actions-handle,
 .sortable-section.is-popover-open .section-add-block {
-  @apply opacity-100;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Keep drag handle visible when a block is selected */
+.sortable-section.has-selected-block .section-drag-handle {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Drag handle - left side */
+.section-drag-handle {
+  @apply left-2 top-2;
+  @apply p-1.5 rounded-md;
+  background: var(--builder-card);
+  border: 1px solid var(--builder-border);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  @apply text-(--builder-muted-foreground);
+  @apply cursor-grab active:cursor-grabbing;
+}
+
+.section-drag-handle:hover {
+  @apply text-(--builder-foreground);
+  border-color: var(--builder-muted-foreground);
+}
+
+.section-drag-handle:active {
+  transform: scale(0.95) translateY(0);
+}
+
+/* Actions handle - right side */
+.section-actions-handle {
+  @apply right-2 top-2;
+  @apply p-1.5 rounded-md;
+  background: var(--builder-card);
+  border: 1px solid var(--builder-border);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  @apply text-(--builder-muted-foreground);
+  @apply cursor-pointer;
+}
+
+.section-actions-handle:hover {
+  @apply text-(--builder-foreground);
+  border-color: var(--builder-muted-foreground);
+}
+
+.section-actions-handle:active {
+  transform: scale(0.95) translateY(0);
+}
+
+/* Add Block button - top left */
+.section-add-block {
+  @apply left-12 top-2;
 }
 
 .section-add-block button {
-  @apply bg-(--builder-card) border border-(--builder-border) shadow-sm;
-  @apply text-(--builder-foreground) font-semibold;
-  @apply hover:bg-(--builder-muted);
+  @apply px-3 py-1.5;
+  @apply text-xs font-medium;
+  background: var(--builder-card);
+  border: 1px solid var(--builder-border);
+  border-radius: 0.375rem;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  @apply text-(--builder-foreground);
+  transition: all 120ms ease-out;
 }
 
-/* ADD SECTION buttons - positioned as overlays at section boundaries */
+.section-add-block button:hover {
+  background: var(--builder-muted);
+  border-color: var(--builder-muted-foreground);
+}
+
+.section-add-block button:active {
+  transform: scale(0.97);
+}
+
+/* =============================================================================
+ * Add Section Buttons - smooth reveal
+ * ============================================================================= */
+
 .section-add-above,
 .section-add-below {
   @apply absolute left-1/2 -translate-x-1/2 z-30;
-  @apply opacity-0 pointer-events-none transition-opacity;
+  opacity: 0;
+  transform: translateX(-50%) scale(0.9);
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
+  pointer-events: none;
 }
 
 .section-add-above {
-  @apply -top-5;
+  @apply -top-4;
 }
 
 .section-add-below {
-  @apply -bottom-5;
+  @apply -bottom-4;
 }
 
 .sortable-section:hover .section-add-above,
@@ -109,60 +183,123 @@
 .sortable-section.is-settings-open .section-add-below,
 .sortable-section.is-popover-open .section-add-above,
 .sortable-section.is-popover-open .section-add-below {
-  @apply opacity-100 pointer-events-auto;
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  pointer-events: auto;
 }
 
-/* ADD SECTION button (builder UI - use builder tokens) */
+/* Add section button styling */
 .section-add-btn {
-  @apply bg-(--builder-primary) text-(--builder-primary-foreground);
-  @apply font-semibold uppercase tracking-wide text-sm;
-  @apply px-4 py-1.5;
-  @apply hover:bg-(--builder-primary)/90;
-  @apply shadow-md uppercase;
+  @apply px-3 py-1;
+  @apply text-xs font-medium tracking-wide;
+  background: var(--builder-primary);
+  color: var(--builder-primary-foreground);
+  border-radius: 9999px;
+  box-shadow:
+    0 2px 8px color-mix(in srgb, var(--builder-primary) 30%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 120ms ease-out;
 }
 
-/* Floating Action Panel - right side (builder UI - use builder tokens) */
+.section-add-btn:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 4px 12px color-mix(in srgb, var(--builder-primary) 40%, transparent),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-add-btn:active {
+  transform: scale(0.98);
+}
+
+/* =============================================================================
+ * Floating Action Panel - smooth entrance
+ * ============================================================================= */
+
 .section-panel {
   @apply absolute top-2 right-2 z-20;
-  @apply bg-(--builder-card) border border-(--builder-border) rounded-lg shadow-lg;
-  @apply p-2 min-w-[180px];
-  @apply opacity-0 pointer-events-none transition-all duration-200;
-  @apply flex flex-col gap-1;
+  @apply rounded-lg;
+  @apply p-1.5 min-w-[160px];
+  @apply flex flex-col gap-0.5;
+  background: var(--builder-card);
+  border: 1px solid var(--builder-border);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.06);
+  opacity: 0;
+  transform: translateY(8px) scale(0.95);
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
+  pointer-events: none;
 }
 
 .sortable-section:hover .section-panel,
 .sortable-section.is-settings-open .section-panel {
-  @apply opacity-100 pointer-events-auto;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
-/* Panel items - full width buttons with icon + text */
+/* Panel items */
 .section-panel-item {
-  @apply w-full justify-start gap-3 text-sm;
-  @apply text-(--builder-foreground) hover:bg-(--builder-muted)/50 rounded-sm;
-  @apply h-10 px-3;
+  @apply w-full justify-start gap-2 text-sm;
+  @apply rounded-md;
+  @apply h-8 px-2;
+  @apply text-(--builder-muted-foreground);
+  transition: all 100ms ease-out;
+}
+
+.section-panel-item:hover {
+  @apply text-(--builder-foreground);
+  background: var(--builder-muted);
+}
+
+.section-panel-item:active {
+  transform: scale(0.98);
 }
 
 .section-panel-item span {
-  @apply text-sm font-semibold tracking-wide text-inherit;
+  @apply text-sm font-medium text-inherit;
 }
 
-/* Panel row - icon buttons in a row */
+/* Panel row - icon buttons */
 .section-panel-row {
   @apply flex items-center justify-between;
-  @apply border-y border-(--builder-border) py-2 my-1;
+  @apply border-y py-1.5 my-1;
+  border-color: var(--builder-border);
 }
 
 .section-panel-row button {
-  @apply h-8 w-8;
-  @apply text-(--builder-muted-foreground) hover:text-(--builder-foreground) hover:bg-(--builder-muted);
+  @apply h-7 w-7;
+  @apply rounded-md;
+  @apply text-(--builder-muted-foreground);
+  transition: all 100ms ease-out;
+}
+
+.section-panel-row button:hover {
+  @apply text-(--builder-foreground);
+  background: var(--builder-muted);
+}
+
+.section-panel-row button:active {
+  transform: scale(0.9);
 }
 
 /* Delete item - red styling */
 .section-panel-delete {
-  @apply text-(--builder-destructive) hover:text-(--builder-destructive) hover:bg-(--builder-destructive)/10;
+  @apply text-(--builder-muted-foreground);
 }
 
-/* Section container - applies container settings (width, layout, padding, etc.) */
+.section-panel-delete:hover {
+  @apply text-(--builder-destructive);
+  background: color-mix(in srgb, var(--builder-destructive) 10%, transparent) !important;
+}
+
+/* =============================================================================
+ * Section Container
+ * ============================================================================= */
+
 .section-container {
   @apply min-h-[40px];
 }

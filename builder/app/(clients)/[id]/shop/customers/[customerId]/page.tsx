@@ -43,6 +43,7 @@ import {
   Star,
   MapPin,
   ShoppingCart,
+  PlusCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { FormItem } from "@/components/ui/form";
@@ -341,7 +342,7 @@ export default function CustomerDetailPage({
               >
                 <DialogTrigger asChild>
                   <Button size="sm" variant="outline">
-                    <Plus className="mr-2 h-4 w-4" />
+                    <PlusCircle className="mr-2 h-4 w-4" />
                     Add Address
                   </Button>
                 </DialogTrigger>

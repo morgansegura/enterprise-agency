@@ -4,13 +4,15 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useTenant, useUpdateTenant } from "@/lib/hooks/use-tenants";
+import { useUploadAsset } from "@/lib/hooks/use-assets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BrandingUpload } from "@/components/ui/branding-upload";
 import { toast } from "sonner";
-import { ImageIcon, Check, Building2, Mail, Phone, Globe } from "lucide-react";
+import { Check, Building2, Mail, Phone, Globe } from "lucide-react";
 
 import "./settings.css";
 
@@ -19,13 +21,16 @@ export default function SettingsPage() {
   const tenantId = params?.id as string;
   const { data: tenant, isLoading, error } = useTenant(tenantId);
   const updateTenant = useUpdateTenant();
+  const uploadAsset = useUploadAsset(tenantId);
 
   const [formData, setFormData] = useState({
     businessName: "",
     businessType: "",
     contactEmail: "",
     contactPhone: "",
+    iconUrl: "",
     logoUrl: "",
+    faviconUrl: "",
     metaDescription: "",
   });
 
@@ -33,14 +38,21 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (tenant) {
+      const extendedTenant = tenant as {
+        iconUrl?: string;
+        logoUrl?: string;
+        faviconUrl?: string;
+        metaDescription?: string;
+      };
       setFormData({
         businessName: tenant.businessName || "",
         businessType: tenant.businessType || "",
         contactEmail: tenant.contactEmail || "",
         contactPhone: tenant.contactPhone || "",
-        logoUrl: (tenant as { logoUrl?: string }).logoUrl || "",
-        metaDescription:
-          (tenant as { metaDescription?: string }).metaDescription || "",
+        iconUrl: extendedTenant.iconUrl || "",
+        logoUrl: extendedTenant.logoUrl || "",
+        faviconUrl: extendedTenant.faviconUrl || "",
+        metaDescription: extendedTenant.metaDescription || "",
       });
     }
   }, [tenant]);
@@ -68,17 +80,38 @@ export default function SettingsPage() {
 
   const handleReset = () => {
     if (tenant) {
+      const extendedTenant = tenant as {
+        iconUrl?: string;
+        logoUrl?: string;
+        faviconUrl?: string;
+        metaDescription?: string;
+      };
       setFormData({
         businessName: tenant.businessName || "",
         businessType: tenant.businessType || "",
         contactEmail: tenant.contactEmail || "",
         contactPhone: tenant.contactPhone || "",
-        logoUrl: (tenant as { logoUrl?: string }).logoUrl || "",
-        metaDescription:
-          (tenant as { metaDescription?: string }).metaDescription || "",
+        iconUrl: extendedTenant.iconUrl || "",
+        logoUrl: extendedTenant.logoUrl || "",
+        faviconUrl: extendedTenant.faviconUrl || "",
+        metaDescription: extendedTenant.metaDescription || "",
       });
       setIsDirty(false);
     }
+  };
+
+  const handleBrandingChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setIsDirty(true);
+  };
+
+  const handleUpload = async (file: File, usageContext: string) => {
+    const result = await uploadAsset.mutateAsync({
+      file,
+      usageContext,
+      altText: `${formData.businessName || "Company"} ${usageContext}`,
+    });
+    return { url: result.url };
   };
 
   if (error) {
@@ -146,49 +179,36 @@ export default function SettingsPage() {
             />
           </div>
 
+          {/* Logo Uploads */}
           <div className="settings-field">
-            <Label htmlFor="logoUrl" className="settings-field-label">
-              Logo URL
+            <Label className="settings-field-label mb-3 block">
+              Brand Assets
             </Label>
-            <Input
-              id="logoUrl"
-              name="logoUrl"
-              value={formData.logoUrl}
-              onChange={handleChange}
-              placeholder="https://example.com/logo.png"
-            />
-            <p className="settings-field-description">
-              Enter a URL to your logo image. Recommended size: 200x200px
+            <div className="flex flex-wrap gap-6">
+              <BrandingUpload
+                label="Icon"
+                description="Square icon (SVG recommended). Used as favicon and in compact layouts."
+                value={formData.iconUrl}
+                onChange={(url) => handleBrandingChange("iconUrl", url)}
+                onUpload={(file) => handleUpload(file, "brand-icon")}
+                accept="image/svg+xml,image/png"
+                aspectRatio="square"
+                maxSizeKB={100}
+              />
+              <BrandingUpload
+                label="Full Logo"
+                description="Wide logo for headers and branding. SVG or PNG recommended."
+                value={formData.logoUrl}
+                onChange={(url) => handleBrandingChange("logoUrl", url)}
+                onUpload={(file) => handleUpload(file, "brand-logo")}
+                accept="image/svg+xml,image/png,image/jpeg,image/webp"
+                aspectRatio="wide"
+                maxSizeKB={500}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              The icon will automatically be used as your site's favicon.
             </p>
-            {formData.logoUrl && (
-              <div className="settings-logo-preview">
-                <img
-                  src={formData.logoUrl}
-                  alt="Logo preview"
-                  className="settings-logo-image"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-                <div className="settings-logo-info">
-                  <div className="settings-logo-name">Logo Preview</div>
-                  <div className="settings-logo-size">
-                    Make sure the image loads correctly
-                  </div>
-                </div>
-              </div>
-            )}
-            {!formData.logoUrl && (
-              <div className="settings-logo-preview">
-                <div className="settings-logo-placeholder">
-                  <ImageIcon className="h-6 w-6" />
-                </div>
-                <div className="settings-logo-info">
-                  <div className="settings-logo-name">No logo set</div>
-                  <div className="settings-logo-size">Add a logo URL above</div>
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="settings-field">

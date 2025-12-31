@@ -270,7 +270,6 @@ export function SortableSection({
         {/* Section Actions Button - Right side */}
         <SectionActionsPopover
           section={section}
-          onSectionChange={onSectionChange}
           onDelete={onDelete}
           onDuplicate={onDuplicate}
           onMoveUp={onMoveUp}

@@ -114,7 +114,7 @@ export function StatusDropdown({
               className={currentStatus === key ? "bg-accent" : ""}
             >
               <Icon
-                className={`h-4 w-4 mr-2 ${className.replace("content-status-", "text-status-")}`}
+                className={`h-4 w-4  ${className.replace("content-status-", "text-status-")}`}
               />
               {label}
             </DropdownMenuItem>
@@ -314,15 +314,15 @@ export function ContentList<T extends ContentItem>({
         )}
         <div className="content-list-view-toggle">
           <Button
-            variant={viewMode === "grid" ? "secondary" : "ghost"}
-            size="icon"
+            variant={viewMode === "grid" ? "outline" : "ghost"}
+            size="icon-sm"
             onClick={() => setViewMode("grid")}
           >
             <LayoutGrid className="h-4 w-4" />
           </Button>
           <Button
-            variant={viewMode === "list" ? "secondary" : "ghost"}
-            size="icon"
+            variant={viewMode === "list" ? "outline" : "ghost"}
+            size="icon-sm"
             onClick={() => setViewMode("list")}
           >
             <List className="h-4 w-4" />
@@ -368,7 +368,7 @@ export function ContentList<T extends ContentItem>({
           </p>
           {!search && statusFilter === "all" && (
             <Button onClick={onCreate}>
-              <Plus className="h-4 w-4 mr-2" />
+              <PlusCircle className="h-4 w-4 " />
               Create {singularName}
             </Button>
           )}
@@ -437,7 +437,7 @@ export function ContentList<T extends ContentItem>({
                                     : undefined
                                 }
                               >
-                                <action.icon className="h-4 w-4 mr-2" />
+                                <action.icon className="h-4 w-4 " />
                                 {action.label}
                               </a>
                             </DropdownMenuItem>
@@ -448,7 +448,7 @@ export function ContentList<T extends ContentItem>({
                               }
                               onClick={() => action.onClick(item)}
                             >
-                              <action.icon className="h-4 w-4 mr-2" />
+                              <action.icon className="h-4 w-4 " />
                               {action.label}
                             </DropdownMenuItem>
                           )}
@@ -532,7 +532,7 @@ export function ContentList<T extends ContentItem>({
                         className={action.destructive ? "text-destructive" : ""}
                         onClick={() => action.onClick(item)}
                       >
-                        <action.icon className="h-4 w-4 mr-2" />
+                        <action.icon className="h-4 w-4 " />
                         {action.label}
                       </DropdownMenuItem>
                     </React.Fragment>

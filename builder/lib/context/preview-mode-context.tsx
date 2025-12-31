@@ -16,6 +16,9 @@ interface PreviewModeContextValue {
   // Page context for header display
   pageContext: { type: string; title: string } | null;
   setPageContext: (context: { type: string; title: string } | null) => void;
+  // Whether the current page has its own toolbar (hides parent header)
+  hasCustomToolbar: boolean;
+  setHasCustomToolbar: (value: boolean) => void;
 }
 
 const PreviewModeContext = createContext<PreviewModeContextValue | null>(null);
@@ -26,6 +29,7 @@ export function PreviewModeProvider({ children }: { children: ReactNode }) {
     type: string;
     title: string;
   } | null>(null);
+  const [hasCustomToolbar, setHasCustomToolbar] = useState(false);
 
   const enterPreviewMode = useCallback(() => setIsPreviewMode(true), []);
   const exitPreviewMode = useCallback(() => setIsPreviewMode(false), []);
@@ -43,6 +47,8 @@ export function PreviewModeProvider({ children }: { children: ReactNode }) {
         togglePreviewMode,
         pageContext,
         setPageContext,
+        hasCustomToolbar,
+        setHasCustomToolbar,
       }}
     >
       {children}
@@ -72,6 +78,8 @@ export function usePreviewModeOptional(): PreviewModeContextValue {
       togglePreviewMode: () => {},
       pageContext: null,
       setPageContext: () => {},
+      hasCustomToolbar: false,
+      setHasCustomToolbar: () => {},
     }
   );
 }

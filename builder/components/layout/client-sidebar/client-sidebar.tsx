@@ -11,9 +11,13 @@ import {
   Receipt,
   Users,
   Settings,
-  ArrowLeft,
+  Globe,
   PanelsTopLeft,
   GlobeLock,
+  Tags,
+  Store,
+  UserCog,
+  Building2,
 } from "lucide-react";
 
 import {
@@ -27,12 +31,14 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  // SidebarRail,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/ui/nav-link";
 import { useTenant } from "@/lib/hooks/use-tenants";
+import { useUIStore } from "@/lib/stores/ui-store";
 
 import "./client-sidebar.css";
+import Link from "next/link";
 
 interface ClientSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
@@ -47,8 +53,26 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
   const params = useParams();
   const tenantId = params?.id as string;
   const { data: tenant } = useTenant(tenantId);
+  const { openPageSettings, openGlobalSettings } = useUIStore();
 
-  const mainMenuItems = [
+  // Determine if user is agency staff or client user
+  // Agency staff see "Client's X" labels, client users see "My X" labels
+  const isAgencyUser = user.isSuperAdmin;
+
+  // Check if sub-clients feature is enabled for this tenant
+  const hasSubClientsFeature =
+    tenant?.enabledFeatures?.["subclients.enabled"] ||
+    (tenant?._count?.children && tenant._count.children > 0);
+
+  // Context-aware labels
+  const labels = {
+    managementSection: isAgencyUser ? "Client" : "Manage",
+    clients: isAgencyUser ? "Client's Clients" : "My Clients",
+    team: isAgencyUser ? "Client Team" : "My Team",
+    settings: isAgencyUser ? "Client Settings" : "Settings",
+  };
+
+  const contentMenuItems = [
     {
       title: "Pages",
       url: `/${tenantId}/pages`,
@@ -60,6 +84,11 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
       icon: Newspaper,
     },
     {
+      title: "Tags",
+      url: `/${tenantId}/tags`,
+      icon: Tags,
+    },
+    {
       title: "Media",
       url: `/${tenantId}/media`,
       icon: Image,
@@ -67,6 +96,11 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
   ];
 
   const shopMenuItems = [
+    {
+      title: "Shop",
+      url: `/${tenantId}/shop`,
+      icon: Store,
+    },
     {
       title: "Products",
       url: `/${tenantId}/shop/products`,
@@ -82,106 +116,171 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
       url: `/${tenantId}/shop/customers`,
       icon: Users,
     },
-    {
-      title: "Settings",
-      url: `/${tenantId}/shop/settings`,
-      icon: Settings,
-    },
   ];
 
+  // Header branding - white-labeled per tenant
+  const brandName = tenantId && tenant?.businessName
+    ? tenant.businessName
+    : "Web & Funnel";
+  const brandHref = tenantId ? `/${tenantId}` : "/clients";
+
+  // Custom icon from tenant settings
+  const tenantIconUrl = (tenant as { iconUrl?: string } | undefined)?.iconUrl;
+
   return (
-    <Sidebar {...props}>
-      <SidebarHeader>
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader className="client-sidebar-header">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href={`/${tenantId}`}>
+            <SidebarMenuButton size="lg" asChild tooltip={brandName}>
+              <Link href={brandHref}>
                 <div className="client-sidebar-logo">
-                  <Pyramid />
+                  {tenantIconUrl ? (
+                    <img
+                      src={tenantIconUrl}
+                      alt={brandName}
+                      className="h-5 w-5 object-contain"
+                    />
+                  ) : (
+                    <Pyramid />
+                  )}
                 </div>
                 <div className="client-sidebar-header-text">
                   <span className="client-sidebar-title">
-                    {tenant?.businessName || "Loading..."}
-                  </span>
-                  <span className="client-sidebar-subtitle">
-                    {tenant?.tier === "BUILDER" ? "Builder" : "Content Editor"}
+                    {brandName}
                   </span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent>
+        {/* Admin Section - always visible for super admins */}
         {user.isSuperAdmin && (
-          <SidebarGroup>
-            <SidebarGroupLabel>Administration</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <NavLink
-                  href="/dashboard/clients"
-                  icon={<PanelsTopLeft />}
-                  title="Manage Clients"
-                />
-                <NavLink
-                  href="/dashboard/users"
-                  icon={<GlobeLock />}
-                  title="Manage Users"
-                />
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>Administration</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <NavLink
+                    href="/clients"
+                    icon={<PanelsTopLeft />}
+                    title="Manage Clients"
+                  />
+                  <NavLink
+                    href="/users"
+                    icon={<GlobeLock />}
+                    title="Manage Users"
+                  />
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+            {tenantId && <SidebarSeparator />}
+          </>
         )}
 
-        <SidebarGroup>
-          <SidebarGroupLabel>Content</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {mainMenuItems.map((item) => (
-                <NavLink
-                  key={item.url}
-                  href={item.url}
-                  icon={<item.icon />}
-                  title={item.title}
-                />
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {/* Content Section - only when inside a client workspace */}
+        {tenantId && (
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>Content</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {contentMenuItems.map((item) => (
+                    <NavLink
+                      key={item.url}
+                      href={item.url}
+                      icon={<item.icon />}
+                      title={item.title}
+                    />
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
 
-        <SidebarGroup>
-          <SidebarGroupLabel>Shop</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {shopMenuItems.map((item) => (
-                <NavLink
-                  key={item.url}
-                  href={item.url}
-                  icon={<item.icon />}
-                  title={item.title}
-                />
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+            <SidebarSeparator />
+
+            {/* Shop Section */}
+            <SidebarGroup>
+              <SidebarGroupLabel>Shop</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {shopMenuItems.map((item) => (
+                    <NavLink
+                      key={item.url}
+                      href={item.url}
+                      icon={<item.icon />}
+                      title={item.title}
+                    />
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarSeparator />
+
+            {/* Client/Manage Section */}
+            <SidebarGroup>
+              <SidebarGroupLabel>{labels.managementSection}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {/* Only show sub-clients if feature is enabled */}
+                  {hasSubClientsFeature && (
+                    <NavLink
+                      href={`/${tenantId}/clients`}
+                      icon={<Building2 />}
+                      title={labels.clients}
+                    />
+                  )}
+                  <NavLink
+                    href={`/${tenantId}/team`}
+                    icon={<UserCog />}
+                    title={labels.team}
+                  />
+                  <NavLink
+                    href={`/${tenantId}/settings`}
+                    icon={<Settings />}
+                    title={labels.settings}
+                  />
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarSeparator />
+
+            {/* Page Settings Section */}
+            <SidebarGroup>
+              <SidebarGroupLabel>Editor</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      onClick={openPageSettings}
+                      tooltip="Page Settings"
+                    >
+                      <Settings className="size-4" />
+                      <span>Page Settings</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      onClick={openGlobalSettings}
+                      tooltip="Global Settings"
+                    >
+                      <Globe className="size-4" />
+                      <span>Global Settings</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        )}
       </SidebarContent>
 
-      <SidebarFooter>
-        {!user.isSuperAdmin && (
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href="/dashboard" className="client-sidebar-back">
-                  <ArrowLeft className="h-4 w-4" />
-                  <span>Back to Dashboard</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        )}
-      </SidebarFooter>
-      {/* <SidebarRail /> */}
+      <SidebarFooter />
     </Sidebar>
   );
 }

@@ -50,21 +50,21 @@ export function ProfileDropdown({ user, onLogout }: ProfileDropdownProps) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push("/dashboard/profile")}>
+        <DropdownMenuItem onClick={() => router.push("/profile")}>
           <User />
           <span>Profile</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push("/dashboard/settings")}>
+        <DropdownMenuItem onClick={() => router.push("/settings")}>
           <Settings />
           <span>Settings</span>
         </DropdownMenuItem>
         {user.isSuperAdmin && (
-          <DropdownMenuItem onClick={() => router.push("/dashboard/team")}>
+          <DropdownMenuItem onClick={() => router.push("/team")}>
             <Users />
             <span>Team Management</span>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onClick={() => router.push("/dashboard/support")}>
+        <DropdownMenuItem onClick={() => router.push("/support")}>
           <HelpCircle />
           <span>Support</span>
         </DropdownMenuItem>

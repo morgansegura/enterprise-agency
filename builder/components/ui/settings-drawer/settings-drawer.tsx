@@ -182,7 +182,7 @@ export function SettingsDrawerSaveButton({
       onClick={onClick}
       disabled={!hasChanges || isPending}
     >
-      {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+      {isPending && <Loader2 className="h-4 w-4  animate-spin" />}
       {hasChanges ? saveLabel : savedLabel}
     </Button>
   );

@@ -220,7 +220,12 @@ function ImagePlaceholder({
 // Loaders
 // ============================================================================
 
-function Loader({ variant = "spinner", size = "md", className, ...props }: LoaderProps) {
+function Loader({
+  variant = "spinner",
+  size = "md",
+  className,
+  ...props
+}: LoaderProps) {
   const sizeClasses = {
     sm: "loader-spinner-sm",
     md: "",
@@ -308,10 +313,7 @@ function PageLoader({
 // Composite Skeletons (Common Patterns)
 // ============================================================================
 
-function SkeletonArticle({
-  className,
-  animation = "shimmer",
-}: SkeletonProps) {
+function SkeletonArticle({ className, animation = "shimmer" }: SkeletonProps) {
   return (
     <div className={cn("space-y-6", className)}>
       <SkeletonImage animation={animation} className="h-64" />
@@ -328,10 +330,7 @@ function SkeletonArticle({
   );
 }
 
-function SkeletonProfile({
-  className,
-  animation = "shimmer",
-}: SkeletonProps) {
+function SkeletonProfile({ className, animation = "shimmer" }: SkeletonProps) {
   return (
     <div className={cn("flex items-center gap-4", className)}>
       <SkeletonAvatar animation={animation} size={56} />
@@ -354,11 +353,7 @@ function SkeletonTable({
       {/* Header */}
       <div className="flex gap-4 pb-3 border-b">
         {Array.from({ length: columns }).map((_, i) => (
-          <Skeleton
-            key={i}
-            animation={animation}
-            className="h-4 flex-1"
-          />
+          <Skeleton key={i} animation={animation} className="h-4 flex-1" />
         ))}
       </div>
       {/* Rows */}

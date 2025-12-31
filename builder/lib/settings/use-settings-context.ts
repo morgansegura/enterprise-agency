@@ -39,10 +39,10 @@ interface RoutePattern {
  */
 const ROUTE_PATTERNS: RoutePattern[] = [
   // ==========================================================================
-  // Admin routes
+  // Admin routes (no tenant prefix)
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/dashboard\/users$/,
+    pattern: /^\/users$/,
     section: "admin",
     entityType: "user",
     extractContext: () => ({
@@ -52,13 +52,45 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/dashboard\/clients$/,
+    pattern: /^\/users\/([^/]+)$/,
+    section: "admin",
+    entityType: "user",
+    extractContext: (match) => ({
+      mode: "edit",
+      section: "admin",
+      entityType: "user",
+      entityId: match[1] || "",
+    }),
+  },
+  {
+    pattern: /^\/clients$/,
     section: "admin",
     entityType: "client",
     extractContext: () => ({
       mode: "list",
       section: "admin",
       entityType: "client",
+    }),
+  },
+  {
+    pattern: /^\/clients\/new$/,
+    section: "admin",
+    entityType: "client",
+    extractContext: () => ({
+      mode: "create",
+      section: "admin",
+      entityType: "client",
+    }),
+  },
+  {
+    pattern: /^\/clients\/([^/]+)$/,
+    section: "admin",
+    entityType: "client",
+    extractContext: (match) => ({
+      mode: "edit",
+      section: "admin",
+      entityType: "client",
+      entityId: match[1] || "",
     }),
   },
 
@@ -317,7 +349,7 @@ function determineSectionFromPath(pathname: string): SettingsSection {
   if (pathname.includes("/shop")) return "shop";
   if (pathname.includes("/posts") || pathname.includes("/tags")) return "blog";
   if (pathname.includes("/media")) return "media";
-  if (pathname.includes("/dashboard")) return "admin";
+  if (pathname.includes("/clients") || pathname.includes("/users")) return "admin";
   return "website";
 }
 

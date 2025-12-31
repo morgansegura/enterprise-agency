@@ -18,9 +18,12 @@ import {
   History,
   PanelRightOpen,
 } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 import { BreakpointSelector, type Breakpoint } from "../breakpoint-selector";
 import { formatDistanceToNow } from "date-fns";
 import { useUIStore } from "@/lib/stores/ui-store";
+import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
 import "./page-editor-layout.css";
 
 interface PageVersion {
@@ -83,6 +86,13 @@ export function PageEditorLayout({
   children,
 }: PageEditorLayoutProps) {
   const { rightPanelOpen, toggleRightPanel } = useUIStore();
+  const { setHasCustomToolbar } = usePreviewModeOptional();
+
+  // Tell parent layout we have our own toolbar
+  React.useEffect(() => {
+    setHasCustomToolbar(true);
+    return () => setHasCustomToolbar(false);
+  }, [setHasCustomToolbar]);
 
   // Memoize save status to avoid Date.now() calls during render
   const saveStatusElement = React.useMemo(() => {
@@ -116,6 +126,8 @@ export function PageEditorLayout({
       {/* Editor Toolbar */}
       <div className="page-editor-toolbar">
         <div className="page-editor-toolbar-left">
+          <SidebarTrigger className="page-editor-toolbar-trigger" />
+          <Separator orientation="vertical" className="h-4 mx-2" />
           {saveStatusElement}
           {/* History Dropdown */}
           {versions.length > 0 && (
@@ -183,12 +195,12 @@ export function PageEditorLayout({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={onPreview}>
-                <ExternalLink className="h-4 w-4 mr-2" />
+                <ExternalLink className="h-4 w-4 " />
                 Open Preview
               </DropdownMenuItem>
               {onGeneratePreviewLink && (
                 <DropdownMenuItem onClick={onGeneratePreviewLink}>
-                  <Link className="h-4 w-4 mr-2" />
+                  <Link className="h-4 w-4 " />
                   Copy Shareable Link
                 </DropdownMenuItem>
               )}

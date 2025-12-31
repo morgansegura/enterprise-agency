@@ -33,6 +33,7 @@ import {
   Eye,
   BarChart3,
   Code,
+  PlusCircle,
 } from "lucide-react";
 
 // ============================================================================
@@ -51,7 +52,11 @@ export interface MetaSettings {
 }
 
 export interface SchemaSettings {
-  organizationType: "Organization" | "LocalBusiness" | "Corporation" | "ProfessionalService";
+  organizationType:
+    | "Organization"
+    | "LocalBusiness"
+    | "Corporation"
+    | "ProfessionalService";
   organizationName: string;
   organizationLogo: string;
   telephone: string;
@@ -172,13 +177,11 @@ function CollapsibleSection({
         <ChevronDown
           className={cn(
             "h-4 w-4 text-muted-foreground transition-transform",
-            open && "rotate-180"
+            open && "rotate-180",
           )}
         />
       </CollapsibleTrigger>
-      <CollapsibleContent className="pt-4 px-1">
-        {children}
-      </CollapsibleContent>
+      <CollapsibleContent className="pt-4 px-1">{children}</CollapsibleContent>
     </Collapsible>
   );
 }
@@ -193,21 +196,33 @@ interface MetaSettingsTabProps {
 }
 
 function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
-  const updateMeta = <K extends keyof MetaSettings>(key: K, value: MetaSettings[K]) => {
+  const updateMeta = <K extends keyof MetaSettings>(
+    key: K,
+    value: MetaSettings[K],
+  ) => {
     onChange({ ...meta, [key]: value });
   };
 
   const [keywordInput, setKeywordInput] = React.useState("");
 
   const addKeyword = () => {
-    if (keywordInput.trim() && !meta.defaultKeywords.includes(keywordInput.trim())) {
-      updateMeta("defaultKeywords", [...meta.defaultKeywords, keywordInput.trim()]);
+    if (
+      keywordInput.trim() &&
+      !meta.defaultKeywords.includes(keywordInput.trim())
+    ) {
+      updateMeta("defaultKeywords", [
+        ...meta.defaultKeywords,
+        keywordInput.trim(),
+      ]);
       setKeywordInput("");
     }
   };
 
   const removeKeyword = (keyword: string) => {
-    updateMeta("defaultKeywords", meta.defaultKeywords.filter((k) => k !== keyword));
+    updateMeta(
+      "defaultKeywords",
+      meta.defaultKeywords.filter((k) => k !== keyword),
+    );
   };
 
   return (
@@ -220,7 +235,9 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Title Template</Label>
+              <Label className="text-xs text-muted-foreground">
+                Title Template
+              </Label>
               <Input
                 value={meta.titleTemplate}
                 onChange={(e) => updateMeta("titleTemplate", e.target.value)}
@@ -252,7 +269,9 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Default Title (Fallback)</Label>
+            <Label className="text-xs text-muted-foreground">
+              Default Title (Fallback)
+            </Label>
             <Input
               value={meta.defaultTitle}
               onChange={(e) => updateMeta("defaultTitle", e.target.value)}
@@ -270,7 +289,9 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs text-muted-foreground">Default Meta Description</Label>
+              <Label className="text-xs text-muted-foreground">
+                Default Meta Description
+              </Label>
               <span className="text-xs text-muted-foreground">
                 {meta.defaultDescription.length}/160
               </span>
@@ -285,16 +306,20 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Default Keywords</Label>
+            <Label className="text-xs text-muted-foreground">
+              Default Keywords
+            </Label>
             <div className="flex gap-2">
               <Input
                 value={keywordInput}
                 onChange={(e) => setKeywordInput(e.target.value)}
                 placeholder="Add keyword..."
-                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && (e.preventDefault(), addKeyword())
+                }
               />
               <Button size="sm" onClick={addKeyword}>
-                <Plus className="h-4 w-4" />
+                <PlusCircle className="h-4 w-4" />
               </Button>
             </div>
             {meta.defaultKeywords.length > 0 && (
@@ -324,7 +349,9 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
       >
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Default OG Image URL</Label>
+            <Label className="text-xs text-muted-foreground">
+              Default OG Image URL
+            </Label>
             <Input
               value={meta.defaultOgImage}
               onChange={(e) => updateMeta("defaultOgImage", e.target.value)}
@@ -337,22 +364,30 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Twitter Card Type</Label>
+              <Label className="text-xs text-muted-foreground">
+                Twitter Card Type
+              </Label>
               <Select
                 value={meta.twitterCard}
-                onValueChange={(v) => updateMeta("twitterCard", v as MetaSettings["twitterCard"])}
+                onValueChange={(v) =>
+                  updateMeta("twitterCard", v as MetaSettings["twitterCard"])
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="summary">Summary</SelectItem>
-                  <SelectItem value="summary_large_image">Summary Large Image</SelectItem>
+                  <SelectItem value="summary_large_image">
+                    Summary Large Image
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Twitter @username</Label>
+              <Label className="text-xs text-muted-foreground">
+                Twitter @username
+              </Label>
               <Input
                 value={meta.twitterSite}
                 onChange={(e) => updateMeta("twitterSite", e.target.value)}
@@ -376,7 +411,10 @@ interface SchemaSettingsTabProps {
 }
 
 function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
-  const updateSchema = <K extends keyof SchemaSettings>(key: K, value: SchemaSettings[K]) => {
+  const updateSchema = <K extends keyof SchemaSettings>(
+    key: K,
+    value: SchemaSettings[K],
+  ) => {
     onChange({ ...schema, [key]: value });
   };
 
@@ -390,10 +428,17 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Organization Type</Label>
+              <Label className="text-xs text-muted-foreground">
+                Organization Type
+              </Label>
               <Select
                 value={schema.organizationType}
-                onValueChange={(v) => updateSchema("organizationType", v as SchemaSettings["organizationType"])}
+                onValueChange={(v) =>
+                  updateSchema(
+                    "organizationType",
+                    v as SchemaSettings["organizationType"],
+                  )
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -402,15 +447,21 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
                   <SelectItem value="Organization">Organization</SelectItem>
                   <SelectItem value="LocalBusiness">Local Business</SelectItem>
                   <SelectItem value="Corporation">Corporation</SelectItem>
-                  <SelectItem value="ProfessionalService">Professional Service</SelectItem>
+                  <SelectItem value="ProfessionalService">
+                    Professional Service
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Organization Name</Label>
+              <Label className="text-xs text-muted-foreground">
+                Organization Name
+              </Label>
               <Input
                 value={schema.organizationName}
-                onChange={(e) => updateSchema("organizationName", e.target.value)}
+                onChange={(e) =>
+                  updateSchema("organizationName", e.target.value)
+                }
                 placeholder="Your Company Name"
               />
             </div>
@@ -454,7 +505,9 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
       >
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Street Address</Label>
+            <Label className="text-xs text-muted-foreground">
+              Street Address
+            </Label>
             <Input
               value={schema.streetAddress}
               onChange={(e) => updateSchema("streetAddress", e.target.value)}
@@ -467,12 +520,16 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
               <Label className="text-xs text-muted-foreground">City</Label>
               <Input
                 value={schema.addressLocality}
-                onChange={(e) => updateSchema("addressLocality", e.target.value)}
+                onChange={(e) =>
+                  updateSchema("addressLocality", e.target.value)
+                }
                 placeholder="San Francisco"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">State/Region</Label>
+              <Label className="text-xs text-muted-foreground">
+                State/Region
+              </Label>
               <Input
                 value={schema.addressRegion}
                 onChange={(e) => updateSchema("addressRegion", e.target.value)}
@@ -483,7 +540,9 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Postal Code</Label>
+              <Label className="text-xs text-muted-foreground">
+                Postal Code
+              </Label>
               <Input
                 value={schema.postalCode}
                 onChange={(e) => updateSchema("postalCode", e.target.value)}
@@ -514,8 +573,14 @@ interface AnalyticsSettingsTabProps {
   onChange: (tracking: TrackingSettings) => void;
 }
 
-function AnalyticsSettingsTab({ tracking, onChange }: AnalyticsSettingsTabProps) {
-  const updateTracking = <K extends keyof TrackingSettings>(key: K, value: TrackingSettings[K]) => {
+function AnalyticsSettingsTab({
+  tracking,
+  onChange,
+}: AnalyticsSettingsTabProps) {
+  const updateTracking = <K extends keyof TrackingSettings>(
+    key: K,
+    value: TrackingSettings[K],
+  ) => {
     onChange({ ...tracking, [key]: value });
   };
 
@@ -529,18 +594,26 @@ function AnalyticsSettingsTab({ tracking, onChange }: AnalyticsSettingsTabProps)
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Google Analytics ID</Label>
+              <Label className="text-xs text-muted-foreground">
+                Google Analytics ID
+              </Label>
               <Input
                 value={tracking.googleAnalyticsId}
-                onChange={(e) => updateTracking("googleAnalyticsId", e.target.value)}
+                onChange={(e) =>
+                  updateTracking("googleAnalyticsId", e.target.value)
+                }
                 placeholder="G-XXXXXXXXXX"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Google Tag Manager ID</Label>
+              <Label className="text-xs text-muted-foreground">
+                Google Tag Manager ID
+              </Label>
               <Input
                 value={tracking.googleTagManagerId}
-                onChange={(e) => updateTracking("googleTagManagerId", e.target.value)}
+                onChange={(e) =>
+                  updateTracking("googleTagManagerId", e.target.value)
+                }
                 placeholder="GTM-XXXXXXX"
               />
             </div>
@@ -555,7 +628,9 @@ function AnalyticsSettingsTab({ tracking, onChange }: AnalyticsSettingsTabProps)
         defaultOpen={false}
       >
         <div className="space-y-2">
-          <Label className="text-xs text-muted-foreground">Facebook Pixel ID</Label>
+          <Label className="text-xs text-muted-foreground">
+            Facebook Pixel ID
+          </Label>
           <Input
             value={tracking.facebookPixelId}
             onChange={(e) => updateTracking("facebookPixelId", e.target.value)}
@@ -577,7 +652,9 @@ function AnalyticsSettingsTab({ tracking, onChange }: AnalyticsSettingsTabProps)
             </Label>
             <Textarea
               value={tracking.customHeadScripts}
-              onChange={(e) => updateTracking("customHeadScripts", e.target.value)}
+              onChange={(e) =>
+                updateTracking("customHeadScripts", e.target.value)
+              }
               placeholder="<!-- Custom scripts for head -->"
               className="min-h-[100px] font-mono text-xs"
             />
@@ -588,7 +665,9 @@ function AnalyticsSettingsTab({ tracking, onChange }: AnalyticsSettingsTabProps)
             </Label>
             <Textarea
               value={tracking.customBodyScripts}
-              onChange={(e) => updateTracking("customBodyScripts", e.target.value)}
+              onChange={(e) =>
+                updateTracking("customBodyScripts", e.target.value)
+              }
               placeholder="<!-- Custom scripts for body -->"
               className="min-h-[100px] font-mono text-xs"
             />
@@ -637,7 +716,7 @@ function RedirectsTab({ redirects, onChange }: RedirectsTabProps) {
           Manage URL redirects for your site
         </p>
         <Button size="sm" onClick={addRedirect}>
-          <Plus className="h-4 w-4 mr-1" />
+          <PlusCircle className="h-4 w-4 mr-1" />
           Add Redirect
         </Button>
       </div>
@@ -653,28 +732,36 @@ function RedirectsTab({ redirects, onChange }: RedirectsTabProps) {
               key={redirect.id}
               className={cn(
                 "p-3 rounded-lg border bg-card",
-                !redirect.enabled && "opacity-50"
+                !redirect.enabled && "opacity-50",
               )}
             >
               <div className="flex items-center gap-3">
                 <div className="flex-1 grid grid-cols-[1fr,auto,1fr] gap-2 items-center">
                   <Input
                     value={redirect.from}
-                    onChange={(e) => updateRedirect(redirect.id, { from: e.target.value })}
+                    onChange={(e) =>
+                      updateRedirect(redirect.id, { from: e.target.value })
+                    }
                     placeholder="/old-page"
                     className="h-9"
                   />
                   <ArrowRight className="h-4 w-4 text-muted-foreground" />
                   <Input
                     value={redirect.to}
-                    onChange={(e) => updateRedirect(redirect.id, { to: e.target.value })}
+                    onChange={(e) =>
+                      updateRedirect(redirect.id, { to: e.target.value })
+                    }
                     placeholder="/new-page"
                     className="h-9"
                   />
                 </div>
                 <Select
                   value={String(redirect.type)}
-                  onValueChange={(v) => updateRedirect(redirect.id, { type: Number(v) as 301 | 302 })}
+                  onValueChange={(v) =>
+                    updateRedirect(redirect.id, {
+                      type: Number(v) as 301 | 302,
+                    })
+                  }
                 >
                   <SelectTrigger className="w-20 h-9">
                     <SelectValue />
@@ -686,7 +773,9 @@ function RedirectsTab({ redirects, onChange }: RedirectsTabProps) {
                 </Select>
                 <Switch
                   checked={redirect.enabled}
-                  onCheckedChange={(v) => updateRedirect(redirect.id, { enabled: v })}
+                  onCheckedChange={(v) =>
+                    updateRedirect(redirect.id, { enabled: v })
+                  }
                 />
                 <Button
                   size="icon"
@@ -741,10 +830,18 @@ export function SEOSettingsPanel({
 
       <Tabs defaultValue="meta" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="meta" className="text-xs">Meta & Social</TabsTrigger>
-          <TabsTrigger value="schema" className="text-xs">Schema</TabsTrigger>
-          <TabsTrigger value="analytics" className="text-xs">Analytics</TabsTrigger>
-          <TabsTrigger value="redirects" className="text-xs">Redirects</TabsTrigger>
+          <TabsTrigger value="meta" className="text-xs">
+            Meta & Social
+          </TabsTrigger>
+          <TabsTrigger value="schema" className="text-xs">
+            Schema
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="text-xs">
+            Analytics
+          </TabsTrigger>
+          <TabsTrigger value="redirects" className="text-xs">
+            Redirects
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="meta" className="mt-6">
@@ -756,11 +853,17 @@ export function SEOSettingsPanel({
         </TabsContent>
 
         <TabsContent value="analytics" className="mt-6">
-          <AnalyticsSettingsTab tracking={settings.tracking} onChange={updateTracking} />
+          <AnalyticsSettingsTab
+            tracking={settings.tracking}
+            onChange={updateTracking}
+          />
         </TabsContent>
 
         <TabsContent value="redirects" className="mt-6">
-          <RedirectsTab redirects={settings.redirects} onChange={updateRedirects} />
+          <RedirectsTab
+            redirects={settings.redirects}
+            onChange={updateRedirects}
+          />
         </TabsContent>
       </Tabs>
     </div>

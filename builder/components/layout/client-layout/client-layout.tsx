@@ -28,7 +28,8 @@ function ClientContent({
   onLogout: () => void;
   children: React.ReactNode;
 }) {
-  const { isPreviewMode, pageContext } = usePreviewModeOptional();
+  const { isPreviewMode, pageContext, hasCustomToolbar } =
+    usePreviewModeOptional();
 
   // In preview mode, render children without layout chrome
   if (isPreviewMode) {
@@ -39,29 +40,32 @@ function ClientContent({
     <>
       <ClientSidebar user={user} />
       <SidebarInset>
-        <header className="client-layout-header">
-          <div className="client-layout-header-left">
-            <SidebarTrigger className="client-layout-header-trigger" />
-            <Separator
-              orientation="vertical"
-              className="client-layout-header-separator"
-            />
-          </div>
-          {pageContext && (
-            <div className="client-layout-header-center">
-              <span className="client-layout-header-context-type">
-                {pageContext.type}:
-              </span>
-              <span className="client-layout-header-context-title">
-                {pageContext.title}
-              </span>
+        {/* Hide header when page has its own toolbar (e.g., editor pages) */}
+        {!hasCustomToolbar && (
+          <header className="client-layout-header">
+            <div className="client-layout-header-left">
+              <SidebarTrigger className="client-layout-header-trigger" />
+              <Separator
+                orientation="vertical"
+                className="client-layout-header-separator"
+              />
             </div>
-          )}
-          <div className="client-layout-header-right">
-            <ThemeSwitcher />
-            <ProfileDropdown user={user} onLogout={onLogout} />
-          </div>
-        </header>
+            {pageContext && (
+              <div className="client-layout-header-center">
+                <span className="client-layout-header-context-type">
+                  {pageContext.type}:
+                </span>
+                <span className="client-layout-header-context-title">
+                  {pageContext.title}
+                </span>
+              </div>
+            )}
+            <div className="client-layout-header-right">
+              <ThemeSwitcher />
+              <ProfileDropdown user={user} onLogout={onLogout} />
+            </div>
+          </header>
+        )}
         <div className="client-layout-main">{children}</div>
       </SidebarInset>
     </>

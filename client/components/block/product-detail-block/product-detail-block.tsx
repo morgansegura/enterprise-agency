@@ -20,6 +20,7 @@ import {
   Package,
   ChevronLeft,
   ChevronRight,
+  PlusCircle,
 } from "lucide-react";
 import "./product-detail-block.css";
 import { FormItem } from "@/components/ui/form";
@@ -261,7 +262,7 @@ export function ProductDetailBlock({ data, product }: ProductDetailBlockProps) {
                   size="icon"
                   onClick={() => handleQuantityChange(1)}
                 >
-                  <Plus className="w-4 h-4" />
+                  <PlusCircle className="w-4 h-4" />
                 </Button>
               </div>
             </FormItem>

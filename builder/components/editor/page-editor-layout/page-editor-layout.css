@@ -10,7 +10,19 @@
 }
 
 .page-editor-toolbar-left {
-  @apply flex items-center gap-4 flex-1;
+  @apply flex items-center gap-2 flex-1;
+}
+
+.page-editor-toolbar-trigger {
+  @apply relative cursor-pointer rounded-md flex items-center justify-center w-7 h-7 -ml-1;
+
+  & svg {
+    @apply size-5 stroke-(--muted-foreground) transition-colors duration-200;
+  }
+
+  &:hover svg {
+    @apply stroke-(--foreground);
+  }
 }
 
 .page-editor-toolbar-center {

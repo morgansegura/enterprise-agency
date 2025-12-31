@@ -26,18 +26,89 @@ export interface ColorScale {
 }
 
 export interface SemanticColors {
+  // Status colors with foregrounds
   success: string;
+  successForeground: string;
   warning: string;
+  warningForeground: string;
   error: string;
+  errorForeground: string;
   info: string;
+  infoForeground: string;
+  // Destructive (alias for error, commonly used)
+  destructive: string;
+  destructiveForeground: string;
+}
+
+/**
+ * UI Semantic Colors - functional color assignments
+ */
+export interface UIColors {
+  background: string;
+  foreground: string;
+  card: string;
+  cardForeground: string;
+  popover: string;
+  popoverForeground: string;
+  muted: string;
+  mutedForeground: string;
+  border: string;
+  input: string;
+  ring: string;
+  primary: string;
+  primaryForeground: string;
+  secondary: string;
+  secondaryForeground: string;
+  accent: string;
+  accentForeground: string;
+}
+
+/**
+ * Link colors for different states
+ */
+export interface LinkColors {
+  default: string;
+  hover: string;
+  visited: string;
+  active: string;
+}
+
+/**
+ * Selection/highlight colors
+ */
+export interface SelectionColors {
+  background: string;
+  foreground: string;
+}
+
+/**
+ * Chart/data visualization colors
+ */
+export interface ChartColors {
+  chart1: string;
+  chart2: string;
+  chart3: string;
+  chart4: string;
+  chart5: string;
+  chart6: string;
 }
 
 export interface ColorTokens {
+  // Brand color scales (auto-generated from base colors)
   primary: ColorScale;
   secondary: ColorScale;
   accent: ColorScale;
   neutral: ColorScale;
+  // Semantic/status colors
   semantic: SemanticColors;
+  // UI colors (for shadcn/Tailwind compatibility)
+  ui?: UIColors;
+  // Link colors
+  link?: LinkColors;
+  // Selection/highlight
+  selection?: SelectionColors;
+  // Chart colors for data visualization
+  chart?: ChartColors;
 }
 
 // =============================================================================
@@ -233,6 +304,302 @@ export interface TransitionScale {
 }
 
 // =============================================================================
+// Animation & Motion Types
+// =============================================================================
+
+/**
+ * Animation timing functions
+ */
+export interface TimingFunctions {
+  linear: string;
+  easeIn: string;
+  easeOut: string;
+  easeInOut: string;
+  bounce: string;
+  elastic: string;
+}
+
+/**
+ * Animation preset configuration
+ */
+export interface AnimationPreset {
+  duration: string;
+  timing: string;
+  delay?: string;
+}
+
+/**
+ * Complete animation tokens
+ */
+export interface AnimationTokens {
+  /** Timing functions */
+  timing: TimingFunctions;
+  /** Preset animations */
+  presets: {
+    fadeIn: AnimationPreset;
+    fadeOut: AnimationPreset;
+    slideUp: AnimationPreset & { distance: string };
+    slideDown: AnimationPreset & { distance: string };
+    slideLeft: AnimationPreset & { distance: string };
+    slideRight: AnimationPreset & { distance: string };
+    scaleIn: AnimationPreset & { from: string };
+    scaleOut: AnimationPreset & { to: string };
+    bounce: AnimationPreset;
+    pulse: AnimationPreset;
+    spin: AnimationPreset;
+  };
+  /** Respect reduced motion preference */
+  reducedMotion: boolean;
+}
+
+// =============================================================================
+// Extended Component Types
+// =============================================================================
+
+/**
+ * Dropdown/Menu component settings
+ */
+export interface DropdownComponentSettings {
+  borderRadius: string;
+  borderWidth: string;
+  shadow: string;
+  minWidth: string;
+  maxHeight: string;
+  padding: string;
+  itemPaddingX: string;
+  itemPaddingY: string;
+  itemBorderRadius: string;
+  itemFontSize: string;
+  separatorMarginY: string;
+  animationDuration: string;
+  animationSlideDistance: string;
+}
+
+/**
+ * Modal/Dialog component settings
+ */
+export interface ModalComponentSettings {
+  borderRadius: string;
+  shadow: string;
+  overlayColor: string;
+  overlayOpacity: string;
+  backdropBlur: string;
+  sizes: {
+    sm: { width: string; maxWidth: string };
+    md: { width: string; maxWidth: string };
+    lg: { width: string; maxWidth: string };
+    xl: { width: string; maxWidth: string };
+    full: { width: string; maxWidth: string };
+  };
+  headerPaddingX: string;
+  headerPaddingY: string;
+  contentPaddingX: string;
+  contentPaddingY: string;
+  footerPaddingX: string;
+  footerPaddingY: string;
+  footerGap: string;
+  animationDuration: string;
+  animationScaleFrom: string;
+}
+
+/**
+ * Drawer/Sheet component settings
+ */
+export interface DrawerComponentSettings {
+  borderRadius: string;
+  shadow: string;
+  overlayColor: string;
+  overlayOpacity: string;
+  backdropBlur: string;
+  sizes: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    full: string;
+  };
+  headerPaddingX: string;
+  headerPaddingY: string;
+  headerMinHeight: string;
+  contentPaddingX: string;
+  contentPaddingY: string;
+  footerPaddingX: string;
+  footerPaddingY: string;
+  animationDuration: string;
+  /** Mobile-specific settings */
+  mobile: {
+    fullScreen: boolean;
+    swipeToClose: boolean;
+    showHandle: boolean;
+    handleWidth: string;
+    handleHeight: string;
+  };
+}
+
+/**
+ * Tabs component settings
+ */
+export interface TabsComponentSettings {
+  listBackground: string;
+  listBorderRadius: string;
+  listPadding: string;
+  listGap: string;
+  triggerPaddingX: string;
+  triggerPaddingY: string;
+  triggerFontSize: string;
+  triggerFontWeight: string;
+  triggerBorderRadius: string;
+  indicatorHeight: string;
+  indicatorBorderRadius: string;
+  animationDuration: string;
+}
+
+/**
+ * Tooltip component settings
+ */
+export interface TooltipComponentSettings {
+  borderRadius: string;
+  paddingX: string;
+  paddingY: string;
+  fontSize: string;
+  fontWeight: string;
+  maxWidth: string;
+  shadow: string;
+  arrowSize: string;
+  showArrow: boolean;
+  animationDuration: string;
+  animationDelay: string;
+}
+
+/**
+ * Badge component settings
+ */
+export interface BadgeComponentSettings {
+  sizes: {
+    sm: { paddingX: string; paddingY: string; fontSize: string };
+    md: { paddingX: string; paddingY: string; fontSize: string };
+    lg: { paddingX: string; paddingY: string; fontSize: string };
+  };
+  borderRadius: string;
+  fontWeight: string;
+  letterSpacing: string;
+  textTransform: string;
+}
+
+/**
+ * Avatar component settings
+ */
+export interface AvatarComponentSettings {
+  sizes: {
+    xs: { size: string; fontSize: string };
+    sm: { size: string; fontSize: string };
+    md: { size: string; fontSize: string };
+    lg: { size: string; fontSize: string };
+    xl: { size: string; fontSize: string };
+    "2xl": { size: string; fontSize: string };
+  };
+  borderRadius: string;
+  borderWidth: string;
+}
+
+/**
+ * Navigation component settings
+ */
+export interface NavComponentSettings {
+  desktop: {
+    height: string;
+    paddingX: string;
+    paddingY: string;
+    shadow: string;
+    sticky: boolean;
+    backdropBlur: string;
+    linkPaddingX: string;
+    linkPaddingY: string;
+    linkFontSize: string;
+    linkFontWeight: string;
+    dropdownGap: string;
+    dropdownOffset: string;
+  };
+  mobile: {
+    height: string;
+    paddingX: string;
+    hamburgerSize: string;
+    menuPosition: "left" | "right" | "full";
+    menuAnimation: "slide" | "fade" | "none";
+    linkPaddingX: string;
+    linkPaddingY: string;
+    linkFontSize: string;
+    linkFontWeight: string;
+  };
+}
+
+/**
+ * Footer component settings
+ */
+export interface FooterComponentSettings {
+  paddingX: string;
+  paddingY: string;
+  linkFontSize: string;
+  headingFontSize: string;
+  headingFontWeight: string;
+  headingMarginBottom: string;
+  columnGap: string;
+  rowGap: string;
+}
+
+/**
+ * Icon size settings
+ */
+export interface IconComponentSettings {
+  sizes: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    "2xl": string;
+  };
+  strokeWidth: {
+    thin: string;
+    normal: string;
+    thick: string;
+  };
+}
+
+// =============================================================================
+// Mobile & Responsive Types
+// =============================================================================
+
+/**
+ * Breakpoint definitions
+ */
+export interface BreakpointTokens {
+  sm: string;
+  md: string;
+  lg: string;
+  xl: string;
+  "2xl": string;
+}
+
+/**
+ * Mobile-specific settings
+ */
+export interface MobileTokens {
+  breakpoints: BreakpointTokens;
+  touchTargetMin: string;
+  mobilePadding: string;
+  tabletPadding: string;
+  scaleDownTypography: boolean;
+  minFontSize: string;
+  navigationStyle: "hamburger" | "bottom-tabs" | "slide-out";
+  bottomNavHeight: string;
+  bottomNavIconSize: string;
+  bottomNavShowLabels: boolean;
+  drawerDefaultPosition: "bottom" | "left" | "right";
+  useBottomSheet: boolean;
+}
+
+// =============================================================================
 // Component Token Types
 // =============================================================================
 
@@ -336,9 +703,23 @@ export interface CardComponentSettings {
 }
 
 export interface ComponentTokens {
+  // Core components
   buttons?: Partial<ButtonComponentSettings>;
   inputs?: Partial<InputComponentSettings>;
   cards?: Partial<CardComponentSettings>;
+  // UI components
+  dropdown?: Partial<DropdownComponentSettings>;
+  modal?: Partial<ModalComponentSettings>;
+  drawer?: Partial<DrawerComponentSettings>;
+  tabs?: Partial<TabsComponentSettings>;
+  tooltip?: Partial<TooltipComponentSettings>;
+  badge?: Partial<BadgeComponentSettings>;
+  avatar?: Partial<AvatarComponentSettings>;
+  // Layout components
+  nav?: Partial<NavComponentSettings>;
+  footer?: Partial<FooterComponentSettings>;
+  // Icons
+  icon?: Partial<IconComponentSettings>;
 }
 
 // =============================================================================
@@ -349,14 +730,23 @@ export interface ComponentTokens {
  * Complete Design Token System
  */
 export interface DesignTokens {
+  // Color system
   colors: ColorTokens;
+  // Typography system
   typography: TypographyTokens;
   fonts?: FontConfig;
+  // Spacing & layout
   spacing: SpacingScale;
+  // Visual effects
   borderRadius: BorderRadiusScale;
   shadows: ShadowScale;
   transitions: TransitionScale;
+  // Animation & motion
+  animations?: AnimationTokens;
+  // Component tokens
   components?: ComponentTokens;
+  // Mobile & responsive
+  mobile?: MobileTokens;
 }
 
 /**
@@ -366,4 +756,33 @@ export interface DesignTokens {
 export interface TenantTokenConfig {
   useCustomTokens?: boolean;
   tokens?: Partial<DesignTokens>;
+}
+
+// =============================================================================
+// Theme Presets
+// =============================================================================
+
+/**
+ * Theme preset - a pre-configured theme
+ */
+export interface ThemePreset {
+  id: string;
+  name: string;
+  description: string;
+  category:
+    | "modern"
+    | "classic"
+    | "playful"
+    | "corporate"
+    | "minimal"
+    | "custom";
+  preview: {
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+    fontHeading: string;
+    fontBody: string;
+    borderRadius: string;
+  };
+  tokens: Partial<DesignTokens>;
 }

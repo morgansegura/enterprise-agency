@@ -94,7 +94,11 @@ const skeletonAnimationOptions: Array<{
   label: string;
   description: string;
 }> = [
-  { value: "shimmer", label: "Shimmer", description: "Gliding highlight effect" },
+  {
+    value: "shimmer",
+    label: "Shimmer",
+    description: "Gliding highlight effect",
+  },
   { value: "pulse", label: "Pulse", description: "Fading in/out" },
   { value: "wave", label: "Wave", description: "Smooth wave motion" },
   { value: "none", label: "None", description: "Static placeholder" },
@@ -147,7 +151,7 @@ export function LoadingSettingsPanel({
 }: LoadingSettingsPanelProps) {
   const updateSkeleton = <K extends keyof LoadingSettingsData["skeleton"]>(
     key: K,
-    value: LoadingSettingsData["skeleton"][K]
+    value: LoadingSettingsData["skeleton"][K],
   ) => {
     onChange({
       ...settings,
@@ -156,10 +160,10 @@ export function LoadingSettingsPanel({
   };
 
   const updateImagePlaceholder = <
-    K extends keyof LoadingSettingsData["imagePlaceholder"]
+    K extends keyof LoadingSettingsData["imagePlaceholder"],
   >(
     key: K,
-    value: LoadingSettingsData["imagePlaceholder"][K]
+    value: LoadingSettingsData["imagePlaceholder"][K],
   ) => {
     onChange({
       ...settings,
@@ -169,7 +173,7 @@ export function LoadingSettingsPanel({
 
   const updatePageLoader = <K extends keyof LoadingSettingsData["pageLoader"]>(
     key: K,
-    value: LoadingSettingsData["pageLoader"][K]
+    value: LoadingSettingsData["pageLoader"][K],
   ) => {
     onChange({
       ...settings,
@@ -178,10 +182,10 @@ export function LoadingSettingsPanel({
   };
 
   const updateInlineLoader = <
-    K extends keyof LoadingSettingsData["inlineLoader"]
+    K extends keyof LoadingSettingsData["inlineLoader"],
   >(
     key: K,
-    value: LoadingSettingsData["inlineLoader"][K]
+    value: LoadingSettingsData["inlineLoader"][K],
   ) => {
     onChange({
       ...settings,
@@ -314,7 +318,7 @@ export function LoadingSettingsPanel({
                 onValueChange={(v) =>
                   updateImagePlaceholder(
                     "defaultAspectRatio",
-                    v as "square" | "video" | "portrait" | "auto"
+                    v as "square" | "video" | "portrait" | "auto",
                   )
                 }
               >
@@ -383,10 +387,7 @@ export function LoadingSettingsPanel({
             </Label>
             <div className="absolute inset-0 flex items-center justify-center bg-background/80">
               <div className="flex flex-col items-center gap-3">
-                <Loader
-                  variant={settings.pageLoader.variant}
-                  size="md"
-                />
+                <Loader variant={settings.pageLoader.variant} size="md" />
                 {settings.pageLoader.showLabel && (
                   <span className="text-sm text-muted-foreground animate-pulse">
                     {settings.pageLoader.labelText}

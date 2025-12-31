@@ -47,7 +47,7 @@ export function AuthGuard({
     // Check super admin requirement
     if (requireSuperAdmin && !user?.isSuperAdmin) {
       logger.log("Auth guard: Super admin required, redirecting");
-      router.push("/dashboard");
+      router.push("/clients");
       return;
     }
 
@@ -58,7 +58,7 @@ export function AuthGuard({
           userRole: user.agencyRole,
           requiredRoles,
         });
-        router.push("/dashboard");
+        router.push("/clients");
         return;
       }
     }

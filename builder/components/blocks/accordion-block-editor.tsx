@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Trash2, ChevronDown, Plus, X } from "lucide-react";
+import { Trash2, ChevronDown, Plus, X, PlusCircle } from "lucide-react";
 import { FormItem } from "@/components/ui/form";
 
 interface AccordionItem {
@@ -162,7 +162,7 @@ export function AccordionBlockEditor({
               variant="outline"
               onClick={handleAddItem}
             >
-              <Plus className="h-3 w-3 mr-1" />
+              <PlusCircle className="h-3 w-3 mr-1" />
               Add Item
             </Button>
           </FormItem>

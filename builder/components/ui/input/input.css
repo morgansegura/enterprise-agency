@@ -4,6 +4,11 @@
   @apply h-9 w-full min-w-0 rounded-md border border-(--input) bg-transparent px-3 py-1 text-base shadow-xs transition-all outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
 }
 
+/* Allow padding overrides for inputs with icons */
+[data-slot="input"][class*="pl-"] {
+  padding-left: unset;
+}
+
 [data-slot="input"]::placeholder {
   @apply text-(--muted-foreground);
 }

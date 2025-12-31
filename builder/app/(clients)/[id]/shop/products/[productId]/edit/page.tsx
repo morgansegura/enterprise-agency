@@ -35,7 +35,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { LayoutHeading } from "@/components/layout/layout-heading";
-import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Plus, Trash2, PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 import { FormItem } from "@/components/ui/form";
 
@@ -552,7 +552,7 @@ export default function EditProductPage({
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Product Variants</CardTitle>
               <Button size="sm" variant="outline" onClick={handleAddVariant}>
-                <Plus className="mr-2 h-4 w-4" />
+                <PlusCircle className="mr-2 h-4 w-4" />
                 Add Variant
               </Button>
             </CardHeader>

@@ -372,10 +372,11 @@ export function ColorPicker({
         </PopoverTrigger>
         <PopoverContent
           className="color-picker-dropdown"
-          side="left"
+          side="bottom"
           align="start"
           sideOffset={8}
-          collisionPadding={16}
+          collisionPadding={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          avoidCollisions={true}
         >
           {/* Theme Colors - simple swatch row */}
           <div className="color-row">

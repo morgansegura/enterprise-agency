@@ -21,6 +21,7 @@ import {
   Search,
   ShoppingCart,
   User,
+  PlusCircle,
 } from "lucide-react";
 
 import "./header-canvas.css";
@@ -109,7 +110,7 @@ function AddBlockPopover({ zone, onAdd }: AddBlockPopoverProps) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button className="header-canvas-add-btn" title={`Add to ${zone} zone`}>
-          <Plus className="size-3" />
+          <PlusCircle className="size-3" />
         </button>
       </PopoverTrigger>
       <PopoverContent className="header-canvas-add-popover" align="center">

@@ -29,8 +29,15 @@
 .color-picker-dropdown {
   @apply bg-(--card) border border-(--border) rounded-xl shadow-xl;
   @apply p-4;
-  @apply max-h-[400px] overflow-y-auto;
   @apply w-[480px];
+  /* Use viewport-relative max-height for better fit */
+  max-height: calc(100vh - 100px);
+  max-height: calc(100dvh - 100px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Enable smooth scrolling */
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
 }
 
 .color-palette {

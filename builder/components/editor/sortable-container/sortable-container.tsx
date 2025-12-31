@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { GripVertical, Plus, Settings2, Trash2 } from "lucide-react";
+import {
+  GripVertical,
+  Plus,
+  PlusCircle,
+  Settings2,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -203,7 +209,7 @@ export function SortableContainer({
               onOpenChange={setAddBlockOpen}
             >
               <Button variant="outline" size="sm">
-                <Plus className="h-4 w-4 mr-2" />
+                <PlusCircle className="h-4 w-4 " />
                 Add Block
               </Button>
             </AddBlockPopover>
@@ -235,7 +241,7 @@ export function SortableContainer({
                 className={cn(addBlockOpen && "is-active")}
                 title="Add Block"
               >
-                <Plus className="h-4 w-4" />
+                <PlusCircle className="h-4 w-4" />
               </Button>
             </AddBlockPopover>
 

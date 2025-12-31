@@ -688,16 +688,163 @@ Build 10 block editors:
 
 ---
 
+## Phase 5: Marketing & Analytics Platform (Months 13-15)
+
+**Goal:** Premium marketing features justifying $2,000/month per client
+
+**See:** [Marketing Platform Documentation](./marketing-platform.md)
+
+### 5.1 Analytics Infrastructure ⏳ PLANNED
+
+**Database:**
+
+- [ ] AnalyticsEvent model (page views, clicks, conversions)
+- [ ] ConversionGoal model (goal definitions)
+- [ ] Conversion model (goal completions)
+- [ ] SEOAudit model (audit results)
+- [ ] TrackedKeyword model (keyword rankings)
+- [ ] KeywordRanking model (historical rankings)
+
+**Tracking Script:**
+
+- [ ] Lightweight client-side tracker (<5KB)
+- [ ] Automatic page view tracking
+- [ ] SPA navigation support
+- [ ] UTM parameter capture
+- [ ] Device/browser detection
+- [ ] Session and visitor ID management
+
+**API Endpoints:**
+
+- [ ] POST /analytics/track (public, rate limited)
+- [ ] GET /analytics/realtime
+- [ ] GET /analytics/stats
+- [ ] CRUD for goals and funnels
+
+### 5.2 SEO Suite ⏳ PLANNED
+
+**SEO Audit Engine:**
+
+- [ ] Meta tag analysis (title, description, OG, Twitter)
+- [ ] Content quality scoring (headings, length, keywords)
+- [ ] Technical SEO checks (mobile, HTTPS, sitemap)
+- [ ] Performance scoring (Core Web Vitals)
+- [ ] Accessibility scoring (contrast, ARIA, keyboard)
+- [ ] Issue detection with suggestions
+
+**Keyword Tracking:**
+
+- [ ] Add/remove tracked keywords
+- [ ] Automated ranking checks
+- [ ] Historical ranking data
+- [ ] Search volume integration
+
+**Builder UI:**
+
+- [ ] SEO Dashboard with overall score
+- [ ] Issues list with fix suggestions
+- [ ] Keyword rankings table
+- [ ] One-click audit runner
+
+### 5.3 AEO/GEO Optimization ⏳ PLANNED
+
+**AEO (Answer Engine Optimization):**
+
+- [ ] FAQ schema auto-generation
+- [ ] Question-based heading suggestions
+- [ ] Featured snippet optimization
+- [ ] Direct answer formatting
+
+**GEO (Generative Engine Optimization):**
+
+- [ ] Citation quality analysis
+- [ ] Authority content suggestions
+- [ ] AI-readable structure scoring
+- [ ] Source verification recommendations
+
+### 5.4 Analytics Dashboard ⏳ PLANNED
+
+**Real-Time Analytics:**
+
+- [ ] Active visitors count
+- [ ] Current pages being viewed
+- [ ] Live traffic sources
+- [ ] Geographic distribution
+
+**Aggregated Stats:**
+
+- [ ] Page views over time
+- [ ] Unique visitors
+- [ ] Session duration
+- [ ] Bounce rate
+- [ ] Top pages
+- [ ] Traffic sources breakdown
+- [ ] Device/browser breakdown
+
+**Conversion Tracking:**
+
+- [ ] Goal creation (page view, event, form, scroll, time)
+- [ ] Conversion rate tracking
+- [ ] Goal value tracking
+- [ ] Revenue attribution
+
+**Funnel Analysis:**
+
+- [ ] Multi-step funnel builder
+- [ ] Drop-off visualization
+- [ ] Conversion rate per step
+- [ ] Funnel comparison
+
+### 5.5 SEM Integration ⏳ PLANNED
+
+**UTM Management:**
+
+- [ ] Campaign URL builder
+- [ ] UTM parameter tracking
+- [ ] Campaign performance dashboard
+- [ ] Revenue attribution by campaign
+- [ ] ROI calculation
+
+### 5.6 Social Media Tools ⏳ PLANNED
+
+**Social Previews:**
+
+- [ ] Facebook preview
+- [ ] Twitter/X preview
+- [ ] LinkedIn preview
+- [ ] Issue detection (image size, text length)
+
+**Share Tracking:**
+
+- [ ] Social share buttons with tracking
+- [ ] Share analytics dashboard
+- [ ] Platform breakdown
+
+### 5.7 Feature Flags ⏳ PLANNED
+
+Add to tenant features:
+
+- [ ] marketing.seo (basic SEO tools)
+- [ ] marketing.seoAdvanced (audit, keywords, AEO, GEO)
+- [ ] marketing.analytics (basic analytics)
+- [ ] marketing.analyticsAdvanced (funnels, goals, real-time)
+- [ ] marketing.campaigns (UTM tracking)
+- [ ] marketing.social (social previews, share tracking)
+
+---
+
 ## Timeline Summary
 
-- **Months 1-3:** Foundation (Tokens + Two-Tier + Block Editors)
-- **Months 4-6:** Builder Features (Drag-Drop + Content + Polish)
-- **Months 7-9:** E-Commerce Feature (For print client)
-- **Months 10-12:** Scale (Client Portals + Agency Tools)
+- **Months 1-3:** Foundation (Tokens + Two-Tier + Block Editors) ✅
+- **Months 4-6:** Builder Features (Drag-Drop + Content + Polish) ✅
+- **Months 7-9:** E-Commerce Feature (For print client) ✅
+- **Months 10-12:** Scale (Client Portals + Agency Tools) ✅ (in progress)
+- **Months 13-15:** Marketing & Analytics Platform ⏳
 
-**Total:** ~12 months to fully-featured platform with first advanced feature
+**Total:** ~15 months to fully-featured premium platform
 
 **MVP (sellable product):** ~3-4 months (Phases 1-2)
+**Premium Platform ($2k/mo value):** ~15 months (all phases)
 
 ---
 

@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Trash2, LayoutGrid, Plus } from "lucide-react";
+import { Trash2, LayoutGrid, Plus, PlusCircle } from "lucide-react";
 import { BlockEditorRenderer } from "./block-editor-renderer";
 import { blockRegistry } from "@/lib/editor/block-registry";
 import { FormItem } from "@/components/ui/form";
@@ -259,7 +259,7 @@ export function GridBlockEditor({
               variant="outline"
               onClick={() => setShowBlockLibrary(!showBlockLibrary)}
             >
-              <Plus className="h-3 w-3 mr-1" />
+              <PlusCircle className="h-3 w-3 mr-1" />
               Add Block
             </Button>
           </FormItem>

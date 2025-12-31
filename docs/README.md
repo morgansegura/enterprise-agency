@@ -8,10 +8,12 @@ Complete documentation for the Professional Web Agency Platform.
 
 **Start here to understand our vision and approach:**
 
+- **[Enterprise Platform Roadmap](./enterprise-platform.md)** - Complete feature roadmap, MVP definition, implementation phases
 - **[Vision & Product Strategy](./vision.md)** - Platform vision, competitive positioning, and why token-based design
 - **[Feature Flags System](./feature-flags.md)** - Progressive feature development and monetization
 - **[Content Preview System](./content-preview-system.md)** - Draft Mode, preview tokens, and publishing workflow
 - **[Build Plan](./build-plan.md)** - Current state, roadmap, and immediate next steps
+- **[Marketing Platform](./marketing-platform.md)** - SEO/AEO/GEO, Analytics, SEM, Social tools
 - [Architecture Overview](./architecture.md) - System architecture and multi-tenant design
 
 ---

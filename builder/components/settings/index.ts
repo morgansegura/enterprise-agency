@@ -63,8 +63,4 @@ export {
 } from "./component-settings-panel";
 
 // Theme Presets
-export {
-  ThemePresets,
-  themePresets,
-  type ThemePreset,
-} from "./theme-presets";
+export { ThemePresets, themePresets, type ThemePreset } from "./theme-presets";
