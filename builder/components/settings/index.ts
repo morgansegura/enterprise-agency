@@ -28,3 +28,43 @@ export {
   WebsiteGlobalSettings,
   type WebsiteGlobalSettingsData,
 } from "./global-panels";
+
+// New Comprehensive Settings Panels
+export {
+  ColorSettingsPanel,
+  type ColorSettingsData,
+  defaultColorSettings,
+} from "./color-settings-panel";
+
+export {
+  TypographySettingsPanel,
+  type TypographySettingsData,
+  defaultTypographySettings,
+} from "./typography-settings-panel";
+
+export {
+  AnimationSettingsPanel,
+  type AnimationSettingsData,
+  defaultAnimationSettings,
+} from "./animation-settings-panel";
+
+export {
+  ComponentSettingsPanel,
+  type ComponentSettingsData,
+  type DropdownSettings,
+  type ModalSettings,
+  type DrawerSettings,
+  type TabsSettings,
+  type TooltipSettings,
+  type BadgeSettings,
+  type AvatarSettings,
+  type NavSettings,
+  defaultComponentSettings,
+} from "./component-settings-panel";
+
+// Theme Presets
+export {
+  ThemePresets,
+  themePresets,
+  type ThemePreset,
+} from "./theme-presets";

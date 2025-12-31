@@ -30,15 +30,28 @@ import {
   FormInput,
   CreditCard,
   Home,
+  Sparkles,
+  Zap,
+  Layers,
+  Loader2,
+  Search,
 } from "lucide-react";
 import { ColorPicker } from "@/components/ui/color-picker";
+import { PageList, type PageCardData, type PageCardActions } from "@/components/ui/page-card";
 import { cn } from "@/lib/utils";
 import {
   useTenantTokens,
   useUpdateTenantTokens,
 } from "@/lib/hooks/use-tenant-tokens";
-import { usePages, useUpdatePage } from "@/lib/hooks/use-pages";
-import { useParams } from "next/navigation";
+import {
+  usePages,
+  useUpdatePage,
+  usePublishPage,
+  useUnpublishPage,
+  useDuplicatePage,
+  useDeletePage
+} from "@/lib/hooks/use-pages";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   spacingSelectOptions,
@@ -69,27 +82,99 @@ import type {
 } from "@/lib/tokens/types";
 import { Checkbox } from "@/components/ui/checkbox";
 
+// New comprehensive settings panels
+import {
+  ColorSettingsPanel,
+  type ColorSettingsData,
+  defaultColorSettings,
+} from "./color-settings-panel";
+import {
+  TypographySettingsPanel as NewTypographySettingsPanel,
+  type TypographySettingsData,
+  defaultTypographySettings,
+} from "./typography-settings-panel";
+import {
+  AnimationSettingsPanel,
+  type AnimationSettingsData,
+  defaultAnimationSettings,
+} from "./animation-settings-panel";
+import {
+  ComponentSettingsPanel,
+  type ComponentSettingsData,
+  defaultComponentSettings,
+} from "./component-settings-panel";
+import {
+  ThemePresets,
+  type ThemePreset,
+} from "./theme-presets";
+import {
+  LoadingSettingsPanel,
+  type LoadingSettingsData,
+  defaultLoadingSettings,
+} from "./loading-settings-panel";
+import {
+  SEOSettingsPanel,
+  type SEOSettingsData,
+  defaultSEOSettings,
+} from "./seo-settings-panel";
+
 type SettingsTab =
+  | "presets"
   | "site"
+  | "seo"
   | "colors"
   | "typography"
+  | "animations"
+  | "components"
+  | "loading"
   | "buttons"
   | "inputs"
   | "cards";
 
 const navItems: SettingsNavItem<SettingsTab>[] = [
+  // TODO: Re-enable when settings are wired to CSS variables and presets can be previewed
+  // {
+  //   id: "presets",
+  //   label: "Theme Presets",
+  //   icon: Sparkles,
+  //   description: "Quick start themes",
+  // },
   {
     id: "site",
     label: "Site",
     icon: Home,
     description: "Site settings",
   },
-  { id: "colors", label: "Colors", icon: Palette, description: "Brand colors" },
+  {
+    id: "seo",
+    label: "SEO",
+    icon: Search,
+    description: "Search & analytics",
+  },
+  { id: "colors", label: "Colors", icon: Palette, description: "Brand & UI colors" },
   {
     id: "typography",
     label: "Typography",
     icon: Type,
-    description: "Fonts & text",
+    description: "Fonts & text scales",
+  },
+  {
+    id: "animations",
+    label: "Animations",
+    icon: Zap,
+    description: "Motion & timing",
+  },
+  {
+    id: "components",
+    label: "Components",
+    icon: Layers,
+    description: "UI component styles",
+  },
+  {
+    id: "loading",
+    label: "Loading",
+    icon: Loader2,
+    description: "Skeletons & loaders",
   },
   {
     id: "buttons",
@@ -211,6 +296,14 @@ interface LocalTokens {
   buttons: ButtonSettings;
   inputs: InputSettings;
   cards: CardSettings;
+  // New comprehensive settings
+  colorSettings: ColorSettingsData;
+  typographySettings: TypographySettingsData;
+  animationSettings: AnimationSettingsData;
+  componentSettings: ComponentSettingsData;
+  loadingSettings: LoadingSettingsData;
+  seoSettings: SEOSettingsData;
+  activeThemeId?: string;
 }
 
 // ============================================================================
@@ -385,6 +478,14 @@ const defaultTokens: LocalTokens = {
   buttons: defaultButtons,
   inputs: defaultInputs,
   cards: defaultCards,
+  // New comprehensive settings
+  colorSettings: defaultColorSettings,
+  typographySettings: defaultTypographySettings,
+  animationSettings: defaultAnimationSettings,
+  componentSettings: defaultComponentSettings,
+  loadingSettings: defaultLoadingSettings,
+  seoSettings: defaultSEOSettings,
+  activeThemeId: undefined,
 };
 
 // ============================================================================
@@ -567,6 +668,14 @@ export function GlobalSettingsDrawer({
             tokens.components?.cards?.transitionDuration ||
             defaultCards.transitionDuration,
         },
+        // New comprehensive settings from stored tokens (cast to any for extended properties)
+        colorSettings: (tokens as Record<string, unknown>).colorSettings as ColorSettingsData || defaultColorSettings,
+        typographySettings: (tokens as Record<string, unknown>).typographySettings as TypographySettingsData || defaultTypographySettings,
+        animationSettings: (tokens as Record<string, unknown>).animationSettings as AnimationSettingsData || defaultAnimationSettings,
+        componentSettings: (tokens as Record<string, unknown>).componentSettings as ComponentSettingsData || defaultComponentSettings,
+        loadingSettings: (tokens as Record<string, unknown>).loadingSettings as LoadingSettingsData || defaultLoadingSettings,
+        seoSettings: (tokens as Record<string, unknown>).seoSettings as SEOSettingsData || defaultSEOSettings,
+        activeThemeId: (tokens as Record<string, unknown>).activeThemeId as string | undefined,
       };
       setLocalTokens(initial);
       setOriginalTokens(initial);
@@ -625,6 +734,61 @@ export function GlobalSettingsDrawer({
     }));
   };
 
+  // New comprehensive settings handlers
+  const updateColorSettings = (settings: ColorSettingsData) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      colorSettings: settings,
+    }));
+  };
+
+  const updateTypographySettings = (settings: TypographySettingsData) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      typographySettings: settings,
+    }));
+  };
+
+  const updateAnimationSettings = (settings: AnimationSettingsData) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      animationSettings: settings,
+    }));
+  };
+
+  const updateComponentSettings = (settings: ComponentSettingsData) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      componentSettings: settings,
+    }));
+  };
+
+  const updateLoadingSettings = (settings: LoadingSettingsData) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      loadingSettings: settings,
+    }));
+  };
+
+  const updateSeoSettings = (settings: SEOSettingsData) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      seoSettings: settings,
+    }));
+  };
+
+  const handleApplyThemePreset = (preset: ThemePreset) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      colorSettings: preset.colors,
+      typographySettings: preset.typography,
+      animationSettings: preset.animations,
+      componentSettings: preset.components,
+      activeThemeId: preset.id,
+    }));
+    toast.success(`Applied "${preset.name}" theme`);
+  };
+
   const handleSave = () => {
     if (!tenantId) return;
 
@@ -656,6 +820,14 @@ export function GlobalSettingsDrawer({
         inputs: localTokens.inputs,
         cards: localTokens.cards,
       },
+      // New comprehensive settings
+      colorSettings: localTokens.colorSettings,
+      typographySettings: localTokens.typographySettings,
+      animationSettings: localTokens.animationSettings,
+      componentSettings: localTokens.componentSettings,
+      loadingSettings: localTokens.loadingSettings,
+      seoSettings: localTokens.seoSettings,
+      activeThemeId: localTokens.activeThemeId,
     };
 
     updateTokens.mutate(
@@ -699,18 +871,60 @@ export function GlobalSettingsDrawer({
           />
         </SettingsDrawerActions>
 
+        {/* Site Settings - Pages management */}
         {activeTab === "site" && tenantId && (
           <SiteSettingsPanel tenantId={tenantId} />
         )}
-        {activeTab === "colors" && (
-          <ColorSettings colors={localTokens.colors} onChange={updateColors} />
-        )}
-        {activeTab === "typography" && (
-          <TypographySettingsPanel
-            settings={localTokens.typography}
-            onChange={updateTypography}
+
+        {/* SEO & Analytics Settings */}
+        {activeTab === "seo" && (
+          <SEOSettingsPanel
+            settings={localTokens.seoSettings}
+            onChange={updateSeoSettings}
           />
         )}
+
+        {/* Colors - Comprehensive color settings with scales */}
+        {activeTab === "colors" && (
+          <ColorSettingsPanel
+            colors={localTokens.colorSettings}
+            onChange={updateColorSettings}
+          />
+        )}
+
+        {/* Typography - Font families, scales, and roles */}
+        {activeTab === "typography" && (
+          <NewTypographySettingsPanel
+            typography={localTokens.typographySettings}
+            onChange={updateTypographySettings}
+          />
+        )}
+
+        {/* Animations - Motion and timing settings */}
+        {activeTab === "animations" && (
+          <AnimationSettingsPanel
+            animation={localTokens.animationSettings}
+            onChange={updateAnimationSettings}
+          />
+        )}
+
+        {/* Components - Dropdowns, modals, drawers, etc. */}
+        {activeTab === "components" && (
+          <ComponentSettingsPanel
+            settings={localTokens.componentSettings}
+            onChange={updateComponentSettings}
+          />
+        )}
+
+        {/* Loading - Skeletons, placeholders, loaders */}
+        {activeTab === "loading" && (
+          <LoadingSettingsPanel
+            settings={localTokens.loadingSettings}
+            onChange={updateLoadingSettings}
+          />
+        )}
+
+        {/* Buttons - Button size and style settings */}
         {activeTab === "buttons" && (
           <ButtonSettingsPanel
             settings={localTokens.buttons}
@@ -718,6 +932,8 @@ export function GlobalSettingsDrawer({
             colors={localTokens.colors}
           />
         )}
+
+        {/* Inputs - Form input styling */}
         {activeTab === "inputs" && (
           <InputSettingsPanel
             settings={localTokens.inputs}
@@ -725,6 +941,8 @@ export function GlobalSettingsDrawer({
             colors={localTokens.colors}
           />
         )}
+
+        {/* Cards - Card component styling */}
         {activeTab === "cards" && (
           <CardSettingsPanel
             settings={localTokens.cards}
@@ -1905,13 +2123,13 @@ function CardSettingsPanel({
     key: K,
     options: Array<{ value: string; label: string; description: string }>,
   ) => (
-    <SettingsField>
-      <Label>{label}</Label>
+    <div className="settings-field-compact">
+      <Label className="text-xs text-muted-foreground">{label}</Label>
       <Select
         value={settings[key] as string}
         onValueChange={(v) => onChange(key, v as CardSettings[K])}
       >
-        <SelectTrigger>
+        <SelectTrigger className="h-9">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -1927,7 +2145,20 @@ function CardSettingsPanel({
           ))}
         </SelectContent>
       </Select>
-    </SettingsField>
+    </div>
+  );
+
+  const renderInlineSwitch = (
+    label: string,
+    key: "headerBorder" | "footerBorder",
+  ) => (
+    <div className="settings-field-inline">
+      <Label>{label}</Label>
+      <Switch
+        checked={settings[key]}
+        onCheckedChange={(v) => onChange(key, v)}
+      />
+    </div>
   );
 
   return (
@@ -1987,69 +2218,47 @@ function CardSettingsPanel({
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Header Spacing">
-        {renderSelect("Padding X", "headerPaddingX", spacingSelectOptions)}
-        {renderSelect("Padding Y", "headerPaddingY", spacingSelectOptions)}
-        <SettingsField>
-          <Label>Show Border</Label>
-          <Switch
-            checked={settings.headerBorder}
-            onCheckedChange={(v) => onChange("headerBorder", v)}
-          />
-        </SettingsField>
+        <div className="settings-grid-compact">
+          {renderSelect("Padding X", "headerPaddingX", spacingSelectOptions)}
+          {renderSelect("Padding Y", "headerPaddingY", spacingSelectOptions)}
+        </div>
+        <div className="mt-3">
+          {renderInlineSwitch("Show Border", "headerBorder")}
+        </div>
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Content Spacing">
-        {renderSelect("Padding X", "contentPaddingX", spacingSelectOptions)}
-        {renderSelect("Padding Y", "contentPaddingY", spacingSelectOptions)}
+        <div className="settings-grid-compact">
+          {renderSelect("Padding X", "contentPaddingX", spacingSelectOptions)}
+          {renderSelect("Padding Y", "contentPaddingY", spacingSelectOptions)}
+        </div>
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Footer Spacing">
-        {renderSelect("Padding X", "footerPaddingX", spacingSelectOptions)}
-        {renderSelect("Padding Y", "footerPaddingY", spacingSelectOptions)}
-        <SettingsField>
-          <Label>Show Border</Label>
-          <Switch
-            checked={settings.footerBorder}
-            onCheckedChange={(v) => onChange("footerBorder", v)}
-          />
-        </SettingsField>
+        <div className="settings-grid-compact">
+          {renderSelect("Padding X", "footerPaddingX", spacingSelectOptions)}
+          {renderSelect("Padding Y", "footerPaddingY", spacingSelectOptions)}
+        </div>
+        <div className="mt-3">
+          {renderInlineSwitch("Show Border", "footerBorder")}
+        </div>
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Title Typography">
-        {renderSelect("Font Size", "titleFontSize", fontSizeSelectOptions)}
-        {renderSelect(
-          "Font Weight",
-          "titleFontWeight",
-          fontWeightSelectOptions,
-        )}
-        {renderSelect(
-          "Line Height",
-          "titleLineHeight",
-          lineHeightSelectOptions,
-        )}
-        {renderSelect(
-          "Letter Spacing",
-          "titleLetterSpacing",
-          letterSpacingSelectOptions,
-        )}
+        <div className="settings-grid-compact">
+          {renderSelect("Font Size", "titleFontSize", fontSizeSelectOptions)}
+          {renderSelect("Font Weight", "titleFontWeight", fontWeightSelectOptions)}
+          {renderSelect("Line Height", "titleLineHeight", lineHeightSelectOptions)}
+          {renderSelect("Letter Spacing", "titleLetterSpacing", letterSpacingSelectOptions)}
+        </div>
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Description Typography">
-        {renderSelect(
-          "Font Size",
-          "descriptionFontSize",
-          fontSizeSelectOptions.slice(0, 5),
-        )}
-        {renderSelect(
-          "Font Weight",
-          "descriptionFontWeight",
-          fontWeightSelectOptions,
-        )}
-        {renderSelect(
-          "Line Height",
-          "descriptionLineHeight",
-          lineHeightSelectOptions,
-        )}
+        <div className="settings-grid-compact">
+          {renderSelect("Font Size", "descriptionFontSize", fontSizeSelectOptions.slice(0, 5))}
+          {renderSelect("Font Weight", "descriptionFontWeight", fontWeightSelectOptions)}
+          {renderSelect("Line Height", "descriptionLineHeight", lineHeightSelectOptions)}
+        </div>
       </SettingsGridBlock>
 
       <SettingsGridBlock title="Effects">
@@ -2072,139 +2281,127 @@ interface SiteSettingsPanelProps {
 }
 
 function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
+  const router = useRouter();
   const { data: pages, isLoading: pagesLoading } = usePages(tenantId);
   const updatePage = useUpdatePage(tenantId);
+  const publishPage = usePublishPage(tenantId);
+  const unpublishPage = useUnpublishPage(tenantId);
+  const duplicatePage = useDuplicatePage(tenantId);
+  const deletePage = useDeletePage(tenantId);
 
-  const currentHomePage = pages?.find((page) => page.isHomePage);
-  const [selectedHomePageId, setSelectedHomePageId] = React.useState<
-    string | null
-  >(null);
+  // Track which pages are being updated
+  const [updatingIds, setUpdatingIds] = React.useState<string[]>([]);
 
-  React.useEffect(() => {
-    if (currentHomePage && selectedHomePageId === null) {
-      setSelectedHomePageId(currentHomePage.id);
-    }
-  }, [currentHomePage, selectedHomePageId]);
+  // Convert pages to PageCardData format
+  const pageCardData: PageCardData[] = React.useMemo(() => {
+    if (!pages) return [];
+    return pages.map((page) => ({
+      id: page.id,
+      title: page.title,
+      slug: page.slug,
+      status: (page.status as "draft" | "published") || "draft",
+      isHomePage: page.isHomePage,
+      updatedAt: page.updatedAt,
+      createdAt: page.createdAt,
+    }));
+  }, [pages]);
 
-  const handleHomePageChange = async (pageId: string) => {
-    if (pageId === "none") {
-      if (currentHomePage) {
-        try {
-          await updatePage.mutateAsync({
-            id: currentHomePage.id,
-            data: { isHomePage: false },
-          });
-          setSelectedHomePageId(null);
-          toast.success("Homepage removed - Coming Soon page will be shown");
-        } catch {
-          toast.error("Failed to remove homepage");
-        }
+  // Action handlers
+  const pageActions: PageCardActions = {
+    onEdit: (page) => {
+      router.push(`/${tenantId}/pages/${page.id}/edit`);
+    },
+    onDuplicate: async (page) => {
+      setUpdatingIds((prev) => [...prev, page.id]);
+      try {
+        await duplicatePage.mutateAsync(page.id);
+        toast.success(`"${page.title}" duplicated`);
+      } catch {
+        toast.error("Failed to duplicate page");
+      } finally {
+        setUpdatingIds((prev) => prev.filter((id) => id !== page.id));
       }
-      return;
-    }
-
-    if (pageId === currentHomePage?.id) {
-      return;
-    }
-
-    try {
-      await updatePage.mutateAsync({
-        id: pageId,
-        data: { isHomePage: true },
-      });
-
-      setSelectedHomePageId(pageId);
-      toast.success("Homepage updated successfully");
-    } catch {
-      toast.error("Failed to update homepage");
-    }
+    },
+    onDelete: async (page) => {
+      if (page.isHomePage) {
+        toast.error("Cannot delete the homepage. Set another page as homepage first.");
+        return;
+      }
+      setUpdatingIds((prev) => [...prev, page.id]);
+      try {
+        await deletePage.mutateAsync(page.id);
+        toast.success(`"${page.title}" deleted`);
+      } catch {
+        toast.error("Failed to delete page");
+      } finally {
+        setUpdatingIds((prev) => prev.filter((id) => id !== page.id));
+      }
+    },
+    onStatusChange: async (page, newStatus) => {
+      setUpdatingIds((prev) => [...prev, page.id]);
+      try {
+        if (newStatus === "published") {
+          await publishPage.mutateAsync(page.id);
+          toast.success(`"${page.title}" published`);
+        } else {
+          await unpublishPage.mutateAsync(page.id);
+          toast.success(`"${page.title}" unpublished`);
+        }
+      } catch {
+        toast.error(`Failed to ${newStatus === "published" ? "publish" : "unpublish"} page`);
+      } finally {
+        setUpdatingIds((prev) => prev.filter((id) => id !== page.id));
+      }
+    },
+    onSetHomePage: async (page) => {
+      setUpdatingIds((prev) => [...prev, page.id]);
+      try {
+        await updatePage.mutateAsync({
+          id: page.id,
+          data: { isHomePage: true },
+        });
+        toast.success(`"${page.title}" is now the homepage`);
+      } catch {
+        toast.error("Failed to set homepage");
+      } finally {
+        setUpdatingIds((prev) => prev.filter((id) => id !== page.id));
+      }
+    },
+    onPreview: (page) => {
+      window.open(`/${tenantId}/preview/${page.slug}`, "_blank");
+    },
   };
 
-  const publishedPages =
-    pages?.filter((page) => page.status === "published") || [];
+  if (pagesLoading) {
+    return (
+      <SettingsSection
+        title="Site Pages"
+        description="Manage all pages on your site. Set homepage, publish/unpublish, and organize your content."
+      >
+        <div className="flex items-center justify-center py-12">
+          <div className="text-sm text-muted-foreground">Loading pages...</div>
+        </div>
+      </SettingsSection>
+    );
+  }
 
   return (
     <SettingsSection
-      title="Site Settings"
-      description="Configure global site settings including homepage and meta information."
+      title="Site Pages"
+      description="Manage all pages on your site. Set homepage, publish/unpublish, and organize your content."
     >
-      <SettingsGridBlock title="Homepage">
-        <SettingsField>
-          <Label>Default Homepage</Label>
-          <Select
-            value={selectedHomePageId || currentHomePage?.id || "none"}
-            onValueChange={handleHomePageChange}
-            disabled={pagesLoading || updatePage.isPending}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select a homepage" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">
-                <span className="text-muted-foreground">
-                  No homepage (Coming Soon page)
-                </span>
-              </SelectItem>
-              {publishedPages.map((page) => (
-                <SelectItem key={page.id} value={page.id}>
-                  <span className="flex items-center gap-2">
-                    <span>{page.title}</span>
-                    <span className="text-muted-foreground text-xs">
-                      /{page.slug}
-                    </span>
-                    {page.isHomePage && (
-                      <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded">
-                        Current
-                      </span>
-                    )}
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <p className="text-xs text-muted-foreground mt-2">
-            The homepage is the default page visitors see when they visit your
-            site. Only published pages can be set as the homepage.
-          </p>
-        </SettingsField>
-      </SettingsGridBlock>
-
-      {pages && pages.length > 0 && (
-        <SettingsGridBlock title="All Pages">
-          <div className="space-y-2">
-            {pages.map((page) => (
-              <div
-                key={page.id}
-                className="flex items-center justify-between p-2 rounded-md border bg-background"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-sm">{page.title}</span>
-                  <span className="text-xs text-muted-foreground">
-                    /{page.slug}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "text-xs px-2 py-0.5 rounded",
-                      page.status === "published"
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                        : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-                    )}
-                  >
-                    {page.status === "published" ? "Published" : "Draft"}
-                  </span>
-                  {page.isHomePage && (
-                    <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
-                      Homepage
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </SettingsGridBlock>
-      )}
+      <PageList
+        pages={pageCardData}
+        actions={pageActions}
+        updatingIds={updatingIds}
+        showSearch={true}
+        showFilters={true}
+        showViewToggle={true}
+        showDate={true}
+        showHomepageToggle={true}
+        defaultView="list"
+        emptyMessage="No pages found. Create your first page to get started."
+      />
     </SettingsSection>
   );
 }

@@ -1,5 +1,248 @@
 @reference "tailwindcss";
 
+/* Base skeleton */
 [data-slot="skeleton"] {
-  @apply bg-(--accent) animate-pulse rounded-md;
+  @apply bg-(--muted) rounded-md relative overflow-hidden;
+}
+
+/* Pulse animation (default) */
+[data-slot="skeleton"][data-animation="pulse"] {
+  @apply animate-pulse;
+}
+
+/* Shimmer animation */
+[data-slot="skeleton"][data-animation="shimmer"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Wave animation */
+[data-slot="skeleton"][data-animation="wave"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  animation: wave 1.8s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* None animation */
+[data-slot="skeleton"][data-animation="none"] {
+  animation: none;
+}
+
+/* Skeleton variants */
+[data-slot="skeleton-text"] {
+  @apply h-4 rounded;
+}
+
+[data-slot="skeleton-heading"] {
+  @apply h-7 rounded w-3/4;
+}
+
+[data-slot="skeleton-avatar"] {
+  @apply rounded-full;
+}
+
+[data-slot="skeleton-button"] {
+  @apply h-10 rounded-md;
+}
+
+[data-slot="skeleton-image"] {
+  @apply aspect-video rounded-lg;
+}
+
+[data-slot="skeleton-card"] {
+  @apply rounded-xl p-4;
+}
+
+/* Image placeholder with icon */
+[data-slot="image-placeholder"] {
+  @apply bg-(--muted) rounded-lg flex items-center justify-center relative overflow-hidden;
+}
+
+[data-slot="image-placeholder"][data-animation="shimmer"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+[data-slot="image-placeholder"] .placeholder-icon {
+  @apply text-(--muted-foreground)/50;
+}
+
+/* Page loader overlay */
+[data-slot="page-loader"] {
+  @apply fixed inset-0 z-50 flex items-center justify-center;
+  @apply bg-(--background)/80 backdrop-blur-sm;
+}
+
+[data-slot="page-loader"][data-variant="fullscreen"] {
+  @apply bg-(--background);
+}
+
+/* Spinner styles */
+.loader-spinner {
+  @apply w-10 h-10 border-4 border-(--muted) rounded-full;
+  border-top-color: var(--primary);
+  animation: spin 1s linear infinite;
+}
+
+.loader-spinner-sm {
+  @apply w-5 h-5 border-2;
+}
+
+.loader-spinner-lg {
+  @apply w-16 h-16 border-4;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dots loader */
+.loader-dots {
+  @apply flex gap-1.5;
+}
+
+.loader-dots span {
+  @apply w-2.5 h-2.5 rounded-full bg-(--primary);
+  animation: dots 1.4s ease-in-out infinite both;
+}
+
+.loader-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loader-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes dots {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Bars loader */
+.loader-bars {
+  @apply flex gap-1 items-end h-6;
+}
+
+.loader-bars span {
+  @apply w-1 bg-(--primary) rounded-full;
+  animation: bars 1.2s ease-in-out infinite;
+}
+
+.loader-bars span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loader-bars span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.loader-bars span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.loader-bars span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@keyframes bars {
+  0%, 100% {
+    height: 8px;
+  }
+  50% {
+    height: 24px;
+  }
+}
+
+/* Logo pulse loader */
+.loader-logo {
+  @apply relative;
+  animation: logo-pulse 2s ease-in-out infinite;
+}
+
+@keyframes logo-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Progress bar loader */
+.loader-progress {
+  @apply w-48 h-1 bg-(--muted) rounded-full overflow-hidden;
+}
+
+.loader-progress-bar {
+  @apply h-full bg-(--primary) rounded-full;
+  animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 30%;
+    margin-left: 70%;
+  }
+  100% {
+    width: 0%;
+    margin-left: 100%;
+  }
 }

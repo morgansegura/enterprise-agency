@@ -115,6 +115,29 @@
   @apply space-y-2;
 }
 
+/* Inline field - label and control on same row */
+.settings-field-inline {
+  @apply flex items-center justify-between gap-3;
+}
+
+.settings-field-inline > label {
+  @apply text-sm text-(--foreground) shrink-0;
+}
+
+/* Compact field - tighter spacing */
+.settings-field-compact {
+  @apply space-y-1;
+}
+
+.settings-field-compact > label {
+  @apply text-xs text-(--muted-foreground);
+}
+
+/* Compact grid - tighter gaps */
+.settings-grid-compact {
+  @apply grid grid-cols-2 gap-3;
+}
+
 .settings-textarea {
   @apply flex min-h-[120px] w-full rounded-md;
   @apply border border-(--input) bg-(--background);
