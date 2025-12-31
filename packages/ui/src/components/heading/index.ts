@@ -1,0 +1,18 @@
+export {
+  Heading,
+  type HeadingProps,
+  type HeadingLevel,
+  type HeadingSize,
+  type HeadingVariant,
+  type FontWeight,
+  type TextAlign,
+  type LetterSpacing,
+  type LineHeight,
+  type FontStyle,
+  type TextTransform,
+  type TextDecoration,
+  type WhiteSpace,
+  type MaxWidthPreset,
+  type OpacityPreset,
+  type ColorPreset,
+} from "./heading";

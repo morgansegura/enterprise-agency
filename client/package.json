@@ -15,7 +15,9 @@
     "verify": "pnpm run format && pnpm run lint && pnpm run typecheck && pnpm run test"
   },
   "dependencies": {
+    "@enterprise/blocks": "workspace:*",
     "@enterprise/tokens": "workspace:*",
+    "@enterprise/ui": "workspace:*",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",

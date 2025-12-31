@@ -1,0 +1,59 @@
+{
+  "name": "@enterprise/blocks",
+  "version": "1.0.0",
+  "description": "CMS content block renderers for the Enterprise platform",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles": "./src/styles/index.css",
+    "./content-blocks": {
+      "types": "./dist/content-blocks/index.d.ts",
+      "import": "./dist/content-blocks/index.js",
+      "require": "./dist/content-blocks/index.cjs"
+    },
+    "./container-blocks": {
+      "types": "./dist/container-blocks/index.d.ts",
+      "import": "./dist/container-blocks/index.js",
+      "require": "./dist/container-blocks/index.cjs"
+    },
+    "./renderer": {
+      "types": "./dist/renderer/index.d.ts",
+      "import": "./dist/renderer/index.js",
+      "require": "./dist/renderer/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src/styles"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@enterprise/tokens": "workspace:*",
+    "@enterprise/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "lucide-react": ">=0.400.0",
+    "next": ">=14.0.0",
+    "react": ">=18.0.0"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ]
+}

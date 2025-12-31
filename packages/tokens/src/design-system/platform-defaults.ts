@@ -74,9 +74,15 @@ export const platformDefaults: DesignTokens = {
     // Semantic colors
     semantic: {
       success: "#22c55e", // green-500
+      successForeground: "#ffffff",
       warning: "#f59e0b", // amber-500
+      warningForeground: "#ffffff",
       error: "#ef4444", // red-500
+      errorForeground: "#ffffff",
       info: "#3b82f6", // blue-500
+      infoForeground: "#ffffff",
+      destructive: "#ef4444", // alias for error
+      destructiveForeground: "#ffffff",
     },
   },
 

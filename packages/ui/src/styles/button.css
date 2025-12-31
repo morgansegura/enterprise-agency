@@ -1,0 +1,112 @@
+[data-slot="button"] {
+  @apply inline-flex items-center justify-center whitespace-nowrap font-medium;
+  @apply transition-all outline-none shrink-0;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+  @apply focus-visible:border-(--ring) focus-visible:ring-(--ring)/50;
+  @apply aria-invalid:ring-(--destructive)/20 aria-invalid:border-(--destructive);
+
+  /* Design token values */
+  gap: var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: var(--text-size-sm);
+  font-family: var(--font-body);
+  focus-visible-ring-width: 3px;
+
+  /* SVG styling */
+  & svg {
+    @apply pointer-events-none shrink-0;
+    width: var(--space-4);
+    height: var(--space-4);
+  }
+}
+
+/* Dark mode aria-invalid */
+.dark [data-slot="button"][aria-invalid] {
+  @apply ring-(--destructive)/40;
+}
+
+/* Variants */
+[data-slot="button"][data-variant="default"] {
+  /* @tw suggestCanonicalClasses: off */
+  @apply bg-(--primary) text-(--primary-foreground) hover:bg-(--primary)/90;
+}
+
+[data-slot="button"][data-variant="destructive"] {
+  @apply bg-(--destructive) text-white hover:bg-(--destructive)/90;
+  @apply focus-visible:ring-(--destructive)/20;
+}
+
+.dark [data-slot="button"][data-variant="destructive"] {
+  @apply bg-(--destructive)/60 focus-visible:ring-(--destructive)/40;
+}
+
+[data-slot="button"][data-variant="outline"] {
+  @apply border bg-(--background);
+  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
+  box-shadow: var(--shadow-sm);
+}
+
+.dark [data-slot="button"][data-variant="outline"] {
+  @apply bg-(--input)/30 border-(--input) hover:bg-(--input)/50;
+}
+
+[data-slot="button"][data-variant="secondary"] {
+  @apply bg-(--secondary) text-(--secondary-foreground) hover:bg-(--secondary)/80;
+}
+
+[data-slot="button"][data-variant="ghost"] {
+  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
+}
+
+.dark [data-slot="button"][data-variant="ghost"] {
+  @apply hover:bg-(--accent)/50;
+}
+
+[data-slot="button"][data-variant="link"] {
+  @apply text-(--primary) underline-offset-4 hover:underline;
+}
+
+/* Sizes */
+[data-slot="button"][data-size="default"] {
+  height: var(--space-9);
+  padding-inline: var(--space-4);
+  padding-block: var(--space-2);
+
+  &:has(> svg) {
+    padding-inline: var(--space-3);
+  }
+}
+
+[data-slot="button"][data-size="sm"] {
+  height: var(--space-8);
+  padding-inline: var(--space-3);
+  gap: var(--space-1\.5);
+
+  &:has(> svg) {
+    padding-inline: calc(var(--space-2) + var(--space-0\.5));
+  }
+}
+
+[data-slot="button"][data-size="lg"] {
+  height: var(--space-10);
+  padding-inline: var(--space-6);
+
+  &:has(> svg) {
+    padding-inline: var(--space-4);
+  }
+}
+
+[data-slot="button"][data-size="icon"] {
+  width: var(--space-9);
+  height: var(--space-9);
+}
+
+[data-slot="button"][data-size="icon-sm"] {
+  width: var(--space-8);
+  height: var(--space-8);
+}
+
+[data-slot="button"][data-size="icon-lg"] {
+  width: var(--space-10);
+  height: var(--space-10);
+}

@@ -1,0 +1,277 @@
+/* Heading Component - data-slot based styling */
+[data-slot="heading"] {
+  @apply font-heading;
+  color: var(--foreground);
+}
+
+/* Sizes */
+[data-slot="heading"][data-size="xs"] {
+  font-size: var(--text-size-xs);
+}
+
+[data-slot="heading"][data-size="sm"] {
+  font-size: var(--text-size-sm);
+}
+
+[data-slot="heading"][data-size="base"] {
+  font-size: var(--text-size-base);
+}
+
+[data-slot="heading"][data-size="lg"] {
+  font-size: var(--text-size-lg);
+}
+
+[data-slot="heading"][data-size="xl"] {
+  font-size: var(--text-size-xl);
+}
+
+[data-slot="heading"][data-size="2xl"] {
+  font-size: var(--text-size-2xl);
+}
+
+[data-slot="heading"][data-size="3xl"] {
+  font-size: var(--text-size-3xl);
+}
+
+[data-slot="heading"][data-size="4xl"] {
+  font-size: var(--text-size-4xl);
+}
+
+[data-slot="heading"][data-size="5xl"] {
+  font-size: var(--text-size-5xl);
+}
+
+[data-slot="heading"][data-size="6xl"] {
+  font-size: var(--text-size-6xl);
+}
+
+[data-slot="heading"][data-size="7xl"] {
+  font-size: var(--text-size-7xl);
+}
+
+[data-slot="heading"][data-size="8xl"] {
+  font-size: var(--text-size-8xl);
+}
+
+[data-slot="heading"][data-size="9xl"] {
+  font-size: var(--text-size-9xl);
+}
+
+/* Font Weights */
+[data-slot="heading"][data-weight="thin"] {
+  @apply font-thin;
+}
+
+[data-slot="heading"][data-weight="extralight"] {
+  @apply font-extralight;
+}
+
+[data-slot="heading"][data-weight="light"] {
+  @apply font-light;
+}
+
+[data-slot="heading"][data-weight="normal"] {
+  @apply font-normal;
+}
+
+[data-slot="heading"][data-weight="medium"] {
+  @apply font-medium;
+}
+
+[data-slot="heading"][data-weight="semibold"] {
+  @apply font-semibold;
+}
+
+[data-slot="heading"][data-weight="bold"] {
+  @apply font-bold;
+}
+
+[data-slot="heading"][data-weight="extrabold"] {
+  @apply font-extrabold;
+}
+
+[data-slot="heading"][data-weight="black"] {
+  @apply font-black;
+}
+
+/* Text Alignment */
+[data-slot="heading"][data-align="left"] {
+  @apply text-left;
+}
+
+[data-slot="heading"][data-align="center"] {
+  @apply text-center;
+}
+
+[data-slot="heading"][data-align="right"] {
+  @apply text-right;
+}
+
+/* Variants */
+[data-slot="heading"][data-variant="default"] {
+  color: var(--foreground);
+}
+
+[data-slot="heading"][data-variant="muted"] {
+  color: var(--muted-foreground);
+}
+
+[data-slot="heading"][data-variant="accent"] {
+  color: var(--accent-foreground);
+}
+
+/* Letter Spacing */
+[data-slot="heading"][data-letter-spacing="tighter"] {
+  @apply tracking-tighter;
+}
+
+[data-slot="heading"][data-letter-spacing="tight"] {
+  @apply tracking-tight;
+}
+
+[data-slot="heading"][data-letter-spacing="normal"] {
+  @apply tracking-normal;
+}
+
+[data-slot="heading"][data-letter-spacing="wide"] {
+  @apply tracking-wide;
+}
+
+[data-slot="heading"][data-letter-spacing="wider"] {
+  @apply tracking-wider;
+}
+
+[data-slot="heading"][data-letter-spacing="widest"] {
+  @apply tracking-widest;
+}
+
+/* Line Height */
+[data-slot="heading"][data-line-height="none"] {
+  @apply leading-none;
+}
+
+[data-slot="heading"][data-line-height="tight"] {
+  @apply leading-tight;
+}
+
+[data-slot="heading"][data-line-height="snug"] {
+  @apply leading-snug;
+}
+
+[data-slot="heading"][data-line-height="normal"] {
+  @apply leading-normal;
+}
+
+[data-slot="heading"][data-line-height="relaxed"] {
+  @apply leading-relaxed;
+}
+
+[data-slot="heading"][data-line-height="loose"] {
+  @apply leading-loose;
+}
+
+/* Font Style */
+[data-slot="heading"][data-font-style="italic"] {
+  @apply italic;
+}
+
+/* Text Transform */
+[data-slot="heading"][data-text-transform="uppercase"] {
+  @apply uppercase;
+}
+
+[data-slot="heading"][data-text-transform="lowercase"] {
+  @apply lowercase;
+}
+
+[data-slot="heading"][data-text-transform="capitalize"] {
+  @apply capitalize;
+}
+
+/* Text Decoration */
+[data-slot="heading"][data-text-decoration="underline"] {
+  @apply underline;
+}
+
+[data-slot="heading"][data-text-decoration="line-through"] {
+  @apply line-through;
+}
+
+/* Color Presets */
+[data-slot="heading"][data-color="default"] {
+  color: var(--foreground);
+}
+
+[data-slot="heading"][data-color="primary"] {
+  color: var(--primary);
+}
+
+[data-slot="heading"][data-color="secondary"] {
+  color: var(--secondary);
+}
+
+[data-slot="heading"][data-color="muted"] {
+  color: var(--muted-foreground);
+}
+
+[data-slot="heading"][data-color="accent"] {
+  color: var(--accent);
+}
+
+[data-slot="heading"][data-color="destructive"] {
+  color: var(--destructive);
+}
+
+/* Max Width Presets */
+[data-slot="heading"][data-max-width="xs"] {
+  max-width: 20rem;
+}
+
+[data-slot="heading"][data-max-width="sm"] {
+  max-width: 24rem;
+}
+
+[data-slot="heading"][data-max-width="md"] {
+  max-width: 28rem;
+}
+
+[data-slot="heading"][data-max-width="lg"] {
+  max-width: 32rem;
+}
+
+[data-slot="heading"][data-max-width="xl"] {
+  max-width: 36rem;
+}
+
+[data-slot="heading"][data-max-width="2xl"] {
+  max-width: 42rem;
+}
+
+[data-slot="heading"][data-max-width="prose"] {
+  max-width: 65ch;
+}
+
+/* Opacity Presets */
+[data-slot="heading"][data-opacity="10"] {
+  opacity: 0.1;
+}
+
+[data-slot="heading"][data-opacity="25"] {
+  opacity: 0.25;
+}
+
+[data-slot="heading"][data-opacity="50"] {
+  opacity: 0.5;
+}
+
+[data-slot="heading"][data-opacity="75"] {
+  opacity: 0.75;
+}
+
+[data-slot="heading"][data-opacity="90"] {
+  opacity: 0.9;
+}
+
+[data-slot="heading"][data-opacity="100"] {
+  opacity: 1;
+}

@@ -1,0 +1,53 @@
+{
+  "name": "@enterprise/ui",
+  "version": "1.0.0",
+  "description": "Shared UI components for builder and client",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./styles": "./src/styles/index.css",
+    "./button": {
+      "types": "./dist/components/button/index.d.ts",
+      "import": "./dist/components/button/index.mjs",
+      "require": "./dist/components/button/index.js"
+    },
+    "./heading": {
+      "types": "./dist/components/heading/index.d.ts",
+      "import": "./dist/components/heading/index.mjs",
+      "require": "./dist/components/heading/index.js"
+    },
+    "./text": {
+      "types": "./dist/components/text/index.d.ts",
+      "import": "./dist/components/text/index.mjs",
+      "require": "./dist/components/text/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.mjs",
+      "require": "./dist/utils/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@enterprise/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@radix-ui/react-slot": "^1.0.0",
+    "react": ">=18.0.0"
+  }
+}

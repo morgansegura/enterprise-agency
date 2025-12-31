@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  transpilePackages: [
+    "@enterprise/tokens",
+    "@enterprise/ui",
+    "@enterprise/blocks",
+  ],
 };
 
 export default nextConfig;

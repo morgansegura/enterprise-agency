@@ -1,0 +1,336 @@
+/* Text Component - data-slot based styling */
+[data-slot="text"] {
+  @apply font-body;
+  color: var(--foreground);
+}
+
+/* Sizes */
+[data-slot="text"][data-size="xs"] {
+  font-size: var(--text-size-xs);
+}
+
+[data-slot="text"][data-size="sm"] {
+  font-size: var(--text-size-sm);
+}
+
+[data-slot="text"][data-size="base"] {
+  font-size: var(--text-size-base);
+}
+
+[data-slot="text"][data-size="lg"] {
+  font-size: var(--text-size-lg);
+}
+
+[data-slot="text"][data-size="xl"] {
+  font-size: var(--text-size-xl);
+}
+
+[data-slot="text"][data-size="2xl"] {
+  font-size: var(--text-size-2xl);
+}
+
+[data-slot="text"][data-size="3xl"] {
+  font-size: var(--text-size-3xl);
+}
+
+[data-slot="text"][data-size="4xl"] {
+  font-size: var(--text-size-4xl);
+}
+
+[data-slot="text"][data-size="5xl"] {
+  font-size: var(--text-size-5xl);
+}
+
+[data-slot="text"][data-size="6xl"] {
+  font-size: var(--text-size-6xl);
+}
+
+[data-slot="text"][data-size="7xl"] {
+  font-size: var(--text-size-7xl);
+}
+
+[data-slot="text"][data-size="8xl"] {
+  font-size: var(--text-size-8xl);
+}
+
+[data-slot="text"][data-size="9xl"] {
+  font-size: var(--text-size-9xl);
+}
+
+/* Font Weights */
+[data-slot="text"][data-weight="thin"] {
+  @apply font-thin;
+}
+
+[data-slot="text"][data-weight="extralight"] {
+  @apply font-extralight;
+}
+
+[data-slot="text"][data-weight="light"] {
+  @apply font-light;
+}
+
+[data-slot="text"][data-weight="normal"] {
+  @apply font-normal;
+}
+
+[data-slot="text"][data-weight="medium"] {
+  @apply font-medium;
+}
+
+[data-slot="text"][data-weight="semibold"] {
+  @apply font-semibold;
+}
+
+[data-slot="text"][data-weight="bold"] {
+  @apply font-bold;
+}
+
+[data-slot="text"][data-weight="extrabold"] {
+  @apply font-extrabold;
+}
+
+[data-slot="text"][data-weight="black"] {
+  @apply font-black;
+}
+
+/* Text Alignment */
+[data-slot="text"][data-align="left"] {
+  @apply text-left;
+}
+
+[data-slot="text"][data-align="center"] {
+  @apply text-center;
+}
+
+[data-slot="text"][data-align="right"] {
+  @apply text-right;
+}
+
+[data-slot="text"][data-align="justify"] {
+  @apply text-justify;
+}
+
+/* Variants */
+[data-slot="text"][data-variant="default"] {
+  color: var(--foreground);
+}
+
+[data-slot="text"][data-variant="muted"] {
+  color: var(--muted-foreground);
+}
+
+[data-slot="text"][data-variant="lead"] {
+  font-size: var(--text-size-xl);
+  color: var(--muted-foreground);
+}
+
+[data-slot="text"][data-variant="subtle"] {
+  color: var(--muted-foreground);
+  opacity: 0.8;
+}
+
+/* Letter Spacing */
+[data-slot="text"][data-letter-spacing="tighter"] {
+  @apply tracking-tighter;
+}
+
+[data-slot="text"][data-letter-spacing="tight"] {
+  @apply tracking-tight;
+}
+
+[data-slot="text"][data-letter-spacing="normal"] {
+  @apply tracking-normal;
+}
+
+[data-slot="text"][data-letter-spacing="wide"] {
+  @apply tracking-wide;
+}
+
+[data-slot="text"][data-letter-spacing="wider"] {
+  @apply tracking-wider;
+}
+
+[data-slot="text"][data-letter-spacing="widest"] {
+  @apply tracking-widest;
+}
+
+/* Line Height */
+[data-slot="text"][data-line-height="none"] {
+  @apply leading-none;
+}
+
+[data-slot="text"][data-line-height="tight"] {
+  @apply leading-tight;
+}
+
+[data-slot="text"][data-line-height="snug"] {
+  @apply leading-snug;
+}
+
+[data-slot="text"][data-line-height="normal"] {
+  @apply leading-normal;
+}
+
+[data-slot="text"][data-line-height="relaxed"] {
+  @apply leading-relaxed;
+}
+
+[data-slot="text"][data-line-height="loose"] {
+  @apply leading-loose;
+}
+
+/* Font Style */
+[data-slot="text"][data-font-style="italic"] {
+  @apply italic;
+}
+
+/* Text Transform */
+[data-slot="text"][data-text-transform="uppercase"] {
+  @apply uppercase;
+}
+
+[data-slot="text"][data-text-transform="lowercase"] {
+  @apply lowercase;
+}
+
+[data-slot="text"][data-text-transform="capitalize"] {
+  @apply capitalize;
+}
+
+/* Text Decoration */
+[data-slot="text"][data-text-decoration="underline"] {
+  @apply underline;
+}
+
+[data-slot="text"][data-text-decoration="line-through"] {
+  @apply line-through;
+}
+
+/* White Space */
+[data-slot="text"][data-white-space="nowrap"] {
+  @apply whitespace-nowrap;
+}
+
+[data-slot="text"][data-white-space="pre-wrap"] {
+  @apply whitespace-pre-wrap;
+}
+
+/* Color Presets */
+[data-slot="text"][data-color="default"] {
+  color: var(--foreground);
+}
+
+[data-slot="text"][data-color="primary"] {
+  color: var(--primary);
+}
+
+[data-slot="text"][data-color="secondary"] {
+  color: var(--secondary);
+}
+
+[data-slot="text"][data-color="muted"] {
+  color: var(--muted-foreground);
+}
+
+[data-slot="text"][data-color="accent"] {
+  color: var(--accent);
+}
+
+[data-slot="text"][data-color="destructive"] {
+  color: var(--destructive);
+}
+
+/* Max Width Presets */
+[data-slot="text"][data-max-width="xs"] {
+  max-width: 20rem;
+}
+
+[data-slot="text"][data-max-width="sm"] {
+  max-width: 24rem;
+}
+
+[data-slot="text"][data-max-width="md"] {
+  max-width: 28rem;
+}
+
+[data-slot="text"][data-max-width="lg"] {
+  max-width: 32rem;
+}
+
+[data-slot="text"][data-max-width="xl"] {
+  max-width: 36rem;
+}
+
+[data-slot="text"][data-max-width="2xl"] {
+  max-width: 42rem;
+}
+
+[data-slot="text"][data-max-width="prose"] {
+  max-width: 65ch;
+}
+
+/* Columns */
+[data-slot="text"][data-columns="2"] {
+  column-count: 2;
+}
+
+[data-slot="text"][data-columns="3"] {
+  column-count: 3;
+}
+
+[data-slot="text"][data-columns="4"] {
+  column-count: 4;
+}
+
+/* Column Gap */
+[data-slot="text"][data-column-gap="sm"] {
+  column-gap: var(--space-4);
+}
+
+[data-slot="text"][data-column-gap="md"] {
+  column-gap: var(--space-6);
+}
+
+[data-slot="text"][data-column-gap="lg"] {
+  column-gap: var(--space-8);
+}
+
+[data-slot="text"][data-column-gap="xl"] {
+  column-gap: var(--space-12);
+}
+
+/* Opacity Presets */
+[data-slot="text"][data-opacity="10"] {
+  opacity: 0.1;
+}
+
+[data-slot="text"][data-opacity="25"] {
+  opacity: 0.25;
+}
+
+[data-slot="text"][data-opacity="50"] {
+  opacity: 0.5;
+}
+
+[data-slot="text"][data-opacity="75"] {
+  opacity: 0.75;
+}
+
+[data-slot="text"][data-opacity="90"] {
+  opacity: 0.9;
+}
+
+[data-slot="text"][data-opacity="100"] {
+  opacity: 1;
+}
+
+/* Drop Cap */
+[data-slot="text"][data-drop-cap="true"]::first-letter {
+  @apply float-left font-bold;
+  font-size: 3.5em;
+  line-height: 0.8;
+  margin-right: var(--space-2);
+  margin-top: var(--space-1);
+  color: var(--primary);
+}
