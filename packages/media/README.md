@@ -13,6 +13,7 @@ pnpm add @enterprise/media
 - **Image Component** - Lazy loading, blur placeholders (BlurHash), skeleton loading, error states
 - **Video Component** - Custom controls, YouTube/Vimeo embeds, poster images, captions
 - **AspectRatio** - Consistent aspect ratio containers for media
+- **Lightbox** - Full-screen image viewer with zoom, navigation, and keyboard controls
 - **Utilities** - File validation, format helpers, video URL parsing, BlurHash decoding
 
 ## Usage
@@ -90,6 +91,55 @@ import { AspectRatio } from '@enterprise/media/primitives';
 </AspectRatio>
 ```
 
+### Lightbox
+
+```tsx
+import { Lightbox, LightboxProvider, useLightbox } from '@enterprise/media/lightbox';
+import { Image } from '@enterprise/media/primitives';
+
+// Wrap your app with LightboxProvider
+function App() {
+  return (
+    <LightboxProvider>
+      <Gallery />
+      <Lightbox />
+    </LightboxProvider>
+  );
+}
+
+// Use with enableLightbox on Image
+function Gallery() {
+  return <Image src="/photo.jpg" alt="Photo" enableLightbox />;
+}
+
+// Or use the hook directly
+function CustomImage() {
+  const { openLightbox } = useLightbox();
+
+  return (
+    <img
+      src="/photo.jpg"
+      alt="Photo"
+      onClick={() =>
+        openLightbox(
+          { src: '/photo.jpg', alt: 'Photo' },
+          [
+            { src: '/photo1.jpg', alt: 'Photo 1' },
+            { src: '/photo2.jpg', alt: 'Photo 2' },
+          ]
+        )
+      }
+    />
+  );
+}
+```
+
+**Keyboard shortcuts:**
+- `Escape` - Close lightbox
+- `ArrowLeft` / `ArrowRight` - Navigate images
+- `+` / `-` - Zoom in/out
+- `0` - Reset zoom
+
 ### Utilities
 
 ```tsx
@@ -138,7 +188,7 @@ packages/media/
 │   │   ├── aspect-ratio/
 │   │   ├── image/
 │   │   └── video/
-│   ├── lightbox/             # Lightbox system (coming soon)
+│   ├── lightbox/             # Full-screen image viewer
 │   ├── library/              # Media library (coming soon)
 │   ├── hooks/                # React hooks (coming soon)
 │   ├── utils/                # Utilities
@@ -166,6 +216,9 @@ import { Image, Video, AspectRatio } from "@enterprise/media/primitives";
 import { Image } from "@enterprise/media/primitives/image";
 import { Video } from "@enterprise/media/primitives/video";
 
+// Lightbox
+import { Lightbox, LightboxProvider, useLightbox } from "@enterprise/media/lightbox";
+
 // Types only
 import type { Media, MediaType, MediaFolder } from "@enterprise/media/types";
 
@@ -186,7 +239,6 @@ import "@enterprise/media/styles";
 
 ## Coming Soon
 
-- Lightbox component with gallery navigation
 - Media Library with folder organization
 - Upload system with progress tracking
 - Bulk operations (move, delete, tag)

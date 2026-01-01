@@ -6,10 +6,16 @@
  * @module @enterprise/media/lightbox
  */
 
-// Placeholder exports - will be implemented in Phase 4
-export {};
+// Lightbox component
+export { Lightbox, type LightboxProps } from "./lightbox";
 
-// TODO: Phase 4 Implementation
-// export { Lightbox, type LightboxProps } from "./lightbox";
-// export { LightboxProvider, type LightboxProviderProps } from "./lightbox-context";
-// export { useLightbox, type LightboxContextValue } from "./use-lightbox";
+// Context and provider
+export {
+  LightboxProvider,
+  type LightboxProviderProps,
+  type LightboxImage,
+  type LightboxContextValue,
+} from "./lightbox-context";
+
+// Hook
+export { useLightbox, useLightboxRequired } from "./use-lightbox";
