@@ -19,19 +19,24 @@ export interface PresignedUploadRequest {
   fileName: string;
   mimeType: string;
   fileSize: number;
-  type: MediaType;
+  type?: MediaType;
+  folderId?: string;
 }
 
 /**
  * Response with presigned upload URL
  */
 export interface PresignedUploadResponse {
+  /** Unique upload ID for tracking */
+  uploadId: string;
   /** URL to upload file directly to CDN */
   uploadUrl: string;
   /** Storage key for the file */
   storageKey: string;
   /** When the presigned URL expires */
   expiresAt: string;
+  /** Form fields for multipart upload (S3-style) */
+  fields?: Record<string, string>;
 }
 
 /**
@@ -79,6 +84,8 @@ export interface UploadProgressItem {
   progress: number;
   /** Current status */
   status: UploadStatus;
+  /** Target folder ID */
+  folderId?: string | null;
   /** Error message if failed */
   error?: string;
   /** Resulting media ID if complete */
@@ -87,6 +94,10 @@ export interface UploadProgressItem {
   previewUrl?: string;
   /** Abort controller for cancellation */
   abortController?: AbortController;
+  /** When the upload was created */
+  createdAt?: string;
+  /** When the upload completed */
+  completedAt?: string;
 }
 
 /**

@@ -6,35 +6,75 @@
  * @module @enterprise/media/hooks
  */
 
-// Placeholder exports - will be implemented in Phase 5
-export {};
+// ============================================================================
+// MEDIA HOOKS
+// ============================================================================
 
-// TODO: Phase 5 Implementation
-// export {
-//   useMedia,
-//   useMediaQuery,
-//   useCreateMedia,
-//   useUpdateMedia,
-//   useDeleteMedia,
-// } from "./use-media";
+export {
+  // Query keys
+  mediaKeys,
+  // Types
+  type MediaApiClient,
+  type UseMediaOptions,
+  // Hooks
+  useMediaList,
+  useMedia,
+  useUpdateMedia,
+  useDeleteMedia,
+  useMoveMedia,
+  useCropMedia,
+  usePrefetchMedia,
+  useInvalidateMedia,
+} from "./use-media";
 
-// export {
-//   useFolders,
-//   useFolderTree,
-//   useCreateFolder,
-//   useUpdateFolder,
-//   useDeleteFolder,
-//   useMoveFolder,
-// } from "./use-folders";
+// ============================================================================
+// FOLDER HOOKS
+// ============================================================================
 
-// export {
-//   useUpload,
-//   usePresignedUpload,
-//   useUploadQueue,
-// } from "./use-upload";
+export {
+  // Query keys
+  folderKeys,
+  // Types
+  type FolderApiClient,
+  type UseFoldersOptions,
+  // Hooks
+  useFolderList,
+  useFolderTree,
+  useFolder,
+  useCreateFolder,
+  useUpdateFolder,
+  useDeleteFolder,
+  useMoveFolder,
+  useInvalidateFolders,
+} from "./use-folders";
 
-// export {
-//   useBulkMove,
-//   useBulkDelete,
-//   useBulkTag,
-// } from "./use-bulk-operations";
+// ============================================================================
+// UPLOAD HOOKS
+// ============================================================================
+
+export {
+  // Types
+  type UploadApiClient,
+  type UseUploadOptions,
+  // Hooks
+  useUploadQueue,
+  useUploadFile,
+  useBatchUpload,
+} from "./use-upload";
+
+// ============================================================================
+// BULK OPERATIONS HOOKS
+// ============================================================================
+
+export {
+  // Types
+  type BulkOperationResult,
+  type BulkApiClient,
+  type UseBulkOperationsOptions,
+  // Hooks
+  useBulkMove,
+  useBulkDelete,
+  useBulkTag,
+  useBulkUntag,
+  useBulkOperations,
+} from "./use-bulk-operations";

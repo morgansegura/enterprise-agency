@@ -7,14 +7,49 @@
  * @module @enterprise/media/library
  */
 
-// Placeholder exports - will be implemented in Phase 5-10
-export {};
+// ============================================================================
+// CONTEXTS
+// ============================================================================
 
-// TODO: Phase 5 - Context & Providers
-// export { MediaLibraryProvider } from "./providers/media-library-provider";
-// export { MediaContext, useMediaContext } from "./context/media-context";
-// export { SelectionContext, useSelection } from "./context/selection-context";
-// export { UploadContext, useUploadContext } from "./context/upload-context";
+export {
+  useMediaLibrary,
+  useMediaLibraryOptional,
+  type MediaLibraryFilters,
+  type MediaLibrarySort,
+  type MediaLibraryState,
+  type MediaLibraryContextValue,
+} from "./context/media-context";
+
+export {
+  useSelection,
+  useSelectionOptional,
+  type SelectionContextValue,
+} from "./context/selection-context";
+
+export {
+  useUpload,
+  useUploadOptional,
+  type UploadContextValue,
+} from "./context/upload-context";
+
+// ============================================================================
+// PROVIDERS
+// ============================================================================
+
+export {
+  CombinedMediaLibraryProvider,
+  type CombinedMediaLibraryProviderProps,
+  MediaLibraryProvider,
+  type MediaLibraryProviderProps,
+  SelectionProvider,
+  type SelectionProviderProps,
+  UploadProvider,
+  type UploadProviderProps,
+} from "./providers/media-library-provider";
+
+// ============================================================================
+// COMPONENTS (Coming in Phase 7-9)
+// ============================================================================
 
 // TODO: Phase 7 - Components
 // export { MediaLibrary, type MediaLibraryProps } from "./components/media-library";
