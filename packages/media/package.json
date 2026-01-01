@@ -1,0 +1,83 @@
+{
+  "name": "@enterprise/media",
+  "version": "0.1.0",
+  "description": "Enterprise-grade media components and library for the agency platform",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js",
+      "require": "./dist/types/index.cjs"
+    },
+    "./primitives": {
+      "types": "./dist/primitives/index.d.ts",
+      "import": "./dist/primitives/index.js",
+      "require": "./dist/primitives/index.cjs"
+    },
+    "./primitives/image": {
+      "types": "./dist/primitives/image/index.d.ts",
+      "import": "./dist/primitives/image/index.js",
+      "require": "./dist/primitives/image/index.cjs"
+    },
+    "./primitives/video": {
+      "types": "./dist/primitives/video/index.d.ts",
+      "import": "./dist/primitives/video/index.js",
+      "require": "./dist/primitives/video/index.cjs"
+    },
+    "./lightbox": {
+      "types": "./dist/lightbox/index.d.ts",
+      "import": "./dist/lightbox/index.js",
+      "require": "./dist/lightbox/index.cjs"
+    },
+    "./library": {
+      "types": "./dist/library/index.d.ts",
+      "import": "./dist/library/index.js",
+      "require": "./dist/library/index.cjs"
+    },
+    "./hooks": {
+      "types": "./dist/hooks/index.d.ts",
+      "import": "./dist/hooks/index.js",
+      "require": "./dist/hooks/index.cjs"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.cjs"
+    },
+    "./styles": "./src/styles/index.css"
+  },
+  "files": [
+    "dist",
+    "src/styles"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@enterprise/tokens": "workspace:*",
+    "blurhash": "^2.0.5"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": ">=5.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}

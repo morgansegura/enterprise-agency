@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@enterprise/blocks": "workspace:*",
+    "@enterprise/media": "workspace:*",
     "@enterprise/tokens": "workspace:*",
     "@enterprise/ui": "workspace:*",
     "@hookform/resolvers": "^5.2.2",
