@@ -10,7 +10,6 @@ import {
   LayoutTemplate,
   Box,
   Type,
-  ChevronDown,
   Layers,
   Palette,
   Move,
@@ -18,8 +17,23 @@ import {
   AlignLeft,
   Settings2,
   EyeOff,
+  Monitor,
+  Tablet,
+  Smartphone,
+  ChevronUp,
+  ChevronDown,
+  Copy,
+  Trash2,
+  Plus,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useUIStore } from "@/lib/stores/ui-store";
+import { useCurrentBreakpoint } from "@/lib/responsive/context";
+import { getResponsiveValue, setResponsiveOverride } from "@/lib/responsive";
 import type {
   Section,
   Container,
@@ -33,9 +47,11 @@ import {
   SECTION_MIN_HEIGHT_OPTIONS,
   OVERFLOW_OPTIONS,
   SECTION_WIDTH_OPTIONS,
+  BORDER_WIDTH_OPTIONS,
+  BORDER_RADIUS_OPTIONS,
+  SHADOW_OPTIONS,
 } from "@/lib/constants";
 import { BackgroundEditor } from "@/components/editors";
-import { BorderEditor, type BorderValues } from "@/components/editors";
 import { VisibilityToggles } from "@/components/ui/visibility-toggles";
 import { PositionPicker } from "@/components/ui/position-picker";
 import {
@@ -44,11 +60,22 @@ import {
   PropertyToggle,
   PropertySelect,
 } from "./components";
+import { HeadingSettings } from "@/components/settings/element-settings/heading-settings";
 import "./settings-panel.css";
 
 // =============================================================================
 // Types
 // =============================================================================
+
+interface ElementActions {
+  onMoveUp?: () => void;
+  onMoveDown?: () => void;
+  onDuplicate?: () => void;
+  onDelete?: () => void;
+  onAddContainer?: () => void;
+  canMoveUp?: boolean;
+  canMoveDown?: boolean;
+}
 
 interface SettingsPanelProps {
   sections: Section[];
@@ -64,9 +91,175 @@ interface SettingsPanelProps {
     blockIndex: number,
     block: Block,
   ) => void;
+  // Action callbacks for the selected element
+  onSectionMoveUp?: (sectionIndex: number) => void;
+  onSectionMoveDown?: (sectionIndex: number) => void;
+  onSectionDuplicate?: (sectionIndex: number) => void;
+  onSectionDelete?: (sectionIndex: number) => void;
+  onAddContainer?: (sectionIndex: number) => void;
+  onContainerDelete?: (sectionIndex: number, containerIndex: number) => void;
+  onBlockMoveUp?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => void;
+  onBlockMoveDown?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => void;
+  onBlockDuplicate?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => void;
+  onBlockDelete?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => void;
 }
 
-type PanelTab = "style" | "settings";
+// =============================================================================
+// Breakpoint Indicator - Shows which device size is being edited
+// =============================================================================
+
+function BreakpointIndicator() {
+  const breakpoint = useCurrentBreakpoint();
+
+  const icons = {
+    desktop: Monitor,
+    tablet: Tablet,
+    mobile: Smartphone,
+  };
+
+  const labels = {
+    desktop: "Desktop",
+    tablet: "Tablet",
+    mobile: "Mobile",
+  };
+
+  const Icon = icons[breakpoint];
+
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-1 px-2 py-1 rounded text-xs font-medium",
+        breakpoint === "desktop" && "bg-muted text-muted-foreground",
+        breakpoint === "tablet" &&
+          "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+        breakpoint === "mobile" &&
+          "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+      )}
+      title={`Editing ${labels[breakpoint]} styles`}
+    >
+      <Icon className="h-3 w-3" />
+      <span>{labels[breakpoint]}</span>
+    </div>
+  );
+}
+
+// =============================================================================
+// Actions Bar - Move, Clone, Delete buttons
+// =============================================================================
+
+function ActionsBar({
+  onMoveUp,
+  onMoveDown,
+  onDuplicate,
+  onDelete,
+  onAddContainer,
+  canMoveUp = true,
+  canMoveDown = true,
+}: ElementActions) {
+  return (
+    <div className="flex items-center gap-0.5 px-3 py-2 border-b border-(--border)">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={onMoveUp}
+            disabled={!canMoveUp || !onMoveUp}
+            className="h-7 w-7"
+          >
+            <ChevronUp className="h-3.5 w-3.5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="text-xs">
+          Move up
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={onMoveDown}
+            disabled={!canMoveDown || !onMoveDown}
+            className="h-7 w-7"
+          >
+            <ChevronDown className="h-3.5 w-3.5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="text-xs">
+          Move down
+        </TooltipContent>
+      </Tooltip>
+      <div className="w-px h-4 bg-border mx-0.5" />
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={onDuplicate}
+            disabled={!onDuplicate}
+            className="h-7 w-7"
+          >
+            <Copy className="h-3.5 w-3.5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="text-xs">
+          Duplicate
+        </TooltipContent>
+      </Tooltip>
+      {onAddContainer && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onAddContainer}
+              className="h-7 w-7"
+            >
+              <Plus className="h-3.5 w-3.5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" className="text-xs">
+            Add container
+          </TooltipContent>
+        </Tooltip>
+      )}
+      <div className="flex-1" />
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={onDelete}
+            disabled={!onDelete}
+            className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="text-xs">
+          Delete
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  );
+}
 
 // =============================================================================
 // Settings Panel Component
@@ -77,11 +270,19 @@ export function SettingsPanel({
   onSectionChange,
   onContainerChange,
   onBlockChange,
+  onSectionMoveUp,
+  onSectionMoveDown,
+  onSectionDuplicate,
+  onSectionDelete,
+  onAddContainer,
+  onContainerDelete,
+  onBlockMoveUp,
+  onBlockMoveDown,
+  onBlockDuplicate,
+  onBlockDelete,
 }: SettingsPanelProps) {
   const { rightPanelOpen, rightPanelWidth, selectedElement, toggleRightPanel } =
     useUIStore();
-
-  const [activeTab, setActiveTab] = React.useState<PanelTab>("style");
 
   // Get the selected element data
   const getSelectedData = React.useCallback(() => {
@@ -148,7 +349,9 @@ export function SettingsPanel({
   const { icon, title } = getElementInfo();
 
   return (
-    <div className={cn("settings-panel-wrapper", !rightPanelOpen && "collapsed")}>
+    <div
+      className={cn("settings-panel-wrapper", !rightPanelOpen && "collapsed")}
+    >
       {/* Toggle button when panel is closed */}
       {!rightPanelOpen && (
         <div className="settings-panel-toggle">
@@ -167,103 +370,165 @@ export function SettingsPanel({
         className={cn("settings-panel", rightPanelOpen && "open")}
         style={{ width: rightPanelWidth }}
       >
-      {/* Panel Header */}
-      <div className="settings-panel-header">
-        <div className="settings-panel-selector">
-          {icon}
-          <span className="settings-panel-selector-name">{title}</span>
-          {selectedElement && (
-            <ChevronDown className="h-3 w-3 text-muted-foreground" />
+        {/* Panel Header */}
+        <div className="settings-panel-header">
+          <div className="settings-panel-selector">
+            {icon}
+            <span className="settings-panel-selector-name">{title}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <BreakpointIndicator />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleRightPanel}
+              title="Close panel"
+              className="h-7 w-7"
+            >
+              <PanelRightClose className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Panel Content */}
+        <div className="settings-panel-content">
+          {!selectedElement ? (
+            <div className="settings-panel-empty">
+              <Layers className="h-10 w-10 text-muted-foreground/30" />
+              <p className="text-sm text-muted-foreground">
+                Select an element to edit
+              </p>
+            </div>
+          ) : selectedData ? (
+            <>
+              {/* Actions Bar - Move, Clone, Delete */}
+              {selectedElement.type === "section" && (
+                <ActionsBar
+                  onMoveUp={() =>
+                    onSectionMoveUp?.(selectedElement.sectionIndex)
+                  }
+                  onMoveDown={() =>
+                    onSectionMoveDown?.(selectedElement.sectionIndex)
+                  }
+                  onDuplicate={() =>
+                    onSectionDuplicate?.(selectedElement.sectionIndex)
+                  }
+                  onDelete={() =>
+                    onSectionDelete?.(selectedElement.sectionIndex)
+                  }
+                  canMoveUp={selectedElement.sectionIndex > 0}
+                  canMoveDown={
+                    selectedElement.sectionIndex < sections.length - 1
+                  }
+                  onAddContainer={
+                    onAddContainer
+                      ? () => onAddContainer(selectedElement.sectionIndex)
+                      : undefined
+                  }
+                />
+              )}
+              {selectedElement.type === "container" && (
+                <ActionsBar
+                  onDelete={() =>
+                    onContainerDelete?.(
+                      selectedElement.sectionIndex,
+                      selectedElement.containerIndex!,
+                    )
+                  }
+                />
+              )}
+              {selectedElement.type === "block" && (
+                <ActionsBar
+                  onMoveUp={() =>
+                    onBlockMoveUp?.(
+                      selectedElement.sectionIndex,
+                      selectedElement.containerIndex!,
+                      selectedElement.blockIndex!,
+                    )
+                  }
+                  onMoveDown={() =>
+                    onBlockMoveDown?.(
+                      selectedElement.sectionIndex,
+                      selectedElement.containerIndex!,
+                      selectedElement.blockIndex!,
+                    )
+                  }
+                  onDuplicate={() =>
+                    onBlockDuplicate?.(
+                      selectedElement.sectionIndex,
+                      selectedElement.containerIndex!,
+                      selectedElement.blockIndex!,
+                    )
+                  }
+                  onDelete={() =>
+                    onBlockDelete?.(
+                      selectedElement.sectionIndex,
+                      selectedElement.containerIndex!,
+                      selectedElement.blockIndex!,
+                    )
+                  }
+                  canMoveUp={
+                    selectedElement.blockIndex !== undefined &&
+                    selectedElement.blockIndex > 0
+                  }
+                  canMoveDown={
+                    selectedElement.blockIndex !== undefined &&
+                    selectedElement.containerIndex !== undefined &&
+                    sections[selectedElement.sectionIndex]?.containers?.[
+                      selectedElement.containerIndex
+                    ]?.blocks &&
+                    selectedElement.blockIndex <
+                      (sections[selectedElement.sectionIndex]?.containers?.[
+                        selectedElement.containerIndex
+                      ]?.blocks?.length ?? 0) -
+                        1
+                  }
+                />
+              )}
+
+              <div className="settings-panel-sections">
+                {selectedElement.type === "section" && (
+                  <SectionStyleSettings
+                    section={selectedData.data as Section}
+                    onChange={(updated) =>
+                      onSectionChange?.(selectedElement.sectionIndex, updated)
+                    }
+                  />
+                )}
+                {selectedElement.type === "container" && (
+                  <ContainerStyleSettings
+                    container={selectedData.data as Container}
+                    onChange={(updated) =>
+                      onContainerChange?.(
+                        selectedElement.sectionIndex,
+                        selectedElement.containerIndex!,
+                        updated,
+                      )
+                    }
+                  />
+                )}
+                {selectedElement.type === "block" && (
+                  <BlockStyleSettings
+                    block={selectedData.data as Block}
+                    onChange={(updated) =>
+                      onBlockChange?.(
+                        selectedElement.sectionIndex,
+                        selectedElement.containerIndex!,
+                        selectedElement.blockIndex!,
+                        updated,
+                      )
+                    }
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="settings-panel-empty">
+              <p className="text-sm text-muted-foreground">Element not found</p>
+            </div>
           )}
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleRightPanel}
-          title="Close panel"
-          className="h-7 w-7"
-        >
-          <PanelRightClose className="h-3.5 w-3.5" />
-        </Button>
-      </div>
-
-      {/* Tabs */}
-      <div className="settings-panel-tabs">
-        <button
-          className={cn(
-            "settings-panel-tab",
-            activeTab === "style" && "active",
-          )}
-          onClick={() => setActiveTab("style")}
-        >
-          Style
-        </button>
-        <button
-          className={cn(
-            "settings-panel-tab",
-            activeTab === "settings" && "active",
-          )}
-          onClick={() => setActiveTab("settings")}
-        >
-          Settings
-        </button>
-      </div>
-
-      {/* Panel Content */}
-      <div className="settings-panel-content">
-        {!selectedElement ? (
-          <div className="settings-panel-empty">
-            <Layers className="h-10 w-10 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">
-              Select an element to edit
-            </p>
-          </div>
-        ) : selectedData ? (
-          <div className="settings-panel-sections">
-            {selectedElement.type === "section" && (
-              <SectionStyleSettings
-                section={selectedData.data as Section}
-                onChange={(updated) =>
-                  onSectionChange?.(selectedElement.sectionIndex, updated)
-                }
-                tab={activeTab}
-              />
-            )}
-            {selectedElement.type === "container" && (
-              <ContainerStyleSettings
-                container={selectedData.data as Container}
-                onChange={(updated) =>
-                  onContainerChange?.(
-                    selectedElement.sectionIndex,
-                    selectedElement.containerIndex!,
-                    updated,
-                  )
-                }
-                tab={activeTab}
-              />
-            )}
-            {selectedElement.type === "block" && (
-              <BlockStyleSettings
-                block={selectedData.data as Block}
-                onChange={(updated) =>
-                  onBlockChange?.(
-                    selectedElement.sectionIndex,
-                    selectedElement.containerIndex!,
-                    selectedElement.blockIndex!,
-                    updated,
-                  )
-                }
-                tab={activeTab}
-              />
-            )}
-          </div>
-        ) : (
-          <div className="settings-panel-empty">
-            <p className="text-sm text-muted-foreground">Element not found</p>
-          </div>
-        )}
-      </div>
-    </aside>
+      </aside>
     </div>
   );
 }
@@ -275,14 +540,29 @@ export function SettingsPanel({
 function SectionStyleSettings({
   section,
   onChange,
-  tab,
 }: {
   section: Section;
   onChange: (section: Section) => void;
-  tab: PanelTab;
 }) {
+  const breakpoint = useCurrentBreakpoint();
+  const sectionData = section as unknown as Record<string, unknown>;
+
+  // Responsive-aware change handler
   const handleChange = (field: string, value: unknown) => {
-    onChange({ ...section, [field]: value });
+    const newData = setResponsiveOverride(
+      sectionData,
+      breakpoint,
+      field,
+      value,
+    );
+    onChange(newData as unknown as Section);
+  };
+
+  // Helper to get responsive value
+  const getValue = <T,>(field: string, defaultValue: T): T => {
+    return (
+      getResponsiveValue<T>(sectionData, field, breakpoint) ?? defaultValue
+    );
   };
 
   // Get background as object (normalize from string if legacy)
@@ -305,60 +585,24 @@ function SectionStyleSettings({
     { value: "full", label: "Full" },
   ];
 
-  // Settings Tab
-  if (tab === "settings") {
-    return (
-      <>
-        {/* Advanced */}
-        <PropertySection
-          title="Advanced"
-          icon={<Settings2 className="h-3.5 w-3.5" />}
-        >
-          <PropertyRow label="Overflow X">
-            <PropertySelect
-              value={section.overflowX || section.overflow || "visible"}
-              options={OVERFLOW_OPTIONS}
-              onChange={(v) => handleChange("overflowX", v)}
-            />
-          </PropertyRow>
-          <PropertyRow label="Overflow Y">
-            <PropertySelect
-              value={section.overflowY || section.overflow || "visible"}
-              options={OVERFLOW_OPTIONS}
-              onChange={(v) => handleChange("overflowY", v)}
-            />
-          </PropertyRow>
-          <PropertyRow label="Anchor ID" stacked>
-            <Input
-              value={section.anchorId || ""}
-              onChange={(e) => handleChange("anchorId", e.target.value)}
-              placeholder="e.g. hero, features"
-              className="settings-input"
-            />
-          </PropertyRow>
-          <PropertyRow label="CSS Classes" stacked>
-            <Input
-              value={section.customClasses || ""}
-              onChange={(e) => handleChange("customClasses", e.target.value)}
-              placeholder="e.g. my-class"
-              className="settings-input"
-            />
-          </PropertyRow>
-        </PropertySection>
-
-        {/* Visibility */}
-        <PropertySection
-          title="Visibility"
-          icon={<EyeOff className="h-3.5 w-3.5" />}
-        >
-          <VisibilityToggles
-            hideOn={section.hideOn}
-            onChange={(hideOn) => handleChange("hideOn", hideOn)}
-          />
-        </PropertySection>
-      </>
-    );
-  }
+  // Get responsive values for display
+  const width = getValue<string>("width", "wide");
+  const minHeight = getValue<string>("minHeight", "none");
+  const align = getValue<string>("align", "left");
+  const verticalAlign = getValue<string>("verticalAlign", "top");
+  const paddingY = getValue<string>("paddingY", "md");
+  const paddingTop = getValue<string>("paddingTop", "") || paddingY;
+  const paddingBottom = getValue<string>("paddingBottom", "") || paddingY;
+  const marginTop = getValue<string>("marginTop", "none");
+  const marginBottom = getValue<string>("marginBottom", "none");
+  const gapY = getValue<string>("gapY", "md");
+  const borderTop = getValue<string>("borderTop", "none");
+  const borderBottom = getValue<string>("borderBottom", "none");
+  const borderLeft = getValue<string>("borderLeft", "none");
+  const borderRight = getValue<string>("borderRight", "none");
+  const borderColor = getValue<string>("borderColor", "");
+  const borderRadius = getValue<string>("borderRadius", "none");
+  const shadow = getValue<string>("shadow", "none");
 
   // Style Tab
   return (
@@ -370,7 +614,7 @@ function SectionStyleSettings({
       >
         <PropertyRow label="Width" stacked>
           <PropertyToggle
-            value={section.width || "wide"}
+            value={width}
             options={widthOptions}
             onChange={(v) => handleChange("width", v)}
             fullWidth
@@ -378,32 +622,24 @@ function SectionStyleSettings({
         </PropertyRow>
         <PropertyRow label="Min Height">
           <PropertySelect
-            value={section.minHeight || "none"}
+            value={minHeight}
             options={SECTION_MIN_HEIGHT_OPTIONS}
             onChange={(v) => handleChange("minHeight", v)}
           />
         </PropertyRow>
-        {section.minHeight && section.minHeight !== "none" && (
+        {minHeight !== "none" && (
           <PropertyRow label="Position" stacked>
             <div className="flex items-center gap-3">
               <PositionPicker
-                horizontal={
-                  (section.align as "left" | "center" | "right") || "left"
-                }
-                vertical={
-                  (section.verticalAlign as "top" | "center" | "bottom") ||
-                  "top"
-                }
+                horizontal={align as "left" | "center" | "right"}
+                vertical={verticalAlign as "top" | "center" | "bottom"}
                 onChange={(h, v) => {
-                  onChange({
-                    ...section,
-                    align: h,
-                    verticalAlign: v,
-                  });
+                  handleChange("align", h);
+                  handleChange("verticalAlign", v);
                 }}
               />
               <span className="text-xs text-muted-foreground">
-                {section.verticalAlign || "top"} / {section.align || "left"}
+                {verticalAlign} / {align}
               </span>
             </div>
           </PropertyRow>
@@ -414,35 +650,35 @@ function SectionStyleSettings({
       <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
         <PropertyRow label="Pad Top">
           <PropertySelect
-            value={section.paddingTop || section.paddingY || "md"}
+            value={paddingTop}
             options={EXTENDED_SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingTop", v)}
           />
         </PropertyRow>
         <PropertyRow label="Pad Bottom">
           <PropertySelect
-            value={section.paddingBottom || section.paddingY || "md"}
+            value={paddingBottom}
             options={EXTENDED_SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingBottom", v)}
           />
         </PropertyRow>
         <PropertyRow label="Margin Top">
           <PropertySelect
-            value={section.marginTop || "none"}
+            value={marginTop}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("marginTop", v)}
           />
         </PropertyRow>
         <PropertyRow label="Margin Bot">
           <PropertySelect
-            value={section.marginBottom || "none"}
+            value={marginBottom}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("marginBottom", v)}
           />
         </PropertyRow>
         <PropertyRow label="Gap">
           <PropertySelect
-            value={section.gapY || "md"}
+            value={gapY}
             options={SPACING_OPTIONS.slice(0, 7)}
             onChange={(v) => handleChange("gapY", v)}
           />
@@ -462,30 +698,103 @@ function SectionStyleSettings({
         />
       </PropertySection>
 
-      {/* Borders & Effects */}
+      {/* Borders */}
       <PropertySection
         title="Borders"
         icon={<Box className="h-3.5 w-3.5" />}
         defaultOpen={false}
       >
-        <BorderEditor
-          value={{
-            borderTop: section.borderTop,
-            borderBottom: section.borderBottom,
-            borderLeft: section.borderLeft,
-            borderRight: section.borderRight,
-            borderColor: section.borderColor,
-            borderRadius: section.borderRadius,
-            shadow: section.shadow,
-          }}
-          onChange={(values: Partial<BorderValues>) => {
-            Object.entries(values).forEach(([key, value]) => {
-              handleChange(key, value);
-            });
-          }}
-          mode="all"
-          showShadow={true}
-          showTitles={false}
+        <PropertyRow label="Top">
+          <PropertySelect
+            value={borderTop}
+            options={BORDER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("borderTop", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Bottom">
+          <PropertySelect
+            value={borderBottom}
+            options={BORDER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("borderBottom", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Left">
+          <PropertySelect
+            value={borderLeft}
+            options={BORDER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("borderLeft", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Right">
+          <PropertySelect
+            value={borderRight}
+            options={BORDER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("borderRight", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Radius">
+          <PropertySelect
+            value={borderRadius}
+            options={BORDER_RADIUS_OPTIONS}
+            onChange={(v) => handleChange("borderRadius", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Shadow">
+          <PropertySelect
+            value={shadow}
+            options={SHADOW_OPTIONS}
+            onChange={(v) => handleChange("shadow", v)}
+          />
+        </PropertyRow>
+      </PropertySection>
+
+      {/* Advanced */}
+      <PropertySection
+        title="Advanced"
+        icon={<Settings2 className="h-3.5 w-3.5" />}
+        defaultOpen={false}
+      >
+        <PropertyRow label="Overflow X">
+          <PropertySelect
+            value={section.overflowX || section.overflow || "visible"}
+            options={OVERFLOW_OPTIONS}
+            onChange={(v) => handleChange("overflowX", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Overflow Y">
+          <PropertySelect
+            value={section.overflowY || section.overflow || "visible"}
+            options={OVERFLOW_OPTIONS}
+            onChange={(v) => handleChange("overflowY", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Anchor ID" stacked>
+          <Input
+            value={section.anchorId || ""}
+            onChange={(e) => handleChange("anchorId", e.target.value)}
+            placeholder="e.g. hero, features"
+            className="settings-input"
+          />
+        </PropertyRow>
+        <PropertyRow label="CSS Classes" stacked>
+          <Input
+            value={section.customClasses || ""}
+            onChange={(e) => handleChange("customClasses", e.target.value)}
+            placeholder="e.g. my-class"
+            className="settings-input"
+          />
+        </PropertyRow>
+      </PropertySection>
+
+      {/* Visibility */}
+      <PropertySection
+        title="Visibility"
+        icon={<EyeOff className="h-3.5 w-3.5" />}
+        defaultOpen={false}
+      >
+        <VisibilityToggles
+          hideOn={section.hideOn}
+          onChange={(hideOn) => handleChange("hideOn", hideOn)}
         />
       </PropertySection>
     </>
@@ -493,28 +802,76 @@ function SectionStyleSettings({
 }
 
 // =============================================================================
-// Container Style Settings - Webflow-style
+// Container Style Settings - Webflow-style (matching Section features)
 // =============================================================================
 
 function ContainerStyleSettings({
   container,
   onChange,
-  tab,
 }: {
   container: Container;
   onChange: (container: Container) => void;
-  tab: PanelTab;
 }) {
+  const breakpoint = useCurrentBreakpoint();
+  const containerData = container as unknown as Record<string, unknown>;
+
+  // Responsive-aware change handler
   const handleChange = (field: string, value: unknown) => {
-    onChange({ ...container, [field]: value });
+    const newData = setResponsiveOverride(
+      containerData,
+      breakpoint,
+      field,
+      value,
+    );
+    onChange(newData as unknown as Container);
+  };
+
+  // Helper to get responsive value
+  const getValue = <T,>(field: string, defaultValue: T): T => {
+    return (
+      getResponsiveValue<T>(containerData, field, breakpoint) ?? defaultValue
+    );
+  };
+
+  // Helper to get responsive layout value
+  const getLayoutValue = <T,>(field: string, defaultValue: T): T => {
+    if (!container.layout) return defaultValue;
+    const layoutData = container.layout as unknown as Record<string, unknown>;
+    return getResponsiveValue<T>(layoutData, field, breakpoint) ?? defaultValue;
   };
 
   const handleLayoutChange = (field: string, value: unknown) => {
+    const layoutData = (container.layout || {}) as unknown as Record<
+      string,
+      unknown
+    >;
+    const newLayoutData = setResponsiveOverride(
+      layoutData,
+      breakpoint,
+      field,
+      value,
+    );
     onChange({
       ...container,
-      layout: { ...container.layout, [field]: value },
+      layout: newLayoutData as Container["layout"],
     });
   };
+
+  // Get background as object (normalize from string if legacy)
+  const getBackground = (): SectionBackground => {
+    if (!container.background) return { type: "none" };
+    if (typeof container.background === "string") {
+      if (
+        container.background === "none" ||
+        container.background === "transparent"
+      )
+        return { type: "none" };
+      return { type: "color", color: container.background };
+    }
+    return container.background as SectionBackground;
+  };
+
+  const background = getBackground();
 
   // Display type options for toggle
   const displayOptions = [
@@ -529,31 +886,36 @@ function ContainerStyleSettings({
     { value: "column", label: "Column" },
   ];
 
-  // Alignment options for toggle
-  const alignOptions = [
-    { value: "left", label: "Left" },
-    { value: "center", label: "Center" },
-    { value: "right", label: "Right" },
-  ];
+  // Get responsive layout values
+  const layoutType = getLayoutValue<string>("type", "stack");
+  const layoutDirection = getLayoutValue<string>("direction", "column");
+  const layoutJustify = getLayoutValue<string>("justify", "start");
+  const layoutAlign = getLayoutValue<string>("align", "stretch");
+  const layoutColumns = getLayoutValue<number>("columns", 2);
+  const layoutGap = getLayoutValue<string>("gap", "md");
 
-  // Settings Tab
-  if (tab === "settings") {
-    return (
-      <PropertySection
-        title="Advanced"
-        icon={<Settings2 className="h-3.5 w-3.5" />}
-      >
-        <PropertyRow label="Custom Classes" stacked>
-          <Input
-            value={container.customClasses || ""}
-            onChange={(e) => handleChange("customClasses", e.target.value)}
-            placeholder="e.g. my-class"
-            className="settings-input"
-          />
-        </PropertyRow>
-      </PropertySection>
-    );
-  }
+  // Get responsive container values
+  const maxWidth = getValue<string>("maxWidth", "none");
+  const minHeight = getValue<string>("minHeight", "none");
+  const paddingX = getValue<string>("paddingX", "none");
+  const paddingY = getValue<string>("paddingY", "none");
+  const align = getValue<string>("align", "left");
+  const verticalAlign = getValue<string>("verticalAlign", "top");
+  const borderTop = getValue<string>("borderTop", "none");
+  const borderBottom = getValue<string>("borderBottom", "none");
+  const borderLeft = getValue<string>("borderLeft", "none");
+  const borderRight = getValue<string>("borderRight", "none");
+  const borderRadius = getValue<string>("borderRadius", "none");
+  const shadow = getValue<string>("shadow", "none");
+
+  // Container min height options
+  const containerMinHeightOptions = [
+    { value: "none", label: "None" },
+    { value: "sm", label: "Small" },
+    { value: "md", label: "Medium" },
+    { value: "lg", label: "Large" },
+    { value: "xl", label: "X-Large" },
+  ];
 
   // Style Tab
   return (
@@ -565,18 +927,18 @@ function ContainerStyleSettings({
       >
         <PropertyRow label="Display" stacked>
           <PropertyToggle
-            value={container.layout?.type || "stack"}
+            value={layoutType}
             options={displayOptions}
             onChange={(v) => handleLayoutChange("type", v)}
             fullWidth
           />
         </PropertyRow>
 
-        {container.layout?.type === "flex" && (
+        {layoutType === "flex" && (
           <>
             <PropertyRow label="Direction" stacked>
               <PropertyToggle
-                value={container.layout?.direction || "column"}
+                value={layoutDirection}
                 options={directionOptions}
                 onChange={(v) => handleLayoutChange("direction", v)}
                 fullWidth
@@ -584,7 +946,7 @@ function ContainerStyleSettings({
             </PropertyRow>
             <PropertyRow label="Justify">
               <PropertySelect
-                value={container.layout?.justify || "start"}
+                value={layoutJustify}
                 options={[
                   { value: "start", label: "Start" },
                   { value: "center", label: "Center" },
@@ -597,7 +959,7 @@ function ContainerStyleSettings({
             </PropertyRow>
             <PropertyRow label="Align">
               <PropertySelect
-                value={container.layout?.align || "stretch"}
+                value={layoutAlign}
                 options={[
                   { value: "start", label: "Start" },
                   { value: "center", label: "Center" },
@@ -610,13 +972,13 @@ function ContainerStyleSettings({
           </>
         )}
 
-        {container.layout?.type === "grid" && (
+        {layoutType === "grid" && (
           <PropertyRow label="Columns">
             <Input
               type="number"
               min={1}
               max={12}
-              value={container.layout?.columns || 2}
+              value={layoutColumns}
               onChange={(e) =>
                 handleLayoutChange("columns", parseInt(e.target.value) || 2)
               }
@@ -627,52 +989,158 @@ function ContainerStyleSettings({
 
         <PropertyRow label="Gap">
           <PropertySelect
-            value={container.layout?.gap || "md"}
+            value={layoutGap}
             options={SPACING_OPTIONS}
             onChange={(v) => handleLayoutChange("gap", v)}
           />
         </PropertyRow>
         <PropertyRow label="Max Width">
           <PropertySelect
-            value={container.maxWidth || "none"}
+            value={maxWidth}
             options={CONTAINER_WIDTH_OPTIONS}
             onChange={(v) => handleChange("maxWidth", v)}
           />
         </PropertyRow>
+        <PropertyRow label="Min Height">
+          <PropertySelect
+            value={minHeight}
+            options={containerMinHeightOptions}
+            onChange={(v) => handleChange("minHeight", v)}
+          />
+        </PropertyRow>
+        {minHeight !== "none" && (
+          <PropertyRow label="Position" stacked>
+            <div className="flex items-center gap-3">
+              <PositionPicker
+                horizontal={align as "left" | "center" | "right"}
+                vertical={verticalAlign as "top" | "center" | "bottom"}
+                onChange={(h, v) => {
+                  handleChange("align", h);
+                  handleChange("verticalAlign", v);
+                }}
+              />
+              <span className="text-xs text-muted-foreground">
+                {verticalAlign} / {align}
+              </span>
+            </div>
+          </PropertyRow>
+        )}
       </PropertySection>
 
       {/* Spacing */}
       <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
         <PropertyRow label="Padding X">
           <PropertySelect
-            value={container.paddingX || "none"}
+            value={paddingX}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingX", v)}
           />
         </PropertyRow>
         <PropertyRow label="Padding Y">
           <PropertySelect
-            value={container.paddingY || "none"}
+            value={paddingY}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingY", v)}
           />
         </PropertyRow>
       </PropertySection>
 
-      {/* Alignment */}
+      {/* Background */}
       <PropertySection
-        title="Alignment"
-        icon={<AlignLeft className="h-3.5 w-3.5" />}
+        title="Background"
+        icon={<Palette className="h-3.5 w-3.5" />}
         defaultOpen={false}
       >
-        <PropertyRow label="Horizontal" stacked>
-          <PropertyToggle
-            value={container.align || "left"}
-            options={alignOptions}
-            onChange={(v) => handleChange("align", v)}
-            fullWidth
+        <BackgroundEditor
+          value={background}
+          onChange={(bg) => handleChange("background", bg)}
+          showTitle={false}
+        />
+      </PropertySection>
+
+      {/* Borders */}
+      <PropertySection
+        title="Borders"
+        icon={<Box className="h-3.5 w-3.5" />}
+        defaultOpen={false}
+      >
+        <PropertyRow label="Top">
+          <PropertySelect
+            value={borderTop}
+            options={BORDER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("borderTop", v)}
           />
         </PropertyRow>
+        <PropertyRow label="Bottom">
+          <PropertySelect
+            value={borderBottom}
+            options={BORDER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("borderBottom", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Left">
+          <PropertySelect
+            value={borderLeft}
+            options={BORDER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("borderLeft", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Right">
+          <PropertySelect
+            value={borderRight}
+            options={BORDER_WIDTH_OPTIONS}
+            onChange={(v) => handleChange("borderRight", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Radius">
+          <PropertySelect
+            value={borderRadius}
+            options={BORDER_RADIUS_OPTIONS}
+            onChange={(v) => handleChange("borderRadius", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Shadow">
+          <PropertySelect
+            value={shadow}
+            options={SHADOW_OPTIONS}
+            onChange={(v) => handleChange("shadow", v)}
+          />
+        </PropertyRow>
+      </PropertySection>
+
+      {/* Advanced */}
+      <PropertySection
+        title="Advanced"
+        icon={<Settings2 className="h-3.5 w-3.5" />}
+        defaultOpen={false}
+      >
+        <PropertyRow label="Overflow">
+          <PropertySelect
+            value={container.overflow || "visible"}
+            options={OVERFLOW_OPTIONS}
+            onChange={(v) => handleChange("overflow", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="CSS Classes" stacked>
+          <Input
+            value={container.customClasses || ""}
+            onChange={(e) => handleChange("customClasses", e.target.value)}
+            placeholder="e.g. my-class"
+            className="settings-input"
+          />
+        </PropertyRow>
+      </PropertySection>
+
+      {/* Visibility */}
+      <PropertySection
+        title="Visibility"
+        icon={<EyeOff className="h-3.5 w-3.5" />}
+        defaultOpen={false}
+      >
+        <VisibilityToggles
+          hideOn={container.hideOn}
+          onChange={(hideOn) => handleChange("hideOn", hideOn)}
+        />
       </PropertySection>
     </>
   );
@@ -685,20 +1153,36 @@ function ContainerStyleSettings({
 function BlockStyleSettings({
   block,
   onChange,
-  tab,
 }: {
   block: Block;
   onChange: (block: Block) => void;
-  tab: PanelTab;
 }) {
   // Component-centric: different settings per block type
   const blockType = block._type;
 
-  if (tab === "settings") {
-    return (
+  // Render type-specific settings with Block Info at the end
+  const renderBlockSettings = () => {
+    switch (blockType) {
+      case "heading-block":
+        return <HeadingBlockSettings block={block} onChange={onChange} />;
+      case "text-block":
+        return <TextBlockSettings block={block} onChange={onChange} />;
+      case "button-block":
+        return <ButtonBlockSettings block={block} onChange={onChange} />;
+      default:
+        return <GenericBlockSettings block={block} onChange={onChange} />;
+    }
+  };
+
+  return (
+    <>
+      {renderBlockSettings()}
+
+      {/* Block Info */}
       <PropertySection
         title="Block Info"
         icon={<Settings2 className="h-3.5 w-3.5" />}
+        defaultOpen={false}
       >
         <PropertyRow label="Type">
           <span className="text-sm text-muted-foreground">{blockType}</span>
@@ -709,26 +1193,20 @@ function BlockStyleSettings({
           </span>
         </PropertyRow>
       </PropertySection>
-    );
-  }
-
-  // Render type-specific settings
-  switch (blockType) {
-    case "heading-block":
-      return <HeadingBlockSettings block={block} onChange={onChange} />;
-    case "text-block":
-      return <TextBlockSettings block={block} onChange={onChange} />;
-    case "button-block":
-      return <ButtonBlockSettings block={block} onChange={onChange} />;
-    default:
-      return <GenericBlockSettings block={block} onChange={onChange} />;
-  }
+    </>
+  );
 }
 
 // =============================================================================
 // Block Type-Specific Settings - Webflow-style
 // =============================================================================
 
+/**
+ * HeadingBlockSettings - Uses shared HeadingSettings component
+ *
+ * Typography uses fluid scaling (no per-breakpoint overrides needed).
+ * The fluid clamp() tokens in @enterprise/tokens handle responsive sizing.
+ */
 function HeadingBlockSettings({
   block,
   onChange,
@@ -736,63 +1214,7 @@ function HeadingBlockSettings({
   block: Block;
   onChange: (block: Block) => void;
 }) {
-  const handleDataChange = (field: string, value: unknown) => {
-    onChange({ ...block, data: { ...block.data, [field]: value } });
-  };
-
-  // Heading level options for toggle
-  const levelOptions = [
-    { value: "h1", label: "H1" },
-    { value: "h2", label: "H2" },
-    { value: "h3", label: "H3" },
-    { value: "h4", label: "H4" },
-    { value: "h5", label: "H5" },
-    { value: "h6", label: "H6" },
-  ];
-
-  // Alignment options for toggle
-  const alignOptions = [
-    { value: "left", label: "Left" },
-    { value: "center", label: "Center" },
-    { value: "right", label: "Right" },
-  ];
-
-  return (
-    <PropertySection title="Heading" icon={<Type className="h-3.5 w-3.5" />}>
-      <PropertyRow label="Level" stacked>
-        <PropertyToggle
-          value={(block.data?.level as string) || "h2"}
-          options={levelOptions}
-          onChange={(v) => handleDataChange("level", v)}
-          fullWidth
-        />
-      </PropertyRow>
-      <PropertyRow label="Size">
-        <PropertySelect
-          value={(block.data?.size as string) || "default"}
-          options={[
-            { value: "xs", label: "XS" },
-            { value: "sm", label: "SM" },
-            { value: "default", label: "Default" },
-            { value: "lg", label: "LG" },
-            { value: "xl", label: "XL" },
-            { value: "2xl", label: "2XL" },
-            { value: "3xl", label: "3XL" },
-            { value: "4xl", label: "4XL" },
-          ]}
-          onChange={(v) => handleDataChange("size", v)}
-        />
-      </PropertyRow>
-      <PropertyRow label="Align" stacked>
-        <PropertyToggle
-          value={(block.data?.align as string) || "left"}
-          options={alignOptions}
-          onChange={(v) => handleDataChange("align", v)}
-          fullWidth
-        />
-      </PropertyRow>
-    </PropertySection>
-  );
+  return <HeadingSettings block={block} onChange={onChange} />;
 }
 
 function TextBlockSettings({
@@ -802,9 +1224,18 @@ function TextBlockSettings({
   block: Block;
   onChange: (block: Block) => void;
 }) {
+  const breakpoint = useCurrentBreakpoint();
+  const data = block.data as Record<string, unknown>;
+
+  // Responsive-aware change handler
   const handleDataChange = (field: string, value: unknown) => {
-    onChange({ ...block, data: { ...block.data, [field]: value } });
+    const newData = setResponsiveOverride(data, breakpoint, field, value);
+    onChange({ ...block, data: newData });
   };
+
+  // Get responsive values for current breakpoint
+  const size = getResponsiveValue<string>(data, "size", breakpoint) || "base";
+  const align = getResponsiveValue<string>(data, "align", breakpoint) || "left";
 
   // Alignment options for toggle
   const alignOptions = [
@@ -814,24 +1245,34 @@ function TextBlockSettings({
     { value: "justify", label: "Justify" },
   ];
 
+  const sizeOptions = [
+    { value: "xs", label: "XS" },
+    { value: "sm", label: "SM" },
+    { value: "base", label: "Base" },
+    { value: "lg", label: "LG" },
+    { value: "xl", label: "XL" },
+    { value: "2xl", label: "2XL" },
+    { value: "3xl", label: "3XL" },
+    { value: "4xl", label: "4XL" },
+    { value: "5xl", label: "5XL" },
+    { value: "6xl", label: "6XL" },
+    { value: "7xl", label: "7XL" },
+    { value: "8xl", label: "8XL" },
+    { value: "9xl", label: "9XL" },
+  ];
+
   return (
-    <PropertySection title="Text" icon={<Type className="h-3.5 w-3.5" />}>
+    <PropertySection title="Typography" icon={<Type className="h-3.5 w-3.5" />}>
       <PropertyRow label="Size">
         <PropertySelect
-          value={(block.data?.size as string) || "default"}
-          options={[
-            { value: "xs", label: "XS" },
-            { value: "sm", label: "SM" },
-            { value: "default", label: "Default" },
-            { value: "lg", label: "LG" },
-            { value: "xl", label: "XL" },
-          ]}
+          value={size}
+          options={sizeOptions}
           onChange={(v) => handleDataChange("size", v)}
         />
       </PropertyRow>
       <PropertyRow label="Align" stacked>
         <PropertyToggle
-          value={(block.data?.align as string) || "left"}
+          value={align}
           options={alignOptions}
           onChange={(v) => handleDataChange("align", v)}
           fullWidth

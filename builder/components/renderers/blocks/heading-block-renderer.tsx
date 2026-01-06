@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface HeadingBlockData {
   text: string;
@@ -31,84 +30,34 @@ interface HeadingBlockData {
     | "black";
   letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
   lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
-  color?: string; // Any color: preset name, hex, rgb, css var
-  fontFamily?: string; // Font family: global preset var or custom font string
+  fontStyle?: "normal" | "italic";
+  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+  textDecoration?: "none" | "underline" | "line-through";
+  color?: "default" | "primary" | "secondary" | "muted" | "accent" | "destructive";
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "prose" | "none";
+  whiteSpace?: "normal" | "nowrap" | "pre-wrap";
+  opacity?: number;
 }
-
-// Match editor's HeadingBlockEditor sizeMap exactly
-const sizeClasses: Record<string, string> = {
-  xs: "text-xs",
-  sm: "text-sm",
-  base: "text-base",
-  lg: "text-lg",
-  xl: "text-xl",
-  "2xl": "text-2xl",
-  "3xl": "text-3xl",
-  "4xl": "text-4xl",
-  "5xl": "text-5xl",
-  "6xl": "text-6xl",
-  "7xl": "text-7xl",
-  "8xl": "text-8xl",
-  "9xl": "text-9xl",
-};
-
-const alignClasses: Record<string, string> = {
-  left: "text-left",
-  center: "text-center",
-  right: "text-right",
-};
-
-const weightClasses: Record<string, string> = {
-  thin: "font-thin",
-  extralight: "font-extralight",
-  light: "font-light",
-  normal: "font-normal",
-  medium: "font-medium",
-  semibold: "font-semibold",
-  bold: "font-bold",
-  extrabold: "font-extrabold",
-  black: "font-black",
-};
-
-const letterSpacingClasses: Record<string, string> = {
-  tighter: "tracking-tighter",
-  tight: "tracking-tight",
-  normal: "tracking-normal",
-  wide: "tracking-wide",
-  wider: "tracking-wider",
-  widest: "tracking-widest",
-};
-
-const lineHeightClasses: Record<string, string> = {
-  none: "leading-none",
-  tight: "leading-tight",
-  snug: "leading-snug",
-  normal: "leading-normal",
-  relaxed: "leading-relaxed",
-  loose: "leading-loose",
-};
-
-// Legacy color presets (for backwards compatibility)
-const colorPresets: Record<string, string> = {
-  default: "var(--foreground)",
-  primary: "var(--primary)",
-  secondary: "var(--secondary)",
-  muted: "var(--muted-foreground)",
-  accent: "var(--accent)",
-  destructive: "var(--destructive)",
-};
 
 /**
- * Get the actual color value from a preset name or return as-is if it's a custom color
+ * Get the closest opacity preset value
  */
-function getColorValue(color: string | undefined): string | undefined {
-  if (!color) return undefined;
-  // Check if it's a preset
-  if (colorPresets[color]) return colorPresets[color];
-  // Otherwise return as-is (hex, rgb, css var, etc.)
-  return color;
+function getOpacityPreset(opacity: number | undefined): string | undefined {
+  if (opacity === undefined) return undefined;
+  if (opacity <= 10) return "10";
+  if (opacity <= 25) return "25";
+  if (opacity <= 50) return "50";
+  if (opacity <= 75) return "75";
+  if (opacity <= 90) return "90";
+  return "100";
 }
 
+/**
+ * HeadingBlockRenderer - Preview/Export Version
+ *
+ * Uses data-* attributes for styling (matching HeadingBlockEditor and client).
+ * This ensures WYSIWYG parity between builder and frontend.
+ */
 export default function HeadingBlockRenderer({ block }: BlockRendererProps) {
   const data = block.data as unknown as HeadingBlockData;
   const {
@@ -119,32 +68,40 @@ export default function HeadingBlockRenderer({ block }: BlockRendererProps) {
     weight = "semibold",
     letterSpacing,
     lineHeight,
+    fontStyle,
+    textTransform,
+    textDecoration,
     color,
-    fontFamily,
+    maxWidth,
+    whiteSpace,
+    opacity,
   } = data;
 
   const Tag = level;
 
-  // Get color value (supports presets and custom colors)
-  const colorValue = getColorValue(color);
-
-  // Build inline styles for color and fontFamily
-  const style: React.CSSProperties = {
-    ...(colorValue && { color: colorValue }),
-    ...(fontFamily && { fontFamily }),
+  // Build data attributes for CSS-based styling (matching client's Heading component)
+  const dataAttributes: Record<string, string | undefined> = {
+    "data-size": size,
+    "data-weight": weight,
+    "data-align": align,
+    "data-letter-spacing": letterSpacing,
+    "data-line-height": lineHeight,
+    "data-font-style": fontStyle,
+    "data-text-transform": textTransform,
+    "data-text-decoration": textDecoration,
+    "data-white-space": whiteSpace,
+    "data-max-width": maxWidth,
+    "data-opacity": getOpacityPreset(opacity),
+    "data-color": color,
   };
 
+  // Filter out undefined values
+  const filteredDataAttributes = Object.fromEntries(
+    Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
+  );
+
   return (
-    <Tag
-      className={cn(
-        sizeClasses[size] || sizeClasses["2xl"],
-        alignClasses[align] || alignClasses.left,
-        weightClasses[weight] || weightClasses.semibold,
-        letterSpacing && letterSpacingClasses[letterSpacing],
-        lineHeight && lineHeightClasses[lineHeight],
-      )}
-      style={Object.keys(style).length > 0 ? style : undefined}
-    >
+    <Tag className="heading" {...filteredDataAttributes}>
       {text}
     </Tag>
   );
