@@ -7,10 +7,11 @@ We are building a **professional web agency platform** that enables us to delive
 **Core Principles:**
 
 1. **100% Professional Frontends** - Zero compromise on frontend quality
-2. **Token-Based Design System** - All styles controlled via design tokens, no inline CSS
-3. **Progressive Features** - Build features when needed, unlock for clients as needed
-4. **Two-Tier Product** - Content editing vs full builder access
-5. **We Own Everything** - API, security, data, deployment
+2. **Builder Freedom, Clean Output** - Full Tailwind in builder, semantic CSS on frontend
+3. **Token-Based Design System** - All styles controlled via design tokens
+4. **Progressive Features** - Build features when needed, unlock for clients as needed
+5. **Two-Tier Product** - Content editing vs full builder access
+6. **We Own Everything** - API, security, data, deployment
 
 ---
 
@@ -219,12 +220,44 @@ interface TenantFeatures {
 
 ## Frontend Architecture
 
+### The Two Outputs: Builder vs Frontend
+
+**Builder = Full Tailwind Freedom**
+
+The builder is our design tool. It has complete Tailwind CSS freedom - the full utility system available for freestyle design. Designers can build anything they could build coding from scratch: layouts, colors, typography, spacing, responsive breakpoints, hover states - unlimited creative freedom.
+
+```tsx
+// Builder preview - Tailwind utilities for rapid design
+<div className="flex flex-col md:flex-row gap-8 p-12 bg-white rounded-2xl shadow-xl">
+  <h1 className="text-5xl font-bold tracking-tight">
+    Boutique. Local. Personalized.
+  </h1>
+</div>
+```
+
+**Frontend = Clean Semantic CSS**
+
+The frontend outputs professional, semantic HTML and CSS. No Tailwind utility soup. No JavaScript bloat. Clean, cacheable, SEO-friendly output that loads fast.
+
+```html
+<!-- Frontend output - Clean semantic markup -->
+<section class="section" data-bg="white" data-py="xl">
+  <div class="container" data-layout="stack" data-gap="lg">
+    <h1 class="heading" data-size="5xl" data-weight="bold">
+      Boutique. Local. Personalized.
+    </h1>
+  </div>
+</section>
+```
+
+This separation is what makes us different from Webflow (inline CSS bloat) and other builders. See `docs/architecture/styling-architecture.md` for the complete technical specification.
+
 ### Professional Frontend Output
 
 **Non-Negotiable Requirements:**
 
-1. Clean, semantic HTML
-2. Minimal CSS (no inline styles)
+1. Clean, semantic HTML with data-attributes for styling
+2. No inline styles, no Tailwind utilities in output
 3. Optimal performance (90+ Lighthouse scores)
 4. Accessibility compliant (WCAG 2.1 AA)
 5. SEO optimized
@@ -407,6 +440,6 @@ All controlled via page settings (not code), all using design tokens for styling
 
 ---
 
-**Last Updated:** 2025-01-22
-**Version:** 1.0
+**Last Updated:** 2025-01-05
+**Version:** 1.1
 **Status:** Active Development
