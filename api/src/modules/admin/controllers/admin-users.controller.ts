@@ -11,11 +11,8 @@ import {
 } from "@nestjs/common";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { RolesGuard } from "@/common/guards/roles.guard";
-import {
-  Roles,
-  SuperAdmin,
-  AgencyRole,
-} from "@/common/decorators/roles.decorator";
+import { Roles } from "@/common/decorators/roles.decorator";
+import { TenantRole } from "@/common/permissions";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
 import { AdminUsersService } from "../services/admin-users.service";
 import { CreateUserDto, InviteUserDto } from "../dto/create-user.dto";
@@ -23,7 +20,7 @@ import { UpdateUserDto } from "../dto/update-user.dto";
 
 @Controller("admin/users")
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(AgencyRole.OWNER, AgencyRole.ADMIN)
+@Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
 export class AdminUsersController {
   constructor(private readonly usersService: AdminUsersService) {}
 
@@ -43,7 +40,7 @@ export class AdminUsersController {
   }
 
   @Post()
-  @SuperAdmin()
+  @Roles(TenantRole.SUPERADMIN)
   async createUser(
     @Body() data: CreateUserDto,
     @CurrentUser() user: { userId: string },
@@ -69,7 +66,7 @@ export class AdminUsersController {
   }
 
   @Delete(":id")
-  @SuperAdmin()
+  @Roles(TenantRole.SUPERADMIN)
   async deleteUser(
     @Param("id") id: string,
     @CurrentUser() user: { userId: string },

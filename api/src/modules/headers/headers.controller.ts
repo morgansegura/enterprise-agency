@@ -16,7 +16,10 @@ import {
   ApiBearerAuth,
 } from "@nestjs/swagger";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 import { HeadersService } from "./headers.service";
 import { CreateHeaderDto, UpdateHeaderDto } from "./dto";
@@ -24,11 +27,12 @@ import { CreateHeaderDto, UpdateHeaderDto } from "./dto";
 @ApiTags("Headers")
 @ApiBearerAuth()
 @Controller("tenants/:tenantId/headers")
-@UseGuards(JwtAuthGuard, TenantGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
 export class HeadersController {
   constructor(private readonly headersService: HeadersService) {}
 
   @Post()
+  @Permissions(Permission.HEADERS_CREATE)
   @ApiOperation({ summary: "Create a new header" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 201, description: "Header created successfully" })
@@ -38,6 +42,7 @@ export class HeadersController {
   }
 
   @Get()
+  @Permissions(Permission.HEADERS_VIEW)
   @ApiOperation({ summary: "List all headers for tenant" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 200, description: "Headers retrieved successfully" })
@@ -46,6 +51,7 @@ export class HeadersController {
   }
 
   @Get("default")
+  @Permissions(Permission.HEADERS_VIEW)
   @ApiOperation({ summary: "Get the default header for tenant" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 200, description: "Default header retrieved" })
@@ -54,6 +60,7 @@ export class HeadersController {
   }
 
   @Get(":id")
+  @Permissions(Permission.HEADERS_VIEW)
   @ApiOperation({ summary: "Get a header by ID" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Header ID" })
@@ -64,6 +71,7 @@ export class HeadersController {
   }
 
   @Get("slug/:slug")
+  @Permissions(Permission.HEADERS_VIEW)
   @ApiOperation({ summary: "Get a header by slug" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "slug", description: "Header slug" })
@@ -74,6 +82,7 @@ export class HeadersController {
   }
 
   @Put(":id")
+  @Permissions(Permission.HEADERS_EDIT)
   @ApiOperation({ summary: "Update a header" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Header ID" })
@@ -89,6 +98,7 @@ export class HeadersController {
   }
 
   @Delete(":id")
+  @Permissions(Permission.HEADERS_DELETE)
   @ApiOperation({ summary: "Delete a header" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Header ID" })
@@ -99,6 +109,7 @@ export class HeadersController {
   }
 
   @Post(":id/duplicate")
+  @Permissions(Permission.HEADERS_CREATE)
   @ApiOperation({ summary: "Duplicate a header" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Header ID to duplicate" })
@@ -113,6 +124,7 @@ export class HeadersController {
   }
 
   @Post(":id/save-to-library")
+  @Permissions(Permission.LIBRARY_CREATE)
   @ApiOperation({ summary: "Save header to component library" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Header ID" })

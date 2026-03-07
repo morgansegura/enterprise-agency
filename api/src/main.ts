@@ -6,6 +6,7 @@ import * as cookieParser from "cookie-parser";
 import helmet from "helmet";
 
 import { AppModule } from "./app.module";
+import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
 
 async function bootstrap() {
   // SECURITY: Validate production environment
@@ -65,6 +66,9 @@ async function bootstrap() {
     ],
     credentials: true,
   });
+
+  // Global exception filter - standardized error responses
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   // Global validation pipe - validates all DTOs automatically
   app.useGlobalPipes(

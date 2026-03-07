@@ -98,10 +98,10 @@ export class AdminUsersService {
     });
 
     await this.auditLog.log({
+      userId: createdBy,
       action: AuditAction.USER_CREATED,
-      performedBy: createdBy,
-      targetType: "user",
-      targetId: user.id,
+      resourceType: "user",
+      resourceId: user.id,
       metadata: { email: user.email, agencyRole: user.agencyRole },
     });
 
@@ -136,10 +136,10 @@ export class AdminUsersService {
     });
 
     await this.auditLog.log({
+      userId: invitedBy,
       action: AuditAction.USER_INVITED,
-      performedBy: invitedBy,
-      targetType: "user",
-      targetId: user.id,
+      resourceType: "user",
+      resourceId: user.id,
       metadata: { email: user.email },
     });
 
@@ -165,11 +165,11 @@ export class AdminUsersService {
     });
 
     await this.auditLog.log({
+      userId: updatedBy,
       action: AuditAction.USER_UPDATED,
-      performedBy: updatedBy,
-      targetType: "user",
-      targetId: updated.id,
-      metadata: { changes: data },
+      resourceType: "user",
+      resourceId: updated.id,
+      changes: data as Record<string, unknown>,
     });
 
     return updated;
@@ -185,10 +185,10 @@ export class AdminUsersService {
     });
 
     await this.auditLog.log({
+      userId: deletedBy,
       action: AuditAction.USER_DELETED,
-      performedBy: deletedBy,
-      targetType: "user",
-      targetId: deleted.id,
+      resourceType: "user",
+      resourceId: deleted.id,
       metadata: { email: user.email },
     });
 

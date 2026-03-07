@@ -5,6 +5,7 @@ import {
   Logger,
 } from "@nestjs/common";
 import { PrismaService } from "@/common/services/prisma.service";
+import { PaginatedResponse } from "@/common/dto/response.dto";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { UpdatePostDto } from "./dto/update-post.dto";
 
@@ -69,8 +70,12 @@ export class PostsService {
       category?: string;
       tags?: string[];
       search?: string;
+      page?: number;
+      limit?: number;
     },
   ) {
+    const page = filters?.page ?? 1;
+    const limit = filters?.limit ?? 20;
     const where: Record<string, unknown> = { tenantId };
 
     if (filters?.status) {
@@ -95,25 +100,30 @@ export class PostsService {
       ];
     }
 
-    const posts = await this.prisma.post.findMany({
-      where,
-      include: {
-        author: {
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
+    const [data, total] = await Promise.all([
+      this.prisma.post.findMany({
+        where,
+        include: {
+          author: {
+            select: {
+              id: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+            },
           },
+          featuredImage: true,
         },
-        featuredImage: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.post.count({ where }),
+    ]);
 
-    return posts;
+    return new PaginatedResponse(data, total, page, limit);
   }
 
   async findOne(tenantId: string, id: string) {

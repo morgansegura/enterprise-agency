@@ -18,10 +18,11 @@ import {
 } from "@nestjs/swagger";
 import { Request } from "express";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
-import { RolesGuard } from "@/common/guards/roles.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
 import { FeatureGuard } from "@/common/guards/feature.guard";
-import { Roles } from "@/common/decorators/roles.decorator";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { RequireFeature } from "@/common/decorators/feature.decorator";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 import { PaymentsService } from "./payments.service";
@@ -33,7 +34,7 @@ import {
 
 @ApiTags("Payments")
 @Controller("payments")
-@UseGuards(JwtAuthGuard, TenantGuard, FeatureGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, FeatureGuard, PermissionGuard)
 @RequireFeature("payments")
 @ApiBearerAuth()
 export class PaymentsController {
@@ -44,7 +45,7 @@ export class PaymentsController {
   // =========================================================================
 
   @Get("config")
-  @Roles("owner", "admin")
+  @Permissions(Permission.SETTINGS_VIEW)
   @ApiOperation({ summary: "Get payment configuration (Stripe/Square)" })
   @ApiResponse({ status: 200, description: "Payment configuration" })
   async getPaymentConfig(@TenantId() tenantId: string) {
@@ -52,7 +53,7 @@ export class PaymentsController {
   }
 
   @Put("config")
-  @Roles("owner", "admin")
+  @Permissions(Permission.SETTINGS_EDIT)
   @ApiOperation({ summary: "Update payment configuration (Stripe/Square)" })
   @ApiResponse({ status: 200, description: "Configuration updated" })
   async updatePaymentConfig(
@@ -67,7 +68,7 @@ export class PaymentsController {
   // =========================================================================
 
   @Post("checkout")
-  @Roles("owner", "admin", "manager")
+  @Permissions(Permission.ORDERS_CREATE)
   @ApiOperation({ summary: "Create a Stripe checkout session" })
   @ApiResponse({ status: 201, description: "Checkout session created" })
   @ApiResponse({ status: 400, description: "Invalid request" })
@@ -83,7 +84,7 @@ export class PaymentsController {
   // =========================================================================
 
   @Post("refund")
-  @Roles("owner", "admin")
+  @Permissions(Permission.ORDERS_REFUND)
   @ApiOperation({ summary: "Create a refund for an order" })
   @ApiResponse({ status: 201, description: "Refund created" })
   @ApiResponse({ status: 400, description: "Invalid request" })
@@ -100,7 +101,7 @@ export class PaymentsController {
   // =========================================================================
 
   @Get("orders/:orderId")
-  @Roles("owner", "admin", "manager")
+  @Permissions(Permission.ORDERS_VIEW)
   @ApiOperation({ summary: "Get payment details for an order" })
   @ApiResponse({ status: 200, description: "Payment details" })
   @ApiResponse({ status: 404, description: "Order not found" })

@@ -3,12 +3,23 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-} from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { PrismaService } from "@/common/services/prisma.service";
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { PrismaService } from '@/common/services/prisma.service';
+import { getRoleLevel } from '@/common/permissions';
 
-export const ROLES_KEY = "roles";
+export const ROLES_KEY = 'roles';
 
+/**
+ * Checks if the user's role is in the allowed roles list.
+ *
+ * Resolution order:
+ * 1. request.tenantUser.role (fast path — set by TenantAccessGuard)
+ * 2. Tenant-scoped DB lookup via route param :id or :tenantId
+ * 3. User's highest role across ALL tenants (for platform-admin routes)
+ *
+ * Usage: @Roles(TenantRole.AGENCY_ADMIN, TenantRole.SUPERADMIN)
+ */
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
@@ -17,10 +28,10 @@ export class RolesGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>(
-      ROLES_KEY,
-      [context.getHandler(), context.getClass()],
-    );
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     if (!requiredRoles || requiredRoles.length === 0) {
       return true;
@@ -28,57 +39,48 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    const tenantId = request.tenantId;
 
-    if (!user) {
-      throw new ForbiddenException("User not authenticated");
+    if (!user?.id) {
+      throw new ForbiddenException('Authentication required');
     }
 
-    if (!tenantId) {
-      throw new ForbiddenException("Tenant context required");
+    // Fast path: TenantAccessGuard already resolved the role
+    if (request.tenantUser?.role) {
+      if (requiredRoles.includes(request.tenantUser.role)) return true;
+      throw new ForbiddenException('Insufficient role');
     }
 
-    // user.id is already the database user ID from JWT strategy validation
-    // Check if user has access via TenantUser (client users) or ProjectAssignment (agency users)
-    const [tenantUser, projectAssignment] = await Promise.all([
-      this.prisma.tenantUser.findUnique({
-        where: {
-          tenantId_userId: {
-            tenantId,
-            userId: user.id,
-          },
-        },
-      }),
-      this.prisma.projectAssignment.findUnique({
-        where: {
-          userId_tenantId: {
-            tenantId,
-            userId: user.id,
-          },
-        },
-      }),
-    ]);
+    // Fallback: resolve role from DB
+    const tenantId = request.params?.tenantId ?? request.params?.id;
 
-    // User must have either TenantUser or ProjectAssignment record
-    if (!tenantUser && !projectAssignment) {
-      throw new ForbiddenException("You do not have access to this tenant");
+    let role: string | null = null;
+
+    if (tenantId) {
+      // Tenant-scoped: look up role for this specific tenant
+      const tu = await this.prisma.tenantUser.findUnique({
+        where: { tenantId_userId: { tenantId, userId: user.id } },
+        select: { role: true },
+      });
+      role = tu?.role ?? null;
     }
 
-    // Get the role from whichever record exists (ProjectAssignment takes priority for agency users)
-    const userRole = projectAssignment?.role || tenantUser?.role;
-
-    // Check if user's role is in required roles
-    if (!userRole || !requiredRoles.includes(userRole)) {
-      throw new ForbiddenException(
-        `Insufficient permissions. Required roles: ${requiredRoles.join(", ")}`,
-      );
+    if (!role) {
+      // Platform-wide: find user's highest role across all tenants
+      const tenantUsers = await this.prisma.tenantUser.findMany({
+        where: { userId: user.id },
+        select: { role: true },
+      });
+      role = tenantUsers.reduce<string | null>((highest, tu) => {
+        if (!highest) return tu.role;
+        return getRoleLevel(tu.role as string) > getRoleLevel(highest)
+          ? tu.role
+          : highest;
+      }, null);
     }
 
-    // Attach tenant user info to request (prefer tenantUser if both exist)
-    request.tenantUser = tenantUser || {
-      role: userRole,
-      permissions: projectAssignment?.permissions,
-    };
+    if (!role || !requiredRoles.includes(role)) {
+      throw new ForbiddenException('Insufficient role');
+    }
 
     return true;
   }

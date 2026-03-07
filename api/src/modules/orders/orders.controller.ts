@@ -13,10 +13,11 @@ import {
 import { OrdersService } from "./orders.service";
 import { CreateOrderDto, UpdateOrderDto } from "./dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
 import { FeatureGuard } from "@/common/guards/feature.guard";
-import { RolesGuard } from "@/common/guards/roles.guard";
-import { Roles } from "@/common/decorators/roles.decorator";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { RequireFeature } from "@/common/decorators/feature.decorator";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 
@@ -28,19 +29,19 @@ import { TenantId } from "@/common/decorators/tenant.decorator";
  * Requires the 'shop' feature to be enabled for the tenant.
  */
 @Controller("orders")
-@UseGuards(JwtAuthGuard, TenantGuard, FeatureGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, FeatureGuard, PermissionGuard)
 @RequireFeature("shop")
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.ORDERS_CREATE)
   create(@TenantId() tenantId: string, @Body() createDto: CreateOrderDto) {
     return this.ordersService.create(tenantId, createDto);
   }
 
   @Get()
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.ORDERS_VIEW)
   findAll(
     @TenantId() tenantId: string,
     @Query("status") status?: string,
@@ -50,8 +51,8 @@ export class OrdersController {
     @Query("search") search?: string,
     @Query("startDate") startDate?: string,
     @Query("endDate") endDate?: string,
-    @Query("limit", new DefaultValuePipe(50), ParseIntPipe) limit?: number,
-    @Query("offset", new DefaultValuePipe(0), ParseIntPipe) offset?: number,
+    @Query("page", new DefaultValuePipe(1), ParseIntPipe) page?: number,
+    @Query("limit", new DefaultValuePipe(20), ParseIntPipe) limit?: number,
   ) {
     return this.ordersService.findAll(tenantId, {
       status,
@@ -61,13 +62,13 @@ export class OrdersController {
       search,
       startDate: startDate ? new Date(startDate) : undefined,
       endDate: endDate ? new Date(endDate) : undefined,
+      page,
       limit,
-      offset,
     });
   }
 
   @Get("stats")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.ORDERS_VIEW)
   getStats(
     @TenantId() tenantId: string,
     @Query("startDate") startDate?: string,
@@ -81,13 +82,13 @@ export class OrdersController {
   }
 
   @Get(":id")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.ORDERS_VIEW)
   findOne(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.ordersService.findOne(tenantId, id);
   }
 
   @Get("number/:orderNumber")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.ORDERS_VIEW)
   findByOrderNumber(
     @TenantId() tenantId: string,
     @Param("orderNumber", ParseIntPipe) orderNumber: number,
@@ -96,7 +97,7 @@ export class OrdersController {
   }
 
   @Patch(":id")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.ORDERS_EDIT)
   update(
     @TenantId() tenantId: string,
     @Param("id") id: string,
@@ -106,13 +107,13 @@ export class OrdersController {
   }
 
   @Post(":id/cancel")
-  @Roles("owner", "admin")
+  @Permissions(Permission.ORDERS_DELETE)
   cancel(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.ordersService.cancel(tenantId, id);
   }
 
   @Post(":id/fulfill")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.ORDERS_FULFILL)
   fulfillItems(
     @TenantId() tenantId: string,
     @Param("id") id: string,

@@ -89,6 +89,9 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   get footer() {
     return this.client.footer;
   }
+  get mediaFolder() {
+    return this.client.mediaFolder;
+  }
 
   // Expose transaction and other methods
   $transaction<T>(

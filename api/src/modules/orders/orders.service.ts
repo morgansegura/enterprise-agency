@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import { PaginatedResponse } from "@/common/dto/response.dto";
 import { CreateOrderDto, UpdateOrderDto } from "./dto";
 
 @Injectable()
@@ -230,10 +231,12 @@ export class OrdersService {
       search?: string;
       startDate?: Date;
       endDate?: Date;
+      page?: number;
       limit?: number;
-      offset?: number;
     },
   ) {
+    const page = filters?.page ?? 1;
+    const limit = filters?.limit ?? 20;
     const where: Prisma.OrderWhereInput = { tenantId };
 
     if (filters?.status) {
@@ -273,7 +276,7 @@ export class OrdersService {
       }
     }
 
-    const [orders, total] = await Promise.all([
+    const [data, total] = await Promise.all([
       this.prisma.order.findMany({
         where,
         include: {
@@ -286,13 +289,13 @@ export class OrdersService {
           },
         },
         orderBy: { createdAt: "desc" },
-        take: filters?.limit,
-        skip: filters?.offset,
+        skip: (page - 1) * limit,
+        take: limit,
       }),
       this.prisma.order.count({ where }),
     ]);
 
-    return { orders, total };
+    return new PaginatedResponse(data, total, page, limit);
   }
 
   async findOne(tenantId: string, id: string) {

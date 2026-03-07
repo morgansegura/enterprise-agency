@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import { PaginatedResponse } from "@/common/dto/response.dto";
 import {
   CreateCustomerDto,
   UpdateCustomerDto,
@@ -84,10 +85,12 @@ export class CustomersService {
       search?: string;
       hasAccount?: boolean;
       acceptsMarketing?: boolean;
+      page?: number;
       limit?: number;
-      offset?: number;
     },
   ) {
+    const page = filters?.page ?? 1;
+    const limit = filters?.limit ?? 20;
     const where: Prisma.CustomerWhereInput = { tenantId };
 
     if (filters?.search) {
@@ -107,7 +110,7 @@ export class CustomersService {
       where.acceptsMarketing = filters.acceptsMarketing;
     }
 
-    const [customers, total] = await Promise.all([
+    const [data, total] = await Promise.all([
       this.prisma.customer.findMany({
         where,
         include: {
@@ -120,13 +123,13 @@ export class CustomersService {
           },
         },
         orderBy: { createdAt: "desc" },
-        take: filters?.limit,
-        skip: filters?.offset,
+        skip: (page - 1) * limit,
+        take: limit,
       }),
       this.prisma.customer.count({ where }),
     ]);
 
-    return { customers, total };
+    return new PaginatedResponse(data, total, page, limit);
   }
 
   async findOne(tenantId: string, id: string) {

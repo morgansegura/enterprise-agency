@@ -1,22 +1,33 @@
-// Extend Express Request type with custom properties
 declare namespace Express {
   interface Request {
-    // From AuthGuard
+    // From JwtAuthGuard (via JWT strategy validate())
     user?: {
       id: string;
-      sessionId: string;
+      email: string;
+      firstName: string | null;
+      lastName: string | null;
+      isSuperAdmin: boolean;
+      emailVerified: boolean;
     };
 
     // From TenantMiddleware
     tenantId?: string;
 
-    // From TenantMemberGuard
+    // From TenantAccessGuard
     tenantUser?: {
       id: string;
       tenantId: string;
       userId: string;
       role: string;
-      permissions: Record<string, unknown>;
+      permissions: unknown;
+    };
+
+    // From TierGuard / FeatureGuard
+    tenant?: {
+      id: string;
+      tier?: string;
+      businessName?: string;
+      enabledFeatures?: unknown;
     };
   }
 }

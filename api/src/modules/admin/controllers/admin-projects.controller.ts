@@ -11,7 +11,8 @@ import {
 } from "@nestjs/common";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { RolesGuard } from "@/common/guards/roles.guard";
-import { Roles, AgencyRole } from "@/common/decorators/roles.decorator";
+import { Roles } from "@/common/decorators/roles.decorator";
+import { TenantRole } from "@/common/permissions";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
 import { AdminProjectsService } from "../services/admin-projects.service";
 import {
@@ -21,7 +22,7 @@ import {
 
 @Controller("admin/projects")
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(AgencyRole.OWNER, AgencyRole.ADMIN)
+@Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
 export class AdminProjectsController {
   constructor(private readonly projectsService: AdminProjectsService) {}
 

@@ -8,24 +8,27 @@ import {
   Param,
   Query,
   UseGuards,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { PostsService } from "./posts.service";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { UpdatePostDto } from "./dto/update-post.dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
-import { RolesGuard } from "@/common/guards/roles.guard";
-import { Roles } from "@/common/decorators/roles.decorator";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
 
 @Controller("posts")
-@UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.BLOG_CREATE)
   create(
     @TenantId() tenantId: string,
     @CurrentUser() user: { id: string; sessionId: string },
@@ -35,13 +38,15 @@ export class PostsController {
   }
 
   @Get()
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.BLOG_VIEW)
   findAll(
     @TenantId() tenantId: string,
     @Query("status") status?: string,
     @Query("category") category?: string,
     @Query("tags") tags?: string,
     @Query("search") search?: string,
+    @Query("page", new DefaultValuePipe(1), ParseIntPipe) page?: number,
+    @Query("limit", new DefaultValuePipe(20), ParseIntPipe) limit?: number,
   ) {
     const tagsArray = tags ? tags.split(",") : undefined;
     return this.postsService.findAll(tenantId, {
@@ -49,35 +54,37 @@ export class PostsController {
       category,
       tags: tagsArray,
       search,
+      page,
+      limit,
     });
   }
 
   @Get("categories")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.BLOG_VIEW)
   getCategories(@TenantId() tenantId: string) {
     return this.postsService.getCategories(tenantId);
   }
 
   @Get("tags")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.BLOG_VIEW)
   getTags(@TenantId() tenantId: string) {
     return this.postsService.getTags(tenantId);
   }
 
   @Get(":id")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.BLOG_VIEW)
   findOne(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.postsService.findOne(tenantId, id);
   }
 
   @Get("slug/:slug")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.BLOG_VIEW)
   findBySlug(@TenantId() tenantId: string, @Param("slug") slug: string) {
     return this.postsService.findBySlug(tenantId, slug);
   }
 
   @Patch(":id")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.BLOG_EDIT)
   update(
     @TenantId() tenantId: string,
     @Param("id") id: string,
@@ -87,25 +94,25 @@ export class PostsController {
   }
 
   @Delete(":id")
-  @Roles("owner", "admin")
+  @Permissions(Permission.BLOG_DELETE)
   remove(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.postsService.remove(tenantId, id);
   }
 
   @Post(":id/publish")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.BLOG_PUBLISH)
   publish(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.postsService.publish(tenantId, id);
   }
 
   @Post(":id/unpublish")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.BLOG_PUBLISH)
   unpublish(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.postsService.unpublish(tenantId, id);
   }
 
   @Post(":id/duplicate")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.BLOG_CREATE)
   duplicate(
     @TenantId() tenantId: string,
     @CurrentUser() user: { id: string; sessionId: string },

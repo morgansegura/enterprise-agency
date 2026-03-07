@@ -1,12 +1,13 @@
 import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { RolesGuard } from "@/common/guards/roles.guard";
-import { Roles, AgencyRole } from "@/common/decorators/roles.decorator";
+import { Roles } from "@/common/decorators/roles.decorator";
+import { TenantRole } from "@/common/permissions";
 import { AdminTenantsService } from "../services/admin-tenants.service";
 
 @Controller("admin/tenants")
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(AgencyRole.OWNER, AgencyRole.ADMIN)
+@Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
 export class AdminTenantsController {
   constructor(private readonly tenantsService: AdminTenantsService) {}
 

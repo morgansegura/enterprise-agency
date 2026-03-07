@@ -8,6 +8,8 @@ import {
   Param,
   Query,
   UseGuards,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { TenantTier } from "@prisma";
 import { PagesService } from "./pages.service";
@@ -15,10 +17,11 @@ import { PageVersionService } from "./services/page-version.service";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
-import { RolesGuard } from "@/common/guards/roles.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
+import { PermissionGuard } from "@/common/guards/permission.guard";
 import { TierGuard } from "@/common/guards/tier.guard";
-import { Roles } from "@/common/decorators/roles.decorator";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { RequireTier } from "@/common/decorators/tier.decorator";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
@@ -43,7 +46,7 @@ interface TenantInfo {
  * - BUILDER: Full access including create, delete, duplicate, and structural changes
  */
 @Controller("pages")
-@UseGuards(JwtAuthGuard, TenantGuard, RolesGuard, TierGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, TierGuard, PermissionGuard)
 export class PagesController {
   constructor(
     private readonly pagesService: PagesService,
@@ -55,7 +58,7 @@ export class PagesController {
    * Requires BUILDER tier - Content Editors cannot create new pages
    */
   @Post()
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_CREATE)
   @RequireTier("BUILDER")
   create(
     @TenantId() tenantId: string,
@@ -70,14 +73,22 @@ export class PagesController {
    * Available to both tiers
    */
   @Get()
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.PAGES_VIEW)
   findAll(
     @TenantId() tenantId: string,
     @Query("status") status?: string,
     @Query("template") template?: string,
     @Query("search") search?: string,
+    @Query("page", new DefaultValuePipe(1), ParseIntPipe) page?: number,
+    @Query("limit", new DefaultValuePipe(20), ParseIntPipe) limit?: number,
   ) {
-    return this.pagesService.findAll(tenantId, { status, template, search });
+    return this.pagesService.findAll(tenantId, {
+      status,
+      template,
+      search,
+      page,
+      limit,
+    });
   }
 
   /**
@@ -85,7 +96,7 @@ export class PagesController {
    * Available to both tiers
    */
   @Get(":id")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.PAGES_VIEW)
   findOne(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.pagesService.findOne(tenantId, id);
   }
@@ -95,7 +106,7 @@ export class PagesController {
    * Available to both tiers
    */
   @Get("slug/:slug")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.PAGES_VIEW)
   findBySlug(@TenantId() tenantId: string, @Param("slug") slug: string) {
     return this.pagesService.findBySlug(tenantId, slug);
   }
@@ -106,7 +117,7 @@ export class PagesController {
    * The service layer validates structural changes based on tier
    */
   @Patch(":id")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_EDIT)
   update(
     @TenantId() tenantId: string,
     @Param("id") id: string,
@@ -121,7 +132,7 @@ export class PagesController {
    * Requires BUILDER tier - Content Editors cannot delete pages
    */
   @Delete(":id")
-  @Roles("owner", "admin")
+  @Permissions(Permission.PAGES_DELETE)
   @RequireTier("BUILDER")
   remove(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.pagesService.remove(tenantId, id);
@@ -132,7 +143,7 @@ export class PagesController {
    * Available to both tiers - publishing doesn't change structure
    */
   @Post(":id/publish")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_PUBLISH)
   publish(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.pagesService.publish(tenantId, id);
   }
@@ -142,7 +153,7 @@ export class PagesController {
    * Available to both tiers - unpublishing doesn't change structure
    */
   @Post(":id/unpublish")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_PUBLISH)
   unpublish(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.pagesService.unpublish(tenantId, id);
   }
@@ -152,7 +163,7 @@ export class PagesController {
    * Requires BUILDER tier - Content Editors cannot create new pages
    */
   @Post(":id/duplicate")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_CREATE)
   @RequireTier("BUILDER")
   duplicate(
     @TenantId() tenantId: string,
@@ -170,7 +181,7 @@ export class PagesController {
    * List all versions of a page
    */
   @Get(":id/versions")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_VIEW)
   listVersions(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.pageVersionService.listVersions(tenantId, id);
   }
@@ -179,7 +190,7 @@ export class PagesController {
    * Get a specific version
    */
   @Get(":id/versions/:versionId")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_VIEW)
   getVersion(
     @TenantId() tenantId: string,
     @Param("id") id: string,
@@ -192,7 +203,7 @@ export class PagesController {
    * Restore a page to a previous version
    */
   @Post(":id/versions/:versionId/restore")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_EDIT)
   restoreVersion(
     @TenantId() tenantId: string,
     @CurrentUser() user: { id: string },
@@ -211,7 +222,7 @@ export class PagesController {
    * Compare two versions
    */
   @Get(":id/versions/compare")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PAGES_VIEW)
   compareVersions(
     @TenantId() tenantId: string,
     @Param("id") id: string,

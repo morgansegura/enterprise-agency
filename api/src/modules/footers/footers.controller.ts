@@ -16,7 +16,10 @@ import {
   ApiBearerAuth,
 } from "@nestjs/swagger";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 import { FootersService } from "./footers.service";
 import { CreateFooterDto } from "./dto/create-footer.dto";
@@ -25,11 +28,12 @@ import { UpdateFooterDto } from "./dto/update-footer.dto";
 @ApiTags("Footers")
 @ApiBearerAuth()
 @Controller("tenants/:tenantId/footers")
-@UseGuards(JwtAuthGuard, TenantGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
 export class FootersController {
   constructor(private readonly footersService: FootersService) {}
 
   @Post()
+  @Permissions(Permission.FOOTERS_CREATE)
   @ApiOperation({ summary: "Create a new footer" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 201, description: "Footer created successfully" })
@@ -39,6 +43,7 @@ export class FootersController {
   }
 
   @Get()
+  @Permissions(Permission.FOOTERS_VIEW)
   @ApiOperation({ summary: "List all footers for tenant" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 200, description: "Footers retrieved successfully" })
@@ -47,6 +52,7 @@ export class FootersController {
   }
 
   @Get("default")
+  @Permissions(Permission.FOOTERS_VIEW)
   @ApiOperation({ summary: "Get the default footer for tenant" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 200, description: "Default footer retrieved" })
@@ -55,6 +61,7 @@ export class FootersController {
   }
 
   @Get(":id")
+  @Permissions(Permission.FOOTERS_VIEW)
   @ApiOperation({ summary: "Get a footer by ID" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Footer ID" })
@@ -65,6 +72,7 @@ export class FootersController {
   }
 
   @Get("slug/:slug")
+  @Permissions(Permission.FOOTERS_VIEW)
   @ApiOperation({ summary: "Get a footer by slug" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "slug", description: "Footer slug" })
@@ -75,6 +83,7 @@ export class FootersController {
   }
 
   @Put(":id")
+  @Permissions(Permission.FOOTERS_EDIT)
   @ApiOperation({ summary: "Update a footer" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Footer ID" })
@@ -90,6 +99,7 @@ export class FootersController {
   }
 
   @Delete(":id")
+  @Permissions(Permission.FOOTERS_DELETE)
   @ApiOperation({ summary: "Delete a footer" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Footer ID" })
@@ -100,6 +110,7 @@ export class FootersController {
   }
 
   @Post(":id/duplicate")
+  @Permissions(Permission.FOOTERS_CREATE)
   @ApiOperation({ summary: "Duplicate a footer" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Footer ID to duplicate" })
@@ -114,6 +125,7 @@ export class FootersController {
   }
 
   @Post(":id/save-to-library")
+  @Permissions(Permission.LIBRARY_CREATE)
   @ApiOperation({ summary: "Save footer to component library" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Footer ID" })

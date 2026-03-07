@@ -8,6 +8,7 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { PrismaService } from "@/common/services/prisma.service";
 import { EmailService } from "@/common/services/email.service";
+import { AuditLogService } from "@/common/services/audit-log.service";
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { EmailService } from "@/common/services/email.service";
     JwtAuthGuard,
     PrismaService,
     EmailService,
+    AuditLogService,
   ],
   exports: [AuthService, JwtAuthGuard, PassportModule],
 })

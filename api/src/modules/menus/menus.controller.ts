@@ -16,7 +16,10 @@ import {
   ApiBearerAuth,
 } from "@nestjs/swagger";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 import { MenusService } from "./menus.service";
 import { CreateMenuDto, UpdateMenuDto } from "./dto";
@@ -24,11 +27,12 @@ import { CreateMenuDto, UpdateMenuDto } from "./dto";
 @ApiTags("Menus")
 @ApiBearerAuth()
 @Controller("tenants/:tenantId/menus")
-@UseGuards(JwtAuthGuard, TenantGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
 export class MenusController {
   constructor(private readonly menusService: MenusService) {}
 
   @Post()
+  @Permissions(Permission.MENUS_CREATE)
   @ApiOperation({ summary: "Create a new menu" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 201, description: "Menu created successfully" })
@@ -38,6 +42,7 @@ export class MenusController {
   }
 
   @Get()
+  @Permissions(Permission.MENUS_VIEW)
   @ApiOperation({ summary: "List all menus for tenant" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 200, description: "Menus retrieved successfully" })
@@ -46,6 +51,7 @@ export class MenusController {
   }
 
   @Get("default")
+  @Permissions(Permission.MENUS_VIEW)
   @ApiOperation({ summary: "Get the default menu for tenant" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiResponse({ status: 200, description: "Default menu retrieved" })
@@ -54,6 +60,7 @@ export class MenusController {
   }
 
   @Get(":id")
+  @Permissions(Permission.MENUS_VIEW)
   @ApiOperation({ summary: "Get a menu by ID" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Menu ID" })
@@ -64,6 +71,7 @@ export class MenusController {
   }
 
   @Get("slug/:slug")
+  @Permissions(Permission.MENUS_VIEW)
   @ApiOperation({ summary: "Get a menu by slug" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "slug", description: "Menu slug" })
@@ -74,6 +82,7 @@ export class MenusController {
   }
 
   @Put(":id")
+  @Permissions(Permission.MENUS_EDIT)
   @ApiOperation({ summary: "Update a menu" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Menu ID" })
@@ -89,6 +98,7 @@ export class MenusController {
   }
 
   @Delete(":id")
+  @Permissions(Permission.MENUS_DELETE)
   @ApiOperation({ summary: "Delete a menu" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Menu ID" })
@@ -99,6 +109,7 @@ export class MenusController {
   }
 
   @Post(":id/duplicate")
+  @Permissions(Permission.MENUS_CREATE)
   @ApiOperation({ summary: "Duplicate a menu" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Menu ID to duplicate" })
@@ -113,6 +124,7 @@ export class MenusController {
   }
 
   @Post(":id/save-to-library")
+  @Permissions(Permission.LIBRARY_CREATE)
   @ApiOperation({ summary: "Save menu to component library" })
   @ApiParam({ name: "tenantId", description: "Tenant ID" })
   @ApiParam({ name: "id", description: "Menu ID" })

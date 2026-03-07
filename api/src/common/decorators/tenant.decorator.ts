@@ -6,3 +6,6 @@ export const TenantId = createParamDecorator(
     return request.tenantId;
   },
 );
+
+// Alias for TenantId - used in media controller
+export const CurrentTenant = TenantId;

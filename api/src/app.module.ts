@@ -11,6 +11,7 @@ import { TenantsModule } from "./modules/tenants/tenants.module";
 import { PagesModule } from "./modules/pages/pages.module";
 import { PostsModule } from "./modules/posts/posts.module";
 import { AssetsModule } from "./modules/assets/assets.module";
+import { MediaModule } from "./modules/media/media.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { SiteConfigModule } from "./modules/site-config/site-config.module";
 import { AdminModule } from "./modules/admin/admin.module";
@@ -51,6 +52,7 @@ import { FootersModule } from "./modules/footers/footers.module";
     PagesModule,
     PostsModule,
     AssetsModule,
+    MediaModule,
     // E-Commerce modules
     ProductsModule,
     OrdersModule,

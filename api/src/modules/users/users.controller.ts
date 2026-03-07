@@ -2,6 +2,10 @@ import { Controller, Get, Patch, Body, Param, UseGuards } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 
@@ -24,6 +28,8 @@ export class UsersController {
   }
 
   @Get("tenant")
+  @UseGuards(TenantAccessGuard, PermissionGuard)
+  @Permissions(Permission.USERS_VIEW)
   async getTenantUsers(@TenantId() tenantId: string) {
     if (!tenantId) {
       return [];
@@ -32,6 +38,8 @@ export class UsersController {
   }
 
   @Get(":id")
+  @UseGuards(TenantAccessGuard, PermissionGuard)
+  @Permissions(Permission.USERS_VIEW)
   async getUser(@Param("id") id: string) {
     return this.usersService.findById(id);
   }

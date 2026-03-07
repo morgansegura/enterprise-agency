@@ -19,6 +19,7 @@ import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { RolesGuard } from "@/common/guards/roles.guard";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
 import { Roles } from "@/common/decorators/roles.decorator";
+import { TenantRole } from "@/common/permissions";
 
 @Controller("tenants")
 @UseGuards(JwtAuthGuard)
@@ -97,7 +98,7 @@ export class TenantsController {
    */
   @Post(":id/set-primary")
   @UseGuards(RolesGuard)
-  @Roles("owner")
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
   async setPrimaryTenant(@Param("id") id: string) {
     return this.tenantsService.setPrimary(id);
   }
@@ -123,7 +124,7 @@ export class TenantsController {
 
   @Patch(":id")
   @UseGuards(RolesGuard)
-  @Roles("owner", "admin")
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
   async updateTenant(
     @Param("id") id: string,
     @Body() updateData: UpdateTenantDto,
@@ -133,7 +134,7 @@ export class TenantsController {
 
   @Post(":id/domains")
   @UseGuards(RolesGuard)
-  @Roles("owner", "admin")
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
   async addDomain(
     @Param("id") tenantId: string,
     @Body() domainData: CreateDomainDto,
@@ -143,7 +144,7 @@ export class TenantsController {
 
   @Delete(":id/domains/:domainId")
   @UseGuards(RolesGuard)
-  @Roles("owner", "admin")
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
   async removeDomain(
     @Param("id") tenantId: string,
     @Param("domainId") domainId: string,
@@ -166,7 +167,7 @@ export class TenantsController {
    */
   @Post(":id/users")
   @UseGuards(RolesGuard)
-  @Roles("owner", "admin")
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
   async addUserToTenant(
     @Param("id") tenantId: string,
     @Body() data: { userId: string; role?: string },
@@ -184,7 +185,7 @@ export class TenantsController {
    */
   @Patch(":id/users/:userId")
   @UseGuards(RolesGuard)
-  @Roles("owner", "admin")
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
   async updateTenantUser(
     @Param("id") tenantId: string,
     @Param("userId") userId: string,
@@ -199,7 +200,7 @@ export class TenantsController {
    */
   @Delete(":id/users/:userId")
   @UseGuards(RolesGuard)
-  @Roles("owner", "admin")
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
   async removeUserFromTenant(
     @Param("id") tenantId: string,
     @Param("userId") userId: string,

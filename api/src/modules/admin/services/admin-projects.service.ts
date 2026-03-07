@@ -88,15 +88,12 @@ export class AdminProjectsService {
     });
 
     await this.auditLog.log({
+      tenantId: data.tenantId,
+      userId: createdBy,
       action: AuditAction.PROJECT_ASSIGNED,
-      performedBy: createdBy,
-      targetType: "project",
-      targetId: assignment.id,
-      metadata: {
-        userId: data.userId,
-        tenantId: data.tenantId,
-        role: data.role,
-      },
+      resourceType: "project",
+      resourceId: assignment.id,
+      metadata: { assignedUserId: data.userId, role: data.role },
     });
 
     return assignment;
@@ -123,11 +120,11 @@ export class AdminProjectsService {
     });
 
     await this.auditLog.log({
+      userId: updatedBy,
       action: AuditAction.PERMISSION_CHANGED,
-      performedBy: updatedBy,
-      targetType: "project",
-      targetId: id,
-      metadata: { changes: data },
+      resourceType: "project",
+      resourceId: id,
+      changes: data as Record<string, unknown>,
     });
 
     return updated;
@@ -141,12 +138,13 @@ export class AdminProjectsService {
     });
 
     await this.auditLog.log({
+      tenantId: assignment.tenantId,
+      userId: deletedBy,
       action: AuditAction.PROJECT_UNASSIGNED,
-      performedBy: deletedBy,
-      targetType: "project",
-      targetId: id,
+      resourceType: "project",
+      resourceId: id,
       metadata: {
-        userId: assignment.userId,
+        assignedUserId: assignment.userId,
         tenantId: assignment.tenantId,
       },
     });

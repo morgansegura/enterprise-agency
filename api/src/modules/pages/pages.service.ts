@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import { Prisma, TenantTier } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import { PaginatedResponse } from "@/common/dto/response.dto";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";
 import { StructureValidationService } from "./services/structure-validation.service";
@@ -111,8 +112,12 @@ export class PagesService {
       status?: string;
       template?: string;
       search?: string;
+      page?: number;
+      limit?: number;
     },
   ) {
+    const page = filters?.page ?? 1;
+    const limit = filters?.limit ?? 20;
     const where: Record<string, unknown> = { tenantId };
 
     if (filters?.status) {
@@ -130,26 +135,31 @@ export class PagesService {
       ];
     }
 
-    const pages = await this.prisma.page.findMany({
-      where,
-      include: {
-        author: {
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
+    const [data, total] = await Promise.all([
+      this.prisma.page.findMany({
+        where,
+        include: {
+          author: {
+            select: {
+              id: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+            },
           },
+          header: true,
+          footer: true,
         },
-        header: true,
-        footer: true,
-      },
-      orderBy: {
-        updatedAt: "desc",
-      },
-    });
+        orderBy: {
+          updatedAt: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.page.count({ where }),
+    ]);
 
-    return pages;
+    return new PaginatedResponse(data, total, page, limit);
   }
 
   async findOne(tenantId: string, id: string) {

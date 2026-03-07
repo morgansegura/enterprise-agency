@@ -7,6 +7,7 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import { PaginatedResponse } from "@/common/dto/response.dto";
 import {
   CreateProductCategoryDto,
   UpdateProductCategoryDto,
@@ -290,10 +291,12 @@ export class ProductsService {
       categoryId?: string;
       featured?: boolean;
       search?: string;
+      page?: number;
       limit?: number;
-      offset?: number;
     },
   ) {
+    const page = filters?.page ?? 1;
+    const limit = filters?.limit ?? 20;
     const where: Prisma.ProductWhereInput = { tenantId };
 
     if (filters?.status) {
@@ -316,7 +319,7 @@ export class ProductsService {
       ];
     }
 
-    const [products, total] = await Promise.all([
+    const [data, total] = await Promise.all([
       this.prisma.product.findMany({
         where,
         include: {
@@ -326,13 +329,13 @@ export class ProductsService {
           },
         },
         orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-        take: filters?.limit,
-        skip: filters?.offset,
+        skip: (page - 1) * limit,
+        take: limit,
       }),
       this.prisma.product.count({ where }),
     ]);
 
-    return { products, total };
+    return new PaginatedResponse(data, total, page, limit);
   }
 
   async findOneProduct(tenantId: string, id: string) {

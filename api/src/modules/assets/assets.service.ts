@@ -4,6 +4,7 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { PrismaService } from "@/common/services/prisma.service";
+import { PaginatedResponse } from "@/common/dto/response.dto";
 import { StorageService } from "@/common/services/storage.service";
 import { UpdateAssetDto } from "./dto/update-asset.dto";
 import * as sharp from "sharp";
@@ -99,8 +100,15 @@ export class AssetsService {
 
   async list(
     tenantId: string,
-    filters?: { fileType?: string; usageContext?: string },
+    filters?: {
+      fileType?: string;
+      usageContext?: string;
+      page?: number;
+      limit?: number;
+    },
   ) {
+    const page = filters?.page ?? 1;
+    const limit = filters?.limit ?? 20;
     const where: {
       tenantId: string;
       fileType?: string;
@@ -115,28 +123,35 @@ export class AssetsService {
       where.usageContext = filters.usageContext;
     }
 
-    const assets = await this.prisma.asset.findMany({
-      where,
-      include: {
-        uploader: {
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
+    const [assets, total] = await Promise.all([
+      this.prisma.asset.findMany({
+        where,
+        include: {
+          uploader: {
+            select: {
+              id: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+            },
           },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.asset.count({ where }),
+    ]);
 
     // Convert BigInt to number for JSON serialization
-    return assets.map((asset) => ({
+    const data = assets.map((asset) => ({
       ...asset,
       sizeBytes: asset.sizeBytes ? Number(asset.sizeBytes) : null,
     }));
+
+    return new PaginatedResponse(data, total, page, limit);
   }
 
   async findById(id: string, tenantId: string) {

@@ -2,207 +2,192 @@ import {
   Controller,
   Post,
   Get,
+  Patch,
   Body,
   Query,
   UseGuards,
   Res,
   Req,
+  Ip,
   UnauthorizedException,
-} from "@nestjs/common";
-import { Response, Request } from "express";
-import { Throttle } from "@nestjs/throttler";
-import { AuthService } from "./auth.service";
+} from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
+import { Response, Request } from 'express';
+import { AuthService } from './auth.service';
 import {
   RegisterDto,
   LoginDto,
   ForgotPasswordDto,
   ResetPasswordDto,
   ResendVerificationDto,
-} from "./dto";
-import { JwtAuthGuard } from "./guards/jwt-auth.guard";
-import { Public, CurrentUser } from "./decorators";
+  RefreshTokenDto,
+} from './dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Public, CurrentUser } from './decorators';
 
-@Controller("auth")
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  path: '/',
+};
+
+const ACCESS_TOKEN_MAX_AGE = 15 * 60 * 1000;
+const REFRESH_TOKEN_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
+
+@Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  /**
-   * Register a new user
-   * POST /api/auth/register
-   * Rate limit: 3 attempts per 15 minutes
-   */
   @Public()
-  @Throttle({ default: { limit: 3, ttl: 900000 } }) // 3 per 15 min
-  @Post("register")
+  @Throttle({ default: { limit: 3, ttl: 900000 } })
+  @Post('register')
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
 
-  /**
-   * Login with email and password
-   * POST /api/auth/login
-   * Rate limit: 5 attempts per minute (brute force protection)
-   */
   @Public()
-  @Throttle({ default: { limit: 5, ttl: 60000 } }) // 5 per minute
-  @Post("login")
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
+  @Post('portal/register')
+  async portalRegister(
+    @Body() dto: RegisterDto,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const tenantId = (req as Request & { tenantId?: string }).tenantId;
+    if (!tenantId) throw new UnauthorizedException('Tenant context required');
+
+    const result = await this.authService.registerPortalCustomer(dto, tenantId, {
+      tenantId,
+      ipAddress: this.getIp(req),
+      userAgent: req.headers['user-agent'],
+    });
+
+    this.setAuthCookies(res, result.tokens.accessToken, result.tokens.refreshToken);
+    return { user: result.user };
+  }
+
+  @Public()
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  @Post('login')
   async login(
     @Body() dto: LoginDto,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    // Extract IP address (handle proxies)
-    const ipAddress =
-      (req.headers["x-forwarded-for"] as string)?.split(",")[0] ||
-      req.socket.remoteAddress ||
-      "unknown";
+    const result = await this.authService.login(dto, {
+      tenantId: (req as Request & { tenantId?: string }).tenantId,
+      ipAddress: this.getIp(req),
+      userAgent: req.headers['user-agent'],
+    });
 
-    const result = await this.authService.login(dto, ipAddress);
-
-    // Set HTTP-only cookies for tokens
-    this.setAuthCookies(
-      res,
-      result.tokens.accessToken,
-      result.tokens.refreshToken,
-    );
-
-    // Return user data only (no tokens in response body)
-    return {
-      user: result.user,
-      message: "Login successful",
-    };
+    this.setAuthCookies(res, result.accessToken, result.refreshToken);
+    return { user: result.user };
   }
 
-  /**
-   * Refresh access token
-   * POST /api/auth/refresh
-   */
   @Public()
-  @Post("refresh")
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @Post('refresh')
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
+    @Body() dto: RefreshTokenDto,
   ) {
-    const refreshToken = req.cookies["refreshToken"];
+    const refreshToken = req.cookies?.refresh_token || dto.refreshToken;
 
     if (!refreshToken) {
-      throw new UnauthorizedException("No refresh token found");
+      throw new UnauthorizedException('No refresh token provided');
     }
 
-    try {
-      const tokens = await this.authService.refreshTokens(refreshToken);
+    const result = await this.authService.refreshAccessToken(refreshToken);
 
-      // Set new HTTP-only cookies
-      this.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
-
-      return {
-        message: "Token refreshed successfully",
-      };
-    } catch (error) {
-      // Clear invalid cookies
-      res.clearCookie("accessToken", { path: "/" });
-      res.clearCookie("refreshToken", { path: "/" });
-      throw new UnauthorizedException("Invalid or expired refresh token");
-    }
+    this.setAuthCookies(res, result.accessToken, result.refreshToken);
+    return { message: 'Token refreshed successfully' };
   }
 
-  /**
-   * Helper to set secure HTTP-only cookies
-   */
-  private setAuthCookies(
-    res: Response,
-    accessToken: string,
-    refreshToken: string,
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  async logout(
+    @CurrentUser() user: { id: string },
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
   ) {
-    const isProduction = process.env.NODE_ENV === "production";
+    const refreshToken = req.cookies?.refresh_token;
+    await this.authService.logout(user.id, refreshToken);
 
-    // Access token - 15 minutes
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "strict" : "lax", // 'lax' for development (cross-port)
-      maxAge: 15 * 60 * 1000, // 15 minutes
-      path: "/",
-    });
-
-    // Refresh token - 7 days
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "strict" : "lax", // 'lax' for development (cross-port)
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      path: "/",
-    });
+    res.clearCookie('access_token', COOKIE_OPTIONS);
+    res.clearCookie('refresh_token', COOKIE_OPTIONS);
+    return { message: 'Logged out successfully' };
   }
 
-  /**
-   * Verify email with token
-   * GET /api/auth/verify-email?token=xxx
-   */
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async me(@CurrentUser() user: { id: string }) {
+    return { user: await this.authService.getProfile(user.id) };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('profile')
+  async updateProfile(@CurrentUser() user: { id: string }, @Body() dto: UpdateProfileDto) {
+    return this.authService.updateProfile(user.id, dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  @Post('change-password')
+  async changePassword(@CurrentUser() user: { id: string }, @Body() dto: ChangePasswordDto) {
+    return this.authService.changePassword(user.id, dto.currentPassword, dto.newPassword);
+  }
+
   @Public()
-  @Get("verify-email")
-  async verifyEmail(@Query("token") token: string) {
+  @Get('verify-email')
+  async verifyEmail(@Query('token') token: string) {
     return this.authService.verifyEmail(token);
   }
 
-  /**
-   * Resend verification email
-   * POST /api/auth/resend-verification
-   */
   @Public()
-  @Post("resend-verification")
+  @Post('resend-verification')
   async resendVerification(@Body() dto: ResendVerificationDto) {
     return this.authService.resendVerificationEmail(dto.email);
   }
 
-  /**
-   * Forgot password - send reset email
-   * POST /api/auth/forgot-password
-   * Rate limit: 3 attempts per 5 minutes
-   */
   @Public()
-  @Throttle({ default: { limit: 3, ttl: 300000 } }) // 3 per 5 min
-  @Post("forgot-password")
-  async forgotPassword(@Body() dto: ForgotPasswordDto) {
-    return this.authService.forgotPassword(dto);
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
+  @Post('forgot-password')
+  async forgotPassword(@Body() dto: ForgotPasswordDto, @Ip() ip: string, @Req() req: Request) {
+    return this.authService.forgotPassword(dto.email, ip, req.headers['user-agent']);
   }
 
-  /**
-   * Reset password with token
-   * POST /api/auth/reset-password
-   * Rate limit: 5 attempts per 15 minutes
-   */
   @Public()
-  @Throttle({ default: { limit: 5, ttl: 900000 } }) // 5 per 15 min
-  @Post("reset-password")
-  async resetPassword(@Body() dto: ResetPasswordDto) {
-    return this.authService.resetPassword(dto);
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @Post('verify-reset-token')
+  async verifyResetToken(@Body() dto: { token: string }) {
+    return this.authService.verifyResetToken(dto.token);
   }
 
-  /**
-   * Logout (protected route)
-   * POST /api/auth/logout
-   */
-  @UseGuards(JwtAuthGuard)
-  @Post("logout")
-  async logout(
-    @CurrentUser("id") userId: string,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    // Clear HTTP-only cookies
-    res.clearCookie("accessToken", { path: "/" });
-    res.clearCookie("refreshToken", { path: "/" });
-
-    return this.authService.logout(userId);
+  @Public()
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
+  @Post('reset-password')
+  async resetPassword(@Body() dto: ResetPasswordDto, @Ip() ip: string) {
+    return this.authService.resetPassword(dto.token, dto.password, ip);
   }
 
-  /**
-   * Get current authenticated user
-   * GET /api/auth/me
-   */
-  @UseGuards(JwtAuthGuard)
-  @Get("me")
-  async getCurrentUser(@CurrentUser("id") userId: string) {
-    return this.authService.getCurrentUser(userId);
+  // ---------------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------------
+
+  private setAuthCookies(res: Response, accessToken: string, refreshToken: string) {
+    res.cookie('access_token', accessToken, { ...COOKIE_OPTIONS, maxAge: ACCESS_TOKEN_MAX_AGE });
+    res.cookie('refresh_token', refreshToken, { ...COOKIE_OPTIONS, maxAge: REFRESH_TOKEN_MAX_AGE });
+  }
+
+  private getIp(req: Request): string {
+    return (
+      (req.headers['x-forwarded-for'] as string)?.split(',')[0] ||
+      req.socket.remoteAddress ||
+      'unknown'
+    );
   }
 }

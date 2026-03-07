@@ -21,10 +21,11 @@ import {
   UpdateProductVariantDto,
 } from "./dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
 import { FeatureGuard } from "@/common/guards/feature.guard";
-import { RolesGuard } from "@/common/guards/roles.guard";
-import { Roles } from "@/common/decorators/roles.decorator";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { RequireFeature } from "@/common/decorators/feature.decorator";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 
@@ -36,7 +37,7 @@ import { TenantId } from "@/common/decorators/tenant.decorator";
  * Requires the 'shop' feature to be enabled for the tenant.
  */
 @Controller("products")
-@UseGuards(JwtAuthGuard, TenantGuard, FeatureGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, FeatureGuard, PermissionGuard)
 @RequireFeature("shop")
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -46,7 +47,7 @@ export class ProductsController {
   // ============================================================================
 
   @Post("categories")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.CATEGORIES_CREATE)
   createCategory(
     @TenantId() tenantId: string,
     @Body() createDto: CreateProductCategoryDto,
@@ -55,7 +56,7 @@ export class ProductsController {
   }
 
   @Get("categories")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.CATEGORIES_VIEW)
   findAllCategories(
     @TenantId() tenantId: string,
     @Query("parentId") parentId?: string,
@@ -68,13 +69,13 @@ export class ProductsController {
   }
 
   @Get("categories/:id")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.CATEGORIES_VIEW)
   findOneCategory(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.productsService.findOneCategory(tenantId, id);
   }
 
   @Patch("categories/:id")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.CATEGORIES_EDIT)
   updateCategory(
     @TenantId() tenantId: string,
     @Param("id") id: string,
@@ -84,7 +85,7 @@ export class ProductsController {
   }
 
   @Delete("categories/:id")
-  @Roles("owner", "admin")
+  @Permissions(Permission.CATEGORIES_DELETE)
   removeCategory(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.productsService.removeCategory(tenantId, id);
   }
@@ -94,7 +95,7 @@ export class ProductsController {
   // ============================================================================
 
   @Post()
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PRODUCTS_CREATE)
   createProduct(
     @TenantId() tenantId: string,
     @Body() createDto: CreateProductDto,
@@ -103,46 +104,46 @@ export class ProductsController {
   }
 
   @Get()
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.PRODUCTS_VIEW)
   findAllProducts(
     @TenantId() tenantId: string,
     @Query("status") status?: string,
     @Query("categoryId") categoryId?: string,
     @Query("featured", new DefaultValuePipe(undefined)) featured?: string,
     @Query("search") search?: string,
-    @Query("limit", new DefaultValuePipe(50), ParseIntPipe) limit?: number,
-    @Query("offset", new DefaultValuePipe(0), ParseIntPipe) offset?: number,
+    @Query("page", new DefaultValuePipe(1), ParseIntPipe) page?: number,
+    @Query("limit", new DefaultValuePipe(20), ParseIntPipe) limit?: number,
   ) {
     return this.productsService.findAllProducts(tenantId, {
       status,
       categoryId,
       featured: featured === undefined ? undefined : featured === "true",
       search,
+      page,
       limit,
-      offset,
     });
   }
 
   @Get("low-stock")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PRODUCTS_VIEW)
   getLowStockProducts(@TenantId() tenantId: string) {
     return this.productsService.getLowStockProducts(tenantId);
   }
 
   @Get(":id")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.PRODUCTS_VIEW)
   findOneProduct(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.productsService.findOneProduct(tenantId, id);
   }
 
   @Get("slug/:slug")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.PRODUCTS_VIEW)
   findProductBySlug(@TenantId() tenantId: string, @Param("slug") slug: string) {
     return this.productsService.findProductBySlug(tenantId, slug);
   }
 
   @Patch(":id")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PRODUCTS_EDIT)
   updateProduct(
     @TenantId() tenantId: string,
     @Param("id") id: string,
@@ -152,25 +153,25 @@ export class ProductsController {
   }
 
   @Delete(":id")
-  @Roles("owner", "admin")
+  @Permissions(Permission.PRODUCTS_DELETE)
   removeProduct(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.productsService.removeProduct(tenantId, id);
   }
 
   @Post(":id/archive")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PRODUCTS_EDIT)
   archiveProduct(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.productsService.archiveProduct(tenantId, id);
   }
 
   @Post(":id/duplicate")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PRODUCTS_CREATE)
   duplicateProduct(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.productsService.duplicateProduct(tenantId, id);
   }
 
   @Post(":id/inventory")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PRODUCTS_EDIT)
   adjustInventory(
     @TenantId() tenantId: string,
     @Param("id") id: string,
@@ -190,7 +191,7 @@ export class ProductsController {
   // ============================================================================
 
   @Post(":productId/variants")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PRODUCTS_CREATE)
   createVariant(
     @TenantId() tenantId: string,
     @Param("productId") productId: string,
@@ -203,7 +204,7 @@ export class ProductsController {
   }
 
   @Get(":productId/variants")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.PRODUCTS_VIEW)
   findAllVariants(
     @TenantId() tenantId: string,
     @Param("productId") productId: string,
@@ -212,7 +213,7 @@ export class ProductsController {
   }
 
   @Get(":productId/variants/:variantId")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.PRODUCTS_VIEW)
   findOneVariant(
     @TenantId() tenantId: string,
     @Param("productId") productId: string,
@@ -222,7 +223,7 @@ export class ProductsController {
   }
 
   @Patch(":productId/variants/:variantId")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.PRODUCTS_EDIT)
   updateVariant(
     @TenantId() tenantId: string,
     @Param("productId") productId: string,
@@ -238,7 +239,7 @@ export class ProductsController {
   }
 
   @Delete(":productId/variants/:variantId")
-  @Roles("owner", "admin")
+  @Permissions(Permission.PRODUCTS_DELETE)
   removeVariant(
     @TenantId() tenantId: string,
     @Param("productId") productId: string,

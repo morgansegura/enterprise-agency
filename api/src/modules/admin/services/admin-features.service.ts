@@ -37,10 +37,11 @@ export class AdminFeaturesService {
     });
 
     await this.auditLog.log({
+      tenantId,
+      userId: updatedBy,
       action: AuditAction.FEATURE_ENABLED,
-      performedBy: updatedBy,
-      targetType: "tenant",
-      targetId: tenantId,
+      resourceType: "tenant",
+      resourceId: tenantId,
       metadata: { features: data.enabledFeatures },
     });
 
@@ -73,13 +74,14 @@ export class AdminFeaturesService {
     });
 
     await this.auditLog.log({
+      tenantId,
+      userId: updatedBy,
       action: data.enabled
         ? AuditAction.FEATURE_ENABLED
         : AuditAction.FEATURE_DISABLED,
-      performedBy: updatedBy,
-      targetType: "feature",
-      targetId: data.featureKey,
-      metadata: { tenantId, enabled: data.enabled },
+      resourceType: "feature",
+      resourceId: data.featureKey,
+      metadata: { enabled: data.enabled },
     });
 
     return updated.enabledFeatures;

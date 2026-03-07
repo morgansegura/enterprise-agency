@@ -8,9 +8,13 @@ import {
   UpdateLogosConfigDto,
 } from "./dto/site-config.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 
 @Controller("tenants/:tenantId/config")
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
 export class SiteConfigController {
   constructor(private readonly siteConfigService: SiteConfigService) {}
 
@@ -19,6 +23,7 @@ export class SiteConfigController {
    * Get all site configuration
    */
   @Get()
+  @Permissions(Permission.SETTINGS_VIEW)
   async getSiteConfig(@Param("tenantId") tenantId: string) {
     return this.siteConfigService.getSiteConfig(tenantId);
   }
@@ -28,6 +33,7 @@ export class SiteConfigController {
    * Update entire site configuration
    */
   @Put()
+  @Permissions(Permission.SETTINGS_EDIT)
   async updateSiteConfig(
     @Param("tenantId") tenantId: string,
     @Body() data: SiteConfigDto,
@@ -40,6 +46,7 @@ export class SiteConfigController {
    * Get header configuration
    */
   @Get("header")
+  @Permissions(Permission.SETTINGS_VIEW)
   async getHeaderConfig(@Param("tenantId") tenantId: string) {
     return this.siteConfigService.getHeaderConfig(tenantId);
   }
@@ -49,6 +56,7 @@ export class SiteConfigController {
    * Update header configuration
    */
   @Put("header")
+  @Permissions(Permission.SETTINGS_EDIT)
   async updateHeaderConfig(
     @Param("tenantId") tenantId: string,
     @Body() data: UpdateHeaderConfigDto,
@@ -61,6 +69,7 @@ export class SiteConfigController {
    * Get footer configuration
    */
   @Get("footer")
+  @Permissions(Permission.SETTINGS_VIEW)
   async getFooterConfig(@Param("tenantId") tenantId: string) {
     return this.siteConfigService.getFooterConfig(tenantId);
   }
@@ -70,6 +79,7 @@ export class SiteConfigController {
    * Update footer configuration
    */
   @Put("footer")
+  @Permissions(Permission.SETTINGS_EDIT)
   async updateFooterConfig(
     @Param("tenantId") tenantId: string,
     @Body() data: UpdateFooterConfigDto,
@@ -82,6 +92,7 @@ export class SiteConfigController {
    * Get menus configuration
    */
   @Get("menus")
+  @Permissions(Permission.SETTINGS_VIEW)
   async getMenusConfig(@Param("tenantId") tenantId: string) {
     return this.siteConfigService.getMenusConfig(tenantId);
   }
@@ -91,6 +102,7 @@ export class SiteConfigController {
    * Update menus configuration
    */
   @Put("menus")
+  @Permissions(Permission.SETTINGS_EDIT)
   async updateMenusConfig(
     @Param("tenantId") tenantId: string,
     @Body() data: UpdateMenusConfigDto,
@@ -103,6 +115,7 @@ export class SiteConfigController {
    * Get logos configuration
    */
   @Get("logos")
+  @Permissions(Permission.SETTINGS_VIEW)
   async getLogosConfig(@Param("tenantId") tenantId: string) {
     return this.siteConfigService.getLogosConfig(tenantId);
   }
@@ -112,6 +125,7 @@ export class SiteConfigController {
    * Update logos configuration
    */
   @Put("logos")
+  @Permissions(Permission.SETTINGS_EDIT)
   async updateLogosConfig(
     @Param("tenantId") tenantId: string,
     @Body() data: UpdateLogosConfigDto,

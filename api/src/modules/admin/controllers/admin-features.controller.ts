@@ -9,7 +9,8 @@ import {
 } from "@nestjs/common";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { RolesGuard } from "@/common/guards/roles.guard";
-import { Roles, AgencyRole } from "@/common/decorators/roles.decorator";
+import { Roles } from "@/common/decorators/roles.decorator";
+import { TenantRole } from "@/common/permissions";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
 import { AdminFeaturesService } from "../services/admin-features.service";
 import {
@@ -19,7 +20,7 @@ import {
 
 @Controller("admin/features")
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(AgencyRole.OWNER, AgencyRole.ADMIN)
+@Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
 export class AdminFeaturesController {
   constructor(private readonly featuresService: AdminFeaturesService) {}
 

@@ -16,9 +16,10 @@ import {
   ValidatedPreviewTokenDto,
 } from "./dto/preview-token-response.dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
-import { RolesGuard } from "@/common/guards/roles.guard";
-import { Roles } from "@/common/decorators/roles.decorator";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
 import { Public } from "@/modules/auth/decorators/public.decorator";
@@ -33,8 +34,8 @@ export class PreviewController {
    * Requires authentication and tenant context
    */
   @Post("token")
-  @UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
-  @Roles("owner", "admin", "editor")
+  @UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
+  @Permissions(Permission.PAGES_VIEW)
   @ApiOperation({
     summary: "Generate preview token",
     description: "Creates a shareable preview token for draft content",
@@ -92,8 +93,8 @@ export class PreviewController {
    * Revoke a preview token
    */
   @Delete("token/:token")
-  @UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
-  @Roles("owner", "admin", "editor")
+  @UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
+  @Permissions(Permission.PAGES_EDIT)
   @ApiOperation({
     summary: "Revoke preview token",
     description: "Revokes a preview token, making it invalid",
@@ -114,8 +115,8 @@ export class PreviewController {
    * List active preview tokens for content
    */
   @Get("tokens/:contentType/:contentId")
-  @UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
-  @Roles("owner", "admin", "editor")
+  @UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
+  @Permissions(Permission.PAGES_VIEW)
   @ApiOperation({
     summary: "List preview tokens",
     description: "Lists all active preview tokens for a piece of content",

@@ -19,10 +19,11 @@ import {
   UpdateCustomerAddressDto,
 } from "./dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
-import { TenantGuard } from "@/common/guards/tenant.guard";
+import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
 import { FeatureGuard } from "@/common/guards/feature.guard";
-import { RolesGuard } from "@/common/guards/roles.guard";
-import { Roles } from "@/common/decorators/roles.decorator";
+import { PermissionGuard } from "@/common/guards/permission.guard";
+import { Permissions } from "@/common/decorators/permissions.decorator";
+import { Permission } from "@/common/permissions";
 import { RequireFeature } from "@/common/decorators/feature.decorator";
 import { TenantId } from "@/common/decorators/tenant.decorator";
 
@@ -34,7 +35,7 @@ import { TenantId } from "@/common/decorators/tenant.decorator";
  * Requires the 'shop' feature to be enabled for the tenant.
  */
 @Controller("customers")
-@UseGuards(JwtAuthGuard, TenantGuard, FeatureGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, TenantAccessGuard, FeatureGuard, PermissionGuard)
 @RequireFeature("shop")
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
@@ -44,20 +45,20 @@ export class CustomersController {
   // ============================================================================
 
   @Post()
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.CUSTOMERS_CREATE)
   create(@TenantId() tenantId: string, @Body() createDto: CreateCustomerDto) {
     return this.customersService.create(tenantId, createDto);
   }
 
   @Get()
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.CUSTOMERS_VIEW)
   findAll(
     @TenantId() tenantId: string,
     @Query("search") search?: string,
     @Query("hasAccount") hasAccount?: string,
     @Query("acceptsMarketing") acceptsMarketing?: string,
-    @Query("limit", new DefaultValuePipe(50), ParseIntPipe) limit?: number,
-    @Query("offset", new DefaultValuePipe(0), ParseIntPipe) offset?: number,
+    @Query("page", new DefaultValuePipe(1), ParseIntPipe) page?: number,
+    @Query("limit", new DefaultValuePipe(20), ParseIntPipe) limit?: number,
   ) {
     return this.customersService.findAll(tenantId, {
       search,
@@ -66,31 +67,31 @@ export class CustomersController {
         acceptsMarketing === undefined
           ? undefined
           : acceptsMarketing === "true",
+      page,
       limit,
-      offset,
     });
   }
 
   @Get("stats")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.CUSTOMERS_VIEW)
   getStats(@TenantId() tenantId: string) {
     return this.customersService.getCustomerStats(tenantId);
   }
 
   @Get(":id")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.CUSTOMERS_VIEW)
   findOne(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.customersService.findOne(tenantId, id);
   }
 
   @Get("email/:email")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.CUSTOMERS_VIEW)
   findByEmail(@TenantId() tenantId: string, @Param("email") email: string) {
     return this.customersService.findByEmail(tenantId, email);
   }
 
   @Patch(":id")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.CUSTOMERS_EDIT)
   update(
     @TenantId() tenantId: string,
     @Param("id") id: string,
@@ -100,7 +101,7 @@ export class CustomersController {
   }
 
   @Delete(":id")
-  @Roles("owner", "admin")
+  @Permissions(Permission.CUSTOMERS_DELETE)
   remove(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.customersService.remove(tenantId, id);
   }
@@ -110,7 +111,7 @@ export class CustomersController {
   // ============================================================================
 
   @Post(":customerId/addresses")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.CUSTOMERS_EDIT)
   createAddress(
     @TenantId() tenantId: string,
     @Param("customerId") customerId: string,
@@ -120,7 +121,7 @@ export class CustomersController {
   }
 
   @Get(":customerId/addresses")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.CUSTOMERS_VIEW)
   findAllAddresses(
     @TenantId() tenantId: string,
     @Param("customerId") customerId: string,
@@ -129,7 +130,7 @@ export class CustomersController {
   }
 
   @Get(":customerId/addresses/:addressId")
-  @Roles("owner", "admin", "editor", "viewer")
+  @Permissions(Permission.CUSTOMERS_VIEW)
   findOneAddress(
     @TenantId() tenantId: string,
     @Param("customerId") customerId: string,
@@ -143,7 +144,7 @@ export class CustomersController {
   }
 
   @Patch(":customerId/addresses/:addressId")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.CUSTOMERS_EDIT)
   updateAddress(
     @TenantId() tenantId: string,
     @Param("customerId") customerId: string,
@@ -159,7 +160,7 @@ export class CustomersController {
   }
 
   @Delete(":customerId/addresses/:addressId")
-  @Roles("owner", "admin")
+  @Permissions(Permission.CUSTOMERS_DELETE)
   removeAddress(
     @TenantId() tenantId: string,
     @Param("customerId") customerId: string,
@@ -169,7 +170,7 @@ export class CustomersController {
   }
 
   @Post(":customerId/addresses/:addressId/default")
-  @Roles("owner", "admin", "editor")
+  @Permissions(Permission.CUSTOMERS_EDIT)
   setDefaultAddress(
     @TenantId() tenantId: string,
     @Param("customerId") customerId: string,

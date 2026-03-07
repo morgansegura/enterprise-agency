@@ -317,6 +317,53 @@ export class StorageService {
   }
 
   /**
+   * Download file from storage as buffer
+   */
+  async download(key: string): Promise<Buffer> {
+    if (this.provider === "local") {
+      return this.downloadLocal(key);
+    } else {
+      return this.downloadCloud(key);
+    }
+  }
+
+  /**
+   * Download from local filesystem
+   */
+  private async downloadLocal(key: string): Promise<Buffer> {
+    const filePath = path.join(this.uploadDir, key);
+    return fs.promises.readFile(filePath);
+  }
+
+  /**
+   * Download from cloud storage
+   */
+  private async downloadCloud(key: string): Promise<Buffer> {
+    if (!this.s3Client) {
+      throw new Error("Cloud storage client not initialized");
+    }
+
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: key,
+    });
+
+    const response = await this.s3Client.send(command);
+
+    if (!response.Body) {
+      throw new Error(`File not found: ${key}`);
+    }
+
+    // Convert stream to buffer
+    const chunks: Uint8Array[] = [];
+    for await (const chunk of response.Body as AsyncIterable<Uint8Array>) {
+      chunks.push(chunk);
+    }
+
+    return Buffer.concat(chunks);
+  }
+
+  /**
    * Get MIME type from file extension
    */
   getMimeType(fileName: string): string {
