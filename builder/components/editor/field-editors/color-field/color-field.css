@@ -1,0 +1,82 @@
+@reference "tailwindcss";
+
+.color-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.color-field[data-width="half"] {
+  @apply w-1/2;
+}
+
+.color-field[data-width="third"] {
+  @apply w-1/3;
+}
+
+.color-field__label {
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.color-field__required {
+  @apply ml-0.5 text-(--destructive);
+}
+
+.color-field__controls {
+  @apply flex items-center gap-2;
+}
+
+.color-field__preview-wrapper {
+  @apply relative;
+}
+
+.color-field__preview {
+  @apply w-9 h-9 rounded-md border border-(--input) cursor-pointer;
+  @apply flex items-center justify-center;
+  @apply transition-all hover:ring-2 hover:ring-(--ring) hover:ring-offset-1;
+}
+
+.color-field__preview-empty {
+  @apply text-(--muted-foreground) text-xs;
+}
+
+.color-field__native-picker {
+  @apply absolute inset-0 opacity-0 cursor-pointer;
+  @apply w-full h-full;
+}
+
+.color-field__input {
+  @apply flex-1 font-mono text-sm;
+}
+
+.color-field__input--error {
+  @apply border-(--destructive) focus-visible:ring-(--destructive);
+}
+
+.color-field__clear {
+  @apply text-(--muted-foreground) hover:text-(--foreground);
+}
+
+.color-field__presets {
+  @apply flex flex-wrap gap-1.5 mt-1;
+}
+
+.color-field__preset {
+  @apply w-6 h-6 rounded-md border border-(--input) cursor-pointer;
+  @apply transition-all hover:scale-110;
+  @apply focus:outline-none focus:ring-2 focus:ring-(--ring) focus:ring-offset-1;
+}
+
+.color-field__preset--selected {
+  @apply ring-2 ring-(--primary) ring-offset-1;
+}
+
+.color-field__preset[data-transparent="true"] {
+  @apply bg-[repeating-conic-gradient(#e5e7eb_0%_25%,transparent_0%_50%)] bg-[length:8px_8px];
+}
+
+.color-field__description {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.color-field__error {
+  @apply text-xs text-(--destructive);
+}

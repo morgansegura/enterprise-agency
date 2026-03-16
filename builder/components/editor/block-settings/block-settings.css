@@ -1,0 +1,30 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * BlockSettings — Schema-driven settings panel
+ * ============================================================================= */
+
+.block-settings {
+  @apply flex flex-col;
+}
+
+.block-settings__tabs {
+  @apply flex flex-col;
+}
+
+.block-settings__tabs-list {
+  @apply w-full justify-start rounded-none border-b border-(--border) bg-transparent p-0;
+}
+
+.block-settings__tab {
+  @apply rounded-none border-b-2 border-transparent px-4 py-2 text-sm font-medium text-(--muted-foreground);
+  @apply data-[state=active]:border-(--primary) data-[state=active]:text-(--foreground) data-[state=active]:shadow-none;
+}
+
+.block-settings__tab-content {
+  @apply p-4;
+}
+
+.block-settings__empty {
+  @apply flex items-center justify-center p-6 text-sm text-(--muted-foreground);
+}

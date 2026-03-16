@@ -1,0 +1,69 @@
+@reference "tailwindcss";
+
+.boolean-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.boolean-field[data-width="half"] {
+  @apply w-1/2;
+}
+
+.boolean-field[data-width="third"] {
+  @apply w-1/3;
+}
+
+/* Switch variant */
+.boolean-field__switch-container {
+  @apply flex items-center gap-3;
+}
+
+.boolean-field__switch {
+  @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-(--muted) transition-colors;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+}
+
+.boolean-field__switch--checked {
+  @apply bg-(--primary);
+}
+
+.boolean-field__switch-thumb {
+  @apply pointer-events-none block h-5 w-5 rounded-full bg-(--background) shadow-lg ring-0 transition-transform;
+}
+
+.boolean-field__switch--checked .boolean-field__switch-thumb {
+  @apply translate-x-5;
+}
+
+.boolean-field__switch-label {
+  @apply text-sm font-medium text-(--foreground) cursor-pointer;
+}
+
+/* Checkbox variant */
+.boolean-field__checkbox-container {
+  @apply flex items-center gap-2;
+}
+
+.boolean-field__checkbox {
+  @apply h-4 w-4 rounded border border-(--input) bg-(--background) text-(--primary);
+  @apply focus:ring-2 focus:ring-(--ring) focus:ring-offset-2;
+}
+
+.boolean-field__checkbox--error {
+  @apply border-(--destructive);
+}
+
+.boolean-field__checkbox-label {
+  @apply text-sm font-medium text-(--foreground) cursor-pointer;
+}
+
+.boolean-field__description {
+  @apply text-xs text-(--muted-foreground) ml-14;
+}
+
+.boolean-field[data-variant="checkbox"] .boolean-field__description {
+  @apply ml-6;
+}
+
+.boolean-field__error {
+  @apply text-xs text-(--destructive);
+}

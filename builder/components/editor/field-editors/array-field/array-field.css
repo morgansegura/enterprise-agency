@@ -1,0 +1,119 @@
+@reference "tailwindcss";
+
+.array-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.array-field[data-width="half"] {
+  @apply w-1/2;
+}
+
+.array-field[data-width="third"] {
+  @apply w-1/3;
+}
+
+.array-field__label {
+  @apply text-sm font-medium text-(--foreground) flex items-center gap-2;
+}
+
+.array-field__required {
+  @apply text-(--destructive);
+}
+
+.array-field__count {
+  @apply text-(--muted-foreground) font-normal;
+}
+
+.array-field__container {
+  @apply border border-(--input) rounded-md overflow-hidden;
+}
+
+.array-field__container--error {
+  @apply border-(--destructive);
+}
+
+.array-field__items {
+  @apply divide-y divide-(--border);
+}
+
+/* Item */
+.array-field__item {
+  @apply bg-(--background);
+}
+
+.array-field__item--dragging {
+  @apply shadow-lg ring-2 ring-(--primary);
+}
+
+.array-field__item-header {
+  @apply flex items-center gap-1 p-2 bg-(--muted)/30;
+}
+
+.array-field__item-drag {
+  @apply p-1 cursor-grab text-(--muted-foreground) hover:text-(--foreground);
+  @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-(--ring) rounded;
+}
+
+.array-field__item-drag:active {
+  @apply cursor-grabbing;
+}
+
+.array-field__item-drag-icon {
+  @apply w-4 h-4;
+}
+
+.array-field__item-toggle {
+  @apply p-1 text-(--muted-foreground) hover:text-(--foreground) rounded;
+  @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-(--ring);
+}
+
+.array-field__item-toggle-icon {
+  @apply w-4 h-4;
+}
+
+.array-field__item-label {
+  @apply flex-1 text-sm truncate;
+}
+
+.array-field__item-remove {
+  @apply text-(--muted-foreground) hover:text-(--destructive);
+}
+
+.array-field__item-remove-icon {
+  @apply w-4 h-4;
+}
+
+.array-field__item-content {
+  @apply p-3 space-y-3;
+}
+
+/* Empty state */
+.array-field__empty {
+  @apply p-4 text-center;
+}
+
+.array-field__empty-text {
+  @apply text-sm text-(--muted-foreground);
+}
+
+/* Add button */
+.array-field__add-btn {
+  @apply w-full rounded-none border-0 border-t border-(--input);
+}
+
+.array-field__add-icon {
+  @apply w-4 h-4 mr-1;
+}
+
+/* Placeholder for fields without renderer */
+.array-field__placeholder {
+  @apply p-2 bg-(--muted)/50 rounded text-sm text-(--muted-foreground);
+}
+
+.array-field__description {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.array-field__error {
+  @apply text-xs text-(--destructive);
+}
