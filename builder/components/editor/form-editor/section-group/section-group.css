@@ -1,0 +1,74 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * SectionGroup — Collapsible section with block cards
+ * ============================================================================= */
+
+.section-group {
+  @apply border border-(--border) rounded-lg bg-(--background) overflow-hidden;
+}
+
+/* Header */
+.section-group__header {
+  @apply flex items-center justify-between px-3 py-2 bg-(--muted)/30;
+}
+
+.section-group__toggle {
+  @apply flex items-center gap-2 cursor-pointer text-left;
+}
+
+.section-group__chevron {
+  @apply w-4 h-4 text-(--muted-foreground) transition-transform duration-150;
+}
+
+.section-group__chevron--collapsed {
+  @apply -rotate-90;
+}
+
+.section-group__title {
+  @apply text-sm font-semibold;
+}
+
+.section-group__count {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.section-group__actions {
+  @apply flex items-center gap-0.5 opacity-0 transition-opacity;
+}
+
+.section-group__header:hover .section-group__actions {
+  @apply opacity-100;
+}
+
+.section-group__action-btn {
+  @apply w-7 h-7 text-(--muted-foreground) hover:text-(--destructive);
+}
+
+.section-group__action-btn svg {
+  @apply w-3.5 h-3.5;
+}
+
+/* Body */
+.section-group__body {
+  @apply border-t border-(--border);
+}
+
+.section-group__blocks {
+  @apply p-2 space-y-1.5;
+}
+
+.section-group__empty {
+  @apply p-6 text-center text-sm text-(--muted-foreground);
+}
+
+/* Add block button */
+.section-group__add-btn {
+  @apply w-full flex items-center justify-center gap-1.5 px-3 py-2
+    text-sm text-(--muted-foreground) hover:text-(--foreground) hover:bg-(--muted)/50
+    border-t border-(--border) cursor-pointer transition-colors;
+}
+
+.section-group__add-icon {
+  @apply w-4 h-4;
+}

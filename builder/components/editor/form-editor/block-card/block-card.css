@@ -1,0 +1,87 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * BlockCard — Collapsible block editor card with drag-and-drop
+ * ============================================================================= */
+
+.block-card {
+  @apply border border-(--border) rounded-md bg-(--background) overflow-hidden;
+  @apply transition-shadow;
+}
+
+.block-card--dragging {
+  @apply shadow-lg ring-2 ring-(--primary) opacity-90;
+}
+
+.block-card--expanded {
+  @apply ring-1 ring-(--border);
+}
+
+/* Header */
+.block-card__header {
+  @apply flex items-center gap-1 px-2 py-1.5;
+}
+
+.block-card__drag {
+  @apply p-1 cursor-grab text-(--muted-foreground) hover:text-(--foreground) rounded;
+  @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-(--ring);
+}
+
+.block-card__drag:active {
+  @apply cursor-grabbing;
+}
+
+.block-card__drag-icon {
+  @apply w-4 h-4;
+}
+
+.block-card__toggle {
+  @apply p-1 text-(--muted-foreground) hover:text-(--foreground) rounded;
+  @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-(--ring);
+}
+
+.block-card__chevron {
+  @apply w-4 h-4 transition-transform duration-150;
+}
+
+.block-card__chevron--open {
+  @apply rotate-90;
+}
+
+.block-card__label {
+  @apply flex-1 flex items-center gap-2 text-left truncate cursor-pointer;
+}
+
+.block-card__icon {
+  @apply w-4 h-4 text-(--muted-foreground) shrink-0;
+}
+
+.block-card__name {
+  @apply text-sm font-medium truncate;
+}
+
+.block-card__summary {
+  @apply text-xs text-(--muted-foreground) truncate ml-1;
+}
+
+/* Actions */
+.block-card__actions {
+  @apply flex items-center gap-0.5 opacity-0 transition-opacity;
+}
+
+.block-card__header:hover .block-card__actions {
+  @apply opacity-100;
+}
+
+.block-card__action-btn {
+  @apply w-7 h-7 text-(--muted-foreground) hover:text-(--foreground);
+}
+
+.block-card__action-btn svg {
+  @apply w-3.5 h-3.5;
+}
+
+/* Body */
+.block-card__body {
+  @apply border-t border-(--border) p-0;
+}

@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * BlockList — Scrollable sidebar with section groups
+ * ============================================================================= */
+
+.block-list {
+  @apply w-[480px] shrink-0 border-r border-(--border) bg-(--background) overflow-hidden flex flex-col;
+}
+
+.block-list__content {
+  @apply flex-1 overflow-y-auto p-4 space-y-4;
+}
+
+.block-list__sections {
+  @apply space-y-4;
+}
+
+.block-list__add-section {
+  @apply w-full;
+}
+
+.block-list__add-icon {
+  @apply w-4 h-4;
+}
