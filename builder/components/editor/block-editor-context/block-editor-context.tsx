@@ -13,18 +13,29 @@ interface BlockEditorContextValue {
   /** Currently active TipTap editor for text formatting */
   activeEditor: Editor | null;
   /** Register a TipTap editor as the active one */
-  setActiveEditor: (editor: Editor | null) => void;
+  setActiveEditor: (editor: Editor | null, blockKey?: string) => void;
   /** Check if there's an active selection in the editor */
   hasSelection: boolean;
   /** Update selection state */
   setHasSelection: (hasSelection: boolean) => void;
+  /** Key of the block that has the active editor */
+  activeBlockKey: string | null;
 }
 
 const BlockEditorContext = createContext<BlockEditorContextValue | null>(null);
 
 export function BlockEditorProvider({ children }: { children: ReactNode }) {
-  const [activeEditor, setActiveEditor] = useState<Editor | null>(null);
+  const [activeEditor, setActiveEditorState] = useState<Editor | null>(null);
   const [hasSelection, setHasSelection] = useState(false);
+  const [activeBlockKey, setActiveBlockKey] = useState<string | null>(null);
+
+  const setActiveEditor = useCallback(
+    (editor: Editor | null, blockKey?: string) => {
+      setActiveEditorState(editor);
+      setActiveBlockKey(blockKey ?? null);
+    },
+    [],
+  );
 
   return (
     <BlockEditorContext.Provider
@@ -33,6 +44,7 @@ export function BlockEditorProvider({ children }: { children: ReactNode }) {
         setActiveEditor,
         hasSelection,
         setHasSelection,
+        activeBlockKey,
       }}
     >
       {children}
@@ -49,6 +61,7 @@ export function useBlockEditor() {
       setActiveEditor: () => {},
       hasSelection: false,
       setHasSelection: () => {},
+      activeBlockKey: null,
     };
   }
   return context;
@@ -57,9 +70,13 @@ export function useBlockEditor() {
 /**
  * Hook for text formatting commands
  * Returns functions to apply formatting to the active editor
+ * @param blockKey - Optional key to check if this block has the active editor
  */
-export function useTextFormatting() {
-  const { activeEditor, hasSelection } = useBlockEditor();
+export function useTextFormatting(blockKey?: string) {
+  const { activeEditor, hasSelection, activeBlockKey } = useBlockEditor();
+
+  // Only enable formatting for the specific block that has the active editor
+  const isActiveBlock = blockKey ? activeBlockKey === blockKey : true;
 
   const toggleBold = useCallback(() => {
     activeEditor?.chain().focus().toggleBold().run();
@@ -99,7 +116,7 @@ export function useTextFormatting() {
   const isLink = activeEditor?.isActive("link") ?? false;
 
   return {
-    canFormat: Boolean(activeEditor) && hasSelection,
+    canFormat: Boolean(activeEditor) && hasSelection && isActiveBlock,
     toggleBold,
     toggleItalic,
     setLink,

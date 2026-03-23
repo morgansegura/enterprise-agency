@@ -53,6 +53,10 @@ import {
   useDuplicatePage,
   useDeletePage,
 } from "@/lib/hooks/use-pages";
+import { useTenant, useUpdateTenant } from "@/lib/hooks/use-tenants";
+import { SvgUpload } from "@/components/ui/svg-upload";
+import { TenantLogo } from "@/components/ui/tenant-logo";
+import { Input } from "@/components/ui/input";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -116,11 +120,15 @@ import {
   type SEOSettingsData,
   defaultSEOSettings,
 } from "./seo-settings-panel";
-import { applyTokensToDOM, type TokensToApply } from "@/lib/tokens/apply-tokens";
+import {
+  applyTokensToDOM,
+  type TokensToApply,
+} from "@/lib/tokens/apply-tokens";
 
 type SettingsTab =
   | "presets"
   | "site"
+  | "pages"
   | "seo"
   | "colors"
   | "typography"
@@ -142,8 +150,14 @@ const navItems: SettingsNavItem<SettingsTab>[] = [
   {
     id: "site",
     label: "Site",
+    icon: Globe,
+    description: "Branding & identity",
+  },
+  {
+    id: "pages",
+    label: "Pages",
     icon: Home,
-    description: "Site settings",
+    description: "Manage pages",
   },
   {
     id: "seo",
@@ -913,9 +927,14 @@ export function GlobalSettingsDrawer({
           </div>
         )}
 
-        {/* Site Settings - Pages management */}
+        {/* Site Settings - Branding & Identity */}
         {activeTab === "site" && tenantId && (
-          <SiteSettingsPanel tenantId={tenantId} />
+          <SiteBrandingPanel tenantId={tenantId} />
+        )}
+
+        {/* Pages Management */}
+        {activeTab === "pages" && tenantId && (
+          <PagesSettingsPanel tenantId={tenantId} />
         )}
 
         {/* SEO & Analytics Settings */}
@@ -2280,14 +2299,146 @@ function CardSettingsPanel({
 }
 
 // ============================================================================
-// SiteSettings panel
+// Site Branding Panel - Logo, Favicon, Site Identity
 // ============================================================================
 
-interface SiteSettingsPanelProps {
+interface SiteBrandingPanelProps {
   tenantId: string;
 }
 
-function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
+function SiteBrandingPanel({ tenantId }: SiteBrandingPanelProps) {
+  const { data: tenant } = useTenant(tenantId);
+  const updateTenant = useUpdateTenant();
+
+  const [formData, setFormData] = React.useState({
+    businessName: "",
+    tagline: "",
+    iconSvg: "",
+    logoSvg: "",
+  });
+
+  // Load tenant data
+  React.useEffect(() => {
+    if (tenant) {
+      const extendedTenant = tenant as {
+        tagline?: string;
+        iconSvg?: string;
+        logoSvg?: string;
+      };
+      setFormData({
+        businessName: tenant.businessName || "",
+        tagline: extendedTenant.tagline || "",
+        iconSvg: extendedTenant.iconSvg || "",
+        logoSvg: extendedTenant.logoSvg || "",
+      });
+    }
+  }, [tenant]);
+
+  const handleChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    // Auto-save after change
+    updateTenant.mutate(
+      { id: tenantId, data: { [field]: value } },
+      {
+        onError: () => toast.error("Failed to save"),
+      },
+    );
+  };
+
+  return (
+    <SettingsSection
+      title="Site Identity"
+      description="Configure your site's branding, logo, and favicon."
+    >
+      <div className="space-y-8">
+        {/* Site Name & Tagline */}
+        <SettingsGridBlock title="Identity">
+          <SettingsField>
+            <Label>Site Name</Label>
+            <Input
+              value={formData.businessName}
+              onChange={(e) => handleChange("businessName", e.target.value)}
+              placeholder="Your Site Name"
+            />
+          </SettingsField>
+          <SettingsField>
+            <Label>Tagline</Label>
+            <Input
+              value={formData.tagline}
+              onChange={(e) => handleChange("tagline", e.target.value)}
+              placeholder="A short description of your site"
+            />
+          </SettingsField>
+        </SettingsGridBlock>
+
+        {/* Brand Assets - SVG Upload */}
+        <SettingsGridBlock title="Brand Assets">
+          <div className="col-span-2 flex flex-wrap gap-8">
+            <SvgUpload
+              label="Site Icon"
+              description="Square SVG icon for favicon and compact layouts. Upload or paste SVG code."
+              value={formData.iconSvg}
+              onChange={(svg) => handleChange("iconSvg", svg)}
+              aspectRatio="square"
+            />
+            <SvgUpload
+              label="Logo"
+              description="Full SVG logo for headers. Upload or paste SVG code."
+              value={formData.logoSvg}
+              onChange={(svg) => handleChange("logoSvg", svg)}
+              aspectRatio="wide"
+            />
+          </div>
+        </SettingsGridBlock>
+
+        {/* Preview */}
+        {(formData.iconSvg || formData.logoSvg) && (
+          <SettingsGridBlock title="Preview">
+            <div className="col-span-2 flex flex-wrap items-center gap-8 p-4 rounded-lg border bg-muted/30">
+              {formData.iconSvg && (
+                <div className="flex flex-col items-center gap-2">
+                  <TenantLogo
+                    svg={formData.iconSvg}
+                    variant="icon"
+                    size="lg"
+                    alt="Site Icon Preview"
+                  />
+                  <span className="text-xs text-muted-foreground">Icon</span>
+                </div>
+              )}
+              {formData.logoSvg && (
+                <div className="flex flex-col items-center gap-2">
+                  <TenantLogo
+                    svg={formData.logoSvg}
+                    variant="logo"
+                    size="lg"
+                    alt="Logo Preview"
+                  />
+                  <span className="text-xs text-muted-foreground">Logo</span>
+                </div>
+              )}
+            </div>
+          </SettingsGridBlock>
+        )}
+
+        <p className="text-xs text-muted-foreground">
+          The site icon will automatically be used as your favicon. SVG format
+          ensures crisp rendering at all sizes.
+        </p>
+      </div>
+    </SettingsSection>
+  );
+}
+
+// ============================================================================
+// Pages Settings Panel
+// ============================================================================
+
+interface PagesSettingsPanelProps {
+  tenantId: string;
+}
+
+function PagesSettingsPanel({ tenantId }: PagesSettingsPanelProps) {
   const router = useRouter();
   const { data: pages, isLoading: pagesLoading } = usePages(tenantId);
   const updatePage = useUpdatePage(tenantId);

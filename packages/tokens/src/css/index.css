@@ -1,0 +1,18 @@
+/**
+ * @enterprise/tokens - CSS Token System
+ *
+ * SINGLE SOURCE OF TRUTH for all styling tokens.
+ * Import this file in both builder and client for WYSIWYG parity.
+ *
+ * Usage:
+ *   @import "@enterprise/tokens/css";
+ *
+ * Or import individual files:
+ *   @import "@enterprise/tokens/css/typography.css";
+ *   @import "@enterprise/tokens/css/heading.css";
+ *   @import "@enterprise/tokens/css/section.css";
+ */
+
+@import "./typography.css";
+@import "./heading.css";
+@import "./section.css";

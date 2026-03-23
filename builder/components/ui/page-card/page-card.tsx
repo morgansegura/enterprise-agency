@@ -92,7 +92,7 @@ export function PageCard({
   return (
     <div
       className={cn(
-        "flex items-center gap-4 p-3 border rounded-lg hover:border-(--primary) transition-colors cursor-pointer",
+        "group flex items-center gap-4 p-3 border rounded-lg hover:border-(--primary) transition-colors cursor-pointer",
         isUpdating && "opacity-60 pointer-events-none",
         className,
       )}
@@ -192,7 +192,7 @@ export function PageCard({
           <Button
             variant="ghost"
             size="icon"
-            className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="h-7 w-7"
             disabled={isUpdating}
           >
             <MoreHorizontal className="h-4 w-4" />
@@ -201,19 +201,19 @@ export function PageCard({
         <DropdownMenuContent align="end" className="w-48">
           {actions?.onEdit && (
             <DropdownMenuItem onClick={() => actions.onEdit?.(page)}>
-              <Pencil className="h-4 w-4 " />
+              <Pencil className="h-4 w-4" />
               Edit Page
             </DropdownMenuItem>
           )}
           {actions?.onPreview && (
             <DropdownMenuItem onClick={() => actions.onPreview?.(page)}>
-              <ExternalLink className="h-4 w-4 " />
+              <ExternalLink className="h-4 w-4" />
               Preview
             </DropdownMenuItem>
           )}
           {actions?.onDuplicate && (
             <DropdownMenuItem onClick={() => actions.onDuplicate?.(page)}>
-              <Copy className="h-4 w-4 " />
+              <Copy className="h-4 w-4" />
               Duplicate
             </DropdownMenuItem>
           )}
@@ -221,7 +221,7 @@ export function PageCard({
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => actions.onSetHomePage?.(page)}>
-                <Home className="h-4 w-4 " />
+                <Home className="h-4 w-4" />
                 Set as Homepage
               </DropdownMenuItem>
             </>
@@ -231,9 +231,9 @@ export function PageCard({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => actions.onDelete?.(page)}
-                className="text-destructive focus:text-destructive"
+                className="text-destructive focus:text-destructive [&>svg]:text-destructive"
               >
-                <Trash2 className="h-4 w-4 " />
+                <Trash2 className="h-4 w-4" />
                 Delete
               </DropdownMenuItem>
             </>

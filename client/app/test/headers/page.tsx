@@ -40,9 +40,9 @@ const masterLogo = `<?xml version="1.0" encoding="UTF-8"?>
       }
     </style>
     <linearGradient id="linear-gradient" x1="155.81" y1="244.05" x2="308.44" y2="55.56" gradientTransform="translate(0 372) scale(1 -1)" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#fff"/>
-      <stop offset=".17" stop-color="#c7d9e2"/>
-      <stop offset=".59" stop-color="#4f6a82"/>
+      <stop offset="0" stopColor="#fff"/>
+      <stop offset=".17" stopColor="#c7d9e2"/>
+      <stop offset=".59" stopColor="#4f6a82"/>
       <stop offset="1" stop-color="#46637c"/>
     </linearGradient>
   </defs>

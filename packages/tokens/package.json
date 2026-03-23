@@ -45,7 +45,11 @@
       "types": "./dist/fonts/index.d.ts",
       "import": "./dist/fonts/index.mjs",
       "require": "./dist/fonts/index.js"
-    }
+    },
+    "./css": "./src/css/index.css",
+    "./css/typography.css": "./src/css/typography.css",
+    "./css/heading.css": "./src/css/heading.css",
+    "./css/section.css": "./src/css/section.css"
   },
   "scripts": {
     "build": "tsup",

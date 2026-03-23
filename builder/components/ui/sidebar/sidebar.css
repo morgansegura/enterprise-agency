@@ -78,7 +78,7 @@
 
 /* Sidebar - Fixed Container */
 [data-slot="sidebar-fixed-container"] {
-  @apply fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-all duration-200 ease-out md:flex;
+  @apply fixed z-10 py-2 hidden h-svh w-(--sidebar-width) transition-all duration-200 ease-out md:flex;
 }
 
 /* Icon mode collapsed width */
@@ -293,7 +293,7 @@
 
 /* Sidebar Separator */
 [data-sidebar="separator"] {
-  @apply mx-2 w-auto bg-(--sidebar-border) transition-all duration-200 ease-out;
+  @apply w-auto bg-(--sidebar-border) transition-all duration-200 ease-out;
 }
 
 /* Center separator in icon mode */

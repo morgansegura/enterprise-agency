@@ -35,7 +35,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LayoutHeading } from "@/components/layout/layout-heading";
+import { PageHeader } from "@/components/layout/page-header";
 import {
   MoreHorizontal,
   Eye,
@@ -175,15 +175,18 @@ export default function OrdersPage({
     return <div className="p-6">Error loading orders: {error.message}</div>;
 
   return (
-    <div className="p-6">
-      <LayoutHeading
+    <div className="flex-1 p-8 space-y-6">
+      <PageHeader
         title="Orders"
-        description={total > 0 ? `${total} total orders` : "No orders yet"}
+        icon={ShoppingCart}
+        count={total}
+        singularName="order"
+        pluralName="orders"
       />
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid gap-4 md:grid-cols-4 mt-6">
+        <div className="grid gap-4 md:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">
@@ -234,7 +237,7 @@ export default function OrdersPage({
       )}
 
       {/* Filters */}
-      <div className="flex gap-4 mb-6 mt-6">
+      <div className="flex gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input

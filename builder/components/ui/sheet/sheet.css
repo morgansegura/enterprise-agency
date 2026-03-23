@@ -163,7 +163,9 @@
 
 /* Content - Bottom Side */
 [data-slot="sheet-content"][data-side="bottom"] {
-  @apply inset-x-0 bottom-0 h-auto border-t;
+  @apply inset-x-0 bottom-0 border-t;
+  /* Allow full height for settings drawers while maintaining auto for short content */
+  max-height: 100vh;
 }
 
 [data-slot="sheet-content"][data-side="bottom"][data-state="closed"] {

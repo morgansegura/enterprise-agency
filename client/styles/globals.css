@@ -3,6 +3,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Shared WYSIWYG tokens - Single source of truth for builder/client parity */
+@import "@enterprise/tokens/css";
+
 /* Import animations */
 @import "./tokens/animations.css";
 
@@ -12,7 +15,6 @@
 @import "./tokens/radius.css";
 @import "./tokens/shadows.css";
 @import "./tokens/spacing.css";
-@import "./tokens/typography.css";
 @import "./tokens/navigation.css";
 
 /* Import component-specific tokens - build on the foundation */
@@ -103,6 +105,10 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 }
+
+/* Responsive heading utilities - enable Tailwind prefixes (md:, lg:) */
+@source inline("heading-size-xs heading-size-sm heading-size-base heading-size-lg heading-size-xl heading-size-2xl heading-size-3xl heading-size-4xl heading-size-5xl heading-size-6xl heading-size-7xl heading-size-8xl heading-size-9xl");
+@source inline("heading-align-left heading-align-center heading-align-right");
 
 @layer base {
   * {

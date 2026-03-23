@@ -415,9 +415,9 @@ export function TextBlockEditor({
       setHasSelection(from !== to);
     },
     onFocus: () => {
-      // Register this editor as active when focused
+      // Register this editor as active when focused, with block key
       if (editor) {
-        setActiveEditor(editor);
+        setActiveEditor(editor, block._key);
       }
     },
     onBlur: () => {
@@ -435,7 +435,7 @@ export function TextBlockEditor({
   // Register editor when block is selected
   useEffect(() => {
     if (isSelected && editor) {
-      setActiveEditor(editor);
+      setActiveEditor(editor, block._key);
     }
     return () => {
       if (isSelected) {
@@ -443,7 +443,7 @@ export function TextBlockEditor({
         setHasSelection(false);
       }
     };
-  }, [isSelected, editor, setActiveEditor, setHasSelection]);
+  }, [isSelected, editor, setActiveEditor, setHasSelection, block._key]);
 
   // Update editor content when block changes externally
   useEffect(() => {

@@ -1,7 +1,10 @@
 @reference "tailwindcss";
 
+.client-layout {
+  @apply relative overflow-hidden flex flex-col bg-(--builder-card);
+}
 .client-layout-header {
-  @apply flex h-11 shrink-0 items-center gap-2 px-4 border-b border-(--border) justify-between;
+  @apply flex h-12 shrink-0 items-center gap-2 px-2 border-b border-(--border) justify-between;
 }
 
 .client-layout-header-left {
@@ -21,14 +24,14 @@
 }
 
 .client-layout-header-trigger {
-  @apply relative cursor-pointer rounded-md flex items-center justify-center  -ml-1.5 w-7.5 h-7.5;
+  @apply relative cursor-pointer rounded-md flex items-center justify-center;
 
   & svg {
-    @apply size-6 stroke-(--muted-foreground) transition-colors duration-300 ease-out;
+    @apply size-5 stroke-(--muted-foreground) transition-colors duration-300 ease-out;
   }
 
   &:hover svg {
-    @apply size-6 outline-inherit stroke-(--foreground);
+    @apply size-5 outline-inherit stroke-(--foreground);
   }
 }
 
@@ -41,7 +44,7 @@
 }
 
 .client-layout-main {
-  @apply flex-1;
+  @apply flex-1 overflow-y-auto;
 }
 
 .client-layout-loading {
@@ -55,4 +58,12 @@
 /* Preview mode - full screen without chrome */
 .client-layout-preview {
   @apply min-h-screen w-full bg-(--background);
+}
+
+.client-layout-header-logo {
+  @apply flex items-center gap-2 text-(--muted-foreground) font-(family-name:--font-heading);
+}
+
+.client-layout-header-logo-text {
+  @apply text-sm font-semibold;
 }

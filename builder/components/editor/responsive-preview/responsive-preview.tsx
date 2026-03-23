@@ -47,8 +47,8 @@ export function ResponsivePreview({
     <div className={cn("w-full flex justify-center", className)}>
       <div
         className={cn(
-          "transition-all duration-300 ease-in-out",
-          isNarrow && "shadow-xl rounded-lg overflow-hidden border",
+          "transition-all duration-300 ease-in-out bg-theme-background",
+          isNarrow && "overflow-hidden",
         )}
         style={{
           width,

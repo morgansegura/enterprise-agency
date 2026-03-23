@@ -33,7 +33,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LayoutHeading } from "@/components/layout/layout-heading";
+import { PageHeader } from "@/components/layout/page-header";
 import {
   MoreHorizontal,
   Eye,
@@ -43,7 +43,6 @@ import {
   UserCheck,
   Mail,
   TrendingUp,
-  Plus,
   PlusCircle,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -117,27 +116,21 @@ export default function CustomersPage({
     return <div className="p-6">Error loading customers: {error.message}</div>;
 
   return (
-    <div className="p-6">
-      <LayoutHeading
+    <div className="flex-1 p-8 space-y-6">
+      <PageHeader
         title="Customers"
-        description={
-          total > 0 ? `${total} total customers` : "No customers yet"
-        }
-        actions={
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => router.push(`/${id}/shop/customers/new`)}
-          >
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Customer
-          </Button>
-        }
+        icon={Users}
+        count={total}
+        singularName="customer"
+        pluralName="customers"
+        actionLabel="Add Customer"
+        actionIcon={PlusCircle}
+        onAction={() => router.push(`/${id}/shop/customers/new`)}
       />
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid gap-4 md:grid-cols-4 mt-6">
+        <div className="grid gap-4 md:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">
@@ -188,7 +181,7 @@ export default function CustomersPage({
       )}
 
       {/* Filters */}
-      <div className="flex gap-4 mb-6 mt-6">
+      <div className="flex gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input

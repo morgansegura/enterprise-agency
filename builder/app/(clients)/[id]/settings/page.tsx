@@ -100,7 +100,10 @@ export default function SettingsPage() {
     }
   };
 
-  const handleBrandingChange = (field: keyof typeof formData, value: string) => {
+  const handleBrandingChange = (
+    field: keyof typeof formData,
+    value: string,
+  ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setIsDirty(true);
   };

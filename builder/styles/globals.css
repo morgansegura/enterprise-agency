@@ -1,5 +1,8 @@
 @import "tailwindcss";
 @import "./builder-tokens.css";
+
+/* Shared WYSIWYG tokens - Single source of truth for builder/client parity */
+@import "@enterprise/tokens/css";
 /* @import "tw-animate-css"; */
 
 /* =============================================================================
@@ -496,32 +499,36 @@
    * BUILDER UI TOKENS (--builder-*)
    * These are for the builder interface: sidebar, panels, buttons, popovers
    * ========================================================================== */
-  --builder-background: var(--color-zinc-50);
-  --builder-foreground: var(--color-zinc-950);
+  --builder-background: var(--color-slate-50);
+  --builder-foreground: var(--color-slate-950);
   --builder-card: var(--color-white);
-  --builder-card-foreground: var(--color-zinc-950);
+  --builder-card-foreground: var(--color-slate-950);
   --builder-popover: oklch(1 0 0);
   --builder-popover-foreground: oklch(0.145 0 0);
-  --builder-primary: var(--color-pink-500);
+  --builder-primary: #1a3f56;
   --builder-primary-foreground: var(--color-white);
-  --builder-secondary: var(--color-cyan-500);
+  --builder-secondary: #ac8365;
   --builder-secondary-foreground: var(--color-white);
-  --builder-muted: var(--color-zinc-200);
-  --builder-muted-foreground: var(--color-zinc-600);
-  --builder-accent: var(--color-zinc-100);
+  --builder-editor-primary: var(--color-pink-500);
+  --builder-primary-editor--foreground: var(--color-white);
+  --builder-editor-secondary: var(--color-pink-500);
+  --builder-editor-secondary-foreground: var(--color-white);
+  --builder-muted: var(--color-slate-200);
+  --builder-muted-foreground: var(--color-slate-600);
+  --builder-accent: var(--color-slate-100);
   --builder-accent-foreground: oklch(0.25 0.08 195);
   --builder-destructive: oklch(63.7% 0.237 25.331);
-  --builder-border: var(--color-zinc-200);
-  --builder-input: var(--color-zinc-300);
+  --builder-border: var(--color-slate-200);
+  --builder-input: var(--color-slate-300);
   --builder-ring: var(--color-emerald-700);
   /* Sidebar */
-  --sidebar: var(--color-zinc-50);
+  --sidebar: var(--color-slate-50);
   --sidebar-foreground: oklch(0.145 0.01 270);
   --sidebar-primary: var(--color-emerald-900);
   --sidebar-primary-foreground: var(--color-lime-50);
-  --sidebar-accent: var(--color-zinc-200);
+  --sidebar-accent: var(--color-slate-200);
   --sidebar-accent-foreground: var(--color-black);
-  --sidebar-border: var(--color-zinc-200);
+  --sidebar-border: var(--color-slate-200);
   --sidebar-ring: oklch(96.2% 0.044 156.743);
   /* Charts */
   --chart-1: oklch(0.53 0.195 264.5);
@@ -533,25 +540,26 @@
   /* ==========================================================================
    * THEME/DESIGN TOKENS (--theme-*)
    * These are for the design preview canvas - what the end user's site looks like
+   * Uses explicit color values to avoid dependency on Tailwind CSS variables
    * ========================================================================== */
-  --theme-background: var(--color-white);
-  --theme-foreground: var(--color-zinc-950);
-  --theme-card: var(--color-zinc-50);
-  --theme-card-foreground: var(--color-zinc-900);
-  --theme-popover: var(--color-white);
-  --theme-popover-foreground: var(--color-zinc-950);
+  --theme-background: #ffffff;
+  --theme-foreground: oklch(0.145 0 0);
+  --theme-card: oklch(0.985 0.002 247.839);
+  --theme-card-foreground: oklch(0.21 0.006 285.885);
+  --theme-popover: #ffffff;
+  --theme-popover-foreground: oklch(0.145 0 0);
   --theme-primary: #1a3f56;
-  --theme-primary-foreground: var(--color-white);
+  --theme-primary-foreground: #ffffff;
   --theme-secondary: #ac8365;
-  --theme-secondary-foreground: var(--color-white);
-  --theme-muted: var(--color-zinc-100);
-  --theme-muted-foreground: var(--color-zinc-500);
-  --theme-accent: var(--color-zinc-100);
-  --theme-accent-foreground: var(--color-zinc-900);
+  --theme-secondary-foreground: #ffffff;
+  --theme-muted: oklch(0.967 0.001 286.375);
+  --theme-muted-foreground: oklch(0.552 0.016 285.938);
+  --theme-accent: oklch(0.967 0.001 286.375);
+  --theme-accent-foreground: oklch(0.21 0.006 285.885);
   --theme-destructive: oklch(63.7% 0.237 25.331);
-  --theme-border: var(--color-zinc-200);
-  --theme-input: var(--color-zinc-200);
-  --theme-ring: var(--color-zinc-950);
+  --theme-border: oklch(0.92 0.004 286.32);
+  --theme-input: oklch(0.92 0.004 286.32);
+  --theme-ring: oklch(0.145 0 0);
 
   /* ==========================================================================
    * LEGACY ALIASES (for existing component compatibility)
@@ -651,6 +659,7 @@
  * design colors while the builder UI maintains its own styling.
  * ============================================================================= */
 .design-preview {
+  /* Override CSS variables with theme values */
   --background: var(--theme-background);
   --foreground: var(--theme-foreground);
   --card: var(--theme-card);
@@ -669,14 +678,22 @@
   --border: var(--theme-border);
   --input: var(--theme-input);
   --ring: var(--theme-ring);
+
+  /* Apply explicit background and text color for site preview */
+  background-color: var(--theme-background);
+  color: var(--theme-foreground);
 }
 
 @layer base {
   * {
     @apply border-(--border) outline-(--ring)/50;
   }
+  body,
+  html {
+    @apply overflow-hidden;
+  }
   body {
-    @apply bg-(--background) text-(--foreground) font-sans;
+    @apply bg-(--background) text-(--foreground) font-sans overflow-hidden;
   }
 
   .scrollbar-x {
@@ -1263,3 +1280,35 @@
 .design-preview .section-container[data-layout-align="baseline"] {
   align-items: baseline;
 }
+
+/* =============================================================================
+ * TYPOGRAPHY TOKENS (matching client/styles/tokens/typography.css)
+ * For WYSIWYG parity between builder canvas and client render
+ * ============================================================================= */
+
+.design-preview {
+  /* Primitive font sizes (from Tailwind) */
+  --font-xs: theme(fontSize.xs);
+  --font-sm: theme(fontSize.sm);
+  --font-base: theme(fontSize.base);
+  --font-lg: theme(fontSize.lg);
+  --font-xl: theme(fontSize.xl);
+  --font-2xl: theme(fontSize.2xl);
+  --font-3xl: theme(fontSize.3xl);
+  --font-4xl: theme(fontSize.4xl);
+  --font-5xl: theme(fontSize.5xl);
+  --font-6xl: theme(fontSize.6xl);
+  --font-7xl: theme(fontSize.7xl);
+  --font-8xl: theme(fontSize.8xl);
+  --font-9xl: theme(fontSize.9xl);
+
+  /* Typography tokens (--heading-size-*, --text-size-*, --font-weight-*, --scale-*)
+   * are now provided by @enterprise/tokens/css for WYSIWYG parity.
+   * DO NOT duplicate them here. */
+}
+
+/* =============================================================================
+ * HEADING STYLES
+ * Now provided by @enterprise/tokens/css (imported above) for WYSIWYG parity.
+ * DO NOT add .design-preview .heading rules here - use the shared tokens.
+ * ============================================================================= */

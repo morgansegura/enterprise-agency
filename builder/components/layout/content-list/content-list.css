@@ -1,6 +1,11 @@
 @reference "tailwindcss";
 
-/* Search & Filters */
+/* Container */
+.content-list-container {
+  @apply flex flex-col gap-6 p-6 h-full min-h-0;
+}
+
+/* Search & Filters - kept for backwards compatibility */
 .content-list-search {
   @apply relative flex-1 max-w-sm;
 }
@@ -22,7 +27,11 @@
 }
 
 .content-list-view-toggle {
-  @apply flex items-center p-0.5 bg-(--border) rounded-md gap-0.5;
+  @apply flex items-center p-0.5 bg-(--muted) rounded-md gap-0.5;
+}
+
+.content-list-view-toggle button svg {
+  @apply text-(--foreground);
 }
 
 /* Grid View */

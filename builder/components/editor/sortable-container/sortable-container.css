@@ -7,145 +7,48 @@
 }
 
 /* =============================================================================
- * Container Visual - refined hover states
+ * Container Visual - only show when directly hovered
  * ============================================================================= */
 
 .container-visual {
-  /* Use box-shadow for smoother transitions */
-  box-shadow: inset 0 0 0 0 transparent;
-  transition:
-    box-shadow 150ms ease-out,
-    background-color 150ms ease-out;
+  transition: background-color 150ms ease-out;
 }
 
-/* Container hover - subtle highlight */
-.sortable-container.is-hovered .container-visual {
-  box-shadow: inset 0 0 0 1px var(--builder-border);
+/* Container hover - only when NOT hovering a block inside */
+.sortable-container.is-hovered:not(:has(.block-wrapper:hover)) .container-visual {
+  outline: 1.5px dashed var(--builder-primary);
+  outline-offset: -1.5px;
 }
 
-/* Selected block within container - refined border */
-.sortable-container.has-selected-block .container-visual {
-  box-shadow: inset 0 0 0 1.5px var(--builder-primary);
+/* Hide container outline when hovering blocks */
+.sortable-container:has(.block-wrapper:hover) .container-visual {
+  outline: none !important;
 }
 
-/* Selected state for sidebar editing - subtle glow */
+/* Hide container controls when hovering blocks */
+.sortable-container:has(.block-wrapper:hover) .container-controls {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Selected state for sidebar editing */
 .container-visual.is-selected {
-  box-shadow:
-    inset 0 0 0 1.5px var(--builder-primary),
-    0 0 0 3px color-mix(in srgb, var(--builder-primary) 10%, transparent);
+  outline: 2px dashed var(--builder-primary);
+  outline-offset: -2px;
   background: color-mix(in srgb, var(--builder-primary) 3%, transparent);
 }
 
-/* =============================================================================
- * Container Controls Bar - smooth reveal
- * ============================================================================= */
-
-.container-controls {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -100%);
-  z-index: 10;
-  /* Smooth entrance */
-  opacity: 0;
-  transition:
-    opacity 150ms ease-out,
-    transform 150ms ease-out;
-  pointer-events: none;
-}
-
-/* Show controls on hover */
-.sortable-container.is-hovered .container-controls,
-.sortable-container.has-selected-block .container-controls {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.container-controls-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  background: var(--builder-card);
-  border: 1px solid var(--builder-border);
-  border-radius: 0.5rem;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.08),
-    0 2px 4px rgba(0, 0, 0, 0.04);
-  /* Smooth entrance animation */
-  animation: controls-enter 150ms ease-out;
-}
-
-@keyframes controls-enter {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.container-label {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  color: var(--builder-muted-foreground);
-  padding-right: 0.5rem;
-  border-right: 1px solid var(--builder-border);
-  margin-right: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.container-controls-bar button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 0.25rem;
-  color: var(--builder-muted-foreground);
-  transition: all 100ms ease-out;
-}
-
-.container-controls-bar button:hover {
-  color: var(--builder-foreground);
-  background: var(--builder-muted);
-}
-
-.container-controls-bar button:active {
-  transform: scale(0.9);
-}
-
-.container-controls-bar button.is-active {
-  color: var(--builder-primary);
-  background: color-mix(in srgb, var(--builder-primary) 10%, transparent);
-}
-
-.container-delete-btn:hover {
-  color: var(--builder-destructive) !important;
-  background: color-mix(in srgb, var(--builder-destructive) 10%, transparent) !important;
-}
 
 /* =============================================================================
- * Empty Container State - refined dashed border
+ * Empty Container State - clean, minimal
  * ============================================================================= */
 
 .container-empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80px;
-  margin: 0.5rem;
-  border-radius: 0.5rem;
-  /* Subtle dashed border using background gradient trick */
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23e5e5e5' stroke-width='2' stroke-dasharray='6%2c 6' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
-  transition: all 150ms ease-out;
-}
-
-.container-empty:hover {
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23a3a3a3' stroke-width='2' stroke-dasharray='6%2c 6' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+  min-height: 60px;
+  padding: 1rem;
 }
 
 .container-empty button {
@@ -170,18 +73,4 @@
 
 .container-empty button:active {
   transform: scale(0.97);
-}
-
-/* =============================================================================
- * Dark mode adjustments for SVG borders
- * ============================================================================= */
-
-:root.dark .container-empty,
-[data-theme="dark"] .container-empty {
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23404040' stroke-width='2' stroke-dasharray='6%2c 6' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
-}
-
-:root.dark .container-empty:hover,
-[data-theme="dark"] .container-empty:hover {
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23737373' stroke-width='2' stroke-dasharray='6%2c 6' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
 }

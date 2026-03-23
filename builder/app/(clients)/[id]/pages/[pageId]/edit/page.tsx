@@ -24,7 +24,6 @@ import {
 } from "@/components/editor";
 import { PageRenderer } from "@/components/renderers/page-renderer";
 import { HeaderRenderer } from "@/components/headers";
-import { Card, CardContent } from "@/components/ui/card";
 import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
@@ -63,17 +62,22 @@ function createDefaultContainer(): Container {
     _type: "container",
     _key: `container-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     layout: { type: "stack", gap: "md" },
+    paddingX: "md",
     blocks: [],
   };
 }
 
 /**
  * Create a default section with one container
+ * Starts with nice defaults - can be customized later
  */
 function createDefaultSection(): Section {
   return {
     _type: "section",
     _key: `section-${Date.now()}`,
+    width: "container",
+    paddingTop: "lg",
+    paddingBottom: "lg",
     containers: [createDefaultContainer()],
   };
 }
@@ -881,6 +885,33 @@ export default function EditPagePage({
                 block,
               );
             }}
+            // Section actions
+            onSectionMoveUp={handleSectionMoveUp}
+            onSectionMoveDown={handleSectionMoveDown}
+            onSectionDuplicate={handleSectionDuplicate}
+            onSectionDelete={handleSectionDelete}
+            // Container actions
+            onContainerDelete={(sectionIndex, containerIndex) => {
+              setSections((prevSections) => {
+                const updated = [...prevSections];
+                const containers = [
+                  ...(updated[sectionIndex].containers ?? []),
+                ];
+                containers.splice(containerIndex, 1);
+                updated[sectionIndex] = {
+                  ...updated[sectionIndex],
+                  containers,
+                };
+                return updated;
+              });
+            }}
+            // Container actions - add container
+            onAddContainer={handleAddContainerToSection}
+            // Block actions
+            onBlockMoveUp={handleBlockMoveUp}
+            onBlockMoveDown={handleBlockMoveDown}
+            onBlockDuplicate={handleBlockDuplicate}
+            onBlockDelete={handleBlockDelete}
           />
         }
       >
@@ -888,184 +919,170 @@ export default function EditPagePage({
         <BlockEditorProvider>
           <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
             <ResponsivePreview breakpoint={breakpoint} className="h-full">
-              <Card
+              <div
                 className="page-editor-canvas-content"
                 onClick={handleCanvasClick}
               >
-                <CardContent>
-                  {/* Editable Header */}
-                  <EditableHeader
-                    tenantId={id}
-                    headerId={localPage.headerId}
-                    onHeaderChange={(headerId) =>
-                      handlePageChange("headerId", headerId)
-                    }
-                  />
+                {/* Editable Header */}
+                <EditableHeader
+                  tenantId={id}
+                  headerId={localPage.headerId}
+                  onHeaderChange={(headerId) =>
+                    handlePageChange("headerId", headerId)
+                  }
+                />
 
-                  <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleSectionDragEnd}
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleSectionDragEnd}
+                >
+                  <SortableContext
+                    items={sections.map((section) => section._key)}
+                    strategy={verticalListSortingStrategy}
                   >
-                    <SortableContext
-                      items={sections.map((section) => section._key)}
-                      strategy={verticalListSortingStrategy}
-                    >
-                      <div>
-                        {sections.map((section, sectionIndex) => (
-                          <SortableSection
-                            key={section._key}
-                            section={section}
-                            sectionIndex={sectionIndex}
-                            onSectionChange={(updatedSection) =>
-                              handleSectionChange(sectionIndex, updatedSection)
+                    <div>
+                      {sections.map((section, sectionIndex) => (
+                        <SortableSection
+                          key={section._key}
+                          section={section}
+                          sectionIndex={sectionIndex}
+                          onSectionChange={(updatedSection) =>
+                            handleSectionChange(sectionIndex, updatedSection)
+                          }
+                          onDelete={() => handleSectionDelete(sectionIndex)}
+                          onAddSectionAbove={() =>
+                            handleAddSectionAt(sectionIndex)
+                          }
+                          onAddSectionBelow={() =>
+                            handleAddSectionAt(sectionIndex + 1)
+                          }
+                          onDuplicate={() =>
+                            handleSectionDuplicate(sectionIndex)
+                          }
+                          onMoveUp={() => handleSectionMoveUp(sectionIndex)}
+                          onMoveDown={() => handleSectionMoveDown(sectionIndex)}
+                          onAddContainer={() =>
+                            handleAddContainerToSection(sectionIndex)
+                          }
+                          selectedBlockKey={selectedBlockKey}
+                          onSelectBlock={setSelectedBlockKey}
+                          hoveredBlockKey={hoveredBlockKey}
+                          onHoverBlock={setHoveredBlockKey}
+                          isFirst={sectionIndex === 0}
+                          isLast={sectionIndex === sections.length - 1}
+                          onAddBlockToContainer={(
+                            containerIndex: number,
+                            blockType: string,
+                          ) =>
+                            handleAddBlockToContainer(
+                              sectionIndex,
+                              containerIndex,
+                              blockType,
+                            )
+                          }
+                          renderContainerBlocks={(
+                            containerIndex: number,
+                            container: Container,
+                          ) => {
+                            const blocks = container.blocks ?? [];
+                            if (blocks.length === 0) {
+                              return null;
                             }
-                            onDelete={() => handleSectionDelete(sectionIndex)}
-                            onAddSectionAbove={() =>
-                              handleAddSectionAt(sectionIndex)
-                            }
-                            onAddSectionBelow={() =>
-                              handleAddSectionAt(sectionIndex + 1)
-                            }
-                            onDuplicate={() =>
-                              handleSectionDuplicate(sectionIndex)
-                            }
-                            onMoveUp={() => handleSectionMoveUp(sectionIndex)}
-                            onMoveDown={() =>
-                              handleSectionMoveDown(sectionIndex)
-                            }
-                            onAddContainer={() =>
-                              handleAddContainerToSection(sectionIndex)
-                            }
-                            selectedBlockKey={selectedBlockKey}
-                            onSelectBlock={setSelectedBlockKey}
-                            hoveredBlockKey={hoveredBlockKey}
-                            onHoverBlock={setHoveredBlockKey}
-                            isFirst={sectionIndex === 0}
-                            isLast={sectionIndex === sections.length - 1}
-                            onAddBlockToContainer={(
-                              containerIndex: number,
-                              blockType: string,
-                            ) =>
-                              handleAddBlockToContainer(
-                                sectionIndex,
-                                containerIndex,
-                                blockType,
-                              )
-                            }
-                            renderContainerBlocks={(
-                              containerIndex: number,
-                              container: Container,
-                            ) => {
-                              const blocks = container.blocks ?? [];
-                              if (blocks.length === 0) {
-                                return null;
-                              }
-                              return (
-                                <DndContext
-                                  sensors={sensors}
-                                  collisionDetection={closestCenter}
-                                  onDragEnd={(event) =>
-                                    handleBlockDragEnd(
-                                      event,
-                                      sectionIndex,
-                                      containerIndex,
-                                    )
-                                  }
+                            return (
+                              <DndContext
+                                sensors={sensors}
+                                collisionDetection={closestCenter}
+                                onDragEnd={(event) =>
+                                  handleBlockDragEnd(
+                                    event,
+                                    sectionIndex,
+                                    containerIndex,
+                                  )
+                                }
+                              >
+                                <SortableContext
+                                  items={blocks.map(
+                                    (block: Block) => block._key,
+                                  )}
+                                  strategy={verticalListSortingStrategy}
                                 >
-                                  <SortableContext
-                                    items={blocks.map(
-                                      (block: Block) => block._key,
+                                  <div className="space-y-4">
+                                    {blocks.map(
+                                      (block: Block, blockIndex: number) => (
+                                        <SortableBlockItem
+                                          key={block._key}
+                                          block={block}
+                                          onChange={(updatedBlock: Block) =>
+                                            handleBlockChange(
+                                              sectionIndex,
+                                              containerIndex,
+                                              blockIndex,
+                                              updatedBlock,
+                                            )
+                                          }
+                                          onDelete={() =>
+                                            handleBlockDelete(
+                                              sectionIndex,
+                                              containerIndex,
+                                              blockIndex,
+                                            )
+                                          }
+                                          onDuplicate={() =>
+                                            handleBlockDuplicate(
+                                              sectionIndex,
+                                              containerIndex,
+                                              blockIndex,
+                                            )
+                                          }
+                                          onMoveUp={() =>
+                                            handleBlockMoveUp(
+                                              sectionIndex,
+                                              containerIndex,
+                                              blockIndex,
+                                            )
+                                          }
+                                          onMoveDown={() =>
+                                            handleBlockMoveDown(
+                                              sectionIndex,
+                                              containerIndex,
+                                              blockIndex,
+                                            )
+                                          }
+                                          tenantId={id}
+                                          isSelected={
+                                            selectedBlockKey === block._key
+                                          }
+                                          isHovered={
+                                            hoveredBlockKey === block._key
+                                          }
+                                          onSelect={() => {
+                                            setSelectedBlockKey(block._key);
+                                            selectBlock(
+                                              sectionIndex,
+                                              containerIndex,
+                                              blockIndex,
+                                              block._key,
+                                            );
+                                          }}
+                                          isFirst={blockIndex === 0}
+                                          isLast={
+                                            blockIndex === blocks.length - 1
+                                          }
+                                        />
+                                      ),
                                     )}
-                                    strategy={verticalListSortingStrategy}
-                                  >
-                                    <div className="space-y-4">
-                                      {blocks.map(
-                                        (block: Block, blockIndex: number) => (
-                                          <SortableBlockItem
-                                            key={block._key}
-                                            block={block}
-                                            onChange={(updatedBlock: Block) =>
-                                              handleBlockChange(
-                                                sectionIndex,
-                                                containerIndex,
-                                                blockIndex,
-                                                updatedBlock,
-                                              )
-                                            }
-                                            onDelete={() =>
-                                              handleBlockDelete(
-                                                sectionIndex,
-                                                containerIndex,
-                                                blockIndex,
-                                              )
-                                            }
-                                            onDuplicate={() =>
-                                              handleBlockDuplicate(
-                                                sectionIndex,
-                                                containerIndex,
-                                                blockIndex,
-                                              )
-                                            }
-                                            onMoveUp={() =>
-                                              handleBlockMoveUp(
-                                                sectionIndex,
-                                                containerIndex,
-                                                blockIndex,
-                                              )
-                                            }
-                                            onMoveDown={() =>
-                                              handleBlockMoveDown(
-                                                sectionIndex,
-                                                containerIndex,
-                                                blockIndex,
-                                              )
-                                            }
-                                            tenantId={id}
-                                            isSelected={
-                                              selectedBlockKey === block._key
-                                            }
-                                            isHovered={
-                                              hoveredBlockKey === block._key
-                                            }
-                                            onSelect={() => {
-                                              setSelectedBlockKey(block._key);
-                                              selectBlock(
-                                                sectionIndex,
-                                                containerIndex,
-                                                blockIndex,
-                                                block._key,
-                                              );
-                                            }}
-                                            isFirst={blockIndex === 0}
-                                            isLast={
-                                              blockIndex === blocks.length - 1
-                                            }
-                                          />
-                                        ),
-                                      )}
-                                    </div>
-                                  </SortableContext>
-                                </DndContext>
-                              );
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </SortableContext>
-                  </DndContext>
-
-                  {/* Debug: Show content data */}
-                  <details className="fixed bottom-8 left-18 flex">
-                    <pre className="absolute bottom-11 left-0 w-screen max-w-6xl mt-2 p-4 bg-muted text-xs overflow-auto max-h-96 rounded-md">
-                      {JSON.stringify({ sections }, null, 2)}
-                    </pre>
-                    <summary className="cursor-pointer text-sm font-medium border p-2 rounded-md">
-                      Content Data (Debug)
-                    </summary>
-                  </details>
-                </CardContent>
-              </Card>
+                                  </div>
+                                </SortableContext>
+                              </DndContext>
+                            );
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
+              </div>
             </ResponsivePreview>
           </ResponsiveProvider>
         </BlockEditorProvider>

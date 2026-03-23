@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PropertySectionProps {
@@ -13,39 +13,40 @@ interface PropertySectionProps {
 }
 
 /**
- * Collapsible property section with Webflow-style header.
- * Uses CSS animations for smooth expand/collapse.
+ * Collapsible property section - Webflow-style.
  */
 export function PropertySection({
   title,
-  icon,
   defaultOpen = true,
   children,
   className,
 }: PropertySectionProps) {
   const [isOpen, setIsOpen] = React.useState(defaultOpen);
-  const contentRef = React.useRef<HTMLDivElement>(null);
 
   return (
-    <div className={cn("property-section", className)}>
+    <div
+      className={cn(
+        "property-section",
+        isOpen && "property-section--open",
+        className,
+      )}
+    >
       <button
         type="button"
         className="property-section-header"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
       >
-        <ChevronRight
+        <ChevronDown
           className={cn(
             "property-section-chevron",
-            isOpen && "property-section-chevron--open",
+            !isOpen && "property-section-chevron--closed",
           )}
         />
-        {icon && <span className="property-section-icon">{icon}</span>}
         <span className="property-section-title">{title}</span>
       </button>
 
       <div
-        ref={contentRef}
         className={cn(
           "property-section-content",
           isOpen

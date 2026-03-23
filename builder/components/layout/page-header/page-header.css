@@ -1,0 +1,87 @@
+@reference "tailwindcss";
+
+/* Page Header Container */
+.page-header {
+  @apply flex flex-col gap-6;
+}
+
+/* Header Row - Title & Actions */
+.page-header-row {
+  @apply flex items-start justify-between gap-4;
+}
+
+.page-header-title-section {
+  @apply flex items-center gap-4;
+}
+
+.page-header-icon {
+  @apply flex items-center justify-center;
+  @apply w-12 h-12 rounded-xl;
+  @apply bg-(--primary)/10 text-(--primary);
+}
+
+.page-header-icon svg {
+  @apply h-6 w-6;
+}
+
+.page-header-text {
+  @apply flex items-center gap-2;
+}
+
+.page-header-title {
+  @apply text-2xl font-semibold tracking-tight text-(--foreground);
+}
+
+.page-header-count {
+  @apply inline-flex font-bold px-1 h-4.5 items-center rounded-sm text-xs text-(--muted-foreground) bg-(--border);
+}
+
+.page-header-actions {
+  @apply flex items-center gap-3;
+}
+
+/* Toolbar Row - Search, Filters, View Toggle */
+.page-header-toolbar {
+  @apply flex items-center justify-between gap-4;
+}
+
+.page-header-toolbar-left {
+  @apply flex items-center gap-3 flex-1;
+}
+
+.page-header-toolbar-right {
+  @apply flex items-center gap-3;
+}
+
+/* Search */
+.page-header-search {
+  @apply relative flex-1 max-w-md;
+}
+
+.page-header-search-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2;
+  @apply h-4 w-4 text-(--muted-foreground);
+}
+
+.page-header-search-input {
+  @apply pl-10 h-10;
+}
+
+/* Filter Select */
+.page-header-filter-select {
+  @apply w-36 h-10;
+}
+
+/* View Toggle */
+.page-header-view-toggle {
+  @apply flex items-center p-0.5 rounded-md;
+  @apply bg-(--muted) gap-0.5;
+}
+
+.page-header-view-toggle button {
+  @apply h-9 w-9;
+}
+
+.page-header-view-toggle button svg {
+  @apply text-(--foreground);
+}

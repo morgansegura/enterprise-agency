@@ -78,6 +78,10 @@
   --text-size-9xl: clamp(var(--font-9xl), calc(var(--font-9xl) + var(--scale-9xl)), var(--font-9xl));
 
   /* ===== FONT WEIGHTS ===== */
+  /* Complete range matching builder for WYSIWYG parity */
+  --font-weight-thin: theme(fontWeight.thin);
+  --font-weight-extralight: theme(fontWeight.extralight);
+  --font-weight-light: theme(fontWeight.light);
   --font-weight-normal: theme(fontWeight.normal);
   --font-weight-medium: theme(fontWeight.medium);
   --font-weight-semibold: theme(fontWeight.semibold);
@@ -86,6 +90,8 @@
   --font-weight-black: theme(fontWeight.black);
 
   /* ===== LINE HEIGHTS ===== */
+  /* Complete range matching builder for WYSIWYG parity */
+  --line-height-none: theme(lineHeight.none);
   --line-height-tight: theme(lineHeight.tight);
   --line-height-snug: theme(lineHeight.snug);
   --line-height-normal: theme(lineHeight.normal);

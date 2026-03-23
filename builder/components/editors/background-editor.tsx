@@ -1,22 +1,13 @@
 "use client";
 
 import * as React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
   Palette,
   LayoutGrid,
   Image as ImageIcon,
   Ban,
-  Plus,
   X,
   PlusCircle,
 } from "lucide-react";
@@ -28,6 +19,10 @@ import {
   BACKGROUND_SIZE_OPTIONS,
   BACKGROUND_POSITION_OPTIONS,
 } from "@/lib/constants";
+import {
+  PropertyRow,
+  PropertySelect,
+} from "@/components/editor/settings-panel/components";
 
 import "./background-editor.css";
 
@@ -51,15 +46,15 @@ const GRADIENT_DIRECTION_OPTIONS = [
 // =============================================================================
 
 export interface TailwindGradient {
-  direction: string; // 'to-t', 'to-r', 'to-b', 'to-l', 'to-tr', 'to-br', 'to-bl', 'to-tl'
-  from: string; // Tailwind color like 'blue-500'
-  via?: string; // Optional middle color
-  to: string; // Tailwind color like 'pink-500'
+  direction: string;
+  from: string;
+  via?: string;
+  to: string;
 }
 
 export interface BackgroundValue {
   type: "none" | "color" | "gradient" | "image";
-  color?: string; // Hex color for solid backgrounds
+  color?: string;
   gradient?: TailwindGradient;
   image?: {
     src: string;
@@ -70,15 +65,10 @@ export interface BackgroundValue {
 }
 
 export interface BackgroundEditorProps {
-  /** Current background value */
   value: BackgroundValue | SectionBackground;
-  /** Called when background changes */
   onChange: (background: BackgroundValue) => void;
-  /** Optional class name */
   className?: string;
-  /** Show section title */
   showTitle?: boolean;
-  /** Label for image upload button (for media library integration) */
   onSelectImage?: () => void;
 }
 
@@ -107,15 +97,12 @@ function normalizeBackground(
 ): BackgroundValue {
   if (!bg) return { type: "none" };
 
-  // Already in new format
   if ("gradient" in bg && bg.gradient && "direction" in bg.gradient) {
     return bg as BackgroundValue;
   }
 
-  // Legacy format - convert
   const legacy = bg as SectionBackground;
   if (legacy.type === "gradient" && legacy.gradient) {
-    // Convert legacy CSS gradient to Tailwind gradient
     return {
       type: "gradient",
       gradient: {
@@ -137,15 +124,6 @@ function normalizeBackground(
 // Background Editor Component
 // =============================================================================
 
-/**
- * BackgroundEditor
- *
- * Unified background editor supporting:
- * - None (transparent)
- * - Solid color (hex via ColorPicker)
- * - Tailwind Gradient (bg-gradient-to-*, from-*, via-*, to-*)
- * - Image (with media library integration ready)
- */
 export function BackgroundEditor({
   value,
   onChange,
@@ -206,13 +184,11 @@ export function BackgroundEditor({
 
   const toggleVia = () => {
     if (showVia) {
-      // Remove via
       const newGradient = { ...(background.gradient || DEFAULT_GRADIENT) };
       delete newGradient.via;
       onChange({ ...background, gradient: newGradient });
       setShowVia(false);
     } else {
-      // Add via
       handleGradientChange({ via: "purple-500" });
       setShowVia(true);
     }
@@ -220,8 +196,6 @@ export function BackgroundEditor({
 
   return (
     <div className={cn("background-editor", className)}>
-      {showTitle && <h4 className="background-editor-title">TYPE</h4>}
-
       {/* Type Selector */}
       <div className="background-editor-types">
         <button
@@ -272,82 +246,69 @@ export function BackgroundEditor({
 
       {/* Color Editor */}
       {background.type === "color" && (
-        <div className="background-editor-section">
+        <PropertyRow label="Color">
           <ColorPicker
-            label="Color"
             value={background.color || DEFAULT_COLOR}
             onChange={handleColorChange}
           />
-        </div>
+        </PropertyRow>
       )}
 
       {/* Tailwind Gradient Editor */}
       {background.type === "gradient" && (
-        <div className="background-editor-section space-y-3">
-          {/* Direction */}
-          <div className="background-editor-field">
-            <Label className="background-editor-label">Direction</Label>
-            <Select
+        <>
+          <PropertyRow label="Direction">
+            <PropertySelect
               value={background.gradient?.direction || "to-r"}
-              onValueChange={(v) => handleGradientChange({ direction: v })}
-            >
-              <SelectTrigger className="h-8">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {GRADIENT_DIRECTION_OPTIONS.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              options={GRADIENT_DIRECTION_OPTIONS}
+              onChange={(v) => handleGradientChange({ direction: v })}
+            />
+          </PropertyRow>
 
-          {/* From Color */}
-          <TailwindColorPicker
-            label="From"
-            value={background.gradient?.from || "blue-500"}
-            onChange={(v) => handleGradientChange({ from: v })}
-          />
+          <PropertyRow label="From">
+            <TailwindColorPicker
+              value={background.gradient?.from || "blue-500"}
+              onChange={(v) => handleGradientChange({ from: v })}
+            />
+          </PropertyRow>
 
-          {/* Via Color (optional) */}
           {showVia && (
-            <div className="background-editor-via-row">
-              <TailwindColorPicker
-                label="Via"
-                value={background.gradient?.via || "purple-500"}
-                onChange={(v) => handleGradientChange({ via: v })}
-              />
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="background-editor-remove-via"
-                onClick={toggleVia}
-                title="Remove middle color"
-              >
-                <X className="h-3 w-3" />
-              </Button>
-            </div>
+            <PropertyRow label="Via">
+              <div className="flex items-center gap-1 w-full">
+                <TailwindColorPicker
+                  value={background.gradient?.via || "purple-500"}
+                  onChange={(v) => handleGradientChange({ via: v })}
+                  className="flex-1"
+                />
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={toggleVia}
+                  title="Remove"
+                  className="h-6 w-6 shrink-0"
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            </PropertyRow>
           )}
 
-          {/* To Color */}
-          <TailwindColorPicker
-            label="To"
-            value={background.gradient?.to || "pink-500"}
-            onChange={(v) => handleGradientChange({ to: v })}
-          />
+          <PropertyRow label="To">
+            <TailwindColorPicker
+              value={background.gradient?.to || "pink-500"}
+              onChange={(v) => handleGradientChange({ to: v })}
+            />
+          </PropertyRow>
 
-          {/* Add Via button */}
           {!showVia && (
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
-              className="w-full"
+              className="w-full text-xs text-muted-foreground"
               onClick={toggleVia}
             >
               <PlusCircle className="h-3 w-3 mr-1" />
-              Add Middle Color
+              Add Via
             </Button>
           )}
 
@@ -362,23 +323,14 @@ export function BackgroundEditor({
                 `to-${background.gradient?.to || "pink-500"}`,
               )}
             />
-            <span className="background-editor-gradient-classes">
-              bg-gradient-{background.gradient?.direction || "to-r"} from-
-              {background.gradient?.from || "blue-500"}
-              {background.gradient?.via &&
-                ` via-${background.gradient.via}`}{" "}
-              to-{background.gradient?.to || "pink-500"}
-            </span>
           </div>
-        </div>
+        </>
       )}
 
       {/* Image Editor */}
       {background.type === "image" && (
-        <div className="background-editor-section space-y-3">
-          {/* Image URL / Media Library */}
-          <div className="background-editor-field">
-            <Label className="background-editor-label">Image</Label>
+        <>
+          <PropertyRow label="URL" stacked>
             {onSelectImage ? (
               <Button
                 variant="outline"
@@ -386,20 +338,19 @@ export function BackgroundEditor({
                 className="w-full"
                 onClick={onSelectImage}
               >
-                <ImageIcon className="h-4 w-4 " />
-                {background.image?.src ? "Change Image" : "Select from Library"}
+                <ImageIcon className="h-4 w-4 mr-1" />
+                {background.image?.src ? "Change" : "Select"}
               </Button>
             ) : (
               <Input
                 placeholder="https://..."
-                className="h-8"
+                className="h-8 text-xs"
                 value={background.image?.src || ""}
                 onChange={(e) => handleImageChange({ src: e.target.value })}
               />
             )}
-          </div>
+          </PropertyRow>
 
-          {/* Image Preview */}
           {background.image?.src && (
             <div
               className="background-editor-image-preview"
@@ -407,55 +358,31 @@ export function BackgroundEditor({
             />
           )}
 
-          {/* Size & Position */}
-          <div className="background-editor-row">
-            <div className="background-editor-field">
-              <Label className="background-editor-label">Size</Label>
-              <Select
-                value={background.image?.size || "cover"}
-                onValueChange={(v) =>
-                  handleImageChange({ size: v as "cover" | "contain" | "auto" })
-                }
-              >
-                <SelectTrigger className="h-8">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {BACKGROUND_SIZE_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="background-editor-field">
-              <Label className="background-editor-label">Position</Label>
-              <Select
-                value={background.image?.position || "center"}
-                onValueChange={(v) => handleImageChange({ position: v })}
-              >
-                <SelectTrigger className="h-8">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {BACKGROUND_POSITION_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          <PropertyRow label="Size">
+            <PropertySelect
+              value={background.image?.size || "cover"}
+              options={BACKGROUND_SIZE_OPTIONS}
+              onChange={(v) =>
+                handleImageChange({ size: v as "cover" | "contain" | "auto" })
+              }
+            />
+          </PropertyRow>
 
-          {/* Overlay */}
-          <ColorPicker
-            label="Overlay"
-            value={background.image?.overlay || "transparent"}
-            onChange={(v) => handleImageChange({ overlay: v })}
-          />
-        </div>
+          <PropertyRow label="Position">
+            <PropertySelect
+              value={background.image?.position || "center"}
+              options={BACKGROUND_POSITION_OPTIONS}
+              onChange={(v) => handleImageChange({ position: v })}
+            />
+          </PropertyRow>
+
+          <PropertyRow label="Overlay">
+            <ColorPicker
+              value={background.image?.overlay || "transparent"}
+              onChange={(v) => handleImageChange({ overlay: v })}
+            />
+          </PropertyRow>
+        </>
       )}
     </div>
   );

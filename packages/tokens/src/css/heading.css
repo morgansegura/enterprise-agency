@@ -1,0 +1,140 @@
+/**
+ * @enterprise/tokens - Heading Component CSS
+ *
+ * SINGLE SOURCE OF TRUTH for heading styles.
+ * Uses data-* attributes for styling.
+ * Import this in both builder and client for WYSIWYG parity.
+ */
+
+/* Base heading styles */
+.heading {
+  position: relative;
+  font-family: var(--font-heading, inherit);
+  line-height: var(--line-height-tight);
+  max-width: clamp(20ch, 50vw + 10ch, 75ch);
+}
+
+/* ===== HEADING SIZES ===== */
+/* Each size includes an appropriate default line-height */
+/* Small sizes: more relaxed line-height for readability */
+.heading[data-size="xs"] { font-size: var(--heading-size-xs); line-height: 1.5; }
+.heading[data-size="sm"] { font-size: var(--heading-size-sm); line-height: 1.45; }
+.heading[data-size="base"] { font-size: var(--heading-size-base); line-height: 1.4; }
+.heading[data-size="lg"] { font-size: var(--heading-size-lg); line-height: 1.35; }
+
+/* Medium sizes: balanced line-height */
+.heading[data-size="xl"] { font-size: var(--heading-size-xl); line-height: 1.3; }
+.heading[data-size="2xl"] { font-size: var(--heading-size-2xl); line-height: 1.25; }
+.heading[data-size="3xl"] { font-size: var(--heading-size-3xl); line-height: 1.2; }
+
+/* Large sizes: tight line-height for impact */
+.heading[data-size="4xl"] { font-size: var(--heading-size-4xl); line-height: 1.15; }
+.heading[data-size="5xl"] { font-size: var(--heading-size-5xl); line-height: 1.1; }
+.heading[data-size="6xl"] { font-size: var(--heading-size-6xl); line-height: 1.05; }
+.heading[data-size="7xl"] { font-size: var(--heading-size-7xl); line-height: 1.05; }
+.heading[data-size="8xl"] { font-size: var(--heading-size-8xl); line-height: 1; }
+.heading[data-size="9xl"] { font-size: var(--heading-size-9xl); line-height: 1; }
+
+/* ===== HEADING WEIGHTS ===== */
+.heading[data-weight="thin"] { font-weight: var(--font-weight-thin); }
+.heading[data-weight="extralight"] { font-weight: var(--font-weight-extralight); }
+.heading[data-weight="light"] { font-weight: var(--font-weight-light); }
+.heading[data-weight="normal"] { font-weight: var(--font-weight-normal); }
+.heading[data-weight="medium"] { font-weight: var(--font-weight-medium); }
+.heading[data-weight="semibold"] { font-weight: var(--font-weight-semibold); }
+.heading[data-weight="bold"] { font-weight: var(--font-weight-bold); }
+.heading[data-weight="extrabold"] { font-weight: var(--font-weight-extrabold); }
+.heading[data-weight="black"] { font-weight: var(--font-weight-black); }
+
+/* ===== HEADING LETTER SPACING ===== */
+.heading[data-letter-spacing="tighter"] { letter-spacing: -0.05em; }
+.heading[data-letter-spacing="tight"] { letter-spacing: -0.025em; }
+.heading[data-letter-spacing="normal"] { letter-spacing: 0em; }
+.heading[data-letter-spacing="wide"] { letter-spacing: 0.025em; }
+.heading[data-letter-spacing="wider"] { letter-spacing: 0.05em; }
+.heading[data-letter-spacing="widest"] { letter-spacing: 0.1em; }
+
+/* ===== HEADING LINE HEIGHT ===== */
+.heading[data-line-height="none"] { line-height: var(--line-height-none); }
+.heading[data-line-height="tight"] { line-height: var(--line-height-tight); }
+.heading[data-line-height="snug"] { line-height: var(--line-height-snug); }
+.heading[data-line-height="normal"] { line-height: var(--line-height-normal); }
+.heading[data-line-height="relaxed"] { line-height: var(--line-height-relaxed); }
+.heading[data-line-height="loose"] { line-height: var(--line-height-loose); }
+
+/* ===== HEADING FONT STYLE ===== */
+.heading[data-font-style="normal"] { font-style: normal; }
+.heading[data-font-style="italic"] { font-style: italic; }
+
+/* ===== HEADING TEXT TRANSFORM ===== */
+.heading[data-text-transform="none"] { text-transform: none; }
+.heading[data-text-transform="uppercase"] { text-transform: uppercase; }
+.heading[data-text-transform="lowercase"] { text-transform: lowercase; }
+.heading[data-text-transform="capitalize"] { text-transform: capitalize; }
+
+/* ===== HEADING TEXT DECORATION ===== */
+.heading[data-text-decoration="none"] { text-decoration: none; }
+.heading[data-text-decoration="underline"] { text-decoration: underline; }
+.heading[data-text-decoration="line-through"] { text-decoration: line-through; }
+
+/* ===== HEADING WHITE SPACE ===== */
+.heading[data-white-space="normal"] { white-space: normal; }
+.heading[data-white-space="nowrap"] { white-space: nowrap; }
+.heading[data-white-space="pre-wrap"] { white-space: pre-wrap; }
+
+/* ===== HEADING MAX WIDTH ===== */
+.heading[data-max-width="xs"] { max-width: 20rem; }    /* 320px */
+.heading[data-max-width="sm"] { max-width: 24rem; }    /* 384px */
+.heading[data-max-width="md"] { max-width: 28rem; }    /* 448px */
+.heading[data-max-width="lg"] { max-width: 32rem; }    /* 512px */
+.heading[data-max-width="xl"] { max-width: 36rem; }    /* 576px */
+.heading[data-max-width="2xl"] { max-width: 42rem; }   /* 672px */
+.heading[data-max-width="prose"] { max-width: 65ch; }
+.heading[data-max-width="none"] { max-width: none; }
+
+/* ===== HEADING OPACITY ===== */
+.heading[data-opacity="10"] { opacity: 0.1; }
+.heading[data-opacity="25"] { opacity: 0.25; }
+.heading[data-opacity="50"] { opacity: 0.5; }
+.heading[data-opacity="75"] { opacity: 0.75; }
+.heading[data-opacity="90"] { opacity: 0.9; }
+.heading[data-opacity="100"] { opacity: 1; }
+
+/* ===== HEADING COLOR PRESETS ===== */
+.heading[data-color="default"] { color: var(--foreground); }
+.heading[data-color="primary"] { color: var(--primary); }
+.heading[data-color="secondary"] { color: var(--secondary); }
+.heading[data-color="muted"] { color: var(--muted-foreground); }
+.heading[data-color="accent"] { color: var(--accent); }
+.heading[data-color="destructive"] { color: var(--destructive); }
+
+/* ===== HEADING ALIGNMENT ===== */
+.heading[data-align="left"] { text-align: left; }
+.heading[data-align="center"] { text-align: center; margin-left: auto; margin-right: auto; }
+.heading[data-align="right"] { text-align: right; }
+
+/* ===== HEADING VARIANTS ===== */
+.heading[data-variant="default"] { color: var(--foreground); }
+.heading[data-variant="primary"] { color: var(--primary); }
+.heading[data-variant="muted"] { color: var(--muted-foreground); }
+
+/* ===== RESPONSIVE SIZE CLASSES ===== */
+/* For per-breakpoint overrides via Tailwind prefixes */
+.heading-size-xs { font-size: var(--heading-size-xs); }
+.heading-size-sm { font-size: var(--heading-size-sm); }
+.heading-size-base { font-size: var(--heading-size-base); }
+.heading-size-lg { font-size: var(--heading-size-lg); }
+.heading-size-xl { font-size: var(--heading-size-xl); }
+.heading-size-2xl { font-size: var(--heading-size-2xl); }
+.heading-size-3xl { font-size: var(--heading-size-3xl); }
+.heading-size-4xl { font-size: var(--heading-size-4xl); }
+.heading-size-5xl { font-size: var(--heading-size-5xl); }
+.heading-size-6xl { font-size: var(--heading-size-6xl); }
+.heading-size-7xl { font-size: var(--heading-size-7xl); }
+.heading-size-8xl { font-size: var(--heading-size-8xl); }
+.heading-size-9xl { font-size: var(--heading-size-9xl); }
+
+/* ===== RESPONSIVE ALIGN CLASSES ===== */
+.heading-align-left { text-align: left; }
+.heading-align-center { text-align: center; margin-left: auto; margin-right: auto; }
+.heading-align-right { text-align: right; }

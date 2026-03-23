@@ -24,6 +24,7 @@ import { BreakpointSelector, type Breakpoint } from "../breakpoint-selector";
 import { formatDistanceToNow } from "date-fns";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
+import { ResponsiveProvider } from "@/lib/responsive/context";
 import "./page-editor-layout.css";
 
 interface PageVersion {
@@ -263,17 +264,20 @@ export function PageEditorLayout({
       </div>
 
       {/* Editor Body - Canvas + Right Panel */}
-      <div className="page-editor-body">
-        <main className="page-editor-canvas">
-          {/* design-preview class maps legacy tokens to --theme-* values */}
-          <div className="page-editor-canvas-content design-preview">
-            {children}
-          </div>
-        </main>
+      {/* ResponsiveProvider wraps both canvas and settings panel so they share breakpoint context */}
+      <ResponsiveProvider breakpoint={breakpoint} isBuilder={true}>
+        <div className="page-editor-body">
+          <main className="page-editor-canvas">
+            {/* design-preview class enables section token styles for WYSIWYG parity */}
+            <div className="page-editor-canvas-content design-preview">
+              {children}
+            </div>
+          </main>
 
-        {/* Right Panel (Settings) */}
-        {rightPanel}
-      </div>
+          {/* Right Panel (Settings) */}
+          {rightPanel}
+        </div>
+      </ResponsiveProvider>
     </div>
   );
 }

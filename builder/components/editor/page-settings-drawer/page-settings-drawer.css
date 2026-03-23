@@ -1,0 +1,97 @@
+@reference "tailwindcss";
+
+/* Drawer container - bottom slide */
+.page-settings-drawer {
+  @apply min-h-screen;
+  @apply p-0;
+}
+
+/* Layout - sidebar + content */
+.page-settings-layout {
+  @apply flex h-screen;
+}
+
+/* Sidebar */
+.page-settings-sidebar {
+  @apply w-[280px] shrink-0 h-full;
+  @apply border-r border-(--border);
+  @apply bg-(--muted)/30;
+  @apply flex flex-col;
+}
+
+.page-settings-header {
+  @apply border-b border-(--border);
+}
+
+/* Navigation */
+.page-settings-nav {
+  @apply flex flex-col gap-1 p-3;
+  @apply list-none m-0;
+}
+
+.page-settings-nav-item {
+  @apply flex items-center gap-3 w-full;
+  @apply px-4 py-3 rounded-lg;
+  @apply text-left;
+  @apply text-(--muted-foreground);
+  @apply hover:bg-(--muted) hover:text-(--foreground);
+  @apply transition-colors;
+  @apply cursor-pointer;
+}
+
+.page-settings-nav-item.is-active {
+  @apply bg-(--primary)/10 text-(--primary);
+}
+
+.page-settings-nav-text {
+  @apply flex flex-col;
+}
+
+.page-settings-nav-label {
+  @apply font-semibold text-sm;
+}
+
+.page-settings-nav-desc {
+  @apply text-xs text-(--muted-foreground);
+}
+
+.page-settings-nav-item.is-active .page-settings-nav-desc {
+  @apply text-(--primary)/70;
+}
+
+/* Content area */
+.page-settings-content {
+  @apply flex-1 overflow-y-auto p-8;
+}
+
+/* Settings sections */
+.settings-section {
+  @apply max-w-3xl;
+}
+
+.settings-section-title {
+  @apply text-xl font-semibold text-(--foreground) mb-2;
+}
+
+.settings-section-description {
+  @apply text-sm text-(--muted-foreground) mb-6;
+}
+
+/* Settings form */
+.settings-form {
+  @apply space-y-6;
+}
+
+.settings-field {
+  @apply space-y-2;
+}
+
+.settings-textarea {
+  @apply flex min-h-[120px] w-full rounded-md;
+  @apply border border-(--input) bg-(--background);
+  @apply px-3 py-2 text-sm font-mono;
+  @apply ring-offset-(--background);
+  @apply placeholder:text-(--muted-foreground);
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply disabled:cursor-not-allowed disabled:opacity-50;
+}

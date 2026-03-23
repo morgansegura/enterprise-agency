@@ -377,89 +377,106 @@ export function ColorPicker({
           sideOffset={8}
           collisionPadding={{ top: 20, bottom: 20, left: 20, right: 20 }}
           avoidCollisions={true}
+          onOpenAutoFocus={(e) => e.preventDefault()}
         >
-          {/* Theme Colors - simple swatch row */}
-          <div className="color-row">
-            <span className="color-row-label">theme</span>
-            <div className="color-row-shades">
-              {themeColors.map((color) => (
-                <button
-                  key={color.value}
-                  type="button"
-                  className={cn(
-                    "color-swatch",
-                    value === color.value && "is-selected",
-                  )}
-                  style={{ backgroundColor: color.preview }}
-                  onClick={() => {
-                    onChange(color.value);
-                    setOpen(false);
-                  }}
-                  title={color.title}
-                />
-              ))}
-            </div>
-          </div>
+          <div
+            className="color-picker-scroll-container"
+            onWheel={(e) => {
+              // Prevent parent scroll, allow this container to scroll
+              const target = e.currentTarget;
+              const { scrollTop, scrollHeight, clientHeight } = target;
+              const atTop = scrollTop === 0 && e.deltaY < 0;
+              const atBottom =
+                scrollTop + clientHeight >= scrollHeight && e.deltaY > 0;
 
-          {/* Basic Colors - simple swatch row */}
-          <div className="color-row">
-            <span className="color-row-label">basic</span>
-            <div className="color-row-shades">
-              {basicColors.map((color) => (
-                <button
-                  key={color.value}
-                  type="button"
-                  className={cn(
-                    "color-swatch",
-                    value === color.value && "is-selected",
-                    color.value === "transparent" && "is-transparent",
-                  )}
-                  style={{ backgroundColor: color.preview }}
-                  onClick={() => {
-                    onChange(color.value);
-                    setOpen(false);
-                  }}
-                  title={color.title}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="color-divider" />
-
-          {/* Tailwind Palette */}
-          <div className="color-palette">
-            {(Object.keys(tailwindColors) as ColorName[]).map((colorName) => (
-              <div key={colorName} className="color-row">
-                <span className="color-row-label">{colorName}</span>
+              if (!atTop && !atBottom) {
+                e.stopPropagation();
+              }
+            }}
+          >
+            {/* Sticky header with Theme & Basic colors */}
+            <div className="color-picker-sticky-header">
+              {/* Theme Colors */}
+              <div className="color-row">
+                <span className="color-row-label">Theme</span>
                 <div className="color-row-shades">
-                  {(
-                    Object.keys(
-                      tailwindColors[colorName],
-                    ) as unknown as ShadeKey[]
-                  ).map((shade) => {
-                    const hex = tailwindColors[colorName][shade];
-                    return (
-                      <button
-                        key={shade}
-                        type="button"
-                        className={cn(
-                          "color-swatch",
-                          value === hex && "is-selected",
-                        )}
-                        style={{ backgroundColor: hex }}
-                        onClick={() => {
-                          onChange(hex);
-                          setOpen(false);
-                        }}
-                        title={`${colorName}-${shade}`}
-                      />
-                    );
-                  })}
+                  {themeColors.map((color) => (
+                    <button
+                      key={color.value}
+                      type="button"
+                      className={cn(
+                        "color-swatch",
+                        value === color.value && "is-selected",
+                      )}
+                      style={{ backgroundColor: color.preview }}
+                      onClick={() => {
+                        onChange(color.value);
+                        setOpen(false);
+                      }}
+                      title={color.title}
+                    />
+                  ))}
                 </div>
               </div>
-            ))}
+
+              {/* Basic Colors */}
+              <div className="color-row">
+                <span className="color-row-label">Basic</span>
+                <div className="color-row-shades">
+                  {basicColors.map((color) => (
+                    <button
+                      key={color.value}
+                      type="button"
+                      className={cn(
+                        "color-swatch",
+                        value === color.value && "is-selected",
+                        color.value === "transparent" && "is-transparent",
+                      )}
+                      style={{ backgroundColor: color.preview }}
+                      onClick={() => {
+                        onChange(color.value);
+                        setOpen(false);
+                      }}
+                      title={color.title}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Tailwind Palette */}
+            <div className="color-palette">
+              {(Object.keys(tailwindColors) as ColorName[]).map((colorName) => (
+                <div key={colorName} className="color-row">
+                  <span className="color-row-label">{colorName}</span>
+                  <div className="color-row-shades">
+                    {(
+                      Object.keys(
+                        tailwindColors[colorName],
+                      ) as unknown as ShadeKey[]
+                    ).map((shade) => {
+                      const hex = tailwindColors[colorName][shade];
+                      return (
+                        <button
+                          key={shade}
+                          type="button"
+                          className={cn(
+                            "color-swatch",
+                            value === hex && "is-selected",
+                          )}
+                          style={{ backgroundColor: hex }}
+                          onClick={() => {
+                            onChange(hex);
+                            setOpen(false);
+                          }}
+                          title={`${colorName}-${shade}`}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </PopoverContent>
       </Popover>

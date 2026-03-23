@@ -349,7 +349,8 @@ function determineSectionFromPath(pathname: string): SettingsSection {
   if (pathname.includes("/shop")) return "shop";
   if (pathname.includes("/posts") || pathname.includes("/tags")) return "blog";
   if (pathname.includes("/media")) return "media";
-  if (pathname.includes("/clients") || pathname.includes("/users")) return "admin";
+  if (pathname.includes("/clients") || pathname.includes("/users"))
+    return "admin";
   return "website";
 }
 

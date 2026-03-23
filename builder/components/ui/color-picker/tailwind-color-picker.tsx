@@ -21,8 +21,6 @@ export interface TailwindColorPickerProps {
   /** Returns Tailwind color name like "blue-500" */
   onChange: (value: string) => void;
   className?: string;
-  /** Show transparent option */
-  showTransparent?: boolean;
 }
 
 /**
@@ -30,13 +28,13 @@ export interface TailwindColorPickerProps {
  *
  * Like ColorPicker but returns Tailwind class names (e.g., "blue-500")
  * instead of hex values. Used for gradient from/via/to colors.
+ * Matches the visual style of ColorPicker with scrollable palette.
  */
 export function TailwindColorPicker({
   label,
   value,
   onChange,
   className,
-  showTransparent = false,
 }: TailwindColorPickerProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -70,16 +68,30 @@ export function TailwindColorPicker({
         </PopoverTrigger>
         <PopoverContent
           className="color-picker-dropdown"
-          side="left"
+          side="bottom"
           align="start"
           sideOffset={8}
-          collisionPadding={16}
+          collisionPadding={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          avoidCollisions={true}
+          onOpenAutoFocus={(e) => e.preventDefault()}
         >
-          {/* Basic Colors */}
-          {showTransparent && (
-            <>
+          <div
+            className="color-picker-scroll-container"
+            onWheel={(e) => {
+              const target = e.currentTarget;
+              const { scrollTop, scrollHeight, clientHeight } = target;
+              const atTop = scrollTop === 0 && e.deltaY < 0;
+              const atBottom =
+                scrollTop + clientHeight >= scrollHeight && e.deltaY > 0;
+              if (!atTop && !atBottom) {
+                e.stopPropagation();
+              }
+            }}
+          >
+            {/* Sticky header with Basic colors */}
+            <div className="color-picker-sticky-header">
               <div className="color-row">
-                <span className="color-row-label">basic</span>
+                <span className="color-row-label">Basic</span>
                 <div className="color-row-shades">
                   <button
                     type="button"
@@ -121,43 +133,42 @@ export function TailwindColorPicker({
                   />
                 </div>
               </div>
-              <div className="color-divider" />
-            </>
-          )}
+            </div>
 
-          {/* Tailwind Palette - returns class names */}
-          <div className="color-palette">
-            {(Object.keys(tailwindColors) as ColorName[]).map((colorName) => (
-              <div key={colorName} className="color-row">
-                <span className="color-row-label">{colorName}</span>
-                <div className="color-row-shades">
-                  {(
-                    Object.keys(
-                      tailwindColors[colorName],
-                    ) as unknown as ShadeKey[]
-                  ).map((shade) => {
-                    const hex = tailwindColors[colorName][shade];
-                    const twClass = `${colorName}-${shade}`;
-                    return (
-                      <button
-                        key={shade}
-                        type="button"
-                        className={cn(
-                          "color-swatch",
-                          value === twClass && "is-selected",
-                        )}
-                        style={{ backgroundColor: hex }}
-                        onClick={() => {
-                          onChange(twClass);
-                          setOpen(false);
-                        }}
-                        title={twClass}
-                      />
-                    );
-                  })}
+            {/* Tailwind Palette - returns class names */}
+            <div className="color-palette">
+              {(Object.keys(tailwindColors) as ColorName[]).map((colorName) => (
+                <div key={colorName} className="color-row">
+                  <span className="color-row-label">{colorName}</span>
+                  <div className="color-row-shades">
+                    {(
+                      Object.keys(
+                        tailwindColors[colorName],
+                      ) as unknown as ShadeKey[]
+                    ).map((shade) => {
+                      const hex = tailwindColors[colorName][shade];
+                      const twClass = `${colorName}-${shade}`;
+                      return (
+                        <button
+                          key={shade}
+                          type="button"
+                          className={cn(
+                            "color-swatch",
+                            value === twClass && "is-selected",
+                          )}
+                          style={{ backgroundColor: hex }}
+                          onClick={() => {
+                            onChange(twClass);
+                            setOpen(false);
+                          }}
+                          title={twClass}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </PopoverContent>
       </Popover>

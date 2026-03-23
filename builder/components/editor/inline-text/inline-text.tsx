@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 
 import "./inline-text.css";
 
-interface InlineTextProps {
+interface InlineTextProps
+  extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -37,6 +38,7 @@ export function InlineText({
   as: Component = "p",
   multiline = false,
   disabled = false,
+  ...rest
 }: InlineTextProps) {
   const ref = React.useRef<HTMLElement>(null);
 
@@ -113,6 +115,7 @@ export function InlineText({
       )}
       style={style}
       data-placeholder={placeholder}
+      {...rest}
     />
   );
 }

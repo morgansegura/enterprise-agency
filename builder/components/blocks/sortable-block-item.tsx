@@ -28,9 +28,9 @@ interface SortableBlockItemProps {
  *
  * Wraps blocks with:
  * - Drag-and-drop functionality
- * - Selection state with floating toolbar
- * - Settings popover for block configuration
- * - Quick actions (edit, duplicate, delete)
+ * - Selection state with background tint
+ * - Text formatting toolbar (only when text is selected)
+ * - Actions (move, clone, delete) are in the sidebar settings panel
  *
  * The content renders exactly as it will appear to end users.
  */
@@ -38,15 +38,9 @@ export function SortableBlockItem({
   block,
   onChange,
   onDelete,
-  onDuplicate,
-  onMoveUp,
-  onMoveDown,
-  tenantId,
   isSelected = false,
   isHovered = false,
   onSelect,
-  isFirst = false,
-  isLast = false,
 }: SortableBlockItemProps) {
   const { setNodeRef, transform, transition, isDragging } = useSortable({
     id: block._key,
@@ -64,17 +58,10 @@ export function SortableBlockItem({
       className={cn(isDragging && "opacity-50 cursor-grabbing")}
     >
       <BlockWrapper
-        block={block}
-        onBlockChange={onChange}
+        blockKey={block._key}
         isSelected={isSelected}
         isHovered={isHovered}
         onSelect={onSelect}
-        onDelete={onDelete}
-        onDuplicate={onDuplicate}
-        onMoveUp={onMoveUp}
-        onMoveDown={onMoveDown}
-        isFirst={isFirst}
-        isLast={isLast}
       >
         <BlockEditorRenderer
           block={block}

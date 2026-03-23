@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useParams } from "next/navigation";
 import {
-  Pyramid,
   FileText,
   Newspaper,
   Image,
@@ -27,18 +26,17 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { NavLink } from "@/components/ui/nav-link";
 import { useTenant } from "@/lib/hooks/use-tenants";
 import { useUIStore } from "@/lib/stores/ui-store";
 
 import "./client-sidebar.css";
-import Link from "next/link";
 
 interface ClientSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: {
@@ -118,44 +116,8 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
     },
   ];
 
-  // Header branding - white-labeled per tenant
-  const brandName = tenantId && tenant?.businessName
-    ? tenant.businessName
-    : "Web & Funnel";
-  const brandHref = tenantId ? `/${tenantId}` : "/clients";
-
-  // Custom icon from tenant settings
-  const tenantIconUrl = (tenant as { iconUrl?: string } | undefined)?.iconUrl;
-
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="client-sidebar-header">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild tooltip={brandName}>
-              <Link href={brandHref}>
-                <div className="client-sidebar-logo">
-                  {tenantIconUrl ? (
-                    <img
-                      src={tenantIconUrl}
-                      alt={brandName}
-                      className="h-5 w-5 object-contain"
-                    />
-                  ) : (
-                    <Pyramid />
-                  )}
-                </div>
-                <div className="client-sidebar-header-text">
-                  <span className="client-sidebar-title">
-                    {brandName}
-                  </span>
-                </div>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-
       <SidebarContent>
         {/* Admin Section - always visible for super admins */}
         {user.isSuperAdmin && (
@@ -247,40 +209,41 @@ export function ClientSidebar({ user, ...props }: ClientSidebarProps) {
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
-
-            <SidebarSeparator />
-
-            {/* Page Settings Section */}
-            <SidebarGroup>
-              <SidebarGroupLabel>Editor</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      onClick={openPageSettings}
-                      tooltip="Page Settings"
-                    >
-                      <Settings className="size-4" />
-                      <span>Page Settings</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      onClick={openGlobalSettings}
-                      tooltip="Global Settings"
-                    >
-                      <Globe className="size-4" />
-                      <span>Global Settings</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
           </>
         )}
       </SidebarContent>
 
-      <SidebarFooter />
+      <SidebarFooter>
+        <SidebarSeparator />
+
+        {/* Page Settings Section */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Editor</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={openPageSettings}
+                  tooltip="Page Settings"
+                >
+                  <Settings className="size-4" />
+                  <span>Page Settings</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={openGlobalSettings}
+                  tooltip="Global Settings"
+                >
+                  <Globe className="size-4" />
+                  <span>Global Settings</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarTrigger className="client-layout-header-trigger" />
+      </SidebarFooter>
     </Sidebar>
   );
 }

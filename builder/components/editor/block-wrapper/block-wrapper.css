@@ -6,27 +6,24 @@
 
 .block-wrapper {
   @apply relative;
-  /* Smooth transitions for all state changes */
-  transition: box-shadow 150ms ease-out, outline-color 150ms ease-out;
 }
 
-/* Subtle hover hint - very light, non-intrusive */
-.block-wrapper:hover:not(.is-selected) {
-  box-shadow: inset 0 0 0 1px var(--builder-border);
+/* Subtle hover - light background tint */
+.block-wrapper:hover {
+  background: color-mix(in srgb, var(--builder-primary) 5%, transparent);
+  border-radius: 4px;
 }
 
-/* Selected state - refined border with subtle glow */
+/* Selected state - stronger background tint, no border */
 .block-wrapper.is-selected {
-  box-shadow:
-    inset 0 0 0 1.5px var(--builder-primary),
-    0 0 0 3px color-mix(in srgb, var(--builder-primary) 15%, transparent);
+  background: color-mix(in srgb, var(--builder-primary) 12%, transparent);
+  border-radius: 4px;
 }
 
-/* Hovered state (from layers popover) - subtle highlight */
-.block-wrapper.is-hovered:not(.is-selected) {
-  box-shadow:
-    inset 0 0 0 1.5px var(--builder-primary),
-    0 0 0 3px color-mix(in srgb, var(--builder-primary) 10%, transparent);
+/* Hovered state (from layers popover) */
+.block-wrapper.is-hovered {
+  background: color-mix(in srgb, var(--builder-primary) 8%, transparent);
+  border-radius: 4px;
 }
 
 /* =============================================================================
@@ -88,70 +85,6 @@
 .block-toolbar-delete:hover {
   @apply text-(--builder-destructive);
   background: color-mix(in srgb, var(--builder-destructive) 10%, transparent) !important;
-}
-
-/* =============================================================================
- * Selection Handles - refined corners
- * ============================================================================= */
-
-.block-handle {
-  @apply absolute w-2 h-2 bg-white rounded-sm;
-  @apply z-10;
-  border: 1.5px solid var(--builder-primary);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  /* Smooth entrance */
-  animation: handle-enter 150ms ease-out;
-  transition: transform 100ms ease-out, box-shadow 100ms ease-out;
-}
-
-.block-handle:hover {
-  transform: scale(1.2);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-@keyframes handle-enter {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Corner handles */
-.block-handle.top-left {
-  @apply -top-1 -left-1 cursor-nwse-resize;
-}
-
-.block-handle.top-right {
-  @apply -top-1 -right-1 cursor-nesw-resize;
-}
-
-.block-handle.bottom-left {
-  @apply -bottom-1 -left-1 cursor-nesw-resize;
-}
-
-.block-handle.bottom-right {
-  @apply -bottom-1 -right-1 cursor-nwse-resize;
-}
-
-/* Edge handles */
-.block-handle.top {
-  @apply -top-1 left-1/2 -translate-x-1/2 cursor-ns-resize;
-}
-
-.block-handle.bottom {
-  @apply -bottom-1 left-1/2 -translate-x-1/2 cursor-ns-resize;
-}
-
-.block-handle.left {
-  @apply top-1/2 -left-1 -translate-y-1/2 cursor-ew-resize;
-}
-
-.block-handle.right {
-  @apply top-1/2 -right-1 -translate-y-1/2 cursor-ew-resize;
 }
 
 /* =============================================================================

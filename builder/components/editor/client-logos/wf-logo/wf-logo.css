@@ -1,0 +1,64 @@
+@reference "tailwindcss";
+
+.wf-logo {
+  &[data-logo-size="sm"] {
+    @apply h-8;
+  }
+
+  &[data-logo-size="base"] {
+    @apply h-10;
+  }
+
+  &[data-logo-size="lg"] {
+    @apply h-20;
+  }
+
+  .color-1 {
+    @apply isolate fill-[#a4b7c6];
+  }
+  .color-2 {
+    @apply fill-[#45637c];
+  }
+
+  .color-3 {
+    @apply fill-[url(#linear-gradient)];
+  }
+
+  .color-4 {
+    @apply fill-[#dce8ed];
+  }
+
+  .color-5 {
+    @apply fill-white;
+  }
+
+  .color-6 {
+    @apply fill-[#bcdae8];
+  }
+
+  .dark & {
+    .color-1 {
+      @apply isolate fill-[#a4b7c6];
+    }
+
+    .color-2 {
+      @apply fill-[#3777ab];
+    }
+
+    .color-3 {
+      @apply fill-[url('#linear-gradient')];
+    }
+
+    .color-4 {
+      @apply fill-[#dce8ed];
+    }
+
+    .color-5 {
+      @apply fill-white;
+    }
+
+    .color-6 {
+      @apply fill-transparent;
+    }
+  }
+}

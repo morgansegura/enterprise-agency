@@ -3,7 +3,6 @@
 import * as React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type {
@@ -11,15 +10,24 @@ import type {
   Container,
   SectionBackground,
 } from "@/lib/hooks/use-pages";
-import { SectionActionsPopover } from "../section-actions-popover";
 import { SortableContainer } from "../sortable-container";
 import { toast } from "sonner";
 import { useUIStore } from "@/lib/stores/ui-store";
+import { useCurrentBreakpoint } from "@/lib/responsive/context";
+import { getResponsiveValue } from "@/lib/responsive";
 
 // Re-export for use by page editor
 export type { Container };
 
 import "./sortable-section.css";
+
+import {
+  ArrowDown,
+  ArrowUp,
+  CopyPlus,
+  SquareDashed,
+  Trash2,
+} from "lucide-react";
 
 interface SortableSectionProps {
   section: Section;
@@ -180,15 +188,38 @@ export function SortableSection({
   // UI Store for section/container selection
   const { selectedElement, selectSection, selectContainer } = useUIStore();
 
+  // Get current breakpoint for responsive values
+  const breakpoint = useCurrentBreakpoint();
+
+  // Helper to get responsive section value
+  const getSectionValue = <T,>(field: string, defaultValue: T): T => {
+    const sectionData = section as unknown as Record<string, unknown>;
+    return (
+      getResponsiveValue<T>(sectionData, field, breakpoint) ?? defaultValue
+    );
+  };
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
-  // Get effective padding values
-  const effectivePaddingTop = section.paddingTop || section.paddingY || "md";
+  // Get responsive padding values
+  const paddingY = getSectionValue<string>("paddingY", "md");
+  const effectivePaddingTop =
+    getSectionValue<string>("paddingTop", "") || paddingY;
   const effectivePaddingBottom =
-    section.paddingBottom || section.paddingY || "md";
+    getSectionValue<string>("paddingBottom", "") || paddingY;
+
+  // Get other responsive values
+  const width = getSectionValue<string>("width", "full");
+  const gapY = getSectionValue<string>("gapY", "");
+  const align = getSectionValue<string>("align", "left");
+  const minHeight = getSectionValue<string>("minHeight", "none");
+  const verticalAlign = getSectionValue<string>("verticalAlign", "top");
+  const borderTop = getSectionValue<string>("borderTop", "none");
+  const borderBottom = getSectionValue<string>("borderBottom", "none");
+  const shadow = getSectionValue<string>("shadow", "none");
 
   // Get background styles
   const { dataBackground, style: bgStyle } = getBackgroundStyles(
@@ -202,9 +233,6 @@ export function SortableSection({
       )
     : false;
 
-  // Track popover open state to keep buttons visible
-  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-
   // Check if this section is selected in the right panel
   const isSectionSelected =
     selectedElement?.type === "section" &&
@@ -215,7 +243,8 @@ export function SortableSection({
     // Only select if clicking directly on section (not on nested elements)
     const target = e.target as HTMLElement;
     if (
-      target.closest(".section-container") ||
+      target.closest(".sortable-container") ||
+      target.closest(".block-wrapper") ||
       target.closest("button") ||
       target.closest('[role="dialog"]') ||
       target.closest("[data-radix-popper-content-wrapper]")
@@ -234,9 +263,31 @@ export function SortableSection({
         "sortable-section",
         isDragging && "is-dragging",
         hasSelectedBlock && "has-selected-block",
-        isPopoverOpen && "is-popover-open",
       )}
     >
+      <div
+        className={cn(
+          "sortable-section-label",
+          isSectionSelected && "is-selected",
+        )}
+      >
+        <span>Section {sectionIndex + 1}</span>
+        <Button variant="ghost" size="icon-sm" onClick={onMoveUp}>
+          <ArrowUp />
+        </Button>
+        <Button variant="ghost" size="icon-sm" onClick={onMoveDown}>
+          <ArrowDown />
+        </Button>
+        <Button variant="ghost" size="icon-sm" onClick={onDuplicate}>
+          <CopyPlus />
+        </Button>
+        <Button variant="ghost" size="icon-sm" onClick={onDelete}>
+          <Trash2 />
+        </Button>
+        <Button variant="ghost" size="icon-sm" onClick={onAddContainer}>
+          <SquareDashed />
+        </Button>
+      </div>
       {/* Section Visual - renders with same data attributes as client Section component */}
       <div
         className={cn(
@@ -245,80 +296,53 @@ export function SortableSection({
         )}
         onClick={handleSectionClick}
         // Section-level data attributes (matches client/components/layout/section/section.tsx)
+        // All values are responsive-aware via getSectionValue()
         data-padding-top={effectivePaddingTop}
         data-padding-bottom={effectivePaddingBottom}
-        data-gap-y={section.gapY}
+        data-gap-y={gapY || undefined}
         data-background={dataBackground}
-        data-width={section.width || "full"}
-        data-align={section.align || "left"}
-        data-border-top={section.borderTop || "none"}
-        data-border-bottom={section.borderBottom || "none"}
-        data-shadow={section.shadow || "none"}
-        data-min-height={section.minHeight || "none"}
-        data-vertical-align={
-          section.minHeight && section.minHeight !== "none"
-            ? section.verticalAlign || "top"
-            : undefined
-        }
+        data-width={width}
+        data-align={align}
+        data-border-top={borderTop}
+        data-border-bottom={borderBottom}
+        data-shadow={shadow}
+        data-min-height={minHeight}
+        data-vertical-align={minHeight !== "none" ? verticalAlign : undefined}
         style={bgStyle}
       >
-        {/* Drag Handle - Left side */}
-        <button className="section-drag-handle" aria-label="Drag section">
-          <GripVertical className="h-4 w-4" />
-        </button>
-
-        {/* Section Actions Button - Right side */}
-        <SectionActionsPopover
-          section={section}
-          onDelete={onDelete}
-          onDuplicate={onDuplicate}
-          onMoveUp={onMoveUp}
-          onMoveDown={onMoveDown}
-          onAddContainer={onAddContainer}
-          selectedBlockKey={selectedBlockKey}
-          onSelectBlock={onSelectBlock}
-          onHoverBlock={onHoverBlock}
-          onOpenChange={setIsPopoverOpen}
-          isFirst={isFirst}
-          isLast={isLast}
-        >
-          <button
-            className="section-actions-handle"
-            aria-label="Section actions"
-          >
-            <Settings2 className="h-4 w-4" />
-          </button>
-        </SectionActionsPopover>
-
         {/* Section boundary controls - only when no block selected */}
         {!hasSelectedBlock && (
           <>
             {/* ADD SECTION - Above (overlaid) - hidden for first section */}
             {onAddSectionAbove && !isFirst ? (
-              <div className="section-add-above">
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={onAddSectionAbove}
-                  className="section-add-btn"
-                >
-                  Add Section
-                </Button>
-              </div>
+              <>
+                <div className="section-add-above">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={onAddSectionAbove}
+                    className="section-add-btn"
+                  >
+                    Add Section
+                  </Button>
+                </div>
+              </>
             ) : null}
 
             {/* ADD SECTION - Below (overlaid) */}
             {onAddSectionBelow ? (
-              <div className="section-add-below">
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={onAddSectionBelow}
-                  className="section-add-btn"
-                >
-                  Add Section
-                </Button>
-              </div>
+              <>
+                <div className="section-add-below">
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={onAddSectionBelow}
+                    className="section-add-btn"
+                  >
+                    Add Section
+                  </Button>
+                </div>
+              </>
             ) : null}
           </>
         )}

@@ -10,25 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PageLayout } from "@/components/layout/page-layout";
+import { PageHeader } from "@/components/layout/page-header";
 import {
   MoreHorizontal,
   Pencil,
   Trash2,
   Copy,
-  Plus,
-  Search,
-  LayoutGrid,
-  List,
   PlusCircle,
   Circle,
   CheckCircle2,
@@ -267,83 +255,51 @@ export function ContentList<T extends ContentItem>({
     },
   ];
 
+  // Build filter options for PageHeader
+  const headerFilterOptions = filterOptions || [
+    { value: "published", label: "Published" },
+    { value: "draft", label: "Draft" },
+  ];
+
   if (error) {
     return (
-      <PageLayout title={title} description={`Error loading ${pluralName}`}>
+      <div className="content-list-container">
+        <PageHeader
+          title={title}
+          icon={Icon}
+          description={`Error loading ${pluralName}`}
+        />
         <div className="content-list-error">
           <p>{error.message}</p>
         </div>
-      </PageLayout>
+      </div>
     );
   }
 
-  // Toolbar component
-  const toolbarContent = (
-    <>
-      <div className="content-list-search">
-        <Search className="content-list-search-icon" />
-        <Input
-          placeholder={`Search ${pluralName}...`}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="content-list-search-input"
-        />
-      </div>
-      <div className="content-list-filters">
-        {(showStatus || filterOptions) && (
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="content-list-filter-select">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              {filterOptions ? (
-                filterOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))
-              ) : (
-                <>
-                  <SelectItem value="published">Published</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                </>
-              )}
-            </SelectContent>
-          </Select>
-        )}
-        <div className="content-list-view-toggle">
-          <Button
-            variant={viewMode === "grid" ? "outline" : "ghost"}
-            size="icon-sm"
-            onClick={() => setViewMode("grid")}
-          >
-            <LayoutGrid className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "list" ? "outline" : "ghost"}
-            size="icon-sm"
-            onClick={() => setViewMode("list")}
-          >
-            <List className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-    </>
-  );
-
   return (
-    <PageLayout
-      title={title}
-      description={`${items?.length || 0} ${items?.length === 1 ? singularName : pluralName}`}
-      actions={
-        <Button onClick={onCreate}>
-          <PlusCircle className="h-4 w-4" />
-          Create {singularName}
-        </Button>
-      }
-      toolbar={toolbarContent}
-    >
+    <div className="content-list-container">
+      {/* Page Header */}
+      <PageHeader
+        title={title}
+        icon={Icon}
+        count={items?.length || 0}
+        singularName={singularName.toLowerCase()}
+        pluralName={pluralName}
+        actionLabel={`Create ${singularName}`}
+        onAction={onCreate}
+        showSearch
+        searchPlaceholder={`Search ${pluralName}...`}
+        searchValue={search}
+        onSearchChange={setSearch}
+        showFilter={showStatus || !!filterOptions}
+        filterOptions={headerFilterOptions}
+        filterValue={statusFilter}
+        onFilterChange={setStatusFilter}
+        showViewToggle
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+      />
+
       {/* Content */}
       {isLoading ? (
         <div className="content-list-grid">
@@ -543,6 +499,6 @@ export function ContentList<T extends ContentItem>({
           ))}
         </div>
       )}
-    </PageLayout>
+    </div>
   );
 }

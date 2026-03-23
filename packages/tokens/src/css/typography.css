@@ -1,0 +1,95 @@
+/**
+ * @enterprise/tokens - Typography CSS Tokens
+ *
+ * SINGLE SOURCE OF TRUTH for typography tokens.
+ * Import this in both builder and client for WYSIWYG parity.
+ *
+ * Layer 1: Primitive tokens (base sizes - Tailwind defaults)
+ * Layer 2: Scaling rates (viewport-based scaling)
+ * Layer 3: Fluid tokens (clamp using primitives)
+ */
+
+:root {
+  /* ===== LAYER 1: PRIMITIVE FONT SIZE TOKENS ===== */
+  /* These match Tailwind's default fontSize scale */
+  --font-xs: 0.75rem;     /* 12px */
+  --font-sm: 0.875rem;    /* 14px */
+  --font-base: 1rem;      /* 16px */
+  --font-lg: 1.125rem;    /* 18px */
+  --font-xl: 1.25rem;     /* 20px */
+  --font-2xl: 1.5rem;     /* 24px */
+  --font-3xl: 1.875rem;   /* 30px */
+  --font-4xl: 2.25rem;    /* 36px */
+  --font-5xl: 3rem;       /* 48px */
+  --font-6xl: 3.75rem;    /* 60px */
+  --font-7xl: 4.5rem;     /* 72px */
+  --font-8xl: 6rem;       /* 96px */
+  --font-9xl: 8rem;       /* 128px */
+
+  /* ===== LAYER 2: SCALING RATE TOKENS ===== */
+  --scale-xs: 0.15vw;
+  --scale-sm: 0.25vw;
+  --scale-base: 0.35vw;
+  --scale-lg: 0.5vw;
+  --scale-xl: 0.75vw;
+  --scale-2xl: 1vw;
+  --scale-3xl: 1.25vw;
+  --scale-4xl: 1.5vw;
+  --scale-5xl: 2vw;
+  --scale-6xl: 2.25vw;
+  --scale-7xl: 2.5vw;
+  --scale-8xl: 3vw;
+  --scale-9xl: 3.5vw;
+
+  /* ===== LAYER 3: FLUID HEADING SIZES ===== */
+  /* More dramatic scaling for larger sizes - better responsive behavior */
+  /* Small sizes: conservative scaling */
+  --heading-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);     /* 12px → 14px */
+  --heading-size-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);        /* 14px → 16px */
+  --heading-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);        /* 16px → 20px */
+  --heading-size-lg: clamp(1.125rem, 1rem + 0.65vw, 1.5rem);        /* 18px → 24px */
+
+  /* Medium sizes: moderate scaling */
+  --heading-size-xl: clamp(1.25rem, 1rem + 1vw, 1.75rem);           /* 20px → 28px */
+  --heading-size-2xl: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);       /* 24px → 36px */
+  --heading-size-3xl: clamp(1.875rem, 1.25rem + 2vw, 3rem);         /* 30px → 48px */
+
+  /* Large sizes: dramatic scaling for hero headlines */
+  --heading-size-4xl: clamp(2.25rem, 1.25rem + 3vw, 4rem);          /* 36px → 64px */
+  --heading-size-5xl: clamp(2.5rem, 1.25rem + 4vw, 5rem);           /* 40px → 80px */
+  --heading-size-6xl: clamp(3rem, 1rem + 5vw, 6rem);                /* 48px → 96px */
+  --heading-size-7xl: clamp(3.5rem, 1rem + 6vw, 7.5rem);            /* 56px → 120px */
+  --heading-size-8xl: clamp(4rem, 1rem + 7vw, 9rem);                /* 64px → 144px */
+  --heading-size-9xl: clamp(5rem, 1rem + 8vw, 11rem);               /* 80px → 176px */
+
+  /* ===== LAYER 3: FLUID TEXT SIZES ===== */
+  --text-size-xs: clamp(var(--font-xs), calc(var(--font-xs) + var(--scale-xs)), var(--font-sm));
+  --text-size-sm: clamp(var(--font-sm), calc(var(--font-sm) + var(--scale-sm)), var(--font-base));
+  --text-size-base: clamp(var(--font-base), calc(var(--font-base) + var(--scale-base)), var(--font-lg));
+  --text-size-lg: clamp(var(--font-lg), calc(var(--font-lg) + var(--scale-lg)), var(--font-xl));
+  --text-size-xl: clamp(var(--font-xl), calc(var(--font-xl) + var(--scale-xl)), var(--font-2xl));
+  --text-size-2xl: clamp(var(--font-2xl), calc(var(--font-2xl) + var(--scale-2xl)), var(--font-3xl));
+  --text-size-3xl: clamp(var(--font-3xl), calc(var(--font-3xl) + var(--scale-3xl)), var(--font-4xl));
+  --text-size-4xl: clamp(var(--font-4xl), calc(var(--font-4xl) + var(--scale-4xl)), var(--font-5xl));
+  --text-size-5xl: clamp(var(--font-5xl), calc(var(--font-5xl) + var(--scale-5xl)), var(--font-6xl));
+  --text-size-6xl: clamp(var(--font-6xl), calc(var(--font-6xl) + var(--scale-6xl)), var(--font-7xl));
+
+  /* ===== FONT WEIGHTS ===== */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* ===== LINE HEIGHTS ===== */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+}

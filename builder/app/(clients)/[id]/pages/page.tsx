@@ -15,8 +15,8 @@ import {
   type PageCardData,
   type PageCardActions,
 } from "@/components/ui/page-card";
-import { Button } from "@/components/ui/button";
-import { Plus, FileText, Loader2, PlusCircle } from "lucide-react";
+import { PageHeader } from "@/components/layout/page-header";
+import { FileText, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function PagesPage({
@@ -36,20 +36,33 @@ export default function PagesPage({
 
   // Track which pages are being updated
   const [updatingIds, setUpdatingIds] = React.useState<string[]>([]);
+  const [search, setSearch] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState("all");
+  const [viewMode, setViewMode] = React.useState<"grid" | "list">("list");
 
-  // Convert pages to PageCardData format
+  // Convert pages to PageCardData format and filter
   const pageCardData: PageCardData[] = React.useMemo(() => {
     if (!pages) return [];
-    return pages.map((page) => ({
-      id: page.id,
-      title: page.title,
-      slug: page.slug,
-      status: (page.status as "draft" | "published") || "draft",
-      isHomePage: page.isHomePage,
-      updatedAt: page.updatedAt,
-      createdAt: page.createdAt,
-    }));
-  }, [pages]);
+    return pages
+      .map((page) => ({
+        id: page.id,
+        title: page.title,
+        slug: page.slug,
+        status: (page.status as "draft" | "published") || "draft",
+        isHomePage: page.isHomePage,
+        updatedAt: page.updatedAt,
+        createdAt: page.createdAt,
+      }))
+      .filter((page) => {
+        const matchesSearch =
+          search === "" ||
+          page.title.toLowerCase().includes(search.toLowerCase()) ||
+          page.slug.toLowerCase().includes(search.toLowerCase());
+        const matchesStatus =
+          statusFilter === "all" || page.status === statusFilter;
+        return matchesSearch && matchesStatus;
+      });
+  }, [pages, search, statusFilter]);
 
   // Action handlers
   const pageActions: PageCardActions = {
@@ -124,33 +137,40 @@ export default function PagesPage({
   if (error) {
     return (
       <div className="flex-1 p-6">
-        <div className="text-center py-12">
-          <p className="text-destructive">Failed to load pages</p>
-        </div>
+        <PageHeader
+          title="Pages"
+          icon={FileText}
+          description="Failed to load pages"
+        />
       </div>
     );
   }
 
   return (
-    <div className="flex-1 p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-primary/10">
-            <FileText className="h-5 w-5 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-xl font-semibold">Pages</h1>
-            <p className="text-sm text-muted-foreground">
-              {pages?.length || 0} {pages?.length === 1 ? "page" : "pages"}
-            </p>
-          </div>
-        </div>
-        <Button onClick={() => router.push(`/${id}/pages/new`)}>
-          <PlusCircle className="h-4 w-4 " />
-          New Page
-        </Button>
-      </div>
+    <div className="flex-1 p-8 space-y-6">
+      <PageHeader
+        title="Pages"
+        icon={FileText}
+        count={pages?.length || 0}
+        singularName="page"
+        pluralName="pages"
+        actionLabel="New Page"
+        onAction={() => router.push(`/${id}/pages/new`)}
+        showSearch
+        searchPlaceholder="Search pages..."
+        searchValue={search}
+        onSearchChange={setSearch}
+        showFilter
+        filterOptions={[
+          { value: "published", label: "Published" },
+          { value: "draft", label: "Draft" },
+        ]}
+        filterValue={statusFilter}
+        onFilterChange={setStatusFilter}
+        showViewToggle
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+      />
 
       {/* Content */}
       {isLoading ? (
@@ -162,12 +182,12 @@ export default function PagesPage({
           pages={pageCardData}
           actions={pageActions}
           updatingIds={updatingIds}
-          showSearch={true}
-          showFilters={true}
-          showViewToggle={true}
+          showSearch={false}
+          showFilters={false}
+          showViewToggle={false}
           showDate={true}
           showHomepageToggle={true}
-          defaultView="list"
+          view={viewMode}
           emptyMessage="No pages yet. Create your first page to get started."
         />
       )}

@@ -1,24 +1,12 @@
 "use client";
 
 import * as React from "react";
-import {
-  GripVertical,
-  Plus,
-  PlusCircle,
-  Settings2,
-  Trash2,
-} from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import type { Container, SectionBackground } from "@/lib/hooks/use-pages";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
-import { ContainerSettingsPopover } from "../container-settings-popover";
 import { AddBlockPopover } from "../add-block-popover";
 import { useUIStore } from "@/lib/stores/ui-store";
 
@@ -109,7 +97,6 @@ export function SortableContainer({
 }: SortableContainerProps) {
   const breakpoint = useCurrentBreakpoint();
   const [isHovered, setIsHovered] = React.useState(false);
-  const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [addBlockOpen, setAddBlockOpen] = React.useState(false);
 
   // UI Store for container selection
@@ -142,6 +129,14 @@ export function SortableContainer({
     selectContainer(sectionIndex, containerIndex, container._key);
   };
 
+  // Helper to get responsive container value
+  const getContainerValue = <T,>(field: string, defaultValue: T): T => {
+    const containerData = container as unknown as Record<string, unknown>;
+    return (
+      getResponsiveValue<T>(containerData, field, breakpoint) ?? defaultValue
+    );
+  };
+
   // Helper to get responsive layout value
   const getLayoutValue = <T,>(field: string, defaultValue: T): T => {
     if (!container.layout) return defaultValue;
@@ -149,14 +144,35 @@ export function SortableContainer({
     return getResponsiveValue<T>(layoutData, field, breakpoint) ?? defaultValue;
   };
 
-  const showControls = isHovered || settingsOpen || addBlockOpen;
+  // Get all responsive container values
+  const paddingX = getContainerValue<string>("paddingX", "");
+  const paddingY = getContainerValue<string>("paddingY", "");
+  const maxWidth = getContainerValue<string>("maxWidth", "none");
+  const minHeight = getContainerValue<string>("minHeight", "none");
+  const align = getContainerValue<string>("align", "left");
+  const verticalAlign = getContainerValue<string>("verticalAlign", "top");
+  const borderTop = getContainerValue<string>("borderTop", "none");
+  const borderBottom = getContainerValue<string>("borderBottom", "none");
+  const borderLeft = getContainerValue<string>("borderLeft", "none");
+  const borderRight = getContainerValue<string>("borderRight", "none");
+  const borderRadius = getContainerValue<string>("borderRadius", "none");
+  const shadow = getContainerValue<string>("shadow", "none");
+
+  // Get responsive layout values
+  const layoutType = getLayoutValue<string>("type", "stack");
+  const layoutDirection = getLayoutValue<string>("direction", "");
+  const layoutWrap = getLayoutValue<string>("wrap", "");
+  const layoutGap = getLayoutValue<string>("gap", "md");
+  const layoutColumns = getLayoutValue<string>("columns", "");
+  const layoutJustify = getLayoutValue<string>("justify", "");
+  const layoutAlign = getLayoutValue<string>("align", "");
 
   return (
     <div
       className={cn(
         "sortable-container",
         hasSelectedBlock && "has-selected-block",
-        showControls && "is-hovered",
+        isHovered && "is-hovered",
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -164,35 +180,35 @@ export function SortableContainer({
       {/* Container Visual */}
       <div
         className={cn(
-          "container-visual container",
+          "container-visual section-container",
           isContainerSelected && "is-selected",
         )}
         onClick={handleContainerClick}
-        // Layout attributes
-        data-layout-type={container.layout?.type || "stack"}
-        data-layout-direction={container.layout?.direction}
-        data-layout-wrap={container.layout?.wrap}
-        data-layout-gap={getLayoutValue<string>("gap", "md")}
-        data-layout-columns={container.layout?.columns}
-        data-layout-justify={container.layout?.justify}
-        data-layout-align={container.layout?.align}
-        // Size attributes
-        data-max-width={container.maxWidth || "none"}
-        data-min-height={container.minHeight || "none"}
-        // Padding attributes
-        data-padding-x={container.paddingX}
-        data-padding-y={container.paddingY}
-        // Border attributes
-        data-border-top={container.borderTop || "none"}
-        data-border-bottom={container.borderBottom || "none"}
-        data-border-left={container.borderLeft || "none"}
-        data-border-right={container.borderRight || "none"}
-        data-border-radius={container.borderRadius || "none"}
-        // Shadow
-        data-shadow={container.shadow || "none"}
-        // Content alignment
-        data-align={container.align || "left"}
-        data-vertical-align={container.verticalAlign || "top"}
+        // Layout attributes - all responsive
+        data-layout-type={layoutType}
+        data-layout-direction={layoutDirection || undefined}
+        data-layout-wrap={layoutWrap || undefined}
+        data-layout-gap={layoutGap}
+        data-layout-columns={layoutColumns || undefined}
+        data-layout-justify={layoutJustify || undefined}
+        data-layout-align={layoutAlign || undefined}
+        // Size attributes - responsive
+        data-max-width={maxWidth}
+        data-min-height={minHeight}
+        // Padding attributes - responsive
+        data-padding-x={paddingX || undefined}
+        data-padding-y={paddingY || undefined}
+        // Border attributes - responsive
+        data-border-top={borderTop}
+        data-border-bottom={borderBottom}
+        data-border-left={borderLeft}
+        data-border-right={borderRight}
+        data-border-radius={borderRadius}
+        // Shadow - responsive
+        data-shadow={shadow}
+        // Content alignment - responsive
+        data-align={align}
+        data-vertical-align={verticalAlign}
         style={getContainerBackgroundStyle(container.background)}
       >
         {children}
@@ -216,67 +232,6 @@ export function SortableContainer({
           </div>
         )}
       </div>
-
-      {/* Container Controls - shown on hover */}
-      {showControls && (
-        <div className="container-controls">
-          <div className="container-controls-bar">
-            {/* Container label */}
-            <span className="container-label">
-              Container {containerIndex + 1}
-            </span>
-
-            {/* Add Block */}
-            <AddBlockPopover
-              onAddBlock={(blockType) => {
-                onAddBlock(blockType);
-                setAddBlockOpen(false);
-              }}
-              open={addBlockOpen}
-              onOpenChange={setAddBlockOpen}
-            >
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className={cn(addBlockOpen && "is-active")}
-                title="Add Block"
-              >
-                <PlusCircle className="h-4 w-4" />
-              </Button>
-            </AddBlockPopover>
-
-            {/* Container Settings */}
-            <ContainerSettingsPopover
-              container={container}
-              onChange={onContainerChange}
-              open={settingsOpen}
-              onOpenChange={setSettingsOpen}
-            >
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className={cn(settingsOpen && "is-active")}
-                title="Container Settings"
-              >
-                <Settings2 className="h-4 w-4" />
-              </Button>
-            </ContainerSettingsPopover>
-
-            {/* Delete Container - only if not the only one */}
-            {!isOnly && (
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={onDelete}
-                title="Delete Container"
-                className="container-delete-btn"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

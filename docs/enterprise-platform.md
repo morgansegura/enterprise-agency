@@ -20,6 +20,7 @@ A premium, enterprise-grade web application platform for building and managing c
 ### Vision
 
 Build a **premium agency platform** that enables:
+
 - Rapid webapp development for clients
 - Professional, enterprise-grade output
 - Self-service client portals
@@ -28,11 +29,11 @@ Build a **premium agency platform** that enables:
 
 ### Three Applications
 
-| App | Purpose | Port | Status |
-|-----|---------|------|--------|
-| **API** | NestJS backend, multi-tenant | 4000 | 90% |
-| **Builder** | Admin/editing interface | 4001 | 60% |
-| **Client** | Public-facing websites | 4002 | 50% |
+| App         | Purpose                      | Port | Status |
+| ----------- | ---------------------------- | ---- | ------ |
+| **API**     | NestJS backend, multi-tenant | 4000 | 90%    |
+| **Builder** | Admin/editing interface      | 4001 | 60%    |
+| **Client**  | Public-facing websites       | 4002 | 50%    |
 
 ### Tech Stack
 
@@ -96,6 +97,7 @@ Tenant Tokens (DB) → CSS Variables → Components → Rendered Output
 ### MVP Checklist
 
 #### API (Backend)
+
 - [x] Multi-tenant architecture
 - [x] Authentication (JWT)
 - [x] Pages CRUD
@@ -107,6 +109,7 @@ Tenant Tokens (DB) → CSS Variables → Components → Rendered Output
 - [ ] **Fix:** TypeScript errors in tokens package
 
 #### Builder (Admin)
+
 - [x] Authentication flow
 - [x] Tenant management
 - [x] Page editor with blocks
@@ -131,6 +134,7 @@ Tenant Tokens (DB) → CSS Variables → Components → Rendered Output
   - [ ] History panel
 
 #### Client (Frontend)
+
 - [x] Page rendering
 - [x] Section/block system
 - [x] Token-based styling
@@ -156,72 +160,79 @@ Tenant Tokens (DB) → CSS Variables → Components → Rendered Output
 ### Phase 1: Foundation (Current)
 
 #### 1.1 Global Settings System
+
 **Status:** In Progress
 
-| Setting Panel | Purpose | Status |
-|--------------|---------|--------|
-| Colors | Brand & UI colors | ✅ Built |
-| Typography | Fonts, scales, roles | ✅ Built |
-| Animations | Motion, transitions | ✅ Built |
-| Components | Dropdowns, modals, drawers | ✅ Built |
-| Loading | Skeletons, loaders, placeholders | ✅ Built |
-| SEO | Meta, schema, analytics, redirects | ✅ Built |
-| Site | Pages, navigation, branding | 🔄 Partial |
-| Buttons | Button styles per size | 🔄 Partial |
-| Inputs | Form input styles | 🔄 Partial |
-| Cards | Card component styles | 🔄 Partial |
+| Setting Panel | Purpose                            | Status     |
+| ------------- | ---------------------------------- | ---------- |
+| Colors        | Brand & UI colors                  | ✅ Built   |
+| Typography    | Fonts, scales, roles               | ✅ Built   |
+| Animations    | Motion, transitions                | ✅ Built   |
+| Components    | Dropdowns, modals, drawers         | ✅ Built   |
+| Loading       | Skeletons, loaders, placeholders   | ✅ Built   |
+| SEO           | Meta, schema, analytics, redirects | ✅ Built   |
+| Site          | Pages, navigation, branding        | 🔄 Partial |
+| Buttons       | Button styles per size             | 🔄 Partial |
+| Inputs        | Form input styles                  | 🔄 Partial |
+| Cards         | Card component styles              | 🔄 Partial |
 
 **Remaining Work:**
+
 - Wire all settings to CSS variable generation
 - Ensure settings persist and load correctly
 - Add reset to defaults functionality
 - Add import/export settings
 
 #### 1.2 Page-Level Settings
+
 **Status:** Planned
 
-| Setting | Description |
-|---------|-------------|
-| SEO | Title, description, OG, Twitter, schema |
-| Layout | Header style, footer style, sidebar |
-| Spacing | Page padding, content width |
-| Background | Color, image, gradient |
-| Custom CSS | Page-specific styles |
-| Visibility | Draft, published, password protected |
-| Scheduling | Publish date, unpublish date |
+| Setting    | Description                             |
+| ---------- | --------------------------------------- |
+| SEO        | Title, description, OG, Twitter, schema |
+| Layout     | Header style, footer style, sidebar     |
+| Spacing    | Page padding, content width             |
+| Background | Color, image, gradient                  |
+| Custom CSS | Page-specific styles                    |
+| Visibility | Draft, published, password protected    |
+| Scheduling | Publish date, unpublish date            |
 
 #### 1.3 Section Settings
+
 **Status:** Partial (needs expansion)
 
-| Setting | Description |
-|---------|-------------|
+| Setting    | Description                            |
+| ---------- | -------------------------------------- |
 | Background | Color, gradient, image, video, overlay |
-| Spacing | Padding top/bottom, margin |
-| Width | Full, contained, narrow |
-| Height | Auto, viewport, fixed |
-| Alignment | Content position (9-point grid) |
-| Effects | Shadow, border, rounded corners |
-| Visibility | Show/hide per breakpoint |
-| Animation | Entrance animation, scroll effects |
-| Anchor | ID for navigation links |
+| Spacing    | Padding top/bottom, margin             |
+| Width      | Full, contained, narrow                |
+| Height     | Auto, viewport, fixed                  |
+| Alignment  | Content position (9-point grid)        |
+| Effects    | Shadow, border, rounded corners        |
+| Visibility | Show/hide per breakpoint               |
+| Animation  | Entrance animation, scroll effects     |
+| Anchor     | ID for navigation links                |
 
 #### 1.4 Container Settings
+
 **Status:** Partial
 
-| Setting | Description |
-|---------|-------------|
-| Layout | Stack, flex, grid |
-| Direction | Row, column (for flex) |
-| Columns | Number of columns (for grid) |
-| Gap | Spacing between items |
-| Alignment | Justify, align items |
-| Wrap | Wrap behavior |
-| Responsive | Per-breakpoint overrides |
+| Setting    | Description                  |
+| ---------- | ---------------------------- |
+| Layout     | Stack, flex, grid            |
+| Direction  | Row, column (for flex)       |
+| Columns    | Number of columns (for grid) |
+| Gap        | Spacing between items        |
+| Alignment  | Justify, align items         |
+| Wrap       | Wrap behavior                |
+| Responsive | Per-breakpoint overrides     |
 
 #### 1.5 Component Settings
+
 **Status:** Partial (per-block editors exist)
 
 Each block type needs:
+
 - Content editing
 - Style overrides
 - Responsive settings
@@ -233,6 +244,7 @@ Each block type needs:
 ### Phase 2: Core Editor Experience
 
 #### 2.1 Undo/Redo System
+
 **Priority:** Critical
 
 ```typescript
@@ -252,6 +264,7 @@ interface HistoryStore {
 ```
 
 **Features:**
+
 - Cmd/Ctrl+Z to undo
 - Cmd/Ctrl+Shift+Z to redo
 - Toolbar buttons with state
@@ -259,23 +272,26 @@ interface HistoryStore {
 - Persist across session (optional)
 
 #### 2.2 Keyboard Shortcuts
+
 **Priority:** Critical
 
-| Category | Shortcuts |
-|----------|-----------|
-| **File** | Save (Cmd+S), Publish (Cmd+Shift+P) |
-| **Edit** | Undo, Redo, Copy, Paste, Duplicate, Delete |
-| **Navigation** | Command palette (Cmd+K), Layers (Cmd+L) |
-| **View** | Preview (Cmd+E), Responsive (Cmd+1/2/3) |
-| **Blocks** | Add block (Cmd+/), Search blocks |
+| Category       | Shortcuts                                  |
+| -------------- | ------------------------------------------ |
+| **File**       | Save (Cmd+S), Publish (Cmd+Shift+P)        |
+| **Edit**       | Undo, Redo, Copy, Paste, Duplicate, Delete |
+| **Navigation** | Command palette (Cmd+K), Layers (Cmd+L)    |
+| **View**       | Preview (Cmd+E), Responsive (Cmd+1/2/3)    |
+| **Blocks**     | Add block (Cmd+/), Search blocks           |
 
 **Implementation:**
+
 - Central keyboard handler
 - User-configurable shortcuts
 - Shortcut hints in UI
 - Cheat sheet modal (Cmd+?)
 
 #### 2.3 Clipboard (Copy/Paste)
+
 **Priority:** High
 
 - Copy block (Cmd+C)
@@ -288,6 +304,7 @@ interface HistoryStore {
 - Paste style only
 
 #### 2.4 Command Palette
+
 **Priority:** High
 
 ```
@@ -316,6 +333,7 @@ interface HistoryStore {
 ```
 
 #### 2.5 Layers Panel
+
 **Priority:** High
 
 - Tree view of page structure
@@ -328,6 +346,7 @@ interface HistoryStore {
 - Search/filter
 
 #### 2.6 History Panel
+
 **Priority:** Medium
 
 - List of all changes
@@ -342,6 +361,7 @@ interface HistoryStore {
 ### Phase 3: Advanced Editor Features
 
 #### 3.1 Multi-Select
+
 - Shift+click for range
 - Cmd+click for individual
 - Drag to box select
@@ -350,6 +370,7 @@ interface HistoryStore {
 - Group selection
 
 #### 3.2 Zoom Controls
+
 - Zoom slider (25% - 200%)
 - Fit to screen
 - Zoom to selection
@@ -357,6 +378,7 @@ interface HistoryStore {
 - Keyboard shortcuts (+/-)
 
 #### 3.3 Grid & Guides
+
 - Show grid overlay
 - Snap to grid
 - Alignment guides
@@ -364,6 +386,7 @@ interface HistoryStore {
 - Ruler display
 
 #### 3.4 Templates
+
 - Save block as template
 - Save section as template
 - Save page as template
@@ -372,6 +395,7 @@ interface HistoryStore {
 - Industry-specific templates
 
 #### 3.5 Autosave & Drafts
+
 - Autosave every 30 seconds
 - Manual save
 - Draft versions
@@ -383,9 +407,11 @@ interface HistoryStore {
 ### Phase 4: Content Management
 
 #### 4.1 Blog System
+
 **Status:** Editor done, client rendering missing
 
 **Builder:**
+
 - [x] Post list page
 - [x] Post create/edit
 - [x] Post settings (author, date, excerpt, categories, tags)
@@ -396,6 +422,7 @@ interface HistoryStore {
 - [ ] Author profiles
 
 **Client:**
+
 - [ ] Blog list page (/blog)
 - [ ] Post detail page (/blog/[slug])
 - [ ] Category pages (/blog/category/[slug])
@@ -407,6 +434,7 @@ interface HistoryStore {
 - [ ] Comments (optional)
 
 #### 4.2 Media Library Enhancements
+
 - [ ] Folders/organization
 - [ ] Bulk upload
 - [ ] Image editing (crop, resize)
@@ -416,6 +444,7 @@ interface HistoryStore {
 - [ ] Lazy loading optimization
 
 #### 4.3 Navigation Builder
+
 - [ ] Menu management
 - [ ] Drag-and-drop menu items
 - [ ] Nested menus
@@ -424,6 +453,7 @@ interface HistoryStore {
 - [ ] Multiple menu locations
 
 #### 4.4 Forms System
+
 - [ ] Form builder
 - [ ] Field types (text, email, phone, select, etc.)
 - [ ] Validation rules
@@ -458,6 +488,7 @@ interface HistoryStore {
 See: [Marketing Platform Documentation](./marketing-platform.md)
 
 #### 6.1 Analytics
+
 - [ ] Page view tracking
 - [ ] Visitor sessions
 - [ ] Traffic sources
@@ -468,6 +499,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - [ ] Event tracking
 
 #### 6.2 SEO Suite
+
 - [ ] SEO audit/scoring
 - [ ] Keyword tracking
 - [ ] Content optimization
@@ -476,6 +508,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - [ ] GEO (Generative Engine Optimization)
 
 #### 6.3 Social & Marketing
+
 - [ ] Social preview cards
 - [ ] Share tracking
 - [ ] UTM builder
@@ -487,6 +520,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 ### Phase 7: Client Portal
 
 #### 7.1 Portal Features
+
 - [ ] Client login
 - [ ] Dashboard with stats
 - [ ] Content editing (tier-based)
@@ -496,6 +530,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - [ ] Activity log
 
 #### 7.2 Agency Dashboard
+
 - [ ] All clients overview
 - [ ] Health monitoring
 - [ ] Revenue tracking
@@ -508,6 +543,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 ### Phase 8: Advanced Features
 
 #### 8.1 Collaboration
+
 - [ ] Real-time editing
 - [ ] User presence
 - [ ] Comments on blocks
@@ -515,12 +551,14 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - [ ] Notifications
 
 #### 8.2 Internationalization
+
 - [ ] Multi-language content
 - [ ] RTL support
 - [ ] Language switcher
 - [ ] Translation workflow
 
 #### 8.3 Accessibility
+
 - [ ] WCAG 2.1 AA compliance
 - [ ] Accessibility checker
 - [ ] Screen reader optimization
@@ -528,6 +566,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - [ ] Color contrast validation
 
 #### 8.4 Performance
+
 - [ ] Core Web Vitals monitoring
 - [ ] Image optimization
 - [ ] Code splitting
@@ -541,6 +580,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 ### Enterprise-Grade Criteria
 
 #### Code Quality
+
 - TypeScript strict mode
 - ESLint + Prettier
 - No `any` types
@@ -550,6 +590,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - E2E tests for critical paths
 
 #### UI/UX Quality
+
 - Consistent design language
 - Responsive across devices
 - Fast interactions (<100ms)
@@ -559,6 +600,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - Accessibility compliant
 
 #### Performance
+
 - Lighthouse score >90
 - First Contentful Paint <1.5s
 - Time to Interactive <3s
@@ -566,6 +608,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - Bundle size optimized
 
 #### Security
+
 - Input validation
 - XSS prevention
 - CSRF protection
@@ -575,6 +618,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 - Role-based access
 
 #### Reliability
+
 - Error boundaries
 - Graceful degradation
 - Offline support
@@ -587,6 +631,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 ## Implementation Phases
 
 ### Sprint 1: MVP Foundation (2 weeks)
+
 **Goal:** Working page builder with basic features
 
 1. Fix TypeScript errors in tokens package
@@ -599,6 +644,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 **Deliverable:** Can build a page with sections/blocks, publish it, and see it live
 
 ### Sprint 2: Editor Experience (2 weeks)
+
 **Goal:** Professional editing experience
 
 1. Command palette
@@ -611,6 +657,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 **Deliverable:** Fast, intuitive editing with recovery options
 
 ### Sprint 3: Content System (2 weeks)
+
 **Goal:** Complete content management
 
 1. Container settings panel
@@ -623,6 +670,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 **Deliverable:** Full CMS capabilities
 
 ### Sprint 4: Polish & Launch (2 weeks)
+
 **Goal:** Production-ready
 
 1. Templates system
@@ -635,6 +683,7 @@ See: [Marketing Platform Documentation](./marketing-platform.md)
 **Deliverable:** Launch-ready platform
 
 ### Post-Launch Sprints
+
 - Sprint 5: E-commerce client blocks
 - Sprint 6: Analytics infrastructure
 - Sprint 7: SEO audit system

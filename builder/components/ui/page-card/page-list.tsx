@@ -27,6 +27,7 @@ interface PageListProps {
   showDate?: boolean;
   showHomepageToggle?: boolean;
   defaultView?: ViewMode;
+  view?: ViewMode;
   emptyMessage?: string;
   className?: string;
 }
@@ -41,12 +42,18 @@ export function PageList({
   showDate = true,
   showHomepageToggle = true,
   defaultView = "list",
+  view,
   emptyMessage = "No pages found",
   className,
 }: PageListProps) {
   const [search, setSearch] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<StatusFilter>("all");
-  const [viewMode, setViewMode] = React.useState<ViewMode>(defaultView);
+  const [internalViewMode, setInternalViewMode] =
+    React.useState<ViewMode>(defaultView);
+
+  // Use controlled view if provided, otherwise use internal state
+  const viewMode = view ?? internalViewMode;
+  const setViewMode = view === undefined ? setInternalViewMode : () => {};
 
   // Filter pages based on search and status
   const filteredPages = React.useMemo(() => {

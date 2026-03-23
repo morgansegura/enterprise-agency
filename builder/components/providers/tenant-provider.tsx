@@ -4,7 +4,10 @@ import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
 import { useTenantTokens } from "@/lib/hooks/use-tenant-tokens";
-import { applyTokensToDOM, type TokensToApply } from "@/lib/tokens/apply-tokens";
+import {
+  applyTokensToDOM,
+  type TokensToApply,
+} from "@/lib/tokens/apply-tokens";
 
 export function TenantProvider({ children }: { children: React.ReactNode }) {
   const params = useParams();

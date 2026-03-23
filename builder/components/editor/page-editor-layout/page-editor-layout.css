@@ -1,7 +1,8 @@
 @reference "tailwindcss";
 
+/* Editor layout - full page like HTML document */
 .page-editor-layout {
-  @apply flex flex-col h-screen w-full bg-(--background) flex-1;
+  @apply h-screen flex flex-col w-full bg-(--background);
 }
 
 /* Toolbar */
@@ -51,23 +52,18 @@
   @apply text-amber-500;
 }
 
-/* Editor Body */
+/* Editor Body - content area fills remaining space */
 .page-editor-body {
-  @apply flex flex-1;
+  @apply flex-1 flex overflow-hidden;
 }
 
-/* Canvas */
+/* Canvas - takes remaining space, scrolls independently */
 .page-editor-canvas {
-  @apply flex-1 flex flex-col relative bg-(--muted) h-screen overflow-y-auto;
+  @apply flex-1 flex flex-col h-screen relative overflow-y-auto p-4 bg-(--builder-body) min-h-0;
 }
 
 .page-editor-canvas-content {
-  [data-slot="card"] {
-    @apply rounded-none border-none h-full top-0;
-  }
-  [data-slot="card-content"] {
-    @apply p-0;
-  }
+  @apply flex-1;
 }
 
 /* Preview Mode */

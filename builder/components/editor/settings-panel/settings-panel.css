@@ -24,7 +24,7 @@
   pointer-events: none;
 }
 
-/* Panel wrapper to maintain layout space */
+/* Panel wrapper - sits beside canvas, not over it */
 .settings-panel-wrapper {
   position: relative;
   width: 280px;
@@ -32,10 +32,18 @@
   flex-shrink: 0;
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  /* Ensure it stays in flow */
+  display: flex;
 }
 
 .settings-panel-wrapper.collapsed {
   width: 0;
+}
+
+/* Panel fills its wrapper */
+.settings-panel-wrapper .settings-panel {
+  position: relative;
+  width: 280px;
 }
 
 /* Toggle button when panel is closed */
@@ -65,24 +73,17 @@
   padding: 0 0.75rem;
   height: 40px;
   border-bottom: 1px solid var(--border);
-  background: var(--muted);
+  background: var(--background);
 }
 
 .settings-panel-selector {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius);
+  padding: 0.25rem 0;
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--foreground);
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-
-.settings-panel-selector:hover {
-  background: var(--accent);
 }
 
 .settings-panel-selector-name {
@@ -90,42 +91,42 @@
 }
 
 /* =============================================================================
- * Tabs (32px)
+ * Tabs (40px)
  * ============================================================================= */
 
 .settings-panel-tabs {
-  display: flex;
-  height: 32px;
-  border-bottom: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 10px 12px;
+  padding: 3px;
   background: var(--muted);
+  border-radius: 6px;
 }
 
 .settings-panel-tab {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
   color: var(--muted-foreground);
   background: transparent;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .settings-panel-tab:hover {
   color: var(--foreground);
-  background: var(--accent);
 }
 
 .settings-panel-tab.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+  color: var(--foreground);
   background: var(--background);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* =============================================================================
@@ -153,31 +154,33 @@
 }
 
 /* =============================================================================
- * Property Section (Collapsible) - New Webflow-style
+ * Property Section (Collapsible)
  * ============================================================================= */
 
 .property-section {
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
 }
 
-.property-section:last-child {
-  border-bottom: none;
+.property-section:first-child {
+  border-top: none;
 }
 
 .property-section-header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   width: 100%;
-  padding: 0.625rem 0.75rem;
+  padding: 10px 12px;
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: background 0.1s ease;
+  text-align: left;
 }
 
-.property-section-header:hover {
-  background: var(--muted);
+.property-section-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground);
 }
 
 .property-section-chevron {
@@ -188,27 +191,8 @@
   flex-shrink: 0;
 }
 
-.property-section-chevron--open {
-  transform: rotate(90deg);
-}
-
-.property-section-icon {
-  display: flex;
-  align-items: center;
-  color: var(--muted-foreground);
-}
-
-.property-section-icon svg {
-  width: 14px;
-  height: 14px;
-}
-
-.property-section-title {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted-foreground);
+.property-section-chevron--closed {
+  transform: rotate(-90deg);
 }
 
 .property-section-content {
@@ -227,10 +211,14 @@
 
 .property-section-inner {
   overflow: hidden;
-  padding: 0 0.75rem 0.75rem;
+  padding: 0 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .property-section-content--closed .property-section-inner {
+  padding-top: 0;
   padding-bottom: 0;
 }
 
@@ -242,24 +230,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.25rem 0;
-  min-height: 28px;
+  gap: 12px;
+  min-height: 32px;
 }
 
 .property-row--stacked {
   flex-direction: column;
   align-items: stretch;
-  gap: 0.25rem;
+  gap: 6px;
 }
 
 .property-row-label {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--foreground);
+  color: var(--muted-foreground);
   white-space: nowrap;
 }
 
@@ -272,7 +256,6 @@
 
 .property-row-control {
   flex-shrink: 0;
-  width: 100px;
 }
 
 .property-row--stacked .property-row-control {
@@ -280,9 +263,24 @@
 }
 
 .property-row-help {
-  font-size: 0.6875rem;
+  font-size: 11px;
   color: var(--muted-foreground);
-  margin-top: 0.25rem;
+  margin-top: 4px;
+}
+
+/* Compact row - inline label and control */
+.property-row-compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 32px;
+}
+
+.property-row-compact .property-row-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground);
 }
 
 /* =============================================================================
@@ -291,7 +289,7 @@
 
 .property-grid {
   display: grid;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
 .property-grid--cols-2 {
@@ -306,15 +304,29 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
+/* Property cell - stacked label + control */
+.property-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.property-cell-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
 /* =============================================================================
- * Property Toggle (Webflow-style)
+ * Property Toggle
  * ============================================================================= */
 
 .property-toggle {
   display: inline-flex;
+  gap: 2px;
+  padding: 3px;
   background: var(--muted);
   border-radius: 6px;
-  padding: 2px;
 }
 
 .property-toggle--full {
@@ -330,16 +342,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.6875rem;
+  gap: 4px;
+  padding: 5px 10px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--muted-foreground);
   background: transparent;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
 
@@ -350,7 +362,7 @@
 .property-toggle-btn--active {
   background: var(--background);
   color: var(--foreground);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .property-toggle-icon {
@@ -373,9 +385,18 @@
  * ============================================================================= */
 
 .property-select {
-  height: 28px;
-  font-size: 0.8125rem;
-  padding: 0 0.5rem;
+  height: 32px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 0 10px;
+  background: var(--muted);
+  border: none;
+  border-radius: 6px;
+  color: var(--foreground);
+}
+
+.property-select:hover {
+  background: var(--accent);
 }
 
 .property-select-option {
@@ -386,7 +407,7 @@
 
 .property-select-description {
   color: var(--muted-foreground);
-  margin-left: 0.5rem;
+  margin-left: 8px;
 }
 
 /* =============================================================================
@@ -484,22 +505,22 @@
 
 .toggle-group {
   display: inline-flex;
+  gap: 2px;
+  padding: 3px;
   background: var(--muted);
   border-radius: 6px;
-  padding: 2px;
-  gap: 1px;
 }
 
 .toggle-group-btn {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.6875rem;
+  padding: 5px 10px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--muted-foreground);
   background: transparent;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
 
@@ -510,14 +531,14 @@
 .toggle-group-btn.active {
   background: var(--background);
   color: var(--foreground);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* =============================================================================
- * Responsive (Mobile overlay)
+ * Responsive (Mobile only - true mobile, not tablets)
  * ============================================================================= */
 
-@media (max-width: 1024px) {
+@media (max-width: 640px) {
   .settings-panel-wrapper {
     position: fixed;
     right: 0;
@@ -536,7 +557,7 @@
     pointer-events: auto;
   }
 
-  .settings-panel {
+  .settings-panel-wrapper .settings-panel {
     position: absolute;
     inset: 0;
     width: 100%;

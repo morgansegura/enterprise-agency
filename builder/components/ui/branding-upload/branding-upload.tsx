@@ -105,10 +105,12 @@ export function BrandingUpload({
     "relative flex items-center justify-center rounded-lg border-2 border-dashed transition-colors",
     aspectRatio === "square" ? "h-24 w-24" : "h-20 w-40",
     isDragging && "border-primary bg-primary/5",
-    !isDragging && !value && "border-muted-foreground/25 hover:border-muted-foreground/50",
+    !isDragging &&
+      !value &&
+      "border-muted-foreground/25 hover:border-muted-foreground/50",
     value && "border-transparent bg-muted",
     disabled && "opacity-50 cursor-not-allowed",
-    className
+    className,
   );
 
   return (
@@ -165,7 +167,7 @@ export function BrandingUpload({
             alt={label}
             className={cn(
               "object-contain",
-              aspectRatio === "square" ? "h-20 w-20" : "h-16 w-36"
+              aspectRatio === "square" ? "h-20 w-20" : "h-16 w-36",
             )}
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";

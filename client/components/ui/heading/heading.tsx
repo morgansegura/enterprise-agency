@@ -7,7 +7,7 @@ import type {
   TextAlign,
   HeadingVariant,
 } from "@/lib/types";
-import "./heading.css";
+// Styles come from @enterprise/tokens/css imported in globals.css
 
 type LetterSpacing =
   | "tighter"
@@ -76,8 +76,8 @@ type HeadingProps = {
 export function Heading({
   children,
   as: Component = "h2",
-  size = "lg",
-  weight = "bold",
+  size = "2xl",
+  weight = "semibold",
   align = "left",
   variant = "default",
   letterSpacing,
