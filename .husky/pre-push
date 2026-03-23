@@ -1,0 +1,48 @@
+#!/bin/sh
+
+echo "Running pre-push verification..."
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+REMOTE_REF="origin/main"
+if git rev-parse --verify "origin/$BRANCH" > /dev/null 2>&1; then
+  REMOTE_REF="origin/$BRANCH"
+fi
+
+CHANGED_FILES=$(git diff --name-only "$REMOTE_REF"...HEAD 2>/dev/null || git diff --name-only HEAD~10...HEAD)
+
+API_FILES=$(echo "$CHANGED_FILES" | grep "^api/.*\.ts$" || true)
+BUILDER_FILES=$(echo "$CHANGED_FILES" | grep "^builder/.*\.tsx\?$" || true)
+CLIENT_FILES=$(echo "$CHANGED_FILES" | grep "^client/.*\.tsx\?$" || true)
+
+FAILED=0
+
+if [ -n "$API_FILES" ]; then
+  echo "API changes detected - running lint & typecheck..."
+  cd api && pnpm lint && pnpm typecheck || FAILED=1
+  cd ..
+fi
+
+if [ -n "$BUILDER_FILES" ]; then
+  echo "Builder changes detected - running lint & typecheck..."
+  cd builder && pnpm lint && pnpm typecheck || FAILED=1
+  cd ..
+fi
+
+if [ -n "$CLIENT_FILES" ]; then
+  echo "Client changes detected - running lint & typecheck..."
+  cd client && pnpm lint && pnpm typecheck || FAILED=1
+  cd ..
+fi
+
+if [ -z "$API_FILES" ] && [ -z "$BUILDER_FILES" ] && [ -z "$CLIENT_FILES" ]; then
+  echo "No TypeScript changes detected, skipping verification"
+fi
+
+if [ "$FAILED" -eq 1 ]; then
+  echo ""
+  echo "Pre-push verification failed! Fix errors before pushing."
+  exit 1
+fi
+
+echo "Pre-push verification passed!"

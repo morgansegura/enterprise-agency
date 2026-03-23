@@ -9,6 +9,8 @@
   },
   "packageManager": "pnpm@10.20.0",
   "scripts": {
+    "prepare": "husky",
+    "pre-commit": "lint-staged",
     "dev": "pnpm --parallel --stream run dev",
     "dev:client": "pnpm --filter client run dev -p 4002",
     "dev:builder": "pnpm --filter builder run dev -p 4001",
@@ -26,7 +28,11 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "typecheck": "pnpm --recursive run typecheck",
-    "verify": "pnpm run format && pnpm run lint && pnpm run typecheck && pnpm run test",
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test",
+    "verify:api": "cd api && pnpm verify",
+    "verify:builder": "cd builder && pnpm verify",
+    "verify:client": "cd client && pnpm verify",
+    "verify:all": "pnpm verify:api && pnpm verify:builder && pnpm verify:client",
     "clean": "pnpm --recursive run clean && rm -rf node_modules",
     "db:migrate": "pnpm --filter api run db:migrate",
     "db:push": "pnpm --filter api run db:push",
@@ -34,8 +40,21 @@
     "db:studio": "pnpm --filter api run db:studio",
     "db:reset": "pnpm --filter api run db:reset"
   },
+  "lint-staged": {
+    "api/**/*.ts": [
+      "bash -c 'cd api && pnpm lint --fix'"
+    ],
+    "builder/**/*.{ts,tsx}": [
+      "bash -c 'cd builder && pnpm lint --fix'"
+    ],
+    "client/**/*.{ts,tsx}": [
+      "bash -c 'cd client && pnpm lint --fix'"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^20.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.3.2",
     "typescript": "^5.5.0"
   },
