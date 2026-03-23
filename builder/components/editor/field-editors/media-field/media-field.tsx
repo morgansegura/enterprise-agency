@@ -6,7 +6,7 @@ import { Image as ImageIcon, Video, FileText, X, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { MediaLibraryPicker } from "@/components/ui/media-library/media-library-picker";
-import { useTenantStore } from "@/lib/stores/tenant-store";
+import { useTenantsStore } from "@/lib/stores/tenants-store";
 import type { Asset } from "@/lib/hooks/use-assets";
 import type { MediaFieldSchema } from "@/lib/schemas";
 
@@ -41,7 +41,7 @@ export function MediaField({
   className,
 }: MediaFieldProps) {
   const [pickerOpen, setPickerOpen] = React.useState(false);
-  const tenantId = useTenantStore((s) => s.activeTenantId) || "";
+  const tenantId = useTenantsStore((s) => s.activeTenantId) || "";
   const hasError = !!error;
 
   const normalizedValue = React.useMemo(() => {

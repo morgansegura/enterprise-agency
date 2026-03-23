@@ -7,6 +7,8 @@ import { createQueryClient } from "@/lib/query-client";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToastProvider } from "@/components/ui/toast";
+import { ApiInterceptor } from "@/components/auth/api-interceptor";
+import { SessionManager } from "@/components/auth/session-manager";
 
 /**
  * Global providers for the application
@@ -29,6 +31,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
         disableTransitionOnChange
       >
         <AuthProvider>
+          <ApiInterceptor />
+          <SessionManager />
           <ToastProvider>{children}</ToastProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </AuthProvider>

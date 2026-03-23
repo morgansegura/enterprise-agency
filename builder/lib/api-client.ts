@@ -60,7 +60,9 @@ export class ApiClient {
         if (
           response.status === 401 &&
           retryCount === 0 &&
-          !endpoint.includes("/refresh")
+          !endpoint.includes("/refresh") &&
+          !endpoint.includes("/login") &&
+          !endpoint.includes("/logout")
         ) {
           const refreshed = await this.refreshTokenIfNeeded();
           if (refreshed) {
@@ -70,6 +72,11 @@ export class ApiClient {
               useAuthBase,
               retryCount + 1,
             );
+          }
+
+          // Refresh failed — notify the app to handle session expiry
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new Event("auth:session-expired"));
           }
         }
 
