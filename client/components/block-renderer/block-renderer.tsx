@@ -166,10 +166,33 @@ function renderBlock(block: RootBlock): React.ReactNode {
     case "checkout-block":
       return <CheckoutBlock key={block._key} data={block.data} />;
 
-    default:
-      // Exhaustive check - TypeScript will error if we miss a block type
-      block satisfies never;
+    default: {
+      // Development-only warning for unknown block types
+      const unknownType = (block as { _type: string })._type;
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          `[BlockRenderer] Unknown block type: "${unknownType}". This block will not be rendered.`,
+        );
+        return (
+          <div
+            key={(block as { _key: string })._key}
+            style={{
+              padding: "1rem",
+              margin: "0.5rem 0",
+              border: "2px dashed #f59e0b",
+              borderRadius: "0.375rem",
+              backgroundColor: "#fffbeb",
+              color: "#92400e",
+              fontSize: "0.875rem",
+              fontFamily: "monospace",
+            }}
+          >
+            Unknown block type: <strong>{unknownType}</strong>
+          </div>
+        );
+      }
       return null;
+    }
   }
 }
 

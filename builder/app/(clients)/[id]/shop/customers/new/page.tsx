@@ -2,16 +2,29 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useCreateCustomer, type CreateCustomerDto } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LayoutHeading } from "@/components/layout/layout-heading";
-import { ArrowLeft, Save, Mail } from "lucide-react";
+import { ArrowLeft, Save } from "lucide-react";
 import { toast } from "sonner";
-import { FormItem } from "@/components/ui/form";
+
+const customerSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Valid email is required"),
+  phone: z.string().optional(),
+  hasAccount: z.boolean().optional().default(false),
+  acceptsMarketing: z.boolean().optional().default(false),
+});
+
+type CustomerFormValues = z.infer<typeof customerSchema>;
 
 export default function NewCustomerPage({
   params,
@@ -23,40 +36,40 @@ export default function NewCustomerPage({
   const router = useRouter();
   const createCustomer = useCreateCustomer(id);
 
-  const [formData, setFormData] = React.useState<CreateCustomerDto>({
-    email: "",
-    firstName: "",
-    lastName: "",
-    phone: "",
-    acceptsMarketing: false,
-    note: "",
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<CustomerFormValues>({
+    resolver: zodResolver(customerSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      hasAccount: false,
+      acceptsMarketing: false,
+    },
   });
 
-  const handleChange = (
-    field: keyof CreateCustomerDto,
-    value: string | boolean,
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  const hasAccount = watch("hasAccount");
+  const acceptsMarketing = watch("acceptsMarketing");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!formData.email.trim()) {
-      toast.error("Email is required");
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
-
+  const onSubmit = async (data: CustomerFormValues) => {
     try {
-      const result = await createCustomer.mutateAsync(formData);
+      const payload: CreateCustomerDto = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone || undefined,
+        acceptsMarketing: data.acceptsMarketing,
+      };
+
+      await createCustomer.mutateAsync(payload);
       toast.success("Customer created successfully");
-      router.push(`/${id}/shop/customers/${result.id}`);
+      router.push(`/${id}/shop/customers`);
     } catch {
       toast.error("Failed to create customer");
     }
@@ -76,104 +89,106 @@ export default function NewCustomerPage({
       </div>
 
       <LayoutHeading
-        title="Add Customer"
-        description="Create a new customer record"
+        title="New Customer"
+        description="Add a new customer to your store"
       />
 
-      <form onSubmit={handleSubmit} className="mt-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-6">
         <div className="grid gap-6 md:grid-cols-3">
+          {/* Main Content */}
           <div className="md:col-span-2 space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Customer Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <FormItem className="space-y-2">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name *</Label>
+                    <Input
+                      id="firstName"
+                      {...register("firstName")}
+                      placeholder="Enter first name"
+                      aria-invalid={!!errors.firstName}
+                    />
+                    {errors.firstName && (
+                      <p className="text-sm text-destructive">
+                        {errors.firstName.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name *</Label>
+                    <Input
+                      id="lastName"
+                      {...register("lastName")}
+                      placeholder="Enter last name"
+                      aria-invalid={!!errors.lastName}
+                    />
+                    {errors.lastName && (
+                      <p className="text-sm text-destructive">
+                        {errors.lastName.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="email">Email *</Label>
                   <Input
                     id="email"
                     type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
+                    {...register("email")}
                     placeholder="customer@example.com"
+                    aria-invalid={!!errors.email}
                   />
-                </FormItem>
-
-                <div className="grid gap-4 md:grid-cols-2">
-                  <FormItem className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input
-                      id="firstName"
-                      value={formData.firstName || ""}
-                      onChange={(e) =>
-                        handleChange("firstName", e.target.value)
-                      }
-                    />
-                  </FormItem>
-                  <FormItem className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input
-                      id="lastName"
-                      value={formData.lastName || ""}
-                      onChange={(e) => handleChange("lastName", e.target.value)}
-                    />
-                  </FormItem>
+                  {errors.email && (
+                    <p className="text-sm text-destructive">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
 
-                <FormItem className="space-y-2">
+                <div className="space-y-2">
                   <Label htmlFor="phone">Phone</Label>
                   <Input
                     id="phone"
-                    value={formData.phone || ""}
-                    onChange={(e) => handleChange("phone", e.target.value)}
-                    placeholder="+1 (555) 123-4567"
+                    type="tel"
+                    {...register("phone")}
+                    placeholder="+1 (555) 000-0000"
                   />
-                </FormItem>
-
-                <FormItem className="space-y-2">
-                  <Label htmlFor="note">Notes</Label>
-                  <Textarea
-                    id="note"
-                    value={formData.note || ""}
-                    onChange={(e) => handleChange("note", e.target.value)}
-                    rows={3}
-                    placeholder="Internal notes about this customer..."
-                  />
-                </FormItem>
+                </div>
               </CardContent>
             </Card>
           </div>
 
+          {/* Sidebar */}
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Mail className="h-5 w-5" />
-                  Marketing
-                </CardTitle>
+                <CardTitle>Options</CardTitle>
               </CardHeader>
-              <CardContent>
-                <FormItem>
-                  <label className="flex items-start gap-3">
-                    <Input
-                      type="checkbox"
-                      checked={formData.acceptsMarketing}
-                      onChange={(e) =>
-                        handleChange("acceptsMarketing", e.target.checked)
-                      }
-                      className="rounded border-gray-300 mt-1"
-                    />
-                    <div>
-                      <span className="font-medium">
-                        Accepts marketing emails
-                      </span>
-                      <p className="text-sm text-muted-foreground">
-                        Customer has agreed to receive promotional emails and
-                        updates.
-                      </p>
-                    </div>
-                  </label>
-                </FormItem>
+              <CardContent className="space-y-4">
+                <Label className="flex items-center gap-2">
+                  <Checkbox
+                    checked={hasAccount}
+                    onCheckedChange={(checked) =>
+                      setValue("hasAccount", checked === true)
+                    }
+                  />
+                  Has account
+                </Label>
+
+                <Label className="flex items-center gap-2">
+                  <Checkbox
+                    checked={acceptsMarketing}
+                    onCheckedChange={(checked) =>
+                      setValue("acceptsMarketing", checked === true)
+                    }
+                  />
+                  Accepts marketing
+                </Label>
               </CardContent>
             </Card>
 
@@ -185,7 +200,9 @@ export default function NewCustomerPage({
                   disabled={createCustomer.isPending}
                 >
                   <Save className="mr-2 h-4 w-4" />
-                  {createCustomer.isPending ? "Creating..." : "Create Customer"}
+                  {createCustomer.isPending
+                    ? "Creating..."
+                    : "Create Customer"}
                 </Button>
               </CardContent>
             </Card>

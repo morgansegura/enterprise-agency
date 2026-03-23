@@ -1,0 +1,19 @@
+.not-found {
+  @apply flex min-h-[60vh] flex-col items-center justify-center px-8 py-16 text-center;
+}
+
+.not-found-code {
+  @apply text-7xl font-bold;
+}
+
+.not-found-title {
+  @apply mt-2 text-2xl font-medium;
+}
+
+.not-found-description {
+  @apply my-4 max-w-md text-sm text-neutral-500;
+}
+
+.not-found-link {
+  @apply mt-6 inline-block rounded-md bg-neutral-900 px-6 py-3 text-sm font-medium text-white no-underline transition-colors hover:bg-neutral-800;
+}

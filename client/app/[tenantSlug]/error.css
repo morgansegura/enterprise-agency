@@ -1,0 +1,15 @@
+.tenant-error {
+  @apply flex min-h-[60vh] flex-col items-center justify-center px-8 py-16 text-center;
+}
+
+.tenant-error-title {
+  @apply text-2xl font-semibold;
+}
+
+.tenant-error-message {
+  @apply my-4 max-w-md text-sm text-neutral-500;
+}
+
+.tenant-error-button {
+  @apply mt-4 cursor-pointer rounded-md border-none bg-neutral-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800;
+}

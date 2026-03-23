@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { SectionRenderer } from "@/components/section-renderer";
+import { createPublicApiClient } from "@/lib/public-api-client";
+import type { TypedSection } from "@/components/section-renderer/section-renderer";
 import { aboutPageMock } from "@/data/mocks";
 
 /**
@@ -36,13 +38,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
-  // Mock data - will be replaced with API call
-  const pageData = aboutPageMock;
+export default async function AboutPage() {
+  let sections: TypedSection[] = [];
+
+  try {
+    const api = await createPublicApiClient();
+    const page = await api.getPage("about");
+
+    if (page?.content?.sections) {
+      sections = page.content.sections as TypedSection[];
+    }
+  } catch {
+    // Fallback to mock data when API is unavailable
+    sections = aboutPageMock.sections as TypedSection[];
+  }
 
   return (
     <div className="min-h-screen">
-      <SectionRenderer sections={pageData.sections} />
+      <SectionRenderer sections={sections} />
     </div>
   );
 }
