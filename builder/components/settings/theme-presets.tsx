@@ -798,7 +798,7 @@ export function ThemePresets({
       : themePresets.filter((p) => p.category === activeCategory);
 
   const handlePreview = (preset: ThemePreset) => {
-    setPreviewingId(preset.id);
+    _setPreviewingId(preset.id);
     // TODO: Apply temporary preview styles to document
   };
 

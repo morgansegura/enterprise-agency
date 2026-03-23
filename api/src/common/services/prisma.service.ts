@@ -99,6 +99,14 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     return this.client.passwordResetToken;
   }
 
+  // Expose raw query method
+  $queryRaw<T = unknown>(
+    query: TemplateStringsArray,
+    ...values: unknown[]
+  ): Promise<T> {
+    return this.client.$queryRaw(query, ...values) as Promise<T>;
+  }
+
   // Expose transaction and other methods
   $transaction<T>(
     fn: (

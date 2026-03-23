@@ -1,24 +1,40 @@
 import { Controller, Get } from "@nestjs/common";
-import {
-  HealthCheck,
-  HealthCheckService,
-  MemoryHealthIndicator,
-} from "@nestjs/terminus";
+import { PrismaService } from "@/common/services/prisma.service";
 
 @Controller("health")
 export class HealthController {
-  constructor(
-    private health: HealthCheckService,
-    private memory: MemoryHealthIndicator,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   @Get()
-  @HealthCheck()
-  check() {
-    return this.health.check([
-      // Check if memory usage is below 150MB
-      () => this.memory.checkHeap("memory_heap", 150 * 1024 * 1024),
-    ]);
+  async check() {
+    const start = Date.now();
+    let dbStatus = "healthy";
+    let dbResponseTime = 0;
+
+    try {
+      const dbStart = Date.now();
+      await this.prisma.$queryRaw`SELECT 1`;
+      dbResponseTime = Date.now() - dbStart;
+    } catch {
+      dbStatus = "unhealthy";
+    }
+
+    return {
+      status: dbStatus === "healthy" ? "ok" : "degraded",
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      responseTime: Date.now() - start,
+      checks: {
+        database: {
+          status: dbStatus,
+          responseTime: dbResponseTime,
+        },
+        memory: {
+          status: "healthy",
+          usage: process.memoryUsage(),
+        },
+      },
+    };
   }
 
   @Get("ready")

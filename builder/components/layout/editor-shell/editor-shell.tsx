@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getCurrentUser, logout, type User } from "@/lib/auth";
+import { logout } from "@/lib/auth";
+import { useAuthStore } from "@/lib/stores/auth-store";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -55,21 +55,7 @@ export function EditorShell({
   children,
 }: EditorShellProps) {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function checkAuth() {
-      const currentUser = await getCurrentUser();
-      if (!currentUser) {
-        router.push("/");
-      } else {
-        setUser(currentUser);
-      }
-      setLoading(false);
-    }
-    checkAuth();
-  }, [router]);
+  const { user, isLoading: loading } = useAuthStore();
 
   const _handleLogout = () => {
     logout();

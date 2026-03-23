@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { apiClient } from "../api-client";
+import { logger } from "../logger";
 
 // Footer layout types
 export type FooterLayout =
@@ -175,6 +177,10 @@ export function useCreateFooter(tenantId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...FOOTERS_KEY, tenantId] });
     },
+    onError: (error: unknown) => {
+      logger.error("Failed to create footer", error as Error);
+      toast.error("Failed to create footer");
+    },
   });
 }
 
@@ -190,6 +196,10 @@ export function useUpdateFooter(tenantId: string) {
         queryKey: [...FOOTERS_KEY, tenantId, variables.id],
       });
     },
+    onError: (error: unknown) => {
+      logger.error("Failed to update footer", error as Error);
+      toast.error("Failed to update footer");
+    },
   });
 }
 
@@ -201,6 +211,10 @@ export function useDeleteFooter(tenantId: string) {
       apiClient.delete(`/tenants/${tenantId}/footers/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...FOOTERS_KEY, tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to delete footer", error as Error);
+      toast.error("Failed to delete footer");
     },
   });
 }
@@ -215,6 +229,10 @@ export function useDuplicateFooter(tenantId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...FOOTERS_KEY, tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to duplicate footer", error as Error);
+      toast.error("Failed to duplicate footer");
     },
   });
 }
@@ -238,6 +256,10 @@ export function useSaveFooterToLibrary(tenantId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["library", tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to save footer to library", error as Error);
+      toast.error("Failed to save footer to library");
     },
   });
 }

@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { apiClient } from "../api-client";
+import { logger } from "../logger";
 
 // Header behavior types
 export type HeaderBehavior =
@@ -225,6 +227,10 @@ export function useCreateHeader(tenantId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...HEADERS_KEY, tenantId] });
     },
+    onError: (error: unknown) => {
+      logger.error("Failed to create header", error as Error);
+      toast.error("Failed to create header");
+    },
   });
 }
 
@@ -240,6 +246,10 @@ export function useUpdateHeader(tenantId: string) {
         queryKey: [...HEADERS_KEY, tenantId, variables.id],
       });
     },
+    onError: (error: unknown) => {
+      logger.error("Failed to update header", error as Error);
+      toast.error("Failed to update header");
+    },
   });
 }
 
@@ -251,6 +261,10 @@ export function useDeleteHeader(tenantId: string) {
       apiClient.delete(`/tenants/${tenantId}/headers/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...HEADERS_KEY, tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to delete header", error as Error);
+      toast.error("Failed to delete header");
     },
   });
 }
@@ -265,6 +279,10 @@ export function useDuplicateHeader(tenantId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...HEADERS_KEY, tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to duplicate header", error as Error);
+      toast.error("Failed to duplicate header");
     },
   });
 }
@@ -288,6 +306,10 @@ export function useSaveHeaderToLibrary(tenantId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["library", tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to save header to library", error as Error);
+      toast.error("Failed to save header to library");
     },
   });
 }

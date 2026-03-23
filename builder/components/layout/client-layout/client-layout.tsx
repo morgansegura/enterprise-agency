@@ -2,10 +2,10 @@
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
-import { getCurrentUser, logout, type User } from "@/lib/auth";
+import { logout, type User } from "@/lib/auth";
+import { useAuthStore } from "@/lib/stores/auth-store";
 import {
   PreviewModeProvider,
   usePreviewModeOptional,
@@ -60,8 +60,7 @@ export function ClientLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, isLoading: loading } = useAuthStore();
 
   const { pageContext, hasCustomToolbar } = usePreviewModeOptional();
 
@@ -77,19 +76,6 @@ export function ClientLayout({
   // Custom icon from tenant settings (prefer SVG, fallback to URL)
   const tenantIconSvg = (tenant as { iconSvg?: string } | undefined)?.iconSvg;
   const tenantIconUrl = (tenant as { iconUrl?: string } | undefined)?.iconUrl;
-
-  useEffect(() => {
-    async function checkAuth() {
-      const currentUser = await getCurrentUser();
-      if (!currentUser) {
-        router.push("/");
-      } else {
-        setUser(currentUser);
-      }
-      setLoading(false);
-    }
-    checkAuth();
-  }, [router]);
 
   const handleLogout = () => {
     logout();

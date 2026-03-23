@@ -147,7 +147,7 @@ export default function MenuEditorPage({
           setHasChanges(false);
         },
         onError: (error) => {
-          toast.error(error.message || "Failed to save menu");
+          toast.error((error as Error).message || "Failed to save menu");
         },
       },
     );

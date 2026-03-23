@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { apiClient } from "../api-client";
+import { logger } from "../logger";
 
 // Menu item for nested structure
 export interface MenuItem {
@@ -126,6 +128,10 @@ export function useCreateMenu(tenantId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...MENUS_KEY, tenantId] });
     },
+    onError: (error: unknown) => {
+      logger.error("Failed to create menu", error as Error);
+      toast.error("Failed to create menu");
+    },
   });
 }
 
@@ -141,6 +147,10 @@ export function useUpdateMenu(tenantId: string) {
         queryKey: [...MENUS_KEY, tenantId, variables.id],
       });
     },
+    onError: (error: unknown) => {
+      logger.error("Failed to update menu", error as Error);
+      toast.error("Failed to update menu");
+    },
   });
 }
 
@@ -152,6 +162,10 @@ export function useDeleteMenu(tenantId: string) {
       apiClient.delete(`/tenants/${tenantId}/menus/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...MENUS_KEY, tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to delete menu", error as Error);
+      toast.error("Failed to delete menu");
     },
   });
 }
@@ -166,6 +180,10 @@ export function useDuplicateMenu(tenantId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [...MENUS_KEY, tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to duplicate menu", error as Error);
+      toast.error("Failed to duplicate menu");
     },
   });
 }
@@ -190,6 +208,10 @@ export function useSaveMenuToLibrary(tenantId: string) {
     onSuccess: () => {
       // Invalidate library components query when implemented
       queryClient.invalidateQueries({ queryKey: ["library", tenantId] });
+    },
+    onError: (error: unknown) => {
+      logger.error("Failed to save menu to library", error as Error);
+      toast.error("Failed to save menu to library");
     },
   });
 }
