@@ -16,7 +16,6 @@ import { useState } from "react";
 import {
   ShoppingCart,
   Minus,
-  Plus,
   Package,
   ChevronLeft,
   ChevronRight,

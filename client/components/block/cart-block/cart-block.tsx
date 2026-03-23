@@ -15,7 +15,6 @@ import Link from "next/link";
 import {
   ShoppingCart,
   Minus,
-  Plus,
   Trash2,
   Package,
   ArrowRight,
