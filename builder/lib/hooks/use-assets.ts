@@ -34,8 +34,12 @@ export function useAssets(
 
   return useQuery<Asset[]>({
     queryKey: queryKeys.assets.list(tenantId, filters as Record<string, unknown>),
-    queryFn: () =>
-      apiClient.get<Asset[]>(`/assets${queryString ? `?${queryString}` : ""}`),
+    queryFn: async () => {
+      const response = await apiClient.get<{ data: Asset[] } | Asset[]>(
+        `/assets${queryString ? `?${queryString}` : ""}`,
+      );
+      return Array.isArray(response) ? response : response.data;
+    },
     enabled: !!tenantId,
   });
 }

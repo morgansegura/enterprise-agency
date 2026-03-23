@@ -45,7 +45,8 @@ export function useAdminUsers(includeDeleted?: boolean) {
       }
 
       const url = `/admin/users${params.toString() ? `?${params}` : ""}`;
-      const data = await apiClient.get<User[]>(url);
+      const response = await apiClient.get<{ data: User[] } | User[]>(url);
+      const data = Array.isArray(response) ? response : response.data;
 
       logger.log("Fetched admin users", { count: data.length });
       return data;
@@ -60,9 +61,10 @@ export function useSearchUsers(query: string) {
   return useQuery({
     queryKey: queryKeys.admin.users.search(query),
     queryFn: async () => {
-      const data = await apiClient.get<User[]>(
+      const response = await apiClient.get<{ data: User[] } | User[]>(
         `/admin/users/search?q=${encodeURIComponent(query)}`,
       );
+      const data = Array.isArray(response) ? response : response.data;
       logger.log("Searched users", { query, count: data.length });
       return data;
     },

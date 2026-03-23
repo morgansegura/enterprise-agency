@@ -26,7 +26,10 @@ export interface Post {
 export function usePosts(tenantId: string) {
   return useQuery<Post[]>({
     queryKey: queryKeys.posts.byTenant(tenantId),
-    queryFn: () => apiClient.get<Post[]>("/posts"),
+    queryFn: async () => {
+      const response = await apiClient.get<{ data: Post[] } | Post[]>("/posts");
+      return Array.isArray(response) ? response : response.data;
+    },
     enabled: !!tenantId,
   });
 }

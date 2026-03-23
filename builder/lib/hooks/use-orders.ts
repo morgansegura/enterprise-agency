@@ -157,10 +157,15 @@ export function useOrders(tenantId: string, filters?: OrderFilters) {
 
   return useQuery<{ orders: Order[]; total: number }>({
     queryKey: queryKeys.orders.list(tenantId, filters as Record<string, unknown>),
-    queryFn: () =>
-      apiClient.get<{ orders: Order[]; total: number }>(
-        `/orders${queryString ? `?${queryString}` : ""}`,
-      ),
+    queryFn: async () => {
+      const response = await apiClient.get<
+        { data: Order[]; total: number } | { orders: Order[]; total: number }
+      >(`/orders${queryString ? `?${queryString}` : ""}`);
+      if ("data" in response && Array.isArray(response.data)) {
+        return { orders: response.data, total: response.total };
+      }
+      return response as { orders: Order[]; total: number };
+    },
     enabled: !!tenantId,
   });
 }

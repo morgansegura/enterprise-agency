@@ -189,10 +189,12 @@ export function useProductCategories(
 
   return useQuery<ProductCategory[]>({
     queryKey: queryKeys.categories.list(tenantId, filters as Record<string, unknown>),
-    queryFn: () =>
-      apiClient.get<ProductCategory[]>(
+    queryFn: async () => {
+      const response = await apiClient.get<{ data: ProductCategory[] } | ProductCategory[]>(
         `/products/categories${queryString ? `?${queryString}` : ""}`,
-      ),
+      );
+      return Array.isArray(response) ? response : response.data;
+    },
     enabled: !!tenantId,
   });
 }
@@ -285,10 +287,15 @@ export function useProducts(tenantId: string, filters?: ProductFilters) {
 
   return useQuery<{ products: Product[]; total: number }>({
     queryKey: queryKeys.products.list(tenantId, filters as Record<string, unknown>),
-    queryFn: () =>
-      apiClient.get<{ products: Product[]; total: number }>(
-        `/products${queryString ? `?${queryString}` : ""}`,
-      ),
+    queryFn: async () => {
+      const response = await apiClient.get<
+        { data: Product[]; total: number } | { products: Product[]; total: number }
+      >(`/products${queryString ? `?${queryString}` : ""}`);
+      if ("data" in response && Array.isArray(response.data)) {
+        return { products: response.data, total: response.total };
+      }
+      return response as { products: Product[]; total: number };
+    },
     enabled: !!tenantId,
   });
 }

@@ -9,7 +9,6 @@ import { useCreateCustomer, type CreateCustomerDto } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LayoutHeading } from "@/components/layout/layout-heading";
 import { ArrowLeft, Save } from "lucide-react";
@@ -39,8 +38,6 @@ export default function NewCustomerPage({
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<CustomerFormValues>({
     resolver: zodResolver(customerSchema),
@@ -53,9 +50,6 @@ export default function NewCustomerPage({
       acceptsMarketing: false,
     },
   });
-
-  const hasAccount = watch("hasAccount");
-  const acceptsMarketing = watch("acceptsMarketing");
 
   const onSubmit = async (data: CustomerFormValues) => {
     try {
@@ -171,21 +165,17 @@ export default function NewCustomerPage({
               </CardHeader>
               <CardContent className="space-y-4">
                 <Label className="flex items-center gap-2">
-                  <Checkbox
-                    checked={hasAccount}
-                    onCheckedChange={(checked) =>
-                      setValue("hasAccount", checked === true)
-                    }
+                  <input
+                    type="checkbox"
+                    {...register("hasAccount")}
                   />
                   Has account
                 </Label>
 
                 <Label className="flex items-center gap-2">
-                  <Checkbox
-                    checked={acceptsMarketing}
-                    onCheckedChange={(checked) =>
-                      setValue("acceptsMarketing", checked === true)
-                    }
+                  <input
+                    type="checkbox"
+                    {...register("acceptsMarketing")}
                   />
                   Accepts marketing
                 </Label>

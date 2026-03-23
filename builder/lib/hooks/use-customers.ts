@@ -125,10 +125,15 @@ export function useCustomers(tenantId: string, filters?: CustomerFilters) {
 
   return useQuery<{ customers: Customer[]; total: number }>({
     queryKey: queryKeys.customers.list(tenantId, filters as Record<string, unknown>),
-    queryFn: () =>
-      apiClient.get<{ customers: Customer[]; total: number }>(
-        `/customers${queryString ? `?${queryString}` : ""}`,
-      ),
+    queryFn: async () => {
+      const response = await apiClient.get<
+        { data: Customer[]; total: number } | { customers: Customer[]; total: number }
+      >(`/customers${queryString ? `?${queryString}` : ""}`);
+      if ("data" in response && Array.isArray(response.data)) {
+        return { customers: response.data, total: response.total };
+      }
+      return response as { customers: Customer[]; total: number };
+    },
     enabled: !!tenantId,
   });
 }

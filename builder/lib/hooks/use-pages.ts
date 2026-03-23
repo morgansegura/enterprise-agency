@@ -108,7 +108,12 @@ export interface Page {
 export function usePages(tenantId: string) {
   return useQuery<Page[]>({
     queryKey: queryKeys.pages.byTenant(tenantId),
-    queryFn: () => apiClient.get<Page[]>("/pages"),
+    queryFn: async () => {
+      const response = await apiClient.get<{ data: Page[] } | Page[]>(
+        "/pages",
+      );
+      return Array.isArray(response) ? response : response.data;
+    },
     enabled: !!tenantId,
   });
 }

@@ -34,8 +34,8 @@ export function ProfileDropdown({ user, onLogout }: ProfileDropdownProps) {
         <Button variant="ghost" size="icon">
           <div className="profile-dropdown-avatar">
             <span className="profile-dropdown-avatar-initials">
-              {user.firstName[0]}
-              {user.lastName[0]}
+              {user.firstName?.[0] ?? ""}
+              {user.lastName?.[0] ?? ""}
             </span>
           </div>
         </Button>

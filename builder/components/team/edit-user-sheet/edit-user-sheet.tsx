@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -47,15 +47,18 @@ export function EditUserSheet({
   open,
   onOpenChange,
 }: EditUserSheetProps) {
-  const [role, setRole] = useState(member?.role || "CLIENT_EDITOR");
+  const [roleOverride, setRoleOverride] = useState<string | null>(null);
+  const role = roleOverride ?? member?.role ?? "CLIENT_EDITOR";
+  const setRole = (newRole: string) => setRoleOverride(newRole);
 
   const updateUser = useUpdateTenantUser(tenantId);
 
-  useEffect(() => {
-    if (member) {
-      setRole(member.role);
-    }
-  }, [member]);
+  // Reset override when member changes (new sheet open)
+  const prevMemberId = React.useRef(member?.user?.id);
+  if (member?.user?.id !== prevMemberId.current) {
+    prevMemberId.current = member?.user?.id;
+    if (roleOverride !== null) setRoleOverride(null);
+  }
 
   const displayName = member
     ? member.user.firstName || member.user.lastName
