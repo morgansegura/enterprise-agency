@@ -891,7 +891,7 @@ async function main() {
     data: {
       userId: agencyOwner.id,
       tenantId: agencyTenant.id,
-      role: "owner",
+      role: "SUPERADMIN",
       permissions: {
         pages: { view: true, create: true, edit: true, delete: true },
         posts: { view: true, create: true, edit: true, delete: true },
