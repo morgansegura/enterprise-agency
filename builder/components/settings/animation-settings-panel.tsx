@@ -18,7 +18,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Slider } from "@/components/ui/slider";
 import {
   ChevronDown,
   Play,

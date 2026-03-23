@@ -1,7 +1,7 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import Link from "next/link";
-import { Pyramid } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -15,7 +15,6 @@ import { useTenant } from "@/lib/hooks";
 import {
   SidebarProvider,
   SidebarInset,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ClientSidebar } from "@/components/layout/client-sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -29,7 +28,7 @@ import { WFLogoIcon } from "@/components/editor/client-logos/wf-logo";
 function ClientContent({
   user,
   children,
-  onLogout,
+  onLogout: _onLogout,
 }: {
   user: User;
   onLogout: () => void;

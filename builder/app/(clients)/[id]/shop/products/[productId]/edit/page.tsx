@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
@@ -35,7 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { LayoutHeading } from "@/components/layout/layout-heading";
-import { ArrowLeft, Save, Plus, Trash2, PlusCircle } from "lucide-react";
+import { ArrowLeft, Save, Trash2, PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 import { FormItem } from "@/components/ui/form";
 

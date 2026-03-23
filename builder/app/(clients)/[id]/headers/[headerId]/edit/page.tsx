@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
@@ -27,7 +28,6 @@ import {
   PaddingControl,
   BorderControl,
   type PaddingSize,
-  type BorderValue,
   getBorderCss,
   parseBorderCss,
   getPaddingClass,
@@ -49,7 +49,6 @@ import { cn } from "@/lib/utils";
 import {
   Save,
   Loader2,
-  Plus,
   Image,
   Menu as MenuIcon,
   MousePointer,
@@ -109,6 +108,7 @@ type HeaderForm = z.infer<typeof headerSchema>;
 
 const blockTypes: { type: BlockType; label: string; icon: React.ReactNode }[] =
   [
+    // eslint-disable-next-line jsx-a11y/alt-text -- lucide-react icon, not an image element
     { type: "logo", label: "Logo", icon: <Image className="size-4" /> },
     { type: "menu", label: "Menu", icon: <MenuIcon className="size-4" /> },
     {
@@ -2034,6 +2034,7 @@ export default function HeaderEditorPage({
     );
   }
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- React Hook Form's watch() is needed for real-time form state
   const formValues = form.watch();
 
   return (

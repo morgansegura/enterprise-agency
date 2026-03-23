@@ -47,6 +47,7 @@ export function InlineText({
     if (ref.current && ref.current.textContent !== value) {
       ref.current.textContent = value || "";
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally only on mount
   }, []);
 
   // Only sync external value changes when not focused

@@ -45,7 +45,6 @@ import {
   Store,
   LayoutPanelTop,
   Layers,
-  Plus,
   PlusCircle,
 } from "lucide-react";
 import { PostEditorLayout } from "@/components/editor/post-editor-layout";

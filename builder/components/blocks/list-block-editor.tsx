@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Trash2, List, Plus, X, Check, Circle, PlusCircle } from "lucide-react";
+import { Trash2, List, X, Check, Circle, PlusCircle } from "lucide-react";
 import { FormItem } from "@/components/ui/form";
 import {
   ResponsiveField,

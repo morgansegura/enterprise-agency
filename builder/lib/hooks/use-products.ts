@@ -132,7 +132,7 @@ export interface CreateProductDto {
   featured?: boolean;
 }
 
-export interface UpdateProductDto extends Partial<CreateProductDto> {}
+export type UpdateProductDto = Partial<CreateProductDto>;
 
 export interface CreateProductVariantDto {
   productId: string;
@@ -154,8 +154,7 @@ export interface CreateProductVariantDto {
   isDefault?: boolean;
 }
 
-export interface UpdateProductVariantDto
-  extends Partial<Omit<CreateProductVariantDto, "productId">> {}
+export type UpdateProductVariantDto = Partial<Omit<CreateProductVariantDto, "productId">>;
 
 export interface ProductFilters {
   status?: string;

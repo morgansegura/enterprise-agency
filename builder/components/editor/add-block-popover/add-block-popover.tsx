@@ -9,13 +9,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
-  Type,
   Image,
   Square,
   Play,
   Music,
   FileText,
-  Minus,
   MapPin,
   Code,
   Quote,
@@ -39,7 +37,6 @@ import {
   Clock,
   Calendar,
   Share2,
-  Link,
   MousePointer,
   Sparkles,
 } from "lucide-react";
@@ -105,6 +102,7 @@ const BLOCK_TYPES: BlockType[] = [
     id: "image-block",
     label: "Image",
     description: "Single image with options",
+    // eslint-disable-next-line jsx-a11y/alt-text -- lucide-react icon, not an image element
     icon: <Image className="h-5 w-5" />,
     category: "media",
   },

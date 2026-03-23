@@ -12,8 +12,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ThemeSwitcher } from "@/components/layout/dashboard-header/theme-switcher";
-import { ProfileDropdown } from "@/components/layout/dashboard-header/profile-dropdown";
 import { cn } from "@/lib/utils";
 
 import "./editor-shell.css";
@@ -53,7 +51,7 @@ export interface EditorShellProps {
 export function EditorShell({
   navGroups,
   bottomNav,
-  headerTitle,
+  headerTitle: _headerTitle,
   children,
 }: EditorShellProps) {
   const router = useRouter();
@@ -73,7 +71,7 @@ export function EditorShell({
     checkAuth();
   }, [router]);
 
-  const handleLogout = () => {
+  const _handleLogout = () => {
     logout();
     router.push("/");
   };

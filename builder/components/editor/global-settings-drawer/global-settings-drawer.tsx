@@ -10,12 +10,10 @@ import {
   SettingsDrawerSaveButton,
   SettingsSection,
   SettingsGridBlock,
-  SettingsForm,
   SettingsField,
   type SettingsNavItem,
 } from "@/components/ui/settings-drawer";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -23,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import {
   Palette,
@@ -32,7 +29,6 @@ import {
   RectangleHorizontal,
   FormInput,
   CreditCard,
-  Settings,
   Home,
 } from "lucide-react";
 import { ColorPicker } from "@/components/ui/color-picker";
@@ -41,7 +37,7 @@ import {
   useTenantTokens,
   useUpdateTenantTokens,
 } from "@/lib/hooks/use-tenant-tokens";
-import { usePages, useUpdatePage, type Page } from "@/lib/hooks/use-pages";
+import { usePages, useUpdatePage } from "@/lib/hooks/use-pages";
 import { toast } from "sonner";
 import {
   spacingSelectOptions,
@@ -66,9 +62,6 @@ import {
 import {
   googleFonts,
   findFont,
-  buildGoogleFontsUrl,
-  buildFontFamily,
-  type GoogleFont,
 } from "@/lib/fonts/google-fonts";
 import type {
   FontDefinition,

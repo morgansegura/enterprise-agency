@@ -83,7 +83,7 @@ export interface PageHeaderProps {
 
 export function PageHeader({
   title,
-  icon: Icon,
+  icon: _Icon,
   count,
   singularName,
   pluralName,

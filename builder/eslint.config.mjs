@@ -15,7 +15,7 @@ const eslintConfig = defineConfig([
     rules: {
       // Downgrade to warnings for existing codebase patterns
       "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_", destructuredArrayIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }],
       "@typescript-eslint/no-empty-object-type": "warn",
       "@typescript-eslint/consistent-type-imports": "warn",
       "@typescript-eslint/no-require-imports": "warn",

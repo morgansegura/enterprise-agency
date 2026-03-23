@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Type, Palette, AlignLeft, Settings2 } from "lucide-react";
+import { Type, Palette, Settings2 } from "lucide-react";
 import {
   PropertySection,
   PropertyRow,

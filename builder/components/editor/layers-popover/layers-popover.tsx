@@ -27,6 +27,7 @@ function getBlockIcon(blockType: string) {
     case "text-block":
       return <Type className="h-4 w-4" />;
     case "image-block":
+      // eslint-disable-next-line jsx-a11y/alt-text -- lucide-react icon, not an image element
       return <Image className="h-4 w-4" />;
     default:
       return <Type className="h-4 w-4" />;

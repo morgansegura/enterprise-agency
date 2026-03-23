@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import {
-  Plus,
   Layers,
   Copy,
   Heart,

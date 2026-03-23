@@ -87,12 +87,12 @@ export function SortableContainer({
   container,
   containerIndex,
   sectionIndex,
-  onContainerChange,
-  onDelete,
+  onContainerChange: _onContainerChange,
+  onDelete: _onDelete,
   onAddBlock,
   selectedBlockKey,
-  onSelectBlock,
-  isOnly = false,
+  onSelectBlock: _onSelectBlock,
+  isOnly: _isOnly = false,
   children,
 }: SortableContainerProps) {
   const breakpoint = useCurrentBreakpoint();

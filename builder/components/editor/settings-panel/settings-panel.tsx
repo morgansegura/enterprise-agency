@@ -14,7 +14,6 @@ import {
   Palette,
   Move,
   Grid3X3,
-  AlignLeft,
   Settings2,
   EyeOff,
   Monitor,
@@ -46,7 +45,6 @@ import {
   CONTAINER_WIDTH_OPTIONS,
   SECTION_MIN_HEIGHT_OPTIONS,
   OVERFLOW_OPTIONS,
-  SECTION_WIDTH_OPTIONS,
   BORDER_WIDTH_OPTIONS,
   BORDER_RADIUS_OPTIONS,
   SHADOW_OPTIONS,
@@ -600,7 +598,7 @@ function SectionStyleSettings({
   const borderBottom = getValue<string>("borderBottom", "none");
   const borderLeft = getValue<string>("borderLeft", "none");
   const borderRight = getValue<string>("borderRight", "none");
-  const borderColor = getValue<string>("borderColor", "");
+  const _borderColor = getValue<string>("borderColor", "");
   const borderRadius = getValue<string>("borderRadius", "none");
   const shadow = getValue<string>("shadow", "none");
 

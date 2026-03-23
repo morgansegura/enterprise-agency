@@ -20,7 +20,7 @@ export interface ProjectAssignment {
   userId: string;
   tenantId: string;
   role: "owner" | "admin" | "developer" | "designer" | "content_manager";
-  permissions: Record<string, any>;
+  permissions: Record<string, unknown>;
   status: "active" | "inactive";
   createdAt: string;
   user?: User;

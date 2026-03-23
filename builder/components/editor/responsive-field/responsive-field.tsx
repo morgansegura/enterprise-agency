@@ -10,7 +10,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  useResponsiveContext,
   useCurrentBreakpoint,
   useCanSetResponsiveOverrides,
 } from "@/lib/responsive/context";
@@ -45,7 +44,7 @@ const breakpointIcons: Record<
   mobile: Smartphone,
 };
 
-const breakpointLabels: Record<Breakpoint, string> = {
+const _breakpointLabels: Record<Breakpoint, string> = {
   desktop: "Desktop (base)",
   tablet: "Tablet override",
   mobile: "Mobile override",
@@ -92,7 +91,7 @@ export function ResponsiveField({
     );
   }
 
-  const BreakpointIcon = breakpointIcons[breakpoint];
+  const _BreakpointIcon = breakpointIcons[breakpoint];
 
   return (
     <div className={cn("relative", className)}>
@@ -220,7 +219,7 @@ export function useResponsiveChange(
 
   return React.useCallback(
     (field: string, value: unknown) => {
-      // Import inline to avoid circular dependency
+      // eslint-disable-next-line @typescript-eslint/no-require-imports -- inline import to avoid circular dependency
       const { setResponsiveOverride } = require("@/lib/responsive");
       onChange(setResponsiveOverride(data, breakpoint, field, value));
     },

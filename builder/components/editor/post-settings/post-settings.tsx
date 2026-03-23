@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import * as React from "react";
 import { Input } from "@/components/ui/input";

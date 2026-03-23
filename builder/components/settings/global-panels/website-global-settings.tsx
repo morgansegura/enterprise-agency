@@ -275,7 +275,7 @@ export function WebsiteGlobalSettings({
                 disabled={isLoading}
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Used when pages don't specify their own title
+                Used when pages don&apos;t specify their own title
               </p>
             </SettingsField>
 

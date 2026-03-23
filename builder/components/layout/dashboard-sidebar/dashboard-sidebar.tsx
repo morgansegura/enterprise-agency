@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
   Pyramid,
   CircleGaugeIcon,
@@ -58,7 +59,7 @@ const adminMenuItems = [
 
 export function DashboardSidebar({
   user,
-  onLogout,
+  onLogout: _onLogout,
   ...props
 }: DashboardSidebarProps) {
   return (
@@ -67,7 +68,7 @@ export function DashboardSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="/dashboard">
+              <Link href="/dashboard">
                 <div className="sidebar-header-icon">
                   <Pyramid />
                 </div>
@@ -75,7 +76,7 @@ export function DashboardSidebar({
                   <span className="sidebar-header-title">Web & Funnel</span>
                   <span className="sidebar-header-subtitle">Builder</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

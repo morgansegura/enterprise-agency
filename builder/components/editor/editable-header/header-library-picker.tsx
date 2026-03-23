@@ -7,9 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { useHeaders, type Header } from "@/lib/hooks/use-headers";
-import { Check, Plus, PlusCircle, Star } from "lucide-react";
+import { Check, PlusCircle, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import "./header-library-picker.css";

@@ -128,7 +128,7 @@ export function BackgroundEditor({
   value,
   onChange,
   className,
-  showTitle = true,
+  showTitle: _showTitle = true,
   onSelectImage,
 }: BackgroundEditorProps) {
   const background = normalizeBackground(value);

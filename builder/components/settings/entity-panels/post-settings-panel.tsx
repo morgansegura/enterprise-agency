@@ -52,12 +52,12 @@ interface PostSettingsPanelProps {
 // =============================================================================
 
 export function PostSettingsPanel({
-  context,
+  context: _context,
   data,
   onChange,
   isLoading,
   availableCategories = [],
-  availableTags = [],
+  availableTags: _availableTags = [],
 }: PostSettingsPanelProps) {
   const [newTag, setNewTag] = React.useState("");
 

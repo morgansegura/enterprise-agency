@@ -76,7 +76,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
     try {
       const parsed = value ? JSON.parse(value) : undefined;
       updateSeo({ structuredData: parsed });
-    } catch (error) {
+    } catch (_error) {
       // Invalid JSON, don't update
     }
   };

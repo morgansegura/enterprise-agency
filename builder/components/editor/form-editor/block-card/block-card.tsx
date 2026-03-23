@@ -209,6 +209,7 @@ export function BlockCard({
           className="block-card__label"
           onClick={() => setExpanded(!expanded)}
         >
+          {/* eslint-disable-next-line react-hooks/static-components -- Icon is dynamically selected based on block type */}
           <Icon className="block-card__icon" />
           <span className="block-card__name">{label}</span>
           {!expanded && summary && (

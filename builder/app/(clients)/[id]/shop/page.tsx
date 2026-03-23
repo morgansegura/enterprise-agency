@@ -14,7 +14,6 @@ import {
   DollarSign,
   ShoppingCart,
   ArrowRight,
-  Plus,
   PlusCircle,
 } from "lucide-react";
 

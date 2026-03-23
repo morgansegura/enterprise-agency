@@ -31,7 +31,6 @@ import {
   Search,
   LayoutGrid,
   List,
-  Plus,
   MoreHorizontal,
   Trash2,
   ExternalLink,

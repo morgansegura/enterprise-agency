@@ -83,8 +83,8 @@ class BlockRendererRegistry {
     }
 
     try {
-      const module = await registration.component();
-      return module.default;
+      const blockModule = await registration.component();
+      return blockModule.default;
     } catch (error) {
       logger.error(`Failed to load renderer for "${type}"`, error as Error);
       return null;

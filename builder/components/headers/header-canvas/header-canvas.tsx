@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import * as React from "react";
 import {
@@ -14,7 +15,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import {
-  Plus,
   Image,
   Menu as MenuIcon,
   MousePointer,
@@ -63,6 +63,7 @@ interface HeaderCanvasProps {
 
 const blockTypes: { type: BlockType; label: string; icon: React.ReactNode }[] =
   [
+    // eslint-disable-next-line jsx-a11y/alt-text -- lucide-react icon, not an image element
     { type: "logo", label: "Logo", icon: <Image className="size-4" /> },
     { type: "menu", label: "Menu", icon: <MenuIcon className="size-4" /> },
     {
@@ -203,6 +204,7 @@ function BlockRenderer({
           onClick={handleClick}
           data-block-type="logo"
         >
+          {/* eslint-disable-next-line jsx-a11y/alt-text -- lucide-react icon */}
           <Image className="size-5 opacity-50" />
           <span>Logo</span>
         </div>

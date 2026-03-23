@@ -1,6 +1,6 @@
-import { SetMetadata } from '@nestjs/common';
-import { ROLES_KEY } from '@/common/guards/roles.guard';
-import { TenantRole } from '@/common/permissions';
+import { SetMetadata } from "@nestjs/common";
+import { ROLES_KEY } from "@/common/guards/roles.guard";
+import { TenantRole } from "@/common/permissions";
 
 /**
  * Restrict route to specific tenant roles.

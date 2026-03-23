@@ -1,7 +1,7 @@
-export { Permission } from './permissions.enum';
+export { Permission } from "./permissions.enum";
 export {
   TenantRole,
   ROLE_PERMISSIONS,
   getRoleLevel,
   canManageRole,
-} from './role-permissions';
+} from "./role-permissions";

@@ -44,6 +44,7 @@ export default function SettingsPage() {
         faviconUrl?: string;
         metaDescription?: string;
       };
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing form state from server data
       setFormData({
         businessName: tenant.businessName || "",
         businessType: tenant.businessType || "",
@@ -210,7 +211,7 @@ export default function SettingsPage() {
               />
             </div>
             <p className="text-xs text-muted-foreground mt-3">
-              The icon will automatically be used as your site's favicon.
+              The icon will automatically be used as your site&apos;s favicon.
             </p>
           </div>
 

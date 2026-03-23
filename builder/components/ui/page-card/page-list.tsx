@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Search, LayoutGrid, List, Filter } from "lucide-react";
+import { Search, LayoutGrid, List } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

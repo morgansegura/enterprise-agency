@@ -20,6 +20,7 @@ export function SessionManager() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
 
+  // eslint-disable-next-line react-hooks/purity -- initial timestamp for session tracking is intentionally impure
   const lastActivityRef = useRef<number>(Date.now());
   const activityTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const warningTimerRef = useRef<NodeJS.Timeout | null>(null);

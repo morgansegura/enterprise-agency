@@ -175,9 +175,9 @@ export function SortableSection({
   selectedBlockKey,
   onSelectBlock,
   hoveredBlockKey: _hoveredBlockKey,
-  onHoverBlock,
+  onHoverBlock: _onHoverBlock,
   isFirst = false,
-  isLast = false,
+  isLast: _isLast = false,
   renderContainerBlocks,
   onAddBlockToContainer,
 }: SortableSectionProps) {
@@ -186,7 +186,7 @@ export function SortableSection({
   });
 
   // UI Store for section/container selection
-  const { selectedElement, selectSection, selectContainer } = useUIStore();
+  const { selectedElement, selectSection, selectContainer: _selectContainer } = useUIStore();
 
   // Get current breakpoint for responsive values
   const breakpoint = useCurrentBreakpoint();

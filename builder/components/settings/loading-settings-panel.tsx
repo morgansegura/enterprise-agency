@@ -17,12 +17,10 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import {
-  Skeleton,
   SkeletonText,
   SkeletonCard,
   ImagePlaceholder,
   Loader,
-  PageLoader,
   type SkeletonAnimation,
   type LoaderVariant,
 } from "@/components/ui/skeleton";

@@ -3,12 +3,12 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { PrismaService } from '@/common/services/prisma.service';
-import { getRoleLevel } from '@/common/permissions';
+} from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { PrismaService } from "@/common/services/prisma.service";
+import { getRoleLevel } from "@/common/permissions";
 
-export const ROLES_KEY = 'roles';
+export const ROLES_KEY = "roles";
 
 /**
  * Checks if the user's role is in the allowed roles list.
@@ -28,10 +28,10 @@ export class RolesGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(
+      ROLES_KEY,
+      [context.getHandler(), context.getClass()],
+    );
 
     if (!requiredRoles || requiredRoles.length === 0) {
       return true;
@@ -41,13 +41,13 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
 
     if (!user?.id) {
-      throw new ForbiddenException('Authentication required');
+      throw new ForbiddenException("Authentication required");
     }
 
     // Fast path: TenantAccessGuard already resolved the role
     if (request.tenantUser?.role) {
       if (requiredRoles.includes(request.tenantUser.role)) return true;
-      throw new ForbiddenException('Insufficient role');
+      throw new ForbiddenException("Insufficient role");
     }
 
     // Fallback: resolve role from DB
@@ -79,7 +79,7 @@ export class RolesGuard implements CanActivate {
     }
 
     if (!role || !requiredRoles.includes(role)) {
-      throw new ForbiddenException('Insufficient role');
+      throw new ForbiddenException("Insufficient role");
     }
 
     return true;

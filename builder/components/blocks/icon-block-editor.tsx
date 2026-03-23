@@ -100,6 +100,7 @@ export function IconBlockEditor({
 
   // Get the icon component dynamically
   const IconComponent =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic icon lookup
     (LucideIcons as any)[block.data.icon] || LucideIcons.HelpCircle;
 
   // Common icon suggestions

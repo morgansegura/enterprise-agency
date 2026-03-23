@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- dynamic imports require cast to match BlockEditorProps */
 import { blockRegistry, type BlockRegistration } from "./block-registry";
 
 /**

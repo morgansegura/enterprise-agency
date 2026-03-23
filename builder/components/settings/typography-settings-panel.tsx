@@ -26,7 +26,7 @@ import {
   Eye,
   RefreshCw,
 } from "lucide-react";
-import { googleFonts, findFont } from "@/lib/fonts/google-fonts";
+import { googleFonts } from "@/lib/fonts/google-fonts";
 
 // ============================================================================
 // Types

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import * as React from "react";
 import { Settings2, ArrowRightLeft, Copy } from "lucide-react";
@@ -10,6 +11,7 @@ import {
   useDuplicateHeader,
   type Header,
   type HeaderStyle,
+  type HeaderZone as HeaderZoneType,
 } from "@/lib/hooks/use-headers";
 import { HeaderSettingsPopover } from "./header-settings-popover";
 import { HeaderLibraryPicker } from "./header-library-picker";
@@ -404,7 +406,7 @@ function HeaderZone({
   position,
   tenantId: _tenantId,
 }: {
-  zone?: import("@/lib/hooks/use-headers").HeaderZone;
+  zone?: HeaderZoneType;
   position: "left" | "center" | "right";
   tenantId: string;
 }) {

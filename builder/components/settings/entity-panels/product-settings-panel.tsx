@@ -52,7 +52,7 @@ interface ProductSettingsPanelProps {
 // =============================================================================
 
 export function ProductSettingsPanel({
-  context,
+  context: _context,
   data,
   onChange,
   isLoading,

@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import { queryKeys } from "./query-keys";
-import { User } from "@/lib/stores/admin-store";
+import type { User } from "@/lib/stores/admin-store";
 import { logger } from "@/lib/logger";
 
 // DTOs
@@ -110,7 +110,7 @@ export function useCreateUser() {
         newUser,
       );
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       logger.error("Failed to create user", error);
     },
   });
@@ -141,7 +141,7 @@ export function useInviteUser() {
         newUser,
       );
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       logger.error("Failed to invite user", error);
     },
   });
@@ -190,7 +190,7 @@ export function useUpdateUser() {
     },
 
     // Rollback on error
-    onError: (error: any, { userId }, context) => {
+    onError: (error: unknown, { userId }, context) => {
       logger.error("Failed to update user", error, { userId });
 
       if (context?.previousUser) {
@@ -243,7 +243,7 @@ export function useDeleteUser() {
         queryKey: queryKeys.admin.users.detail(userId),
       });
     },
-    onError: (error: any, userId) => {
+    onError: (error: unknown, userId) => {
       logger.error("Failed to delete user", error, { userId });
     },
   });

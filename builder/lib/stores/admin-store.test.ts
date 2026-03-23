@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { useAdminStore, User, ProjectAssignment } from "./admin-store";
+import type { User, ProjectAssignment } from "./admin-store";
+import { useAdminStore } from "./admin-store";
 
 // Mock data following enterprise patterns
 const mockUser: User = {
@@ -45,7 +46,7 @@ const mockProjectAssignment: ProjectAssignment = {
   },
 };
 
-const mockProjectAssignment2: ProjectAssignment = {
+const _mockProjectAssignment2: ProjectAssignment = {
   id: "assignment-2",
   userId: "user-2",
   tenantId: "tenant-2",

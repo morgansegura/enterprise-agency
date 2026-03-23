@@ -26,7 +26,7 @@ interface MenuItemPreviewProps {
 function MenuItemPreview({
   item,
   style,
-  isVertical,
+  isVertical: _isVertical,
   depth = 0,
 }: MenuItemPreviewProps) {
   const [isOpen, setIsOpen] = React.useState(false);

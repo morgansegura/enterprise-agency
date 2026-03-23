@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormItem } from "@/components/ui/form";
-import { Settings, Palette, Box, Type, AlignLeft, Link } from "lucide-react";
+import { Palette, Box, Type } from "lucide-react";
 import type { Block } from "@/lib/hooks/use-pages";
 
 import "./block-settings-modal.css";
@@ -60,7 +60,7 @@ export function BlockSettingsModal({
     });
   };
 
-  const handleChange = (field: string, value: unknown) => {
+  const _handleChange = (field: string, value: unknown) => {
     onChange({
       ...block,
       [field]: value,

@@ -27,7 +27,6 @@ import {
   Search,
   LayoutGrid,
   List,
-  Plus,
   MoreHorizontal,
   Pencil,
   Trash2,

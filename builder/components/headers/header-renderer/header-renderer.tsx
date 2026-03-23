@@ -1,8 +1,8 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import * as React from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { Pencil } from "lucide-react";
 import { useHeader, useDefaultHeader } from "@/lib/hooks/use-headers";
 import { useMenu } from "@/lib/hooks/use-menus";

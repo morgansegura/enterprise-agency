@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Plus,
   Trash2,
   GripVertical,
   ChevronRight,

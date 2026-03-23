@@ -90,7 +90,7 @@ export function useUpdateFeatures() {
       return { previousFeatures };
     },
 
-    onError: (error: any, { tenantId }, context) => {
+    onError: (error: unknown, { tenantId }, context) => {
       logger.error("Failed to update features", error, { tenantId });
 
       // Rollback on error
@@ -165,7 +165,7 @@ export function useToggleFeature() {
       return { previousFeatures };
     },
 
-    onError: (error: any, { tenantId, featureKey }, context) => {
+    onError: (error: unknown, { tenantId, featureKey }, context) => {
       logger.error("Failed to toggle feature", error, { tenantId, featureKey });
 
       // Rollback on error

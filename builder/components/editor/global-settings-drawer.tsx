@@ -6,7 +6,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
 } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import {
@@ -198,6 +197,7 @@ export function GlobalSettingsDrawer({
       setLocalTokens(initial);
       setOriginalTokens(initial);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- defaultColors is a module-level constant
   }, [tokens]);
 
   // Check if there are unsaved changes

@@ -779,7 +779,7 @@ export function ThemePresets({
   currentThemeId,
   className,
 }: ThemePresetsProps) {
-  const [previewingId, setPreviewingId] = React.useState<string | null>(null);
+  const [_previewingId, _setPreviewingId] = React.useState<string | null>(null);
 
   const categories = [
     { id: "all", label: "All Themes" },

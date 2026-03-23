@@ -28,7 +28,6 @@ import {
   FileCode,
   MapPin,
   ArrowRight,
-  Plus,
   Trash2,
   Eye,
   BarChart3,

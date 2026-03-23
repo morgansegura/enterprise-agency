@@ -32,7 +32,6 @@ import {
   Search,
   LayoutGrid,
   List,
-  Plus,
   MoreHorizontal,
   ExternalLink,
   Settings,

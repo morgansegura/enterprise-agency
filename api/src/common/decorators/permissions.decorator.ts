@@ -1,7 +1,7 @@
-import { SetMetadata } from '@nestjs/common';
-import { Permission } from '@/common/permissions';
+import { SetMetadata } from "@nestjs/common";
+import { Permission } from "@/common/permissions";
 
-export const PERMISSIONS_KEY = 'permissions';
+export const PERMISSIONS_KEY = "permissions";
 
 /**
  * Specify required permissions for a route. User must have ALL listed permissions.

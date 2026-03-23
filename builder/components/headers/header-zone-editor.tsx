@@ -24,7 +24,6 @@ import {
 import {
   Image,
   Menu as MenuIcon,
-  Plus,
   Trash2,
   Settings,
   MousePointer,
@@ -53,6 +52,7 @@ interface ZoneBlock {
 
 const blockTypes: { type: BlockType; label: string; icon: React.ReactNode }[] =
   [
+    // eslint-disable-next-line jsx-a11y/alt-text -- lucide-react icon, not an image element
     { type: "logo", label: "Logo", icon: <Image /> },
     { type: "menu", label: "Menu", icon: <MenuIcon /> },
     { type: "button", label: "Button", icon: <MousePointer /> },

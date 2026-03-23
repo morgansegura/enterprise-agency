@@ -1,4 +1,5 @@
-import { QueryClient, DefaultOptions } from "@tanstack/react-query";
+import type { DefaultOptions } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { logger } from "./logger";
 
 const queryConfig: DefaultOptions = {
@@ -8,9 +9,12 @@ const queryConfig: DefaultOptions = {
     // Cache time: how long unused data stays in cache
     gcTime: 5 * 60 * 1000, // 5 minutes (formerly cacheTime)
     // Retry logic
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error: unknown) => {
       // Don't retry on 4xx errors
-      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+      const err = error as Record<string, unknown> | undefined;
+      const response = err?.response as Record<string, unknown> | undefined;
+      const status = response?.status as number | undefined;
+      if (status !== undefined && status >= 400 && status < 500) {
         return false;
       }
       // Retry up to 2 times for other errors
@@ -24,10 +28,12 @@ const queryConfig: DefaultOptions = {
   },
   mutations: {
     // Global mutation error handler
-    onError: (error: any) => {
+    onError: (error: unknown) => {
+      const err = error as Record<string, unknown> | undefined;
+      const response = err?.response as Record<string, unknown> | undefined;
       logger.error("Mutation error", error, {
-        status: error?.response?.status,
-        message: error?.message,
+        status: response?.status,
+        message: err?.message,
       });
     },
   },

@@ -38,7 +38,6 @@ import { LayoutHeading } from "@/components/layout/layout-heading";
 import {
   ArrowLeft,
   Save,
-  Plus,
   Trash2,
   Star,
   MapPin,

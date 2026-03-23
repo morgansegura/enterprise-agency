@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api-client";
 import { queryKeys } from "./query-keys";
-import { ProjectAssignment } from "@/lib/stores/admin-store";
+import type { ProjectAssignment } from "@/lib/stores/admin-store";
 import { logger } from "@/lib/logger";
 
 // DTOs
@@ -9,13 +9,13 @@ export interface CreateProjectAssignmentDto {
   userId: string;
   tenantId: string;
   role: "owner" | "admin" | "developer" | "designer" | "content_manager";
-  permissions?: Record<string, any>;
+  permissions?: Record<string, unknown>;
   status?: "active" | "inactive";
 }
 
 export interface UpdateProjectAssignmentDto {
   role?: "owner" | "admin" | "developer" | "designer" | "content_manager";
-  permissions?: Record<string, any>;
+  permissions?: Record<string, unknown>;
   status?: "active" | "inactive";
 }
 
@@ -118,7 +118,7 @@ export function useCreateAssignment() {
       }
     },
 
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       logger.error("Failed to create assignment", error);
     },
   });
@@ -171,7 +171,7 @@ export function useUpdateAssignment() {
       return { previousAssignment };
     },
 
-    onError: (error: any, { assignmentId }, context) => {
+    onError: (error: unknown, { assignmentId }, context) => {
       logger.error("Failed to update assignment", error, { assignmentId });
 
       // Rollback on error
@@ -260,7 +260,7 @@ export function useDeleteAssignment() {
       }
     },
 
-    onError: (error: any, assignmentId) => {
+    onError: (error: unknown, assignmentId) => {
       logger.error("Failed to delete assignment", error, { assignmentId });
     },
   });

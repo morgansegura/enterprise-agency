@@ -3,9 +3,9 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-} from '@nestjs/common';
-import { PrismaService } from '@/common/services/prisma.service';
-import { TenantRole } from '@/common/permissions';
+} from "@nestjs/common";
+import { PrismaService } from "@/common/services/prisma.service";
+import { TenantRole } from "@/common/permissions";
 
 /**
  * Verifies the authenticated user has access to the requested tenant.
@@ -30,7 +30,9 @@ export class TenantAccessGuard implements CanActivate {
     const tenantId = request.tenantId;
 
     if (!user || !tenantId) {
-      throw new ForbiddenException('Authentication and tenant context required');
+      throw new ForbiddenException(
+        "Authentication and tenant context required",
+      );
     }
 
     // 1. Direct tenant membership
@@ -50,7 +52,7 @@ export class TenantAccessGuard implements CanActivate {
 
     if (superAdminAccess) {
       request.tenantUser = {
-        id: 'virtual',
+        id: "virtual",
         tenantId,
         userId: user.id,
         role: TenantRole.SUPERADMIN,
@@ -90,7 +92,7 @@ export class TenantAccessGuard implements CanActivate {
       where: { userId_tenantId: { tenantId, userId: user.id } },
     });
 
-    if (projectAssignment && projectAssignment.status === 'active') {
+    if (projectAssignment && projectAssignment.status === "active") {
       request.tenantUser = {
         id: projectAssignment.id,
         tenantId,
@@ -101,6 +103,6 @@ export class TenantAccessGuard implements CanActivate {
       return true;
     }
 
-    throw new ForbiddenException('You do not have access to this tenant');
+    throw new ForbiddenException("You do not have access to this tenant");
   }
 }

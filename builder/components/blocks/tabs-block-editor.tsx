@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Trash2, LayoutGrid, Plus, X, PlusCircle } from "lucide-react";
+import { Trash2, LayoutGrid, X, PlusCircle } from "lucide-react";
 import { FormItem } from "@/components/ui/form";
 
 interface TabItem {

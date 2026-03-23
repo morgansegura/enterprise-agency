@@ -33,7 +33,7 @@ interface PostEditorLayoutProps {
 }
 
 export function PostEditorLayout({
-  postId,
+  postId: _postId,
   postTitle,
   post,
   breakpoint = "desktop",

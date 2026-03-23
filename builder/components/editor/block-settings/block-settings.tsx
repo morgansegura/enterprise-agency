@@ -50,7 +50,7 @@ function setNestedValue(
 /**
  * Get a deeply nested value using dot-notation.
  */
-function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
+function _getNestedValue(obj: Record<string, unknown>, path: string): unknown {
   const parts = path.split(".");
   let current: unknown = obj;
   for (const part of parts) {

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
 import * as React from "react";
 import { Settings2, Copy, ArrowRightLeft } from "lucide-react";
@@ -10,6 +11,7 @@ import {
   useDuplicateFooter,
   type Footer,
   type FooterStyle,
+  type FooterZone as FooterZoneType,
 } from "@/lib/hooks/use-footers";
 import { FooterSettingsPopover } from "./footer-settings-popover";
 import { FooterLibraryPicker } from "./footer-library-picker";
@@ -498,7 +500,7 @@ function FooterLayout({ footer }: { footer: Footer }) {
 function FooterZone({
   zone,
 }: {
-  zone?: import("@/lib/hooks/use-footers").FooterZone;
+  zone?: FooterZoneType;
 }) {
   if (!zone) return null;
 

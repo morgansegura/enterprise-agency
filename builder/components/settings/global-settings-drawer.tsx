@@ -28,7 +28,6 @@ import {
   FormInput,
   CreditCard,
   Home,
-  Sparkles,
   Zap,
   Layers,
   Loader2,
@@ -109,7 +108,7 @@ import {
   type ComponentSettingsData,
   defaultComponentSettings,
 } from "./component-settings-panel";
-import { ThemePresets, type ThemePreset } from "./theme-presets";
+import { type ThemePreset } from "./theme-presets";
 import {
   LoadingSettingsPanel,
   type LoadingSettingsData,
@@ -799,14 +798,14 @@ export function GlobalSettingsDrawer({
   }, [localTokens, tenantId, hasChanges, updateTokens]);
 
   // Update handlers
-  const updateColors = (key: keyof SemanticColors, value: string) => {
+  const _updateColors = (key: keyof SemanticColors, value: string) => {
     setLocalTokens((prev) => ({
       ...prev,
       colors: { ...prev.colors, [key]: value },
     }));
   };
 
-  const updateTypography = <K extends keyof TypographySettings>(
+  const _updateTypography = <K extends keyof TypographySettings>(
     key: K,
     value: TypographySettings[K],
   ) => {
@@ -889,7 +888,7 @@ export function GlobalSettingsDrawer({
     }));
   };
 
-  const handleApplyThemePreset = (preset: ThemePreset) => {
+  const _handleApplyThemePreset = (preset: ThemePreset) => {
     setLocalTokens((prev) => ({
       ...prev,
       colorSettings: preset.colors,
@@ -1074,7 +1073,7 @@ interface ColorSettingsProps {
   onChange: (key: SemanticColorKey, value: string) => void;
 }
 
-function ColorSettings({ colors, onChange }: ColorSettingsProps) {
+function _ColorSettings({ colors, onChange }: ColorSettingsProps) {
   return (
     <SettingsSection
       title="Brand Colors"
@@ -1229,7 +1228,7 @@ interface TypographySettingsPanelProps {
   ) => void;
 }
 
-function TypographySettingsPanel({
+function _TypographySettingsPanel({
   settings,
   onChange,
 }: TypographySettingsPanelProps) {

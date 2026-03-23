@@ -37,9 +37,9 @@ export interface SettingsDrawerProps {
 export function SettingsDrawer({
   open,
   onOpenChange,
-  title,
-  description,
-  titleIcon,
+  title: _title,
+  description: _description,
+  titleIcon: _titleIcon,
   children,
   className,
 }: SettingsDrawerProps) {

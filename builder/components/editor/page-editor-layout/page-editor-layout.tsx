@@ -107,6 +107,7 @@ export function PageEditorLayout({
     }
     if (lastSaved) {
       // Show "All changes saved" if saved within last 10 seconds
+      // eslint-disable-next-line react-hooks/purity -- Date.now() for time-since-save display is intentional
       const secondsAgo = (Date.now() - lastSaved.getTime()) / 1000;
       if (secondsAgo < 10) {
         return (

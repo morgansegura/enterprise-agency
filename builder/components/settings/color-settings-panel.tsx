@@ -19,18 +19,13 @@ import {
   RefreshCw,
   Sparkles,
   AlertCircle,
-  CheckCircle,
-  Info,
-  AlertTriangle,
   Link as LinkIcon,
-  MousePointer,
   LayoutGrid,
 } from "lucide-react";
 import {
   generateColorScale,
   generateForegroundColor,
   getContrastRatio,
-  hexToHslString,
   isValidHex,
   normalizeHex,
 } from "@/lib/utils/color-utils";
@@ -383,7 +378,7 @@ interface LivePreviewProps {
 }
 
 function LivePreview({ colors }: LivePreviewProps) {
-  const primaryScale = React.useMemo(
+  const _primaryScale = React.useMemo(
     () => generateColorScale(colors.brand.primary),
     [colors.brand.primary],
   );

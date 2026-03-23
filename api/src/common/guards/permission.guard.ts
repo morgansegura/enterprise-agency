@@ -1,8 +1,8 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { PrismaService } from '@/common/services/prisma.service';
-import { PERMISSIONS_KEY } from '@/common/decorators/permissions.decorator';
-import { Permission, TenantRole, ROLE_PERMISSIONS } from '@/common/permissions';
+import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { PrismaService } from "@/common/services/prisma.service";
+import { PERMISSIONS_KEY } from "@/common/decorators/permissions.decorator";
+import { Permission, TenantRole, ROLE_PERMISSIONS } from "@/common/permissions";
 
 /**
  * Checks if the authenticated user has the required atomic permissions.
@@ -54,7 +54,10 @@ export class PermissionGuard implements CanActivate {
     const rolePermissions = ROLE_PERMISSIONS[role] ?? [];
 
     let customPermissions: Permission[] = [];
-    if (resolvedTenantUser.permissions && Array.isArray(resolvedTenantUser.permissions)) {
+    if (
+      resolvedTenantUser.permissions &&
+      Array.isArray(resolvedTenantUser.permissions)
+    ) {
       customPermissions = resolvedTenantUser.permissions as Permission[];
     }
 

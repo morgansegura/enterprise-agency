@@ -147,7 +147,7 @@ export async function getCurrentUser(): Promise<User | null> {
 
     logger.log("Current user fetched", { userId: user.id });
     return user;
-  } catch (error) {
+  } catch (_error) {
     logger.log("No authenticated user");
 
     // Clear store on auth failure

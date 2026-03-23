@@ -51,7 +51,7 @@ export default function IconBlockRenderer({ block }: BlockRendererProps) {
   if (!IconComponent) {
     return (
       <div className="text-muted-foreground text-sm">
-        Icon "{icon}" not found
+        Icon &quot;{icon}&quot; not found
       </div>
     );
   }

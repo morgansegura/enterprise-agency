@@ -101,9 +101,17 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
 
   // Expose transaction and other methods
   $transaction<T>(
-    fn: (tx: Parameters<Parameters<typeof this.client.$transaction>[0]> extends [infer Tx] ? Tx : never) => Promise<T>,
+    fn: (
+      tx: Parameters<Parameters<typeof this.client.$transaction>[0]> extends [
+        infer Tx,
+      ]
+        ? Tx
+        : never,
+    ) => Promise<T>,
   ): Promise<T> {
-    return this.client.$transaction(fn as Parameters<typeof this.client.$transaction>[0]) as Promise<T>;
+    return this.client.$transaction(
+      fn as Parameters<typeof this.client.$transaction>[0],
+    ) as Promise<T>;
   }
 
   async onModuleInit() {

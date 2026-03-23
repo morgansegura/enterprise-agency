@@ -212,6 +212,7 @@ export default function MenuEditorPage({
                   <MenuItemTree
                     items={items}
                     onChange={setItems}
+                    // eslint-disable-next-line react-hooks/incompatible-library -- React Hook Form watch() needed for reactive form state
                     maxDepth={form.watch("type") === "mega" ? 2 : 3}
                   />
                 </CardContent>

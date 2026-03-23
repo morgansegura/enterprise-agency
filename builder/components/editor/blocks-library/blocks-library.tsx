@@ -11,7 +11,6 @@ import {
   Minus,
   MousePointer,
   Box,
-  Play,
   Music,
   Code,
   TrendingUp,
@@ -231,7 +230,7 @@ const LAYOUT_BLOCKS: Block[] = [
 export function BlocksLibrary() {
   const params = useParams();
   const tenantId = params?.id as string;
-  const isBuilder = useIsBuilder(tenantId);
+  const _isBuilder = useIsBuilder(tenantId);
 
   const handleBlockClick = (block: Block) => {
     // Emit event for parent to handle block addition

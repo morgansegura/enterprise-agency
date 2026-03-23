@@ -1,6 +1,6 @@
 "use client";
 
-import { UseFormReturn, FieldValues } from "react-hook-form";
+import type { UseFormReturn, FieldValues } from "react-hook-form";
 import {
   FormField,
   FormItem,

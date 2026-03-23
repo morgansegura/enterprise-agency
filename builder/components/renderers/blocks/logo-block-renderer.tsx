@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { cn } from "@/lib/utils";
 

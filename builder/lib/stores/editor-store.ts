@@ -14,7 +14,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { produce } from "immer";
 import type { Block, Container, Section } from "@/lib/types/section";
-import type { Page, PageSeo } from "@/lib/hooks/use-pages";
+import type { Page } from "@/lib/hooks/use-pages";
 import { useEditorHistory } from "./editor-history";
 
 // =============================================================================
