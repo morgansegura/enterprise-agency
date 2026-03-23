@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 // Header behavior types
 export type HeaderBehavior =
@@ -181,11 +182,9 @@ export interface UpdateHeaderInput {
   isDefault?: boolean;
 }
 
-const HEADERS_KEY = ["headers"];
-
 export function useHeaders(tenantId: string) {
   return useQuery<Header[]>({
-    queryKey: [...HEADERS_KEY, tenantId],
+    queryKey: queryKeys.headers.byTenant(tenantId),
     queryFn: () => apiClient.get<Header[]>(`/tenants/${tenantId}/headers`),
     enabled: !!tenantId,
   });
@@ -193,7 +192,7 @@ export function useHeaders(tenantId: string) {
 
 export function useHeader(tenantId: string, headerId: string) {
   return useQuery<Header>({
-    queryKey: [...HEADERS_KEY, tenantId, headerId],
+    queryKey: queryKeys.headers.detail(tenantId, headerId),
     queryFn: () =>
       apiClient.get<Header>(`/tenants/${tenantId}/headers/${headerId}`),
     enabled: !!tenantId && !!headerId,
@@ -202,7 +201,7 @@ export function useHeader(tenantId: string, headerId: string) {
 
 export function useHeaderBySlug(tenantId: string, slug: string) {
   return useQuery<Header>({
-    queryKey: [...HEADERS_KEY, tenantId, "slug", slug],
+    queryKey: queryKeys.headers.slug(tenantId, slug),
     queryFn: () =>
       apiClient.get<Header>(`/tenants/${tenantId}/headers/slug/${slug}`),
     enabled: !!tenantId && !!slug,
@@ -211,7 +210,7 @@ export function useHeaderBySlug(tenantId: string, slug: string) {
 
 export function useDefaultHeader(tenantId: string) {
   return useQuery<Header | null>({
-    queryKey: [...HEADERS_KEY, tenantId, "default"],
+    queryKey: queryKeys.headers.default(tenantId),
     queryFn: () =>
       apiClient.get<Header | null>(`/tenants/${tenantId}/headers/default`),
     enabled: !!tenantId,
@@ -225,7 +224,7 @@ export function useCreateHeader(tenantId: string) {
     mutationFn: (data: CreateHeaderInput) =>
       apiClient.post<Header>(`/tenants/${tenantId}/headers`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...HEADERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.headers.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to create header", error as Error);
@@ -241,9 +240,9 @@ export function useUpdateHeader(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateHeaderInput }) =>
       apiClient.put<Header>(`/tenants/${tenantId}/headers/${id}`, data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: [...HEADERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.headers.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...HEADERS_KEY, tenantId, variables.id],
+        queryKey: queryKeys.headers.detail(tenantId, variables.id),
       });
     },
     onError: (error: unknown) => {
@@ -260,7 +259,7 @@ export function useDeleteHeader(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.delete(`/tenants/${tenantId}/headers/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...HEADERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.headers.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to delete header", error as Error);
@@ -278,7 +277,7 @@ export function useDuplicateHeader(tenantId: string) {
         name,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...HEADERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.headers.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to duplicate header", error as Error);

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 export interface Asset {
   id: string;
@@ -21,8 +22,6 @@ export interface Asset {
   updatedAt?: string;
 }
 
-const ASSETS_KEY = ["assets"];
-
 export function useAssets(
   tenantId: string,
   filters?: { fileType?: string; usageContext?: string },
@@ -34,7 +33,7 @@ export function useAssets(
   const queryString = params.toString();
 
   return useQuery<Asset[]>({
-    queryKey: [...ASSETS_KEY, tenantId, filters],
+    queryKey: queryKeys.assets.list(tenantId, filters as Record<string, unknown>),
     queryFn: () =>
       apiClient.get<Asset[]>(`/assets${queryString ? `?${queryString}` : ""}`),
     enabled: !!tenantId,
@@ -43,7 +42,7 @@ export function useAssets(
 
 export function useAsset(tenantId: string, assetId: string) {
   return useQuery<Asset>({
-    queryKey: [...ASSETS_KEY, tenantId, assetId],
+    queryKey: queryKeys.assets.detail(tenantId, assetId),
     queryFn: () => apiClient.get<Asset>(`/assets/${assetId}`),
     enabled: !!tenantId && !!assetId,
   });
@@ -87,7 +86,7 @@ export function useUploadAsset(tenantId: string) {
       return response.json() as Promise<Asset>;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...ASSETS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.assets.byTenant(tenantId) });
       logger.log("Asset uploaded successfully");
     },
     onError: (error) => {
@@ -108,9 +107,9 @@ export function useUpdateAsset(tenantId: string) {
       data: { fileName?: string; altText?: string; usageContext?: string };
     }) => apiClient.patch<Asset>(`/assets/${id}`, data),
     onSuccess: (updatedAsset) => {
-      queryClient.invalidateQueries({ queryKey: [...ASSETS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.assets.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...ASSETS_KEY, tenantId, updatedAsset.id],
+        queryKey: queryKeys.assets.detail(tenantId, updatedAsset.id),
       });
       logger.log("Asset updated successfully");
     },
@@ -126,7 +125,7 @@ export function useDeleteAsset(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete(`/assets/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...ASSETS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.assets.byTenant(tenantId) });
       logger.log("Asset deleted successfully");
     },
     onError: (error) => {

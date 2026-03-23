@@ -2,6 +2,7 @@ import { useCallback, useRef, useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 import type { Page } from "./use-pages";
 
 interface AutoSaveOptions {
@@ -53,7 +54,7 @@ export function useAutoSave({
         lastSaved: new Date(),
         hasUnsavedChanges: false,
       }));
-      queryClient.invalidateQueries({ queryKey: ["pages", tenantId, pageId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pages.detail(tenantId, pageId) });
       logger.log("Auto-save completed");
       onSaveSuccess?.();
     },

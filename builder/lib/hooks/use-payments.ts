@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 // ============================================================================
 // Types
@@ -113,15 +114,15 @@ export interface PaymentDetails {
 }
 
 // ============================================================================
-// Query Keys
+// Legacy Query Keys (deprecated - use queryKeys.payments instead)
 // ============================================================================
 
+/** @deprecated Use queryKeys.payments from ./query-keys instead */
 export const paymentKeys = {
-  all: ["payments"] as const,
-  config: (tenantId: string) =>
-    [...paymentKeys.all, "config", tenantId] as const,
+  all: queryKeys.payments.all,
+  config: (tenantId: string) => queryKeys.payments.config(tenantId),
   details: (tenantId: string, orderId: string) =>
-    [...paymentKeys.all, "details", tenantId, orderId] as const,
+    queryKeys.payments.details(tenantId, orderId),
 };
 
 // ============================================================================
@@ -133,7 +134,7 @@ export const paymentKeys = {
  */
 export function usePaymentConfig(tenantId: string) {
   return useQuery<PaymentConfig>({
-    queryKey: paymentKeys.config(tenantId),
+    queryKey: queryKeys.payments.config(tenantId),
     queryFn: () => apiClient.get<PaymentConfig>("/payments/config"),
     enabled: !!tenantId,
   });
@@ -152,7 +153,7 @@ export function useUpdatePaymentConfig(tenantId: string) {
         dto,
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: paymentKeys.config(tenantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.payments.config(tenantId) });
       logger.log("Payment configuration updated");
     },
     onError: (error) => {
@@ -194,10 +195,10 @@ export function useCreateRefund(tenantId: string) {
       apiClient.post<RefundResult, CreateRefundDto>("/payments/refund", dto),
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: paymentKeys.details(tenantId, variables.orderId),
+        queryKey: queryKeys.payments.details(tenantId, variables.orderId),
       });
       // Also invalidate orders list
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
       logger.log("Refund created", {
         provider: data.provider,
         refundId: data.refundId,
@@ -214,7 +215,7 @@ export function useCreateRefund(tenantId: string) {
  */
 export function usePaymentDetails(tenantId: string, orderId: string) {
   return useQuery<PaymentDetails>({
-    queryKey: paymentKeys.details(tenantId, orderId),
+    queryKey: queryKeys.payments.details(tenantId, orderId),
     queryFn: () => apiClient.get<PaymentDetails>(`/payments/orders/${orderId}`),
     enabled: !!tenantId && !!orderId,
   });

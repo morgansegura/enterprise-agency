@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 import type { DesignTokens } from "../tokens";
 
 /**
@@ -11,14 +12,12 @@ import type { DesignTokens } from "../tokens";
 
 export type TenantTokens = Partial<DesignTokens>;
 
-const TENANT_TOKENS_KEY = (tenantId: string) => ["tenant-tokens", tenantId];
-
 /**
  * Fetch tenant design tokens
  */
 export function useTenantTokens(tenantId: string) {
   return useQuery<TenantTokens>({
-    queryKey: TENANT_TOKENS_KEY(tenantId),
+    queryKey: queryKeys.tenantTokens.detail(tenantId),
     queryFn: async () => {
       try {
         return await apiClient.get<TenantTokens>(`/tenants/${tenantId}/tokens`);
@@ -47,7 +46,7 @@ export function useUpdateTenantTokens() {
       tokens: TenantTokens;
     }) => apiClient.put<TenantTokens>(`/tenants/${tenantId}/tokens`, tokens),
     onSuccess: (_, { tenantId }) => {
-      queryClient.invalidateQueries({ queryKey: TENANT_TOKENS_KEY(tenantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenantTokens.detail(tenantId) });
       logger.log("Tenant tokens updated successfully", { tenantId });
     },
     onError: (error) => {

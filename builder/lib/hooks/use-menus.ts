@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 // Menu item for nested structure
 export interface MenuItem {
@@ -83,11 +84,9 @@ export interface UpdateMenuInput {
   isDefault?: boolean;
 }
 
-const MENUS_KEY = ["menus"];
-
 export function useMenus(tenantId: string) {
   return useQuery<Menu[]>({
-    queryKey: [...MENUS_KEY, tenantId],
+    queryKey: queryKeys.menus.byTenant(tenantId),
     queryFn: () => apiClient.get<Menu[]>(`/tenants/${tenantId}/menus`),
     enabled: !!tenantId,
   });
@@ -95,7 +94,7 @@ export function useMenus(tenantId: string) {
 
 export function useMenu(tenantId: string, menuId: string) {
   return useQuery<Menu>({
-    queryKey: [...MENUS_KEY, tenantId, menuId],
+    queryKey: queryKeys.menus.detail(tenantId, menuId),
     queryFn: () => apiClient.get<Menu>(`/tenants/${tenantId}/menus/${menuId}`),
     enabled: !!tenantId && !!menuId,
   });
@@ -103,7 +102,7 @@ export function useMenu(tenantId: string, menuId: string) {
 
 export function useMenuBySlug(tenantId: string, slug: string) {
   return useQuery<Menu>({
-    queryKey: [...MENUS_KEY, tenantId, "slug", slug],
+    queryKey: queryKeys.menus.slug(tenantId, slug),
     queryFn: () =>
       apiClient.get<Menu>(`/tenants/${tenantId}/menus/slug/${slug}`),
     enabled: !!tenantId && !!slug,
@@ -112,7 +111,7 @@ export function useMenuBySlug(tenantId: string, slug: string) {
 
 export function useDefaultMenu(tenantId: string) {
   return useQuery<Menu | null>({
-    queryKey: [...MENUS_KEY, tenantId, "default"],
+    queryKey: queryKeys.menus.default(tenantId),
     queryFn: () =>
       apiClient.get<Menu | null>(`/tenants/${tenantId}/menus/default`),
     enabled: !!tenantId,
@@ -126,7 +125,7 @@ export function useCreateMenu(tenantId: string) {
     mutationFn: (data: CreateMenuInput) =>
       apiClient.post<Menu>(`/tenants/${tenantId}/menus`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...MENUS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.menus.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to create menu", error as Error);
@@ -142,9 +141,9 @@ export function useUpdateMenu(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateMenuInput }) =>
       apiClient.put<Menu>(`/tenants/${tenantId}/menus/${id}`, data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: [...MENUS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.menus.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...MENUS_KEY, tenantId, variables.id],
+        queryKey: queryKeys.menus.detail(tenantId, variables.id),
       });
     },
     onError: (error: unknown) => {
@@ -161,7 +160,7 @@ export function useDeleteMenu(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.delete(`/tenants/${tenantId}/menus/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...MENUS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.menus.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to delete menu", error as Error);
@@ -179,7 +178,7 @@ export function useDuplicateMenu(tenantId: string) {
         name,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...MENUS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.menus.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to duplicate menu", error as Error);

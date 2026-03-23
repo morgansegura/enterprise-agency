@@ -7,6 +7,7 @@ import { createQueryClient } from "@/lib/query-client";
 import { AuthProvider } from "@/components/providers/auth-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ToastProvider } from "@/components/ui/toast";
+import { Toaster } from "sonner";
 import { ApiInterceptor } from "@/components/auth/api-interceptor";
 import { SessionManager } from "@/components/auth/session-manager";
 
@@ -34,6 +35,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           <ApiInterceptor />
           <SessionManager />
           <ToastProvider>{children}</ToastProvider>
+          <Toaster position="top-right" richColors closeButton />
           <ReactQueryDevtools initialIsOpen={false} />
         </AuthProvider>
       </ThemeProvider>

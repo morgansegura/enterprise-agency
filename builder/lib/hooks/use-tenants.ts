@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { useTenantsStore } from "../stores";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 import type {
   TenantType,
   ClientType,
@@ -56,13 +57,11 @@ export interface Tenant {
   };
 }
 
-const TENANTS_KEY = ["tenants"];
-
 export function useTenants() {
   const { setTenants, setLoading } = useTenantsStore();
 
   return useQuery<Tenant[]>({
-    queryKey: TENANTS_KEY,
+    queryKey: queryKeys.tenants.all(),
     queryFn: async () => {
       setLoading(true);
       try {
@@ -81,7 +80,7 @@ export function useTenants() {
 
 export function useTenant(tenantId: string) {
   return useQuery<Tenant>({
-    queryKey: [...TENANTS_KEY, tenantId],
+    queryKey: queryKeys.tenants.detail(tenantId),
     queryFn: () => apiClient.get<Tenant>(`/tenants/${tenantId}`),
     enabled: !!tenantId,
   });
@@ -95,7 +94,7 @@ export function useCreateTenant() {
     mutationFn: (data: Partial<Tenant>) =>
       apiClient.post<Tenant>("/tenants", data),
     onSuccess: (newTenant) => {
-      queryClient.invalidateQueries({ queryKey: TENANTS_KEY });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.all() });
       addTenant(newTenant);
       logger.log("Tenant created successfully", { tenantId: newTenant.id });
     },
@@ -113,9 +112,9 @@ export function useUpdateTenant() {
     mutationFn: ({ id, data }: { id: string; data: Partial<Tenant> }) =>
       apiClient.patch<Tenant>(`/tenants/${id}`, data),
     onSuccess: (updatedTenant) => {
-      queryClient.invalidateQueries({ queryKey: TENANTS_KEY });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.all() });
       queryClient.invalidateQueries({
-        queryKey: [...TENANTS_KEY, updatedTenant.id],
+        queryKey: queryKeys.tenants.detail(updatedTenant.id),
       });
       updateTenant(updatedTenant.id, updatedTenant);
       logger.log("Tenant updated successfully", { tenantId: updatedTenant.id });
@@ -133,7 +132,7 @@ export function useDeleteTenant() {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete(`/tenants/${id}`),
     onSuccess: (_, tenantId) => {
-      queryClient.invalidateQueries({ queryKey: TENANTS_KEY });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.all() });
       deleteTenant(tenantId);
       logger.log("Tenant deleted successfully", { tenantId });
     },
@@ -191,11 +190,10 @@ export interface TenantUser {
   };
 }
 
-const TENANT_USERS_KEY = (tenantId: string) => ["tenants", tenantId, "users"];
 
 export function useTenantUsers(tenantId: string) {
   return useQuery<TenantUser[]>({
-    queryKey: TENANT_USERS_KEY(tenantId),
+    queryKey: queryKeys.tenants.users(tenantId),
     queryFn: () => apiClient.get<TenantUser[]>(`/tenants/${tenantId}/users`),
     enabled: !!tenantId,
   });
@@ -208,7 +206,7 @@ export function useAddTenantUser(tenantId: string) {
     mutationFn: (data: { userId: string; role?: string }) =>
       apiClient.post<TenantUser>(`/tenants/${tenantId}/users`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: TENANT_USERS_KEY(tenantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.users(tenantId) });
       logger.log("User added to tenant", { tenantId });
     },
     onError: (error) => {
@@ -230,7 +228,7 @@ export function useUpdateTenantUser(tenantId: string) {
     }) =>
       apiClient.patch<TenantUser>(`/tenants/${tenantId}/users/${userId}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: TENANT_USERS_KEY(tenantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.users(tenantId) });
       logger.log("Tenant user updated", { tenantId });
     },
     onError: (error) => {
@@ -246,7 +244,7 @@ export function useRemoveTenantUser(tenantId: string) {
     mutationFn: (userId: string) =>
       apiClient.delete(`/tenants/${tenantId}/users/${userId}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: TENANT_USERS_KEY(tenantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.users(tenantId) });
       logger.log("User removed from tenant", { tenantId });
     },
     onError: (error) => {
@@ -289,7 +287,7 @@ export interface TenantStats {
 
 export function useTenantStats(tenantId: string) {
   return useQuery<TenantStats>({
-    queryKey: ["tenants", tenantId, "stats"],
+    queryKey: queryKeys.tenants.stats(tenantId),
     queryFn: () => apiClient.get<TenantStats>(`/tenants/${tenantId}/stats`),
     enabled: !!tenantId,
     staleTime: 60000, // Cache for 1 minute
@@ -339,7 +337,7 @@ export interface TenantsHealthOverview {
 
 export function useTenantsHealth() {
   return useQuery<TenantsHealthOverview>({
-    queryKey: ["tenants", "health", "overview"],
+    queryKey: queryKeys.tenants.health(),
     queryFn: () =>
       apiClient.get<TenantsHealthOverview>("/tenants/health/overview"),
     staleTime: 60000, // Cache for 1 minute
@@ -355,7 +353,7 @@ export function useTenantsHealth() {
  */
 export function useAgencyTenant() {
   return useQuery<Tenant>({
-    queryKey: ["tenants", "agency"],
+    queryKey: queryKeys.tenants.agency(),
     queryFn: () => apiClient.get<Tenant>("/tenants/agency"),
     staleTime: 300000, // Cache for 5 minutes (agency rarely changes)
   });
@@ -368,7 +366,7 @@ export function useAccessibleTenants() {
   const { setAccessibleTenants, setLoading } = useTenantsStore();
 
   return useQuery<AccessibleTenant[]>({
-    queryKey: ["tenants", "accessible"],
+    queryKey: queryKeys.tenants.accessible(),
     queryFn: async () => {
       setLoading(true);
       try {
@@ -390,7 +388,7 @@ export function useAccessibleTenants() {
  */
 export function useTenantsByType(type: TenantType) {
   return useQuery<Tenant[]>({
-    queryKey: ["tenants", "type", type],
+    queryKey: queryKeys.tenants.byType(type),
     queryFn: () => apiClient.get<Tenant[]>(`/tenants/type/${type}`),
     enabled: !!type,
   });
@@ -401,7 +399,7 @@ export function useTenantsByType(type: TenantType) {
  */
 export function useChildTenants(parentTenantId: string) {
   return useQuery<Tenant[]>({
-    queryKey: ["tenants", parentTenantId, "children"],
+    queryKey: queryKeys.tenants.children(parentTenantId),
     queryFn: () =>
       apiClient.get<Tenant[]>(`/tenants/${parentTenantId}/children`),
     enabled: !!parentTenantId,
@@ -437,7 +435,7 @@ export interface TenantHierarchy {
 
 export function useTenantHierarchy(tenantId: string) {
   return useQuery<TenantHierarchy>({
-    queryKey: ["tenants", tenantId, "hierarchy"],
+    queryKey: queryKeys.tenants.hierarchy(tenantId),
     queryFn: () =>
       apiClient.get<TenantHierarchy>(`/tenants/${tenantId}/hierarchy`),
     enabled: !!tenantId,
@@ -455,7 +453,7 @@ export interface TenantAccess {
 
 export function useTenantAccess(tenantId: string) {
   return useQuery<TenantAccess>({
-    queryKey: ["tenants", tenantId, "access"],
+    queryKey: queryKeys.tenants.access(tenantId),
     queryFn: () => apiClient.get<TenantAccess>(`/tenants/${tenantId}/access`),
     enabled: !!tenantId,
   });
@@ -475,7 +473,7 @@ export function useActiveTenant() {
 
   // Query to fetch the full tenant data when activeTenantId is set but activeTenant is null
   const { data: tenantData, isLoading } = useQuery<Tenant>({
-    queryKey: ["tenants", activeTenantId],
+    queryKey: queryKeys.tenants.detail(activeTenantId!),
     queryFn: () => apiClient.get<Tenant>(`/tenants/${activeTenantId}`),
     enabled: !!activeTenantId && !activeTenant,
   });

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 export interface Tag {
   id: string;
@@ -9,16 +10,13 @@ export interface Tag {
   count: number;
 }
 
-const TAGS_KEY = ["tags"];
-const POSTS_KEY = ["posts"];
-
 /**
  * Fetch all tags for a tenant
  * Tags are derived from posts - each unique tag string becomes a Tag object
  */
 export function useTags(tenantId: string) {
   return useQuery<Tag[]>({
-    queryKey: [...TAGS_KEY, tenantId],
+    queryKey: queryKeys.tags.byTenant(tenantId),
     queryFn: async () => {
       // Get raw tag strings from posts
       const tagStrings = await apiClient.get<string[]>("/posts/tags");
@@ -41,7 +39,7 @@ export function useTags(tenantId: string) {
  */
 export function useTagsWithCounts(tenantId: string) {
   return useQuery<Tag[]>({
-    queryKey: [...TAGS_KEY, tenantId, "with-counts"],
+    queryKey: queryKeys.tags.withCounts(tenantId),
     queryFn: async () => {
       // Get all posts to count tag usage
       const posts = await apiClient.get<{ tags?: string[] }[]>("/posts");
@@ -96,8 +94,8 @@ export function useRenameTag(tenantId: string) {
       return { oldName, newName, updatedCount: posts.length };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...TAGS_KEY, tenantId] });
-      queryClient.invalidateQueries({ queryKey: [...POSTS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tags.byTenant(tenantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
       logger.log("Tag renamed successfully");
     },
     onError: (error) => {
@@ -129,8 +127,8 @@ export function useDeleteTag(tenantId: string) {
       return { tagName, removedFromCount: posts.length };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...TAGS_KEY, tenantId] });
-      queryClient.invalidateQueries({ queryKey: [...POSTS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.tags.byTenant(tenantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
       logger.log("Tag deleted successfully");
     },
     onError: (error) => {

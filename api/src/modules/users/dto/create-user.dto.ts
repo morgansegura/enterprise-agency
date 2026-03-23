@@ -1,35 +1,25 @@
 import {
-  IsString,
-  IsOptional,
-  IsUrl,
   IsEmail,
+  IsString,
   MinLength,
   MaxLength,
   Matches,
 } from "class-validator";
 
-export class UpdateUserDto {
-  @IsOptional()
+export class CreateUserDto {
   @IsEmail({}, { message: "Please provide a valid email address" })
-  email?: string;
+  email: string;
 
-  @IsOptional()
   @IsString()
   @MinLength(2)
   @MaxLength(100)
-  firstName?: string;
+  firstName: string;
 
-  @IsOptional()
   @IsString()
   @MinLength(2)
   @MaxLength(100)
-  lastName?: string;
+  lastName: string;
 
-  @IsOptional()
-  @IsUrl()
-  avatarUrl?: string;
-
-  @IsOptional()
   @IsString()
   @MinLength(8, { message: "Password must be at least 8 characters long" })
   @MaxLength(128, { message: "Password must not exceed 128 characters" })
@@ -37,9 +27,8 @@ export class UpdateUserDto {
     message:
       "Password must contain at least one uppercase letter, one lowercase letter, and one number or special character",
   })
-  password?: string;
+  password: string;
 
-  @IsOptional()
   @IsString()
-  role?: string;
+  role: string;
 }

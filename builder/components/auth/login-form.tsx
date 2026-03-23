@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 import { login } from "@/lib/auth";
 import { AuthError, getErrorMessage } from "@/lib/errors";
 import { Input } from "@/components/ui/input";
@@ -17,12 +18,10 @@ export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
@@ -35,14 +34,14 @@ export function LoginForm() {
 
       if (err instanceof AuthError) {
         if (err.code === "INVALID_CREDENTIALS") {
-          setError("Invalid email or password");
+          toast.error("Invalid email or password");
         } else if (err.code === "UNAUTHORIZED") {
-          setError("Access denied");
+          toast.error("Access denied");
         } else {
-          setError(message);
+          toast.error(message || "Something went wrong");
         }
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        toast.error("An unexpected error occurred. Please try again.");
       }
 
       logger.error("Login failed", err as Error, { email });
@@ -59,11 +58,6 @@ export function LoginForm() {
           <p className="login-form-subtitle">Sign in to your account</p>
         </div>
         <form className="login-form" onSubmit={handleSubmit}>
-          {error && (
-            <div className="login-form-error">
-              <p className="login-form-error-text">{error}</p>
-            </div>
-          )}
           <div className="login-form-fields">
             <FormItem>
               <Label htmlFor="email" className="login-form-label">

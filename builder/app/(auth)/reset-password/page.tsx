@@ -3,6 +3,7 @@
 import { useState, useEffect, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 import { resetPassword } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/errors";
 import { PasswordInput } from "@/components/ui/password-input";
@@ -19,33 +20,32 @@ export default function ResetPasswordPage() {
 
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
+  const [fieldError, setFieldError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     if (!token) {
-      setError("Invalid or missing reset token");
+      toast.error("Invalid or missing reset token");
     }
   }, [token]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setFieldError("");
 
     if (!token) {
-      setError("Invalid reset token");
+      toast.error("Invalid reset token");
       return;
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
+      setFieldError("Password must be at least 8 characters");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setFieldError("Passwords do not match");
       return;
     }
 
@@ -54,7 +54,8 @@ export default function ResetPasswordPage() {
     try {
       logger.log("Reset password attempt");
       const message = await resetPassword(token, password);
-      setSuccess(message || "Password reset successful");
+      toast.success(message || "Password reset successful");
+      setSuccess(true);
       logger.log("Password reset successful");
 
       setTimeout(() => {
@@ -62,7 +63,7 @@ export default function ResetPasswordPage() {
       }, 2000);
     } catch (err) {
       const message = getErrorMessage(err);
-      setError(
+      toast.error(
         message || "Failed to reset password. The link may have expired.",
       );
       logger.error("Password reset failed", err as Error);
@@ -80,15 +81,14 @@ export default function ResetPasswordPage() {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          {error && (
+          {fieldError && (
             <div className="auth-form-error">
-              <p className="auth-form-error-text">{error}</p>
+              <p className="auth-form-error-text">{fieldError}</p>
             </div>
           )}
 
           {success && (
             <div className="auth-form-success">
-              <p className="auth-form-success-text">{success}</p>
               <p className="auth-form-success-subtext">
                 Redirecting to login...
               </p>
@@ -108,7 +108,7 @@ export default function ResetPasswordPage() {
                 minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={loading || success.length > 0 || !token}
+                disabled={loading || success || !token}
                 className="auth-form-input"
                 placeholder="At least 8 characters"
               />
@@ -126,7 +126,7 @@ export default function ResetPasswordPage() {
                 minLength={8}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={loading || success.length > 0 || !token}
+                disabled={loading || success || !token}
                 className="auth-form-input"
                 placeholder="Confirm your password"
               />
@@ -136,7 +136,7 @@ export default function ResetPasswordPage() {
           <div className="auth-form-actions">
             <button
               type="submit"
-              disabled={loading || success.length > 0 || !token}
+              disabled={loading || success || !token}
               className="auth-form-submit"
             >
               {loading ? "Resetting Password..." : "Reset Password"}

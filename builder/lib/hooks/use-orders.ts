@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 // ============================================================================
 // Types
@@ -135,12 +136,6 @@ export interface OrderFilters {
 }
 
 // ============================================================================
-// Query Keys
-// ============================================================================
-
-const ORDERS_KEY = ["orders"];
-
-// ============================================================================
 // Order Hooks
 // ============================================================================
 
@@ -161,7 +156,7 @@ export function useOrders(tenantId: string, filters?: OrderFilters) {
   const queryString = params.toString();
 
   return useQuery<{ orders: Order[]; total: number }>({
-    queryKey: [...ORDERS_KEY, tenantId, filters],
+    queryKey: queryKeys.orders.list(tenantId, filters as Record<string, unknown>),
     queryFn: () =>
       apiClient.get<{ orders: Order[]; total: number }>(
         `/orders${queryString ? `?${queryString}` : ""}`,
@@ -172,7 +167,7 @@ export function useOrders(tenantId: string, filters?: OrderFilters) {
 
 export function useOrder(tenantId: string, orderId: string) {
   return useQuery<Order>({
-    queryKey: [...ORDERS_KEY, tenantId, orderId],
+    queryKey: queryKeys.orders.detail(tenantId, orderId),
     queryFn: () => apiClient.get<Order>(`/orders/${orderId}`),
     enabled: !!tenantId && !!orderId,
   });
@@ -180,7 +175,7 @@ export function useOrder(tenantId: string, orderId: string) {
 
 export function useOrderByNumber(tenantId: string, orderNumber: number) {
   return useQuery<Order>({
-    queryKey: [...ORDERS_KEY, tenantId, "number", orderNumber],
+    queryKey: queryKeys.orders.number(tenantId, orderNumber),
     queryFn: () => apiClient.get<Order>(`/orders/number/${orderNumber}`),
     enabled: !!tenantId && !!orderNumber,
   });
@@ -198,7 +193,7 @@ export function useOrderStats(
   const queryString = params.toString();
 
   return useQuery<OrderStats>({
-    queryKey: [...ORDERS_KEY, tenantId, "stats", { startDate, endDate }],
+    queryKey: queryKeys.orders.stats(tenantId, { startDate, endDate }),
     queryFn: () =>
       apiClient.get<OrderStats>(
         `/orders/stats${queryString ? `?${queryString}` : ""}`,
@@ -214,7 +209,7 @@ export function useCreateOrder(tenantId: string) {
     mutationFn: (data: CreateOrderDto) =>
       apiClient.post<Order>("/orders", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...ORDERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.orders.byTenant(tenantId) });
       logger.log("Order created successfully");
     },
     onError: (error) => {
@@ -230,9 +225,9 @@ export function useUpdateOrder(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateOrderDto }) =>
       apiClient.patch<Order>(`/orders/${id}`, data),
     onSuccess: (updatedOrder) => {
-      queryClient.invalidateQueries({ queryKey: [...ORDERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.orders.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...ORDERS_KEY, tenantId, updatedOrder.id],
+        queryKey: queryKeys.orders.detail(tenantId, updatedOrder.id),
       });
       logger.log("Order updated successfully");
     },
@@ -248,12 +243,12 @@ export function useCancelOrder(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.post(`/orders/${id}/cancel`, {}),
     onSuccess: (_, orderId) => {
-      queryClient.invalidateQueries({ queryKey: [...ORDERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.orders.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...ORDERS_KEY, tenantId, orderId],
+        queryKey: queryKeys.orders.detail(tenantId, orderId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...ORDERS_KEY, tenantId, "stats"],
+        queryKey: queryKeys.orders.stats(tenantId),
       });
       logger.log("Order cancelled successfully");
     },
@@ -275,9 +270,9 @@ export function useFulfillOrderItems(tenantId: string) {
       itemIds: string[];
     }) => apiClient.post(`/orders/${orderId}/fulfill`, { itemIds }),
     onSuccess: (_, { orderId }) => {
-      queryClient.invalidateQueries({ queryKey: [...ORDERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.orders.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...ORDERS_KEY, tenantId, orderId],
+        queryKey: queryKeys.orders.detail(tenantId, orderId),
       });
       logger.log("Order items fulfilled successfully");
     },

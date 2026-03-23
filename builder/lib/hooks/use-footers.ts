@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 // Footer layout types
 export type FooterLayout =
@@ -131,11 +132,9 @@ export interface UpdateFooterInput {
   isDefault?: boolean;
 }
 
-const FOOTERS_KEY = ["footers"];
-
 export function useFooters(tenantId: string) {
   return useQuery<Footer[]>({
-    queryKey: [...FOOTERS_KEY, tenantId],
+    queryKey: queryKeys.footers.byTenant(tenantId),
     queryFn: () => apiClient.get<Footer[]>(`/tenants/${tenantId}/footers`),
     enabled: !!tenantId,
   });
@@ -143,7 +142,7 @@ export function useFooters(tenantId: string) {
 
 export function useFooter(tenantId: string, footerId: string) {
   return useQuery<Footer>({
-    queryKey: [...FOOTERS_KEY, tenantId, footerId],
+    queryKey: queryKeys.footers.detail(tenantId, footerId),
     queryFn: () =>
       apiClient.get<Footer>(`/tenants/${tenantId}/footers/${footerId}`),
     enabled: !!tenantId && !!footerId,
@@ -152,7 +151,7 @@ export function useFooter(tenantId: string, footerId: string) {
 
 export function useFooterBySlug(tenantId: string, slug: string) {
   return useQuery<Footer>({
-    queryKey: [...FOOTERS_KEY, tenantId, "slug", slug],
+    queryKey: queryKeys.footers.slug(tenantId, slug),
     queryFn: () =>
       apiClient.get<Footer>(`/tenants/${tenantId}/footers/slug/${slug}`),
     enabled: !!tenantId && !!slug,
@@ -161,7 +160,7 @@ export function useFooterBySlug(tenantId: string, slug: string) {
 
 export function useDefaultFooter(tenantId: string) {
   return useQuery<Footer | null>({
-    queryKey: [...FOOTERS_KEY, tenantId, "default"],
+    queryKey: queryKeys.footers.default(tenantId),
     queryFn: () =>
       apiClient.get<Footer | null>(`/tenants/${tenantId}/footers/default`),
     enabled: !!tenantId,
@@ -175,7 +174,7 @@ export function useCreateFooter(tenantId: string) {
     mutationFn: (data: CreateFooterInput) =>
       apiClient.post<Footer>(`/tenants/${tenantId}/footers`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...FOOTERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.footers.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to create footer", error as Error);
@@ -191,9 +190,9 @@ export function useUpdateFooter(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateFooterInput }) =>
       apiClient.put<Footer>(`/tenants/${tenantId}/footers/${id}`, data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: [...FOOTERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.footers.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...FOOTERS_KEY, tenantId, variables.id],
+        queryKey: queryKeys.footers.detail(tenantId, variables.id),
       });
     },
     onError: (error: unknown) => {
@@ -210,7 +209,7 @@ export function useDeleteFooter(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.delete(`/tenants/${tenantId}/footers/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...FOOTERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.footers.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to delete footer", error as Error);
@@ -228,7 +227,7 @@ export function useDuplicateFooter(tenantId: string) {
         name,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...FOOTERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.footers.byTenant(tenantId) });
     },
     onError: (error: unknown) => {
       logger.error("Failed to duplicate footer", error as Error);

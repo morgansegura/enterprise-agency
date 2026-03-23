@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { forgotPassword } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/errors";
 import { Input } from "@/components/ui/input";
@@ -13,27 +14,23 @@ import "@/components/auth/auth-form.css";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
     setLoading(true);
 
     try {
       logger.log("Forgot password request", { email });
       const message = await forgotPassword(email);
-      setSuccess(
+      toast.success(
         message || "Password reset instructions have been sent to your email",
       );
       setEmail("");
       logger.log("Forgot password successful", { email });
     } catch (err) {
       const message = getErrorMessage(err);
-      setError(message || "Failed to send reset email. Please try again.");
+      toast.error(message || "Failed to send reset email. Please try again.");
       logger.error("Forgot password failed", err as Error, { email });
     } finally {
       setLoading(false);
@@ -52,18 +49,6 @@ export default function ForgotPasswordPage() {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          {error && (
-            <div className="auth-form-error">
-              <p className="auth-form-error-text">{error}</p>
-            </div>
-          )}
-
-          {success && (
-            <div className="auth-form-success">
-              <p className="auth-form-success-text">{success}</p>
-            </div>
-          )}
-
           <div className="auth-form-fields">
             <FormItem>
               <Label htmlFor="email" className="auth-form-label">

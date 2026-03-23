@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 // ============================================================================
 // Types
@@ -107,12 +108,6 @@ export interface CustomerFilters {
 }
 
 // ============================================================================
-// Query Keys
-// ============================================================================
-
-const CUSTOMERS_KEY = ["customers"];
-
-// ============================================================================
 // Customer Hooks
 // ============================================================================
 
@@ -129,7 +124,7 @@ export function useCustomers(tenantId: string, filters?: CustomerFilters) {
   const queryString = params.toString();
 
   return useQuery<{ customers: Customer[]; total: number }>({
-    queryKey: [...CUSTOMERS_KEY, tenantId, filters],
+    queryKey: queryKeys.customers.list(tenantId, filters as Record<string, unknown>),
     queryFn: () =>
       apiClient.get<{ customers: Customer[]; total: number }>(
         `/customers${queryString ? `?${queryString}` : ""}`,
@@ -140,7 +135,7 @@ export function useCustomers(tenantId: string, filters?: CustomerFilters) {
 
 export function useCustomer(tenantId: string, customerId: string) {
   return useQuery<Customer>({
-    queryKey: [...CUSTOMERS_KEY, tenantId, customerId],
+    queryKey: queryKeys.customers.detail(tenantId, customerId),
     queryFn: () => apiClient.get<Customer>(`/customers/${customerId}`),
     enabled: !!tenantId && !!customerId,
   });
@@ -148,7 +143,7 @@ export function useCustomer(tenantId: string, customerId: string) {
 
 export function useCustomerByEmail(tenantId: string, email: string) {
   return useQuery<Customer>({
-    queryKey: [...CUSTOMERS_KEY, tenantId, "email", email],
+    queryKey: queryKeys.customers.email(tenantId, email),
     queryFn: () => apiClient.get<Customer>(`/customers/email/${email}`),
     enabled: !!tenantId && !!email,
   });
@@ -156,7 +151,7 @@ export function useCustomerByEmail(tenantId: string, email: string) {
 
 export function useCustomerStats(tenantId: string) {
   return useQuery<CustomerStats>({
-    queryKey: [...CUSTOMERS_KEY, tenantId, "stats"],
+    queryKey: queryKeys.customers.stats(tenantId),
     queryFn: () => apiClient.get<CustomerStats>("/customers/stats"),
     enabled: !!tenantId,
   });
@@ -169,7 +164,7 @@ export function useCreateCustomer(tenantId: string) {
     mutationFn: (data: CreateCustomerDto) =>
       apiClient.post<Customer>("/customers", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...CUSTOMERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.customers.byTenant(tenantId) });
       logger.log("Customer created successfully");
     },
     onError: (error) => {
@@ -185,9 +180,9 @@ export function useUpdateCustomer(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateCustomerDto }) =>
       apiClient.patch<Customer>(`/customers/${id}`, data),
     onSuccess: (updatedCustomer) => {
-      queryClient.invalidateQueries({ queryKey: [...CUSTOMERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.customers.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, updatedCustomer.id],
+        queryKey: queryKeys.customers.detail(tenantId, updatedCustomer.id),
       });
       logger.log("Customer updated successfully");
     },
@@ -203,7 +198,7 @@ export function useDeleteCustomer(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete(`/customers/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...CUSTOMERS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.customers.byTenant(tenantId) });
       logger.log("Customer deleted successfully");
     },
     onError: (error) => {
@@ -218,7 +213,7 @@ export function useDeleteCustomer(tenantId: string) {
 
 export function useCustomerAddresses(tenantId: string, customerId: string) {
   return useQuery<CustomerAddress[]>({
-    queryKey: [...CUSTOMERS_KEY, tenantId, customerId, "addresses"],
+    queryKey: queryKeys.customers.addresses(tenantId, customerId),
     queryFn: () =>
       apiClient.get<CustomerAddress[]>(`/customers/${customerId}/addresses`),
     enabled: !!tenantId && !!customerId,
@@ -231,7 +226,7 @@ export function useCustomerAddress(
   addressId: string,
 ) {
   return useQuery<CustomerAddress>({
-    queryKey: [...CUSTOMERS_KEY, tenantId, customerId, "addresses", addressId],
+    queryKey: queryKeys.customers.address(tenantId, customerId, addressId),
     queryFn: () =>
       apiClient.get<CustomerAddress>(
         `/customers/${customerId}/addresses/${addressId}`,
@@ -251,10 +246,10 @@ export function useCreateCustomerAddress(tenantId: string, customerId: string) {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, customerId],
+        queryKey: queryKeys.customers.detail(tenantId, customerId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, customerId, "addresses"],
+        queryKey: queryKeys.customers.addresses(tenantId, customerId),
       });
       logger.log("Customer address created successfully");
     },
@@ -281,10 +276,10 @@ export function useUpdateCustomerAddress(tenantId: string, customerId: string) {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, customerId],
+        queryKey: queryKeys.customers.detail(tenantId, customerId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, customerId, "addresses"],
+        queryKey: queryKeys.customers.addresses(tenantId, customerId),
       });
       logger.log("Customer address updated successfully");
     },
@@ -302,10 +297,10 @@ export function useDeleteCustomerAddress(tenantId: string, customerId: string) {
       apiClient.delete(`/customers/${customerId}/addresses/${addressId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, customerId],
+        queryKey: queryKeys.customers.detail(tenantId, customerId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, customerId, "addresses"],
+        queryKey: queryKeys.customers.addresses(tenantId, customerId),
       });
       logger.log("Customer address deleted successfully");
     },
@@ -326,10 +321,10 @@ export function useSetDefaultAddress(tenantId: string, customerId: string) {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, customerId],
+        queryKey: queryKeys.customers.detail(tenantId, customerId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...CUSTOMERS_KEY, tenantId, customerId, "addresses"],
+        queryKey: queryKeys.customers.addresses(tenantId, customerId),
       });
       logger.log("Default address updated successfully");
     },

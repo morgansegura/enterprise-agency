@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 // ============================================================================
 // Types
@@ -171,13 +172,6 @@ export interface CategoryFilters {
 }
 
 // ============================================================================
-// Query Keys
-// ============================================================================
-
-const PRODUCTS_KEY = ["products"];
-const CATEGORIES_KEY = ["product-categories"];
-
-// ============================================================================
 // Category Hooks
 // ============================================================================
 
@@ -194,7 +188,7 @@ export function useProductCategories(
   const queryString = params.toString();
 
   return useQuery<ProductCategory[]>({
-    queryKey: [...CATEGORIES_KEY, tenantId, filters],
+    queryKey: queryKeys.categories.list(tenantId, filters as Record<string, unknown>),
     queryFn: () =>
       apiClient.get<ProductCategory[]>(
         `/products/categories${queryString ? `?${queryString}` : ""}`,
@@ -205,7 +199,7 @@ export function useProductCategories(
 
 export function useProductCategory(tenantId: string, categoryId: string) {
   return useQuery<ProductCategory>({
-    queryKey: [...CATEGORIES_KEY, tenantId, categoryId],
+    queryKey: queryKeys.categories.detail(tenantId, categoryId),
     queryFn: () =>
       apiClient.get<ProductCategory>(`/products/categories/${categoryId}`),
     enabled: !!tenantId && !!categoryId,
@@ -220,7 +214,7 @@ export function useCreateProductCategory(tenantId: string) {
       apiClient.post<ProductCategory>("/products/categories", data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...CATEGORIES_KEY, tenantId],
+        queryKey: queryKeys.categories.byTenant(tenantId),
       });
       logger.log("Product category created successfully");
     },
@@ -243,10 +237,10 @@ export function useUpdateProductCategory(tenantId: string) {
     }) => apiClient.patch<ProductCategory>(`/products/categories/${id}`, data),
     onSuccess: (updatedCategory) => {
       queryClient.invalidateQueries({
-        queryKey: [...CATEGORIES_KEY, tenantId],
+        queryKey: queryKeys.categories.byTenant(tenantId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...CATEGORIES_KEY, tenantId, updatedCategory.id],
+        queryKey: queryKeys.categories.detail(tenantId, updatedCategory.id),
       });
       logger.log("Product category updated successfully");
     },
@@ -263,7 +257,7 @@ export function useDeleteProductCategory(tenantId: string) {
     mutationFn: (id: string) => apiClient.delete(`/products/categories/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...CATEGORIES_KEY, tenantId],
+        queryKey: queryKeys.categories.byTenant(tenantId),
       });
       logger.log("Product category deleted successfully");
     },
@@ -290,7 +284,7 @@ export function useProducts(tenantId: string, filters?: ProductFilters) {
   const queryString = params.toString();
 
   return useQuery<{ products: Product[]; total: number }>({
-    queryKey: [...PRODUCTS_KEY, tenantId, filters],
+    queryKey: queryKeys.products.list(tenantId, filters as Record<string, unknown>),
     queryFn: () =>
       apiClient.get<{ products: Product[]; total: number }>(
         `/products${queryString ? `?${queryString}` : ""}`,
@@ -301,7 +295,7 @@ export function useProducts(tenantId: string, filters?: ProductFilters) {
 
 export function useProduct(tenantId: string, productId: string) {
   return useQuery<Product>({
-    queryKey: [...PRODUCTS_KEY, tenantId, productId],
+    queryKey: queryKeys.products.detail(tenantId, productId),
     queryFn: () => apiClient.get<Product>(`/products/${productId}`),
     enabled: !!tenantId && !!productId,
   });
@@ -309,7 +303,7 @@ export function useProduct(tenantId: string, productId: string) {
 
 export function useProductBySlug(tenantId: string, slug: string) {
   return useQuery<Product>({
-    queryKey: [...PRODUCTS_KEY, tenantId, "slug", slug],
+    queryKey: queryKeys.products.slug(tenantId, slug),
     queryFn: () => apiClient.get<Product>(`/products/slug/${slug}`),
     enabled: !!tenantId && !!slug,
   });
@@ -317,7 +311,7 @@ export function useProductBySlug(tenantId: string, slug: string) {
 
 export function useLowStockProducts(tenantId: string) {
   return useQuery<Product[]>({
-    queryKey: [...PRODUCTS_KEY, tenantId, "low-stock"],
+    queryKey: queryKeys.products.lowStock(tenantId),
     queryFn: () => apiClient.get<Product[]>("/products/low-stock"),
     enabled: !!tenantId,
   });
@@ -330,7 +324,7 @@ export function useCreateProduct(tenantId: string) {
     mutationFn: (data: CreateProductDto) =>
       apiClient.post<Product>("/products", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...PRODUCTS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byTenant(tenantId) });
       logger.log("Product created successfully");
     },
     onError: (error) => {
@@ -346,9 +340,9 @@ export function useUpdateProduct(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateProductDto }) =>
       apiClient.patch<Product>(`/products/${id}`, data),
     onSuccess: (updatedProduct) => {
-      queryClient.invalidateQueries({ queryKey: [...PRODUCTS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, updatedProduct.id],
+        queryKey: queryKeys.products.detail(tenantId, updatedProduct.id),
       });
       logger.log("Product updated successfully");
     },
@@ -364,7 +358,7 @@ export function useDeleteProduct(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete(`/products/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...PRODUCTS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byTenant(tenantId) });
       logger.log("Product deleted successfully");
     },
     onError: (error) => {
@@ -379,9 +373,9 @@ export function useArchiveProduct(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.post(`/products/${id}/archive`, {}),
     onSuccess: (_, productId) => {
-      queryClient.invalidateQueries({ queryKey: [...PRODUCTS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, productId],
+        queryKey: queryKeys.products.detail(tenantId, productId),
       });
       logger.log("Product archived successfully");
     },
@@ -398,7 +392,7 @@ export function useDuplicateProduct(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.post<Product>(`/products/${id}/duplicate`, {}),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...PRODUCTS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byTenant(tenantId) });
       logger.log("Product duplicated successfully");
     },
     onError: (error) => {
@@ -428,12 +422,12 @@ export function useAdjustInventory(tenantId: string) {
         reason,
       }),
     onSuccess: (_, { productId }) => {
-      queryClient.invalidateQueries({ queryKey: [...PRODUCTS_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.products.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, productId],
+        queryKey: queryKeys.products.detail(tenantId, productId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, "low-stock"],
+        queryKey: queryKeys.products.lowStock(tenantId),
       });
       logger.log("Inventory adjusted successfully");
     },
@@ -449,7 +443,7 @@ export function useAdjustInventory(tenantId: string) {
 
 export function useProductVariants(tenantId: string, productId: string) {
   return useQuery<ProductVariant[]>({
-    queryKey: [...PRODUCTS_KEY, tenantId, productId, "variants"],
+    queryKey: queryKeys.products.variants(tenantId, productId),
     queryFn: () =>
       apiClient.get<ProductVariant[]>(`/products/${productId}/variants`),
     enabled: !!tenantId && !!productId,
@@ -464,10 +458,10 @@ export function useCreateProductVariant(tenantId: string, productId: string) {
       apiClient.post<ProductVariant>(`/products/${productId}/variants`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, productId],
+        queryKey: queryKeys.products.detail(tenantId, productId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, productId, "variants"],
+        queryKey: queryKeys.products.variants(tenantId, productId),
       });
       logger.log("Product variant created successfully");
     },
@@ -494,10 +488,10 @@ export function useUpdateProductVariant(tenantId: string, productId: string) {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, productId],
+        queryKey: queryKeys.products.detail(tenantId, productId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, productId, "variants"],
+        queryKey: queryKeys.products.variants(tenantId, productId),
       });
       logger.log("Product variant updated successfully");
     },
@@ -515,10 +509,10 @@ export function useDeleteProductVariant(tenantId: string, productId: string) {
       apiClient.delete(`/products/${productId}/variants/${variantId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, productId],
+        queryKey: queryKeys.products.detail(tenantId, productId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...PRODUCTS_KEY, tenantId, productId, "variants"],
+        queryKey: queryKeys.products.variants(tenantId, productId),
       });
       logger.log("Product variant deleted successfully");
     },

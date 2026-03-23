@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
+import { queryKeys } from "./query-keys";
 
 // Re-export types from shared types file
 export type {
@@ -104,11 +105,9 @@ export interface Page {
   updatedAt?: string;
 }
 
-const PAGES_KEY = ["pages"];
-
 export function usePages(tenantId: string) {
   return useQuery<Page[]>({
-    queryKey: [...PAGES_KEY, tenantId],
+    queryKey: queryKeys.pages.byTenant(tenantId),
     queryFn: () => apiClient.get<Page[]>("/pages"),
     enabled: !!tenantId,
   });
@@ -116,7 +115,7 @@ export function usePages(tenantId: string) {
 
 export function usePage(tenantId: string, pageId: string) {
   return useQuery<Page>({
-    queryKey: [...PAGES_KEY, tenantId, pageId],
+    queryKey: queryKeys.pages.detail(tenantId, pageId),
     queryFn: () => apiClient.get<Page>(`/pages/${pageId}`),
     enabled: !!tenantId && !!pageId,
   });
@@ -124,7 +123,7 @@ export function usePage(tenantId: string, pageId: string) {
 
 export function usePageBySlug(tenantId: string, slug: string) {
   return useQuery<Page>({
-    queryKey: [...PAGES_KEY, tenantId, "slug", slug],
+    queryKey: queryKeys.pages.slug(tenantId, slug),
     queryFn: () => apiClient.get<Page>(`/pages/slug/${slug}`),
     enabled: !!tenantId && !!slug,
   });
@@ -136,7 +135,7 @@ export function useCreatePage(tenantId: string) {
   return useMutation({
     mutationFn: (data: Partial<Page>) => apiClient.post<Page>("/pages", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...PAGES_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pages.byTenant(tenantId) });
       logger.log("Page created successfully");
     },
     onError: (error) => {
@@ -152,9 +151,9 @@ export function useUpdatePage(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: Partial<Page> }) =>
       apiClient.patch<Page>(`/pages/${id}`, data),
     onSuccess: (updatedPage) => {
-      queryClient.invalidateQueries({ queryKey: [...PAGES_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pages.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...PAGES_KEY, tenantId, updatedPage.id],
+        queryKey: queryKeys.pages.detail(tenantId, updatedPage.id),
       });
       logger.log("Page updated successfully");
     },
@@ -170,7 +169,7 @@ export function useDeletePage(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete(`/pages/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...PAGES_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pages.byTenant(tenantId) });
       logger.log("Page deleted successfully");
     },
     onError: (error) => {
@@ -185,9 +184,9 @@ export function usePublishPage(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.post(`/pages/${id}/publish`, {}),
     onSuccess: (_, pageId) => {
-      queryClient.invalidateQueries({ queryKey: [...PAGES_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pages.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...PAGES_KEY, tenantId, pageId],
+        queryKey: queryKeys.pages.detail(tenantId, pageId),
       });
       logger.log("Page published successfully");
     },
@@ -203,9 +202,9 @@ export function useUnpublishPage(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.post(`/pages/${id}/unpublish`, {}),
     onSuccess: (_, pageId) => {
-      queryClient.invalidateQueries({ queryKey: [...PAGES_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pages.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...PAGES_KEY, tenantId, pageId],
+        queryKey: queryKeys.pages.detail(tenantId, pageId),
       });
       logger.log("Page unpublished successfully");
     },
@@ -222,7 +221,7 @@ export function useDuplicatePage(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.post<Page>(`/pages/${id}/duplicate`, {}),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...PAGES_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pages.byTenant(tenantId) });
       logger.log("Page duplicated successfully");
     },
     onError: (error) => {
@@ -255,11 +254,9 @@ export interface PageVersionFull extends PageVersion {
   metaDescription: string | null;
 }
 
-const VERSION_KEY = "versions";
-
 export function usePageVersions(tenantId: string, pageId: string) {
   return useQuery<PageVersion[]>({
-    queryKey: [...PAGES_KEY, tenantId, pageId, VERSION_KEY],
+    queryKey: queryKeys.pages.versions(tenantId, pageId),
     queryFn: () => apiClient.get<PageVersion[]>(`/pages/${pageId}/versions`),
     enabled: !!tenantId && !!pageId,
   });
@@ -271,7 +268,7 @@ export function usePageVersion(
   versionId: string,
 ) {
   return useQuery<PageVersionFull>({
-    queryKey: [...PAGES_KEY, tenantId, pageId, VERSION_KEY, versionId],
+    queryKey: queryKeys.pages.version(tenantId, pageId, versionId),
     queryFn: () =>
       apiClient.get<PageVersionFull>(`/pages/${pageId}/versions/${versionId}`),
     enabled: !!tenantId && !!pageId && !!versionId,
@@ -294,12 +291,12 @@ export function useRestorePageVersion(tenantId: string) {
         {},
       ),
     onSuccess: (_, { pageId }) => {
-      queryClient.invalidateQueries({ queryKey: [...PAGES_KEY, tenantId] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.pages.byTenant(tenantId) });
       queryClient.invalidateQueries({
-        queryKey: [...PAGES_KEY, tenantId, pageId],
+        queryKey: queryKeys.pages.detail(tenantId, pageId),
       });
       queryClient.invalidateQueries({
-        queryKey: [...PAGES_KEY, tenantId, pageId, VERSION_KEY],
+        queryKey: queryKeys.pages.versions(tenantId, pageId),
       });
       logger.log("Page restored to previous version");
     },
@@ -316,15 +313,7 @@ export function useComparePageVersions(
   versionIdB: string,
 ) {
   return useQuery<{ versionA: PageVersionFull; versionB: PageVersionFull }>({
-    queryKey: [
-      ...PAGES_KEY,
-      tenantId,
-      pageId,
-      VERSION_KEY,
-      "compare",
-      versionIdA,
-      versionIdB,
-    ],
+    queryKey: queryKeys.pages.versionCompare(tenantId, pageId, versionIdA, versionIdB),
     queryFn: () =>
       apiClient.get(
         `/pages/${pageId}/versions/compare?versionA=${versionIdA}&versionB=${versionIdB}`,
