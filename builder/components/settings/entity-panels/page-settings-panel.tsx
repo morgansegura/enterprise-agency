@@ -207,19 +207,6 @@ export function PageSettingsPanel({
         />
       )}
 
-      {activeTab === "style" && (
-        <SettingsSection
-          title="Style"
-          description="Override default styling for this page."
-        >
-          <SettingsForm>
-            <p className="text-sm text-muted-foreground">
-              Style settings coming soon. This will include custom CSS and theme
-              overrides.
-            </p>
-          </SettingsForm>
-        </SettingsSection>
-      )}
     </>
   );
 }

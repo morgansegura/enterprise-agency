@@ -846,10 +846,7 @@ export default function EditPagePage({
             },
           );
         }}
-        onViewAllHistory={() => {
-          // TODO: Open full history modal/drawer
-          toast.info("Full history view coming soon");
-        }}
+        onViewAllHistory={undefined}
         isSaving={autoSave.isSaving || updatePage.isPending}
         isPublished={localPage.status === "published"}
         hasUnsavedChanges={autoSave.hasUnsavedChanges}

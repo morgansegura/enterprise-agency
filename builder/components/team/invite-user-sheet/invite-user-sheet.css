@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.invite-user-form {
+  @apply flex flex-col gap-4 px-4;
+}
+
+.invite-user-field {
+  @apply flex flex-col gap-2;
+}
+
+.invite-user-field label {
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.invite-user-error {
+  @apply text-sm text-(--destructive);
+}
+
+.invite-user-actions {
+  @apply flex items-center justify-end gap-2 px-4 pt-2;
+}

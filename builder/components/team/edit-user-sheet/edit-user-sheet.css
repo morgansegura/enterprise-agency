@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.edit-user-form {
+  @apply flex flex-col gap-4 px-4;
+}
+
+.edit-user-field {
+  @apply flex flex-col gap-2;
+}
+
+.edit-user-field label {
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.edit-user-info {
+  @apply flex items-center gap-3 rounded-lg border p-3;
+}
+
+.edit-user-avatar {
+  @apply h-10 w-10 rounded-full bg-(--muted) flex items-center justify-center shrink-0;
+}
+
+.edit-user-avatar span {
+  @apply text-sm font-medium;
+}
+
+.edit-user-details {
+  @apply flex flex-col min-w-0;
+}
+
+.edit-user-name {
+  @apply text-sm font-medium truncate;
+}
+
+.edit-user-email {
+  @apply text-sm text-(--muted-foreground) truncate;
+}
+
+.edit-user-actions {
+  @apply flex items-center justify-end gap-2 px-4 pt-2;
+}

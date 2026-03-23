@@ -197,7 +197,7 @@ The builder includes a comprehensive design token configuration system for per-c
 - **Header Tokens** - Heights (default, shrunk, mobile), backgrounds, positioning
 - **Menu Tokens** - Typography, colors, padding, hover states
 - **Section Tokens** - Spacing scale, container widths, background colors
-- **Footer Tokens** - Layout, columns, social links (coming soon)
+- **Footer Tokens** - Layout, columns, social links
 
 Access token configuration via:
 `Dashboard → Clients → [Client Name] → Design Tab`

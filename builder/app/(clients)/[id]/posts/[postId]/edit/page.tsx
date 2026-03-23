@@ -16,7 +16,6 @@ import {
 } from "@/lib/hooks/use-pages";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
 import { SortableSection } from "@/components/editor/sortable-section";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
@@ -43,8 +42,6 @@ import {
   PanelsTopLeft,
   Newspaper,
   Store,
-  LayoutPanelTop,
-  Layers,
   PlusCircle,
 } from "lucide-react";
 import { PostEditorLayout } from "@/components/editor/post-editor-layout";
@@ -462,27 +459,10 @@ export default function EditPostPage({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={() => toast.info("Shop editor coming soon")}
+          onClick={() => router.push(`/${id}/shop`)}
           title="Visit the Shop Editor"
         >
           <Store />
-        </Button>
-        <Separator />
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => toast.info("Block editor coming soon")}
-          title="Open Block Editor"
-        >
-          <LayoutPanelTop />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => toast.info("Settings coming soon")}
-          title="Open Editor Settings"
-        >
-          <Layers />
         </Button>
       </aside>
       <PostEditorLayout

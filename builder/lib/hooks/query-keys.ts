@@ -248,6 +248,29 @@ export const queryKeys = {
   },
 
   // ============================================================================
+  // Webhooks
+  // ============================================================================
+
+  webhooks: {
+    all: ["webhooks"] as const,
+    lists: () => [...queryKeys.webhooks.all, "list"] as const,
+    list: (tenantId: string) => [...queryKeys.webhooks.lists(), tenantId] as const,
+    details: () => [...queryKeys.webhooks.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.webhooks.details(), id] as const,
+    deliveries: (id: string) => [...queryKeys.webhooks.detail(id), "deliveries"] as const,
+  },
+
+  // ============================================================================
+  // Site Config
+  // ============================================================================
+
+  siteConfig: {
+    all: ["site-config"] as const,
+    config: (tenantId: string) => [...queryKeys.siteConfig.all, tenantId] as const,
+    section: (tenantId: string, section: string) => [...queryKeys.siteConfig.config(tenantId), section] as const,
+  },
+
+  // ============================================================================
   // Payments
   // ============================================================================
 

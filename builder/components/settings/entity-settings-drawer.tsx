@@ -26,7 +26,6 @@ import {
   Settings,
   Search,
   Layout,
-  Palette,
   Tag,
   DollarSign,
   Truck,
@@ -49,7 +48,6 @@ type TabId =
   | "general"
   | "seo"
   | "layout"
-  | "style"
   | "publishing"
   | "inventory"
   | "shipping"
@@ -92,7 +90,6 @@ const PAGE_NAV_ITEMS: SettingsNavItem<TabId>[] = [
     icon: Layout,
     description: "Page structure",
   },
-  { id: "style", label: "Style", icon: Palette, description: "Page styling" },
 ];
 
 const POST_NAV_ITEMS: SettingsNavItem<TabId>[] = [

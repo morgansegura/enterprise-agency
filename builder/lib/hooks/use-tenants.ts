@@ -215,6 +215,22 @@ export function useAddTenantUser(tenantId: string) {
   });
 }
 
+export function useInviteTenantUser(tenantId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: { email: string; role: string }) =>
+      apiClient.post<TenantUser>(`/tenants/${tenantId}/users`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.users(tenantId) });
+      logger.log("User invited to tenant", { tenantId });
+    },
+    onError: (error) => {
+      logger.error("Failed to invite user to tenant", error as Error);
+    },
+  });
+}
+
 export function useUpdateTenantUser(tenantId: string) {
   const queryClient = useQueryClient();
 

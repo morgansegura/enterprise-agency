@@ -146,7 +146,7 @@ export function FieldRenderer({
             {schema.label}
           </span>
           <span className="field-renderer__placeholder-type">
-            Relationship picker (coming soon)
+            Relationship
           </span>
         </div>
       );

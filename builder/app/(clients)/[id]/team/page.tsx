@@ -9,6 +9,8 @@ import {
   useRemoveTenantUser,
   type TenantUser,
 } from "@/lib/hooks/use-tenants";
+import { InviteUserSheet } from "@/components/team/invite-user-sheet";
+import { EditUserSheet } from "@/components/team/edit-user-sheet";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,6 +83,9 @@ export default function ClientTeamPage() {
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editMember, setEditMember] = useState<TenantUser | null>(null);
 
   // Filter team members
   const filteredMembers = React.useMemo(() => {
@@ -98,13 +103,12 @@ export default function ClientTeamPage() {
   }, [teamMembers, search, roleFilter]);
 
   const handleInvite = () => {
-    // TODO: Open invite modal
-    console.log("Invite team member");
+    setInviteOpen(true);
   };
 
   const handleEdit = (member: TenantUser) => {
-    // TODO: Open edit modal
-    console.log("Edit member", member.id);
+    setEditMember(member);
+    setEditOpen(true);
   };
 
   const handleRemove = (member: TenantUser) => {
@@ -384,6 +388,20 @@ export default function ClientTeamPage() {
           })}
         </div>
       )}
+      <InviteUserSheet
+        tenantId={tenantId}
+        open={inviteOpen}
+        onOpenChange={setInviteOpen}
+      />
+      <EditUserSheet
+        tenantId={tenantId}
+        member={editMember}
+        open={editOpen}
+        onOpenChange={(open) => {
+          setEditOpen(open);
+          if (!open) setEditMember(null);
+        }}
+      />
     </PageLayout>
   );
 }
