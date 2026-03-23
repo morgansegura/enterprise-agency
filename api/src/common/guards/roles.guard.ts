@@ -72,7 +72,7 @@ export class RolesGuard implements CanActivate {
       });
       role = tenantUsers.reduce<string | null>((highest, tu) => {
         if (!highest) return tu.role;
-        return getRoleLevel(tu.role as string) > getRoleLevel(highest)
+        return getRoleLevel(tu.role as never) > getRoleLevel(highest as never)
           ? tu.role
           : highest;
       }, null);

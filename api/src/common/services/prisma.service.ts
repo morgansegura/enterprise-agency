@@ -92,12 +92,18 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   get mediaFolder() {
     return this.client.mediaFolder;
   }
+  get refreshToken() {
+    return this.client.refreshToken;
+  }
+  get passwordResetToken() {
+    return this.client.passwordResetToken;
+  }
 
   // Expose transaction and other methods
   $transaction<T>(
-    fn: Parameters<typeof this.client.$transaction>[0],
+    fn: (tx: Parameters<Parameters<typeof this.client.$transaction>[0]> extends [infer Tx] ? Tx : never) => Promise<T>,
   ): Promise<T> {
-    return this.client.$transaction(fn) as Promise<T>;
+    return this.client.$transaction(fn as Parameters<typeof this.client.$transaction>[0]) as Promise<T>;
   }
 
   async onModuleInit() {

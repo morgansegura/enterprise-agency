@@ -11,6 +11,8 @@
 export type * from './models/Tenant'
 export type * from './models/TenantDomain'
 export type * from './models/User'
+export type * from './models/RefreshToken'
+export type * from './models/PasswordResetToken'
 export type * from './models/TenantUser'
 export type * from './models/ProjectAssignment'
 export type * from './models/Asset'

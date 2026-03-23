@@ -28,10 +28,12 @@ export type AggregateUser = {
 
 export type UserAvgAggregateOutputType = {
   tokenVersion: number | null
+  failedLoginAttempts: number | null
 }
 
 export type UserSumAggregateOutputType = {
   tokenVersion: number | null
+  failedLoginAttempts: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -45,14 +47,17 @@ export type UserMinAggregateOutputType = {
   emailVerified: boolean | null
   verificationToken: string | null
   verificationTokenExpires: Date | null
-  resetToken: string | null
-  resetTokenExpires: Date | null
   isSuperAdmin: boolean | null
   agencyRole: string | null
+  phone: string | null
+  avatar: string | null
   status: string | null
+  deletedAt: Date | null
   lastLoginAt: Date | null
   lastLoginIp: string | null
   tokenVersion: number | null
+  failedLoginAttempts: number | null
+  lockedUntil: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -68,14 +73,17 @@ export type UserMaxAggregateOutputType = {
   emailVerified: boolean | null
   verificationToken: string | null
   verificationTokenExpires: Date | null
-  resetToken: string | null
-  resetTokenExpires: Date | null
   isSuperAdmin: boolean | null
   agencyRole: string | null
+  phone: string | null
+  avatar: string | null
   status: string | null
+  deletedAt: Date | null
   lastLoginAt: Date | null
   lastLoginIp: string | null
   tokenVersion: number | null
+  failedLoginAttempts: number | null
+  lockedUntil: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -91,14 +99,17 @@ export type UserCountAggregateOutputType = {
   emailVerified: number
   verificationToken: number
   verificationTokenExpires: number
-  resetToken: number
-  resetTokenExpires: number
   isSuperAdmin: number
   agencyRole: number
+  phone: number
+  avatar: number
   status: number
+  deletedAt: number
   lastLoginAt: number
   lastLoginIp: number
   tokenVersion: number
+  failedLoginAttempts: number
+  lockedUntil: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -107,10 +118,12 @@ export type UserCountAggregateOutputType = {
 
 export type UserAvgAggregateInputType = {
   tokenVersion?: true
+  failedLoginAttempts?: true
 }
 
 export type UserSumAggregateInputType = {
   tokenVersion?: true
+  failedLoginAttempts?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -124,14 +137,17 @@ export type UserMinAggregateInputType = {
   emailVerified?: true
   verificationToken?: true
   verificationTokenExpires?: true
-  resetToken?: true
-  resetTokenExpires?: true
   isSuperAdmin?: true
   agencyRole?: true
+  phone?: true
+  avatar?: true
   status?: true
+  deletedAt?: true
   lastLoginAt?: true
   lastLoginIp?: true
   tokenVersion?: true
+  failedLoginAttempts?: true
+  lockedUntil?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -147,14 +163,17 @@ export type UserMaxAggregateInputType = {
   emailVerified?: true
   verificationToken?: true
   verificationTokenExpires?: true
-  resetToken?: true
-  resetTokenExpires?: true
   isSuperAdmin?: true
   agencyRole?: true
+  phone?: true
+  avatar?: true
   status?: true
+  deletedAt?: true
   lastLoginAt?: true
   lastLoginIp?: true
   tokenVersion?: true
+  failedLoginAttempts?: true
+  lockedUntil?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -170,14 +189,17 @@ export type UserCountAggregateInputType = {
   emailVerified?: true
   verificationToken?: true
   verificationTokenExpires?: true
-  resetToken?: true
-  resetTokenExpires?: true
   isSuperAdmin?: true
   agencyRole?: true
+  phone?: true
+  avatar?: true
   status?: true
+  deletedAt?: true
   lastLoginAt?: true
   lastLoginIp?: true
   tokenVersion?: true
+  failedLoginAttempts?: true
+  lockedUntil?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -280,14 +302,17 @@ export type UserGroupByOutputType = {
   emailVerified: boolean
   verificationToken: string | null
   verificationTokenExpires: Date | null
-  resetToken: string | null
-  resetTokenExpires: Date | null
   isSuperAdmin: boolean
   agencyRole: string | null
+  phone: string | null
+  avatar: string | null
   status: string
+  deletedAt: Date | null
   lastLoginAt: Date | null
   lastLoginIp: string | null
   tokenVersion: number
+  failedLoginAttempts: number
+  lockedUntil: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -326,14 +351,17 @@ export type UserWhereInput = {
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   verificationToken?: Prisma.StringNullableFilter<"User"> | string | null
   verificationTokenExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  resetToken?: Prisma.StringNullableFilter<"User"> | string | null
-  resetTokenExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   isSuperAdmin?: Prisma.BoolFilter<"User"> | boolean
   agencyRole?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  avatar?: Prisma.StringNullableFilter<"User"> | string | null
   status?: Prisma.StringFilter<"User"> | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   lastLoginIp?: Prisma.StringNullableFilter<"User"> | string | null
   tokenVersion?: Prisma.IntFilter<"User"> | number
+  failedLoginAttempts?: Prisma.IntFilter<"User"> | number
+  lockedUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   tenantUsers?: Prisma.TenantUserListRelationFilter
@@ -347,6 +375,8 @@ export type UserWhereInput = {
   projectAssignments?: Prisma.ProjectAssignmentListRelationFilter
   customers?: Prisma.CustomerListRelationFilter
   previewTokens?: Prisma.PreviewTokenListRelationFilter
+  refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -360,14 +390,17 @@ export type UserOrderByWithRelationInput = {
   emailVerified?: Prisma.SortOrder
   verificationToken?: Prisma.SortOrderInput | Prisma.SortOrder
   verificationTokenExpires?: Prisma.SortOrderInput | Prisma.SortOrder
-  resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
-  resetTokenExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
   agencyRole?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastLoginIp?: Prisma.SortOrderInput | Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenantUsers?: Prisma.TenantUserOrderByRelationAggregateInput
@@ -381,6 +414,8 @@ export type UserOrderByWithRelationInput = {
   projectAssignments?: Prisma.ProjectAssignmentOrderByRelationAggregateInput
   customers?: Prisma.CustomerOrderByRelationAggregateInput
   previewTokens?: Prisma.PreviewTokenOrderByRelationAggregateInput
+  refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
+  passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -388,7 +423,6 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   clerkUserId?: string
   email?: string
   verificationToken?: string
-  resetToken?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -398,13 +432,17 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringNullableFilter<"User"> | string | null
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   verificationTokenExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
-  resetTokenExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   isSuperAdmin?: Prisma.BoolFilter<"User"> | boolean
   agencyRole?: Prisma.StringNullableFilter<"User"> | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  avatar?: Prisma.StringNullableFilter<"User"> | string | null
   status?: Prisma.StringFilter<"User"> | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   lastLoginIp?: Prisma.StringNullableFilter<"User"> | string | null
   tokenVersion?: Prisma.IntFilter<"User"> | number
+  failedLoginAttempts?: Prisma.IntFilter<"User"> | number
+  lockedUntil?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   tenantUsers?: Prisma.TenantUserListRelationFilter
@@ -418,7 +456,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   projectAssignments?: Prisma.ProjectAssignmentListRelationFilter
   customers?: Prisma.CustomerListRelationFilter
   previewTokens?: Prisma.PreviewTokenListRelationFilter
-}, "id" | "clerkUserId" | "email" | "verificationToken" | "resetToken">
+  refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+}, "id" | "clerkUserId" | "email" | "verificationToken">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -431,14 +471,17 @@ export type UserOrderByWithAggregationInput = {
   emailVerified?: Prisma.SortOrder
   verificationToken?: Prisma.SortOrderInput | Prisma.SortOrder
   verificationTokenExpires?: Prisma.SortOrderInput | Prisma.SortOrder
-  resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
-  resetTokenExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
   agencyRole?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  avatar?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastLoginIp?: Prisma.SortOrderInput | Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -462,14 +505,17 @@ export type UserScalarWhereWithAggregatesInput = {
   emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   verificationToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   verificationTokenExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-  resetToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  resetTokenExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   isSuperAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   agencyRole?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"User"> | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   lastLoginIp?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   tokenVersion?: Prisma.IntWithAggregatesFilter<"User"> | number
+  failedLoginAttempts?: Prisma.IntWithAggregatesFilter<"User"> | number
+  lockedUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -485,14 +531,17 @@ export type UserCreateInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -506,6 +555,8 @@ export type UserCreateInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -519,14 +570,17 @@ export type UserUncheckedCreateInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -540,6 +594,8 @@ export type UserUncheckedCreateInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -553,14 +609,17 @@ export type UserUpdateInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -574,6 +633,8 @@ export type UserUpdateInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -587,14 +648,17 @@ export type UserUncheckedUpdateInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -608,6 +672,8 @@ export type UserUncheckedUpdateInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -621,14 +687,17 @@ export type UserCreateManyInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -644,14 +713,17 @@ export type UserUpdateManyMutationInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -667,14 +739,17 @@ export type UserUncheckedUpdateManyInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -690,20 +765,24 @@ export type UserCountOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   verificationToken?: Prisma.SortOrder
   verificationTokenExpires?: Prisma.SortOrder
-  resetToken?: Prisma.SortOrder
-  resetTokenExpires?: Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
   agencyRole?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  avatar?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   lastLoginIp?: Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
   tokenVersion?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -717,14 +796,17 @@ export type UserMaxOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   verificationToken?: Prisma.SortOrder
   verificationTokenExpires?: Prisma.SortOrder
-  resetToken?: Prisma.SortOrder
-  resetTokenExpires?: Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
   agencyRole?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  avatar?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   lastLoginIp?: Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -740,20 +822,24 @@ export type UserMinOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   verificationToken?: Prisma.SortOrder
   verificationTokenExpires?: Prisma.SortOrder
-  resetToken?: Prisma.SortOrder
-  resetTokenExpires?: Prisma.SortOrder
   isSuperAdmin?: Prisma.SortOrder
   agencyRole?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  avatar?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   lastLoginIp?: Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
+  lockedUntil?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
   tokenVersion?: Prisma.SortOrder
+  failedLoginAttempts?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -772,6 +858,34 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type UserCreateNestedOneWithoutRefreshTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
+  upsert?: Prisma.UserUpsertWithoutRefreshTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.UserUpdateWithoutRefreshTokensInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+}
+
+export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  upsert?: Prisma.UserUpsertWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.UserUpdateWithoutPasswordResetTokensInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
 }
 
 export type UserCreateNestedOneWithoutTenantUsersInput = {
@@ -940,6 +1054,342 @@ export type UserUpdateOneWithoutCustomersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCustomersInput, Prisma.UserUpdateWithoutCustomersInput>, Prisma.UserUncheckedUpdateWithoutCustomersInput>
 }
 
+export type UserCreateWithoutRefreshTokensInput = {
+  id?: string
+  clerkUserId?: string | null
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  avatarUrl?: string | null
+  passwordHash?: string | null
+  emailVerified?: boolean
+  verificationToken?: string | null
+  verificationTokenExpires?: Date | string | null
+  isSuperAdmin?: boolean
+  agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
+  status?: string
+  deletedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastLoginIp?: string | null
+  tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
+  uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput
+  createdFolders?: Prisma.MediaFolderCreateNestedManyWithoutCreatorInput
+  authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput
+  authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutRefreshTokensInput = {
+  id?: string
+  clerkUserId?: string | null
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  avatarUrl?: string | null
+  passwordHash?: string | null
+  emailVerified?: boolean
+  verificationToken?: string | null
+  verificationTokenExpires?: Date | string | null
+  isSuperAdmin?: boolean
+  agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
+  status?: string
+  deletedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastLoginIp?: string | null
+  tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
+  uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput
+  createdFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutCreatorInput
+  authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput
+  authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutRefreshTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+}
+
+export type UserUpsertWithoutRefreshTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+}
+
+export type UserUpdateWithoutRefreshTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
+  uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput
+  createdFolders?: Prisma.MediaFolderUpdateManyWithoutCreatorNestedInput
+  authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput
+  authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRefreshTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput
+  createdFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput
+  authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  clerkUserId?: string | null
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  avatarUrl?: string | null
+  passwordHash?: string | null
+  emailVerified?: boolean
+  verificationToken?: string | null
+  verificationTokenExpires?: Date | string | null
+  isSuperAdmin?: boolean
+  agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
+  status?: string
+  deletedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastLoginIp?: string | null
+  tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
+  uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput
+  createdFolders?: Prisma.MediaFolderCreateNestedManyWithoutCreatorInput
+  authoredPages?: Prisma.PageCreateNestedManyWithoutAuthorInput
+  authoredPosts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  pageVersions?: Prisma.PageVersionCreateNestedManyWithoutAuthorInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  clerkUserId?: string | null
+  email: string
+  firstName?: string | null
+  lastName?: string | null
+  avatarUrl?: string | null
+  passwordHash?: string | null
+  emailVerified?: boolean
+  verificationToken?: string | null
+  verificationTokenExpires?: Date | string | null
+  isSuperAdmin?: boolean
+  agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
+  status?: string
+  deletedAt?: Date | string | null
+  lastLoginAt?: Date | string | null
+  lastLoginIp?: string | null
+  tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
+  uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput
+  createdFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutCreatorInput
+  authoredPages?: Prisma.PageUncheckedCreateNestedManyWithoutAuthorInput
+  authoredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  pageVersions?: Prisma.PageVersionUncheckedCreateNestedManyWithoutAuthorInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpsertWithoutPasswordResetTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
+  uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput
+  createdFolders?: Prisma.MediaFolderUpdateManyWithoutCreatorNestedInput
+  authoredPages?: Prisma.PageUpdateManyWithoutAuthorNestedInput
+  authoredPosts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  pageVersions?: Prisma.PageVersionUpdateManyWithoutAuthorNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  clerkUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput
+  createdFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutCreatorNestedInput
+  authoredPages?: Prisma.PageUncheckedUpdateManyWithoutAuthorNestedInput
+  authoredPosts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  pageVersions?: Prisma.PageVersionUncheckedUpdateManyWithoutAuthorNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutTenantUsersInput = {
   id?: string
   clerkUserId?: string | null
@@ -951,14 +1401,17 @@ export type UserCreateWithoutTenantUsersInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   uploadedAssets?: Prisma.AssetCreateNestedManyWithoutUploaderInput
@@ -971,6 +1424,8 @@ export type UserCreateWithoutTenantUsersInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTenantUsersInput = {
@@ -984,14 +1439,17 @@ export type UserUncheckedCreateWithoutTenantUsersInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   uploadedAssets?: Prisma.AssetUncheckedCreateNestedManyWithoutUploaderInput
@@ -1004,6 +1462,8 @@ export type UserUncheckedCreateWithoutTenantUsersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTenantUsersInput = {
@@ -1022,14 +1482,17 @@ export type UserCreateWithoutInvitedUsersInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -1042,6 +1505,8 @@ export type UserCreateWithoutInvitedUsersInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvitedUsersInput = {
@@ -1055,14 +1520,17 @@ export type UserUncheckedCreateWithoutInvitedUsersInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -1075,6 +1543,8 @@ export type UserUncheckedCreateWithoutInvitedUsersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvitedUsersInput = {
@@ -1104,14 +1574,17 @@ export type UserUpdateWithoutTenantUsersInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedAssets?: Prisma.AssetUpdateManyWithoutUploaderNestedInput
@@ -1124,6 +1597,8 @@ export type UserUpdateWithoutTenantUsersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantUsersInput = {
@@ -1137,14 +1612,17 @@ export type UserUncheckedUpdateWithoutTenantUsersInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedAssets?: Prisma.AssetUncheckedUpdateManyWithoutUploaderNestedInput
@@ -1157,6 +1635,8 @@ export type UserUncheckedUpdateWithoutTenantUsersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutInvitedUsersInput = {
@@ -1181,14 +1661,17 @@ export type UserUpdateWithoutInvitedUsersInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -1201,6 +1684,8 @@ export type UserUpdateWithoutInvitedUsersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvitedUsersInput = {
@@ -1214,14 +1699,17 @@ export type UserUncheckedUpdateWithoutInvitedUsersInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -1234,6 +1722,8 @@ export type UserUncheckedUpdateWithoutInvitedUsersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProjectAssignmentsInput = {
@@ -1247,14 +1737,17 @@ export type UserCreateWithoutProjectAssignmentsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -1267,6 +1760,8 @@ export type UserCreateWithoutProjectAssignmentsInput = {
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProjectAssignmentsInput = {
@@ -1280,14 +1775,17 @@ export type UserUncheckedCreateWithoutProjectAssignmentsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -1300,6 +1798,8 @@ export type UserUncheckedCreateWithoutProjectAssignmentsInput = {
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProjectAssignmentsInput = {
@@ -1329,14 +1829,17 @@ export type UserUpdateWithoutProjectAssignmentsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -1349,6 +1852,8 @@ export type UserUpdateWithoutProjectAssignmentsInput = {
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectAssignmentsInput = {
@@ -1362,14 +1867,17 @@ export type UserUncheckedUpdateWithoutProjectAssignmentsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -1382,6 +1890,8 @@ export type UserUncheckedUpdateWithoutProjectAssignmentsInput = {
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUploadedAssetsInput = {
@@ -1395,14 +1905,17 @@ export type UserCreateWithoutUploadedAssetsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -1415,6 +1928,8 @@ export type UserCreateWithoutUploadedAssetsInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUploadedAssetsInput = {
@@ -1428,14 +1943,17 @@ export type UserUncheckedCreateWithoutUploadedAssetsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -1448,6 +1966,8 @@ export type UserUncheckedCreateWithoutUploadedAssetsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUploadedAssetsInput = {
@@ -1477,14 +1997,17 @@ export type UserUpdateWithoutUploadedAssetsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -1497,6 +2020,8 @@ export type UserUpdateWithoutUploadedAssetsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedAssetsInput = {
@@ -1510,14 +2035,17 @@ export type UserUncheckedUpdateWithoutUploadedAssetsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -1530,6 +2058,8 @@ export type UserUncheckedUpdateWithoutUploadedAssetsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedFoldersInput = {
@@ -1543,14 +2073,17 @@ export type UserCreateWithoutCreatedFoldersInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -1563,6 +2096,8 @@ export type UserCreateWithoutCreatedFoldersInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedFoldersInput = {
@@ -1576,14 +2111,17 @@ export type UserUncheckedCreateWithoutCreatedFoldersInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -1596,6 +2134,8 @@ export type UserUncheckedCreateWithoutCreatedFoldersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedFoldersInput = {
@@ -1625,14 +2165,17 @@ export type UserUpdateWithoutCreatedFoldersInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -1645,6 +2188,8 @@ export type UserUpdateWithoutCreatedFoldersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedFoldersInput = {
@@ -1658,14 +2203,17 @@ export type UserUncheckedUpdateWithoutCreatedFoldersInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -1678,6 +2226,8 @@ export type UserUncheckedUpdateWithoutCreatedFoldersInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuthoredPagesInput = {
@@ -1691,14 +2241,17 @@ export type UserCreateWithoutAuthoredPagesInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -1711,6 +2264,8 @@ export type UserCreateWithoutAuthoredPagesInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthoredPagesInput = {
@@ -1724,14 +2279,17 @@ export type UserUncheckedCreateWithoutAuthoredPagesInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -1744,6 +2302,8 @@ export type UserUncheckedCreateWithoutAuthoredPagesInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthoredPagesInput = {
@@ -1773,14 +2333,17 @@ export type UserUpdateWithoutAuthoredPagesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -1793,6 +2356,8 @@ export type UserUpdateWithoutAuthoredPagesInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthoredPagesInput = {
@@ -1806,14 +2371,17 @@ export type UserUncheckedUpdateWithoutAuthoredPagesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -1826,6 +2394,8 @@ export type UserUncheckedUpdateWithoutAuthoredPagesInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPageVersionsInput = {
@@ -1839,14 +2409,17 @@ export type UserCreateWithoutPageVersionsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -1859,6 +2432,8 @@ export type UserCreateWithoutPageVersionsInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPageVersionsInput = {
@@ -1872,14 +2447,17 @@ export type UserUncheckedCreateWithoutPageVersionsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -1892,6 +2470,8 @@ export type UserUncheckedCreateWithoutPageVersionsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPageVersionsInput = {
@@ -1921,14 +2501,17 @@ export type UserUpdateWithoutPageVersionsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -1941,6 +2524,8 @@ export type UserUpdateWithoutPageVersionsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPageVersionsInput = {
@@ -1954,14 +2539,17 @@ export type UserUncheckedUpdateWithoutPageVersionsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -1974,6 +2562,8 @@ export type UserUncheckedUpdateWithoutPageVersionsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuthoredPostsInput = {
@@ -1987,14 +2577,17 @@ export type UserCreateWithoutAuthoredPostsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -2007,6 +2600,8 @@ export type UserCreateWithoutAuthoredPostsInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuthoredPostsInput = {
@@ -2020,14 +2615,17 @@ export type UserUncheckedCreateWithoutAuthoredPostsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -2040,6 +2638,8 @@ export type UserUncheckedCreateWithoutAuthoredPostsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuthoredPostsInput = {
@@ -2069,14 +2669,17 @@ export type UserUpdateWithoutAuthoredPostsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -2089,6 +2692,8 @@ export type UserUpdateWithoutAuthoredPostsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthoredPostsInput = {
@@ -2102,14 +2707,17 @@ export type UserUncheckedUpdateWithoutAuthoredPostsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -2122,6 +2730,8 @@ export type UserUncheckedUpdateWithoutAuthoredPostsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPreviewTokensInput = {
@@ -2135,14 +2745,17 @@ export type UserCreateWithoutPreviewTokensInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -2155,6 +2768,8 @@ export type UserCreateWithoutPreviewTokensInput = {
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPreviewTokensInput = {
@@ -2168,14 +2783,17 @@ export type UserUncheckedCreateWithoutPreviewTokensInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -2188,6 +2806,8 @@ export type UserUncheckedCreateWithoutPreviewTokensInput = {
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPreviewTokensInput = {
@@ -2217,14 +2837,17 @@ export type UserUpdateWithoutPreviewTokensInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -2237,6 +2860,8 @@ export type UserUpdateWithoutPreviewTokensInput = {
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPreviewTokensInput = {
@@ -2250,14 +2875,17 @@ export type UserUncheckedUpdateWithoutPreviewTokensInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -2270,6 +2898,8 @@ export type UserUncheckedUpdateWithoutPreviewTokensInput = {
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -2283,14 +2913,17 @@ export type UserCreateWithoutAuditLogsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -2303,6 +2936,8 @@ export type UserCreateWithoutAuditLogsInput = {
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -2316,14 +2951,17 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -2336,6 +2974,8 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -2365,14 +3005,17 @@ export type UserUpdateWithoutAuditLogsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -2385,6 +3028,8 @@ export type UserUpdateWithoutAuditLogsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -2398,14 +3043,17 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -2418,6 +3066,8 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCustomersInput = {
@@ -2431,14 +3081,17 @@ export type UserCreateWithoutCustomersInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutUserInput
@@ -2451,6 +3104,8 @@ export type UserCreateWithoutCustomersInput = {
   invitedUsers?: Prisma.TenantUserCreateNestedManyWithoutInviterInput
   projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCustomersInput = {
@@ -2464,14 +3119,17 @@ export type UserUncheckedCreateWithoutCustomersInput = {
   emailVerified?: boolean
   verificationToken?: string | null
   verificationTokenExpires?: Date | string | null
-  resetToken?: string | null
-  resetTokenExpires?: Date | string | null
   isSuperAdmin?: boolean
   agencyRole?: string | null
+  phone?: string | null
+  avatar?: string | null
   status?: string
+  deletedAt?: Date | string | null
   lastLoginAt?: Date | string | null
   lastLoginIp?: string | null
   tokenVersion?: number
+  failedLoginAttempts?: number
+  lockedUntil?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutUserInput
@@ -2484,6 +3142,8 @@ export type UserUncheckedCreateWithoutCustomersInput = {
   invitedUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutInviterInput
   projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutUserInput
   previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutCreatorInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCustomersInput = {
@@ -2513,14 +3173,17 @@ export type UserUpdateWithoutCustomersInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUpdateManyWithoutUserNestedInput
@@ -2533,6 +3196,8 @@ export type UserUpdateWithoutCustomersInput = {
   invitedUsers?: Prisma.TenantUserUpdateManyWithoutInviterNestedInput
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCustomersInput = {
@@ -2546,14 +3211,17 @@ export type UserUncheckedUpdateWithoutCustomersInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   verificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificationTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isSuperAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   agencyRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastLoginIp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  failedLoginAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutUserNestedInput
@@ -2566,6 +3234,8 @@ export type UserUncheckedUpdateWithoutCustomersInput = {
   invitedUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutInviterNestedInput
   projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutUserNestedInput
   previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutCreatorNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -2585,6 +3255,8 @@ export type UserCountOutputType = {
   projectAssignments: number
   customers: number
   previewTokens: number
+  refreshTokens: number
+  passwordResetTokens: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2599,6 +3271,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   projectAssignments?: boolean | UserCountOutputTypeCountProjectAssignmentsArgs
   customers?: boolean | UserCountOutputTypeCountCustomersArgs
   previewTokens?: boolean | UserCountOutputTypeCountPreviewTokensArgs
+  refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
+  passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
 }
 
 /**
@@ -2688,6 +3362,20 @@ export type UserCountOutputTypeCountPreviewTokensArgs<ExtArgs extends runtime.Ty
   where?: Prisma.PreviewTokenWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefreshTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordResetTokenWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2700,14 +3388,17 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailVerified?: boolean
   verificationToken?: boolean
   verificationTokenExpires?: boolean
-  resetToken?: boolean
-  resetTokenExpires?: boolean
   isSuperAdmin?: boolean
   agencyRole?: boolean
+  phone?: boolean
+  avatar?: boolean
   status?: boolean
+  deletedAt?: boolean
   lastLoginAt?: boolean
   lastLoginIp?: boolean
   tokenVersion?: boolean
+  failedLoginAttempts?: boolean
+  lockedUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenantUsers?: boolean | Prisma.User$tenantUsersArgs<ExtArgs>
@@ -2721,6 +3412,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   projectAssignments?: boolean | Prisma.User$projectAssignmentsArgs<ExtArgs>
   customers?: boolean | Prisma.User$customersArgs<ExtArgs>
   previewTokens?: boolean | Prisma.User$previewTokensArgs<ExtArgs>
+  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2735,14 +3428,17 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailVerified?: boolean
   verificationToken?: boolean
   verificationTokenExpires?: boolean
-  resetToken?: boolean
-  resetTokenExpires?: boolean
   isSuperAdmin?: boolean
   agencyRole?: boolean
+  phone?: boolean
+  avatar?: boolean
   status?: boolean
+  deletedAt?: boolean
   lastLoginAt?: boolean
   lastLoginIp?: boolean
   tokenVersion?: boolean
+  failedLoginAttempts?: boolean
+  lockedUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2758,14 +3454,17 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailVerified?: boolean
   verificationToken?: boolean
   verificationTokenExpires?: boolean
-  resetToken?: boolean
-  resetTokenExpires?: boolean
   isSuperAdmin?: boolean
   agencyRole?: boolean
+  phone?: boolean
+  avatar?: boolean
   status?: boolean
+  deletedAt?: boolean
   lastLoginAt?: boolean
   lastLoginIp?: boolean
   tokenVersion?: boolean
+  failedLoginAttempts?: boolean
+  lockedUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2781,19 +3480,22 @@ export type UserSelectScalar = {
   emailVerified?: boolean
   verificationToken?: boolean
   verificationTokenExpires?: boolean
-  resetToken?: boolean
-  resetTokenExpires?: boolean
   isSuperAdmin?: boolean
   agencyRole?: boolean
+  phone?: boolean
+  avatar?: boolean
   status?: boolean
+  deletedAt?: boolean
   lastLoginAt?: boolean
   lastLoginIp?: boolean
   tokenVersion?: boolean
+  failedLoginAttempts?: boolean
+  lockedUntil?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkUserId" | "email" | "firstName" | "lastName" | "avatarUrl" | "passwordHash" | "emailVerified" | "verificationToken" | "verificationTokenExpires" | "resetToken" | "resetTokenExpires" | "isSuperAdmin" | "agencyRole" | "status" | "lastLoginAt" | "lastLoginIp" | "tokenVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerkUserId" | "email" | "firstName" | "lastName" | "avatarUrl" | "passwordHash" | "emailVerified" | "verificationToken" | "verificationTokenExpires" | "isSuperAdmin" | "agencyRole" | "phone" | "avatar" | "status" | "deletedAt" | "lastLoginAt" | "lastLoginIp" | "tokenVersion" | "failedLoginAttempts" | "lockedUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenantUsers?: boolean | Prisma.User$tenantUsersArgs<ExtArgs>
   uploadedAssets?: boolean | Prisma.User$uploadedAssetsArgs<ExtArgs>
@@ -2806,6 +3508,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   projectAssignments?: boolean | Prisma.User$projectAssignmentsArgs<ExtArgs>
   customers?: boolean | Prisma.User$customersArgs<ExtArgs>
   previewTokens?: boolean | Prisma.User$previewTokensArgs<ExtArgs>
+  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2825,6 +3529,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     projectAssignments: Prisma.$ProjectAssignmentPayload<ExtArgs>[]
     customers: Prisma.$CustomerPayload<ExtArgs>[]
     previewTokens: Prisma.$PreviewTokenPayload<ExtArgs>[]
+    refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+    passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2837,14 +3543,17 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     emailVerified: boolean
     verificationToken: string | null
     verificationTokenExpires: Date | null
-    resetToken: string | null
-    resetTokenExpires: Date | null
     isSuperAdmin: boolean
     agencyRole: string | null
+    phone: string | null
+    avatar: string | null
     status: string
+    deletedAt: Date | null
     lastLoginAt: Date | null
     lastLoginIp: string | null
     tokenVersion: number
+    failedLoginAttempts: number
+    lockedUntil: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -3252,6 +3961,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   projectAssignments<T extends Prisma.User$projectAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$projectAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   customers<T extends Prisma.User$customersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$customersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   previewTokens<T extends Prisma.User$previewTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$previewTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PreviewTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordResetTokens<T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3291,14 +4002,17 @@ export interface UserFieldRefs {
   readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly verificationToken: Prisma.FieldRef<"User", 'String'>
   readonly verificationTokenExpires: Prisma.FieldRef<"User", 'DateTime'>
-  readonly resetToken: Prisma.FieldRef<"User", 'String'>
-  readonly resetTokenExpires: Prisma.FieldRef<"User", 'DateTime'>
   readonly isSuperAdmin: Prisma.FieldRef<"User", 'Boolean'>
   readonly agencyRole: Prisma.FieldRef<"User", 'String'>
+  readonly phone: Prisma.FieldRef<"User", 'String'>
+  readonly avatar: Prisma.FieldRef<"User", 'String'>
   readonly status: Prisma.FieldRef<"User", 'String'>
+  readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly lastLoginIp: Prisma.FieldRef<"User", 'String'>
   readonly tokenVersion: Prisma.FieldRef<"User", 'Int'>
+  readonly failedLoginAttempts: Prisma.FieldRef<"User", 'Int'>
+  readonly lockedUntil: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -3950,6 +4664,54 @@ export type User$previewTokensArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.PreviewTokenScalarFieldEnum | Prisma.PreviewTokenScalarFieldEnum[]
+}
+
+/**
+ * User.refreshTokens
+ */
+export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RefreshToken
+   */
+  select?: Prisma.RefreshTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RefreshToken
+   */
+  omit?: Prisma.RefreshTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefreshTokenInclude<ExtArgs> | null
+  where?: Prisma.RefreshTokenWhereInput
+  orderBy?: Prisma.RefreshTokenOrderByWithRelationInput | Prisma.RefreshTokenOrderByWithRelationInput[]
+  cursor?: Prisma.RefreshTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[]
+}
+
+/**
+ * User.passwordResetTokens
+ */
+export type User$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PasswordResetToken
+   */
+  select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PasswordResetToken
+   */
+  omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null
+  where?: Prisma.PasswordResetTokenWhereInput
+  orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordResetTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[]
 }
 
 /**

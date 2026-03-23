@@ -54,6 +54,8 @@ export const ModelName = {
   Tenant: 'Tenant',
   TenantDomain: 'TenantDomain',
   User: 'User',
+  RefreshToken: 'RefreshToken',
+  PasswordResetToken: 'PasswordResetToken',
   TenantUser: 'TenantUser',
   ProjectAssignment: 'ProjectAssignment',
   Asset: 'Asset',
@@ -153,19 +155,48 @@ export const UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   verificationToken: 'verificationToken',
   verificationTokenExpires: 'verificationTokenExpires',
-  resetToken: 'resetToken',
-  resetTokenExpires: 'resetTokenExpires',
   isSuperAdmin: 'isSuperAdmin',
   agencyRole: 'agencyRole',
+  phone: 'phone',
+  avatar: 'avatar',
   status: 'status',
+  deletedAt: 'deletedAt',
   lastLoginAt: 'lastLoginAt',
   lastLoginIp: 'lastLoginIp',
   tokenVersion: 'tokenVersion',
+  failedLoginAttempts: 'failedLoginAttempts',
+  lockedUntil: 'lockedUntil',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
+
+
+export const PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
+} as const
+
+export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
 
 
 export const TenantUserScalarFieldEnum = {

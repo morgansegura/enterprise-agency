@@ -2,9 +2,13 @@ import {
   registerDecorator,
   ValidationOptions,
   ValidatorConstraint,
-  ValidatorConstraintInterface,
   ValidationArguments,
 } from "class-validator";
+
+interface ValidatorConstraintInterface {
+  validate(value: unknown, args?: ValidationArguments): boolean | Promise<boolean>;
+  defaultMessage?(args?: ValidationArguments): string;
+}
 
 interface BlockWithKey {
   _key: string;
