@@ -6,6 +6,10 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { PaginatedResponse } from "@/common/dto/response.dto";
 import { CreateOrderDto, UpdateOrderDto } from "./dto";
 
@@ -13,7 +17,10 @@ import { CreateOrderDto, UpdateOrderDto } from "./dto";
 export class OrdersService {
   private readonly logger = new Logger(OrdersService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private audit: AuditLogService,
+  ) {}
 
   async create(tenantId: string, createData: CreateOrderDto) {
     const customer = await this.prisma.customer.findFirst({
@@ -218,6 +225,12 @@ export class OrdersService {
     });
 
     this.logger.log(`Order created: #${orderNumber} for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "order",
+      resourceId: order.id,
+    });
     return order;
   }
 
@@ -433,6 +446,12 @@ export class OrdersService {
     });
 
     this.logger.log(`Order updated: #${order.orderNumber}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "order",
+      resourceId: order.id,
+    });
     return order;
   }
 
@@ -491,6 +510,12 @@ export class OrdersService {
     });
 
     this.logger.log(`Order cancelled: #${cancelled.orderNumber}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CANCELLED,
+      resourceType: "order",
+      resourceId: cancelled.id,
+    });
     return cancelled;
   }
 
@@ -546,6 +571,12 @@ export class OrdersService {
     this.logger.log(
       `Order items fulfilled: #${updated.orderNumber} - ${itemIds.length} items`,
     );
+    this.audit.log({
+      tenantId,
+      action: AuditAction.FULFILLED,
+      resourceType: "order",
+      resourceId: updated.id,
+    });
     return updated;
   }
 

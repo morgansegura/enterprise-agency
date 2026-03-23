@@ -6,7 +6,10 @@ import {
 } from "class-validator";
 
 interface ValidatorConstraintInterface {
-  validate(value: unknown, args?: ValidationArguments): boolean | Promise<boolean>;
+  validate(
+    value: unknown,
+    args?: ValidationArguments,
+  ): boolean | Promise<boolean>;
   defaultMessage?(args?: ValidationArguments): string;
 }
 

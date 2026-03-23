@@ -5,6 +5,10 @@ import {
   Logger,
 } from "@nestjs/common";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { PaginatedResponse } from "@/common/dto/response.dto";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { UpdatePostDto } from "./dto/update-post.dto";
@@ -13,7 +17,10 @@ import { UpdatePostDto } from "./dto/update-post.dto";
 export class PostsService {
   private readonly logger = new Logger(PostsService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private audit: AuditLogService,
+  ) {}
 
   async create(tenantId: string, userId: string, createData: CreatePostDto) {
     // Check if slug already exists for this tenant
@@ -60,6 +67,12 @@ export class PostsService {
     });
 
     this.logger.log(`Post created: ${post.slug} by user ${userId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "post",
+      resourceId: post.id,
+    });
     return post;
   }
 
@@ -238,6 +251,12 @@ export class PostsService {
     });
 
     this.logger.log(`Post updated: ${post.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "post",
+      resourceId: post.id,
+    });
     return post;
   }
 
@@ -250,6 +269,12 @@ export class PostsService {
     });
 
     this.logger.log(`Post deleted: ${id}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "post",
+      resourceId: id,
+    });
     return { success: true, id };
   }
 
@@ -259,6 +284,12 @@ export class PostsService {
     });
 
     this.logger.log(`Post published: ${post.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.PUBLISHED,
+      resourceType: "post",
+      resourceId: post.id,
+    });
     return post;
   }
 
@@ -268,6 +299,12 @@ export class PostsService {
     });
 
     this.logger.log(`Post unpublished: ${post.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UNPUBLISHED,
+      resourceType: "post",
+      resourceId: post.id,
+    });
     return post;
   }
 
@@ -316,6 +353,12 @@ export class PostsService {
     });
 
     this.logger.log(`Post duplicated: ${original.slug} -> ${duplicated.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DUPLICATED,
+      resourceType: "post",
+      resourceId: duplicated.id,
+    });
     return duplicated;
   }
 

@@ -6,13 +6,20 @@ import {
 } from "@nestjs/common";
 import type { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { CreateHeaderDto, UpdateHeaderDto } from "./dto";
 
 @Injectable()
 export class HeadersService {
   private readonly logger = new Logger(HeadersService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly audit: AuditLogService,
+  ) {}
 
   /**
    * Create a new header
@@ -62,6 +69,12 @@ export class HeadersService {
     });
 
     this.logger.log(`Created header "${dto.name}" for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "header",
+      resourceId: header.id,
+    });
     return header;
   }
 
@@ -192,6 +205,12 @@ export class HeadersService {
     });
 
     this.logger.log(`Updated header ${id} for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "header",
+      resourceId: header.id,
+    });
     return header;
   }
 
@@ -207,6 +226,12 @@ export class HeadersService {
     });
 
     this.logger.log(`Deleted header "${header.name}" for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "header",
+      resourceId: id,
+    });
     return { success: true };
   }
 
@@ -253,6 +278,12 @@ export class HeadersService {
     this.logger.log(
       `Duplicated header ${id} as ${duplicated.id} for tenant ${tenantId}`,
     );
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DUPLICATED,
+      resourceType: "header",
+      resourceId: duplicated.id,
+    });
     return duplicated;
   }
 
@@ -292,6 +323,12 @@ export class HeadersService {
     this.logger.log(
       `Saved header ${id} to library as component ${component.id}`,
     );
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "library-component",
+      resourceId: component.id,
+    });
     return component;
   }
 }

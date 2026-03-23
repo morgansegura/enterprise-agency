@@ -4,6 +4,10 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { PaginatedResponse } from "@/common/dto/response.dto";
 import { StorageService } from "@/common/services/storage.service";
 import { UpdateAssetDto } from "./dto/update-asset.dto";
@@ -14,6 +18,7 @@ export class AssetsService {
   constructor(
     private prisma: PrismaService,
     private storage: StorageService,
+    private audit: AuditLogService,
   ) {}
 
   async upload(
@@ -93,6 +98,13 @@ export class AssetsService {
         altText: metadata?.altText,
         usageContext: metadata?.usageContext,
       },
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPLOADED,
+      resourceType: "asset",
+      resourceId: asset.id,
     });
 
     return asset;
@@ -199,6 +211,13 @@ export class AssetsService {
       data: updateData,
     });
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "asset",
+      resourceId: updated.id,
+    });
+
     return {
       ...updated,
       sizeBytes: updated.sizeBytes ? Number(updated.sizeBytes) : null,
@@ -236,6 +255,13 @@ export class AssetsService {
     // Delete database record
     await this.prisma.asset.delete({
       where: { id },
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "asset",
+      resourceId: id,
     });
 
     return { success: true, id };

@@ -6,13 +6,20 @@ import {
 } from "@nestjs/common";
 import type { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { CreateMenuDto, UpdateMenuDto } from "./dto";
 
 @Injectable()
 export class MenusService {
   private readonly logger = new Logger(MenusService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly audit: AuditLogService,
+  ) {}
 
   /**
    * Create a new menu
@@ -50,6 +57,12 @@ export class MenusService {
     });
 
     this.logger.log(`Created menu "${dto.name}" for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "menu",
+      resourceId: menu.id,
+    });
     return menu;
   }
 
@@ -153,6 +166,12 @@ export class MenusService {
     });
 
     this.logger.log(`Updated menu ${id} for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "menu",
+      resourceId: menu.id,
+    });
     return menu;
   }
 
@@ -168,6 +187,12 @@ export class MenusService {
     });
 
     this.logger.log(`Deleted menu "${menu.name}" for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "menu",
+      resourceId: id,
+    });
     return { success: true };
   }
 
@@ -206,6 +231,12 @@ export class MenusService {
     this.logger.log(
       `Duplicated menu ${id} as ${duplicated.id} for tenant ${tenantId}`,
     );
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DUPLICATED,
+      resourceType: "menu",
+      resourceId: duplicated.id,
+    });
     return duplicated;
   }
 
@@ -239,6 +270,12 @@ export class MenusService {
     });
 
     this.logger.log(`Saved menu ${id} to library as component ${component.id}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "library-component",
+      resourceId: component.id,
+    });
     return component;
   }
 }

@@ -4,19 +4,22 @@ import {
   BadRequestException,
   NotFoundException,
   Logger,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '@/common/services/prisma.service';
-import { EmailService } from '@/common/services/email.service';
-import { AuditLogService, AuditAction } from '@/common/services/audit-log.service';
-import * as bcrypt from 'bcrypt';
-import * as crypto from 'crypto';
-import { RegisterDto, LoginDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
-import { JwtPayload } from './strategies/jwt.strategy';
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
+import { PrismaService } from "@/common/services/prisma.service";
+import { EmailService } from "@/common/services/email.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
+import * as bcrypt from "bcrypt";
+import * as crypto from "crypto";
+import { RegisterDto, LoginDto } from "./dto";
+import { JwtPayload } from "./strategies/jwt.strategy";
 
 const SALT_ROUNDS = 12;
-const ACCESS_TOKEN_EXPIRES_IN = '15m';
+const ACCESS_TOKEN_EXPIRES_IN = "15m";
 const REFRESH_TOKEN_EXPIRY_DAYS = 7;
 const PASSWORD_RESET_EXPIRY_MINUTES = 15;
 const MAX_RESET_REQUESTS_PER_HOUR = 3;
@@ -59,21 +62,31 @@ export class AuthService {
         await this.emailService.sendAccountExistsEmail(existingUser.email);
       } else {
         const newToken = this.generateSecureToken();
-        const newExpiry = new Date(Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN);
+        const newExpiry = new Date(
+          Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+        );
 
         await this.prisma.user.update({
           where: { id: existingUser.id },
-          data: { verificationToken: newToken, verificationTokenExpires: newExpiry },
+          data: {
+            verificationToken: newToken,
+            verificationTokenExpires: newExpiry,
+          },
         });
 
-        await this.emailService.sendVerificationEmail(existingUser.email, newToken);
+        await this.emailService.sendVerificationEmail(
+          existingUser.email,
+          newToken,
+        );
       }
       return { message: genericMessage };
     }
 
     const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
     const verificationToken = this.generateSecureToken();
-    const verificationTokenExpires = new Date(Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN);
+    const verificationTokenExpires = new Date(
+      Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+    );
 
     const user = await this.prisma.user.create({
       data: {
@@ -87,7 +100,10 @@ export class AuthService {
       },
     });
 
-    await this.emailService.sendVerificationEmail(user.email, verificationToken);
+    await this.emailService.sendVerificationEmail(
+      user.email,
+      verificationToken,
+    );
     return { message: genericMessage };
   }
 
@@ -95,13 +111,19 @@ export class AuthService {
   // Portal Registration (sub-client self-service)
   // ---------------------------------------------------------------------------
 
-  async registerPortalCustomer(dto: RegisterDto, tenantId: string, context?: RequestContext) {
+  async registerPortalCustomer(
+    dto: RegisterDto,
+    tenantId: string,
+    context?: RequestContext,
+  ) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: dto.email.toLowerCase() },
     });
 
     if (existingUser) {
-      throw new BadRequestException('An account with this email already exists');
+      throw new BadRequestException(
+        "An account with this email already exists",
+      );
     }
 
     const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
@@ -129,7 +151,7 @@ export class AuthService {
       });
 
       await tx.tenantUser.create({
-        data: { tenantId, userId: user.id, role: 'SUB_CLIENT' },
+        data: { tenantId, userId: user.id, role: "SUB_CLIENT" },
       });
 
       return user;
@@ -142,7 +164,7 @@ export class AuthService {
       tenantId,
       userId: result.id,
       action: AuditAction.REGISTER,
-      resourceType: 'auth',
+      resourceType: "auth",
       metadata: { portal: true },
       ipAddress: context?.ipAddress,
       userAgent: context?.userAgent,
@@ -170,7 +192,8 @@ export class AuthService {
     });
 
     // Timing-attack safe: always compare even if user doesn't exist
-    const dummyHash = '$2b$12$dummyHashToPreventTimingAttack1234567890123456789012345678';
+    const dummyHash =
+      "$2b$12$dummyHashToPreventTimingAttack1234567890123456789012345678";
     const hashToCompare = user?.passwordHash || dummyHash;
     const isPasswordValid = await bcrypt.compare(dto.password, hashToCompare);
 
@@ -178,17 +201,21 @@ export class AuthService {
       if (user && isPasswordValid === false) {
         await this.handleFailedLogin(user.id, user.failedLoginAttempts);
       }
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     // Check account lockout
     if (user.lockedUntil && user.lockedUntil > new Date()) {
       this.logger.warn(`Login attempt on locked account: ${user.email}`);
-      throw new UnauthorizedException('Account is locked. Please try again later.');
+      throw new UnauthorizedException(
+        "Account is locked. Please try again later.",
+      );
     }
 
     if (!user.emailVerified) {
-      throw new UnauthorizedException('Please verify your email before logging in');
+      throw new UnauthorizedException(
+        "Please verify your email before logging in",
+      );
     }
 
     // Reset failed attempts on success
@@ -202,7 +229,11 @@ export class AuthService {
       },
     });
 
-    const accessToken = await this.signAccessToken(user.id, user.email, user.tokenVersion);
+    const accessToken = await this.signAccessToken(
+      user.id,
+      user.email,
+      user.tokenVersion,
+    );
     const refreshToken = await this.generateRefreshToken(user.id);
     const tenantAccess = await this.getUserTenantAccess(user.id);
 
@@ -210,7 +241,7 @@ export class AuthService {
       tenantId: context?.tenantId,
       userId: user.id,
       action: AuditAction.LOGIN,
-      resourceType: 'auth',
+      resourceType: "auth",
       ipAddress: context?.ipAddress,
       userAgent: context?.userAgent,
     });
@@ -249,7 +280,7 @@ export class AuthService {
     });
 
     if (!storedToken || storedToken.user.deletedAt) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new UnauthorizedException("Invalid refresh token");
     }
 
     // Rotate: revoke old, issue new
@@ -259,7 +290,11 @@ export class AuthService {
     });
 
     const user = storedToken.user;
-    const accessToken = await this.signAccessToken(user.id, user.email, user.tokenVersion);
+    const accessToken = await this.signAccessToken(
+      user.id,
+      user.email,
+      user.tokenVersion,
+    );
     const newRefreshToken = await this.generateRefreshToken(user.id);
 
     return { accessToken, refreshToken: newRefreshToken, expiresIn: 900 };
@@ -293,10 +328,10 @@ export class AuthService {
     this.audit.log({
       userId,
       action: AuditAction.LOGOUT,
-      resourceType: 'auth',
+      resourceType: "auth",
     });
 
-    return { message: 'Logged out successfully' };
+    return { message: "Logged out successfully" };
   }
 
   // ---------------------------------------------------------------------------
@@ -309,7 +344,7 @@ export class AuthService {
       include: { tenantUsers: { include: { tenant: true } } },
     });
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user) throw new NotFoundException("User not found");
 
     return {
       id: user.id,
@@ -331,7 +366,10 @@ export class AuthService {
     };
   }
 
-  async updateProfile(userId: string, data: { firstName?: string; lastName?: string; phone?: string }) {
+  async updateProfile(
+    userId: string,
+    data: { firstName?: string; lastName?: string; phone?: string },
+  ) {
     const user = await this.prisma.user.update({
       where: { id: userId },
       data: {
@@ -339,7 +377,14 @@ export class AuthService {
         ...(data.lastName !== undefined && { lastName: data.lastName }),
         ...(data.phone !== undefined && { phone: data.phone }),
       },
-      select: { id: true, email: true, firstName: true, lastName: true, phone: true, avatar: true },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        avatar: true,
+      },
     });
 
     return user;
@@ -349,19 +394,23 @@ export class AuthService {
   // Password Management
   // ---------------------------------------------------------------------------
 
-  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+  ) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       select: { id: true, email: true, passwordHash: true },
     });
 
     if (!user || !user.passwordHash) {
-      throw new BadRequestException('User not found');
+      throw new BadRequestException("User not found");
     }
 
     const isValid = await bcrypt.compare(currentPassword, user.passwordHash);
     if (!isValid) {
-      throw new BadRequestException('Current password is incorrect');
+      throw new BadRequestException("Current password is incorrect");
     }
 
     const passwordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
@@ -374,15 +423,16 @@ export class AuthService {
     this.audit.log({
       userId,
       action: AuditAction.PASSWORD_CHANGED,
-      resourceType: 'auth',
+      resourceType: "auth",
     });
 
-    return { message: 'Password updated successfully' };
+    return { message: "Password updated successfully" };
   }
 
   async forgotPassword(email: string, ipAddress?: string, userAgent?: string) {
     const successMessage = {
-      message: 'If an account with that email exists, a password reset link has been sent.',
+      message:
+        "If an account with that email exists, a password reset link has been sent.",
     };
 
     const user = await this.prisma.user.findUnique({
@@ -396,7 +446,10 @@ export class AuthService {
 
     // Rate limit
     const recentRequests = await this.prisma.passwordResetToken.count({
-      where: { userId: user.id, createdAt: { gte: new Date(Date.now() - 60 * 60 * 1000) } },
+      where: {
+        userId: user.id,
+        createdAt: { gte: new Date(Date.now() - 60 * 60 * 1000) },
+      },
     });
 
     if (recentRequests >= MAX_RESET_REQUESTS_PER_HOUR) {
@@ -409,9 +462,11 @@ export class AuthService {
       data: { usedAt: new Date() },
     });
 
-    const rawToken = crypto.randomBytes(32).toString('hex');
+    const rawToken = crypto.randomBytes(32).toString("hex");
     const hashedToken = this.hashToken(rawToken);
-    const expiresAt = new Date(Date.now() + PASSWORD_RESET_EXPIRY_MINUTES * 60 * 1000);
+    const expiresAt = new Date(
+      Date.now() + PASSWORD_RESET_EXPIRY_MINUTES * 60 * 1000,
+    );
 
     await this.prisma.passwordResetToken.create({
       data: {
@@ -428,7 +483,7 @@ export class AuthService {
     this.audit.log({
       userId: user.id,
       action: AuditAction.PASSWORD_RESET_REQUESTED,
-      resourceType: 'auth',
+      resourceType: "auth",
       ipAddress: ipAddress,
       userAgent: userAgent,
     });
@@ -440,7 +495,11 @@ export class AuthService {
     const hashedToken = this.hashToken(token);
 
     const resetToken = await this.prisma.passwordResetToken.findFirst({
-      where: { token: hashedToken, expiresAt: { gt: new Date() }, usedAt: null },
+      where: {
+        token: hashedToken,
+        expiresAt: { gt: new Date() },
+        usedAt: null,
+      },
       include: { user: true },
     });
 
@@ -451,16 +510,20 @@ export class AuthService {
     const hashedToken = this.hashToken(token);
 
     const resetToken = await this.prisma.passwordResetToken.findFirst({
-      where: { token: hashedToken, expiresAt: { gt: new Date() }, usedAt: null },
+      where: {
+        token: hashedToken,
+        expiresAt: { gt: new Date() },
+        usedAt: null,
+      },
       include: { user: true },
     });
 
     if (!resetToken) {
-      throw new BadRequestException('Invalid or expired password reset token.');
+      throw new BadRequestException("Invalid or expired password reset token.");
     }
 
     if (resetToken.user.deletedAt) {
-      throw new BadRequestException('Account no longer exists.');
+      throw new BadRequestException("Account no longer exists.");
     }
 
     const passwordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
@@ -486,11 +549,11 @@ export class AuthService {
     this.audit.log({
       userId: resetToken.userId,
       action: AuditAction.PASSWORD_RESET_COMPLETED,
-      resourceType: 'auth',
+      resourceType: "auth",
       ipAddress: ipAddress,
     });
 
-    return { message: 'Password has been reset successfully. Please log in.' };
+    return { message: "Password has been reset successfully. Please log in." };
   }
 
   // ---------------------------------------------------------------------------
@@ -499,49 +562,69 @@ export class AuthService {
 
   async verifyEmail(token: string) {
     const user = await this.prisma.user.findFirst({
-      where: { verificationToken: token, verificationTokenExpires: { gt: new Date() } },
+      where: {
+        verificationToken: token,
+        verificationTokenExpires: { gt: new Date() },
+      },
     });
 
     if (!user) {
-      throw new BadRequestException('Invalid or expired verification token');
+      throw new BadRequestException("Invalid or expired verification token");
     }
 
     await this.prisma.user.update({
       where: { id: user.id },
-      data: { emailVerified: true, verificationToken: null, verificationTokenExpires: null },
+      data: {
+        emailVerified: true,
+        verificationToken: null,
+        verificationTokenExpires: null,
+      },
     });
 
-    return { message: 'Email verified successfully. You can now log in.' };
+    return { message: "Email verified successfully. You can now log in." };
   }
 
   async resendVerificationEmail(email: string) {
-    const user = await this.prisma.user.findUnique({ where: { email: email.toLowerCase() } });
+    const user = await this.prisma.user.findUnique({
+      where: { email: email.toLowerCase() },
+    });
 
     if (!user) {
-      return { message: 'If an account exists with this email, a verification email has been sent.' };
+      return {
+        message:
+          "If an account exists with this email, a verification email has been sent.",
+      };
     }
 
     if (user.emailVerified) {
-      throw new BadRequestException('Email is already verified');
+      throw new BadRequestException("Email is already verified");
     }
 
     const verificationToken = this.generateSecureToken();
-    const verificationTokenExpires = new Date(Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN);
+    const verificationTokenExpires = new Date(
+      Date.now() + EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+    );
 
     await this.prisma.user.update({
       where: { id: user.id },
       data: { verificationToken, verificationTokenExpires },
     });
 
-    await this.emailService.sendVerificationEmail(user.email, verificationToken);
-    return { message: 'Verification email sent. Please check your inbox.' };
+    await this.emailService.sendVerificationEmail(
+      user.email,
+      verificationToken,
+    );
+    return { message: "Verification email sent. Please check your inbox." };
   }
 
   // ---------------------------------------------------------------------------
   // Private Helpers
   // ---------------------------------------------------------------------------
 
-  private async handleFailedLogin(userId: string, currentAttempts: number): Promise<void> {
+  private async handleFailedLogin(
+    userId: string,
+    currentAttempts: number,
+  ): Promise<void> {
     const newAttempts = currentAttempts + 1;
 
     const data: { failedLoginAttempts: number; lockedUntil?: Date } = {
@@ -550,18 +633,20 @@ export class AuthService {
 
     if (newAttempts >= MAX_LOGIN_ATTEMPTS) {
       data.lockedUntil = new Date(Date.now() + LOCKOUT_DURATION_MS);
-      this.logger.warn(`Account locked after ${newAttempts} failed attempts: ${userId}`);
+      this.logger.warn(
+        `Account locked after ${newAttempts} failed attempts: ${userId}`,
+      );
       this.audit.log({
         userId,
         action: AuditAction.ACCOUNT_LOCKED,
-        resourceType: 'auth',
+        resourceType: "auth",
         metadata: { attempts: newAttempts },
       });
     } else {
       this.audit.log({
         userId,
         action: AuditAction.LOGIN_FAILED,
-        resourceType: 'auth',
+        resourceType: "auth",
         metadata: { attempts: newAttempts },
       });
     }
@@ -569,18 +654,27 @@ export class AuthService {
     await this.prisma.user.update({ where: { id: userId }, data });
   }
 
-  private async signAccessToken(userId: string, email: string, tokenVersion: number): Promise<string> {
-    const jwtSecret = this.config.get('JWT_SECRET');
-    if (!jwtSecret) throw new Error('JWT_SECRET is not configured');
+  private async signAccessToken(
+    userId: string,
+    email: string,
+    tokenVersion: number,
+  ): Promise<string> {
+    const jwtSecret = this.config.get("JWT_SECRET");
+    if (!jwtSecret) throw new Error("JWT_SECRET is not configured");
 
     const payload: JwtPayload = { sub: userId, email, tokenVersion };
-    return this.jwtService.signAsync(payload, { secret: jwtSecret, expiresIn: ACCESS_TOKEN_EXPIRES_IN });
+    return this.jwtService.signAsync(payload, {
+      secret: jwtSecret,
+      expiresIn: ACCESS_TOKEN_EXPIRES_IN,
+    });
   }
 
   private async generateRefreshToken(userId: string): Promise<string> {
-    const rawToken = crypto.randomBytes(64).toString('hex');
+    const rawToken = crypto.randomBytes(64).toString("hex");
     const hashedToken = this.hashToken(rawToken);
-    const expiresAt = new Date(Date.now() + REFRESH_TOKEN_EXPIRY_DAYS * 24 * 60 * 60 * 1000);
+    const expiresAt = new Date(
+      Date.now() + REFRESH_TOKEN_EXPIRY_DAYS * 24 * 60 * 60 * 1000,
+    );
 
     await this.prisma.refreshToken.create({
       data: { token: hashedToken, userId, expiresAt },
@@ -595,9 +689,13 @@ export class AuthService {
       select: { tokenVersion: true },
     });
 
-    if (!user) throw new UnauthorizedException('User not found');
+    if (!user) throw new UnauthorizedException("User not found");
 
-    const accessToken = await this.signAccessToken(userId, email, user.tokenVersion);
+    const accessToken = await this.signAccessToken(
+      userId,
+      email,
+      user.tokenVersion,
+    );
     const refreshToken = await this.generateRefreshToken(userId);
 
     return { accessToken, refreshToken, expiresIn: 900 };
@@ -606,8 +704,17 @@ export class AuthService {
   private async getUserTenantAccess(userId: string) {
     const tenantUsers = await this.prisma.tenantUser.findMany({
       where: { userId },
-      include: { tenant: { select: { id: true, slug: true, businessName: true, tenantType: true } } },
-      orderBy: { tenant: { businessName: 'asc' } },
+      include: {
+        tenant: {
+          select: {
+            id: true,
+            slug: true,
+            businessName: true,
+            tenantType: true,
+          },
+        },
+      },
+      orderBy: { tenant: { businessName: "asc" } },
     });
 
     return tenantUsers.map((tu) => ({
@@ -620,11 +727,11 @@ export class AuthService {
   }
 
   private hashToken(token: string): string {
-    return crypto.createHash('sha256').update(token).digest('hex');
+    return crypto.createHash("sha256").update(token).digest("hex");
   }
 
   private generateSecureToken(): string {
-    return crypto.randomBytes(32).toString('hex');
+    return crypto.randomBytes(32).toString("hex");
   }
 
   private async simulateProcessingDelay(): Promise<void> {

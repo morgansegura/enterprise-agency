@@ -6,6 +6,10 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { PaginatedResponse } from "@/common/dto/response.dto";
 import {
   CreateCustomerDto,
@@ -18,7 +22,10 @@ import {
 export class CustomersService {
   private readonly logger = new Logger(CustomersService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private audit: AuditLogService,
+  ) {}
 
   // ============================================================================
   // CUSTOMERS
@@ -76,6 +83,12 @@ export class CustomersService {
     });
 
     this.logger.log(`Customer created: ${customer.email}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "customer",
+      resourceId: customer.id,
+    });
     return customer;
   }
 
@@ -244,6 +257,12 @@ export class CustomersService {
     });
 
     this.logger.log(`Customer updated: ${customer.email}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "customer",
+      resourceId: customer.id,
+    });
     return customer;
   }
 
@@ -265,6 +284,12 @@ export class CustomersService {
     });
 
     this.logger.log(`Customer deleted: ${id}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "customer",
+      resourceId: id,
+    });
     return { success: true, id };
   }
 
@@ -294,6 +319,12 @@ export class CustomersService {
     });
 
     this.logger.log(`Customer address created for customer ${customerId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "customer-address",
+      resourceId: address.id,
+    });
     return address;
   }
 
@@ -347,6 +378,12 @@ export class CustomersService {
     });
 
     this.logger.log(`Customer address updated: ${addressId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "customer-address",
+      resourceId: address.id,
+    });
     return address;
   }
 
@@ -370,6 +407,12 @@ export class CustomersService {
     });
 
     this.logger.log(`Customer address deleted: ${addressId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "customer-address",
+      resourceId: addressId,
+    });
     return { success: true, id: addressId };
   }
 
@@ -391,6 +434,12 @@ export class CustomersService {
     });
 
     this.logger.log(`Default address set: ${addressId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "customer-address",
+      resourceId: address.id,
+    });
     return address;
   }
 

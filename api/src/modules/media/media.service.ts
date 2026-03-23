@@ -4,6 +4,10 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { StorageService } from "@/common/services/storage.service";
 import * as sharp from "sharp";
 import {
@@ -15,7 +19,6 @@ import {
   BulkTagDto,
   CropMediaDto,
   UploadMediaDto,
-  MediaType,
   MediaSortBy,
 } from "./dto";
 
@@ -24,6 +27,7 @@ export class MediaService {
   constructor(
     private prisma: PrismaService,
     private storage: StorageService,
+    private audit: AuditLogService,
   ) {}
 
   // ============================================================================
@@ -192,6 +196,13 @@ export class MediaService {
       },
     });
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPLOADED,
+      resourceType: "asset",
+      resourceId: asset.id,
+    });
+
     return this.serializeAsset(asset);
   }
 
@@ -225,6 +236,13 @@ export class MediaService {
       },
     });
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "asset",
+      resourceId: updated.id,
+    });
+
     return this.serializeAsset(updated);
   }
 
@@ -256,6 +274,13 @@ export class MediaService {
       include: {
         folder: { select: { id: true, name: true, path: true } },
       },
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "asset",
+      resourceId: updated.id,
     });
 
     return this.serializeAsset(updated);
@@ -330,6 +355,13 @@ export class MediaService {
     // Delete old file
     await this.storage.delete(asset.fileKey).catch(() => {});
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "asset",
+      resourceId: updated.id,
+    });
+
     return this.serializeAsset(updated);
   }
 
@@ -363,6 +395,13 @@ export class MediaService {
     // Delete record
     await this.prisma.asset.delete({ where: { id } });
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "asset",
+      resourceId: id,
+    });
+
     return { success: true, id };
   }
 
@@ -390,6 +429,13 @@ export class MediaService {
         tenantId,
       },
       data: { folderId: dto.folderId ?? null },
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.BULK_MOVED,
+      resourceType: "asset",
+      metadata: { mediaIds: dto.mediaIds, folderId: dto.folderId },
     });
 
     return {
@@ -426,6 +472,13 @@ export class MediaService {
       }
     }
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.BULK_DELETED,
+      resourceType: "asset",
+      metadata: { successIds, failedIds: failedIds.map((f) => f.id) },
+    });
+
     return { successIds, failedIds, total: assets.length };
   }
 
@@ -452,6 +505,13 @@ export class MediaService {
       successIds.push(asset.id);
     }
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "asset",
+      metadata: { operation: "bulkTag", mediaIds: successIds, tags: dto.tags },
+    });
+
     return { successIds, failedIds: [], total: assets.length };
   }
 
@@ -477,6 +537,17 @@ export class MediaService {
       });
       successIds.push(asset.id);
     }
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "asset",
+      metadata: {
+        operation: "bulkUntag",
+        mediaIds: successIds,
+        tags: dto.tags,
+      },
+    });
 
     return { successIds, failedIds: [], total: assets.length };
   }
@@ -505,7 +576,7 @@ export class MediaService {
     buffer: Buffer,
     tenantId: string,
     fileName: string,
-    mimeType: string,
+    _mimeType: string,
   ) {
     const metadata = await sharp(buffer).metadata();
     const width = metadata.width || 0;

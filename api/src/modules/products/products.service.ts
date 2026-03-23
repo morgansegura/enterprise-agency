@@ -7,6 +7,10 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { PaginatedResponse } from "@/common/dto/response.dto";
 import {
   CreateProductCategoryDto,
@@ -21,7 +25,10 @@ import {
 export class ProductsService {
   private readonly logger = new Logger(ProductsService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private audit: AuditLogService,
+  ) {}
 
   // ============================================================================
   // PRODUCT CATEGORIES
@@ -73,6 +80,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product category created: ${category.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "product-category",
+      resourceId: category.id,
+    });
     return category;
   }
 
@@ -181,6 +194,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product category updated: ${category.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "product-category",
+      resourceId: category.id,
+    });
     return category;
   }
 
@@ -207,6 +226,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product category deleted: ${id}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "product-category",
+      resourceId: id,
+    });
     return { success: true, id };
   }
 
@@ -281,6 +306,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product created: ${product.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "product",
+      resourceId: product.id,
+    });
     return product;
   }
 
@@ -481,6 +512,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product updated: ${product.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "product",
+      resourceId: product.id,
+    });
     return product;
   }
 
@@ -502,6 +539,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product deleted: ${id}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "product",
+      resourceId: id,
+    });
     return { success: true, id };
   }
 
@@ -511,6 +554,13 @@ export class ProductsService {
     });
 
     this.logger.log(`Product archived: ${product.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "product",
+      resourceId: product.id,
+      metadata: { archived: true },
+    });
     return product;
   }
 
@@ -571,6 +621,12 @@ export class ProductsService {
     this.logger.log(
       `Product duplicated: ${original.slug} -> ${duplicated.slug}`,
     );
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DUPLICATED,
+      resourceType: "product",
+      resourceId: duplicated.id,
+    });
     return duplicated;
   }
 
@@ -619,6 +675,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product variant created: ${variant.title}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "product-variant",
+      resourceId: variant.id,
+    });
     return variant;
   }
 
@@ -685,6 +747,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product variant updated: ${variant.title}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "product-variant",
+      resourceId: variant.id,
+    });
     return variant;
   }
 
@@ -706,6 +774,12 @@ export class ProductsService {
     });
 
     this.logger.log(`Product variant deleted: ${variantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "product-variant",
+      resourceId: variantId,
+    });
     return { success: true, id: variantId };
   }
 
@@ -734,6 +808,13 @@ export class ProductsService {
       this.logger.log(
         `Inventory adjusted for variant ${variantId}: ${adjustment} (${reason || "manual adjustment"})`,
       );
+      this.audit.log({
+        tenantId,
+        action: AuditAction.UPDATED,
+        resourceType: "product-variant",
+        resourceId: variantId,
+        metadata: { inventoryAdjustment: true, quantity: adjustment, reason },
+      });
       return updated;
     } else {
       const product = await this.findOneProduct(tenantId, productId);
@@ -751,6 +832,13 @@ export class ProductsService {
       this.logger.log(
         `Inventory adjusted for product ${productId}: ${adjustment} (${reason || "manual adjustment"})`,
       );
+      this.audit.log({
+        tenantId,
+        action: AuditAction.UPDATED,
+        resourceType: "product",
+        resourceId: productId,
+        metadata: { inventoryAdjustment: true, quantity: adjustment, reason },
+      });
       return updated;
     }
   }

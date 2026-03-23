@@ -1,60 +1,60 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { Injectable, Logger } from "@nestjs/common";
+import { PrismaService } from "./prisma.service";
 
 /**
  * Audit actions organized by resource domain.
  */
 export enum AuditAction {
   // Auth
-  LOGIN = 'login',
-  LOGIN_FAILED = 'login.failed',
-  LOGOUT = 'logout',
-  PASSWORD_CHANGED = 'password.changed',
-  PASSWORD_RESET_REQUESTED = 'password.reset_requested',
-  PASSWORD_RESET_COMPLETED = 'password.reset_completed',
-  ACCOUNT_LOCKED = 'account.locked',
-  TOKEN_REFRESHED = 'token.refreshed',
-  REGISTER = 'register',
+  LOGIN = "login",
+  LOGIN_FAILED = "login.failed",
+  LOGOUT = "logout",
+  PASSWORD_CHANGED = "password.changed",
+  PASSWORD_RESET_REQUESTED = "password.reset_requested",
+  PASSWORD_RESET_COMPLETED = "password.reset_completed",
+  ACCOUNT_LOCKED = "account.locked",
+  TOKEN_REFRESHED = "token.refreshed",
+  REGISTER = "register",
 
   // User management
-  USER_CREATED = 'user.created',
-  USER_UPDATED = 'user.updated',
-  USER_DELETED = 'user.deleted',
-  USER_INVITED = 'user.invited',
+  USER_CREATED = "user.created",
+  USER_UPDATED = "user.updated",
+  USER_DELETED = "user.deleted",
+  USER_INVITED = "user.invited",
 
   // Tenant management
-  TENANT_CREATED = 'tenant.created',
-  TENANT_UPDATED = 'tenant.updated',
-  TENANT_DELETED = 'tenant.deleted',
+  TENANT_CREATED = "tenant.created",
+  TENANT_UPDATED = "tenant.updated",
+  TENANT_DELETED = "tenant.deleted",
 
   // Features & projects
-  FEATURE_ENABLED = 'feature.enabled',
-  FEATURE_DISABLED = 'feature.disabled',
-  PROJECT_ASSIGNED = 'project.assigned',
-  PROJECT_UNASSIGNED = 'project.unassigned',
-  PERMISSION_CHANGED = 'permission.changed',
+  FEATURE_ENABLED = "feature.enabled",
+  FEATURE_DISABLED = "feature.disabled",
+  PROJECT_ASSIGNED = "project.assigned",
+  PROJECT_UNASSIGNED = "project.unassigned",
+  PERMISSION_CHANGED = "permission.changed",
 
   // Content
-  CREATED = 'created',
-  UPDATED = 'updated',
-  DELETED = 'deleted',
-  PUBLISHED = 'published',
-  UNPUBLISHED = 'unpublished',
-  DUPLICATED = 'duplicated',
+  CREATED = "created",
+  UPDATED = "updated",
+  DELETED = "deleted",
+  PUBLISHED = "published",
+  UNPUBLISHED = "unpublished",
+  DUPLICATED = "duplicated",
 
   // Media
-  UPLOADED = 'uploaded',
-  MOVED = 'moved',
-  BULK_DELETED = 'bulk.deleted',
-  BULK_MOVED = 'bulk.moved',
+  UPLOADED = "uploaded",
+  MOVED = "moved",
+  BULK_DELETED = "bulk.deleted",
+  BULK_MOVED = "bulk.moved",
 
   // Orders
-  FULFILLED = 'fulfilled',
-  REFUNDED = 'refunded',
-  CANCELLED = 'cancelled',
+  FULFILLED = "fulfilled",
+  REFUNDED = "refunded",
+  CANCELLED = "cancelled",
 
   // Settings
-  SETTINGS_UPDATED = 'settings.updated',
+  SETTINGS_UPDATED = "settings.updated",
 }
 
 export interface AuditLogEntry {
@@ -83,7 +83,7 @@ export class AuditLogService {
     try {
       if (!entry.tenantId) {
         // Platform-level event with no tenant context — log only
-        this.logger.log({ message: 'Audit event (no tenant)', ...entry });
+        this.logger.log({ message: "Audit event (no tenant)", ...entry });
         return;
       }
 
@@ -102,7 +102,7 @@ export class AuditLogService {
       });
     } catch (error) {
       // Audit logging must never break the request
-      this.logger.error('Failed to write audit log', {
+      this.logger.error("Failed to write audit log", {
         error: (error as Error).message,
         entry,
       });
@@ -132,11 +132,13 @@ export class AuditLogService {
     const [data, total] = await Promise.all([
       this.prisma.auditLog.findMany({
         where,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
         take: limit,
         skip: offset,
         include: {
-          user: { select: { id: true, firstName: true, lastName: true, email: true } },
+          user: {
+            select: { id: true, firstName: true, lastName: true, email: true },
+          },
         },
       }),
       this.prisma.auditLog.count({ where }),
@@ -151,7 +153,7 @@ export class AuditLogService {
   async getByUser(userId: string, limit = 50) {
     return this.prisma.auditLog.findMany({
       where: { userId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       take: limit,
     });
   }
@@ -162,10 +164,12 @@ export class AuditLogService {
   async getByResource(resourceType: string, resourceId: string, limit = 50) {
     return this.prisma.auditLog.findMany({
       where: { resourceType, resourceId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       take: limit,
       include: {
-        user: { select: { id: true, firstName: true, lastName: true, email: true } },
+        user: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
       },
     });
   }

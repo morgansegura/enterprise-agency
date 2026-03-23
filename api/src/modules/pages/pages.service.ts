@@ -6,6 +6,10 @@ import {
 } from "@nestjs/common";
 import { Prisma, TenantTier } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { PaginatedResponse } from "@/common/dto/response.dto";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";
@@ -26,6 +30,7 @@ export class PagesService {
     private prisma: PrismaService,
     private structureValidation: StructureValidationService,
     private revalidationService: RevalidationService,
+    private audit: AuditLogService,
   ) {}
 
   async create(tenantId: string, userId: string, createData: CreatePageDto) {
@@ -103,6 +108,12 @@ export class PagesService {
     });
 
     this.logger.log(`Page created: ${page.slug} by user ${userId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "page",
+      resourceId: page.id,
+    });
     return page;
   }
 
@@ -347,6 +358,12 @@ export class PagesService {
     });
 
     this.logger.log(`Page updated: ${page.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "page",
+      resourceId: page.id,
+    });
     return page;
   }
 
@@ -359,6 +376,12 @@ export class PagesService {
     });
 
     this.logger.log(`Page deleted: ${id}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "page",
+      resourceId: id,
+    });
     return { success: true, id };
   }
 
@@ -375,6 +398,12 @@ export class PagesService {
       });
 
     this.logger.log(`Page published: ${page.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.PUBLISHED,
+      resourceType: "page",
+      resourceId: page.id,
+    });
     return page;
   }
 
@@ -391,6 +420,12 @@ export class PagesService {
       });
 
     this.logger.log(`Page unpublished: ${page.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UNPUBLISHED,
+      resourceType: "page",
+      resourceId: page.id,
+    });
     return page;
   }
 
@@ -442,6 +477,12 @@ export class PagesService {
     });
 
     this.logger.log(`Page duplicated: ${original.slug} -> ${duplicated.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DUPLICATED,
+      resourceType: "page",
+      resourceId: duplicated.id,
+    });
     return duplicated;
   }
 }

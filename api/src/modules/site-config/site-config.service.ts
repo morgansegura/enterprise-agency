@@ -2,6 +2,10 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { Prisma } from "@prisma";
 import { PrismaService } from "../../common/services/prisma.service";
 import {
+  AuditLogService,
+  AuditAction,
+} from "../../common/services/audit-log.service";
+import {
   SiteConfigDto,
   UpdateHeaderConfigDto,
   UpdateFooterConfigDto,
@@ -15,7 +19,10 @@ import { LogosConfigDto } from "./dto/logos-config.dto";
 
 @Injectable()
 export class SiteConfigService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly audit: AuditLogService,
+  ) {}
 
   /**
    * Get all site configuration for a tenant
@@ -66,6 +73,14 @@ export class SiteConfigService {
       },
     });
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.SETTINGS_UPDATED,
+      resourceType: "site-config",
+      resourceId: tenantId,
+      metadata: { section: "all" },
+    });
+
     return {
       headerConfig: tenant.headerConfig as unknown as HeaderConfigDto,
       footerConfig: tenant.footerConfig as unknown as FooterConfigDto,
@@ -100,6 +115,14 @@ export class SiteConfigService {
       select: { headerConfig: true },
     });
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.SETTINGS_UPDATED,
+      resourceType: "site-config",
+      resourceId: tenantId,
+      metadata: { section: "header" },
+    });
+
     return tenant.headerConfig as unknown as HeaderConfigDto;
   }
 
@@ -127,6 +150,14 @@ export class SiteConfigService {
       where: { id: tenantId },
       data: { footerConfig: data as unknown as Prisma.InputJsonValue },
       select: { footerConfig: true },
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.SETTINGS_UPDATED,
+      resourceType: "site-config",
+      resourceId: tenantId,
+      metadata: { section: "footer" },
     });
 
     return tenant.footerConfig as unknown as FooterConfigDto;
@@ -158,6 +189,14 @@ export class SiteConfigService {
       select: { menusConfig: true },
     });
 
+    this.audit.log({
+      tenantId,
+      action: AuditAction.SETTINGS_UPDATED,
+      resourceType: "site-config",
+      resourceId: tenantId,
+      metadata: { section: "menus" },
+    });
+
     return tenant.menusConfig as unknown as MenusConfigDto;
   }
 
@@ -185,6 +224,14 @@ export class SiteConfigService {
       where: { id: tenantId },
       data: { logosConfig: data as unknown as Prisma.InputJsonValue },
       select: { logosConfig: true },
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.SETTINGS_UPDATED,
+      resourceType: "site-config",
+      resourceId: tenantId,
+      metadata: { section: "logos" },
     });
 
     return tenant.logosConfig as unknown as LogosConfigDto;

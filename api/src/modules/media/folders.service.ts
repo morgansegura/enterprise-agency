@@ -34,7 +34,9 @@ export class FoldersService {
       where: { tenantId, path },
     });
     if (existing) {
-      throw new ConflictException("A folder with this name already exists in this location");
+      throw new ConflictException(
+        "A folder with this name already exists in this location",
+      );
     }
 
     return this.prisma.mediaFolder.create({
@@ -190,7 +192,9 @@ export class FoldersService {
       }
       // Check if target is a descendant
       if (parent.path.startsWith(`${folder.path}/`)) {
-        throw new BadRequestException("Cannot move folder into its own descendant");
+        throw new BadRequestException(
+          "Cannot move folder into its own descendant",
+        );
       }
       newPath = `${parent.path}/${folder.slug}`;
     } else {
@@ -202,7 +206,9 @@ export class FoldersService {
       where: { tenantId, path: newPath, id: { not: id } },
     });
     if (existing) {
-      throw new ConflictException("A folder with this name already exists in the target location");
+      throw new ConflictException(
+        "A folder with this name already exists in the target location",
+      );
     }
 
     // Move folder and update all descendant paths
@@ -254,7 +260,7 @@ export class FoldersService {
     if (folder._count.assets > 0 || folder._count.children > 0) {
       if (!deleteContents) {
         throw new BadRequestException(
-          "Folder is not empty. Set deleteContents=true to delete folder and all its contents."
+          "Folder is not empty. Set deleteContents=true to delete folder and all its contents.",
         );
       }
     }
@@ -286,10 +292,13 @@ export class FoldersService {
       slug: string;
       path: string;
       _count: { assets: number; children: number };
-    }>
+    }>,
   ) {
-    const map = new Map<string, typeof folders[0] & { children: typeof folders }>();
-    const roots: Array<typeof folders[0] & { children: typeof folders }> = [];
+    const map = new Map<
+      string,
+      (typeof folders)[0] & { children: typeof folders }
+    >();
+    const roots: Array<(typeof folders)[0] & { children: typeof folders }> = [];
 
     // Create map of all folders
     for (const folder of folders) {

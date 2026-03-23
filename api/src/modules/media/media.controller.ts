@@ -45,10 +45,7 @@ export class MediaController {
    */
   @Get()
   @Permissions(Permission.MEDIA_VIEW)
-  async list(
-    @CurrentTenant() tenantId: string,
-    @Query() query: MediaQueryDto,
-  ) {
+  async list(@CurrentTenant() tenantId: string, @Query() query: MediaQueryDto) {
     return this.mediaService.list(tenantId, query);
   }
 
@@ -57,10 +54,7 @@ export class MediaController {
    */
   @Get(":id")
   @Permissions(Permission.MEDIA_VIEW)
-  async findById(
-    @CurrentTenant() tenantId: string,
-    @Param("id") id: string,
-  ) {
+  async findById(@CurrentTenant() tenantId: string, @Param("id") id: string) {
     return this.mediaService.findById(tenantId, id);
   }
 
@@ -135,10 +129,7 @@ export class MediaController {
    */
   @Delete(":id")
   @Permissions(Permission.MEDIA_DELETE)
-  async delete(
-    @CurrentTenant() tenantId: string,
-    @Param("id") id: string,
-  ) {
+  async delete(@CurrentTenant() tenantId: string, @Param("id") id: string) {
     return this.mediaService.delete(tenantId, id);
   }
 
@@ -151,10 +142,7 @@ export class MediaController {
    */
   @Post("bulk/move")
   @Permissions(Permission.MEDIA_EDIT)
-  async bulkMove(
-    @CurrentTenant() tenantId: string,
-    @Body() dto: BulkMoveDto,
-  ) {
+  async bulkMove(@CurrentTenant() tenantId: string, @Body() dto: BulkMoveDto) {
     return this.mediaService.bulkMove(tenantId, dto);
   }
 
@@ -175,10 +163,7 @@ export class MediaController {
    */
   @Post("bulk/tag")
   @Permissions(Permission.MEDIA_EDIT)
-  async bulkTag(
-    @CurrentTenant() tenantId: string,
-    @Body() dto: BulkTagDto,
-  ) {
+  async bulkTag(@CurrentTenant() tenantId: string, @Body() dto: BulkTagDto) {
     return this.mediaService.bulkTag(tenantId, dto);
   }
 
@@ -187,10 +172,7 @@ export class MediaController {
    */
   @Post("bulk/untag")
   @Permissions(Permission.MEDIA_EDIT)
-  async bulkUntag(
-    @CurrentTenant() tenantId: string,
-    @Body() dto: BulkTagDto,
-  ) {
+  async bulkUntag(@CurrentTenant() tenantId: string, @Body() dto: BulkTagDto) {
     return this.mediaService.bulkUntag(tenantId, dto);
   }
 }

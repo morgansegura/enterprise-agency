@@ -593,9 +593,7 @@ export class PaymentsService {
 
     // Verify Square webhook HMAC-SHA256 signature
     const url =
-      notificationUrl ||
-      this.config.get<string>("SQUARE_WEBHOOK_URL") ||
-      "";
+      notificationUrl || this.config.get<string>("SQUARE_WEBHOOK_URL") || "";
     const combined = url + payload;
     const expectedSignature = createHmac("sha256", webhookSignatureKey)
       .update(combined)

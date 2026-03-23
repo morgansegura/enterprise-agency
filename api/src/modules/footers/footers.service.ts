@@ -6,6 +6,10 @@ import {
 } from "@nestjs/common";
 import type { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { CreateFooterDto } from "./dto/create-footer.dto";
 import { UpdateFooterDto } from "./dto/update-footer.dto";
 
@@ -13,7 +17,10 @@ import { UpdateFooterDto } from "./dto/update-footer.dto";
 export class FootersService {
   private readonly logger = new Logger(FootersService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly audit: AuditLogService,
+  ) {}
 
   /**
    * Create a new footer
@@ -51,6 +58,12 @@ export class FootersService {
     });
 
     this.logger.log(`Created footer "${dto.name}" for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "footer",
+      resourceId: footer.id,
+    });
     return footer;
   }
 
@@ -154,6 +167,12 @@ export class FootersService {
     });
 
     this.logger.log(`Updated footer ${id} for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPDATED,
+      resourceType: "footer",
+      resourceId: footer.id,
+    });
     return footer;
   }
 
@@ -169,6 +188,12 @@ export class FootersService {
     });
 
     this.logger.log(`Deleted footer "${footer.name}" for tenant ${tenantId}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DELETED,
+      resourceType: "footer",
+      resourceId: id,
+    });
     return { success: true };
   }
 
@@ -207,6 +232,12 @@ export class FootersService {
     this.logger.log(
       `Duplicated footer ${id} as ${duplicated.id} for tenant ${tenantId}`,
     );
+    this.audit.log({
+      tenantId,
+      action: AuditAction.DUPLICATED,
+      resourceType: "footer",
+      resourceId: duplicated.id,
+    });
     return duplicated;
   }
 
@@ -242,6 +273,12 @@ export class FootersService {
     this.logger.log(
       `Saved footer ${id} to library as component ${component.id}`,
     );
+    this.audit.log({
+      tenantId,
+      action: AuditAction.CREATED,
+      resourceType: "library-component",
+      resourceId: component.id,
+    });
     return component;
   }
 }

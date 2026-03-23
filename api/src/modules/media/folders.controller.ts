@@ -66,10 +66,7 @@ export class FoldersController {
    */
   @Get(":id")
   @Permissions(Permission.MEDIA_VIEW)
-  async findById(
-    @CurrentTenant() tenantId: string,
-    @Param("id") id: string,
-  ) {
+  async findById(@CurrentTenant() tenantId: string, @Param("id") id: string) {
     return this.foldersService.findById(tenantId, id);
   }
 
@@ -109,10 +106,6 @@ export class FoldersController {
     @Param("id") id: string,
     @Query("deleteContents") deleteContents?: string,
   ) {
-    return this.foldersService.delete(
-      tenantId,
-      id,
-      deleteContents === "true",
-    );
+    return this.foldersService.delete(tenantId, id, deleteContents === "true");
   }
 }
