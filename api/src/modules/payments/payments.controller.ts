@@ -151,10 +151,12 @@ export class PaymentsWebhookController {
     @Headers("x-square-hmacsha256-signature") signature: string,
   ) {
     const payload = req.rawBody?.toString() || "";
+    const notificationUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
     return this.paymentsService.handleSquareWebhook(
       tenantId,
       payload,
       signature,
+      notificationUrl,
     );
   }
 }

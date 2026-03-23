@@ -28,7 +28,9 @@ export class TenantMiddleware implements NestMiddleware {
 
     // Extract tenant from various sources (priority order)
     const tenantFromHeader = req.get("x-tenant-id");
-    const tenantFromQuery = req.query.tenant as string;
+    const rawTenantQuery = req.query.tenant;
+    const tenantFromQuery =
+      typeof rawTenantQuery === "string" ? rawTenantQuery : undefined;
 
     // Determine tenant ID
     let tenantId: string | null = null;

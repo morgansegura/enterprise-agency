@@ -1,5 +1,5 @@
 import { NestFactory } from "@nestjs/core";
-import { ValidationPipe } from "@nestjs/common";
+import { Logger, ValidationPipe } from "@nestjs/common";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "path";
 import * as cookieParser from "cookie-parser";
@@ -38,6 +38,7 @@ async function bootstrap() {
           styleSrc: ["'self'", "'unsafe-inline'"],
           scriptSrc: ["'self'"],
           imgSrc: ["'self'", "data:", "https:"],
+          frameAncestors: ["'self'"],
         },
       },
       hsts: {
@@ -61,9 +62,9 @@ async function bootstrap() {
     origin: [
       "http://localhost:4002", // app (dev)
       "http://localhost:4001", // admin (dev)
-      process.env.APP_URL || "",
-      process.env.ADMIN_URL || "",
-    ],
+      process.env.APP_URL,
+      process.env.ADMIN_URL,
+    ].filter(Boolean) as string[],
     credentials: true,
   });
 
@@ -88,8 +89,9 @@ async function bootstrap() {
   const port = process.env.PORT || 4000;
   await app.listen(port);
 
-  console.log(`🚀 API server running on http://localhost:${port}`);
-  console.log(`📚 Health check: http://localhost:${port}/api/v1/health`);
+  const logger = new Logger("Bootstrap");
+  logger.log(`API server running on http://localhost:${port}`);
+  logger.log(`Health check: http://localhost:${port}/api/v1/health`);
 }
 
 bootstrap();

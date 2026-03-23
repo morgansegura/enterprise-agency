@@ -25,11 +25,12 @@ export class UsersService {
     return user;
   }
 
-  async findById(id: string) {
+  async findById(id: string, tenantId?: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
       include: {
         tenantUsers: {
+          where: tenantId ? { tenantId } : undefined,
           include: {
             tenant: true,
           },

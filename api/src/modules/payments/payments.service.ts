@@ -3,7 +3,9 @@ import {
   NotFoundException,
   BadRequestException,
   Logger,
+  UnauthorizedException,
 } from "@nestjs/common";
+import { createHmac } from "crypto";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "@/common/services/prisma.service";
 import { Prisma } from "@prisma";
@@ -504,8 +506,12 @@ export class PaymentsService {
   ) {
     const tenant = await this.prisma.tenant.findUnique({
       where: { id: tenantId },
-      select: { paymentConfig: true },
+      select: { paymentConfig: true, status: true },
     });
+
+    if (!tenant || tenant.status !== "active") {
+      throw new NotFoundException("Tenant not found or inactive");
+    }
 
     const config = tenant?.paymentConfig as PaymentConfigData | null;
     const webhookSecret =
@@ -564,12 +570,17 @@ export class PaymentsService {
   async handleSquareWebhook(
     tenantId: string,
     payload: string,
-    _signature: string,
+    signature: string,
+    notificationUrl?: string,
   ) {
     const tenant = await this.prisma.tenant.findUnique({
       where: { id: tenantId },
-      select: { paymentConfig: true },
+      select: { paymentConfig: true, status: true },
     });
+
+    if (!tenant || tenant.status !== "active") {
+      throw new NotFoundException("Tenant not found or inactive");
+    }
 
     const config = tenant?.paymentConfig as PaymentConfigData | null;
     const webhookSignatureKey = config?.square?.webhookSignatureKey;
@@ -580,10 +591,30 @@ export class PaymentsService {
       );
     }
 
-    // Square webhook verification would go here
-    // For now, we trust the webhook (in production, verify the signature)
+    // Verify Square webhook HMAC-SHA256 signature
+    const url =
+      notificationUrl ||
+      this.config.get<string>("SQUARE_WEBHOOK_URL") ||
+      "";
+    const combined = url + payload;
+    const expectedSignature = createHmac("sha256", webhookSignatureKey)
+      .update(combined)
+      .digest("base64");
 
-    const event = JSON.parse(payload);
+    if (signature !== expectedSignature) {
+      this.logger.error(
+        `Square webhook signature verification failed for tenant ${tenantId}`,
+      );
+      throw new UnauthorizedException("Invalid webhook signature");
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let event: { type: string; data: any };
+    try {
+      event = JSON.parse(payload);
+    } catch {
+      throw new BadRequestException("Invalid webhook payload");
+    }
     this.logger.log(`Processing Square webhook event: ${event.type}`);
 
     switch (event.type) {

@@ -2,6 +2,7 @@ import { IsString, MinLength, MaxLength, Matches } from "class-validator";
 
 export class ResetPasswordDto {
   @IsString()
+  @MaxLength(512, { message: "Invalid token format" })
   token: string;
 
   @IsString()

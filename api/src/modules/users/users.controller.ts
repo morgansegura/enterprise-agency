@@ -40,7 +40,7 @@ export class UsersController {
   @Get(":id")
   @UseGuards(TenantAccessGuard, PermissionGuard)
   @Permissions(Permission.USERS_VIEW)
-  async getUser(@Param("id") id: string) {
-    return this.usersService.findById(id);
+  async getUser(@Param("id") id: string, @TenantId() tenantId: string) {
+    return this.usersService.findById(id, tenantId);
   }
 }
