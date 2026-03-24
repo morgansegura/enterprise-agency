@@ -1,0 +1,105 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Customer Addresses — Address cards, form fields, empty state
+   ============================================================================ */
+
+.customer-addresses-list {
+  @apply flex flex-col gap-3;
+}
+
+.customer-address-card {
+  @apply p-4 rounded-md border;
+  border-color: var(--border-default);
+  background: var(--el-50);
+}
+
+.customer-address-card-default {
+  border-color: var(--status-info);
+  background: var(--status-info-subtle);
+}
+
+.customer-address-card-header {
+  @apply flex items-center justify-between mb-2;
+}
+
+.customer-address-default-badge {
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[10px] font-medium;
+  @apply bg-(--status-info-subtle) text-(--status-info);
+}
+
+.customer-address-actions {
+  @apply flex items-center gap-1;
+}
+
+.customer-address-action {
+  @apply h-6 w-6 flex items-center justify-center rounded cursor-pointer transition-colors;
+  color: var(--text-tertiary);
+}
+
+.customer-address-action:hover {
+  color: var(--foreground);
+  background: var(--el-100);
+}
+
+.customer-address-action svg {
+  @apply h-3.5 w-3.5;
+}
+
+.customer-address-action-danger:hover {
+  color: var(--status-error);
+  background: var(--status-error-subtle);
+}
+
+.customer-address-name {
+  @apply text-sm font-medium;
+  color: var(--foreground);
+}
+
+.customer-address-line {
+  @apply text-sm;
+  color: var(--el-500);
+}
+
+.customer-addresses-empty {
+  @apply py-6 text-center;
+}
+
+.customer-addresses-empty p {
+  @apply text-sm;
+  color: var(--text-tertiary);
+}
+
+/* Form fields within address form */
+
+.customer-addresses-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.customer-addresses-field-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  @apply flex items-center gap-1.5;
+}
+
+.customer-addresses-field-label svg {
+  @apply h-3.5 w-3.5;
+}
+
+.customer-addresses-field-input {
+  height: 40px;
+  border-radius: 3px;
+}
+
+.customer-addresses-field-row {
+  @apply grid grid-cols-2 gap-4;
+}
+
+@media (max-width: 640px) {
+  .customer-addresses-field-row {
+    @apply grid-cols-1;
+  }
+}

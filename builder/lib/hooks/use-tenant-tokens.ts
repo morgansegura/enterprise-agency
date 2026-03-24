@@ -46,7 +46,9 @@ export function useUpdateTenantTokens() {
       tokens: TenantTokens;
     }) => apiClient.put<TenantTokens>(`/tenants/${tenantId}/tokens`, tokens),
     onSuccess: (_, { tenantId }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tenantTokens.detail(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tenantTokens.detail(tenantId),
+      });
       logger.log("Tenant tokens updated successfully", { tenantId });
     },
     onError: (error) => {

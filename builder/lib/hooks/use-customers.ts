@@ -124,10 +124,14 @@ export function useCustomers(tenantId: string, filters?: CustomerFilters) {
   const queryString = params.toString();
 
   return useQuery<{ customers: Customer[]; total: number }>({
-    queryKey: queryKeys.customers.list(tenantId, filters as Record<string, unknown>),
+    queryKey: queryKeys.customers.list(
+      tenantId,
+      filters as Record<string, unknown>,
+    ),
     queryFn: async () => {
       const response = await apiClient.get<
-        { data: Customer[]; total: number } | { customers: Customer[]; total: number }
+        | { data: Customer[]; total: number }
+        | { customers: Customer[]; total: number }
       >(`/customers${queryString ? `?${queryString}` : ""}`);
       if ("data" in response && Array.isArray(response.data)) {
         return { customers: response.data, total: response.total };
@@ -169,7 +173,9 @@ export function useCreateCustomer(tenantId: string) {
     mutationFn: (data: CreateCustomerDto) =>
       apiClient.post<Customer>("/customers", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.customers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.customers.byTenant(tenantId),
+      });
       logger.log("Customer created successfully");
     },
     onError: (error) => {
@@ -185,7 +191,9 @@ export function useUpdateCustomer(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateCustomerDto }) =>
       apiClient.patch<Customer>(`/customers/${id}`, data),
     onSuccess: (updatedCustomer) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.customers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.customers.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.customers.detail(tenantId, updatedCustomer.id),
       });
@@ -203,7 +211,9 @@ export function useDeleteCustomer(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete(`/customers/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.customers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.customers.byTenant(tenantId),
+      });
       logger.log("Customer deleted successfully");
     },
     onError: (error) => {

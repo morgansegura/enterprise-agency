@@ -197,7 +197,7 @@ export function GlobalSettingsDrawer({
       setLocalTokens(initial);
       setOriginalTokens(initial);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- defaultColors is a module-level constant
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- defaultColors is a module-level constant
   }, [tokens]);
 
   // Check if there are unsaved changes

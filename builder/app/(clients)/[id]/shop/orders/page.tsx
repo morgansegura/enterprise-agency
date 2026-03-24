@@ -286,9 +286,7 @@ export default function OrdersPage({
                   <div className="orders-col-customer-name">
                     {order.customer?.firstName} {order.customer?.lastName}
                   </div>
-                  <div className="orders-col-customer-email">
-                    {order.email}
-                  </div>
+                  <div className="orders-col-customer-email">{order.email}</div>
                 </td>
                 <td>
                   <span

@@ -1,0 +1,171 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * Users Table Component
+ * ============================================================================= */
+
+/* Table
+ * -------------------------------------------------------------------------- */
+
+.users-table {
+  @apply w-full text-sm;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.users-table-header {
+  @apply sticky top-0 z-10;
+  background: var(--surface-raised);
+}
+
+.users-table-header th {
+  @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.users-table-body tr {
+  @apply transition-colors;
+}
+
+.users-table-body tr:hover {
+  background: var(--surface-raised);
+}
+
+.users-table-body td {
+  @apply px-4 py-3 whitespace-nowrap;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Name cell with avatar
+ * -------------------------------------------------------------------------- */
+
+.users-col-identity {
+  @apply flex items-center gap-3;
+}
+
+.users-avatar {
+  @apply flex items-center justify-center h-8 w-8 rounded-full shrink-0;
+  @apply text-xs font-semibold;
+  background: var(--el-100);
+  color: var(--text-secondary);
+}
+
+.users-col-name {
+  @apply font-medium leading-tight;
+  color: var(--text-primary);
+}
+
+.users-col-email {
+  @apply text-xs leading-tight;
+  color: var(--text-secondary);
+}
+
+.users-col-last-login {
+  @apply text-xs;
+  color: var(--text-secondary);
+}
+
+.users-col-actions {
+  @apply text-right w-12;
+}
+
+/* Status pills
+ * -------------------------------------------------------------------------- */
+
+.users-status-pill {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.users-status-active {
+  background: var(--status-success-subtle);
+  color: var(--status-success);
+}
+
+.users-status-inactive {
+  background: var(--el-100);
+  color: var(--text-secondary);
+}
+
+.users-status-pending {
+  background: var(--status-warning-subtle);
+  color: var(--status-warning);
+}
+
+/* Role badges
+ * -------------------------------------------------------------------------- */
+
+.users-role-badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.users-role-owner {
+  background: #fdf4ff;
+  color: #a21caf;
+}
+
+.users-role-admin {
+  background: var(--accent-primary-subtle);
+  color: var(--accent-primary);
+}
+
+.users-role-developer {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.users-role-designer {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.users-role-content-manager {
+  background: var(--el-100);
+  color: var(--text-secondary);
+}
+
+/* Super admin indicator
+ * -------------------------------------------------------------------------- */
+
+.users-super-admin-icon {
+  @apply h-3.5 w-3.5 inline-block ml-1;
+  color: var(--accent-primary);
+}
+
+/* Empty state
+ * -------------------------------------------------------------------------- */
+
+.users-empty {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+}
+
+.users-empty-icon {
+  @apply h-16 w-16 mb-4;
+  color: var(--text-tertiary);
+}
+
+.users-empty h3 {
+  @apply text-lg font-medium mb-2;
+  color: var(--text-primary);
+}
+
+.users-empty p {
+  @apply mb-6 max-w-sm;
+  color: var(--text-secondary);
+}
+
+/* Skeleton rows
+ * -------------------------------------------------------------------------- */
+
+.users-skeleton-row {
+  @apply flex items-center gap-6 px-4 py-4;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Actions trigger
+ * -------------------------------------------------------------------------- */
+
+.users-actions-trigger {
+  @apply h-8 w-8;
+}

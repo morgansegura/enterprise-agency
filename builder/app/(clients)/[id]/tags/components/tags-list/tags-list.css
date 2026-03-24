@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+/* Tag name column */
+.tags-col-name {
+  @apply flex-1 min-w-0;
+}
+
+.tags-name-text {
+  @apply text-sm font-semibold text-(--foreground) truncate;
+}
+
+/* Count column */
+.tags-col-count {
+  @apply w-28;
+}
+
+.tags-count-text {
+  @apply text-sm text-(--el-400);
+}

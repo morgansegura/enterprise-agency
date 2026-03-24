@@ -1,0 +1,29 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Product Sidebar — status pills, select styles, toggle
+   ============================================================================ */
+
+.product-form-status-select {
+  @apply w-full;
+}
+
+.product-form-status-pill {
+  @apply inline-flex items-center px-2 py-0.5 rounded-[3px] text-[11px] font-medium leading-tight;
+}
+
+.product-form-status-draft {
+  @apply bg-(--el-100) text-(--el-500);
+}
+
+.product-form-status-active {
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
+.product-form-status-archived {
+  @apply bg-(--status-warning-subtle) text-(--status-warning);
+}
+
+.product-form-featured-toggle {
+  @apply flex items-center justify-between py-3 border-t border-(--border-subtle);
+}

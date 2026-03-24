@@ -1,0 +1,36 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Timeline
+   ============================================================================ */
+
+.order-timeline {
+  @apply flex flex-col gap-4;
+}
+
+.order-timeline-item {
+  @apply flex gap-3;
+}
+
+.order-timeline-dot {
+  @apply h-2 w-2 rounded-full mt-1.5 shrink-0;
+  background: var(--el-300);
+}
+
+.order-timeline-dot-active {
+  background: var(--status-success);
+}
+
+.order-timeline-content {
+  @apply flex flex-col;
+}
+
+.order-timeline-label {
+  @apply text-sm font-medium;
+  color: var(--foreground);
+}
+
+.order-timeline-date {
+  @apply text-xs;
+  color: var(--text-tertiary);
+}

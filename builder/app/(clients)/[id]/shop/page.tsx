@@ -32,10 +32,26 @@ export default function ShopPage({
   const resolvedParams = React.use(params);
   const { id } = resolvedParams;
 
-  const { data: productsData, isLoading: productsLoading, error: productsError } = useProducts(id);
-  const { data: ordersData, isLoading: ordersLoading, error: ordersError } = useOrders(id, { limit: 5 });
-  const { data: customersData, isLoading: customersLoading, error: customersError } = useCustomers(id);
-  const { data: stats, isLoading: statsLoading, error: statsError } = useOrderStats(id);
+  const {
+    data: productsData,
+    isLoading: productsLoading,
+    error: productsError,
+  } = useProducts(id);
+  const {
+    data: ordersData,
+    isLoading: ordersLoading,
+    error: ordersError,
+  } = useOrders(id, { limit: 5 });
+  const {
+    data: customersData,
+    isLoading: customersLoading,
+    error: customersError,
+  } = useCustomers(id);
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useOrderStats(id);
 
   const products = productsData?.products ?? [];
   const orders = ordersData?.orders ?? [];
@@ -49,7 +65,8 @@ export default function ShopPage({
       currency: "USD",
     }).format(amount);
 
-  const isLoading = productsLoading || ordersLoading || customersLoading || statsLoading;
+  const isLoading =
+    productsLoading || ordersLoading || customersLoading || statsLoading;
 
   // Surface errors via toast
   React.useEffect(() => {

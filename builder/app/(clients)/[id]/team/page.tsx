@@ -153,9 +153,7 @@ export default function ClientTeamPage() {
   };
 
   const getInitial = (member: TenantUser) => {
-    return (
-      member.user.firstName?.[0] || member.user.email[0]
-    ).toUpperCase();
+    return (member.user.firstName?.[0] || member.user.email[0]).toUpperCase();
   };
 
   // ---------------------------------------------------------------------------
@@ -185,9 +183,7 @@ export default function ClientTeamPage() {
         singularName="member"
         pluralName="members"
         description={
-          tenant?.businessName
-            ? `${tenant.businessName} team`
-            : undefined
+          tenant?.businessName ? `${tenant.businessName} team` : undefined
         }
         actionLabel="Invite Member"
         actionIcon={Plus}

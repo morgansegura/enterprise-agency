@@ -1,0 +1,35 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Customer Stats — Sidebar statistics grid
+   ============================================================================ */
+
+.customer-stats-grid {
+  @apply grid grid-cols-1 gap-3;
+}
+
+.customer-stats-item {
+  @apply flex flex-col gap-1 py-2;
+}
+
+.customer-stats-item + .customer-stats-item {
+  @apply border-t border-(--border-subtle);
+}
+
+.customer-stats-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+}
+
+.customer-stats-value {
+  @apply text-lg font-semibold tabular-nums;
+  color: var(--foreground);
+}
+
+.customer-stats-account-badge {
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[10px] font-medium mt-3;
+  @apply bg-(--status-info-subtle) text-(--status-info);
+}

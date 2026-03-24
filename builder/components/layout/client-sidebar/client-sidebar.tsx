@@ -55,7 +55,15 @@ interface NavItem {
 
 /* ── Internal nav link ─────────────────────────────────────────────────── */
 
-function ClientNavLink({ href, icon: Icon, title }: { href: string; icon: React.ComponentType<{ className?: string }>; title: string }) {
+function ClientNavLink({
+  href,
+  icon: Icon,
+  title,
+}: {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+}) {
   const pathname = usePathname();
   const isActive = pathname === href;
 

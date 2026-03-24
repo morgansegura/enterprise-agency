@@ -117,9 +117,7 @@ function TableSkeleton() {
           <div className="dashboard-table-th dashboard-table-th-status">
             Status
           </div>
-          <div className="dashboard-table-th dashboard-table-th-tier">
-            Tier
-          </div>
+          <div className="dashboard-table-th dashboard-table-th-tier">Tier</div>
           <div className="dashboard-table-th dashboard-table-th-pages">
             Pages
           </div>

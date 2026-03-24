@@ -36,10 +36,7 @@ export function SessionWarningDialog({
           Click below to stay logged in and continue your work.
         </p>
         <div className="session-warning-footer">
-          <button
-            onClick={onExtendSession}
-            className="session-warning-button"
-          >
+          <button onClick={onExtendSession} className="session-warning-button">
             Stay Logged In
           </button>
         </div>

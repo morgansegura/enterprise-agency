@@ -12,10 +12,7 @@ import {
 } from "@/lib/context/preview-mode-context";
 import { useTenant } from "@/lib/hooks";
 
-import {
-  SidebarProvider,
-  SidebarInset,
-} from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { ClientSidebar } from "@/components/layout/client-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { ThemeSwitcher } from "@/components/layout/dashboard-header/theme-switcher";

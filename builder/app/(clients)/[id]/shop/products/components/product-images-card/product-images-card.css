@@ -1,0 +1,53 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Product Images Card — upload zone, image grid, thumbnails, remove button
+   ============================================================================ */
+
+.product-form-image-upload {
+  @apply border-2 border-dashed rounded-md p-8 flex flex-col items-center justify-center gap-3;
+  @apply cursor-pointer transition-colors;
+  border-color: var(--border-default);
+  background: var(--el-50);
+}
+
+.product-form-image-upload:hover {
+  border-color: var(--el-300);
+  background: var(--el-100);
+}
+
+.product-form-image-upload svg {
+  @apply h-8 w-8;
+  color: var(--el-300);
+}
+
+.product-form-image-upload-text {
+  @apply text-sm font-medium;
+  color: var(--foreground);
+}
+
+.product-form-image-upload-hint {
+  @apply text-xs;
+  color: var(--text-tertiary);
+}
+
+.product-form-image-grid {
+  @apply grid grid-cols-3 gap-3 mt-4;
+}
+
+.product-form-image-thumb {
+  @apply relative rounded-md overflow-hidden aspect-square bg-(--el-100);
+}
+
+.product-form-image-thumb img {
+  @apply h-full w-full object-cover;
+}
+
+.product-form-image-thumb-remove {
+  @apply absolute top-1 right-1 h-5 w-5 rounded-full flex items-center justify-center;
+  @apply bg-black/60 text-white cursor-pointer hover:bg-black/80 transition-colors;
+}
+
+.product-form-image-thumb-remove svg {
+  @apply h-3 w-3;
+}

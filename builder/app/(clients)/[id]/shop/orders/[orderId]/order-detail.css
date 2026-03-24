@@ -1,0 +1,133 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Order Detail — Layout
+   ============================================================================ */
+
+/* Container */
+.order-detail {
+  @apply flex flex-col h-full min-h-0;
+}
+
+.order-detail-header {
+  @apply px-6 pt-6 pb-4 flex items-center justify-between;
+}
+
+.order-detail-header-left {
+  @apply flex items-center gap-3;
+}
+
+.order-detail-back {
+  @apply flex items-center justify-center h-8 w-8 rounded-md;
+  @apply hover:bg-(--el-100) transition-colors cursor-pointer;
+  color: var(--text-tertiary);
+}
+
+.order-detail-back svg {
+  @apply h-4 w-4;
+}
+
+.order-detail-title {
+  @apply text-lg font-semibold;
+  color: var(--foreground);
+}
+
+.order-detail-date {
+  @apply text-sm;
+  color: var(--text-tertiary);
+}
+
+.order-detail-actions {
+  @apply flex items-center gap-2;
+}
+
+/* ============================================================================
+   Two-Column Layout
+   ============================================================================ */
+
+.order-detail-body {
+  @apply flex-1 overflow-y-auto px-6 pb-12;
+}
+
+.order-detail-columns {
+  @apply grid gap-6;
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .order-detail-columns {
+    @apply grid-cols-1;
+  }
+}
+
+.order-detail-main {
+  @apply flex flex-col gap-6;
+}
+
+.order-detail-sidebar {
+  @apply flex flex-col gap-6;
+}
+
+/* ============================================================================
+   Cards (shared base)
+   ============================================================================ */
+
+.order-detail-card {
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  @apply overflow-hidden;
+}
+
+.order-detail-card-header {
+  @apply px-5 py-4 border-b border-(--border-subtle) flex items-center justify-between;
+}
+
+.order-detail-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.order-detail-card-body {
+  @apply px-5 py-5;
+}
+
+/* ============================================================================
+   Skeleton
+   ============================================================================ */
+
+.order-detail-skeleton {
+  @apply flex flex-col gap-6 px-6 pt-6;
+}
+
+.order-detail-skeleton-header {
+  @apply flex items-center justify-between;
+}
+
+.order-detail-skeleton-columns {
+  @apply grid gap-6;
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .order-detail-skeleton-columns {
+    @apply grid-cols-1;
+  }
+}
+
+.order-detail-skeleton-card {
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  @apply p-5 flex flex-col gap-4;
+}
+
+/* ============================================================================
+   Error State
+   ============================================================================ */
+
+.order-detail-error {
+  @apply flex items-center justify-center py-16 text-center;
+  color: var(--status-error);
+}

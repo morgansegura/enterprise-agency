@@ -2,7 +2,10 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { ChevronDown, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BlockCard } from "../block-card";
@@ -17,7 +20,10 @@ import "./section-group.css";
 interface SectionGroupProps {
   section: Section;
   sectionIndex: number;
-  onUpdateBlock: (blockKey: string, dataUpdates: Record<string, unknown>) => void;
+  onUpdateBlock: (
+    blockKey: string,
+    dataUpdates: Record<string, unknown>,
+  ) => void;
   onDeleteBlock: (blockKey: string) => void;
   onDuplicateBlock: (blockKey: string) => void;
   onDeleteSection: (sectionKey: string) => void;
@@ -42,7 +48,11 @@ export function SectionGroup({
   const [expanded, setExpanded] = React.useState(true);
 
   // Gather all blocks from all containers into a flat sortable list
-  const allBlocks: { block: Block; containerKey: string; sortableId: string }[] = [];
+  const allBlocks: {
+    block: Block;
+    containerKey: string;
+    sortableId: string;
+  }[] = [];
   for (const container of section.containers) {
     for (const block of container.blocks) {
       allBlocks.push({
@@ -121,7 +131,9 @@ export function SectionGroup({
             <button
               type="button"
               className="section-group__add-btn"
-              onClick={() => onOpenBlockPicker(section._key, defaultContainerKey)}
+              onClick={() =>
+                onOpenBlockPicker(section._key, defaultContainerKey)
+              }
             >
               <Plus className="section-group__add-icon" />
               Add Block

@@ -56,7 +56,9 @@ export function useCreatePost(tenantId: string) {
   return useMutation({
     mutationFn: (data: Partial<Post>) => apiClient.post<Post>("/posts", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.posts.byTenant(tenantId),
+      });
       logger.log("Post created successfully");
     },
     onError: (error) => {
@@ -72,7 +74,9 @@ export function useUpdatePost(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: Partial<Post> }) =>
       apiClient.patch<Post>(`/posts/${id}`, data),
     onSuccess: (updatedPost) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.posts.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.posts.detail(tenantId, updatedPost.id),
       });
@@ -90,7 +94,9 @@ export function useDeletePost(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete(`/posts/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.posts.byTenant(tenantId),
+      });
       logger.log("Post deleted successfully");
     },
     onError: (error) => {
@@ -105,7 +111,9 @@ export function usePublishPost(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.post(`/posts/${id}/publish`, {}),
     onSuccess: (_, postId) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.posts.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.posts.detail(tenantId, postId),
       });
@@ -123,7 +131,9 @@ export function useUnpublishPost(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.post(`/posts/${id}/unpublish`, {}),
     onSuccess: (_, postId) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.posts.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.posts.detail(tenantId, postId),
       });
@@ -142,7 +152,9 @@ export function useDuplicatePost(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.post<Post>(`/posts/${id}/duplicate`, {}),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.posts.byTenant(tenantId),
+      });
       logger.log("Post duplicated successfully");
     },
     onError: (error) => {

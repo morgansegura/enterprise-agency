@@ -156,7 +156,10 @@ export function useOrders(tenantId: string, filters?: OrderFilters) {
   const queryString = params.toString();
 
   return useQuery<{ orders: Order[]; total: number }>({
-    queryKey: queryKeys.orders.list(tenantId, filters as Record<string, unknown>),
+    queryKey: queryKeys.orders.list(
+      tenantId,
+      filters as Record<string, unknown>,
+    ),
     queryFn: async () => {
       const response = await apiClient.get<
         { data: Order[]; total: number } | { orders: Order[]; total: number }
@@ -214,7 +217,9 @@ export function useCreateOrder(tenantId: string) {
     mutationFn: (data: CreateOrderDto) =>
       apiClient.post<Order>("/orders", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.orders.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.orders.byTenant(tenantId),
+      });
       logger.log("Order created successfully");
     },
     onError: (error) => {
@@ -230,7 +235,9 @@ export function useUpdateOrder(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateOrderDto }) =>
       apiClient.patch<Order>(`/orders/${id}`, data),
     onSuccess: (updatedOrder) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.orders.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.orders.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.orders.detail(tenantId, updatedOrder.id),
       });
@@ -248,7 +255,9 @@ export function useCancelOrder(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.post(`/orders/${id}/cancel`, {}),
     onSuccess: (_, orderId) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.orders.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.orders.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.orders.detail(tenantId, orderId),
       });
@@ -275,7 +284,9 @@ export function useFulfillOrderItems(tenantId: string) {
       itemIds: string[];
     }) => apiClient.post(`/orders/${orderId}/fulfill`, { itemIds }),
     onSuccess: (_, { orderId }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.orders.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.orders.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.orders.detail(tenantId, orderId),
       });

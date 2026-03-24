@@ -51,9 +51,9 @@ export function useAdminTenants() {
   return useQuery({
     queryKey: queryKeys.admin.tenants.all(),
     queryFn: async () => {
-      const response = await apiClient.get<{ data: TenantWithStats[] } | TenantWithStats[]>(
-        "/admin/tenants",
-      );
+      const response = await apiClient.get<
+        { data: TenantWithStats[] } | TenantWithStats[]
+      >("/admin/tenants");
       const data = Array.isArray(response) ? response : response.data;
       logger.log("Fetched admin tenants", { count: data.length });
       return data;

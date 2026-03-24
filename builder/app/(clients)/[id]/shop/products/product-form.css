@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Product Form — shared card & layout styles used by both edit and new pages
+   ============================================================================ */
+
+/* Cards */
+.product-form-card {
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  @apply overflow-hidden;
+}
+
+.product-form-card-header {
+  @apply px-5 py-4 border-b border-(--border-subtle);
+}
+
+.product-form-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.product-form-card-description {
+  @apply text-xs mt-1;
+  color: var(--text-tertiary);
+}
+
+.product-form-card-body {
+  @apply px-5 py-5 flex flex-col gap-5;
+}

@@ -174,7 +174,9 @@ export function useCreateFooter(tenantId: string) {
     mutationFn: (data: CreateFooterInput) =>
       apiClient.post<Footer>(`/tenants/${tenantId}/footers`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.footers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.footers.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to create footer", error as Error);
@@ -190,7 +192,9 @@ export function useUpdateFooter(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateFooterInput }) =>
       apiClient.put<Footer>(`/tenants/${tenantId}/footers/${id}`, data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.footers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.footers.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.footers.detail(tenantId, variables.id),
       });
@@ -209,7 +213,9 @@ export function useDeleteFooter(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.delete(`/tenants/${tenantId}/footers/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.footers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.footers.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to delete footer", error as Error);
@@ -227,7 +233,9 @@ export function useDuplicateFooter(tenantId: string) {
         name,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.footers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.footers.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to duplicate footer", error as Error);

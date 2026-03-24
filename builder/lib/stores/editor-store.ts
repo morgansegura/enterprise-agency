@@ -28,14 +28,11 @@ function snapshot(state: EditorState) {
   }
 }
 
-function findBlockInContainer(
-  blocks: Block[],
-  key: string,
-): Block | null {
+function findBlockInContainer(blocks: Block[], key: string): Block | null {
   for (const block of blocks) {
     if (block._key === key) return block;
     // Nested blocks in container-type blocks (grid, flex, stack, columns)
-    const children = (block.data?.blocks as Block[] | undefined);
+    const children = block.data?.blocks as Block[] | undefined;
     if (children) {
       const found = findBlockInContainer(children, key);
       if (found) return found;
@@ -174,8 +171,7 @@ export const useEditorStore = create<EditorStore>()(
         ),
 
       setDirty: (isDirty) => set({ isDirty }, false, "editor/setDirty"),
-      setLoading: (isLoading) =>
-        set({ isLoading }, false, "editor/setLoading"),
+      setLoading: (isLoading) => set({ isLoading }, false, "editor/setLoading"),
       setSaving: (isSaving) => set({ isSaving }, false, "editor/setSaving"),
       setError: (error) => set({ error }, false, "editor/setError"),
 
@@ -259,9 +255,7 @@ export const useEditorStore = create<EditorStore>()(
           produce((state: EditorState) => {
             if (!state.page?.sections) return;
             const sections = state.page.sections;
-            const oldIndex = sections.findIndex(
-              (s) => s._key === sectionKey,
-            );
+            const oldIndex = sections.findIndex((s) => s._key === sectionKey);
             if (oldIndex === -1 || oldIndex === newIndex) return;
 
             snapshot(state);

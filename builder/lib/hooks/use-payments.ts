@@ -153,7 +153,9 @@ export function useUpdatePaymentConfig(tenantId: string) {
         dto,
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.payments.config(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.payments.config(tenantId),
+      });
       logger.log("Payment configuration updated");
     },
     onError: (error) => {

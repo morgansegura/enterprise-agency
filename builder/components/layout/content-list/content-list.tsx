@@ -288,10 +288,22 @@ export function ContentList<T extends ContentItem>({
   const defaultMenuActions: MenuAction<T>[] = [
     { label: "Edit", icon: Pencil, onClick: onEdit },
     ...(onDuplicate
-      ? [{ label: "Duplicate", icon: Copy, onClick: onDuplicate } as MenuAction<T>]
+      ? [
+          {
+            label: "Duplicate",
+            icon: Copy,
+            onClick: onDuplicate,
+          } as MenuAction<T>,
+        ]
       : []),
     ...menuActions,
-    { label: "Delete", icon: Trash2, onClick: onDelete, destructive: true, separator: true },
+    {
+      label: "Delete",
+      icon: Trash2,
+      onClick: onDelete,
+      destructive: true,
+      separator: true,
+    },
   ];
 
   // ---- Filter options for PageHeader ----
@@ -346,7 +358,11 @@ export function ContentList<T extends ContentItem>({
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem
-                className={action.destructive ? "text-destructive focus:text-destructive [&>svg]:text-destructive" : ""}
+                className={
+                  action.destructive
+                    ? "text-destructive focus:text-destructive [&>svg]:text-destructive"
+                    : ""
+                }
                 onClick={() => action.onClick(item)}
               >
                 <action.icon className="h-4 w-4" />
@@ -371,7 +387,11 @@ export function ContentList<T extends ContentItem>({
         <span className="content-table-cell-title-text">{item.title}</span>
         {badges.map((badge, index) =>
           badge.show(item) ? (
-            <span key={index} className={`content-badge ${badge.className}`} title={badge.title}>
+            <span
+              key={index}
+              className={`content-badge ${badge.className}`}
+              title={badge.title}
+            >
               <badge.icon className="h-3 w-3" />
             </span>
           ) : null,
@@ -421,7 +441,10 @@ export function ContentList<T extends ContentItem>({
       onClick={() => onEdit(item)}
     >
       {columns!.map((col) => (
-        <div key={col.key} className={`content-table-cell ${col.cellClassName || ""}`}>
+        <div
+          key={col.key}
+          className={`content-table-cell ${col.cellClassName || ""}`}
+        >
           {col.render(item)}
         </div>
       ))}

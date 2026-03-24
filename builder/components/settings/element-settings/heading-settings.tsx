@@ -118,7 +118,10 @@ export function HeadingSettings({ block, onChange }: HeadingSettingsProps) {
   return (
     <>
       {/* Typography - Main Settings */}
-      <PropertySection title="Typography" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertySection
+        title="Typography"
+        icon={<Type className="h-3.5 w-3.5" />}
+      >
         <PropertyRow label="Level" stacked>
           <PropertyToggle
             value={(block.data?.level as string) || "h2"}

@@ -1910,7 +1910,8 @@ export default function HeaderEditorPage({
           toast.success("Header saved");
           setHasChanges(false);
         },
-        onError: (err: unknown) => toast.error((err as Error).message || "Failed to save"),
+        onError: (err: unknown) =>
+          toast.error((err as Error).message || "Failed to save"),
       },
     );
   };

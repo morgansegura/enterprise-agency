@@ -24,6 +24,7 @@ The builder is where we design. It has **full Tailwind CSS freedom** - the compl
 ```
 
 **Why Tailwind in the Builder:**
+
 - Freestyle design - build anything you can imagine
 - Rapid iteration - change styles instantly
 - Full design system - every spacing, color, typography option
@@ -38,8 +39,18 @@ The frontend outputs **clean, semantic HTML and CSS**. No Tailwind utility soup.
 ```html
 <!-- Frontend output - Clean semantic markup -->
 <section class="section" data-bg="white" data-py="xl">
-  <div class="container" data-layout="flex" data-direction="column" data-gap="lg">
-    <h1 class="heading" data-size="5xl" data-weight="bold" data-letter-spacing="tight">
+  <div
+    class="container"
+    data-layout="flex"
+    data-direction="column"
+    data-gap="lg"
+  >
+    <h1
+      class="heading"
+      data-size="5xl"
+      data-weight="bold"
+      data-letter-spacing="tight"
+    >
       Boutique. Local. Personalized.
     </h1>
   </div>
@@ -48,22 +59,48 @@ The frontend outputs **clean, semantic HTML and CSS**. No Tailwind utility soup.
 
 ```css
 /* Frontend CSS - Token-based styling via data-attributes */
-.section { width: 100%; }
-.section[data-bg="white"] { background: var(--background); }
-.section[data-py="xl"] { padding-block: var(--spacing-xl); }
+.section {
+  width: 100%;
+}
+.section[data-bg="white"] {
+  background: var(--background);
+}
+.section[data-py="xl"] {
+  padding-block: var(--spacing-xl);
+}
 
-.container { width: 100%; max-width: var(--container-max); margin-inline: auto; }
-.container[data-layout="flex"] { display: flex; }
-.container[data-direction="column"] { flex-direction: column; }
-.container[data-gap="lg"] { gap: var(--spacing-lg); }
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+}
+.container[data-layout="flex"] {
+  display: flex;
+}
+.container[data-direction="column"] {
+  flex-direction: column;
+}
+.container[data-gap="lg"] {
+  gap: var(--spacing-lg);
+}
 
-.heading { font-family: var(--font-heading); line-height: var(--line-height-tight); }
-.heading[data-size="5xl"] { font-size: var(--heading-size-5xl); }
-.heading[data-weight="bold"] { font-weight: var(--font-weight-bold); }
-.heading[data-letter-spacing="tight"] { letter-spacing: -0.025em; }
+.heading {
+  font-family: var(--font-heading);
+  line-height: var(--line-height-tight);
+}
+.heading[data-size="5xl"] {
+  font-size: var(--heading-size-5xl);
+}
+.heading[data-weight="bold"] {
+  font-weight: var(--font-weight-bold);
+}
+.heading[data-letter-spacing="tight"] {
+  letter-spacing: -0.025em;
+}
 ```
 
 **Why Clean CSS on Frontend:**
+
 - Performance - cached CSS, minimal HTML
 - SEO - search engines love clean markup
 - Accessibility - semantic structure
@@ -152,8 +189,14 @@ export function HeadingBlock({ data }: { data: HeadingBlockData }) {
 ```
 
 Output:
+
 ```html
-<h1 class="heading" data-size="5xl" data-weight="bold" data-letter-spacing="tight">
+<h1
+  class="heading"
+  data-size="5xl"
+  data-weight="bold"
+  data-letter-spacing="tight"
+>
   Boutique. Local. Personalized.
 </h1>
 ```
@@ -211,32 +254,82 @@ All frontend styling uses base classes + data-attributes:
 
 ```css
 /* Section */
-.section { width: 100%; }
-.section[data-bg="gray"] { background: var(--muted); }
-.section[data-bg="white"] { background: var(--background); }
-.section[data-py="xl"] { padding-block: var(--spacing-xl); }
-.section[data-py="2xl"] { padding-block: var(--spacing-2xl); }
+.section {
+  width: 100%;
+}
+.section[data-bg="gray"] {
+  background: var(--muted);
+}
+.section[data-bg="white"] {
+  background: var(--background);
+}
+.section[data-py="xl"] {
+  padding-block: var(--spacing-xl);
+}
+.section[data-py="2xl"] {
+  padding-block: var(--spacing-2xl);
+}
 
 /* Container */
-.container { width: 100%; max-width: var(--container-max); margin-inline: auto; }
-.container[data-layout="grid"] { display: grid; }
-.container[data-layout="flex"] { display: flex; }
-.container[data-layout="stack"] { display: flex; flex-direction: column; }
-.container[data-cols="2"] { grid-template-columns: repeat(2, 1fr); }
-.container[data-gap="lg"] { gap: var(--spacing-lg); }
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+}
+.container[data-layout="grid"] {
+  display: grid;
+}
+.container[data-layout="flex"] {
+  display: flex;
+}
+.container[data-layout="stack"] {
+  display: flex;
+  flex-direction: column;
+}
+.container[data-cols="2"] {
+  grid-template-columns: repeat(2, 1fr);
+}
+.container[data-gap="lg"] {
+  gap: var(--spacing-lg);
+}
 
 /* Heading */
-.heading { font-family: var(--font-heading); line-height: var(--line-height-tight); }
-.heading[data-size="5xl"] { font-size: var(--heading-size-5xl); }
-.heading[data-size="4xl"] { font-size: var(--heading-size-4xl); }
-.heading[data-weight="bold"] { font-weight: var(--font-weight-bold); }
-.heading[data-align="center"] { text-align: center; margin-inline: auto; }
+.heading {
+  font-family: var(--font-heading);
+  line-height: var(--line-height-tight);
+}
+.heading[data-size="5xl"] {
+  font-size: var(--heading-size-5xl);
+}
+.heading[data-size="4xl"] {
+  font-size: var(--heading-size-4xl);
+}
+.heading[data-weight="bold"] {
+  font-weight: var(--font-weight-bold);
+}
+.heading[data-align="center"] {
+  text-align: center;
+  margin-inline: auto;
+}
 
 /* Button */
-.button { display: inline-flex; align-items: center; justify-content: center; }
-.button[data-variant="primary"] { background: var(--primary); color: var(--primary-foreground); }
-.button[data-variant="secondary"] { background: var(--secondary); color: var(--secondary-foreground); }
-.button[data-size="lg"] { padding: var(--spacing-3) var(--spacing-6); font-size: var(--font-lg); }
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.button[data-variant="primary"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.button[data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.button[data-size="lg"] {
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--font-lg);
+}
 ```
 
 ### CSS Custom Properties
@@ -285,7 +378,7 @@ packages/tokens/
 
 ```typescript
 // builder/tailwind.config.ts
-import { enterprisePreset } from '@enterprise/tokens';
+import { enterprisePreset } from "@enterprise/tokens";
 
 export default {
   presets: [enterprisePreset],
@@ -293,7 +386,7 @@ export default {
 };
 
 // client/tailwind.config.ts
-import { enterprisePreset } from '@enterprise/tokens';
+import { enterprisePreset } from "@enterprise/tokens";
 
 export default {
   presets: [enterprisePreset],
@@ -302,6 +395,7 @@ export default {
 ```
 
 This ensures:
+
 - Same color palette in builder and frontend
 - Same typography scale
 - Same spacing values
@@ -318,23 +412,51 @@ Every block stores styling as structured data, not raw CSS:
 interface HeadingBlockData {
   // Content
   text: string;
-  level: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
   // Typography
-  size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl';
-  weight?: 'thin' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black';
-  letterSpacing?: 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
-  lineHeight?: 'none' | 'tight' | 'snug' | 'normal' | 'relaxed' | 'loose';
-  fontStyle?: 'normal' | 'italic';
-  textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
-  textDecoration?: 'none' | 'underline' | 'line-through';
+  size?:
+    | "xs"
+    | "sm"
+    | "base"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "6xl"
+    | "7xl"
+    | "8xl"
+    | "9xl";
+  weight?:
+    | "thin"
+    | "extralight"
+    | "light"
+    | "normal"
+    | "medium"
+    | "semibold"
+    | "bold"
+    | "extrabold"
+    | "black";
+  letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
+  lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
+  fontStyle?: "normal" | "italic";
+  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
+  textDecoration?: "none" | "underline" | "line-through";
 
   // Color
-  color?: 'default' | 'primary' | 'secondary' | 'muted' | 'accent' | 'destructive';
+  color?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "accent"
+    | "destructive";
 
   // Layout
-  align?: 'left' | 'center' | 'right';
-  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'prose' | 'none';
+  align?: "left" | "center" | "right";
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "prose" | "none";
 
   // Responsive
   _responsive?: {
@@ -345,6 +467,7 @@ interface HeadingBlockData {
 ```
 
 **Why structured data, not raw classes:**
+
 - Validation - ensure valid values
 - Migration - easy to update all blocks
 - Analysis - query blocks by property
@@ -369,7 +492,7 @@ export function HeadingBlockEditor({ block, onChange }: Props) {
   return (
     <InlineText
       value={block.data.text}
-      onChange={(text) => handleChange('text', text)}
+      onChange={(text) => handleChange("text", text)}
       as={block.data.level}
       className="heading"
       data-size={block.data.size}
@@ -413,16 +536,29 @@ Both builder and client import the same base CSS from `@enterprise/tokens`:
   line-height: var(--line-height-tight);
 }
 
-.heading[data-size="5xl"] { font-size: var(--heading-size-5xl); }
-.heading[data-size="4xl"] { font-size: var(--heading-size-4xl); }
+.heading[data-size="5xl"] {
+  font-size: var(--heading-size-5xl);
+}
+.heading[data-size="4xl"] {
+  font-size: var(--heading-size-4xl);
+}
 /* ... */
 
-.heading[data-weight="bold"] { font-weight: var(--font-weight-bold); }
-.heading[data-weight="semibold"] { font-weight: var(--font-weight-semibold); }
+.heading[data-weight="bold"] {
+  font-weight: var(--font-weight-bold);
+}
+.heading[data-weight="semibold"] {
+  font-weight: var(--font-weight-semibold);
+}
 /* ... */
 
-.heading[data-align="center"] { text-align: center; margin-inline: auto; }
-.heading[data-align="left"] { text-align: left; }
+.heading[data-align="center"] {
+  text-align: center;
+  margin-inline: auto;
+}
+.heading[data-align="left"] {
+  text-align: left;
+}
 /* ... */
 ```
 
@@ -480,24 +616,28 @@ Compiled to CSS with media queries:
 
 ```html
 <!-- Their output - bloated, uncacheable -->
-<div style="display:flex;flex-direction:column;gap:2rem;padding:3rem;background:#fff;border-radius:1rem;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1)">
+<div
+  style="display:flex;flex-direction:column;gap:2rem;padding:3rem;background:#fff;border-radius:1rem;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1)"
+></div>
 ```
 
 ```html
 <!-- Our output - clean, cacheable -->
-<div class="hero-card">
+<div class="hero-card"></div>
 ```
 
 ### vs Utility Classes (Tailwind in production)
 
 ```html
 <!-- Tailwind output - messy, hard to maintain -->
-<div class="flex flex-col gap-8 p-12 bg-white rounded-2xl shadow-xl md:flex-row hover:shadow-2xl transition-shadow">
+<div
+  class="flex flex-col gap-8 p-12 bg-white rounded-2xl shadow-xl md:flex-row hover:shadow-2xl transition-shadow"
+></div>
 ```
 
 ```html
 <!-- Our output - semantic, readable -->
-<div class="hero-card">
+<div class="hero-card"></div>
 ```
 
 ### vs React/JS Frameworks
@@ -506,26 +646,28 @@ Compiled to CSS with media queries:
 <!-- Framework output - JS bloat, hydration -->
 <div data-reactroot="" data-v-abc123>
   <!-- + 200KB of JavaScript -->
+</div>
 ```
 
 ```html
 <!-- Our output - static, fast -->
 <div class="hero-card">
   <!-- Pure HTML + CSS, no JS required -->
+</div>
 ```
 
 ---
 
 ## Summary
 
-| Aspect | Builder | Frontend |
-|--------|---------|----------|
-| Styling | Full Tailwind utilities | Data-attribute CSS selectors |
-| Output | Visual preview | Clean semantic HTML |
-| Classes | `text-5xl font-bold` | `class="heading" data-size="5xl"` |
-| CSS | Tailwind processed | CSS custom properties |
-| Purpose | Design freedom | Production quality |
-| Performance | Development speed | Runtime speed |
+| Aspect      | Builder                 | Frontend                          |
+| ----------- | ----------------------- | --------------------------------- |
+| Styling     | Full Tailwind utilities | Data-attribute CSS selectors      |
+| Output      | Visual preview          | Clean semantic HTML               |
+| Classes     | `text-5xl font-bold`    | `class="heading" data-size="5xl"` |
+| CSS         | Tailwind processed      | CSS custom properties             |
+| Purpose     | Design freedom          | Production quality                |
+| Performance | Development speed       | Runtime speed                     |
 
 **The builder is our design tool. The frontend is our production output.**
 

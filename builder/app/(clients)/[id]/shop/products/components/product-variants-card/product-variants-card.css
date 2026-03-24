@@ -1,0 +1,63 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Product Variants Card — variants table, empty state
+   ============================================================================ */
+
+.product-form-variants-table {
+  @apply w-full;
+}
+
+.product-form-variants-table thead {
+  @apply border-b border-(--border-subtle);
+}
+
+.product-form-variants-table th {
+  @apply px-3 py-2.5 text-left text-[11px] font-normal uppercase tracking-wider;
+  color: var(--text-tertiary);
+}
+
+.product-form-variants-table th.product-form-variant-col-right {
+  @apply text-right;
+}
+
+.product-form-variants-table tbody {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.product-form-variants-table td {
+  @apply px-3 py-3 text-sm;
+}
+
+.product-form-variant-name {
+  @apply font-medium;
+  color: var(--foreground);
+}
+
+.product-form-variant-options {
+  @apply text-xs;
+  color: var(--text-tertiary);
+}
+
+.product-form-variant-price {
+  @apply text-right tabular-nums;
+  color: var(--foreground);
+}
+
+.product-form-variant-inventory {
+  @apply text-right tabular-nums;
+  color: var(--foreground);
+}
+
+.product-form-variant-low {
+  color: var(--status-warning);
+}
+
+.product-form-variants-empty {
+  @apply py-8 text-center;
+}
+
+.product-form-variants-empty p {
+  @apply text-sm;
+  color: var(--text-tertiary);
+}

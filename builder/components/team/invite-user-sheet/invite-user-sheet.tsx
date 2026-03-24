@@ -110,8 +110,8 @@ export function InviteUserSheet({
         <SheetHeader>
           <SheetTitle>Invite Team Member</SheetTitle>
           <SheetDescription>
-            Send an invitation to join this team. They will receive an email with
-            instructions to get started.
+            Send an invitation to join this team. They will receive an email
+            with instructions to get started.
           </SheetDescription>
         </SheetHeader>
         <form onSubmit={handleSubmit} className="invite-user-form">
@@ -131,9 +131,7 @@ export function InviteUserSheet({
               }}
               autoFocus
             />
-            {emailError && (
-              <p className="invite-user-error">{emailError}</p>
-            )}
+            {emailError && <p className="invite-user-error">{emailError}</p>}
           </div>
           <div className="invite-user-field">
             <Label htmlFor="invite-role">Role</Label>

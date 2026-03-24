@@ -94,8 +94,12 @@ export function useRenameTag(tenantId: string) {
       return { oldName, newName, updatedCount: posts.length };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tags.byTenant(tenantId) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tags.byTenant(tenantId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.posts.byTenant(tenantId),
+      });
       logger.log("Tag renamed successfully");
     },
     onError: (error) => {
@@ -127,8 +131,12 @@ export function useDeleteTag(tenantId: string) {
       return { tagName, removedFromCount: posts.length };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tags.byTenant(tenantId) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tags.byTenant(tenantId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.posts.byTenant(tenantId),
+      });
       logger.log("Tag deleted successfully");
     },
     onError: (error) => {

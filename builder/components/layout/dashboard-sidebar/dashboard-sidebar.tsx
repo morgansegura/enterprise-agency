@@ -3,12 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Users,
-  Building2,
-  Pyramid,
-} from "lucide-react";
+import { LayoutDashboard, Users, Building2, Pyramid } from "lucide-react";
 
 import "./dashboard-sidebar.css";
 
@@ -64,8 +59,7 @@ function SidebarNavLink({
 /* ── Component ─────────────────────────────────────────────────────────── */
 
 export function DashboardSidebar({ user }: DashboardSidebarProps) {
-  const initials =
-    (user.firstName?.[0] ?? "") + (user.lastName?.[0] ?? "");
+  const initials = (user.firstName?.[0] ?? "") + (user.lastName?.[0] ?? "");
 
   return (
     <aside className="dashboard-sidebar">

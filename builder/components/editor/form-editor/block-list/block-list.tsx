@@ -24,10 +24,17 @@ import "./block-list.css";
 
 interface BlockListProps {
   sections: Section[];
-  onUpdateBlock: (blockKey: string, dataUpdates: Record<string, unknown>) => void;
+  onUpdateBlock: (
+    blockKey: string,
+    dataUpdates: Record<string, unknown>,
+  ) => void;
   onDeleteBlock: (blockKey: string) => void;
   onDuplicateBlock: (blockKey: string) => void;
-  onMoveBlock: (blockKey: string, from: BlockLocation, to: BlockLocation) => void;
+  onMoveBlock: (
+    blockKey: string,
+    from: BlockLocation,
+    to: BlockLocation,
+  ) => void;
   onDeleteSection: (sectionKey: string) => void;
   onAddSection: () => void;
   onOpenBlockPicker: (sectionKey: string, containerKey: string) => void;
@@ -83,7 +90,11 @@ export function BlockList({
     onMoveBlock(
       blockKey,
       { sectionKey: fromSectionKey, containerKey: fromContainerKey, index: 0 },
-      { sectionKey: toSectionKey, containerKey: toContainerKey, index: toIndex },
+      {
+        sectionKey: toSectionKey,
+        containerKey: toContainerKey,
+        index: toIndex,
+      },
     );
   };
 

@@ -1,1 +1,6 @@
-export { BlockCard, getBlockIcon, getBlockLabel, getBlockSummary } from "./block-card";
+export {
+  BlockCard,
+  getBlockIcon,
+  getBlockLabel,
+  getBlockSummary,
+} from "./block-card";

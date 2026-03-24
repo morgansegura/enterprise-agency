@@ -8,7 +8,11 @@
 export * from "./field-types";
 export * from "./block-schemas";
 
-import type { BlockSchema, BlockSchemaRegistry, FieldSchema } from "./field-types";
+import type {
+  BlockSchema,
+  BlockSchemaRegistry,
+  FieldSchema,
+} from "./field-types";
 import {
   // Layout
   containerBlockSchema,
@@ -190,9 +194,7 @@ export function getFieldsByGroup(
 /**
  * Get default values from a block schema
  */
-export function getSchemaDefaults(
-  blockType: string,
-): Record<string, unknown> {
+export function getSchemaDefaults(blockType: string): Record<string, unknown> {
   const schema = getBlockSchema(blockType);
   if (!schema) return {};
 

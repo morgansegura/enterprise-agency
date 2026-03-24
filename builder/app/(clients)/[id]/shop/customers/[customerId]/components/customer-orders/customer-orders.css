@@ -1,0 +1,55 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Customer Orders — Sidebar recent orders table
+   ============================================================================ */
+
+.customer-orders-table {
+  @apply w-full;
+}
+
+.customer-orders-table thead {
+  @apply border-b border-(--border-subtle);
+}
+
+.customer-orders-table th {
+  @apply px-2 py-2 text-left text-[11px] font-normal uppercase tracking-wider;
+  color: var(--text-tertiary);
+}
+
+.customer-orders-table th.customer-orders-col-right {
+  @apply text-right;
+}
+
+.customer-orders-table tbody {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.customer-orders-table td {
+  @apply px-2 py-2 text-sm;
+}
+
+.customer-orders-number {
+  @apply font-medium;
+  color: var(--status-info);
+  @apply cursor-pointer hover:underline;
+}
+
+.customer-orders-date {
+  color: var(--text-tertiary);
+  @apply text-xs;
+}
+
+.customer-orders-total {
+  @apply text-right tabular-nums;
+  color: var(--foreground);
+}
+
+.customer-orders-empty {
+  @apply py-6 text-center;
+}
+
+.customer-orders-empty p {
+  @apply text-sm;
+  color: var(--text-tertiary);
+}

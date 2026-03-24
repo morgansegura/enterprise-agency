@@ -33,7 +33,13 @@ interface HeadingBlockData {
   fontStyle?: "normal" | "italic";
   textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
   textDecoration?: "none" | "underline" | "line-through";
-  color?: "default" | "primary" | "secondary" | "muted" | "accent" | "destructive";
+  color?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "accent"
+    | "destructive";
   maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "prose" | "none";
   whiteSpace?: "normal" | "nowrap" | "pre-wrap";
   opacity?: number;

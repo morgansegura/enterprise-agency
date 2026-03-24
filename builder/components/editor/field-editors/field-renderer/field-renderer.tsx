@@ -145,9 +145,7 @@ export function FieldRenderer({
           <span className="field-renderer__placeholder-label">
             {schema.label}
           </span>
-          <span className="field-renderer__placeholder-type">
-            Relationship
-          </span>
+          <span className="field-renderer__placeholder-type">Relationship</span>
         </div>
       );
 

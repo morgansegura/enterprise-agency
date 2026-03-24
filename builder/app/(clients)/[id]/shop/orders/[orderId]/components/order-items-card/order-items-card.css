@@ -1,0 +1,119 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Order Items Table
+   ============================================================================ */
+
+.order-items-table {
+  @apply w-full;
+}
+
+.order-items-table thead {
+  @apply border-b border-(--border-subtle);
+}
+
+.order-items-table th {
+  @apply px-3 py-2.5 text-left text-[11px] font-normal uppercase tracking-wider;
+  color: var(--text-tertiary);
+}
+
+.order-items-table th.order-items-col-right {
+  @apply text-right;
+}
+
+.order-items-table tbody {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.order-items-table td {
+  @apply px-3 py-3 text-sm;
+}
+
+.order-item-product {
+  @apply flex items-center gap-3;
+}
+
+.order-item-image {
+  @apply h-10 w-10 rounded-md bg-(--el-100) flex items-center justify-center;
+  overflow: hidden;
+}
+
+.order-item-image img {
+  @apply h-full w-full object-cover;
+}
+
+.order-item-image svg {
+  @apply h-4 w-4;
+  color: var(--text-tertiary);
+}
+
+.order-item-name {
+  @apply font-medium;
+  color: var(--foreground);
+}
+
+.order-item-sku {
+  @apply text-xs;
+  color: var(--text-tertiary);
+}
+
+.order-item-qty {
+  @apply tabular-nums;
+  color: var(--foreground);
+}
+
+.order-item-price {
+  @apply text-right tabular-nums;
+  color: var(--el-500);
+}
+
+.order-item-total {
+  @apply text-right font-medium tabular-nums;
+  color: var(--foreground);
+}
+
+.order-item-fulfilled {
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[10px] font-medium;
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
+.order-item-unfulfilled {
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[10px] font-medium;
+  @apply bg-(--status-warning-subtle) text-(--status-warning);
+}
+
+/* ============================================================================
+   Order Summary
+   ============================================================================ */
+
+.order-summary {
+  @apply border-t border-(--border-subtle) px-3 pt-4 mt-2;
+}
+
+.order-summary-row {
+  @apply flex items-center justify-between py-1;
+}
+
+.order-summary-label {
+  @apply text-sm;
+  color: var(--text-tertiary);
+}
+
+.order-summary-value {
+  @apply text-sm tabular-nums;
+  color: var(--foreground);
+}
+
+.order-summary-total {
+  @apply border-t border-(--border-subtle) mt-2 pt-2;
+}
+
+.order-summary-total .order-summary-label {
+  @apply font-semibold;
+  color: var(--foreground);
+}
+
+.order-summary-total .order-summary-value {
+  @apply font-semibold text-base;
+  color: var(--foreground);
+}

@@ -54,7 +54,9 @@ export function useAutoSave({
         lastSaved: new Date(),
         hasUnsavedChanges: false,
       }));
-      queryClient.invalidateQueries({ queryKey: queryKeys.pages.detail(tenantId, pageId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.pages.detail(tenantId, pageId),
+      });
       logger.log("Auto-save completed");
       onSaveSuccess?.();
     },

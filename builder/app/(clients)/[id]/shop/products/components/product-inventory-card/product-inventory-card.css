@@ -1,0 +1,23 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Product Inventory Card — toggle row styles
+   ============================================================================ */
+
+.product-form-toggle-row {
+  @apply flex items-center justify-between;
+}
+
+.product-form-toggle-info {
+  @apply flex flex-col;
+}
+
+.product-form-toggle-label {
+  @apply text-sm font-medium;
+  color: var(--foreground);
+}
+
+.product-form-toggle-description {
+  @apply text-xs;
+  color: var(--text-tertiary);
+}

@@ -8,7 +8,11 @@ import type { Page } from "@/lib/hooks/use-pages";
 // Mock data
 // ---------------------------------------------------------------------------
 
-function makeBlock(key = "b1", type = "text-block", data: Record<string, unknown> = { text: "hello" }): Block {
+function makeBlock(
+  key = "b1",
+  type = "text-block",
+  data: Record<string, unknown> = { text: "hello" },
+): Block {
   return { _type: type, _key: key, data };
 }
 
@@ -48,7 +52,9 @@ function makePopulatedPage(): Page {
           makeBlock("b1", "text-block", { text: "hello" }),
           makeBlock("b2", "heading-block", { text: "title", level: "h2" }),
         ]),
-        makeContainer("c2", [makeBlock("b3", "image-block", { src: "/img.png" })]),
+        makeContainer("c2", [
+          makeBlock("b3", "image-block", { src: "/img.png" }),
+        ]),
       ]),
       makeSection("s2", [
         makeContainer("c3", [makeBlock("b4", "text-block", { text: "world" })]),
@@ -239,9 +245,9 @@ describe("EditorStore", () => {
     it("should update section properties", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
       useEditorStore.getState().updateSection("s1", { paddingY: "lg" });
-      const section = useEditorStore.getState().page?.sections?.find(
-        (s) => s._key === "s1",
-      );
+      const section = useEditorStore
+        .getState()
+        .page?.sections?.find((s) => s._key === "s1");
       expect(section?.paddingY).toBe("lg");
     });
 
@@ -253,7 +259,9 @@ describe("EditorStore", () => {
 
     it("should do nothing for a nonexistent section key", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().updateSection("nonexistent", { paddingY: "lg" });
+      useEditorStore
+        .getState()
+        .updateSection("nonexistent", { paddingY: "lg" });
       expect(useEditorStore.getState().isDirty).toBe(false);
     });
   });
@@ -354,9 +362,9 @@ describe("EditorStore", () => {
       const container = makeContainer("c-new");
       useEditorStore.getState().addContainer("s1", container);
 
-      const section = useEditorStore.getState().page?.sections?.find(
-        (s) => s._key === "s1",
-      );
+      const section = useEditorStore
+        .getState()
+        .page?.sections?.find((s) => s._key === "s1");
       expect(section?.containers).toHaveLength(3);
       expect(section?.containers[2]._key).toBe("c-new");
     });
@@ -366,9 +374,9 @@ describe("EditorStore", () => {
       const container = makeContainer("c-inserted");
       useEditorStore.getState().addContainer("s1", container, 0);
 
-      const section = useEditorStore.getState().page?.sections?.find(
-        (s) => s._key === "s1",
-      );
+      const section = useEditorStore
+        .getState()
+        .page?.sections?.find((s) => s._key === "s1");
       expect(section?.containers[0]._key).toBe("c-inserted");
     });
 
@@ -380,7 +388,9 @@ describe("EditorStore", () => {
 
     it("should do nothing for a nonexistent section key", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().addContainer("nonexistent", makeContainer("c-new"));
+      useEditorStore
+        .getState()
+        .addContainer("nonexistent", makeContainer("c-new"));
       expect(useEditorStore.getState().isDirty).toBe(false);
     });
   });
@@ -407,7 +417,9 @@ describe("EditorStore", () => {
 
     it("should do nothing for a nonexistent container key", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().updateContainer("s1", "nonexistent", { paddingX: "lg" });
+      useEditorStore
+        .getState()
+        .updateContainer("s1", "nonexistent", { paddingX: "lg" });
       expect(useEditorStore.getState().isDirty).toBe(false);
     });
   });
@@ -417,9 +429,9 @@ describe("EditorStore", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
       useEditorStore.getState().deleteContainer("s1", "c1");
 
-      const section = useEditorStore.getState().page?.sections?.find(
-        (s) => s._key === "s1",
-      );
+      const section = useEditorStore
+        .getState()
+        .page?.sections?.find((s) => s._key === "s1");
       expect(section?.containers).toHaveLength(1);
       expect(section?.containers[0]._key).toBe("c2");
     });
@@ -475,7 +487,9 @@ describe("EditorStore", () => {
 
     it("should do nothing for a nonexistent container key", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().addBlock("s1", "nonexistent", makeBlock("b-new"));
+      useEditorStore
+        .getState()
+        .addBlock("s1", "nonexistent", makeBlock("b-new"));
       expect(useEditorStore.getState().isDirty).toBe(false);
     });
   });
@@ -546,7 +560,9 @@ describe("EditorStore", () => {
 
     it("should mark isDirty", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().updateBlockData("s1", "c1", "b1", { text: "x" });
+      useEditorStore
+        .getState()
+        .updateBlockData("s1", "c1", "b1", { text: "x" });
       expect(useEditorStore.getState().isDirty).toBe(true);
     });
   });
@@ -574,15 +590,19 @@ describe("EditorStore", () => {
   describe("moveBlock", () => {
     it("should move a block within the same container", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().moveBlock("b1", {
-        sectionKey: "s1",
-        containerKey: "c1",
-        index: 0,
-      }, {
-        sectionKey: "s1",
-        containerKey: "c1",
-        index: 1,
-      });
+      useEditorStore.getState().moveBlock(
+        "b1",
+        {
+          sectionKey: "s1",
+          containerKey: "c1",
+          index: 0,
+        },
+        {
+          sectionKey: "s1",
+          containerKey: "c1",
+          index: 1,
+        },
+      );
 
       const container = useEditorStore
         .getState()
@@ -594,15 +614,19 @@ describe("EditorStore", () => {
 
     it("should move a block across containers", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().moveBlock("b1", {
-        sectionKey: "s1",
-        containerKey: "c1",
-        index: 0,
-      }, {
-        sectionKey: "s1",
-        containerKey: "c2",
-        index: 0,
-      });
+      useEditorStore.getState().moveBlock(
+        "b1",
+        {
+          sectionKey: "s1",
+          containerKey: "c1",
+          index: 0,
+        },
+        {
+          sectionKey: "s1",
+          containerKey: "c2",
+          index: 0,
+        },
+      );
 
       const fromContainer = useEditorStore
         .getState()
@@ -620,15 +644,19 @@ describe("EditorStore", () => {
 
     it("should move a block across sections", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().moveBlock("b1", {
-        sectionKey: "s1",
-        containerKey: "c1",
-        index: 0,
-      }, {
-        sectionKey: "s2",
-        containerKey: "c3",
-        index: 0,
-      });
+      useEditorStore.getState().moveBlock(
+        "b1",
+        {
+          sectionKey: "s1",
+          containerKey: "c1",
+          index: 0,
+        },
+        {
+          sectionKey: "s2",
+          containerKey: "c3",
+          index: 0,
+        },
+      );
 
       const toContainer = useEditorStore
         .getState()
@@ -640,15 +668,19 @@ describe("EditorStore", () => {
 
     it("should mark isDirty", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      useEditorStore.getState().moveBlock("b1", {
-        sectionKey: "s1",
-        containerKey: "c1",
-        index: 0,
-      }, {
-        sectionKey: "s1",
-        containerKey: "c2",
-        index: 0,
-      });
+      useEditorStore.getState().moveBlock(
+        "b1",
+        {
+          sectionKey: "s1",
+          containerKey: "c1",
+          index: 0,
+        },
+        {
+          sectionKey: "s1",
+          containerKey: "c2",
+          index: 0,
+        },
+      );
       expect(useEditorStore.getState().isDirty).toBe(true);
     });
   });
@@ -678,7 +710,9 @@ describe("EditorStore", () => {
     });
 
     it("should find nested blocks inside container-type blocks", () => {
-      const nestedBlock = makeBlock("b-nested", "text-block", { text: "nested" });
+      const nestedBlock = makeBlock("b-nested", "text-block", {
+        text: "nested",
+      });
       const parentBlock: Block = {
         _type: "columns-block",
         _key: "b-parent",
@@ -687,9 +721,7 @@ describe("EditorStore", () => {
         },
       };
       const page = makePage({
-        sections: [
-          makeSection("s1", [makeContainer("c1", [parentBlock])]),
-        ],
+        sections: [makeSection("s1", [makeContainer("c1", [parentBlock])])],
       });
       useEditorStore.getState().setPage(page);
 
@@ -727,7 +759,9 @@ describe("EditorStore", () => {
 
     it("should return undefined for a nonexistent container key", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      expect(useEditorStore.getState().getContainer("s1", "nope")).toBeUndefined();
+      expect(
+        useEditorStore.getState().getContainer("s1", "nope"),
+      ).toBeUndefined();
     });
   });
 
@@ -740,7 +774,9 @@ describe("EditorStore", () => {
 
     it("should return undefined for a nonexistent block key", () => {
       useEditorStore.getState().setPage(makePopulatedPage());
-      expect(useEditorStore.getState().getBlock("s1", "c1", "nope")).toBeUndefined();
+      expect(
+        useEditorStore.getState().getBlock("s1", "c1", "nope"),
+      ).toBeUndefined();
     });
   });
 

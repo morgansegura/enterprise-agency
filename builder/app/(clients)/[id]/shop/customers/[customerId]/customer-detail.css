@@ -1,0 +1,154 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Customer Detail — Layout, header, footer, skeleton, error
+   ============================================================================ */
+
+/* Container */
+.customer-detail {
+  @apply flex flex-col h-full min-h-0;
+}
+
+.customer-detail-header {
+  @apply px-6 pt-6 pb-4 flex items-center justify-between;
+}
+
+.customer-detail-header-left {
+  @apply flex items-center gap-3;
+}
+
+.customer-detail-back {
+  @apply flex items-center justify-center h-8 w-8 rounded-md;
+  @apply hover:bg-(--el-100) transition-colors cursor-pointer;
+  color: var(--text-tertiary);
+}
+
+.customer-detail-back svg {
+  @apply h-4 w-4;
+}
+
+.customer-detail-title-section {
+  @apply flex flex-col;
+}
+
+.customer-detail-title {
+  @apply text-lg font-semibold;
+  color: var(--foreground);
+}
+
+.customer-detail-email {
+  @apply text-sm;
+  color: var(--text-tertiary);
+}
+
+.customer-detail-actions {
+  @apply flex items-center gap-2;
+}
+
+/* ============================================================================
+   Two-Column Layout
+   ============================================================================ */
+
+.customer-detail-body {
+  @apply flex-1 overflow-y-auto px-6 pb-24;
+}
+
+.customer-detail-columns {
+  @apply grid gap-6;
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .customer-detail-columns {
+    @apply grid-cols-1;
+  }
+}
+
+.customer-detail-main {
+  @apply flex flex-col gap-6;
+}
+
+.customer-detail-sidebar {
+  @apply flex flex-col gap-6;
+}
+
+/* ============================================================================
+   Card Base (shared by child components)
+   ============================================================================ */
+
+.customer-detail-card {
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  @apply overflow-hidden;
+}
+
+.customer-detail-card-header {
+  @apply px-5 py-4 border-b border-(--border-subtle) flex items-center justify-between;
+}
+
+.customer-detail-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.customer-detail-card-body {
+  @apply px-5 py-5;
+}
+
+/* ============================================================================
+   Sticky Footer
+   ============================================================================ */
+
+.customer-detail-footer {
+  @apply fixed bottom-0 left-0 right-0 z-20;
+  @apply flex items-center justify-end gap-3;
+  @apply px-6 py-3;
+  background: var(--el-0);
+  border-top: 1px solid var(--border-default);
+  box-shadow: var(--shadow-md);
+}
+
+.customer-detail-footer-hidden {
+  @apply hidden;
+}
+
+/* ============================================================================
+   Skeleton
+   ============================================================================ */
+
+.customer-detail-skeleton {
+  @apply flex flex-col gap-6 px-6 pt-6;
+}
+
+.customer-detail-skeleton-header {
+  @apply flex items-center justify-between;
+}
+
+.customer-detail-skeleton-columns {
+  @apply grid gap-6;
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .customer-detail-skeleton-columns {
+    @apply grid-cols-1;
+  }
+}
+
+.customer-detail-skeleton-card {
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  @apply p-5 flex flex-col gap-4;
+}
+
+/* ============================================================================
+   Error State
+   ============================================================================ */
+
+.customer-detail-error {
+  @apply flex items-center justify-center py-16 text-center;
+  color: var(--status-error);
+}

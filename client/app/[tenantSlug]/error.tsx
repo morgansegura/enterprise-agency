@@ -13,7 +13,8 @@ export default function TenantError({
     <div className="tenant-error">
       <h2 className="tenant-error-title">Something went wrong</h2>
       <p className="tenant-error-message">
-        {error.message || "An unexpected error occurred while loading this page."}
+        {error.message ||
+          "An unexpected error occurred while loading this page."}
       </p>
       <button onClick={reset} className="tenant-error-button">
         Try again

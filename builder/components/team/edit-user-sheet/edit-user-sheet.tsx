@@ -19,10 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  useUpdateTenantUser,
-  type TenantUser,
-} from "@/lib/hooks/use-tenants";
+import { useUpdateTenantUser, type TenantUser } from "@/lib/hooks/use-tenants";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 

@@ -33,7 +33,10 @@ export function useAssets(
   const queryString = params.toString();
 
   return useQuery<Asset[]>({
-    queryKey: queryKeys.assets.list(tenantId, filters as Record<string, unknown>),
+    queryKey: queryKeys.assets.list(
+      tenantId,
+      filters as Record<string, unknown>,
+    ),
     queryFn: async () => {
       const response = await apiClient.get<{ data: Asset[] } | Asset[]>(
         `/assets${queryString ? `?${queryString}` : ""}`,
@@ -90,7 +93,9 @@ export function useUploadAsset(tenantId: string) {
       return response.json() as Promise<Asset>;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.assets.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.assets.byTenant(tenantId),
+      });
       logger.log("Asset uploaded successfully");
     },
     onError: (error) => {
@@ -111,7 +116,9 @@ export function useUpdateAsset(tenantId: string) {
       data: { fileName?: string; altText?: string; usageContext?: string };
     }) => apiClient.patch<Asset>(`/assets/${id}`, data),
     onSuccess: (updatedAsset) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.assets.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.assets.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.assets.detail(tenantId, updatedAsset.id),
       });
@@ -129,7 +136,9 @@ export function useDeleteAsset(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) => apiClient.delete(`/assets/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.assets.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.assets.byTenant(tenantId),
+      });
       logger.log("Asset deleted successfully");
     },
     onError: (error) => {

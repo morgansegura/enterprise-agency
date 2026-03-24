@@ -1,0 +1,55 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Customer Info Card — Form Fields
+   ============================================================================ */
+
+.customer-info-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.customer-info-field-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  @apply flex items-center gap-1.5;
+}
+
+.customer-info-field-label svg {
+  @apply h-3.5 w-3.5;
+}
+
+.customer-info-field-input {
+  height: 40px;
+  border-radius: 3px;
+}
+
+.customer-info-field-row {
+  @apply grid grid-cols-2 gap-4;
+}
+
+@media (max-width: 640px) {
+  .customer-info-field-row {
+    @apply grid-cols-1;
+  }
+}
+
+.customer-info-toggle-row {
+  @apply flex items-center justify-between py-3;
+}
+
+.customer-info-toggle-info {
+  @apply flex flex-col;
+}
+
+.customer-info-toggle-label {
+  @apply text-sm font-medium;
+  color: var(--foreground);
+}
+
+.customer-info-toggle-description {
+  @apply text-xs;
+  color: var(--text-tertiary);
+}

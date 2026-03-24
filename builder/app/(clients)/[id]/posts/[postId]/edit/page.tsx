@@ -38,12 +38,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import {
-  PanelsTopLeft,
-  Newspaper,
-  Store,
-  PlusCircle,
-} from "lucide-react";
+import { PanelsTopLeft, Newspaper, Store, PlusCircle } from "lucide-react";
 import { PostEditorLayout } from "@/components/editor/post-editor-layout";
 import { useUIStore } from "@/lib/stores/ui-store";
 

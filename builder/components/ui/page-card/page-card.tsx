@@ -105,11 +105,7 @@ export function PageCard({
 
   return (
     <div
-      className={cn(
-        "page-row",
-        isUpdating && "page-row-updating",
-        className,
-      )}
+      className={cn("page-row", isUpdating && "page-row-updating", className)}
       onClick={() => actions?.onEdit?.(page)}
     >
       {/* Title */}
@@ -177,9 +173,7 @@ export function PageCard({
             >
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
               Draft
-              {page.status === "draft" && (
-                <Check className="h-3 w-3 ml-auto" />
-              )}
+              {page.status === "draft" && <Check className="h-3 w-3 ml-auto" />}
             </button>
           </PopoverContent>
         </Popover>

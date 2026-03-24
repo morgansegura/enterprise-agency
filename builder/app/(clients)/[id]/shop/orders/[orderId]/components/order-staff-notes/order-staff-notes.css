@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Staff Notes
+   ============================================================================ */
+
+.order-detail-notes {
+  @apply text-sm leading-relaxed;
+  color: var(--foreground);
+}
+
+.order-detail-notes-empty {
+  @apply text-sm italic;
+  color: var(--text-tertiary);
+}

@@ -1,0 +1,77 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   New Product — Page-specific layout and footer
+   ============================================================================ */
+
+/* Container */
+.new-product {
+  @apply flex flex-col h-full min-h-0;
+}
+
+.new-product-header {
+  @apply px-6 pt-6 pb-4 flex items-center justify-between;
+}
+
+.new-product-header-left {
+  @apply flex items-center gap-3;
+}
+
+.new-product-back {
+  @apply flex items-center justify-center h-8 w-8 rounded-md;
+  @apply hover:bg-(--el-100) transition-colors cursor-pointer;
+  color: var(--text-tertiary);
+}
+
+.new-product-back svg {
+  @apply h-4 w-4;
+}
+
+.new-product-title {
+  @apply text-lg font-semibold;
+  color: var(--foreground);
+}
+
+.new-product-actions {
+  @apply flex items-center gap-2;
+}
+
+/* ============================================================================
+   Two-Column Layout
+   ============================================================================ */
+
+.new-product-body {
+  @apply flex-1 overflow-y-auto px-6 pb-24;
+}
+
+.new-product-columns {
+  @apply grid gap-6;
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .new-product-columns {
+    @apply grid-cols-1;
+  }
+}
+
+.new-product-main {
+  @apply flex flex-col gap-6;
+}
+
+.new-product-sidebar {
+  @apply flex flex-col gap-6;
+}
+
+/* ============================================================================
+   Sticky Footer
+   ============================================================================ */
+
+.new-product-footer {
+  @apply fixed bottom-0 left-0 right-0 z-20;
+  @apply flex items-center justify-end gap-3;
+  @apply px-6 py-3;
+  background: var(--el-0);
+  border-top: 1px solid var(--border-default);
+  box-shadow: var(--shadow-md);
+}

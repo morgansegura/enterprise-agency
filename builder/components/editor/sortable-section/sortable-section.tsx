@@ -186,7 +186,11 @@ export function SortableSection({
   });
 
   // UI Store for section/container selection
-  const { selectedElement, selectSection, selectContainer: _selectContainer } = useUIStore();
+  const {
+    selectedElement,
+    selectSection,
+    selectContainer: _selectContainer,
+  } = useUIStore();
 
   // Get current breakpoint for responsive values
   const breakpoint = useCurrentBreakpoint();

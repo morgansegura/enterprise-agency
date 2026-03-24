@@ -1,0 +1,151 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * Client Form — shared styles for create & edit
+ * ============================================================================= */
+
+/* Two-column layout
+ * -------------------------------------------------------------------------- */
+
+.client-form-columns {
+  @apply grid gap-6;
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 768px) {
+  .client-form-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.client-form-main {
+  @apply flex flex-col gap-6;
+}
+
+.client-form-sidebar {
+  @apply flex flex-col gap-6;
+}
+
+/* Cards
+ * -------------------------------------------------------------------------- */
+
+.client-form-card {
+  @apply rounded-lg border p-0 overflow-hidden;
+  background: var(--surface);
+  border-color: var(--border-default);
+}
+
+.client-form-card-header {
+  @apply px-6 py-4;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.client-form-card-title {
+  @apply text-sm font-semibold;
+  color: var(--text-primary);
+}
+
+.client-form-card-description {
+  @apply text-xs mt-1;
+  color: var(--text-secondary);
+}
+
+.client-form-card-body {
+  @apply px-6 py-5 flex flex-col gap-4;
+}
+
+/* Fields
+ * -------------------------------------------------------------------------- */
+
+.client-form-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.client-form-field-row {
+  @apply grid grid-cols-2 gap-4;
+}
+
+@media (max-width: 640px) {
+  .client-form-field-row {
+    @apply grid-cols-1;
+  }
+}
+
+.client-form-field-label {
+  @apply flex items-center gap-1.5 text-xs font-medium;
+  color: var(--text-primary);
+}
+
+.client-form-field-label svg {
+  @apply h-3.5 w-3.5;
+  color: var(--text-tertiary);
+}
+
+.client-form-field-input {
+  @apply h-9;
+  background: var(--input-bg);
+}
+
+.client-form-field-hint {
+  @apply text-xs;
+  color: var(--text-tertiary);
+}
+
+.client-form-field-error {
+  @apply text-xs;
+  color: var(--status-error);
+}
+
+/* Submit section (create mode sidebar)
+ * -------------------------------------------------------------------------- */
+
+.client-form-submit-section {
+  @apply flex flex-col gap-3 px-6 py-5;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Meta info row (edit mode sidebar)
+ * -------------------------------------------------------------------------- */
+
+.client-form-meta {
+  @apply flex flex-col gap-2 px-6 py-4 text-xs;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-tertiary);
+}
+
+.client-form-meta-item {
+  @apply flex items-center justify-between;
+}
+
+.client-form-meta-label {
+  @apply font-medium;
+  color: var(--text-secondary);
+}
+
+/* Features list (edit mode)
+ * -------------------------------------------------------------------------- */
+
+.client-form-features {
+  @apply flex flex-wrap gap-1.5;
+}
+
+.client-form-feature-tag {
+  @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  background: var(--el-100);
+  color: var(--text-secondary);
+}
+
+/* Footer bar (edit mode)
+ * -------------------------------------------------------------------------- */
+
+.client-form-footer {
+  @apply fixed bottom-0 left-0 right-0 z-50;
+  @apply flex items-center justify-end gap-3 px-6 py-3;
+  @apply border-t transition-transform duration-200;
+  background: var(--surface);
+  border-color: var(--border-default);
+}
+
+.client-form-footer-hidden {
+  @apply translate-y-full;
+}

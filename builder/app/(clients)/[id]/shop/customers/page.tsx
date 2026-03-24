@@ -137,9 +137,7 @@ export default function CustomersPage({
                 <span className="customers-stat-label">Total Customers</span>
                 <Users className="customers-stat-icon" />
               </div>
-              <div className="customers-stat-value">
-                {stats.totalCustomers}
-              </div>
+              <div className="customers-stat-value">{stats.totalCustomers}</div>
             </div>
             <div className="customers-stat-card">
               <div className="customers-stat-header">
@@ -224,7 +222,10 @@ export default function CustomersPage({
         <div className="customers-empty">
           <Users className="customers-empty-icon" />
           <h3>No customers found</h3>
-          <p>Customers will appear here when they create accounts or place orders.</p>
+          <p>
+            Customers will appear here when they create accounts or place
+            orders.
+          </p>
         </div>
       ) : (
         <table className="customers-table">
@@ -249,9 +250,7 @@ export default function CustomersPage({
                       : "\u2014"}
                   </div>
                   {customer.userId && (
-                    <span className="customers-account-badge">
-                      Has Account
-                    </span>
+                    <span className="customers-account-badge">Has Account</span>
                   )}
                 </td>
                 <td className="customers-col-email">{customer.email}</td>
@@ -287,9 +286,7 @@ export default function CustomersPage({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        onClick={() => handleView(customer.id)}
-                      >
+                      <DropdownMenuItem onClick={() => handleView(customer.id)}>
                         <Eye className="mr-2 h-4 w-4" />
                         View Details
                       </DropdownMenuItem>

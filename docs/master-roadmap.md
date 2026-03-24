@@ -18,17 +18,17 @@ A single platform that powers:
 
 ## Agency Services → Platform Features
 
-| Service | Platform Module | Status | Priority |
-|---------|----------------|--------|----------|
-| **Web & Funnel** | Page Builder, Blocks | ✅ Complete | - |
-| **SEO/AEO/GEO** | Marketing Suite | ⏳ Planned | P1 |
-| **Analytics & Reporting** | Analytics Module | ⏳ Planned | P1 |
-| **Social Media Marketing** | Social Tools | ⏳ Planned | P2 |
-| **Digital Marketing** | Campaign Manager | ⏳ Planned | P2 |
-| **Content Architecture** | Page/Block System | ✅ Complete | - |
-| **E-Commerce** | Shop Module | ✅ Complete | - |
-| **CRM** | CRM Module | ❌ Not Started | P3 |
-| **Mobile App** | React Native | ❌ Not Started | P4 |
+| Service                    | Platform Module      | Status         | Priority |
+| -------------------------- | -------------------- | -------------- | -------- |
+| **Web & Funnel**           | Page Builder, Blocks | ✅ Complete    | -        |
+| **SEO/AEO/GEO**            | Marketing Suite      | ⏳ Planned     | P1       |
+| **Analytics & Reporting**  | Analytics Module     | ⏳ Planned     | P1       |
+| **Social Media Marketing** | Social Tools         | ⏳ Planned     | P2       |
+| **Digital Marketing**      | Campaign Manager     | ⏳ Planned     | P2       |
+| **Content Architecture**   | Page/Block System    | ✅ Complete    | -        |
+| **E-Commerce**             | Shop Module          | ✅ Complete    | -        |
+| **CRM**                    | CRM Module           | ❌ Not Started | P3       |
+| **Mobile App**             | React Native         | ❌ Not Started | P4       |
 
 ---
 

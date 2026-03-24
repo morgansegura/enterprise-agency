@@ -1,0 +1,27 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Posts List — extends content-list tokens
+   ============================================================================ */
+
+.posts-page {
+  @apply flex-1 flex flex-col gap-6 p-8;
+}
+
+/* Category column */
+.posts-col-category {
+  @apply w-32 hidden lg:block;
+}
+
+.posts-category-text {
+  @apply text-sm text-(--el-400) truncate;
+}
+
+/* Author column */
+.posts-col-author {
+  @apply w-32 hidden xl:block;
+}
+
+.posts-author-text {
+  @apply text-sm text-(--el-500) truncate;
+}

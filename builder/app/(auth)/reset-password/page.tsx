@@ -77,9 +77,7 @@ export default function ResetPasswordPage() {
       </div>
 
       <form className="auth-form" onSubmit={handleSubmit}>
-        {fieldError && (
-          <p className="auth-field-error">{fieldError}</p>
-        )}
+        {fieldError && <p className="auth-field-error">{fieldError}</p>}
 
         {success && (
           <p className="auth-success-message">

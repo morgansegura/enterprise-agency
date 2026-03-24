@@ -2,38 +2,22 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useTenant, useUpdateTenant } from "@/lib/hooks/use-tenants";
-import { LayoutHeading } from "@/components/layout/layout-heading";
+import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { ArrowLeft } from "lucide-react";
-import { DesignTokensTab } from "@/components/design-tokens";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ArrowLeft, ExternalLink } from "lucide-react";
+import { toast } from "sonner";
+import { ClientForm } from "../components/client-form";
+import type { ClientFormValues } from "../components/client-form";
 
-const clientSchema = z.object({
-  businessName: z.string().min(1, "Business name is required"),
-  slug: z.string().min(1, "Slug is required"),
-  businessType: z.string().optional(),
-  status: z.string().min(1, "Status is required"),
-  contactEmail: z.string().email("Invalid email").optional().or(z.literal("")),
-  contactPhone: z.string().optional(),
-});
+import "./edit-client.css";
 
-type ClientForm = z.infer<typeof clientSchema>;
+// =============================================================================
+// Component
+// =============================================================================
 
-export default function ClientDetailPage({
+export default function EditClientPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -44,234 +28,151 @@ export default function ClientDetailPage({
   const { data: tenant, isLoading, error } = useTenant(id);
   const updateTenant = useUpdateTenant();
 
-  const form = useForm<ClientForm>({
-    resolver: zodResolver(clientSchema),
-    values: tenant
-      ? {
-          businessName: tenant.businessName || "",
-          slug: tenant.slug || "",
-          businessType: tenant.businessType || "",
-          status: tenant.status || "",
-          contactEmail: tenant.contactEmail || "",
-          contactPhone: tenant.contactPhone || "",
-        }
-      : undefined,
-  });
+  // Build form default values from tenant data
+  const defaultValues = React.useMemo<ClientFormValues | undefined>(() => {
+    if (!tenant) return undefined;
+    return {
+      businessName: tenant.businessName || "",
+      slug: tenant.slug || "",
+      businessType: tenant.businessType || "",
+      contactEmail: tenant.contactEmail || "",
+      contactPhone: tenant.contactPhone || "",
+      tier: (tenant.tier as ClientFormValues["tier"]) || "CONTENT_EDITOR",
+      status: (tenant.status as ClientFormValues["status"]) || "active",
+    };
+  }, [tenant]);
 
-  if (isLoading) return <div>Loading client...</div>;
-  if (error) return <div>Error loading client: {error.message}</div>;
-  if (!tenant) return <div>Client not found</div>;
+  // Get enabled features for display
+  const enabledFeatures = React.useMemo(() => {
+    if (!tenant) return [];
+    const features = (tenant.enabledFeatures as Record<string, boolean>) || {};
+    return Object.entries(features)
+      .filter(([, enabled]) => enabled)
+      .map(([feature]) => feature);
+  }, [tenant]);
 
-  const features = (tenant.enabledFeatures as Record<string, boolean>) || {};
-  const enabledFeatures = Object.entries(features)
-    .filter(([, enabled]) => enabled)
-    .map(([feature]) => feature);
+  // Build meta info
+  const meta = React.useMemo(() => {
+    if (!tenant) return undefined;
+    return {
+      createdAt: tenant.createdAt,
+      updatedAt: tenant.updatedAt,
+      id: tenant.id,
+    };
+  }, [tenant]);
 
-  const onSubmit = (data: ClientForm) => {
-    updateTenant.mutate(
-      {
-        id: id,
+  const handleSubmit = async (data: ClientFormValues) => {
+    try {
+      await updateTenant.mutateAsync({
+        id,
         data: {
           businessName: data.businessName,
           slug: data.slug,
           businessType: data.businessType,
-          status: data.status,
           contactEmail: data.contactEmail,
           contactPhone: data.contactPhone,
+          tier: data.tier,
+          status: data.status,
         },
-      },
-      {
-        onSuccess: () => {
-          router.push("/clients");
-        },
-      },
-    );
+      });
+      toast.success("Client updated successfully");
+    } catch {
+      toast.error("Failed to update client");
+    }
   };
 
+  // ---------------------------------------------------------------------------
+  // Error
+  // ---------------------------------------------------------------------------
+
+  if (error) {
+    return (
+      <div className="edit-client-page">
+        <PageHeader title="Edit Client" description="Error loading client" />
+        <p className="text-sm" style={{ color: "var(--status-error)" }}>
+          {error.message}
+        </p>
+      </div>
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Loading skeleton
+  // ---------------------------------------------------------------------------
+
+  if (isLoading) {
+    return (
+      <div className="edit-client-skeleton">
+        <div className="edit-client-skeleton-header">
+          <Skeleton className="h-7 w-48" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+        <div className="edit-client-skeleton-columns">
+          <div className="edit-client-skeleton-main">
+            <div className="edit-client-skeleton-card">
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+            </div>
+            <div className="edit-client-skeleton-card">
+              <Skeleton className="h-5 w-40" />
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+            </div>
+          </div>
+          <div className="edit-client-skeleton-sidebar">
+            <div className="edit-client-skeleton-card">
+              <Skeleton className="h-5 w-24" />
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-9 w-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <div>
-      <LayoutHeading
-        title={tenant.businessName}
-        description={`Client ID: ${tenant.id}`}
-        back={
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router.push("/clients")}
-          >
-            <ArrowLeft />
-          </Button>
-        }
-        actions={
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router.push(`/${id}/pages`)}
-          >
-            Open Builder
-          </Button>
+    <div className="edit-client-page">
+      <PageHeader
+        title={tenant?.businessName || "Edit Client"}
+        description={`/${tenant?.slug || ""}`}
+        additionalActions={
+          <>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/clients")}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push(`/${id}/pages`)}
+            >
+              <ExternalLink className="h-4 w-4" />
+              Open Workspace
+            </Button>
+          </>
         }
       />
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <Tabs defaultValue="business">
-            <TabsList>
-              <TabsTrigger value="business">Business</TabsTrigger>
-              <TabsTrigger value="contact">Contact</TabsTrigger>
-              <TabsTrigger value="services">Services</TabsTrigger>
-              <TabsTrigger value="design">Design</TabsTrigger>
-              <TabsTrigger value="technical">Technical</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="business">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Business Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="businessName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Business Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="slug"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Slug (URL)</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="businessType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Business Type</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="status"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Status</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="contact">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="contactEmail"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Contact Email</FormLabel>
-                        <FormControl>
-                          <Input type="email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="contactPhone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Contact Phone</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="services">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Services & Features</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div>
-                    <dt>Enabled Features</dt>
-                    <dd>
-                      {enabledFeatures.length > 0
-                        ? enabledFeatures.join(", ")
-                        : "None"}
-                    </dd>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="design">
-              <DesignTokensTab tenantId={id} />
-            </TabsContent>
-
-            <TabsContent value="technical">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Technical Details</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div>
-                    <dt>Created</dt>
-                    <dd>{new Date(tenant.createdAt).toLocaleDateString()}</dd>
-                  </div>
-                  <div>
-                    <dt>Last Updated</dt>
-                    <dd>{new Date(tenant.updatedAt).toLocaleDateString()}</dd>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-
-          <Button type="submit" disabled={updateTenant.isPending}>
-            {updateTenant.isPending ? "Saving..." : "Save Changes"}
-          </Button>
-        </form>
-      </Form>
+      <ClientForm
+        mode="edit"
+        defaultValues={defaultValues}
+        enabledFeatures={enabledFeatures}
+        meta={meta}
+        onSubmit={handleSubmit}
+        onCancel={() => router.push("/clients")}
+        isPending={updateTenant.isPending}
+      />
     </div>
   );
 }

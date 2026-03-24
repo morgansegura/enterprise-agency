@@ -497,11 +497,7 @@ function FooterLayout({ footer }: { footer: Footer }) {
 /**
  * Footer Zone - renders a single zone
  */
-function FooterZone({
-  zone,
-}: {
-  zone?: FooterZoneType;
-}) {
+function FooterZone({ zone }: { zone?: FooterZoneType }) {
   if (!zone) return null;
 
   return (

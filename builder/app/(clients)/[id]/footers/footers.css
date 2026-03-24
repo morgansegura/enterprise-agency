@@ -1,0 +1,30 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Footers List — enterprise table with custom columns
+   ============================================================================ */
+
+.footers-page {
+  @apply flex-1 flex flex-col gap-6 p-8;
+}
+
+/* Layout column */
+.footers-col-layout {
+  @apply w-32 hidden md:block;
+}
+
+.footers-layout-text {
+  @apply text-sm text-(--el-500);
+}
+
+/* Default badge */
+.footers-default-badge {
+  @apply inline-flex items-center gap-1 px-1.5 py-0.5;
+  @apply text-[11px] font-medium rounded-[3px];
+  @apply bg-blue-100 text-blue-700;
+}
+
+/* Default column */
+.footers-col-default {
+  @apply w-24 hidden lg:block;
+}

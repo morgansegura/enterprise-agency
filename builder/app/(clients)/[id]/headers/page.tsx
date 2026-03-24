@@ -7,19 +7,17 @@ import {
   useDeleteHeader,
   useDuplicateHeader,
   useSaveHeaderToLibrary,
+  type Header,
 } from "@/lib/hooks/use-headers";
-import { ContentList, type MenuAction } from "@/components/layout/content-list";
-import { PanelTop, Star, BookmarkPlus } from "lucide-react";
+import {
+  ContentList,
+  type ColumnDef,
+  type MenuAction,
+} from "@/components/layout/content-list";
+import { PanelTop, BookmarkPlus } from "lucide-react";
 import { toast } from "sonner";
 
-interface HeaderListItem {
-  id: string;
-  name: string;
-  slug: string;
-  behavior: string;
-  isDefault?: boolean;
-  updatedAt?: string;
-}
+import "./headers.css";
 
 const behaviorLabels: Record<string, string> = {
   STATIC: "Static",
@@ -29,6 +27,8 @@ const behaviorLabels: Record<string, string> = {
   TRANSPARENT: "Transparent",
 };
 
+type HeaderItem = Header & { title: string };
+
 export default function HeadersPage({
   params,
 }: {
@@ -37,49 +37,69 @@ export default function HeadersPage({
   const resolvedParams = React.use(params);
   const { id } = resolvedParams;
   const router = useRouter();
+
   const { data: headers, isLoading, error } = useHeaders(id);
   const deleteHeader = useDeleteHeader(id);
   const duplicateHeader = useDuplicateHeader(id);
   const saveToLibrary = useSaveHeaderToLibrary(id);
 
-  const handleCreate = () => {
-    router.push(`/${id}/headers/new`);
-  };
+  const headerItems = React.useMemo(
+    () => headers?.map((h) => ({ ...h, title: h.name })) || undefined,
+    [headers],
+  );
 
-  const handleEdit = (header: HeaderListItem) => {
-    router.push(`/${id}/headers/${header.id}/edit`);
-  };
-
-  const handleDelete = (header: HeaderListItem) => {
-    if (confirm(`Delete "${header.name}"?`)) {
-      deleteHeader.mutate(header.id);
+  const handleDelete = async (header: HeaderItem) => {
+    if (header.isDefault) {
+      toast.error(
+        "Cannot delete the default header. Set another as default first.",
+      );
+      return;
+    }
+    if (!confirm(`Delete "${header.name}"? This action cannot be undone.`))
+      return;
+    try {
+      await deleteHeader.mutateAsync(header.id);
+      toast.success(`"${header.name}" deleted`);
+    } catch {
+      toast.error("Failed to delete header");
     }
   };
 
-  const handleDuplicate = (header: HeaderListItem) => {
-    duplicateHeader.mutate({ id: header.id });
+  const handleDuplicate = async (header: HeaderItem) => {
+    try {
+      await duplicateHeader.mutateAsync({ id: header.id });
+      toast.success(`"${header.name}" duplicated`);
+    } catch {
+      toast.error("Failed to duplicate header");
+    }
   };
 
-  const handleSaveToLibrary = (header: HeaderListItem) => {
-    saveToLibrary.mutate(
-      { id: header.id },
-      {
-        onSuccess: () => {
-          toast.success("Header saved to library");
-        },
-      },
-    );
+  const handleSaveToLibrary = async (header: HeaderItem) => {
+    try {
+      await saveToLibrary.mutateAsync({ id: header.id });
+      toast.success("Header saved to library");
+    } catch {
+      toast.error("Failed to save to library");
+    }
   };
 
-  // Transform headers to include title for ContentList
-  const headerItems = headers?.map((header) => ({
-    ...header,
-    title: header.name,
-    subtitle: behaviorLabels[header.behavior] || header.behavior,
-  }));
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "\u2014";
+    const d = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - d.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    if (days === 0) return "Today";
+    if (days === 1) return "Yesterday";
+    if (days < 7) return `${days}d ago`;
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: d.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
+    });
+  };
 
-  // Additional menu actions
-  const menuActions: MenuAction<HeaderListItem>[] = [
+  const extraActions: MenuAction<HeaderItem>[] = [
     {
       label: "Save to Library",
       icon: BookmarkPlus,
@@ -87,28 +107,78 @@ export default function HeadersPage({
     },
   ];
 
+  const columns: ColumnDef<HeaderItem>[] = [
+    {
+      key: "name",
+      header: "Name",
+      headerClassName: "content-table-header-cell-title",
+      cellClassName: "content-table-cell-title",
+      render: (h) => (
+        <span className="content-table-cell-title-text">{h.name}</span>
+      ),
+    },
+    {
+      key: "slug",
+      header: "Slug",
+      headerClassName: "content-table-header-cell-slug",
+      cellClassName: "content-table-cell-slug",
+      render: (h) => (
+        <span className="content-table-cell-slug-text">/{h.slug}</span>
+      ),
+    },
+    {
+      key: "behavior",
+      header: "Behavior",
+      headerClassName: "headers-col-behavior",
+      cellClassName: "headers-col-behavior",
+      render: (h) => (
+        <span className="headers-behavior-text">
+          {behaviorLabels[h.behavior] || h.behavior}
+        </span>
+      ),
+    },
+    {
+      key: "default",
+      header: "Default",
+      headerClassName: "headers-col-default",
+      cellClassName: "headers-col-default",
+      render: (h) =>
+        h.isDefault ? (
+          <span className="headers-default-badge">Default</span>
+        ) : null,
+    },
+    {
+      key: "updated",
+      header: "Updated",
+      headerClassName: "content-table-header-cell-date",
+      cellClassName: "content-table-cell-date",
+      render: (h) => (
+        <span className="content-table-cell-date-text">
+          {formatDate(h.updatedAt)}
+        </span>
+      ),
+    },
+  ];
+
   return (
-    <ContentList<HeaderListItem & { title: string; subtitle?: string }>
-      title="Headers"
-      singularName="Header"
-      pluralName="headers"
-      icon={PanelTop}
-      items={headerItems}
-      isLoading={isLoading}
-      error={error}
-      onCreate={handleCreate}
-      onEdit={handleEdit}
-      onDelete={handleDelete}
-      onDuplicate={handleDuplicate}
-      menuActions={menuActions}
-      badges={[
-        {
-          show: (header) => Boolean(header.isDefault),
-          icon: Star,
-          className: "content-card-badge-default",
-          title: "Default Header",
-        },
-      ]}
-    />
+    <div className="headers-page">
+      <ContentList<HeaderItem>
+        title="Headers"
+        singularName="Header"
+        pluralName="headers"
+        icon={PanelTop}
+        items={headerItems}
+        isLoading={isLoading}
+        error={error}
+        onCreate={() => router.push(`/${id}/headers/new`)}
+        onEdit={(h) => router.push(`/${id}/headers/${h.id}/edit`)}
+        onDelete={handleDelete}
+        onDuplicate={handleDuplicate}
+        menuActions={extraActions}
+        columns={columns}
+        showStatus={false}
+        searchFields={["title", "slug"]}
+      />
+    </div>
   );
 }

@@ -190,7 +190,6 @@ export interface TenantUser {
   };
 }
 
-
 export function useTenantUsers(tenantId: string) {
   return useQuery<TenantUser[]>({
     queryKey: queryKeys.tenants.users(tenantId),
@@ -206,7 +205,9 @@ export function useAddTenantUser(tenantId: string) {
     mutationFn: (data: { userId: string; role?: string }) =>
       apiClient.post<TenantUser>(`/tenants/${tenantId}/users`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.users(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tenants.users(tenantId),
+      });
       logger.log("User added to tenant", { tenantId });
     },
     onError: (error) => {
@@ -222,7 +223,9 @@ export function useInviteTenantUser(tenantId: string) {
     mutationFn: (data: { email: string; role: string }) =>
       apiClient.post<TenantUser>(`/tenants/${tenantId}/users`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.users(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tenants.users(tenantId),
+      });
       logger.log("User invited to tenant", { tenantId });
     },
     onError: (error) => {
@@ -244,7 +247,9 @@ export function useUpdateTenantUser(tenantId: string) {
     }) =>
       apiClient.patch<TenantUser>(`/tenants/${tenantId}/users/${userId}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.users(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tenants.users(tenantId),
+      });
       logger.log("Tenant user updated", { tenantId });
     },
     onError: (error) => {
@@ -260,7 +265,9 @@ export function useRemoveTenantUser(tenantId: string) {
     mutationFn: (userId: string) =>
       apiClient.delete(`/tenants/${tenantId}/users/${userId}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.users(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tenants.users(tenantId),
+      });
       logger.log("User removed from tenant", { tenantId });
     },
     onError: (error) => {

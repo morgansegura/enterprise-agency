@@ -152,9 +152,11 @@ export function useDeleteWebhook(tenantId: string) {
 export function useTestWebhook() {
   return useMutation({
     mutationFn: (id: string) =>
-      apiClient.post<{ success: boolean; statusCode: number; duration: number }>(
-        `/webhooks/${id}/test`,
-      ),
+      apiClient.post<{
+        success: boolean;
+        statusCode: number;
+        duration: number;
+      }>(`/webhooks/${id}/test`),
     onError: (error: unknown) => {
       logger.error("Failed to test webhook", error as Error);
       toast.error("Failed to test webhook");

@@ -95,11 +95,7 @@ export function LoginForm() {
         </div>
 
         <div className="auth-actions">
-          <button
-            type="submit"
-            disabled={loading}
-            className="auth-submit"
-          >
+          <button type="submit" disabled={loading} className="auth-submit">
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </div>

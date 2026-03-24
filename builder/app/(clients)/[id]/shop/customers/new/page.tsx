@@ -165,18 +165,12 @@ export default function NewCustomerPage({
               </CardHeader>
               <CardContent className="space-y-4">
                 <Label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    {...register("hasAccount")}
-                  />
+                  <input type="checkbox" {...register("hasAccount")} />
                   Has account
                 </Label>
 
                 <Label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    {...register("acceptsMarketing")}
-                  />
+                  <input type="checkbox" {...register("acceptsMarketing")} />
                   Accepts marketing
                 </Label>
               </CardContent>
@@ -190,9 +184,7 @@ export default function NewCustomerPage({
                   disabled={createCustomer.isPending}
                 >
                   <Save className="mr-2 h-4 w-4" />
-                  {createCustomer.isPending
-                    ? "Creating..."
-                    : "Create Customer"}
+                  {createCustomer.isPending ? "Creating..." : "Create Customer"}
                 </Button>
               </CardContent>
             </Card>

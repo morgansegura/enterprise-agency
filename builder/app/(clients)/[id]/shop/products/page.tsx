@@ -219,10 +219,7 @@ export default function ProductsPage({
                   <div className="products-cell-product">
                     <div className="products-thumbnail">
                       {product.images?.[0] ? (
-                        <img
-                          src={product.images[0]}
-                          alt={product.name}
-                        />
+                        <img src={product.images[0]} alt={product.name} />
                       ) : (
                         <Package className="products-thumbnail-placeholder" />
                       )}

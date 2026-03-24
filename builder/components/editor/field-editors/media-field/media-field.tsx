@@ -79,7 +79,12 @@ export function MediaField({
     }
   };
 
-  const resolveFileType = (): "image" | "video" | "audio" | "document" | undefined => {
+  const resolveFileType = ():
+    | "image"
+    | "video"
+    | "audio"
+    | "document"
+    | undefined => {
     if (!schema.accept) return undefined;
     const first = schema.accept[0];
     if (first?.startsWith("image/")) return "image";

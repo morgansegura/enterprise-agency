@@ -125,7 +125,9 @@ export function useCreateMenu(tenantId: string) {
     mutationFn: (data: CreateMenuInput) =>
       apiClient.post<Menu>(`/tenants/${tenantId}/menus`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.menus.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.menus.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to create menu", error as Error);
@@ -141,7 +143,9 @@ export function useUpdateMenu(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateMenuInput }) =>
       apiClient.put<Menu>(`/tenants/${tenantId}/menus/${id}`, data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.menus.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.menus.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.menus.detail(tenantId, variables.id),
       });
@@ -160,7 +164,9 @@ export function useDeleteMenu(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.delete(`/tenants/${tenantId}/menus/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.menus.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.menus.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to delete menu", error as Error);
@@ -178,7 +184,9 @@ export function useDuplicateMenu(tenantId: string) {
         name,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.menus.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.menus.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to duplicate menu", error as Error);

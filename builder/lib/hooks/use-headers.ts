@@ -224,7 +224,9 @@ export function useCreateHeader(tenantId: string) {
     mutationFn: (data: CreateHeaderInput) =>
       apiClient.post<Header>(`/tenants/${tenantId}/headers`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.headers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.headers.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to create header", error as Error);
@@ -240,7 +242,9 @@ export function useUpdateHeader(tenantId: string) {
     mutationFn: ({ id, data }: { id: string; data: UpdateHeaderInput }) =>
       apiClient.put<Header>(`/tenants/${tenantId}/headers/${id}`, data),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.headers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.headers.byTenant(tenantId),
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.headers.detail(tenantId, variables.id),
       });
@@ -259,7 +263,9 @@ export function useDeleteHeader(tenantId: string) {
     mutationFn: (id: string) =>
       apiClient.delete(`/tenants/${tenantId}/headers/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.headers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.headers.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to delete header", error as Error);
@@ -277,7 +283,9 @@ export function useDuplicateHeader(tenantId: string) {
         name,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.headers.byTenant(tenantId) });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.headers.byTenant(tenantId),
+      });
     },
     onError: (error: unknown) => {
       logger.error("Failed to duplicate header", error as Error);
