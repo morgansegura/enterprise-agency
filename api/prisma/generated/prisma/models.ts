@@ -35,4 +35,5 @@ export type * from "./models/Customer";
 export type * from "./models/CustomerAddress";
 export type * from "./models/Order";
 export type * from "./models/OrderItem";
+export type * from "./models/Redirect";
 export type * from "./commonInputTypes";

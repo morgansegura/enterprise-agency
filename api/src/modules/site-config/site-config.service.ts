@@ -16,6 +16,8 @@ import { HeaderConfigDto } from "./dto/header-config.dto";
 import { FooterConfigDto } from "./dto/footer-config.dto";
 import { MenusConfigDto } from "./dto/menus-config.dto";
 import { LogosConfigDto } from "./dto/logos-config.dto";
+import { UpdateDesignTokensDto } from "./dto/design-tokens.dto";
+import { UpdateThemeConfigDto } from "./dto/theme-config.dto";
 
 @Injectable()
 export class SiteConfigService {
@@ -235,5 +237,83 @@ export class SiteConfigService {
     });
 
     return tenant.logosConfig as unknown as LogosConfigDto;
+  }
+
+  /**
+   * Get design tokens
+   */
+  async getDesignTokens(tenantId: string) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+      select: { designTokens: true },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException(`Tenant with ID ${tenantId} not found`);
+    }
+
+    return tenant.designTokens;
+  }
+
+  /**
+   * Update design tokens
+   */
+  async updateDesignTokens(tenantId: string, data: UpdateDesignTokensDto) {
+    const tenant = await this.prisma.tenant.update({
+      where: { id: tenantId },
+      data: {
+        designTokens: data.tokens as unknown as Prisma.InputJsonValue,
+      },
+      select: { designTokens: true },
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.SETTINGS_UPDATED,
+      resourceType: "site-config",
+      resourceId: tenantId,
+      metadata: { section: "design-tokens" },
+    });
+
+    return tenant.designTokens;
+  }
+
+  /**
+   * Get theme configuration
+   */
+  async getThemeConfig(tenantId: string) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+      select: { themeConfig: true },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException(`Tenant with ID ${tenantId} not found`);
+    }
+
+    return tenant.themeConfig;
+  }
+
+  /**
+   * Update theme configuration
+   */
+  async updateThemeConfig(tenantId: string, data: UpdateThemeConfigDto) {
+    const tenant = await this.prisma.tenant.update({
+      where: { id: tenantId },
+      data: {
+        themeConfig: data.theme as unknown as Prisma.InputJsonValue,
+      },
+      select: { themeConfig: true },
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.SETTINGS_UPDATED,
+      resourceType: "site-config",
+      resourceId: tenantId,
+      metadata: { section: "theme" },
+    });
+
+    return tenant.themeConfig;
   }
 }

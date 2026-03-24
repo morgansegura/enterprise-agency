@@ -25,6 +25,8 @@ type PageTemplate = {
       paddingY?: string;
       width?: string;
       align?: string;
+      minHeight?: string;
+      verticalAlign?: string;
       containers: Array<{
         _type: "container";
         _key: string;
@@ -34,6 +36,7 @@ type PageTemplate = {
           align?: string;
           justify?: string;
         };
+        maxWidth?: string;
         blocks: Array<Record<string, unknown>>;
       }>;
     }>;
@@ -199,6 +202,52 @@ function headingBlock(
 }
 
 /**
+ * Create a spacer block
+ */
+function spacerBlock(key: string, size: string = "lg") {
+  return {
+    _type: "spacer-block",
+    _key: key,
+    data: { size },
+  };
+}
+
+/**
+ * Create a stats block
+ */
+function statsBlock(
+  key: string,
+  stats: Array<{ label: string; value: string }>,
+) {
+  return {
+    _type: "stats-block",
+    _key: key,
+    data: { stats, columns: stats.length },
+  };
+}
+
+/**
+ * Create a card block
+ */
+function cardBlock(
+  key: string,
+  title: string,
+  description: string,
+  options: { variant?: string; icon?: string } = {},
+) {
+  return {
+    _type: "card-block",
+    _key: key,
+    data: {
+      title,
+      description,
+      variant: options.variant || "default",
+      ...(options.icon && { icon: options.icon }),
+    },
+  };
+}
+
+/**
  * Create a button block
  */
 function buttonBlock(
@@ -305,9 +354,11 @@ export function generateDefaultPages(
       isHomePage: false,
       status: "draft",
       metaTitle: (name) => `Welcome to ${name}`,
-      metaDescription: (name) => `Welcome to ${name}. Discover what we offer.`,
+      metaDescription: (name) =>
+        `Welcome to ${name}. Discover our services and what makes us different.`,
       content: {
         sections: [
+          // Hero Section
           {
             _type: "section",
             _key: "home-hero",
@@ -315,11 +366,14 @@ export function generateDefaultPages(
             paddingY: "2xl",
             width: "wide",
             align: "center",
+            minHeight: "70vh",
+            verticalAlign: "center",
             containers: [
               {
                 _type: "container",
                 _key: "home-hero-content",
                 layout: { type: "stack", gap: "lg", align: "center" },
+                maxWidth: "3xl",
                 blocks: [
                   headingBlock("hero-title", `Welcome to ${businessName}`, {
                     level: "h1",
@@ -329,7 +383,7 @@ export function generateDefaultPages(
                   }),
                   textBlock(
                     "hero-subtitle",
-                    "Your compelling tagline goes here. Tell visitors what makes you special.",
+                    "Your compelling tagline goes here. Tell visitors what makes you special and why they should choose you.",
                     { size: "xl", align: "center", variant: "lead" },
                   ),
                 ],
@@ -347,6 +401,286 @@ export function generateDefaultPages(
                     variant: "outline",
                     size: "lg",
                   }),
+                ],
+              },
+            ],
+          },
+
+          // Stats Section
+          {
+            _type: "section",
+            _key: "home-stats",
+            background: "dark",
+            paddingY: "lg",
+            width: "wide",
+            align: "center",
+            containers: [
+              {
+                _type: "container",
+                _key: "home-stats-grid",
+                layout: { type: "stack", align: "center" },
+                maxWidth: "4xl",
+                blocks: [
+                  statsBlock("stats", [
+                    { label: "Years in Business", value: "10+" },
+                    { label: "Clients Served", value: "500+" },
+                    { label: "Projects Completed", value: "1,200+" },
+                    { label: "Team Members", value: "25+" },
+                  ]),
+                ],
+              },
+            ],
+          },
+
+          // Services Preview
+          {
+            _type: "section",
+            _key: "home-services",
+            background: "white",
+            paddingY: "2xl",
+            width: "wide",
+            align: "center",
+            containers: [
+              {
+                _type: "container",
+                _key: "home-services-header",
+                layout: { type: "stack", gap: "md", align: "center" },
+                maxWidth: "2xl",
+                blocks: [
+                  headingBlock("services-title", "What We Do", {
+                    level: "h2",
+                    size: "3xl",
+                    align: "center",
+                  }),
+                  textBlock(
+                    "services-intro",
+                    "We offer a range of professional services tailored to help your business grow and succeed.",
+                    { align: "center" },
+                  ),
+                ],
+              },
+              {
+                _type: "container",
+                _key: "home-services-grid",
+                layout: { type: "grid", gap: "lg" },
+                blocks: [
+                  cardBlock(
+                    "svc-1",
+                    "Strategy",
+                    "We help you define your goals and create a roadmap to achieve them.",
+                  ),
+                  cardBlock(
+                    "svc-2",
+                    "Design",
+                    "Beautiful, functional designs that represent your brand and engage your audience.",
+                  ),
+                  cardBlock(
+                    "svc-3",
+                    "Development",
+                    "Custom-built solutions using modern technology for performance and reliability.",
+                  ),
+                ],
+              },
+              {
+                _type: "container",
+                _key: "home-services-cta",
+                layout: { type: "stack", align: "center" },
+                blocks: [
+                  spacerBlock("svc-spacer", "md"),
+                  buttonBlock("svc-btn", "View All Services", "/services", {
+                    variant: "outline",
+                  }),
+                ],
+              },
+            ],
+          },
+
+          // About Preview
+          {
+            _type: "section",
+            _key: "home-about",
+            background: "muted",
+            paddingY: "2xl",
+            width: "wide",
+            containers: [
+              {
+                _type: "container",
+                _key: "home-about-content",
+                layout: { type: "stack", gap: "lg" },
+                maxWidth: "3xl",
+                blocks: [
+                  headingBlock("about-preview-title", `Why ${businessName}?`, {
+                    level: "h2",
+                    size: "3xl",
+                  }),
+                  textBlock(
+                    "about-preview-body",
+                    "We believe in delivering exceptional results through a combination of expertise, dedication, and genuine care for our clients. Our approach is collaborative — we work alongside you, not just for you.",
+                    { size: "lg" },
+                  ),
+                  textBlock(
+                    "about-preview-body2",
+                    "With over a decade of experience, our team brings deep industry knowledge and a track record of success to every project we take on.",
+                  ),
+                  buttonBlock("about-btn", "Learn More About Us", "/about"),
+                ],
+              },
+            ],
+          },
+
+          // CTA Section
+          {
+            _type: "section",
+            _key: "home-cta",
+            background: "primary",
+            paddingY: "2xl",
+            width: "wide",
+            align: "center",
+            containers: [
+              {
+                _type: "container",
+                _key: "home-cta-content",
+                layout: { type: "stack", gap: "lg", align: "center" },
+                maxWidth: "2xl",
+                blocks: [
+                  headingBlock("cta-title", "Ready to Get Started?", {
+                    level: "h2",
+                    size: "3xl",
+                    align: "center",
+                  }),
+                  textBlock(
+                    "cta-body",
+                    "Let's discuss how we can help you achieve your goals. Reach out today for a free consultation.",
+                    { align: "center", size: "lg" },
+                  ),
+                  buttonBlock("cta-contact", "Contact Us", "/contact", {
+                    variant: "default",
+                    size: "lg",
+                  }),
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
+
+    // Services - DRAFT
+    {
+      slug: "services",
+      title: "Services",
+      pageType: "content",
+      isSystemPage: false,
+      isHomePage: false,
+      status: "draft",
+      metaTitle: (name) => `Our Services - ${name}`,
+      metaDescription: (name) =>
+        `Explore the professional services offered by ${name}. From strategy to execution, we deliver results.`,
+      content: {
+        sections: [
+          {
+            _type: "section",
+            _key: "services-hero",
+            background: "white",
+            paddingY: "xl",
+            width: "narrow",
+            align: "center",
+            containers: [
+              {
+                _type: "container",
+                _key: "services-hero-content",
+                layout: { type: "stack", gap: "md", align: "center" },
+                blocks: [
+                  headingBlock("services-page-title", "Our Services", {
+                    level: "h1",
+                    size: "4xl",
+                    align: "center",
+                  }),
+                  textBlock(
+                    "services-page-intro",
+                    "We provide comprehensive solutions to help your business thrive in a competitive landscape.",
+                    { size: "lg", align: "center" },
+                  ),
+                ],
+              },
+            ],
+          },
+          {
+            _type: "section",
+            _key: "services-list",
+            background: "white",
+            paddingY: "xl",
+            width: "wide",
+            containers: [
+              {
+                _type: "container",
+                _key: "services-grid",
+                layout: { type: "grid", gap: "lg" },
+                blocks: [
+                  cardBlock(
+                    "svc-detail-1",
+                    "Strategic Consulting",
+                    "We analyze your market, competition, and opportunities to build a winning strategy for growth.",
+                  ),
+                  cardBlock(
+                    "svc-detail-2",
+                    "Brand Design",
+                    "From logos to complete brand systems, we craft identities that resonate and stand the test of time.",
+                  ),
+                  cardBlock(
+                    "svc-detail-3",
+                    "Web Development",
+                    "Modern, fast, accessible websites built with the latest technology for an optimal user experience.",
+                  ),
+                  cardBlock(
+                    "svc-detail-4",
+                    "Digital Marketing",
+                    "Data-driven campaigns across search, social, and email to reach your ideal customers.",
+                  ),
+                  cardBlock(
+                    "svc-detail-5",
+                    "Content Strategy",
+                    "Compelling content that tells your story, builds authority, and drives organic traffic.",
+                  ),
+                  cardBlock(
+                    "svc-detail-6",
+                    "Ongoing Support",
+                    "We don't disappear after launch. Continuous optimization, updates, and dedicated support.",
+                  ),
+                ],
+              },
+            ],
+          },
+          {
+            _type: "section",
+            _key: "services-cta",
+            background: "muted",
+            paddingY: "xl",
+            width: "wide",
+            align: "center",
+            containers: [
+              {
+                _type: "container",
+                _key: "services-cta-content",
+                layout: { type: "stack", gap: "md", align: "center" },
+                maxWidth: "2xl",
+                blocks: [
+                  headingBlock("services-cta-title", "Let's Work Together", {
+                    level: "h2",
+                    size: "2xl",
+                    align: "center",
+                  }),
+                  textBlock(
+                    "services-cta-body",
+                    "Every project starts with a conversation. Tell us about your goals and we'll show you how we can help.",
+                    { align: "center" },
+                  ),
+                  buttonBlock(
+                    "services-cta-btn",
+                    "Start a Conversation",
+                    "/contact",
+                    { variant: "default", size: "lg" },
+                  ),
                 ],
               },
             ],

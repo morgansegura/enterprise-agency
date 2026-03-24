@@ -178,9 +178,10 @@
   width: 100%;
 }
 
-/* Placeholder styles */
+/* Placeholder styles — min-height prevents CLS during product load */
 [data-slot="product-grid-item"][data-placeholder="true"] {
   pointer-events: none;
+  min-height: 320px;
 }
 
 [data-slot="placeholder-title"] {

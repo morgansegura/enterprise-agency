@@ -631,4 +631,36 @@ export class PublicApiService {
       updatedAt: post.updatedAt.toISOString(),
     };
   }
+
+  /**
+   * Look up an active redirect by source path
+   * GET /api/v1/public/:tenantSlug/redirect?path=/old-page
+   */
+  async lookupRedirect(
+    tenantSlug: string,
+    sourcePath: string,
+  ): Promise<{ targetPath: string; statusCode: number }> {
+    const tenant = await this.getTenantBySlug(tenantSlug);
+
+    const redirect = await this.prisma.redirect.findFirst({
+      where: {
+        tenantId: tenant.id,
+        sourcePath,
+        isActive: true,
+      },
+      select: {
+        targetPath: true,
+        statusCode: true,
+      },
+    });
+
+    if (!redirect) {
+      throw new NotFoundException(`No redirect found for path: ${sourcePath}`);
+    }
+
+    return {
+      targetPath: redirect.targetPath,
+      statusCode: redirect.statusCode,
+    };
+  }
 }

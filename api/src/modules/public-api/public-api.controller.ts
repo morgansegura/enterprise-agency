@@ -361,4 +361,43 @@ export class PublicApiController {
   ): Promise<PublicPostDto> {
     return this.publicApiService.getPostBySlug(tenantSlug, postSlug);
   }
+
+  /**
+   * Look up a redirect by source path
+   * GET /api/v1/public/:tenantSlug/redirect?path=/old-page
+   *
+   * Used by client middleware to resolve redirects before rendering.
+   * Returns 404 if no active redirect exists for the given path.
+   * Cache: 5 minutes
+   */
+  @Get(":tenantSlug/redirect")
+  @Header("Cache-Control", "public, max-age=300") // 5 minutes
+  @ApiOperation({
+    summary: "Look up redirect by source path",
+    description:
+      "Returns redirect target and status code if an active redirect exists for the given path",
+  })
+  @ApiParam({
+    name: "tenantSlug",
+    description: "Tenant slug identifier",
+    example: "acme-consulting",
+  })
+  @ApiQuery({
+    name: "path",
+    required: true,
+    type: String,
+    example: "/old-page",
+    description: "The source path to look up",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Redirect found",
+  })
+  @ApiResponse({ status: 404, description: "No redirect found for this path" })
+  async lookupRedirect(
+    @Param("tenantSlug") tenantSlug: string,
+    @Query("path") path: string,
+  ): Promise<{ targetPath: string; statusCode: number }> {
+    return this.publicApiService.lookupRedirect(tenantSlug, path);
+  }
 }

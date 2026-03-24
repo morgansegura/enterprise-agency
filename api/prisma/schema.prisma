@@ -44,6 +44,11 @@ model Tenant {
   status          String  @default("active") @db.VarChar(20)
   isPrimaryTenant Boolean @default(false) @map("is_primary_tenant")
 
+  // Template system
+  isTemplate          Boolean @default(false) @map("is_template")
+  templateName        String? @map("template_name") @db.VarChar(255)
+  templateDescription String? @map("template_description") @db.Text
+
   // Tenant hierarchy
   parentTenantId String?     @map("parent_tenant_id")
   tenantType     TenantType  @default(CLIENT) @map("tenant_type")
@@ -121,12 +126,16 @@ model Tenant {
   // Media organization
   mediaFolders MediaFolder[]
 
+  // SEO
+  redirects Redirect[]
+
   @@index([slug])
   @@index([status])
   @@index([tier], map: "idx_tenants_tier")
   @@index([businessType], map: "idx_tenants_business_type")
   @@index([parentTenantId], map: "idx_tenants_parent")
   @@index([tenantType], map: "idx_tenants_type")
+  @@index([isTemplate], map: "idx_tenants_template")
   @@map("tenants")
 }
 
@@ -1209,4 +1218,28 @@ model OrderItem {
   @@index([orderId], map: "idx_order_items_order")
   @@index([productId], map: "idx_order_items_product")
   @@map("order_items")
+}
+
+// ============================================================================
+// SEO: REDIRECTS
+// ============================================================================
+
+model Redirect {
+  id       String @id @default(dbgenerated("gen_random_uuid()"))
+  tenantId String @map("tenant_id")
+
+  sourcePath String  @map("source_path") @db.VarChar(2048)
+  targetPath String  @map("target_path") @db.VarChar(2048)
+  statusCode Int     @default(301) @map("status_code")
+  isActive   Boolean @default(true) @map("is_active")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, sourcePath], map: "uq_redirects_tenant_source")
+  @@index([tenantId, isActive], map: "idx_redirects_tenant_active")
+  @@map("redirects")
 }

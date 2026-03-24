@@ -1,6 +1,9 @@
 import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
-import { BlockRenderer } from "@/components/block-renderer/block-renderer";
+import {
+  BlockRenderer,
+  resetImagePriority,
+} from "@/components/block-renderer/block-renderer";
 import type { BackgroundVariant } from "@/lib/types";
 import type {
   Section as SectionType,
@@ -201,6 +204,9 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
       </div>
     );
   }
+
+  // Reset LCP image priority tracker for this page render
+  resetImagePriority();
 
   return (
     <div className={className}>

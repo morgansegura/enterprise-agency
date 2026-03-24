@@ -68,7 +68,6 @@ export default function EditProductPage({
 
   React.useEffect(() => {
     if (product) {
-       
       setFormData({
         name: product.name,
         description: product.description,

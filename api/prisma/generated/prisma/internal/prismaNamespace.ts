@@ -440,6 +440,7 @@ export const ModelName = {
   CustomerAddress: "CustomerAddress",
   Order: "Order",
   OrderItem: "OrderItem",
+  Redirect: "Redirect",
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -489,7 +490,8 @@ export type TypeMap<
       | "customer"
       | "customerAddress"
       | "order"
-      | "orderItem";
+      | "orderItem"
+      | "redirect";
     txIsolationLevel: TransactionIsolationLevel;
   };
   model: {
@@ -2621,6 +2623,82 @@ export type TypeMap<
         };
       };
     };
+    Redirect: {
+      payload: Prisma.$RedirectPayload<ExtArgs>;
+      fields: Prisma.RedirectFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.RedirectFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.RedirectFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>;
+        };
+        findFirst: {
+          args: Prisma.RedirectFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.RedirectFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>;
+        };
+        findMany: {
+          args: Prisma.RedirectFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>[];
+        };
+        create: {
+          args: Prisma.RedirectCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>;
+        };
+        createMany: {
+          args: Prisma.RedirectCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.RedirectCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>[];
+        };
+        delete: {
+          args: Prisma.RedirectDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>;
+        };
+        update: {
+          args: Prisma.RedirectUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>;
+        };
+        deleteMany: {
+          args: Prisma.RedirectDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.RedirectUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.RedirectUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>[];
+        };
+        upsert: {
+          args: Prisma.RedirectUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RedirectPayload>;
+        };
+        aggregate: {
+          args: Prisma.RedirectAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRedirect>;
+        };
+        groupBy: {
+          args: Prisma.RedirectGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.RedirectGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.RedirectCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.RedirectCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
   };
 } & {
   other: {
@@ -2667,6 +2745,9 @@ export const TenantScalarFieldEnum = {
   businessType: "businessType",
   status: "status",
   isPrimaryTenant: "isPrimaryTenant",
+  isTemplate: "isTemplate",
+  templateName: "templateName",
+  templateDescription: "templateDescription",
   parentTenantId: "parentTenantId",
   tenantType: "tenantType",
   clientType: "clientType",
@@ -3228,6 +3309,20 @@ export const OrderItemScalarFieldEnum = {
 export type OrderItemScalarFieldEnum =
   (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum];
 
+export const RedirectScalarFieldEnum = {
+  id: "id",
+  tenantId: "tenantId",
+  sourcePath: "sourcePath",
+  targetPath: "targetPath",
+  statusCode: "statusCode",
+  isActive: "isActive",
+  createdAt: "createdAt",
+  updatedAt: "updatedAt",
+} as const;
+
+export type RedirectScalarFieldEnum =
+  (typeof RedirectScalarFieldEnum)[keyof typeof RedirectScalarFieldEnum];
+
 export const SortOrder = {
   asc: "asc",
   desc: "desc",
@@ -3618,6 +3713,7 @@ export type GlobalOmitConfig = {
   customerAddress?: Prisma.CustomerAddressOmit;
   order?: Prisma.OrderOmit;
   orderItem?: Prisma.OrderItemOmit;
+  redirect?: Prisma.RedirectOmit;
 };
 
 /* Types for Logging */

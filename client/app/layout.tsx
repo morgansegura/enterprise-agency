@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { createPublicApiClient, SiteConfig } from "@/lib/public-api-client";
 import { generateOrganizationSchema } from "@/lib/seo";
@@ -29,6 +29,19 @@ async function getSiteConfig(): Promise<SiteConfig | null> {
     return null;
   }
 }
+
+/**
+ * Viewport configuration for mobile PageSpeed optimization
+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
+};
 
 /**
  * Generate dynamic metadata based on tenant configuration
@@ -107,6 +120,15 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* DNS prefetch for API to reduce latency on first fetch */}
+        <link
+          rel="dns-prefetch"
+          href={process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}
+        />
+        <link
+          rel="preconnect"
+          href={process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}
+        />
         <TokenProvider />
       </head>
       <body

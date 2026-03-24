@@ -67,7 +67,6 @@ export default function CustomerDetailPage({
 
   React.useEffect(() => {
     if (customer) {
-       
       setFormData({
         email: customer.email,
         firstName: customer.firstName,

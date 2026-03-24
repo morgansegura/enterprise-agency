@@ -82,6 +82,7 @@ export const ModelName = {
   CustomerAddress: "CustomerAddress",
   Order: "Order",
   OrderItem: "OrderItem",
+  Redirect: "Redirect",
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -107,6 +108,9 @@ export const TenantScalarFieldEnum = {
   businessType: "businessType",
   status: "status",
   isPrimaryTenant: "isPrimaryTenant",
+  isTemplate: "isTemplate",
+  templateName: "templateName",
+  templateDescription: "templateDescription",
   parentTenantId: "parentTenantId",
   tenantType: "tenantType",
   clientType: "clientType",
@@ -667,6 +671,20 @@ export const OrderItemScalarFieldEnum = {
 
 export type OrderItemScalarFieldEnum =
   (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum];
+
+export const RedirectScalarFieldEnum = {
+  id: "id",
+  tenantId: "tenantId",
+  sourcePath: "sourcePath",
+  targetPath: "targetPath",
+  statusCode: "statusCode",
+  isActive: "isActive",
+  createdAt: "createdAt",
+  updatedAt: "updatedAt",
+} as const;
+
+export type RedirectScalarFieldEnum =
+  (typeof RedirectScalarFieldEnum)[keyof typeof RedirectScalarFieldEnum];
 
 export const SortOrder = {
   asc: "asc",

@@ -98,6 +98,9 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   get passwordResetToken() {
     return this.client.passwordResetToken;
   }
+  get redirect() {
+    return this.client.redirect;
+  }
 
   // Expose raw query method
   $queryRaw<T = unknown>(

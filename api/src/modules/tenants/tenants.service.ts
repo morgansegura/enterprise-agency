@@ -3,18 +3,30 @@ import {
   NotFoundException,
   ConflictException,
   BadRequestException,
+  Logger,
 } from "@nestjs/common";
 import { Prisma, TenantType } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import {
+  AuditLogService,
+  AuditAction,
+} from "@/common/services/audit-log.service";
 import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
 import { CreateDomainDto } from "./dto/create-domain.dto";
 import { UpdateDesignTokensDto } from "./dto/update-design-tokens.dto";
+import { MarkAsTemplateDto } from "./dto/mark-as-template.dto";
+import { CloneTenantDto } from "./dto/clone-tenant.dto";
 import { generateDefaultPages } from "./default-pages";
 
 @Injectable()
 export class TenantsService {
-  constructor(private prisma: PrismaService) {}
+  private readonly logger = new Logger(TenantsService.name);
+
+  constructor(
+    private prisma: PrismaService,
+    private audit: AuditLogService,
+  ) {}
 
   async findAll() {
     const tenants = await this.prisma.tenant.findMany({
@@ -1257,5 +1269,338 @@ export class TenantsService {
     }
 
     return { hasAccess: false, accessType: null, role: null };
+  }
+
+  // ============================================
+  // TEMPLATE SYSTEM
+  // ============================================
+
+  /**
+   * List all template tenants
+   */
+  async findTemplates() {
+    const templates = await this.prisma.tenant.findMany({
+      where: { isTemplate: true },
+      select: {
+        id: true,
+        slug: true,
+        businessName: true,
+        templateName: true,
+        templateDescription: true,
+        tier: true,
+        businessType: true,
+        createdAt: true,
+        _count: {
+          select: {
+            pages: true,
+            headers: true,
+            footers: true,
+            menus: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return templates;
+  }
+
+  /**
+   * Mark an existing tenant as a template
+   */
+  async markAsTemplate(tenantId: string, data: MarkAsTemplateDto) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException("Tenant not found");
+    }
+
+    const updated = await this.prisma.tenant.update({
+      where: { id: tenantId },
+      data: {
+        isTemplate: true,
+        templateName: data.templateName || tenant.businessName,
+        templateDescription: data.templateDescription || null,
+      },
+      include: {
+        domains: true,
+        _count: {
+          select: {
+            pages: true,
+            headers: true,
+            footers: true,
+            menus: true,
+          },
+        },
+      },
+    });
+
+    this.logger.log(`Tenant marked as template: ${tenant.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.TENANT_UPDATED,
+      resourceType: "tenant",
+      resourceId: tenantId,
+      metadata: { action: "mark_as_template" },
+    });
+
+    return updated;
+  }
+
+  /**
+   * Unmark a tenant as a template
+   */
+  async unmarkAsTemplate(tenantId: string) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException("Tenant not found");
+    }
+
+    const updated = await this.prisma.tenant.update({
+      where: { id: tenantId },
+      data: {
+        isTemplate: false,
+        templateName: null,
+        templateDescription: null,
+      },
+    });
+
+    this.logger.log(`Tenant unmarked as template: ${tenant.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.TENANT_UPDATED,
+      resourceType: "tenant",
+      resourceId: tenantId,
+      metadata: { action: "unmark_as_template" },
+    });
+
+    return updated;
+  }
+
+  /**
+   * Clone a tenant from a template.
+   * Creates a new tenant with all pages, headers, footers, menus,
+   * site config, and design tokens from the template.
+   */
+  async cloneFromTemplate(cloneData: CloneTenantDto, creatorUserId: string) {
+    // Validate slug uniqueness
+    const existingSlug = await this.prisma.tenant.findUnique({
+      where: { slug: cloneData.slug },
+    });
+
+    if (existingSlug) {
+      throw new ConflictException("Tenant slug already exists");
+    }
+
+    // Fetch the template with all related data
+    const template = await this.prisma.tenant.findUnique({
+      where: { id: cloneData.templateId },
+      include: {
+        pages: true,
+        headers: {
+          include: {
+            menu: true,
+          },
+        },
+        footers: true,
+        menus: true,
+      },
+    });
+
+    if (!template) {
+      throw new NotFoundException("Template tenant not found");
+    }
+
+    if (!template.isTemplate) {
+      throw new BadRequestException("Tenant is not marked as a template");
+    }
+
+    // Execute the entire clone operation in a transaction
+    const newTenant = await this.prisma.$transaction(async (tx) => {
+      // 1. Create the new tenant with site config copied from template
+      const tenant = await tx.tenant.create({
+        data: {
+          slug: cloneData.slug,
+          businessName: cloneData.businessName,
+          businessType: template.businessType,
+          contactEmail: cloneData.contactEmail || template.contactEmail,
+          tenantType: "CLIENT",
+          tier: cloneData.tier || template.tier,
+          enabledFeatures: template.enabledFeatures as Prisma.InputJsonValue,
+          themeConfig: template.themeConfig as Prisma.InputJsonValue,
+          planLimits: template.planLimits as Prisma.InputJsonValue,
+          designTokens: template.designTokens
+            ? (template.designTokens as Prisma.InputJsonValue)
+            : undefined,
+          headerConfig: template.headerConfig
+            ? (template.headerConfig as Prisma.InputJsonValue)
+            : undefined,
+          footerConfig: template.footerConfig
+            ? (template.footerConfig as Prisma.InputJsonValue)
+            : undefined,
+          menusConfig: template.menusConfig
+            ? (template.menusConfig as Prisma.InputJsonValue)
+            : undefined,
+          logosConfig: template.logosConfig
+            ? (template.logosConfig as Prisma.InputJsonValue)
+            : undefined,
+          tenantUsers: {
+            create: {
+              userId: creatorUserId,
+              role: "owner",
+              permissions: {
+                pages: {
+                  view: true,
+                  create: true,
+                  edit: true,
+                  delete: true,
+                },
+                posts: {
+                  view: true,
+                  create: true,
+                  edit: true,
+                  delete: true,
+                },
+                assets: {
+                  view: true,
+                  create: true,
+                  edit: true,
+                  delete: true,
+                },
+                settings: { view: true, edit: true },
+              },
+            },
+          },
+        },
+      });
+
+      // 2. Clone menus — build a map of old menu ID → new menu ID
+      //    so we can remap header menu references
+      const menuIdMap = new Map<string, string>();
+
+      for (const menu of template.menus) {
+        const newMenu = await tx.menu.create({
+          data: {
+            tenantId: tenant.id,
+            name: menu.name,
+            slug: menu.slug,
+            type: menu.type,
+            items: menu.items as Prisma.InputJsonValue,
+            style: menu.style as Prisma.InputJsonValue,
+            isDefault: menu.isDefault,
+          },
+        });
+        menuIdMap.set(menu.id, newMenu.id);
+      }
+
+      // 3. Clone headers — remap menuId references
+      const headerIdMap = new Map<string, string>();
+
+      for (const header of template.headers) {
+        const newHeader = await tx.header.create({
+          data: {
+            tenantId: tenant.id,
+            name: header.name,
+            slug: header.slug,
+            behavior: header.behavior,
+            scrollThreshold: header.scrollThreshold,
+            animation: header.animation,
+            zones: header.zones as Prisma.InputJsonValue,
+            style: header.style as Prisma.InputJsonValue,
+            transparentStyle: header.transparentStyle
+              ? (header.transparentStyle as Prisma.InputJsonValue)
+              : undefined,
+            menuId: header.menuId ? menuIdMap.get(header.menuId) || null : null,
+            isDefault: header.isDefault,
+          },
+        });
+        headerIdMap.set(header.id, newHeader.id);
+      }
+
+      // 4. Clone footers
+      const footerIdMap = new Map<string, string>();
+
+      for (const footer of template.footers) {
+        const newFooter = await tx.footer.create({
+          data: {
+            tenantId: tenant.id,
+            name: footer.name,
+            slug: footer.slug,
+            layout: footer.layout,
+            zones: footer.zones as Prisma.InputJsonValue,
+            style: footer.style as Prisma.InputJsonValue,
+            isDefault: footer.isDefault,
+          },
+        });
+        footerIdMap.set(footer.id, newFooter.id);
+      }
+
+      // 5. Clone pages — remap header/footer references
+      for (const page of template.pages) {
+        await tx.page.create({
+          data: {
+            tenantId: tenant.id,
+            authorId: creatorUserId,
+            slug: page.slug,
+            title: page.title,
+            content: page.content
+              ? (JSON.parse(
+                  JSON.stringify(page.content),
+                ) as Prisma.InputJsonValue)
+              : undefined,
+            metaTitle: page.metaTitle,
+            metaDescription: page.metaDescription,
+            status: page.status,
+            publishedAt: page.status === "published" ? new Date() : null,
+            template: page.template,
+            isHomePage: page.isHomePage,
+            pageType: page.pageType,
+            isSystemPage: page.isSystemPage,
+            headerId: page.headerId
+              ? headerIdMap.get(page.headerId) || null
+              : null,
+            footerId: page.footerId
+              ? footerIdMap.get(page.footerId) || null
+              : null,
+          },
+        });
+      }
+
+      return tenant;
+    });
+
+    // Fetch the complete new tenant with all relations
+    const result = await this.prisma.tenant.findUnique({
+      where: { id: newTenant.id },
+      include: {
+        tenantUsers: true,
+        domains: true,
+        pages: true,
+        headers: true,
+        footers: true,
+        menus: true,
+      },
+    });
+
+    this.logger.log(
+      `Tenant cloned from template: ${template.slug} → ${cloneData.slug}`,
+    );
+    this.audit.log({
+      tenantId: newTenant.id,
+      action: AuditAction.TENANT_CLONED,
+      resourceType: "tenant",
+      resourceId: newTenant.id,
+      metadata: {
+        templateId: cloneData.templateId,
+        templateSlug: template.slug,
+      },
+    });
+
+    return result;
   }
 }

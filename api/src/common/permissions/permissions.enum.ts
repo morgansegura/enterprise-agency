@@ -42,6 +42,11 @@ export enum Permission {
   TENANTS_EDIT = "tenants:edit",
   TENANTS_DELETE = "tenants:delete",
 
+  // Templates
+  TEMPLATES_VIEW = "templates:view",
+  TEMPLATES_CREATE = "templates:create",
+  TEMPLATES_CLONE = "templates:clone",
+
   // Settings
   SETTINGS_VIEW = "settings:view",
   SETTINGS_EDIT = "settings:edit",
@@ -116,4 +121,10 @@ export enum Permission {
   WEBHOOKS_CREATE = "webhooks:create",
   WEBHOOKS_EDIT = "webhooks:edit",
   WEBHOOKS_DELETE = "webhooks:delete",
+
+  // Redirects
+  REDIRECTS_VIEW = "redirects:view",
+  REDIRECTS_CREATE = "redirects:create",
+  REDIRECTS_EDIT = "redirects:edit",
+  REDIRECTS_DELETE = "redirects:delete",
 }

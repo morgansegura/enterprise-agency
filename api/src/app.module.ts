@@ -24,6 +24,7 @@ import { PreviewModule } from "./modules/preview/preview.module";
 import { MenusModule } from "./modules/menus/menus.module";
 import { HeadersModule } from "./modules/headers/headers.module";
 import { FootersModule } from "./modules/footers/footers.module";
+import { RedirectsModule } from "./modules/redirects/redirects.module";
 
 @Module({
   imports: [
@@ -68,6 +69,8 @@ import { FootersModule } from "./modules/footers/footers.module";
     MenusModule,
     HeadersModule,
     FootersModule,
+    // SEO
+    RedirectsModule,
     // Integrations
     WebhooksModule,
   ],

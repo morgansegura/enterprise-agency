@@ -186,12 +186,12 @@ export class PublicApiClient {
 
   /**
    * Get tenant design tokens
-   * Cached for 5 minutes (tokens change infrequently)
+   * Cached for 1 hour (tokens change very infrequently)
    */
   async getTokens(): Promise<Record<string, unknown>> {
     const res = await fetch(
       `${this.baseUrl}/tokens`,
-      this.getFetchOptions(300),
+      this.getFetchOptions(3600),
     );
 
     if (!res.ok) {
@@ -205,12 +205,12 @@ export class PublicApiClient {
 
   /**
    * Get site configuration (theme, branding, navigation)
-   * Cached for 5 minutes to reduce API load
+   * Cached for 10 minutes to reduce API load
    */
   async getConfig(): Promise<SiteConfig> {
     const res = await fetch(
       `${this.baseUrl}/config`,
-      this.getFetchOptions(300),
+      this.getFetchOptions(600),
     );
 
     if (!res.ok) {

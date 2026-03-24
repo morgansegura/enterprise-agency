@@ -44,7 +44,6 @@ export default function OrderDetailPage({
 
   React.useEffect(() => {
     if (order?.staffNote) {
-       
       setStaffNote(order.staffNote);
     }
   }, [order?.staffNote]);

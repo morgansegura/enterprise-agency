@@ -15,6 +15,8 @@ import { CreateTenantDto } from "./dto/create-tenant.dto";
 import { UpdateTenantDto } from "./dto/update-tenant.dto";
 import { CreateDomainDto } from "./dto/create-domain.dto";
 import { UpdateDesignTokensDto } from "./dto/update-design-tokens.dto";
+import { MarkAsTemplateDto } from "./dto/mark-as-template.dto";
+import { CloneTenantDto } from "./dto/clone-tenant.dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { RolesGuard } from "@/common/guards/roles.guard";
 import { CurrentUser } from "@/common/decorators/current-user.decorator";
@@ -70,6 +72,35 @@ export class TenantsController {
   @Get("agency")
   async getAgencyTenant() {
     return this.tenantsService.getAgencyTenant();
+  }
+
+  // ============================================
+  // TEMPLATE SYSTEM ENDPOINTS
+  // ============================================
+
+  /**
+   * List all template tenants
+   * GET /tenants/templates
+   */
+  @Get("templates")
+  @UseGuards(RolesGuard)
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
+  async listTemplates() {
+    return this.tenantsService.findTemplates();
+  }
+
+  /**
+   * Clone a new tenant from a template
+   * POST /tenants/clone
+   */
+  @Post("clone")
+  @UseGuards(RolesGuard)
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
+  async cloneFromTemplate(
+    @CurrentUser() currentUser: { id: string; sessionId: string },
+    @Body() cloneData: CloneTenantDto,
+  ) {
+    return this.tenantsService.cloneFromTemplate(cloneData, currentUser.id);
   }
 
   /**
@@ -241,6 +272,31 @@ export class TenantsController {
   // ============================================
   // TENANT HIERARCHY PARAMETERIZED ENDPOINTS
   // ============================================
+
+  /**
+   * Mark tenant as a template
+   * POST /tenants/:id/mark-as-template
+   */
+  @Post(":id/mark-as-template")
+  @UseGuards(RolesGuard)
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
+  async markAsTemplate(
+    @Param("id") id: string,
+    @Body() data: MarkAsTemplateDto,
+  ) {
+    return this.tenantsService.markAsTemplate(id, data);
+  }
+
+  /**
+   * Unmark tenant as a template
+   * POST /tenants/:id/unmark-as-template
+   */
+  @Post(":id/unmark-as-template")
+  @UseGuards(RolesGuard)
+  @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
+  async unmarkAsTemplate(@Param("id") id: string) {
+    return this.tenantsService.unmarkAsTemplate(id);
+  }
 
   /**
    * Get child tenants of a parent tenant

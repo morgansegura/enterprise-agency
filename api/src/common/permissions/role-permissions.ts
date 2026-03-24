@@ -51,6 +51,10 @@ export const ROLE_PERMISSIONS: Record<TenantRole, Permission[]> = {
     Permission.TENANTS_VIEW,
     Permission.TENANTS_CREATE,
     Permission.TENANTS_EDIT,
+    // Templates — full
+    Permission.TEMPLATES_VIEW,
+    Permission.TEMPLATES_CREATE,
+    Permission.TEMPLATES_CLONE,
     // Settings — full
     Permission.SETTINGS_VIEW,
     Permission.SETTINGS_EDIT,
@@ -106,6 +110,11 @@ export const ROLE_PERMISSIONS: Record<TenantRole, Permission[]> = {
     Permission.WEBHOOKS_CREATE,
     Permission.WEBHOOKS_EDIT,
     Permission.WEBHOOKS_DELETE,
+    // Redirects — full
+    Permission.REDIRECTS_VIEW,
+    Permission.REDIRECTS_CREATE,
+    Permission.REDIRECTS_EDIT,
+    Permission.REDIRECTS_DELETE,
   ],
 
   [TenantRole.AGENCY_EDITOR]: [
@@ -155,6 +164,10 @@ export const ROLE_PERMISSIONS: Record<TenantRole, Permission[]> = {
     Permission.CUSTOMERS_VIEW,
     Permission.CUSTOMERS_CREATE,
     Permission.CUSTOMERS_EDIT,
+    // Redirects — no delete
+    Permission.REDIRECTS_VIEW,
+    Permission.REDIRECTS_CREATE,
+    Permission.REDIRECTS_EDIT,
   ],
 
   [TenantRole.CLIENT_ADMIN]: [

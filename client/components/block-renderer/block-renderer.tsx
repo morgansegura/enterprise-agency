@@ -43,7 +43,17 @@ import { StackBlock } from "@/components/block/stack-block";
  */
 type BlockRendererProps = {
   blocks: RootBlock[];
+  /** Index offset for priority tracking — first image on page gets priority loading */
+  blockOffset?: number;
 };
+
+/** Track whether we've already assigned priority to the first image on page */
+let firstImageClaimed = false;
+
+/** Reset priority tracker — call once at page render start */
+export function resetImagePriority() {
+  firstImageClaimed = false;
+}
 
 /**
  * Render a single block with proper type narrowing and recursive handling
@@ -105,8 +115,13 @@ function renderBlock(block: RootBlock): React.ReactNode {
     case "rich-text-block":
       return <RichTextBlock key={block._key} data={block.data} />;
 
-    case "image-block":
-      return <ImageBlock key={block._key} data={block.data} />;
+    case "image-block": {
+      const isPriority = !firstImageClaimed;
+      if (isPriority) firstImageClaimed = true;
+      return (
+        <ImageBlock key={block._key} data={block.data} priority={isPriority} />
+      );
+    }
 
     case "button-block":
       return <ButtonBlock key={block._key} data={block.data} />;

@@ -7,6 +7,8 @@ import {
   UpdateMenusConfigDto,
   UpdateLogosConfigDto,
 } from "./dto/site-config.dto";
+import { UpdateDesignTokensDto } from "./dto/design-tokens.dto";
+import { UpdateThemeConfigDto } from "./dto/theme-config.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
 import { PermissionGuard } from "@/common/guards/permission.guard";
@@ -131,5 +133,51 @@ export class SiteConfigController {
     @Body() data: UpdateLogosConfigDto,
   ) {
     return this.siteConfigService.updateLogosConfig(tenantId, data);
+  }
+
+  /**
+   * GET /api/tenants/:tenantId/config/design-tokens
+   * Get design tokens
+   */
+  @Get("design-tokens")
+  @Permissions(Permission.SETTINGS_VIEW)
+  async getDesignTokens(@Param("tenantId") tenantId: string) {
+    return this.siteConfigService.getDesignTokens(tenantId);
+  }
+
+  /**
+   * PUT /api/tenants/:tenantId/config/design-tokens
+   * Update design tokens
+   */
+  @Put("design-tokens")
+  @Permissions(Permission.SETTINGS_EDIT)
+  async updateDesignTokens(
+    @Param("tenantId") tenantId: string,
+    @Body() data: UpdateDesignTokensDto,
+  ) {
+    return this.siteConfigService.updateDesignTokens(tenantId, data);
+  }
+
+  /**
+   * GET /api/tenants/:tenantId/config/theme
+   * Get theme configuration
+   */
+  @Get("theme")
+  @Permissions(Permission.SETTINGS_VIEW)
+  async getThemeConfig(@Param("tenantId") tenantId: string) {
+    return this.siteConfigService.getThemeConfig(tenantId);
+  }
+
+  /**
+   * PUT /api/tenants/:tenantId/config/theme
+   * Update theme configuration
+   */
+  @Put("theme")
+  @Permissions(Permission.SETTINGS_EDIT)
+  async updateThemeConfig(
+    @Param("tenantId") tenantId: string,
+    @Body() data: UpdateThemeConfigDto,
+  ) {
+    return this.siteConfigService.updateThemeConfig(tenantId, data);
   }
 }

@@ -26,6 +26,7 @@ export enum AuditAction {
   TENANT_CREATED = "tenant.created",
   TENANT_UPDATED = "tenant.updated",
   TENANT_DELETED = "tenant.deleted",
+  TENANT_CLONED = "tenant.cloned",
 
   // Features & projects
   FEATURE_ENABLED = "feature.enabled",

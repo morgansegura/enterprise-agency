@@ -5,6 +5,8 @@ import "./image-block.css";
 
 type ImageBlockProps = {
   data: ImageBlockData;
+  /** Mark as LCP candidate — first visible image on page gets priority loading */
+  priority?: boolean;
 };
 
 // Object fit class maps for responsive
@@ -21,7 +23,7 @@ const objectFitClasses: Record<string, string> = {
  *
  * Supports responsive overrides for objectFit
  */
-export function ImageBlock({ data }: ImageBlockProps) {
+export function ImageBlock({ data, priority = false }: ImageBlockProps) {
   const { url, alt = "", caption, width, height, objectFit = "cover" } = data;
 
   // Check if we have responsive overrides
@@ -39,6 +41,7 @@ export function ImageBlock({ data }: ImageBlockProps) {
             alt={alt}
             width={width || 1200}
             height={height || 630}
+            priority={priority}
             data-slot="image-block-image"
           />
         </div>

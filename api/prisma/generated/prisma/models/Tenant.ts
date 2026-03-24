@@ -31,6 +31,9 @@ export type TenantMinAggregateOutputType = {
   businessType: string | null;
   status: string | null;
   isPrimaryTenant: boolean | null;
+  isTemplate: boolean | null;
+  templateName: string | null;
+  templateDescription: string | null;
   parentTenantId: string | null;
   tenantType: $Enums.TenantType | null;
   clientType: $Enums.ClientType | null;
@@ -51,6 +54,9 @@ export type TenantMaxAggregateOutputType = {
   businessType: string | null;
   status: string | null;
   isPrimaryTenant: boolean | null;
+  isTemplate: boolean | null;
+  templateName: string | null;
+  templateDescription: string | null;
   parentTenantId: string | null;
   tenantType: $Enums.TenantType | null;
   clientType: $Enums.ClientType | null;
@@ -71,6 +77,9 @@ export type TenantCountAggregateOutputType = {
   businessType: number;
   status: number;
   isPrimaryTenant: number;
+  isTemplate: number;
+  templateName: number;
+  templateDescription: number;
   parentTenantId: number;
   tenantType: number;
   clientType: number;
@@ -101,6 +110,9 @@ export type TenantMinAggregateInputType = {
   businessType?: true;
   status?: true;
   isPrimaryTenant?: true;
+  isTemplate?: true;
+  templateName?: true;
+  templateDescription?: true;
   parentTenantId?: true;
   tenantType?: true;
   clientType?: true;
@@ -121,6 +133,9 @@ export type TenantMaxAggregateInputType = {
   businessType?: true;
   status?: true;
   isPrimaryTenant?: true;
+  isTemplate?: true;
+  templateName?: true;
+  templateDescription?: true;
   parentTenantId?: true;
   tenantType?: true;
   clientType?: true;
@@ -141,6 +156,9 @@ export type TenantCountAggregateInputType = {
   businessType?: true;
   status?: true;
   isPrimaryTenant?: true;
+  isTemplate?: true;
+  templateName?: true;
+  templateDescription?: true;
   parentTenantId?: true;
   tenantType?: true;
   clientType?: true;
@@ -250,6 +268,9 @@ export type TenantGroupByOutputType = {
   businessType: string | null;
   status: string;
   isPrimaryTenant: boolean;
+  isTemplate: boolean;
+  templateName: string | null;
+  templateDescription: string | null;
   parentTenantId: string | null;
   tenantType: $Enums.TenantType;
   clientType: $Enums.ClientType | null;
@@ -298,6 +319,9 @@ export type TenantWhereInput = {
   businessType?: Prisma.StringNullableFilter<"Tenant"> | string | null;
   status?: Prisma.StringFilter<"Tenant"> | string;
   isPrimaryTenant?: Prisma.BoolFilter<"Tenant"> | boolean;
+  isTemplate?: Prisma.BoolFilter<"Tenant"> | boolean;
+  templateName?: Prisma.StringNullableFilter<"Tenant"> | string | null;
+  templateDescription?: Prisma.StringNullableFilter<"Tenant"> | string | null;
   parentTenantId?: Prisma.StringNullableFilter<"Tenant"> | string | null;
   tenantType?: Prisma.EnumTenantTypeFilter<"Tenant"> | $Enums.TenantType;
   clientType?:
@@ -345,6 +369,7 @@ export type TenantWhereInput = {
   headers?: Prisma.HeaderListRelationFilter;
   footers?: Prisma.FooterListRelationFilter;
   mediaFolders?: Prisma.MediaFolderListRelationFilter;
+  redirects?: Prisma.RedirectListRelationFilter;
 };
 
 export type TenantOrderByWithRelationInput = {
@@ -354,6 +379,9 @@ export type TenantOrderByWithRelationInput = {
   businessType?: Prisma.SortOrderInput | Prisma.SortOrder;
   status?: Prisma.SortOrder;
   isPrimaryTenant?: Prisma.SortOrder;
+  isTemplate?: Prisma.SortOrder;
+  templateName?: Prisma.SortOrderInput | Prisma.SortOrder;
+  templateDescription?: Prisma.SortOrderInput | Prisma.SortOrder;
   parentTenantId?: Prisma.SortOrderInput | Prisma.SortOrder;
   tenantType?: Prisma.SortOrder;
   clientType?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -395,6 +423,7 @@ export type TenantOrderByWithRelationInput = {
   headers?: Prisma.HeaderOrderByRelationAggregateInput;
   footers?: Prisma.FooterOrderByRelationAggregateInput;
   mediaFolders?: Prisma.MediaFolderOrderByRelationAggregateInput;
+  redirects?: Prisma.RedirectOrderByRelationAggregateInput;
 };
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<
@@ -408,6 +437,9 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<
     businessType?: Prisma.StringNullableFilter<"Tenant"> | string | null;
     status?: Prisma.StringFilter<"Tenant"> | string;
     isPrimaryTenant?: Prisma.BoolFilter<"Tenant"> | boolean;
+    isTemplate?: Prisma.BoolFilter<"Tenant"> | boolean;
+    templateName?: Prisma.StringNullableFilter<"Tenant"> | string | null;
+    templateDescription?: Prisma.StringNullableFilter<"Tenant"> | string | null;
     parentTenantId?: Prisma.StringNullableFilter<"Tenant"> | string | null;
     tenantType?: Prisma.EnumTenantTypeFilter<"Tenant"> | $Enums.TenantType;
     clientType?:
@@ -455,6 +487,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<
     headers?: Prisma.HeaderListRelationFilter;
     footers?: Prisma.FooterListRelationFilter;
     mediaFolders?: Prisma.MediaFolderListRelationFilter;
+    redirects?: Prisma.RedirectListRelationFilter;
   },
   "id" | "slug"
 >;
@@ -466,6 +499,9 @@ export type TenantOrderByWithAggregationInput = {
   businessType?: Prisma.SortOrderInput | Prisma.SortOrder;
   status?: Prisma.SortOrder;
   isPrimaryTenant?: Prisma.SortOrder;
+  isTemplate?: Prisma.SortOrder;
+  templateName?: Prisma.SortOrderInput | Prisma.SortOrder;
+  templateDescription?: Prisma.SortOrderInput | Prisma.SortOrder;
   parentTenantId?: Prisma.SortOrderInput | Prisma.SortOrder;
   tenantType?: Prisma.SortOrder;
   clientType?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -508,6 +544,15 @@ export type TenantScalarWhereWithAggregatesInput = {
     | null;
   status?: Prisma.StringWithAggregatesFilter<"Tenant"> | string;
   isPrimaryTenant?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean;
+  isTemplate?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean;
+  templateName?:
+    | Prisma.StringNullableWithAggregatesFilter<"Tenant">
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.StringNullableWithAggregatesFilter<"Tenant">
+    | string
+    | null;
   parentTenantId?:
     | Prisma.StringNullableWithAggregatesFilter<"Tenant">
     | string
@@ -559,6 +604,9 @@ export type TenantCreateInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -599,6 +647,7 @@ export type TenantCreateInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateInput = {
@@ -608,6 +657,9 @@ export type TenantUncheckedCreateInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -648,6 +700,7 @@ export type TenantUncheckedCreateInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUpdateInput = {
@@ -660,6 +713,15 @@ export type TenantUpdateInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -717,6 +779,7 @@ export type TenantUpdateInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateInput = {
@@ -729,6 +792,15 @@ export type TenantUncheckedUpdateInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -789,6 +861,7 @@ export type TenantUncheckedUpdateInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateManyInput = {
@@ -798,6 +871,9 @@ export type TenantCreateManyInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -830,6 +906,15 @@ export type TenantUpdateManyMutationInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -878,6 +963,15 @@ export type TenantUncheckedUpdateManyInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -942,6 +1036,9 @@ export type TenantCountOrderByAggregateInput = {
   businessType?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   isPrimaryTenant?: Prisma.SortOrder;
+  isTemplate?: Prisma.SortOrder;
+  templateName?: Prisma.SortOrder;
+  templateDescription?: Prisma.SortOrder;
   parentTenantId?: Prisma.SortOrder;
   tenantType?: Prisma.SortOrder;
   clientType?: Prisma.SortOrder;
@@ -971,6 +1068,9 @@ export type TenantMaxOrderByAggregateInput = {
   businessType?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   isPrimaryTenant?: Prisma.SortOrder;
+  isTemplate?: Prisma.SortOrder;
+  templateName?: Prisma.SortOrder;
+  templateDescription?: Prisma.SortOrder;
   parentTenantId?: Prisma.SortOrder;
   tenantType?: Prisma.SortOrder;
   clientType?: Prisma.SortOrder;
@@ -991,6 +1091,9 @@ export type TenantMinOrderByAggregateInput = {
   businessType?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   isPrimaryTenant?: Prisma.SortOrder;
+  isTemplate?: Prisma.SortOrder;
+  templateName?: Prisma.SortOrder;
+  templateDescription?: Prisma.SortOrder;
   parentTenantId?: Prisma.SortOrder;
   tenantType?: Prisma.SortOrder;
   clientType?: Prisma.SortOrder;
@@ -1647,6 +1750,32 @@ export type TenantUpdateOneRequiredWithoutOrdersNestedInput = {
   >;
 };
 
+export type TenantCreateNestedOneWithoutRedirectsInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutRedirectsInput,
+    Prisma.TenantUncheckedCreateWithoutRedirectsInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutRedirectsInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+};
+
+export type TenantUpdateOneRequiredWithoutRedirectsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.TenantCreateWithoutRedirectsInput,
+    Prisma.TenantUncheckedCreateWithoutRedirectsInput
+  >;
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutRedirectsInput;
+  upsert?: Prisma.TenantUpsertWithoutRedirectsInput;
+  connect?: Prisma.TenantWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.TenantUpdateToOneWithWhereWithoutRedirectsInput,
+      Prisma.TenantUpdateWithoutRedirectsInput
+    >,
+    Prisma.TenantUncheckedUpdateWithoutRedirectsInput
+  >;
+};
+
 export type TenantCreateWithoutChildrenInput = {
   id?: string;
   slug: string;
@@ -1654,6 +1783,9 @@ export type TenantCreateWithoutChildrenInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -1693,6 +1825,7 @@ export type TenantCreateWithoutChildrenInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutChildrenInput = {
@@ -1702,6 +1835,9 @@ export type TenantUncheckedCreateWithoutChildrenInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -1741,6 +1877,7 @@ export type TenantUncheckedCreateWithoutChildrenInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutChildrenInput = {
@@ -1758,6 +1895,9 @@ export type TenantCreateWithoutParentInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -1797,6 +1937,7 @@ export type TenantCreateWithoutParentInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutParentInput = {
@@ -1806,6 +1947,9 @@ export type TenantUncheckedCreateWithoutParentInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -1845,6 +1989,7 @@ export type TenantUncheckedCreateWithoutParentInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutParentInput = {
@@ -1892,6 +2037,15 @@ export type TenantUpdateWithoutChildrenInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -1948,6 +2102,7 @@ export type TenantUpdateWithoutChildrenInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutChildrenInput = {
@@ -1960,6 +2115,15 @@ export type TenantUncheckedUpdateWithoutChildrenInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -2019,6 +2183,7 @@ export type TenantUncheckedUpdateWithoutChildrenInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUpsertWithWhereUniqueWithoutParentInput = {
@@ -2059,6 +2224,9 @@ export type TenantScalarWhereInput = {
   businessType?: Prisma.StringNullableFilter<"Tenant"> | string | null;
   status?: Prisma.StringFilter<"Tenant"> | string;
   isPrimaryTenant?: Prisma.BoolFilter<"Tenant"> | boolean;
+  isTemplate?: Prisma.BoolFilter<"Tenant"> | boolean;
+  templateName?: Prisma.StringNullableFilter<"Tenant"> | string | null;
+  templateDescription?: Prisma.StringNullableFilter<"Tenant"> | string | null;
   parentTenantId?: Prisma.StringNullableFilter<"Tenant"> | string | null;
   tenantType?: Prisma.EnumTenantTypeFilter<"Tenant"> | $Enums.TenantType;
   clientType?:
@@ -2091,6 +2259,9 @@ export type TenantCreateWithoutDomainsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -2130,6 +2301,7 @@ export type TenantCreateWithoutDomainsInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutDomainsInput = {
@@ -2139,6 +2311,9 @@ export type TenantUncheckedCreateWithoutDomainsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -2178,6 +2353,7 @@ export type TenantUncheckedCreateWithoutDomainsInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutDomainsInput = {
@@ -2218,6 +2394,15 @@ export type TenantUpdateWithoutDomainsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -2274,6 +2459,7 @@ export type TenantUpdateWithoutDomainsInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutDomainsInput = {
@@ -2286,6 +2472,15 @@ export type TenantUncheckedUpdateWithoutDomainsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -2345,6 +2540,7 @@ export type TenantUncheckedUpdateWithoutDomainsInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutTenantUsersInput = {
@@ -2354,6 +2550,9 @@ export type TenantCreateWithoutTenantUsersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -2393,6 +2592,7 @@ export type TenantCreateWithoutTenantUsersInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutTenantUsersInput = {
@@ -2402,6 +2602,9 @@ export type TenantUncheckedCreateWithoutTenantUsersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -2441,6 +2644,7 @@ export type TenantUncheckedCreateWithoutTenantUsersInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutTenantUsersInput = {
@@ -2481,6 +2685,15 @@ export type TenantUpdateWithoutTenantUsersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -2537,6 +2750,7 @@ export type TenantUpdateWithoutTenantUsersInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutTenantUsersInput = {
@@ -2549,6 +2763,15 @@ export type TenantUncheckedUpdateWithoutTenantUsersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -2608,6 +2831,7 @@ export type TenantUncheckedUpdateWithoutTenantUsersInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutProjectAssignmentsInput = {
@@ -2617,6 +2841,9 @@ export type TenantCreateWithoutProjectAssignmentsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -2656,6 +2883,7 @@ export type TenantCreateWithoutProjectAssignmentsInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutProjectAssignmentsInput = {
@@ -2665,6 +2893,9 @@ export type TenantUncheckedCreateWithoutProjectAssignmentsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -2704,6 +2935,7 @@ export type TenantUncheckedCreateWithoutProjectAssignmentsInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutProjectAssignmentsInput = {
@@ -2744,6 +2976,15 @@ export type TenantUpdateWithoutProjectAssignmentsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -2800,6 +3041,7 @@ export type TenantUpdateWithoutProjectAssignmentsInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutProjectAssignmentsInput = {
@@ -2812,6 +3054,15 @@ export type TenantUncheckedUpdateWithoutProjectAssignmentsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -2871,6 +3122,7 @@ export type TenantUncheckedUpdateWithoutProjectAssignmentsInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutAssetsInput = {
@@ -2880,6 +3132,9 @@ export type TenantCreateWithoutAssetsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -2919,6 +3174,7 @@ export type TenantCreateWithoutAssetsInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutAssetsInput = {
@@ -2928,6 +3184,9 @@ export type TenantUncheckedCreateWithoutAssetsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -2967,6 +3226,7 @@ export type TenantUncheckedCreateWithoutAssetsInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutAssetsInput = {
@@ -3007,6 +3267,15 @@ export type TenantUpdateWithoutAssetsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -3063,6 +3332,7 @@ export type TenantUpdateWithoutAssetsInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutAssetsInput = {
@@ -3075,6 +3345,15 @@ export type TenantUncheckedUpdateWithoutAssetsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -3134,6 +3413,7 @@ export type TenantUncheckedUpdateWithoutAssetsInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutMediaFoldersInput = {
@@ -3143,6 +3423,9 @@ export type TenantCreateWithoutMediaFoldersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -3182,6 +3465,7 @@ export type TenantCreateWithoutMediaFoldersInput = {
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutMediaFoldersInput = {
@@ -3191,6 +3475,9 @@ export type TenantUncheckedCreateWithoutMediaFoldersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -3230,6 +3517,7 @@ export type TenantUncheckedCreateWithoutMediaFoldersInput = {
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutMediaFoldersInput = {
@@ -3270,6 +3558,15 @@ export type TenantUpdateWithoutMediaFoldersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -3326,6 +3623,7 @@ export type TenantUpdateWithoutMediaFoldersInput = {
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutMediaFoldersInput = {
@@ -3338,6 +3636,15 @@ export type TenantUncheckedUpdateWithoutMediaFoldersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -3397,6 +3704,7 @@ export type TenantUncheckedUpdateWithoutMediaFoldersInput = {
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutLibraryComponentsInput = {
@@ -3406,6 +3714,9 @@ export type TenantCreateWithoutLibraryComponentsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -3445,6 +3756,7 @@ export type TenantCreateWithoutLibraryComponentsInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutLibraryComponentsInput = {
@@ -3454,6 +3766,9 @@ export type TenantUncheckedCreateWithoutLibraryComponentsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -3493,6 +3808,7 @@ export type TenantUncheckedCreateWithoutLibraryComponentsInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutLibraryComponentsInput = {
@@ -3533,6 +3849,15 @@ export type TenantUpdateWithoutLibraryComponentsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -3589,6 +3914,7 @@ export type TenantUpdateWithoutLibraryComponentsInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutLibraryComponentsInput = {
@@ -3601,6 +3927,15 @@ export type TenantUncheckedUpdateWithoutLibraryComponentsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -3660,6 +3995,7 @@ export type TenantUncheckedUpdateWithoutLibraryComponentsInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutMenusInput = {
@@ -3669,6 +4005,9 @@ export type TenantCreateWithoutMenusInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -3708,6 +4047,7 @@ export type TenantCreateWithoutMenusInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutMenusInput = {
@@ -3717,6 +4057,9 @@ export type TenantUncheckedCreateWithoutMenusInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -3756,6 +4099,7 @@ export type TenantUncheckedCreateWithoutMenusInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutMenusInput = {
@@ -3796,6 +4140,15 @@ export type TenantUpdateWithoutMenusInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -3852,6 +4205,7 @@ export type TenantUpdateWithoutMenusInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutMenusInput = {
@@ -3864,6 +4218,15 @@ export type TenantUncheckedUpdateWithoutMenusInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -3923,6 +4286,7 @@ export type TenantUncheckedUpdateWithoutMenusInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutHeadersInput = {
@@ -3932,6 +4296,9 @@ export type TenantCreateWithoutHeadersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -3971,6 +4338,7 @@ export type TenantCreateWithoutHeadersInput = {
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutHeadersInput = {
@@ -3980,6 +4348,9 @@ export type TenantUncheckedCreateWithoutHeadersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -4019,6 +4390,7 @@ export type TenantUncheckedCreateWithoutHeadersInput = {
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutHeadersInput = {
@@ -4059,6 +4431,15 @@ export type TenantUpdateWithoutHeadersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -4115,6 +4496,7 @@ export type TenantUpdateWithoutHeadersInput = {
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutHeadersInput = {
@@ -4127,6 +4509,15 @@ export type TenantUncheckedUpdateWithoutHeadersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -4186,6 +4577,7 @@ export type TenantUncheckedUpdateWithoutHeadersInput = {
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutFootersInput = {
@@ -4195,6 +4587,9 @@ export type TenantCreateWithoutFootersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -4234,6 +4629,7 @@ export type TenantCreateWithoutFootersInput = {
   menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutFootersInput = {
@@ -4243,6 +4639,9 @@ export type TenantUncheckedCreateWithoutFootersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -4282,6 +4681,7 @@ export type TenantUncheckedCreateWithoutFootersInput = {
   menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutFootersInput = {
@@ -4322,6 +4722,15 @@ export type TenantUpdateWithoutFootersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -4378,6 +4787,7 @@ export type TenantUpdateWithoutFootersInput = {
   menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutFootersInput = {
@@ -4390,6 +4800,15 @@ export type TenantUncheckedUpdateWithoutFootersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -4449,6 +4868,7 @@ export type TenantUncheckedUpdateWithoutFootersInput = {
   menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutPagesInput = {
@@ -4458,6 +4878,9 @@ export type TenantCreateWithoutPagesInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -4497,6 +4920,7 @@ export type TenantCreateWithoutPagesInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutPagesInput = {
@@ -4506,6 +4930,9 @@ export type TenantUncheckedCreateWithoutPagesInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -4545,6 +4972,7 @@ export type TenantUncheckedCreateWithoutPagesInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutPagesInput = {
@@ -4585,6 +5013,15 @@ export type TenantUpdateWithoutPagesInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -4641,6 +5078,7 @@ export type TenantUpdateWithoutPagesInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutPagesInput = {
@@ -4653,6 +5091,15 @@ export type TenantUncheckedUpdateWithoutPagesInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -4712,6 +5159,7 @@ export type TenantUncheckedUpdateWithoutPagesInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutPostsInput = {
@@ -4721,6 +5169,9 @@ export type TenantCreateWithoutPostsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -4760,6 +5211,7 @@ export type TenantCreateWithoutPostsInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutPostsInput = {
@@ -4769,6 +5221,9 @@ export type TenantUncheckedCreateWithoutPostsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -4808,6 +5263,7 @@ export type TenantUncheckedCreateWithoutPostsInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutPostsInput = {
@@ -4848,6 +5304,15 @@ export type TenantUpdateWithoutPostsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -4904,6 +5369,7 @@ export type TenantUpdateWithoutPostsInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutPostsInput = {
@@ -4916,6 +5382,15 @@ export type TenantUncheckedUpdateWithoutPostsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -4975,6 +5450,7 @@ export type TenantUncheckedUpdateWithoutPostsInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutPreviewTokensInput = {
@@ -4984,6 +5460,9 @@ export type TenantCreateWithoutPreviewTokensInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -5023,6 +5502,7 @@ export type TenantCreateWithoutPreviewTokensInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutPreviewTokensInput = {
@@ -5032,6 +5512,9 @@ export type TenantUncheckedCreateWithoutPreviewTokensInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -5071,6 +5554,7 @@ export type TenantUncheckedCreateWithoutPreviewTokensInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutPreviewTokensInput = {
@@ -5111,6 +5595,15 @@ export type TenantUpdateWithoutPreviewTokensInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -5167,6 +5660,7 @@ export type TenantUpdateWithoutPreviewTokensInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutPreviewTokensInput = {
@@ -5179,6 +5673,15 @@ export type TenantUncheckedUpdateWithoutPreviewTokensInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -5238,6 +5741,7 @@ export type TenantUncheckedUpdateWithoutPreviewTokensInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutAuditLogsInput = {
@@ -5247,6 +5751,9 @@ export type TenantCreateWithoutAuditLogsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -5286,6 +5793,7 @@ export type TenantCreateWithoutAuditLogsInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutAuditLogsInput = {
@@ -5295,6 +5803,9 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -5334,6 +5845,7 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutAuditLogsInput = {
@@ -5374,6 +5886,15 @@ export type TenantUpdateWithoutAuditLogsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -5430,6 +5951,7 @@ export type TenantUpdateWithoutAuditLogsInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutAuditLogsInput = {
@@ -5442,6 +5964,15 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -5501,6 +6032,7 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutTenantUsageInput = {
@@ -5510,6 +6042,9 @@ export type TenantCreateWithoutTenantUsageInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -5549,6 +6084,7 @@ export type TenantCreateWithoutTenantUsageInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutTenantUsageInput = {
@@ -5558,6 +6094,9 @@ export type TenantUncheckedCreateWithoutTenantUsageInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -5597,6 +6136,7 @@ export type TenantUncheckedCreateWithoutTenantUsageInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutTenantUsageInput = {
@@ -5637,6 +6177,15 @@ export type TenantUpdateWithoutTenantUsageInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -5693,6 +6242,7 @@ export type TenantUpdateWithoutTenantUsageInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutTenantUsageInput = {
@@ -5705,6 +6255,15 @@ export type TenantUncheckedUpdateWithoutTenantUsageInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -5764,6 +6323,7 @@ export type TenantUncheckedUpdateWithoutTenantUsageInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutWebhooksInput = {
@@ -5773,6 +6333,9 @@ export type TenantCreateWithoutWebhooksInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -5812,6 +6375,7 @@ export type TenantCreateWithoutWebhooksInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutWebhooksInput = {
@@ -5821,6 +6385,9 @@ export type TenantUncheckedCreateWithoutWebhooksInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -5860,6 +6427,7 @@ export type TenantUncheckedCreateWithoutWebhooksInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutWebhooksInput = {
@@ -5900,6 +6468,15 @@ export type TenantUpdateWithoutWebhooksInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -5956,6 +6533,7 @@ export type TenantUpdateWithoutWebhooksInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutWebhooksInput = {
@@ -5968,6 +6546,15 @@ export type TenantUncheckedUpdateWithoutWebhooksInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -6027,6 +6614,7 @@ export type TenantUncheckedUpdateWithoutWebhooksInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutProductCategoriesInput = {
@@ -6036,6 +6624,9 @@ export type TenantCreateWithoutProductCategoriesInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -6075,6 +6666,7 @@ export type TenantCreateWithoutProductCategoriesInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutProductCategoriesInput = {
@@ -6084,6 +6676,9 @@ export type TenantUncheckedCreateWithoutProductCategoriesInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -6123,6 +6718,7 @@ export type TenantUncheckedCreateWithoutProductCategoriesInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutProductCategoriesInput = {
@@ -6163,6 +6759,15 @@ export type TenantUpdateWithoutProductCategoriesInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -6219,6 +6824,7 @@ export type TenantUpdateWithoutProductCategoriesInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutProductCategoriesInput = {
@@ -6231,6 +6837,15 @@ export type TenantUncheckedUpdateWithoutProductCategoriesInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -6290,6 +6905,7 @@ export type TenantUncheckedUpdateWithoutProductCategoriesInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutProductsInput = {
@@ -6299,6 +6915,9 @@ export type TenantCreateWithoutProductsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -6338,6 +6957,7 @@ export type TenantCreateWithoutProductsInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutProductsInput = {
@@ -6347,6 +6967,9 @@ export type TenantUncheckedCreateWithoutProductsInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -6386,6 +7009,7 @@ export type TenantUncheckedCreateWithoutProductsInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutProductsInput = {
@@ -6426,6 +7050,15 @@ export type TenantUpdateWithoutProductsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -6482,6 +7115,7 @@ export type TenantUpdateWithoutProductsInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutProductsInput = {
@@ -6494,6 +7128,15 @@ export type TenantUncheckedUpdateWithoutProductsInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -6553,6 +7196,7 @@ export type TenantUncheckedUpdateWithoutProductsInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutCustomersInput = {
@@ -6562,6 +7206,9 @@ export type TenantCreateWithoutCustomersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -6601,6 +7248,7 @@ export type TenantCreateWithoutCustomersInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutCustomersInput = {
@@ -6610,6 +7258,9 @@ export type TenantUncheckedCreateWithoutCustomersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -6649,6 +7300,7 @@ export type TenantUncheckedCreateWithoutCustomersInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutCustomersInput = {
@@ -6689,6 +7341,15 @@ export type TenantUpdateWithoutCustomersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -6745,6 +7406,7 @@ export type TenantUpdateWithoutCustomersInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutCustomersInput = {
@@ -6757,6 +7419,15 @@ export type TenantUncheckedUpdateWithoutCustomersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -6816,6 +7487,7 @@ export type TenantUncheckedUpdateWithoutCustomersInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantCreateWithoutOrdersInput = {
@@ -6825,6 +7497,9 @@ export type TenantCreateWithoutOrdersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -6864,6 +7539,7 @@ export type TenantCreateWithoutOrdersInput = {
   headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantUncheckedCreateWithoutOrdersInput = {
@@ -6873,6 +7549,9 @@ export type TenantUncheckedCreateWithoutOrdersInput = {
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   parentTenantId?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
@@ -6912,6 +7591,7 @@ export type TenantUncheckedCreateWithoutOrdersInput = {
   headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
   footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
   mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+  redirects?: Prisma.RedirectUncheckedCreateNestedManyWithoutTenantInput;
 };
 
 export type TenantCreateOrConnectWithoutOrdersInput = {
@@ -6952,6 +7632,15 @@ export type TenantUpdateWithoutOrdersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -7008,6 +7697,7 @@ export type TenantUpdateWithoutOrdersInput = {
   headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
 };
 
 export type TenantUncheckedUpdateWithoutOrdersInput = {
@@ -7020,6 +7710,15 @@ export type TenantUncheckedUpdateWithoutOrdersInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   parentTenantId?:
     | Prisma.NullableStringFieldUpdateOperationsInput
     | string
@@ -7079,15 +7778,19 @@ export type TenantUncheckedUpdateWithoutOrdersInput = {
   headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
   footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
-export type TenantCreateManyParentInput = {
+export type TenantCreateWithoutRedirectsInput = {
   id?: string;
   slug: string;
   businessName: string;
   businessType?: string | null;
   status?: string;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
   tenantType?: $Enums.TenantType;
   clientType?: $Enums.ClientType | null;
   enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
@@ -7107,9 +7810,110 @@ export type TenantCreateManyParentInput = {
   contactPhone?: string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentCreateNestedManyWithoutTenantInput;
+  parent?: Prisma.TenantCreateNestedOneWithoutChildrenInput;
+  children?: Prisma.TenantCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterCreateNestedManyWithoutTenantInput;
+  mediaFolders?: Prisma.MediaFolderCreateNestedManyWithoutTenantInput;
 };
 
-export type TenantUpdateWithoutParentInput = {
+export type TenantUncheckedCreateWithoutRedirectsInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
+  parentTenantId?: string | null;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  domains?: Prisma.TenantDomainUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsers?: Prisma.TenantUserUncheckedCreateNestedManyWithoutTenantInput;
+  assets?: Prisma.AssetUncheckedCreateNestedManyWithoutTenantInput;
+  pages?: Prisma.PageUncheckedCreateNestedManyWithoutTenantInput;
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutTenantInput;
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTenantInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput;
+  webhooks?: Prisma.WebhookUncheckedCreateNestedManyWithoutTenantInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedCreateNestedManyWithoutTenantInput;
+  children?: Prisma.TenantUncheckedCreateNestedManyWithoutParentInput;
+  productCategories?: Prisma.ProductCategoryUncheckedCreateNestedManyWithoutTenantInput;
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput;
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput;
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutTenantInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedCreateNestedManyWithoutTenantInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedCreateNestedManyWithoutTenantInput;
+  menus?: Prisma.MenuUncheckedCreateNestedManyWithoutTenantInput;
+  headers?: Prisma.HeaderUncheckedCreateNestedManyWithoutTenantInput;
+  footers?: Prisma.FooterUncheckedCreateNestedManyWithoutTenantInput;
+  mediaFolders?: Prisma.MediaFolderUncheckedCreateNestedManyWithoutTenantInput;
+};
+
+export type TenantCreateOrConnectWithoutRedirectsInput = {
+  where: Prisma.TenantWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutRedirectsInput,
+    Prisma.TenantUncheckedCreateWithoutRedirectsInput
+  >;
+};
+
+export type TenantUpsertWithoutRedirectsInput = {
+  update: Prisma.XOR<
+    Prisma.TenantUpdateWithoutRedirectsInput,
+    Prisma.TenantUncheckedUpdateWithoutRedirectsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.TenantCreateWithoutRedirectsInput,
+    Prisma.TenantUncheckedCreateWithoutRedirectsInput
+  >;
+  where?: Prisma.TenantWhereInput;
+};
+
+export type TenantUpdateToOneWithWhereWithoutRedirectsInput = {
+  where?: Prisma.TenantWhereInput;
+  data: Prisma.XOR<
+    Prisma.TenantUpdateWithoutRedirectsInput,
+    Prisma.TenantUncheckedUpdateWithoutRedirectsInput
+  >;
+};
+
+export type TenantUpdateWithoutRedirectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   slug?: Prisma.StringFieldUpdateOperationsInput | string;
   businessName?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7119,6 +7923,15 @@ export type TenantUpdateWithoutParentInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -7164,6 +7977,7 @@ export type TenantUpdateWithoutParentInput = {
   tenantUsage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput;
   webhooks?: Prisma.WebhookUpdateManyWithoutTenantNestedInput;
   projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutTenantNestedInput;
+  parent?: Prisma.TenantUpdateOneWithoutChildrenNestedInput;
   children?: Prisma.TenantUpdateManyWithoutParentNestedInput;
   productCategories?: Prisma.ProductCategoryUpdateManyWithoutTenantNestedInput;
   products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
@@ -7177,7 +7991,7 @@ export type TenantUpdateWithoutParentInput = {
   mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
 };
 
-export type TenantUncheckedUpdateWithoutParentInput = {
+export type TenantUncheckedUpdateWithoutRedirectsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   slug?: Prisma.StringFieldUpdateOperationsInput | string;
   businessName?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7187,6 +8001,19 @@ export type TenantUncheckedUpdateWithoutParentInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  parentTenantId?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -7245,6 +8072,193 @@ export type TenantUncheckedUpdateWithoutParentInput = {
   mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
 };
 
+export type TenantCreateManyParentInput = {
+  id?: string;
+  slug: string;
+  businessName: string;
+  businessType?: string | null;
+  status?: string;
+  isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: string | null;
+  templateDescription?: string | null;
+  tenantType?: $Enums.TenantType;
+  clientType?: $Enums.ClientType | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?: string | null;
+  logoUrl?: string | null;
+  metaDescription?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+};
+
+export type TenantUpdateWithoutParentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUpdateManyWithoutTenantNestedInput;
+  children?: Prisma.TenantUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUpdateManyWithoutTenantNestedInput;
+  mediaFolders?: Prisma.MediaFolderUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUpdateManyWithoutTenantNestedInput;
+};
+
+export type TenantUncheckedUpdateWithoutParentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string;
+  businessType?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  status?: Prisma.StringFieldUpdateOperationsInput | string;
+  isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  tenantType?:
+    | Prisma.EnumTenantTypeFieldUpdateOperationsInput
+    | $Enums.TenantType;
+  clientType?:
+    | Prisma.NullableEnumClientTypeFieldUpdateOperationsInput
+    | $Enums.ClientType
+    | null;
+  enabledFeatures?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  tier?: Prisma.EnumTenantTierFieldUpdateOperationsInput | $Enums.TenantTier;
+  designTokens?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  themeConfig?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  headerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  footerConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue;
+  paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+  paymentProvider?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  metaDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactEmail?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  contactPhone?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  domains?: Prisma.TenantDomainUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsers?: Prisma.TenantUserUncheckedUpdateManyWithoutTenantNestedInput;
+  assets?: Prisma.AssetUncheckedUpdateManyWithoutTenantNestedInput;
+  pages?: Prisma.PageUncheckedUpdateManyWithoutTenantNestedInput;
+  posts?: Prisma.PostUncheckedUpdateManyWithoutTenantNestedInput;
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutTenantNestedInput;
+  tenantUsage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput;
+  webhooks?: Prisma.WebhookUncheckedUpdateManyWithoutTenantNestedInput;
+  projectAssignments?: Prisma.ProjectAssignmentUncheckedUpdateManyWithoutTenantNestedInput;
+  children?: Prisma.TenantUncheckedUpdateManyWithoutParentNestedInput;
+  productCategories?: Prisma.ProductCategoryUncheckedUpdateManyWithoutTenantNestedInput;
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput;
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput;
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutTenantNestedInput;
+  previewTokens?: Prisma.PreviewTokenUncheckedUpdateManyWithoutTenantNestedInput;
+  libraryComponents?: Prisma.LibraryComponentUncheckedUpdateManyWithoutTenantNestedInput;
+  menus?: Prisma.MenuUncheckedUpdateManyWithoutTenantNestedInput;
+  headers?: Prisma.HeaderUncheckedUpdateManyWithoutTenantNestedInput;
+  footers?: Prisma.FooterUncheckedUpdateManyWithoutTenantNestedInput;
+  mediaFolders?: Prisma.MediaFolderUncheckedUpdateManyWithoutTenantNestedInput;
+  redirects?: Prisma.RedirectUncheckedUpdateManyWithoutTenantNestedInput;
+};
+
 export type TenantUncheckedUpdateManyWithoutParentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   slug?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -7255,6 +8269,15 @@ export type TenantUncheckedUpdateManyWithoutParentInput = {
     | null;
   status?: Prisma.StringFieldUpdateOperationsInput | string;
   isPrimaryTenant?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isTemplate?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  templateName?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
+  templateDescription?:
+    | Prisma.NullableStringFieldUpdateOperationsInput
+    | string
+    | null;
   tenantType?:
     | Prisma.EnumTenantTypeFieldUpdateOperationsInput
     | $Enums.TenantType;
@@ -7318,6 +8341,7 @@ export type TenantCountOutputType = {
   headers: number;
   footers: number;
   mediaFolders: number;
+  redirects: number;
 };
 
 export type TenantCountOutputTypeSelect<
@@ -7346,6 +8370,7 @@ export type TenantCountOutputTypeSelect<
   headers?: boolean | TenantCountOutputTypeCountHeadersArgs;
   footers?: boolean | TenantCountOutputTypeCountFootersArgs;
   mediaFolders?: boolean | TenantCountOutputTypeCountMediaFoldersArgs;
+  redirects?: boolean | TenantCountOutputTypeCountRedirectsArgs;
 };
 
 /**
@@ -7561,6 +8586,16 @@ export type TenantCountOutputTypeCountMediaFoldersArgs<
   where?: Prisma.MediaFolderWhereInput;
 };
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountRedirectsArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.RedirectWhereInput;
+};
+
 export type TenantSelect<
   ExtArgs extends
     runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
@@ -7572,6 +8607,9 @@ export type TenantSelect<
     businessType?: boolean;
     status?: boolean;
     isPrimaryTenant?: boolean;
+    isTemplate?: boolean;
+    templateName?: boolean;
+    templateDescription?: boolean;
     parentTenantId?: boolean;
     tenantType?: boolean;
     clientType?: boolean;
@@ -7615,6 +8653,7 @@ export type TenantSelect<
     headers?: boolean | Prisma.Tenant$headersArgs<ExtArgs>;
     footers?: boolean | Prisma.Tenant$footersArgs<ExtArgs>;
     mediaFolders?: boolean | Prisma.Tenant$mediaFoldersArgs<ExtArgs>;
+    redirects?: boolean | Prisma.Tenant$redirectsArgs<ExtArgs>;
     _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs["result"]["tenant"]
@@ -7631,6 +8670,9 @@ export type TenantSelectCreateManyAndReturn<
     businessType?: boolean;
     status?: boolean;
     isPrimaryTenant?: boolean;
+    isTemplate?: boolean;
+    templateName?: boolean;
+    templateDescription?: boolean;
     parentTenantId?: boolean;
     tenantType?: boolean;
     clientType?: boolean;
@@ -7667,6 +8709,9 @@ export type TenantSelectUpdateManyAndReturn<
     businessType?: boolean;
     status?: boolean;
     isPrimaryTenant?: boolean;
+    isTemplate?: boolean;
+    templateName?: boolean;
+    templateDescription?: boolean;
     parentTenantId?: boolean;
     tenantType?: boolean;
     clientType?: boolean;
@@ -7699,6 +8744,9 @@ export type TenantSelectScalar = {
   businessType?: boolean;
   status?: boolean;
   isPrimaryTenant?: boolean;
+  isTemplate?: boolean;
+  templateName?: boolean;
+  templateDescription?: boolean;
   parentTenantId?: boolean;
   tenantType?: boolean;
   clientType?: boolean;
@@ -7731,6 +8779,9 @@ export type TenantOmit<
   | "businessType"
   | "status"
   | "isPrimaryTenant"
+  | "isTemplate"
+  | "templateName"
+  | "templateDescription"
   | "parentTenantId"
   | "tenantType"
   | "clientType"
@@ -7778,6 +8829,7 @@ export type TenantInclude<
   headers?: boolean | Prisma.Tenant$headersArgs<ExtArgs>;
   footers?: boolean | Prisma.Tenant$footersArgs<ExtArgs>;
   mediaFolders?: boolean | Prisma.Tenant$mediaFoldersArgs<ExtArgs>;
+  redirects?: boolean | Prisma.Tenant$redirectsArgs<ExtArgs>;
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type TenantIncludeCreateManyAndReturn<
@@ -7820,6 +8872,7 @@ export type $TenantPayload<
     headers: Prisma.$HeaderPayload<ExtArgs>[];
     footers: Prisma.$FooterPayload<ExtArgs>[];
     mediaFolders: Prisma.$MediaFolderPayload<ExtArgs>[];
+    redirects: Prisma.$RedirectPayload<ExtArgs>[];
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -7829,6 +8882,9 @@ export type $TenantPayload<
       businessType: string | null;
       status: string;
       isPrimaryTenant: boolean;
+      isTemplate: boolean;
+      templateName: string | null;
+      templateDescription: string | null;
       parentTenantId: string | null;
       tenantType: $Enums.TenantType;
       clientType: $Enums.ClientType | null;
@@ -8638,6 +9694,17 @@ export interface Prisma__TenantClient<
       >
     | Null
   >;
+  redirects<T extends Prisma.Tenant$redirectsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Tenant$redirectsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$RedirectPayload<ExtArgs>,
+        T,
+        "findMany",
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8686,6 +9753,9 @@ export interface TenantFieldRefs {
   readonly businessType: Prisma.FieldRef<"Tenant", "String">;
   readonly status: Prisma.FieldRef<"Tenant", "String">;
   readonly isPrimaryTenant: Prisma.FieldRef<"Tenant", "Boolean">;
+  readonly isTemplate: Prisma.FieldRef<"Tenant", "Boolean">;
+  readonly templateName: Prisma.FieldRef<"Tenant", "String">;
+  readonly templateDescription: Prisma.FieldRef<"Tenant", "String">;
   readonly parentTenantId: Prisma.FieldRef<"Tenant", "String">;
   readonly tenantType: Prisma.FieldRef<"Tenant", "TenantType">;
   readonly clientType: Prisma.FieldRef<"Tenant", "ClientType">;
@@ -9776,6 +10846,35 @@ export type Tenant$mediaFoldersArgs<
   distinct?:
     | Prisma.MediaFolderScalarFieldEnum
     | Prisma.MediaFolderScalarFieldEnum[];
+};
+
+/**
+ * Tenant.redirects
+ */
+export type Tenant$redirectsArgs<
+  ExtArgs extends
+    runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Redirect
+   */
+  select?: Prisma.RedirectSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Redirect
+   */
+  omit?: Prisma.RedirectOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RedirectInclude<ExtArgs> | null;
+  where?: Prisma.RedirectWhereInput;
+  orderBy?:
+    | Prisma.RedirectOrderByWithRelationInput
+    | Prisma.RedirectOrderByWithRelationInput[];
+  cursor?: Prisma.RedirectWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.RedirectScalarFieldEnum | Prisma.RedirectScalarFieldEnum[];
 };
 
 /**
