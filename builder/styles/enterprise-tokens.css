@@ -1,0 +1,220 @@
+/**
+ * Enterprise Design System Tokens
+ *
+ * Elevation-based neutral scale that auto-inverts for dark mode.
+ * Inspired by Payload CMS's semantic elevation model.
+ *
+ * Usage: var(--el-0) for page bg, var(--el-800) for primary text, etc.
+ * In dark mode, the scale inverts automatically.
+ */
+
+:root {
+  /* =========================================================================
+   * Base Neutral Scale (21 steps)
+   * Pure neutral, no color bias
+   * ========================================================================= */
+  --base-0: #ffffff;
+  --base-50: #f8f8f8;
+  --base-100: #f0f0f0;
+  --base-150: #e0e0e0;
+  --base-200: #d0d0d0;
+  --base-250: #bfbfbf;
+  --base-300: #ababab;
+  --base-400: #8c8c8c;
+  --base-500: #707070;
+  --base-600: #555555;
+  --base-700: #3d3d3d;
+  --base-800: #2a2a2a;
+  --base-850: #1f1f1f;
+  --base-900: #161616;
+  --base-950: #0d0d0d;
+  --base-1000: #000000;
+
+  /* =========================================================================
+   * Elevation Scale (semantic, auto-inverts in dark mode)
+   * el-0 = page bg, el-50 = subtle bg, el-800 = primary text
+   * ========================================================================= */
+  --el-0: var(--base-0);
+  --el-50: var(--base-50);
+  --el-100: var(--base-100);
+  --el-150: var(--base-150);
+  --el-200: var(--base-200);
+  --el-250: var(--base-250);
+  --el-300: var(--base-300);
+  --el-400: var(--base-400);
+  --el-500: var(--base-500);
+  --el-600: var(--base-600);
+  --el-700: var(--base-700);
+  --el-800: var(--base-800);
+  --el-850: var(--base-850);
+  --el-900: var(--base-900);
+  --el-950: var(--base-950);
+  --el-1000: var(--base-1000);
+
+  /* =========================================================================
+   * Status Colors
+   * ========================================================================= */
+  --status-success: #16a34a;
+  --status-success-subtle: #f0fdf4;
+  --status-warning: #ca8a04;
+  --status-warning-subtle: #fefce8;
+  --status-error: #dc2626;
+  --status-error-subtle: #fef2f2;
+  --status-info: #2563eb;
+  --status-info-subtle: #eff6ff;
+
+  /* =========================================================================
+   * Brand Accent
+   * ========================================================================= */
+  --accent-primary: #1a73e8;
+  --accent-primary-hover: #1557b0;
+  --accent-primary-subtle: #e8f0fe;
+  --accent-primary-foreground: #ffffff;
+
+  /* =========================================================================
+   * Semantic Aliases
+   * ========================================================================= */
+  --page-bg: var(--el-0);
+  --surface: var(--el-0);
+  --surface-raised: var(--el-50);
+  --surface-overlay: var(--el-0);
+
+  --text-primary: var(--el-800);
+  --text-secondary: var(--el-500);
+  --text-tertiary: var(--el-400);
+  --text-disabled: var(--el-300);
+  --text-inverse: var(--el-0);
+
+  --border-default: var(--el-150);
+  --border-subtle: var(--el-100);
+  --border-strong: var(--el-200);
+  --border-focus: var(--accent-primary);
+
+  --input-bg: var(--el-0);
+  --input-border: var(--el-150);
+  --input-border-hover: var(--el-250);
+  --input-border-focus: var(--accent-primary);
+  --input-placeholder: var(--el-400);
+
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+
+  /* =========================================================================
+   * Typography
+   * System font stack — fast, native, professional
+   * ========================================================================= */
+  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", Menlo, Consolas, Monaco, monospace;
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.75rem;
+  --text-base: 0.8125rem;
+  --text-md: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.125rem;
+  --text-2xl: 1.375rem;
+  --text-3xl: 1.625rem;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* =========================================================================
+   * Spacing (4px grid)
+   * ========================================================================= */
+  --sp-0: 0px;
+  --sp-px: 1px;
+  --sp-0-5: 2px;
+  --sp-1: 4px;
+  --sp-1-5: 6px;
+  --sp-2: 8px;
+  --sp-2-5: 10px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* =========================================================================
+   * Radius (conservative — enterprise, not playful)
+   * ========================================================================= */
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-full: 9999px;
+
+  /* =========================================================================
+   * Shadows (subtle, opacity-based)
+   * ========================================================================= */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+
+  /* =========================================================================
+   * Layout Dimensions
+   * ========================================================================= */
+  --nav-width: 240px;
+  --nav-width-collapsed: 48px;
+  --header-height: 48px;
+  --content-max-width: 1200px;
+  --gutter: 24px;
+
+  /* =========================================================================
+   * Transitions
+   * ========================================================================= */
+  --ease-out: cubic-bezier(0, 0.2, 0.2, 1);
+  --duration-fast: 100ms;
+  --duration-normal: 150ms;
+  --duration-slow: 200ms;
+}
+
+/* =========================================================================
+ * Dark Mode — Invert the elevation scale
+ * ========================================================================= */
+.dark {
+  --el-0: var(--base-900);
+  --el-50: var(--base-850);
+  --el-100: var(--base-800);
+  --el-150: var(--base-700);
+  --el-200: var(--base-600);
+  --el-250: var(--base-500);
+  --el-300: var(--base-400);
+  --el-400: var(--base-300);
+  --el-500: var(--base-250);
+  --el-600: var(--base-200);
+  --el-700: var(--base-150);
+  --el-800: var(--base-100);
+  --el-850: var(--base-50);
+  --el-900: var(--base-0);
+  --el-950: var(--base-0);
+  --el-1000: var(--base-0);
+
+  /* Status colors — slightly brighter in dark mode */
+  --status-success: #22c55e;
+  --status-success-subtle: #052e16;
+  --status-warning: #eab308;
+  --status-warning-subtle: #422006;
+  --status-error: #ef4444;
+  --status-error-subtle: #450a0a;
+  --status-info: #3b82f6;
+  --status-info-subtle: #172554;
+
+  /* Accent */
+  --accent-primary: #4d9ef6;
+  --accent-primary-hover: #6db3ff;
+  --accent-primary-subtle: #172554;
+
+  /* Semantic re-derived from inverted elevation */
+  --input-bg: var(--el-50);
+  --overlay-bg: rgba(0, 0, 0, 0.75);
+
+  /* Shadows — use lighter opacity on dark */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 4px -1px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+}

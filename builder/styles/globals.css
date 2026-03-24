@@ -1,9 +1,9 @@
 @import "tailwindcss";
+@import "./enterprise-tokens.css";
 @import "./builder-tokens.css";
 
 /* Shared WYSIWYG tokens - Single source of truth for builder/client parity */
 @import "@enterprise/tokens/css";
-/* @import "tw-animate-css"; */
 
 /* =============================================================================
  * COMPREHENSIVE TAILWIND SAFELIST
@@ -493,78 +493,74 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: var(--radius-md);
 
   /* ==========================================================================
-   * BUILDER UI TOKENS (--builder-*)
-   * These are for the builder interface: sidebar, panels, buttons, popovers
+   * BUILDER UI TOKENS — mapped to elevation system
    * ========================================================================== */
-  --builder-background: var(--color-slate-50);
-  --builder-foreground: var(--color-slate-950);
-  --builder-card: var(--color-white);
-  --builder-card-foreground: var(--color-slate-950);
-  --builder-popover: oklch(1 0 0);
-  --builder-popover-foreground: oklch(0.145 0 0);
-  --builder-primary: #1a3f56;
-  --builder-primary-foreground: var(--color-white);
-  --builder-secondary: #ac8365;
-  --builder-secondary-foreground: var(--color-white);
-  --builder-editor-primary: var(--color-pink-500);
-  --builder-primary-editor--foreground: var(--color-white);
-  --builder-editor-secondary: var(--color-pink-500);
-  --builder-editor-secondary-foreground: var(--color-white);
-  --builder-muted: var(--color-slate-200);
-  --builder-muted-foreground: var(--color-slate-600);
-  --builder-accent: var(--color-slate-100);
-  --builder-accent-foreground: oklch(0.25 0.08 195);
-  --builder-destructive: oklch(63.7% 0.237 25.331);
-  --builder-border: var(--color-slate-200);
-  --builder-input: var(--color-slate-300);
-  --builder-ring: var(--color-emerald-700);
-  /* Sidebar */
-  --sidebar: var(--color-slate-50);
-  --sidebar-foreground: oklch(0.145 0.01 270);
-  --sidebar-primary: var(--color-emerald-900);
-  --sidebar-primary-foreground: var(--color-lime-50);
-  --sidebar-accent: var(--color-slate-200);
-  --sidebar-accent-foreground: var(--color-black);
-  --sidebar-border: var(--color-slate-200);
-  --sidebar-ring: oklch(96.2% 0.044 156.743);
+  --builder-background: var(--el-50);
+  --builder-foreground: var(--el-800);
+  --builder-card: var(--el-0);
+  --builder-card-foreground: var(--el-800);
+  --builder-popover: var(--el-0);
+  --builder-popover-foreground: var(--el-800);
+  --builder-primary: var(--accent-primary);
+  --builder-primary-foreground: var(--accent-primary-foreground);
+  --builder-secondary: var(--el-100);
+  --builder-secondary-foreground: var(--el-800);
+  --builder-muted: var(--el-100);
+  --builder-muted-foreground: var(--el-500);
+  --builder-accent: var(--el-50);
+  --builder-accent-foreground: var(--el-800);
+  --builder-destructive: var(--status-error);
+  --builder-border: var(--el-150);
+  --builder-input: var(--el-150);
+  --builder-ring: var(--accent-primary);
+
+  /* Sidebar — clean, minimal */
+  --sidebar: var(--el-0);
+  --sidebar-foreground: var(--el-800);
+  --sidebar-primary: var(--accent-primary);
+  --sidebar-primary-foreground: var(--accent-primary-foreground);
+  --sidebar-accent: var(--el-50);
+  --sidebar-accent-foreground: var(--el-800);
+  --sidebar-border: var(--el-100);
+  --sidebar-ring: var(--accent-primary);
+
   /* Charts */
-  --chart-1: oklch(0.53 0.195 264.5);
-  --chart-2: oklch(0.65 0.15 162);
-  --chart-3: oklch(0.6 0.12 195);
-  --chart-4: oklch(0.7 0.18 84.429);
-  --chart-5: oklch(0.5 0.2 320);
+  --chart-1: #2563eb;
+  --chart-2: #16a34a;
+  --chart-3: #ca8a04;
+  --chart-4: #dc2626;
+  --chart-5: #7c3aed;
 
   /* ==========================================================================
    * THEME/DESIGN TOKENS (--theme-*)
-   * These are for the design preview canvas - what the end user's site looks like
-   * Uses explicit color values to avoid dependency on Tailwind CSS variables
+   * For the design preview canvas — what the end user's site looks like.
+   * Overridden by TenantProvider when tokens load from API.
    * ========================================================================== */
   --theme-background: #ffffff;
-  --theme-foreground: oklch(0.145 0 0);
-  --theme-card: oklch(0.985 0.002 247.839);
-  --theme-card-foreground: oklch(0.21 0.006 285.885);
+  --theme-foreground: #1a1a1a;
+  --theme-card: #fafafa;
+  --theme-card-foreground: #1a1a1a;
   --theme-popover: #ffffff;
-  --theme-popover-foreground: oklch(0.145 0 0);
-  --theme-primary: #1a3f56;
+  --theme-popover-foreground: #1a1a1a;
+  --theme-primary: #1a73e8;
   --theme-primary-foreground: #ffffff;
-  --theme-secondary: #ac8365;
+  --theme-secondary: #6b7280;
   --theme-secondary-foreground: #ffffff;
-  --theme-muted: oklch(0.967 0.001 286.375);
-  --theme-muted-foreground: oklch(0.552 0.016 285.938);
-  --theme-accent: oklch(0.967 0.001 286.375);
-  --theme-accent-foreground: oklch(0.21 0.006 285.885);
-  --theme-destructive: oklch(63.7% 0.237 25.331);
-  --theme-border: oklch(0.92 0.004 286.32);
-  --theme-input: oklch(0.92 0.004 286.32);
-  --theme-ring: oklch(0.145 0 0);
+  --theme-muted: #f3f4f6;
+  --theme-muted-foreground: #6b7280;
+  --theme-accent: #f3f4f6;
+  --theme-accent-foreground: #1a1a1a;
+  --theme-destructive: #dc2626;
+  --theme-border: #e5e7eb;
+  --theme-input: #e5e7eb;
+  --theme-ring: #1a73e8;
 
   /* ==========================================================================
-   * LEGACY ALIASES (for existing component compatibility)
-   * These map to builder tokens by default. Components in the design canvas
-   * should use --theme-* directly or be wrapped with .design-preview
+   * LEGACY ALIASES — bridge to elevation system
+   * Existing components use these, new components should use --el-* directly
    * ========================================================================== */
   --background: var(--builder-background);
   --foreground: var(--builder-foreground);
@@ -588,68 +584,15 @@
 
 .dark {
   /* ==========================================================================
-   * BUILDER UI TOKENS - Dark Mode
+   * Dark mode: elevation scale inverts via enterprise-tokens.css
+   * Builder tokens auto-derive from --el-* so no manual overrides needed.
+   * Only chart colors need explicit dark variants.
    * ========================================================================== */
-  --builder-background: var(--color-zinc-900);
-  --builder-foreground: oklch(0.985 0.005 270);
-  --builder-card: var(--color-zinc-800);
-  --builder-card-foreground: oklch(0.985 0.005 270);
-  --builder-popover: var(--color-zinc-800);
-  --builder-popover-foreground: oklch(0.985 0.005 270);
-  --builder-primary: var(--color-teal-600);
-  --builder-primary-foreground: var(--color-emerald-50);
-  --builder-secondary: var(--color-blue-500);
-  --builder-secondary-foreground: oklch(0.91 0.04 162);
-  --builder-muted: var(--color-zinc-700);
-  --builder-muted-foreground: var(--color-zinc-300);
-  --builder-accent: var(--color-zinc-700);
-  --builder-accent-foreground: oklch(0.985 0.005 270);
-  --builder-destructive: oklch(0.704 0.191 22.216);
-  --builder-border: var(--color-zinc-700);
-  --builder-input: oklch(1 0 0 / 18%);
-  --builder-ring: oklch(0.65 0.22 264.5);
-  /* Sidebar */
-  --sidebar: var(--color-zinc-900);
-  --sidebar-foreground: oklch(0.92 0.005 270);
-  --sidebar-primary: var(--color-emerald-800);
-  --sidebar-primary-foreground: var(--color-emerald-100);
-  --sidebar-accent: var(--color-emerald-900);
-  --sidebar-accent-foreground: oklch(0.88 0.04 195);
-  --sidebar-border: var(--color-zinc-800);
-  --sidebar-ring: oklch(0.65 0.22 264.5);
-  /* Charts */
-  --chart-1: oklch(0.65 0.22 264.5);
-  --chart-2: oklch(0.7 0.18 162);
-  --chart-3: oklch(0.68 0.15 195);
-  --chart-4: oklch(0.75 0.2 84.429);
-  --chart-5: oklch(0.6 0.24 320);
-
-  /* ==========================================================================
-   * THEME/DESIGN TOKENS - NOT overridden in dark mode!
-   * Theme tokens come from Global Settings / tenant tokens and are independent
-   * of the builder's UI theme. The :root defaults are overwritten by
-   * TenantProvider when it loads tokens from the API.
-   * ========================================================================== */
-
-  /* Legacy aliases - map to builder tokens in dark mode */
-  --background: var(--builder-background);
-  --foreground: var(--builder-foreground);
-  --card: var(--builder-card);
-  --card-foreground: var(--builder-card-foreground);
-  --popover: var(--builder-popover);
-  --popover-foreground: var(--builder-popover-foreground);
-  --primary: var(--builder-primary);
-  --primary-foreground: var(--builder-primary-foreground);
-  --secondary: var(--builder-secondary);
-  --secondary-foreground: var(--builder-secondary-foreground);
-  --muted: var(--builder-muted);
-  --muted-foreground: var(--builder-muted-foreground);
-  --accent: var(--builder-accent);
-  --accent-foreground: var(--builder-accent-foreground);
-  --destructive: var(--builder-destructive);
-  --border: var(--builder-border);
-  --input: var(--builder-input);
-  --ring: var(--builder-ring);
+  --chart-1: #3b82f6;
+  --chart-2: #22c55e;
+  --chart-3: #eab308;
+  --chart-4: #ef4444;
+  --chart-5: #a855f7;
 }
 
 /* =============================================================================
@@ -721,7 +664,7 @@
 
   .scrollbar-x::-webkit-scrollbar-thumb:hover,
   .scrollbar-y::-webkit-scrollbar-thumb:hover {
-    /* @apply bg-(--background)/50; */
+    @apply bg-(--foreground)/20;
   }
 }
 
