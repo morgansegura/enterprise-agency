@@ -1,0 +1,140 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Shop Dashboard
+   ============================================================================ */
+
+.shop-dashboard {
+  @apply space-y-6;
+}
+
+/* Stats Grid */
+.shop-stats-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4;
+}
+
+.shop-stat-card {
+  @apply bg-(--el-0) border border-(--border-subtle) rounded-md p-4;
+  box-shadow: var(--shadow-xs);
+}
+
+.shop-stat-header {
+  @apply flex items-center justify-between mb-2;
+}
+
+.shop-stat-label {
+  @apply text-sm font-medium text-(--el-400);
+}
+
+.shop-stat-icon {
+  @apply h-4 w-4 text-(--el-300);
+}
+
+.shop-stat-value {
+  @apply text-2xl font-bold text-(--foreground);
+}
+
+.shop-stat-subtext {
+  @apply text-xs text-(--el-400) mt-1;
+}
+
+/* Quick Links */
+.shop-links-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-4;
+}
+
+.shop-link-card {
+  @apply bg-(--el-0) border border-(--border-subtle) rounded-md p-5;
+  @apply hover:border-(--accent-primary) transition-colors cursor-pointer;
+  box-shadow: var(--shadow-xs);
+}
+
+.shop-link-card-header {
+  @apply flex items-center gap-3 mb-3;
+}
+
+.shop-link-card-icon {
+  @apply flex items-center justify-center w-10 h-10 rounded-lg;
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary);
+}
+
+.shop-link-card-icon svg {
+  @apply h-5 w-5;
+}
+
+.shop-link-card-title {
+  @apply text-base font-semibold text-(--foreground);
+}
+
+.shop-link-card-description {
+  @apply text-sm text-(--el-400);
+}
+
+.shop-link-card-footer {
+  @apply flex items-center justify-between;
+}
+
+.shop-link-card-count {
+  @apply text-sm text-(--el-400);
+}
+
+.shop-link-card-arrow {
+  @apply h-4 w-4 text-(--el-300);
+}
+
+/* Recent Orders Section */
+.shop-recent-orders {
+  @apply bg-(--el-0) border border-(--border-subtle) rounded-md;
+  box-shadow: var(--shadow-xs);
+}
+
+.shop-recent-orders-header {
+  @apply flex items-center justify-between px-5 py-4 border-b border-(--border-subtle);
+}
+
+.shop-recent-orders-title {
+  @apply text-base font-semibold text-(--foreground);
+}
+
+.shop-recent-orders-body {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.shop-recent-order-row {
+  @apply flex items-center justify-between px-5 py-3;
+  @apply hover:bg-(--el-50) transition-colors;
+}
+
+.shop-recent-order-info {
+  @apply flex flex-col gap-0.5;
+}
+
+.shop-recent-order-number {
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.shop-recent-order-email {
+  @apply text-xs text-(--el-400);
+}
+
+.shop-recent-order-right {
+  @apply flex flex-col items-end gap-0.5;
+}
+
+.shop-recent-order-total {
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.shop-recent-order-status {
+  @apply text-xs capitalize;
+}
+
+/* Empty State */
+.shop-empty-orders {
+  @apply text-center py-8 text-(--el-400) text-sm;
+}
+
+/* Skeleton */
+.shop-skeleton-card {
+  @apply h-24 rounded-md;
+}

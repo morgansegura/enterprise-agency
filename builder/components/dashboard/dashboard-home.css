@@ -1,251 +1,270 @@
 @reference "tailwindcss";
 
-.dashboard-home {
-  @apply space-y-6;
+/* =============================================================================
+   Dashboard Home — Enterprise dashboard
+   ============================================================================= */
+
+.dashboard {
+  @apply flex flex-col gap-8 p-6 max-w-[1200px] mx-auto w-full;
 }
 
-.dashboard-home-card {
-  @apply bg-(--background) shadow rounded-lg p-6 border;
+/* =============================================================================
+   Welcome Section
+   ============================================================================= */
+
+.dashboard-welcome {
+  @apply flex flex-col gap-1;
 }
 
-.dashboard-home-welcome-title {
-  @apply text-2xl font-bold text-(--foreground) mb-2;
+.dashboard-greeting {
+  @apply text-[20px] font-semibold text-(--text-primary) leading-tight tracking-tight;
 }
 
-.dashboard-home-welcome-subtitle {
-  @apply text-(--muted-foreground);
+.dashboard-date {
+  @apply text-[11px] uppercase tracking-wider text-(--text-tertiary);
 }
 
-/* Summary Stats Grid */
-.dashboard-summary-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4;
+/* =============================================================================
+   Stats Grid
+   ============================================================================= */
+
+.dashboard-stats {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
 }
 
-.dashboard-summary-card {
-  @apply bg-(--card) border border-(--border) rounded-lg p-4;
+.dashboard-stat-card {
+  @apply bg-(--el-0) border border-(--border-default) p-4;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
 }
 
-.dashboard-summary-card-success {
-  @apply border-l-4 border-l-green-500;
+.dashboard-stat-label {
+  @apply text-[11px] font-medium uppercase tracking-wider text-(--text-tertiary) mb-2;
 }
 
-.dashboard-summary-card-warning {
-  @apply border-l-4 border-l-yellow-500;
+.dashboard-stat-row {
+  @apply flex items-end justify-between;
 }
 
-.dashboard-summary-card-danger {
-  @apply border-l-4 border-l-red-500;
+.dashboard-stat-value {
+  @apply text-[24px] font-semibold leading-none text-(--text-primary);
 }
 
-.dashboard-summary-header {
-  @apply flex items-center justify-between mb-2;
+.dashboard-stat-trend {
+  @apply text-[11px] font-medium leading-none;
 }
 
-.dashboard-summary-title {
-  @apply text-sm font-medium text-(--muted-foreground);
-}
-
-.dashboard-summary-icon {
-  @apply h-4 w-4 text-(--muted-foreground);
-}
-
-.dashboard-summary-value {
-  @apply text-2xl font-bold text-(--foreground);
-}
-
-.dashboard-summary-subtext {
-  @apply text-xs text-(--muted-foreground) mt-1;
-}
-
-/* Section Styles */
-.dashboard-section-header {
-  @apply flex items-center justify-between mb-4;
-}
-
-.dashboard-section-title {
-  @apply text-lg font-semibold text-(--foreground);
-}
-
-.dashboard-section-badge {
-  @apply text-sm text-(--muted-foreground) bg-(--muted) px-2 py-1 rounded;
-}
-
-/* Tier Distribution */
-.dashboard-tier-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4;
-}
-
-.dashboard-tier-card {
-  @apply flex items-center gap-4 p-4 bg-(--muted)/50 rounded-lg;
-}
-
-.dashboard-tier-icon {
-  @apply h-12 w-12 rounded-full flex items-center justify-center;
-}
-
-.dashboard-tier-icon-builder {
-  @apply bg-purple-100 text-purple-600;
-}
-
-.dashboard-tier-icon-editor {
-  @apply bg-blue-100 text-blue-600;
-}
-
-.dashboard-tier-content {
-  @apply flex-1;
-}
-
-.dashboard-tier-label {
-  @apply text-sm text-(--muted-foreground);
-}
-
-.dashboard-tier-value {
-  @apply text-xl font-bold text-(--foreground);
-}
-
-/* Health Table */
-.dashboard-health-table {
-  @apply w-full overflow-x-auto;
-}
-
-.dashboard-health-header {
-  @apply hidden md:grid md:grid-cols-7 gap-4 py-3 px-4 bg-(--muted) rounded-t-lg text-sm font-medium text-(--muted-foreground);
-}
-
-.dashboard-health-row {
-  @apply grid grid-cols-2 md:grid-cols-7 gap-2 md:gap-4 py-4 px-4 border-b border-(--border) hover:bg-(--muted)/50 transition-colors items-center;
-}
-
-.dashboard-health-cell {
-  @apply text-sm;
-}
-
-.dashboard-health-cell-name {
-  @apply col-span-2 md:col-span-1 flex flex-col;
-}
-
-.dashboard-health-name {
-  @apply font-medium text-(--foreground);
-}
-
-.dashboard-health-slug {
-  @apply text-xs text-(--muted-foreground);
-}
-
-/* Health Status */
-.dashboard-health-status {
-  @apply inline-flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full;
-}
-
-.dashboard-health-status-active {
-  @apply bg-green-100 text-green-700;
-}
-
-.dashboard-health-status-idle {
-  @apply bg-yellow-100 text-yellow-700;
-}
-
-.dashboard-health-status-inactive {
-  @apply bg-red-100 text-red-700;
-}
-
-.health-icon {
-  @apply h-3.5 w-3.5;
-}
-
-.health-icon-active {
+.dashboard-stat-trend-up {
   @apply text-green-600;
 }
 
-.health-icon-idle {
-  @apply text-yellow-600;
+.dashboard-stat-trend-down {
+  @apply text-red-500;
 }
 
-.health-icon-inactive {
-  @apply text-red-600;
+.dashboard-stat-trend-neutral {
+  @apply text-(--text-tertiary);
+}
+
+.dashboard-stat-sub {
+  @apply text-[11px] text-(--text-tertiary) mt-1.5;
+}
+
+/* =============================================================================
+   Stats Skeleton
+   ============================================================================= */
+
+.dashboard-stat-skeleton {
+  @apply bg-(--el-0) border border-(--border-default) p-4 flex flex-col gap-3;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+}
+
+/* =============================================================================
+   Health Table
+   ============================================================================= */
+
+.dashboard-table-section {
+  @apply flex flex-col gap-0;
+}
+
+.dashboard-table-header-bar {
+  @apply flex items-center justify-between mb-4;
+}
+
+.dashboard-table-title {
+  @apply text-[13px] font-semibold text-(--text-primary);
+}
+
+.dashboard-table-count {
+  @apply text-[11px] text-(--text-tertiary) font-normal;
+}
+
+.dashboard-table {
+  @apply w-full bg-(--el-0) border border-(--border-default) overflow-hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+}
+
+.dashboard-table-head {
+  @apply border-b border-(--border-subtle);
+}
+
+.dashboard-table-head-row {
+  @apply flex items-center px-3;
+}
+
+.dashboard-table-th {
+  @apply py-2.5 px-2 text-[11px] font-normal uppercase tracking-wider text-(--el-400) select-none text-left;
+}
+
+.dashboard-table-th-client {
+  @apply flex-1 min-w-0;
+}
+
+.dashboard-table-th-status {
+  @apply w-24;
+}
+
+.dashboard-table-th-tier {
+  @apply w-24;
+}
+
+.dashboard-table-th-pages {
+  @apply w-20 text-right;
+}
+
+.dashboard-table-th-activity {
+  @apply w-28 hidden lg:block;
+}
+
+.dashboard-table-th-health {
+  @apply w-20 text-center;
+}
+
+/* Table Body */
+.dashboard-table-body {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.dashboard-table-row {
+  @apply flex items-center px-3 transition-colors cursor-pointer;
+  @apply hover:bg-(--el-50);
+}
+
+.dashboard-table-td {
+  @apply py-2.5 px-2 text-[13px];
+}
+
+.dashboard-table-td-client {
+  @apply flex-1 min-w-0 flex flex-col;
+}
+
+.dashboard-table-client-name {
+  @apply text-[13px] font-medium text-(--text-primary) truncate;
+}
+
+.dashboard-table-client-slug {
+  @apply text-[11px] text-(--text-tertiary) truncate;
+}
+
+.dashboard-table-td-status {
+  @apply w-24;
+}
+
+.dashboard-table-td-tier {
+  @apply w-24;
+}
+
+.dashboard-table-td-pages {
+  @apply w-20 text-right text-[13px] text-(--text-secondary) tabular-nums;
+}
+
+.dashboard-table-td-activity {
+  @apply w-28 hidden lg:block text-[13px];
+}
+
+.dashboard-table-td-health {
+  @apply w-20 flex items-center justify-center;
+}
+
+/* Status Pill */
+.dashboard-status-pill {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium leading-tight;
+  border-radius: var(--radius-sm);
+}
+
+.dashboard-status-active {
+  @apply bg-green-50 text-green-700;
+}
+
+.dashboard-status-idle {
+  @apply bg-amber-50 text-amber-700;
+}
+
+.dashboard-status-inactive {
+  @apply bg-(--el-100) text-(--el-400);
 }
 
 /* Tier Badge */
-.dashboard-health-tier {
-  @apply text-xs font-medium px-2 py-1 rounded;
+.dashboard-tier-badge {
+  @apply inline-flex items-center px-1.5 py-0.5 text-[11px] font-medium leading-tight;
+  border-radius: var(--radius-sm);
 }
 
-.dashboard-health-tier-builder {
-  @apply bg-purple-100 text-purple-700;
+.dashboard-tier-builder {
+  @apply bg-purple-50 text-purple-600;
 }
 
-.dashboard-health-tier-content_editor {
-  @apply bg-blue-100 text-blue-700;
+.dashboard-tier-editor {
+  @apply bg-blue-50 text-blue-600;
 }
 
-/* Content Stats */
-.dashboard-health-content {
-  @apply flex items-center gap-1 text-(--muted-foreground);
+/* Health Dot */
+.dashboard-health-dot {
+  @apply inline-block w-2 h-2 rounded-full;
 }
 
-/* Activity */
-.dashboard-health-activity {
-  @apply flex items-center gap-1 text-green-600;
+.dashboard-health-dot-active {
+  @apply bg-green-500;
 }
 
-.dashboard-health-no-activity {
-  @apply text-(--muted-foreground);
+.dashboard-health-dot-idle {
+  @apply bg-amber-400;
 }
 
-.dashboard-health-last-active {
-  @apply text-(--muted-foreground);
+.dashboard-health-dot-inactive {
+  @apply bg-red-400;
 }
 
-/* Error State */
+/* Activity Cell */
+.dashboard-activity-text {
+  @apply text-green-600;
+}
+
+.dashboard-activity-none {
+  @apply text-(--text-tertiary);
+}
+
+/* =============================================================================
+   Table Skeleton
+   ============================================================================= */
+
+.dashboard-table-skeleton-row {
+  @apply flex items-center px-3 py-2.5 gap-3;
+  @apply border-b border-(--border-subtle) last:border-b-0;
+}
+
+/* =============================================================================
+   Error State
+   ============================================================================= */
+
 .dashboard-error {
-  @apply flex items-center gap-2 p-4 bg-red-50 text-red-600 rounded-lg;
+  @apply flex items-center gap-2 px-4 py-3 text-[13px] text-(--status-error);
+  @apply bg-(--status-error-subtle) border border-red-200;
+  border-radius: var(--radius-md);
 }
 
-/* Legacy styles (kept for compatibility) */
-.dashboard-home-card-title {
-  @apply text-lg font-semibold text-(--foreground) mb-4;
-}
-
-.dashboard-home-info-grid {
-  @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
-}
-
-.dashboard-home-info-label {
-  @apply text-sm font-medium text-(--muted-foreground);
-}
-
-.dashboard-home-info-value {
-  @apply mt-1 text-sm text-(--foreground);
-}
-
-.dashboard-home-tenants-grid {
-  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
-}
-
-.dashboard-home-tenant-card {
-  @apply border rounded-lg p-4 hover:border-(--primary) transition-colors;
-}
-
-.dashboard-home-tenant-name {
-  @apply font-medium text-(--foreground);
-}
-
-.dashboard-home-tenant-info {
-  @apply text-sm text-(--muted-foreground) mt-1;
-}
-
-.dashboard-home-actions-grid {
-  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
-}
-
-.dashboard-home-action-button {
-  @apply flex flex-col items-center justify-center p-6 border-2 border-dashed border-(--border) rounded-lg hover:border-(--primary) transition-colors;
-}
-
-.dashboard-home-action-icon {
-  @apply h-12 w-12 text-(--muted-foreground);
-}
-
-.dashboard-home-action-label {
-  @apply mt-2 text-sm font-medium text-(--foreground);
+.dashboard-error-icon {
+  @apply h-4 w-4 shrink-0;
 }

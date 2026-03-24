@@ -1,0 +1,194 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Orders List
+   ============================================================================ */
+
+.orders-page {
+  @apply flex-1 space-y-6;
+}
+
+/* Stats Row */
+.orders-stats-row {
+  @apply grid grid-cols-2 lg:grid-cols-4 gap-4;
+}
+
+.orders-stat-card {
+  @apply bg-(--el-0) border border-(--border-subtle) rounded-md p-4;
+  box-shadow: var(--shadow-xs);
+}
+
+.orders-stat-header {
+  @apply flex items-center justify-between mb-2;
+}
+
+.orders-stat-label {
+  @apply text-sm font-medium text-(--el-400);
+}
+
+.orders-stat-icon {
+  @apply h-4 w-4 text-(--el-300);
+}
+
+.orders-stat-value {
+  @apply text-2xl font-bold text-(--foreground);
+}
+
+/* Filters */
+.orders-filters {
+  @apply flex items-center gap-3;
+}
+
+.orders-search {
+  @apply relative flex-1 max-w-sm;
+}
+
+.orders-search-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--el-300);
+}
+
+.orders-search-input {
+  @apply pl-9;
+}
+
+.orders-filter-select {
+  @apply w-36;
+}
+
+/* Table */
+.orders-table {
+  @apply w-full;
+}
+
+.orders-table-header {
+  @apply border-b border-(--border-subtle);
+}
+
+.orders-table-header th {
+  @apply px-3 py-2.5 text-left text-[11px] font-normal uppercase tracking-wider text-(--el-400);
+}
+
+.orders-table-header th.orders-col-total {
+  @apply text-right;
+}
+
+.orders-table-body {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.orders-table-row {
+  @apply hover:bg-(--el-50) transition-colors;
+}
+
+.orders-table-row td {
+  @apply px-3 py-3 text-sm;
+}
+
+.orders-col-order {
+  @apply font-medium text-(--foreground);
+}
+
+.orders-col-customer-name {
+  @apply font-medium text-(--foreground);
+}
+
+.orders-col-customer-email {
+  @apply text-xs text-(--el-400);
+}
+
+.orders-col-total {
+  @apply text-right font-medium text-(--foreground);
+}
+
+.orders-col-date {
+  @apply text-(--el-400);
+}
+
+/* Status Pills */
+.orders-status-pill {
+  @apply inline-flex items-center px-2 py-0.5 rounded-[3px] text-[11px] font-medium leading-tight;
+}
+
+.orders-status-pending {
+  @apply bg-(--status-warning-subtle) text-(--status-warning);
+}
+
+.orders-status-confirmed {
+  @apply bg-(--status-info-subtle) text-(--status-info);
+}
+
+.orders-status-processing {
+  @apply bg-purple-100 text-purple-700;
+}
+
+.orders-status-shipped {
+  @apply bg-indigo-100 text-indigo-700;
+}
+
+.orders-status-delivered {
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
+.orders-status-cancelled {
+  @apply bg-(--status-error-subtle) text-(--status-error);
+}
+
+.orders-status-refunded {
+  @apply bg-(--el-100) text-(--el-500);
+}
+
+/* Payment Pills */
+.orders-payment-pill {
+  @apply inline-flex items-center px-2 py-0.5 rounded-[3px] text-[11px] font-medium leading-tight;
+}
+
+.orders-payment-pending {
+  @apply bg-(--status-warning-subtle) text-(--status-warning);
+}
+
+.orders-payment-paid {
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
+.orders-payment-failed {
+  @apply bg-(--status-error-subtle) text-(--status-error);
+}
+
+.orders-payment-refunded {
+  @apply bg-(--el-100) text-(--el-500);
+}
+
+/* Actions */
+.orders-actions-trigger {
+  @apply opacity-0 transition-opacity;
+}
+
+.orders-table-row:hover .orders-actions-trigger {
+  @apply opacity-100;
+}
+
+/* Empty State */
+.orders-empty {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+}
+
+.orders-empty-icon {
+  @apply h-12 w-12 text-(--el-300) mb-4;
+}
+
+.orders-empty h3 {
+  @apply text-base font-medium text-(--foreground) mb-1;
+}
+
+.orders-empty p {
+  @apply text-sm text-(--el-400);
+}
+
+/* Skeleton */
+.orders-skeleton-row {
+  @apply flex items-center gap-4 px-3 py-3 border-b border-(--border-subtle);
+}
+
+.orders-skeleton-stat {
+  @apply h-24 rounded-md;
+}

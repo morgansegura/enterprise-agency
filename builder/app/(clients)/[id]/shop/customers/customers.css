@@ -1,0 +1,159 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Customers List
+   ============================================================================ */
+
+.customers-page {
+  @apply flex-1 space-y-6;
+}
+
+/* Stats Row */
+.customers-stats-row {
+  @apply grid grid-cols-2 lg:grid-cols-4 gap-4;
+}
+
+.customers-stat-card {
+  @apply bg-(--el-0) border border-(--border-subtle) rounded-md p-4;
+  box-shadow: var(--shadow-xs);
+}
+
+.customers-stat-header {
+  @apply flex items-center justify-between mb-2;
+}
+
+.customers-stat-label {
+  @apply text-sm font-medium text-(--el-400);
+}
+
+.customers-stat-icon {
+  @apply h-4 w-4 text-(--el-300);
+}
+
+.customers-stat-value {
+  @apply text-2xl font-bold text-(--foreground);
+}
+
+/* Filters */
+.customers-filters {
+  @apply flex items-center gap-3;
+}
+
+.customers-search {
+  @apply relative flex-1 max-w-sm;
+}
+
+.customers-search-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--el-300);
+}
+
+.customers-search-input {
+  @apply pl-9;
+}
+
+.customers-filter-select {
+  @apply w-36;
+}
+
+/* Table */
+.customers-table {
+  @apply w-full;
+}
+
+.customers-table-header {
+  @apply border-b border-(--border-subtle);
+}
+
+.customers-table-header th {
+  @apply px-3 py-2.5 text-left text-[11px] font-normal uppercase tracking-wider text-(--el-400);
+}
+
+.customers-table-header th.customers-col-spent {
+  @apply text-right;
+}
+
+.customers-table-body {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.customers-table-row {
+  @apply hover:bg-(--el-50) transition-colors;
+}
+
+.customers-table-row td {
+  @apply px-3 py-3 text-sm;
+}
+
+.customers-col-name {
+  @apply font-medium text-(--foreground);
+}
+
+.customers-col-email {
+  @apply text-(--el-500);
+}
+
+.customers-col-orders {
+  @apply text-(--foreground) tabular-nums;
+}
+
+.customers-col-spent {
+  @apply text-right font-medium text-(--foreground) tabular-nums;
+}
+
+.customers-col-date {
+  @apply text-(--el-400);
+}
+
+/* Account Badge */
+.customers-account-badge {
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[11px] font-medium leading-tight;
+  @apply bg-(--status-info-subtle) text-(--status-info);
+}
+
+/* Marketing Pills */
+.customers-marketing-pill {
+  @apply inline-flex items-center px-2 py-0.5 rounded-[3px] text-[11px] font-medium leading-tight;
+}
+
+.customers-marketing-yes {
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
+.customers-marketing-no {
+  @apply bg-(--el-100) text-(--el-500);
+}
+
+/* Actions */
+.customers-actions-trigger {
+  @apply opacity-0 transition-opacity;
+}
+
+.customers-table-row:hover .customers-actions-trigger {
+  @apply opacity-100;
+}
+
+/* Empty State */
+.customers-empty {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+}
+
+.customers-empty-icon {
+  @apply h-12 w-12 text-(--el-300) mb-4;
+}
+
+.customers-empty h3 {
+  @apply text-base font-medium text-(--foreground) mb-1;
+}
+
+.customers-empty p {
+  @apply text-sm text-(--el-400);
+}
+
+/* Skeleton */
+.customers-skeleton-row {
+  @apply flex items-center gap-4 px-3 py-3 border-b border-(--border-subtle);
+}
+
+.customers-skeleton-stat {
+  @apply h-24 rounded-md;
+}

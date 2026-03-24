@@ -5,44 +5,29 @@ import {
   useTenantsHealth,
   type TenantHealthData,
 } from "@/lib/hooks/use-tenants";
-import { PageLayout } from "@/components/layout/page-layout";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import {
-  Building2,
-  Activity,
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-  Users,
-  FileText,
-  Crown,
-  Zap,
-  ChevronRight,
-  TrendingUp,
-} from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import "./dashboard-home.css";
 
-function getHealthIcon(status: TenantHealthData["healthStatus"]) {
-  switch (status) {
-    case "active":
-      return <CheckCircle2 className="health-icon health-icon-active" />;
-    case "idle":
-      return <Clock className="health-icon health-icon-idle" />;
-    case "inactive":
-      return <AlertCircle className="health-icon health-icon-inactive" />;
-  }
+// =============================================================================
+// Helpers
+// =============================================================================
+
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
 }
 
-function getHealthLabel(status: TenantHealthData["healthStatus"]) {
-  switch (status) {
-    case "active":
-      return "Active";
-    case "idle":
-      return "Idle";
-    case "inactive":
-      return "Inactive";
-  }
+function formatDate(): string {
+  return new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 function formatRelativeTime(dateString: string | null): string {
@@ -54,205 +39,296 @@ function formatRelativeTime(dateString: string | null): string {
 
   if (diffDays === 0) return "Today";
   if (diffDays === 1) return "Yesterday";
-  if (diffDays < 7) return `${diffDays} days ago`;
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-  if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
-  return `${Math.floor(diffDays / 365)} years ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo ago`;
+  return `${Math.floor(diffDays / 365)}y ago`;
 }
+
+function getHealthLabel(status: TenantHealthData["healthStatus"]): string {
+  switch (status) {
+    case "active":
+      return "Active";
+    case "idle":
+      return "Idle";
+    case "inactive":
+      return "Inactive";
+  }
+}
+
+// =============================================================================
+// Stat Card
+// =============================================================================
+
+interface StatCardProps {
+  label: string;
+  value: number;
+  sub?: string;
+  trend?: { value: string; direction: "up" | "down" | "neutral" };
+}
+
+function StatCard({ label, value, sub, trend }: StatCardProps) {
+  return (
+    <div className="dashboard-stat-card">
+      <div className="dashboard-stat-label">{label}</div>
+      <div className="dashboard-stat-row">
+        <span className="dashboard-stat-value">{value}</span>
+        {trend && (
+          <span
+            className={`dashboard-stat-trend dashboard-stat-trend-${trend.direction}`}
+          >
+            {trend.direction === "up" && "\u2191 "}
+            {trend.direction === "down" && "\u2193 "}
+            {trend.value}
+          </span>
+        )}
+      </div>
+      {sub && <div className="dashboard-stat-sub">{sub}</div>}
+    </div>
+  );
+}
+
+// =============================================================================
+// Skeleton States
+// =============================================================================
+
+function StatsSkeleton() {
+  return (
+    <div className="dashboard-stats">
+      {[1, 2, 3, 4].map((i) => (
+        <div key={i} className="dashboard-stat-skeleton">
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-7 w-14" />
+          <Skeleton className="h-3 w-28" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TableSkeleton() {
+  return (
+    <div className="dashboard-table">
+      <div className="dashboard-table-head">
+        <div className="dashboard-table-head-row">
+          <div className="dashboard-table-th dashboard-table-th-client">
+            Client
+          </div>
+          <div className="dashboard-table-th dashboard-table-th-status">
+            Status
+          </div>
+          <div className="dashboard-table-th dashboard-table-th-tier">
+            Tier
+          </div>
+          <div className="dashboard-table-th dashboard-table-th-pages">
+            Pages
+          </div>
+          <div className="dashboard-table-th dashboard-table-th-activity">
+            Last Activity
+          </div>
+          <div className="dashboard-table-th dashboard-table-th-health">
+            Health
+          </div>
+        </div>
+      </div>
+      <div className="dashboard-table-body">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="dashboard-table-skeleton-row">
+            <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+              <Skeleton className="h-3.5 w-32" />
+              <Skeleton className="h-2.5 w-20" />
+            </div>
+            <Skeleton className="h-5 w-16" />
+            <Skeleton className="h-5 w-14 ml-3" />
+            <Skeleton className="h-3.5 w-8 ml-auto" />
+            <Skeleton className="h-3.5 w-16 ml-6 hidden lg:block" />
+            <Skeleton className="h-2 w-2 rounded-full ml-8" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// =============================================================================
+// Dashboard Home
+// =============================================================================
 
 export function DashboardHome() {
   const { user } = useAuthStore();
   const { data: healthData, isLoading, error } = useTenantsHealth();
 
+  const firstName = user?.firstName || "there";
+  const totalPages =
+    healthData?.tenants.reduce((sum, t) => sum + t.counts.pages, 0) ?? 0;
+
   return (
-    <PageLayout
-      title={`Welcome back, ${user?.firstName}!`}
-      description="Manage your clients and monitor platform health from this dashboard."
-    >
-      <div className="dashboard-home">
-        {/* Summary Stats */}
-        {isLoading ? (
-          <div className="dashboard-summary-grid">
-            {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-24 rounded-lg" />
-            ))}
+    <div className="dashboard">
+      {/* Welcome */}
+      <div className="dashboard-welcome">
+        <h1 className="dashboard-greeting">
+          {getGreeting()}, {firstName}
+        </h1>
+        <span className="dashboard-date">{formatDate()}</span>
+      </div>
+
+      {/* Stats */}
+      {isLoading ? (
+        <StatsSkeleton />
+      ) : error ? (
+        <div className="dashboard-error">
+          <AlertCircle className="dashboard-error-icon" />
+          <span>Unable to load dashboard metrics</span>
+        </div>
+      ) : healthData ? (
+        <>
+          <div className="dashboard-stats">
+            <StatCard
+              label="Total Clients"
+              value={healthData.summary.totalTenants}
+              sub="Active workspaces"
+            />
+            <StatCard
+              label="Active (7d)"
+              value={healthData.summary.activeTenants}
+              sub="Updated in past week"
+              trend={
+                healthData.summary.activeTenants > 0
+                  ? {
+                      value: `${Math.round((healthData.summary.activeTenants / Math.max(healthData.summary.totalTenants, 1)) * 100)}%`,
+                      direction: "up",
+                    }
+                  : undefined
+              }
+            />
+            <StatCard
+              label="Total Pages"
+              value={totalPages}
+              sub="Across all clients"
+            />
+            <StatCard
+              label="Needs Attention"
+              value={
+                healthData.summary.idleTenants +
+                healthData.summary.inactiveTenants
+              }
+              sub="Idle or inactive clients"
+              trend={
+                healthData.summary.inactiveTenants > 0
+                  ? {
+                      value: `${healthData.summary.inactiveTenants} inactive`,
+                      direction: "down",
+                    }
+                  : undefined
+              }
+            />
           </div>
-        ) : error ? (
-          <div className="dashboard-error">
-            <AlertCircle className="h-5 w-5" />
-            <span>Failed to load health data</span>
-          </div>
-        ) : healthData ? (
-          <>
-            <div className="dashboard-summary-grid">
-              <div className="dashboard-summary-card">
-                <div className="dashboard-summary-header">
-                  <span className="dashboard-summary-title">Total Clients</span>
-                  <Building2 className="dashboard-summary-icon" />
-                </div>
-                <div className="dashboard-summary-value">
-                  {healthData.summary.totalTenants}
-                </div>
-                <div className="dashboard-summary-subtext">
-                  Active workspaces
-                </div>
-              </div>
 
-              <div className="dashboard-summary-card dashboard-summary-card-success">
-                <div className="dashboard-summary-header">
-                  <span className="dashboard-summary-title">Active (7d)</span>
-                  <Activity className="dashboard-summary-icon" />
-                </div>
-                <div className="dashboard-summary-value">
-                  {healthData.summary.activeTenants}
-                </div>
-                <div className="dashboard-summary-subtext">
-                  Updated in past week
-                </div>
-              </div>
-
-              <div className="dashboard-summary-card dashboard-summary-card-warning">
-                <div className="dashboard-summary-header">
-                  <span className="dashboard-summary-title">Idle (30d)</span>
-                  <Clock className="dashboard-summary-icon" />
-                </div>
-                <div className="dashboard-summary-value">
-                  {healthData.summary.idleTenants}
-                </div>
-                <div className="dashboard-summary-subtext">
-                  No recent activity
-                </div>
-              </div>
-
-              <div className="dashboard-summary-card dashboard-summary-card-danger">
-                <div className="dashboard-summary-header">
-                  <span className="dashboard-summary-title">Inactive</span>
-                  <AlertCircle className="dashboard-summary-icon" />
-                </div>
-                <div className="dashboard-summary-value">
-                  {healthData.summary.inactiveTenants}
-                </div>
-                <div className="dashboard-summary-subtext">
-                  May need attention
-                </div>
-              </div>
-            </div>
-
-            {/* Tier Distribution */}
-            <div className="dashboard-home-card">
-              <h3 className="dashboard-section-title">Subscription Tiers</h3>
-              <div className="dashboard-tier-grid">
-                <div className="dashboard-tier-card">
-                  <div className="dashboard-tier-icon dashboard-tier-icon-builder">
-                    <Crown className="h-5 w-5" />
-                  </div>
-                  <div className="dashboard-tier-content">
-                    <div className="dashboard-tier-label">Builder Tier</div>
-                    <div className="dashboard-tier-value">
-                      {healthData.summary.builderTier}
-                    </div>
-                  </div>
-                </div>
-                <div className="dashboard-tier-card">
-                  <div className="dashboard-tier-icon dashboard-tier-icon-editor">
-                    <Zap className="h-5 w-5" />
-                  </div>
-                  <div className="dashboard-tier-content">
-                    <div className="dashboard-tier-label">Content Editor</div>
-                    <div className="dashboard-tier-value">
-                      {healthData.summary.contentEditorTier}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Client Health Table */}
-            <div className="dashboard-home-card">
-              <div className="dashboard-section-header">
-                <h3 className="dashboard-section-title">
-                  Client Health Monitor
-                </h3>
-                <span className="dashboard-section-badge">
-                  {healthData.tenants.length} clients
+          {/* Client Health Table */}
+          <div className="dashboard-table-section">
+            <div className="dashboard-table-header-bar">
+              <h2 className="dashboard-table-title">
+                Client Health{" "}
+                <span className="dashboard-table-count">
+                  {healthData.tenants.length}
                 </span>
-              </div>
-              <div className="dashboard-health-table">
-                <div className="dashboard-health-header">
-                  <div className="dashboard-health-cell dashboard-health-cell-name">
+              </h2>
+            </div>
+
+            <div className="dashboard-table">
+              <div className="dashboard-table-head">
+                <div className="dashboard-table-head-row">
+                  <div className="dashboard-table-th dashboard-table-th-client">
                     Client
                   </div>
-                  <div className="dashboard-health-cell">Status</div>
-                  <div className="dashboard-health-cell">Tier</div>
-                  <div className="dashboard-health-cell">Content</div>
-                  <div className="dashboard-health-cell">Activity (7d)</div>
-                  <div className="dashboard-health-cell">Last Active</div>
-                  <div className="dashboard-health-cell"></div>
+                  <div className="dashboard-table-th dashboard-table-th-status">
+                    Status
+                  </div>
+                  <div className="dashboard-table-th dashboard-table-th-tier">
+                    Tier
+                  </div>
+                  <div className="dashboard-table-th dashboard-table-th-pages">
+                    Pages
+                  </div>
+                  <div className="dashboard-table-th dashboard-table-th-activity">
+                    Last Activity
+                  </div>
+                  <div className="dashboard-table-th dashboard-table-th-health">
+                    Health
+                  </div>
                 </div>
+              </div>
+
+              <div className="dashboard-table-body">
                 {healthData.tenants.map((tenant) => (
                   <Link
                     key={tenant.id}
                     href={`/${tenant.id}/pages`}
-                    className="dashboard-health-row"
+                    className="dashboard-table-row"
                   >
-                    <div className="dashboard-health-cell dashboard-health-cell-name">
-                      <span className="dashboard-health-name">
+                    <div className="dashboard-table-td dashboard-table-td-client">
+                      <span className="dashboard-table-client-name">
                         {tenant.businessName}
                       </span>
-                      <span className="dashboard-health-slug">
+                      <span className="dashboard-table-client-slug">
                         /{tenant.slug}
                       </span>
                     </div>
-                    <div className="dashboard-health-cell">
-                      <div
-                        className={`dashboard-health-status dashboard-health-status-${tenant.healthStatus}`}
-                      >
-                        {getHealthIcon(tenant.healthStatus)}
-                        <span>{getHealthLabel(tenant.healthStatus)}</span>
-                      </div>
-                    </div>
-                    <div className="dashboard-health-cell">
+
+                    <div className="dashboard-table-td dashboard-table-td-status">
                       <span
-                        className={`dashboard-health-tier dashboard-health-tier-${tenant.tier.toLowerCase()}`}
+                        className={`dashboard-status-pill dashboard-status-${tenant.healthStatus}`}
+                      >
+                        {getHealthLabel(tenant.healthStatus)}
+                      </span>
+                    </div>
+
+                    <div className="dashboard-table-td dashboard-table-td-tier">
+                      <span
+                        className={`dashboard-tier-badge dashboard-tier-${tenant.tier === "BUILDER" ? "builder" : "editor"}`}
                       >
                         {tenant.tier === "BUILDER" ? "Builder" : "Editor"}
                       </span>
                     </div>
-                    <div className="dashboard-health-cell">
-                      <div className="dashboard-health-content">
-                        <FileText className="h-3.5 w-3.5" />
-                        <span>{tenant.counts.pages}</span>
-                        <Users className="h-3.5 w-3.5 ml-2" />
-                        <span>{tenant.counts.teamMembers}</span>
-                      </div>
+
+                    <div className="dashboard-table-td dashboard-table-td-pages">
+                      {tenant.counts.pages}
                     </div>
-                    <div className="dashboard-health-cell">
+
+                    <div className="dashboard-table-td dashboard-table-td-activity">
                       {tenant.recentActivity.total > 0 ? (
-                        <div className="dashboard-health-activity">
-                          <TrendingUp className="h-3.5 w-3.5" />
-                          <span>{tenant.recentActivity.total} updates</span>
-                        </div>
+                        <span className="dashboard-activity-text">
+                          {tenant.recentActivity.total} updates
+                        </span>
                       ) : (
-                        <span className="dashboard-health-no-activity">
-                          No activity
+                        <span className="dashboard-activity-none">
+                          {formatRelativeTime(tenant.lastActivity)}
                         </span>
                       )}
                     </div>
-                    <div className="dashboard-health-cell">
-                      <span className="dashboard-health-last-active">
-                        {formatRelativeTime(tenant.lastActivity)}
-                      </span>
-                    </div>
-                    <div className="dashboard-health-cell">
-                      <ChevronRight className="h-4 w-4 text-(--muted-foreground)" />
+
+                    <div className="dashboard-table-td dashboard-table-td-health">
+                      <span
+                        className={`dashboard-health-dot dashboard-health-dot-${tenant.healthStatus}`}
+                      />
                     </div>
                   </Link>
                 ))}
               </div>
             </div>
-          </>
-        ) : null}
-      </div>
-    </PageLayout>
+          </div>
+        </>
+      ) : null}
+
+      {/* Loading table skeleton alongside stats skeleton */}
+      {isLoading && (
+        <div className="dashboard-table-section">
+          <div className="dashboard-table-header-bar">
+            <Skeleton className="h-4 w-28" />
+          </div>
+          <TableSkeleton />
+        </div>
+      )}
+    </div>
   );
 }

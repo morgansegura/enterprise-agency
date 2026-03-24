@@ -9,14 +9,6 @@ import {
   type Customer,
 } from "@/lib/hooks";
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-} from "@/components/ui/table";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -32,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/layout/page-header";
 import {
   MoreHorizontal,
@@ -42,10 +34,11 @@ import {
   Users,
   UserCheck,
   Mail,
-  TrendingUp,
   PlusCircle,
 } from "lucide-react";
 import { toast } from "sonner";
+
+import "./customers.css";
 
 export default function CustomersPage({
   params,
@@ -70,11 +63,18 @@ export default function CustomersPage({
     acceptsMarketing:
       marketingFilter !== "all" ? marketingFilter === "yes" : undefined,
   });
-  const { data: stats } = useCustomerStats(id);
+  const { data: stats, isLoading: statsLoading } = useCustomerStats(id);
   const deleteCustomer = useDeleteCustomer(id);
 
   const customers = customersData?.customers ?? [];
   const total = customersData?.total ?? 0;
+
+  // Surface errors via toast
+  React.useEffect(() => {
+    if (error) {
+      toast.error("Failed to load customers");
+    }
+  }, [error]);
 
   const handleView = (customerId: string) => {
     router.push(`/${id}/shop/customers/${customerId}`);
@@ -96,27 +96,21 @@ export default function CustomersPage({
     }
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(price);
-  };
+    }).format(amount);
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("en-US", {
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     });
-  };
-
-  if (isLoading) return <div className="p-6">Loading customers...</div>;
-  if (error)
-    return <div className="p-6">Error loading customers: {error.message}</div>;
 
   return (
-    <div className="flex-1 p-8 space-y-6">
+    <div className="customers-page">
       <PageHeader
         title="Customers"
         icon={Users}
@@ -128,152 +122,174 @@ export default function CustomersPage({
         onAction={() => router.push(`/${id}/shop/customers/new`)}
       />
 
-      {/* Stats Cards */}
-      {stats && (
-        <div className="grid gap-4 md:grid-cols-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Customers
-              </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.totalCustomers}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                With Accounts
-              </CardTitle>
-              <UserCheck className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
+      {/* Stats Row */}
+      <div className="customers-stats-row">
+        {statsLoading ? (
+          <>
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="customers-skeleton-stat" />
+            ))}
+          </>
+        ) : stats ? (
+          <>
+            <div className="customers-stat-card">
+              <div className="customers-stat-header">
+                <span className="customers-stat-label">Total Customers</span>
+                <Users className="customers-stat-icon" />
+              </div>
+              <div className="customers-stat-value">
+                {stats.totalCustomers}
+              </div>
+            </div>
+            <div className="customers-stat-card">
+              <div className="customers-stat-header">
+                <span className="customers-stat-label">With Accounts</span>
+                <UserCheck className="customers-stat-icon" />
+              </div>
+              <div className="customers-stat-value">
                 {stats.customersWithAccounts}
               </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Marketing Opt-ins
-              </CardTitle>
-              <Mail className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.marketingOptIns}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Avg. Order</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {formatPrice(stats.averageOrderValue)}
+            </div>
+            <div className="customers-stat-card">
+              <div className="customers-stat-header">
+                <span className="customers-stat-label">Marketing Opt-ins</span>
+                <Mail className="customers-stat-icon" />
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+              <div className="customers-stat-value">
+                {stats.marketingOptIns}
+              </div>
+            </div>
+            <div className="customers-stat-card">
+              <div className="customers-stat-header">
+                <span className="customers-stat-label">Avg. Order Value</span>
+                <Mail className="customers-stat-icon" />
+              </div>
+              <div className="customers-stat-value">
+                {formatCurrency(stats.averageOrderValue)}
+              </div>
+            </div>
+          </>
+        ) : null}
+      </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className="customers-filters">
+        <div className="customers-search">
+          <Search className="customers-search-icon" />
           <Input
             placeholder="Search customers..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
+            className="customers-search-input"
           />
         </div>
         <Select value={accountFilter} onValueChange={setAccountFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="customers-filter-select">
             <SelectValue placeholder="Account" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="all">All Accounts</SelectItem>
             <SelectItem value="yes">With Account</SelectItem>
             <SelectItem value="no">No Account</SelectItem>
           </SelectContent>
         </Select>
         <Select value={marketingFilter} onValueChange={setMarketingFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="customers-filter-select">
             <SelectValue placeholder="Marketing" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="all">All Marketing</SelectItem>
             <SelectItem value="yes">Opted In</SelectItem>
             <SelectItem value="no">Opted Out</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      {customers.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">
-          <Users className="mx-auto h-12 w-12 mb-4 opacity-50" />
-          <p>No customers found.</p>
+      {/* Table */}
+      {isLoading ? (
+        <div>
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="customers-skeleton-row">
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-4 w-8" />
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-12" />
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-8" />
+            </div>
+          ))}
+        </div>
+      ) : customers.length === 0 ? (
+        <div className="customers-empty">
+          <Users className="customers-empty-icon" />
+          <h3>No customers found</h3>
+          <p>Customers will appear here when they create accounts or place orders.</p>
         </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Customer</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Orders</TableHead>
-              <TableHead className="text-right">Total Spent</TableHead>
-              <TableHead>Marketing</TableHead>
-              <TableHead>Joined</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+        <table className="customers-table">
+          <thead className="customers-table-header">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Orders</th>
+              <th className="customers-col-spent">Total Spent</th>
+              <th>Marketing</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody className="customers-table-body">
             {customers.map((customer) => (
-              <TableRow key={customer.id}>
-                <TableCell>
-                  <div className="font-medium">
+              <tr key={customer.id} className="customers-table-row">
+                <td>
+                  <div className="customers-col-name">
                     {customer.firstName || customer.lastName
                       ? `${customer.firstName || ""} ${customer.lastName || ""}`
-                      : "—"}
+                      : "\u2014"}
                   </div>
                   {customer.userId && (
-                    <span className="text-xs bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">
+                    <span className="customers-account-badge">
                       Has Account
                     </span>
                   )}
-                </TableCell>
-                <TableCell>{customer.email}</TableCell>
-                <TableCell>{customer._count?.orders || 0}</TableCell>
-                <TableCell className="text-right font-medium">
-                  {formatPrice(customer.totalSpent || 0)}
-                </TableCell>
-                <TableCell>
+                </td>
+                <td className="customers-col-email">{customer.email}</td>
+                <td className="customers-col-orders">
+                  {customer._count?.orders || 0}
+                </td>
+                <td className="customers-col-spent">
+                  {formatCurrency(customer.totalSpent || 0)}
+                </td>
+                <td>
                   {customer.acceptsMarketing ? (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                    <span className="customers-marketing-pill customers-marketing-yes">
                       Yes
                     </span>
                   ) : (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                    <span className="customers-marketing-pill customers-marketing-no">
                       No
                     </span>
                   )}
-                </TableCell>
-                <TableCell className="text-muted-foreground">
+                </td>
+                <td className="customers-col-date">
                   {formatDate(customer.createdAt)}
-                </TableCell>
-                <TableCell>
+                </td>
+                <td>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="customers-actions-trigger"
+                      >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleView(customer.id)}>
+                      <DropdownMenuItem
+                        onClick={() => handleView(customer.id)}
+                      >
                         <Eye className="mr-2 h-4 w-4" />
                         View Details
                       </DropdownMenuItem>
@@ -287,11 +303,11 @@ export default function CustomersPage({
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       )}
     </div>
   );

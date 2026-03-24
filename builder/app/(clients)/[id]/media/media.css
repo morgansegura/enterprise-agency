@@ -1,0 +1,293 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Media Library Page — Grid layout with upload zone
+   ============================================================================ */
+
+/* Container */
+.media-page {
+  @apply flex flex-col h-full min-h-0;
+}
+
+/* ============================================================================
+   Upload Zone
+   ============================================================================ */
+
+.media-upload-zone {
+  @apply mx-6 mt-6 mb-4;
+  @apply flex flex-col items-center justify-center gap-2 py-8;
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--el-50);
+  cursor: pointer;
+  transition: border-color var(--duration-normal) var(--ease-out),
+              background var(--duration-normal) var(--ease-out);
+}
+
+.media-upload-zone:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary-subtle);
+}
+
+.media-upload-zone-active {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary-subtle);
+}
+
+.media-upload-zone-icon {
+  @apply h-10 w-10;
+  color: var(--text-tertiary);
+}
+
+.media-upload-zone-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.media-upload-zone-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================================
+   Toolbar
+   ============================================================================ */
+
+.media-toolbar {
+  @apply flex items-center gap-3 px-6 py-3;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.media-toolbar-search {
+  @apply relative flex-1 max-w-sm;
+}
+
+.media-toolbar-search-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4;
+  color: var(--text-tertiary);
+}
+
+.media-toolbar-search-input {
+  @apply pl-9;
+  height: 36px;
+  border-radius: 3px;
+}
+
+.media-toolbar-filters {
+  @apply flex items-center gap-2;
+}
+
+.media-toolbar-filter-select {
+  @apply w-[140px];
+  height: 36px;
+}
+
+/* ============================================================================
+   Thumbnail Grid
+   ============================================================================ */
+
+.media-grid {
+  @apply flex-1 overflow-y-auto px-6 py-4;
+}
+
+.media-grid-inner {
+  @apply grid gap-4;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 640px) {
+  .media-grid-inner {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .media-grid-inner {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .media-grid-inner {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .media-grid-inner {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* ============================================================================
+   Thumbnail Card
+   ============================================================================ */
+
+.media-thumb {
+  @apply relative cursor-pointer overflow-hidden;
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  aspect-ratio: 1;
+  transition: border-color var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.media-thumb:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.media-thumb-selected {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-primary-subtle);
+}
+
+.media-thumb-image {
+  @apply w-full h-full object-cover;
+}
+
+/* File type overlay for non-image files */
+.media-thumb-overlay {
+  @apply absolute inset-0 flex flex-col items-center justify-center gap-1;
+  background: var(--el-50);
+}
+
+.media-thumb-overlay-icon {
+  @apply h-8 w-8;
+  color: var(--text-tertiary);
+}
+
+.media-thumb-overlay-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-tertiary);
+}
+
+/* Filename strip */
+.media-thumb-name {
+  @apply absolute bottom-0 left-0 right-0 px-2 py-1.5 truncate;
+  font-size: 11px;
+  color: var(--el-0);
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+}
+
+/* Selection check */
+.media-thumb-check {
+  @apply absolute top-2 right-2 h-5 w-5;
+  @apply flex items-center justify-center rounded-full;
+  background: var(--accent-primary);
+  color: var(--accent-primary-foreground);
+}
+
+.media-thumb-check svg {
+  @apply h-3 w-3;
+}
+
+/* ============================================================================
+   Detail Drawer
+   ============================================================================ */
+
+.media-detail-preview {
+  @apply flex items-center justify-center min-h-[240px] overflow-hidden;
+  background: var(--el-50);
+  border-radius: var(--radius-md);
+}
+
+.media-detail-preview img {
+  @apply max-w-full max-h-[360px] object-contain;
+}
+
+.media-detail-meta {
+  @apply grid grid-cols-2 gap-4 mt-4;
+}
+
+.media-detail-meta-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  @apply mb-0.5;
+}
+
+.media-detail-meta-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.media-detail-url {
+  @apply mt-4;
+}
+
+.media-detail-url-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  @apply mb-1.5;
+}
+
+.media-detail-url-row {
+  @apply flex gap-2;
+}
+
+.media-detail-url-input {
+  @apply flex-1 font-mono text-xs;
+  height: 36px;
+  border-radius: 3px;
+}
+
+.media-detail-actions {
+  @apply flex items-center justify-between mt-6 pt-4 border-t border-(--border-subtle);
+}
+
+/* ============================================================================
+   Empty State
+   ============================================================================ */
+
+.media-empty {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+}
+
+.media-empty-icon {
+  @apply h-16 w-16 mb-4;
+  color: var(--el-300);
+}
+
+.media-empty h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--foreground);
+  @apply mb-1;
+}
+
+.media-empty p {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  @apply mb-6;
+}
+
+/* ============================================================================
+   Loading Skeleton
+   ============================================================================ */
+
+.media-skeleton-grid {
+  @apply grid gap-4 px-6 py-4;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 768px) {
+  .media-skeleton-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.media-skeleton-thumb {
+  @apply rounded-[var(--radius-md)] aspect-square;
+}

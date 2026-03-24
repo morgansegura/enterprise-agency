@@ -1,0 +1,240 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Team Page — Table layout with role badges
+   ============================================================================ */
+
+/* Container */
+.team-page {
+  @apply flex flex-col h-full min-h-0;
+}
+
+/* ============================================================================
+   Table
+   ============================================================================ */
+
+.team-table {
+  @apply w-full;
+}
+
+.team-table-header {
+  @apply border-b border-(--border-subtle);
+}
+
+.team-table-header-row {
+  @apply flex items-center;
+}
+
+.team-table-header-cell {
+  @apply px-4 py-3 text-left;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  @apply select-none;
+}
+
+.team-table-header-name {
+  @apply flex-1 min-w-0;
+}
+
+.team-table-header-email {
+  @apply w-56 hidden md:block;
+}
+
+.team-table-header-role {
+  @apply w-28;
+}
+
+.team-table-header-status {
+  @apply w-28;
+}
+
+.team-table-header-joined {
+  @apply w-32 hidden lg:block;
+}
+
+.team-table-header-actions {
+  @apply w-12;
+}
+
+/* ============================================================================
+   Table Body
+   ============================================================================ */
+
+.team-table-body {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.team-table-row {
+  @apply flex items-center transition-colors;
+  @apply hover:bg-(--el-50);
+}
+
+/* Table Cells */
+.team-table-cell {
+  @apply px-4 py-3;
+}
+
+.team-table-cell-name {
+  @apply flex-1 min-w-0 flex items-center gap-3;
+}
+
+.team-table-cell-email {
+  @apply w-56 hidden md:block;
+}
+
+.team-table-cell-role {
+  @apply w-28;
+}
+
+.team-table-cell-status {
+  @apply w-28;
+}
+
+.team-table-cell-joined {
+  @apply w-32 hidden lg:block;
+}
+
+.team-table-cell-actions {
+  @apply w-12 flex items-center justify-end;
+}
+
+/* Name column */
+.team-member-avatar {
+  @apply h-8 w-8 rounded-full flex items-center justify-center shrink-0;
+  background: var(--el-100);
+}
+
+.team-member-avatar-letter {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.team-member-name-text {
+  @apply flex items-center gap-1.5 truncate;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.team-member-owner-icon {
+  @apply h-3.5 w-3.5;
+  color: var(--accent-primary);
+}
+
+/* Email column */
+.team-member-email {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  @apply truncate;
+}
+
+/* Joined column */
+.team-member-joined {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================================
+   Role Badges — subtle pills
+   ============================================================================ */
+
+.team-role-pill {
+  @apply inline-flex items-center px-2 py-0.5;
+  @apply rounded-[3px];
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.team-role-owner {
+  @apply bg-blue-100 text-blue-700;
+}
+
+.team-role-admin {
+  @apply bg-purple-100 text-purple-700;
+}
+
+.team-role-editor {
+  @apply bg-emerald-100 text-emerald-700;
+}
+
+.team-role-viewer {
+  @apply bg-gray-100 text-gray-600;
+}
+
+/* ============================================================================
+   Status Badges
+   ============================================================================ */
+
+.team-status-pill {
+  @apply inline-flex items-center gap-1 px-2 py-0.5;
+  @apply rounded-[3px];
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.team-status-active {
+  @apply bg-green-100 text-green-700;
+}
+
+.team-status-inactive {
+  @apply bg-gray-100 text-gray-600;
+}
+
+.team-status-pending {
+  @apply bg-amber-100 text-amber-700;
+}
+
+.team-status-pill svg {
+  @apply h-3 w-3;
+}
+
+/* ============================================================================
+   Actions column button
+   ============================================================================ */
+
+.team-actions-trigger {
+  @apply h-7 w-7 opacity-0 transition-opacity;
+}
+
+.team-table-row:hover .team-actions-trigger {
+  @apply opacity-100;
+}
+
+/* ============================================================================
+   Empty State
+   ============================================================================ */
+
+.team-empty {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+}
+
+.team-empty-icon {
+  @apply h-16 w-16 mb-4;
+  color: var(--el-300);
+}
+
+.team-empty h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--foreground);
+  @apply mb-1;
+}
+
+.team-empty p {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  @apply mb-6;
+}
+
+/* ============================================================================
+   Loading Skeleton
+   ============================================================================ */
+
+.team-skeleton-row {
+  @apply flex items-center gap-4 px-4 py-3;
+  @apply border-b border-(--border-subtle);
+}

@@ -11,14 +11,6 @@ import {
   type OrderStatus,
 } from "@/lib/hooks";
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-} from "@/components/ui/table";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -34,7 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/layout/page-header";
 import {
   MoreHorizontal,
@@ -48,6 +40,8 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { toast } from "sonner";
+
+import "./orders.css";
 
 export default function OrdersPage({
   params,
@@ -71,12 +65,19 @@ export default function OrdersPage({
     status: statusFilter !== "all" ? statusFilter : undefined,
     paymentStatus: paymentFilter !== "all" ? paymentFilter : undefined,
   });
-  const { data: stats } = useOrderStats(id);
+  const { data: stats, isLoading: statsLoading } = useOrderStats(id);
   const cancelOrder = useCancelOrder(id);
   const fulfillItems = useFulfillOrderItems(id);
 
   const orders = ordersData?.orders ?? [];
   const total = ordersData?.total ?? 0;
+
+  // Surface errors via toast
+  React.useEffect(() => {
+    if (error) {
+      toast.error("Failed to load orders");
+    }
+  }, [error]);
 
   const handleView = (orderId: string) => {
     router.push(`/${id}/shop/orders/${orderId}`);
@@ -118,64 +119,38 @@ export default function OrdersPage({
     }
   };
 
-  const getStatusBadge = (status: OrderStatus) => {
-    const styles: Record<OrderStatus, string> = {
-      pending: "bg-yellow-100 text-yellow-800",
-      confirmed: "bg-blue-100 text-blue-800",
-      processing: "bg-purple-100 text-purple-800",
-      shipped: "bg-indigo-100 text-indigo-800",
-      delivered: "bg-green-100 text-green-800",
-      cancelled: "bg-red-100 text-red-800",
-      refunded: "bg-gray-100 text-gray-800",
-    };
-    return (
-      <span
-        className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${styles[status]}`}
-      >
-        {status}
-      </span>
-    );
+  const statusClass: Record<OrderStatus, string> = {
+    pending: "orders-status-pending",
+    confirmed: "orders-status-confirmed",
+    processing: "orders-status-processing",
+    shipped: "orders-status-shipped",
+    delivered: "orders-status-delivered",
+    cancelled: "orders-status-cancelled",
+    refunded: "orders-status-refunded",
   };
 
-  const getPaymentBadge = (status: string) => {
-    const styles: Record<string, string> = {
-      pending: "bg-yellow-100 text-yellow-800",
-      paid: "bg-green-100 text-green-800",
-      failed: "bg-red-100 text-red-800",
-      refunded: "bg-gray-100 text-gray-800",
-    };
-    return (
-      <span
-        className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${styles[status] || styles.pending}`}
-      >
-        {status}
-      </span>
-    );
+  const paymentClass: Record<string, string> = {
+    pending: "orders-payment-pending",
+    paid: "orders-payment-paid",
+    failed: "orders-payment-failed",
+    refunded: "orders-payment-refunded",
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(price);
-  };
+    }).format(amount);
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("en-US", {
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
     });
-  };
-
-  if (isLoading) return <div className="p-6">Loading orders...</div>;
-  if (error)
-    return <div className="p-6">Error loading orders: {error.message}</div>;
 
   return (
-    <div className="flex-1 p-8 space-y-6">
+    <div className="orders-page">
       <PageHeader
         title="Orders"
         icon={ShoppingCart}
@@ -184,71 +159,65 @@ export default function OrdersPage({
         pluralName="orders"
       />
 
-      {/* Stats Cards */}
-      {stats && (
-        <div className="grid gap-4 md:grid-cols-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Orders
-              </CardTitle>
-              <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.totalOrders}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Pending Orders
-              </CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.pendingOrders}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Revenue
-              </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {formatPrice(stats.totalRevenue)}
+      {/* Stats Row */}
+      <div className="orders-stats-row">
+        {statsLoading ? (
+          <>
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="orders-skeleton-stat" />
+            ))}
+          </>
+        ) : stats ? (
+          <>
+            <div className="orders-stat-card">
+              <div className="orders-stat-header">
+                <span className="orders-stat-label">Total Orders</span>
+                <ShoppingCart className="orders-stat-icon" />
               </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Avg. Order</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {formatPrice(stats.averageOrderValue)}
+              <div className="orders-stat-value">{stats.totalOrders}</div>
+            </div>
+            <div className="orders-stat-card">
+              <div className="orders-stat-header">
+                <span className="orders-stat-label">Pending</span>
+                <Clock className="orders-stat-icon" />
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+              <div className="orders-stat-value">{stats.pendingOrders}</div>
+            </div>
+            <div className="orders-stat-card">
+              <div className="orders-stat-header">
+                <span className="orders-stat-label">Revenue</span>
+                <DollarSign className="orders-stat-icon" />
+              </div>
+              <div className="orders-stat-value">
+                {formatCurrency(stats.totalRevenue)}
+              </div>
+            </div>
+            <div className="orders-stat-card">
+              <div className="orders-stat-header">
+                <span className="orders-stat-label">Avg. Order Value</span>
+                <TrendingUp className="orders-stat-icon" />
+              </div>
+              <div className="orders-stat-value">
+                {formatCurrency(stats.averageOrderValue)}
+              </div>
+            </div>
+          </>
+        ) : null}
+      </div>
 
       {/* Filters */}
-      <div className="flex gap-4">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className="orders-filters">
+        <div className="orders-search">
+          <Search className="orders-search-icon" />
           <Input
             placeholder="Search orders..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
+            className="orders-search-input"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="orders-filter-select">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -262,7 +231,7 @@ export default function OrdersPage({
           </SelectContent>
         </Select>
         <Select value={paymentFilter} onValueChange={setPaymentFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="orders-filter-select">
             <SelectValue placeholder="Payment" />
           </SelectTrigger>
           <SelectContent>
@@ -275,66 +244,80 @@ export default function OrdersPage({
         </Select>
       </div>
 
-      {orders.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">
-          <ShoppingCart className="mx-auto h-12 w-12 mb-4 opacity-50" />
-          <p>No orders found.</p>
+      {/* Table */}
+      {isLoading ? (
+        <div>
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="orders-skeleton-row">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-8" />
+            </div>
+          ))}
+        </div>
+      ) : orders.length === 0 ? (
+        <div className="orders-empty">
+          <ShoppingCart className="orders-empty-icon" />
+          <h3>No orders found</h3>
+          <p>Orders will appear here once customers start purchasing.</p>
         </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Order</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Payment</TableHead>
-              <TableHead>Fulfillment</TableHead>
-              <TableHead className="text-right">Total</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+        <table className="orders-table">
+          <thead className="orders-table-header">
+            <tr>
+              <th>Order #</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Payment</th>
+              <th className="orders-col-total">Total</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody className="orders-table-body">
             {orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell className="font-medium">
-                  #{order.orderNumber}
-                </TableCell>
-                <TableCell>
-                  <div>
-                    <div className="font-medium">
-                      {order.customer?.firstName} {order.customer?.lastName}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {order.email}
-                    </div>
+              <tr key={order.id} className="orders-table-row">
+                <td className="orders-col-order">#{order.orderNumber}</td>
+                <td>
+                  <div className="orders-col-customer-name">
+                    {order.customer?.firstName} {order.customer?.lastName}
                   </div>
-                </TableCell>
-                <TableCell>{getStatusBadge(order.status)}</TableCell>
-                <TableCell>{getPaymentBadge(order.paymentStatus)}</TableCell>
-                <TableCell>
+                  <div className="orders-col-customer-email">
+                    {order.email}
+                  </div>
+                </td>
+                <td>
                   <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                      order.fulfillmentStatus === "fulfilled"
-                        ? "bg-green-100 text-green-800"
-                        : order.fulfillmentStatus === "partial"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-gray-100 text-gray-800"
-                    }`}
+                    className={`orders-status-pill ${statusClass[order.status]}`}
                   >
-                    {order.fulfillmentStatus}
+                    {order.status}
                   </span>
-                </TableCell>
-                <TableCell className="text-right font-medium">
-                  {formatPrice(order.total)}
-                </TableCell>
-                <TableCell className="text-muted-foreground">
+                </td>
+                <td>
+                  <span
+                    className={`orders-payment-pill ${paymentClass[order.paymentStatus] || "orders-payment-pending"}`}
+                  >
+                    {order.paymentStatus}
+                  </span>
+                </td>
+                <td className="orders-col-total">
+                  {formatCurrency(order.total)}
+                </td>
+                <td className="orders-col-date">
                   {formatDate(order.createdAt)}
-                </TableCell>
-                <TableCell>
+                </td>
+                <td>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="orders-actions-trigger"
+                      >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -365,11 +348,11 @@ export default function OrdersPage({
                         )}
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       )}
     </div>
   );

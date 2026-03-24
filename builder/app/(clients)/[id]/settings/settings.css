@@ -1,117 +1,258 @@
 @reference "tailwindcss";
 
-.settings-container {
-  @apply p-6 w-full;
+/* ============================================================================
+   Settings Page — Two-column layout with cards
+   ============================================================================ */
+
+/* Container */
+.settings-page {
+  @apply flex flex-col h-full min-h-0;
 }
 
-.settings-header {
-  @apply mb-6;
+.settings-page-header {
+  @apply px-6 pt-6 pb-4;
 }
 
-.settings-header h1 {
-  @apply text-2xl font-bold text-(--foreground);
+.settings-page-header h1 {
+  @apply text-lg font-semibold text-(--foreground);
 }
 
-.settings-header p {
-  @apply text-sm text-(--muted-foreground) mt-1;
+.settings-page-header p {
+  @apply text-sm mt-1;
+  color: var(--text-tertiary);
 }
 
-.settings-section {
-  @apply bg-(--card) border border-(--border) rounded-lg p-6 mb-6;
+/* ============================================================================
+   Two-Column Layout
+   ============================================================================ */
+
+.settings-page-body {
+  @apply flex-1 overflow-y-auto px-6 pb-24;
 }
 
-.settings-section-title {
-  @apply text-lg font-semibold text-(--foreground) font-(family-name:--font-heading) mb-4;
+.settings-page-columns {
+  @apply grid gap-6;
+  grid-template-columns: 2fr 1fr;
 }
 
-.settings-section-description {
-  @apply text-sm text-(--muted-foreground) mb-4;
+@media (max-width: 1024px) {
+  .settings-page-columns {
+    @apply grid-cols-1;
+  }
 }
 
-.settings-form {
-  @apply space-y-4;
+.settings-page-main {
+  @apply flex flex-col gap-6;
 }
+
+.settings-page-sidebar {
+  @apply flex flex-col gap-6;
+}
+
+/* ============================================================================
+   Section Cards
+   ============================================================================ */
+
+.settings-card {
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  @apply overflow-hidden;
+}
+
+.settings-card-header {
+  @apply px-5 py-4 border-b border-(--border-subtle);
+}
+
+.settings-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.settings-card-description {
+  @apply text-xs mt-1;
+  color: var(--text-tertiary);
+}
+
+.settings-card-body {
+  @apply px-5 py-5 flex flex-col gap-5;
+}
+
+/* ============================================================================
+   Form Fields
+   ============================================================================ */
 
 .settings-field {
-  @apply space-y-2;
+  @apply flex flex-col gap-1.5;
 }
 
 .settings-field-label {
-  @apply text-sm font-medium text-(--foreground);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-tertiary);
+  @apply flex items-center gap-1.5;
 }
 
-.settings-field-description {
-  @apply text-xs text-(--muted-foreground);
+.settings-field-label svg {
+  @apply h-3.5 w-3.5;
 }
 
-.settings-logo-preview {
-  @apply flex items-center gap-4 p-4 bg-(--muted) rounded-lg;
+.settings-field-input {
+  height: 40px;
+  border-radius: 3px;
 }
 
-.settings-logo-image {
-  @apply h-16 w-16 rounded-lg object-contain bg-white border border-(--border);
+.settings-field-textarea {
+  border-radius: 3px;
 }
 
-.settings-logo-placeholder {
-  @apply h-16 w-16 rounded-lg bg-(--muted) border border-dashed border-(--border) flex items-center justify-center text-(--muted-foreground);
+.settings-field-hint {
+  font-size: 11px;
+  color: var(--text-tertiary);
 }
 
-.settings-logo-info {
-  @apply flex-1;
+/* Two-column field row */
+.settings-field-row {
+  @apply grid grid-cols-2 gap-4;
 }
 
-.settings-logo-name {
-  @apply text-sm font-medium text-(--foreground);
+@media (max-width: 640px) {
+  .settings-field-row {
+    @apply grid-cols-1;
+  }
 }
 
-.settings-logo-size {
-  @apply text-xs text-(--muted-foreground);
+/* Branding row */
+.settings-branding-row {
+  @apply flex flex-wrap gap-6;
 }
 
-.settings-actions {
-  @apply flex items-center justify-end gap-2 pt-4 border-t border-(--border);
+/* ============================================================================
+   Plan Card (sidebar)
+   ============================================================================ */
+
+.settings-plan-card {
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  @apply overflow-hidden;
 }
 
-.settings-tier-badge {
-  @apply inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium;
+.settings-plan-header {
+  @apply px-5 py-4 border-b border-(--border-subtle) flex items-center justify-between;
 }
 
-.settings-tier-badge-content-editor {
+.settings-plan-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.settings-plan-body {
+  @apply px-5 py-5;
+}
+
+/* Tier badge */
+.settings-tier-pill {
+  @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
+}
+
+.settings-tier-pill-builder {
   @apply bg-blue-100 text-blue-700;
 }
 
-.settings-tier-badge-builder {
-  @apply bg-purple-100 text-purple-700;
+.settings-tier-pill-content-editor {
+  @apply bg-amber-100 text-amber-700;
 }
 
-.settings-upgrade-card {
-  @apply bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6;
+/* Plan features list */
+.settings-plan-features {
+  @apply mt-4 flex flex-col gap-2.5;
 }
 
-.settings-upgrade-title {
-  @apply text-lg font-semibold text-(--foreground) mb-2;
+.settings-plan-feature {
+  @apply flex items-center gap-2 text-sm;
+  color: var(--text-secondary);
 }
 
-.settings-upgrade-description {
-  @apply text-sm text-(--muted-foreground) mb-4;
+.settings-plan-feature svg {
+  @apply h-4 w-4 shrink-0;
+  color: var(--status-success);
 }
 
-.settings-upgrade-features {
-  @apply space-y-2 mb-4;
+/* Upgrade CTA */
+.settings-upgrade-section {
+  @apply mt-5 pt-5 border-t border-(--border-subtle);
 }
 
-.settings-upgrade-feature {
-  @apply flex items-center gap-2 text-sm text-(--foreground);
+.settings-upgrade-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+  @apply mb-1;
 }
 
-.settings-upgrade-feature-icon {
-  @apply h-4 w-4 text-green-600;
+.settings-upgrade-text {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  @apply mb-4;
 }
 
-.settings-loading {
-  @apply space-y-4;
+/* ============================================================================
+   Sticky Footer Bar
+   ============================================================================ */
+
+.settings-footer {
+  @apply fixed bottom-0 left-0 right-0 z-20;
+  @apply flex items-center justify-end gap-3;
+  @apply px-6 py-3;
+  background: var(--el-0);
+  border-top: 1px solid var(--border-default);
+  box-shadow: var(--shadow-md);
 }
+
+.settings-footer-hidden {
+  @apply hidden;
+}
+
+/* ============================================================================
+   Loading Skeleton
+   ============================================================================ */
+
+.settings-skeleton {
+  @apply flex flex-col gap-6 px-6 pt-6;
+}
+
+.settings-skeleton-header {
+  @apply flex flex-col gap-2;
+}
+
+.settings-skeleton-columns {
+  @apply grid gap-6;
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .settings-skeleton-columns {
+    @apply grid-cols-1;
+  }
+}
+
+.settings-skeleton-card {
+  background: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  @apply p-5 flex flex-col gap-4;
+}
+
+/* ============================================================================
+   Error State
+   ============================================================================ */
 
 .settings-error {
-  @apply p-6 text-center text-(--destructive);
+  @apply flex items-center justify-center py-16 text-center;
+  color: var(--status-error);
 }

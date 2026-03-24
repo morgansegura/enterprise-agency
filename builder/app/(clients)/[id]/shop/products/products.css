@@ -1,0 +1,151 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Products List
+   ============================================================================ */
+
+.products-page {
+  @apply flex-1 space-y-6;
+}
+
+/* Filters */
+.products-filters {
+  @apply flex items-center gap-3;
+}
+
+.products-search {
+  @apply relative flex-1 max-w-sm;
+}
+
+.products-search-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--el-300);
+}
+
+.products-search-input {
+  @apply pl-9;
+}
+
+.products-filter-select {
+  @apply w-36;
+}
+
+/* Table */
+.products-table {
+  @apply w-full;
+}
+
+.products-table-header {
+  @apply border-b border-(--border-subtle);
+}
+
+.products-table-header th {
+  @apply px-3 py-2.5 text-left text-[11px] font-normal uppercase tracking-wider text-(--el-400);
+}
+
+.products-table-header th.products-col-price {
+  @apply text-right;
+}
+
+.products-table-body {
+  @apply divide-y divide-(--border-subtle);
+}
+
+.products-table-row {
+  @apply hover:bg-(--el-50) transition-colors cursor-pointer;
+}
+
+.products-table-row td {
+  @apply px-3 py-3 text-sm;
+}
+
+/* Product Cell (with thumbnail) */
+.products-cell-product {
+  @apply flex items-center gap-3;
+}
+
+.products-thumbnail {
+  @apply w-10 h-10 rounded-md overflow-hidden bg-(--el-50) flex-shrink-0;
+  @apply flex items-center justify-center border border-(--border-subtle);
+}
+
+.products-thumbnail img {
+  @apply w-full h-full object-cover;
+}
+
+.products-thumbnail-placeholder {
+  @apply h-5 w-5 text-(--el-300);
+}
+
+.products-product-name {
+  @apply font-medium text-(--foreground) truncate;
+}
+
+.products-product-sku {
+  @apply text-xs text-(--el-400);
+}
+
+/* Price */
+.products-col-price {
+  @apply text-right font-medium text-(--foreground) tabular-nums;
+}
+
+/* Status Pills */
+.products-status-pill {
+  @apply inline-flex items-center px-2 py-0.5 rounded-[3px] text-[11px] font-medium leading-tight;
+}
+
+.products-status-active {
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
+.products-status-draft {
+  @apply bg-(--status-warning-subtle) text-(--status-warning);
+}
+
+.products-status-archived {
+  @apply bg-(--el-100) text-(--el-500);
+}
+
+/* Stock */
+.products-stock-normal {
+  @apply text-(--foreground) tabular-nums;
+}
+
+.products-stock-low {
+  @apply text-(--status-warning) font-medium tabular-nums;
+}
+
+.products-stock-out {
+  @apply text-(--status-error) font-medium tabular-nums;
+}
+
+/* Actions */
+.products-actions-trigger {
+  @apply opacity-0 transition-opacity;
+}
+
+.products-table-row:hover .products-actions-trigger {
+  @apply opacity-100;
+}
+
+/* Empty State */
+.products-empty {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+}
+
+.products-empty-icon {
+  @apply h-12 w-12 text-(--el-300) mb-4;
+}
+
+.products-empty h3 {
+  @apply text-base font-medium text-(--foreground) mb-1;
+}
+
+.products-empty p {
+  @apply text-sm text-(--el-400) mb-6;
+}
+
+/* Skeleton */
+.products-skeleton-row {
+  @apply flex items-center gap-4 px-3 py-3 border-b border-(--border-subtle);
+}
