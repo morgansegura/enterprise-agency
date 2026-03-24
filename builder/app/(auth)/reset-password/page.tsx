@@ -6,10 +6,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { resetPassword } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/errors";
-import { PasswordInput } from "@/components/ui/password-input";
-import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
-import { FormItem } from "@/components/ui/form";
 
 import "@/components/auth/auth-form.css";
 
@@ -73,83 +70,77 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="auth-form-container">
-      <div className="auth-form-card">
-        <div className="auth-form-header">
-          <h2 className="auth-form-title">Set New Password</h2>
-          <p className="auth-form-subtitle">Enter your new password below</p>
+    <div className="auth-card">
+      <div className="auth-header">
+        <span className="auth-logo">Enterprise</span>
+        <p className="auth-subtitle">Set your new password</p>
+      </div>
+
+      <form className="auth-form" onSubmit={handleSubmit}>
+        {fieldError && (
+          <p className="auth-field-error">{fieldError}</p>
+        )}
+
+        {success && (
+          <p className="auth-success-message">
+            Password reset successful. Redirecting to sign in...
+          </p>
+        )}
+
+        <div className="auth-fields">
+          <div className="auth-field">
+            <label htmlFor="password" className="auth-label">
+              New password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              required
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading || success || !token}
+              className="auth-input"
+              placeholder="At least 8 characters"
+            />
+          </div>
+
+          <div className="auth-field">
+            <label htmlFor="confirmPassword" className="auth-label">
+              Confirm new password
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              autoComplete="new-password"
+              required
+              minLength={8}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={loading || success || !token}
+              className="auth-input"
+              placeholder="Confirm your password"
+            />
+          </div>
         </div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          {fieldError && (
-            <div className="auth-form-error">
-              <p className="auth-form-error-text">{fieldError}</p>
-            </div>
-          )}
+        <div className="auth-actions">
+          <button
+            type="submit"
+            disabled={loading || success || !token}
+            className="auth-submit"
+          >
+            {loading ? "Resetting..." : "Reset password"}
+          </button>
 
-          {success && (
-            <div className="auth-form-success">
-              <p className="auth-form-success-subtext">
-                Redirecting to login...
-              </p>
-            </div>
-          )}
-
-          <div className="auth-form-fields">
-            <FormItem>
-              <Label htmlFor="password" className="auth-form-label">
-                New Password
-              </Label>
-              <PasswordInput
-                id="password"
-                name="password"
-                autoComplete="new-password"
-                required
-                minLength={8}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={loading || success || !token}
-                className="auth-form-input"
-                placeholder="At least 8 characters"
-              />
-            </FormItem>
-
-            <FormItem>
-              <Label htmlFor="confirmPassword" className="auth-form-label">
-                Confirm New Password
-              </Label>
-              <PasswordInput
-                id="confirmPassword"
-                name="confirmPassword"
-                autoComplete="new-password"
-                required
-                minLength={8}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                disabled={loading || success || !token}
-                className="auth-form-input"
-                placeholder="Confirm your password"
-              />
-            </FormItem>
-          </div>
-
-          <div className="auth-form-actions">
-            <button
-              type="submit"
-              disabled={loading || success || !token}
-              className="auth-form-submit"
-            >
-              {loading ? "Resetting Password..." : "Reset Password"}
-            </button>
-
-            <div className="auth-form-link-container">
-              <Link href="/" className="auth-form-link">
-                Back to login
-              </Link>
-            </div>
-          </div>
-        </form>
-      </div>
+          <Link href="/" className="auth-back-link">
+            Back to sign in
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }

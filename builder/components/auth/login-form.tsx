@@ -6,13 +6,9 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { login } from "@/lib/auth";
 import { AuthError, getErrorMessage } from "@/lib/errors";
-import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
-import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
-import { FormItem } from "@/components/ui/form";
 
-import "./login-form.css";
+import "./auth-form.css";
 
 export function LoginForm() {
   const router = useRouter();
@@ -51,62 +47,63 @@ export function LoginForm() {
   };
 
   return (
-    <div className="login-form-container">
-      <div className="login-form-card">
-        <div className="login-form-header">
-          <h2 className="login-form-title">Web & Funnel</h2>
-          <p className="login-form-subtitle">Sign in to your account</p>
-        </div>
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="login-form-fields">
-            <FormItem>
-              <Label htmlFor="email" className="login-form-label">
-                Email address
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="login-form-input"
-              />
-            </FormItem>
-            <FormItem>
-              <Label htmlFor="password" className="login-form-label">
-                Password
-              </Label>
-              <PasswordInput
-                id="password"
-                name="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="login-form-input"
-              />
-            </FormItem>
+    <div className="auth-card">
+      <div className="auth-header">
+        <span className="auth-logo">Enterprise</span>
+        <p className="auth-subtitle">Sign in to your account</p>
+      </div>
+
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-fields">
+          <div className="auth-field">
+            <label htmlFor="email" className="auth-label">
+              Email address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="auth-input"
+              placeholder="you@company.com"
+            />
           </div>
 
-          <div className="login-form-actions">
-            <button
-              type="submit"
-              disabled={loading}
-              className="login-form-submit"
-            >
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
-
-            <div className="login-form-forgot">
-              <Link href="/forgot-password" className="login-form-forgot-link">
-                Forgot your password?
+          <div className="auth-field">
+            <label htmlFor="password" className="auth-label">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="auth-input"
+            />
+            <div className="auth-forgot">
+              <Link href="/forgot-password" className="auth-forgot-link">
+                Forgot password?
               </Link>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div className="auth-actions">
+          <button
+            type="submit"
+            disabled={loading}
+            className="auth-submit"
+          >
+            {loading ? "Signing in..." : "Sign in"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

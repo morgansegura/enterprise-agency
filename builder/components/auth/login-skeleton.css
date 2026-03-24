@@ -1,57 +1,65 @@
 @reference "tailwindcss";
 
-.login-skeleton-container {
-  @apply min-h-screen flex items-center justify-center bg-(--muted);
-}
-
+/* Skeleton card matches auth-card dimensions */
 .login-skeleton-card {
-  @apply max-w-md w-full space-y-8 p-8 bg-(--card) rounded-lg shadow;
+  @apply w-full;
+  max-width: 380px;
+  padding: var(--sp-8) var(--sp-8) var(--sp-6);
+  background-color: var(--el-0);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
 }
 
 .login-skeleton-header {
-  @apply space-y-2;
+  @apply flex flex-col items-center;
+  margin-bottom: var(--sp-6);
+  gap: var(--sp-2);
 }
 
-.login-skeleton-title {
-  @apply h-9 w-3/4 mx-auto;
+.login-skeleton-logo {
+  @apply h-4 w-20;
+  border-radius: var(--radius-sm);
 }
 
 .login-skeleton-subtitle {
-  @apply h-4 w-2/3 mx-auto;
+  @apply h-3 w-36;
+  border-radius: var(--radius-sm);
 }
 
 .login-skeleton-form {
-  @apply mt-8 space-y-6;
+  @apply flex flex-col;
+  gap: var(--sp-5);
+}
+
+.login-skeleton-fields {
+  @apply flex flex-col;
+  gap: var(--sp-4);
 }
 
 .login-skeleton-field {
-  @apply space-y-2;
+  @apply flex flex-col;
+  gap: var(--sp-1-5);
 }
 
 .login-skeleton-label {
-  @apply h-4 w-24;
+  @apply h-2.5 w-20;
+  border-radius: var(--radius-sm);
 }
 
 .login-skeleton-label-short {
-  @apply h-4 w-20;
+  @apply h-2.5 w-14;
+  border-radius: var(--radius-sm);
 }
 
 .login-skeleton-input {
-  @apply h-10 w-full;
-}
-
-.login-skeleton-actions {
-  @apply space-y-4;
+  @apply w-full;
+  height: 40px;
+  border-radius: var(--radius-sm);
 }
 
 .login-skeleton-button {
-  @apply h-10 w-full;
-}
-
-.login-skeleton-link-container {
-  @apply flex justify-center;
-}
-
-.login-skeleton-link {
-  @apply h-4 w-32;
+  @apply w-full;
+  height: 36px;
+  border-radius: var(--radius-sm);
 }

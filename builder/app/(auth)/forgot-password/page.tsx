@@ -5,10 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { forgotPassword } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/errors";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
-import { FormItem } from "@/components/ui/form";
 
 import "@/components/auth/auth-form.css";
 
@@ -38,53 +35,49 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="auth-form-container">
-      <div className="auth-form-card">
-        <div className="auth-form-header">
-          <h2 className="auth-form-title">Reset Password</h2>
-          <p className="auth-form-subtitle">
-            Enter your email address and we&apos;ll send you instructions to
-            reset your password
-          </p>
+    <div className="auth-card">
+      <div className="auth-header">
+        <span className="auth-logo">Enterprise</span>
+        <p className="auth-subtitle">
+          Enter your email and we&apos;ll send you reset instructions
+        </p>
+      </div>
+
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-fields">
+          <div className="auth-field">
+            <label htmlFor="email" className="auth-label">
+              Email address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+              className="auth-input"
+              placeholder="you@company.com"
+            />
+          </div>
         </div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="auth-form-fields">
-            <FormItem>
-              <Label htmlFor="email" className="auth-form-label">
-                Email address
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={loading}
-                className="auth-form-input"
-              />
-            </FormItem>
-          </div>
+        <div className="auth-actions">
+          <button
+            type="submit"
+            disabled={loading}
+            className="auth-submit"
+          >
+            {loading ? "Sending..." : "Send reset instructions"}
+          </button>
 
-          <div className="auth-form-actions">
-            <button
-              type="submit"
-              disabled={loading}
-              className="auth-form-submit"
-            >
-              {loading ? "Sending..." : "Send Reset Instructions"}
-            </button>
-
-            <div className="auth-form-link-container">
-              <Link href="/" className="auth-form-link">
-                Back to login
-              </Link>
-            </div>
-          </div>
-        </form>
-      </div>
+          <Link href="/" className="auth-back-link">
+            Back to sign in
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }

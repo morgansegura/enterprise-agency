@@ -1,35 +1,96 @@
 @reference "tailwindcss";
 
-.sidebar-header-icon {
-  @apply flex aspect-square size-8 items-center justify-center rounded-lg bg-(--color-sidebar-primary) text-(--color-sidebar-primary-foreground);
+/* =========================================================================
+ * Dashboard Sidebar
+ * Enterprise-grade navigation for the main dashboard view.
+ * Tokens: --el-*, --accent-primary-*, --border-subtle, --font-system
+ * ========================================================================= */
+
+/* Root wrapper — white surface, right border */
+.dashboard-sidebar {
+  @apply font-(family-name:--font-system) text-[13px];
 }
 
-.sidebar-header-text {
-  @apply grid flex-1 text-left text-sm leading-tight;
+/* Header —————————————————————————————————————————————————————————————————— */
+
+.dashboard-sidebar-header {
+  @apply flex items-center gap-2.5 px-4 h-12 border-b border-(--border-subtle);
 }
 
-.sidebar-header-title {
-  @apply truncate font-semibold;
-  @apply font-(family-name:--font-roboto-slab);
+.dashboard-sidebar-logo {
+  @apply flex items-center justify-center size-7 rounded-(--radius-md) bg-(--accent-primary) text-(--accent-primary-foreground);
 }
 
-.sidebar-header-subtitle {
-  @apply truncate text-xs;
+.dashboard-sidebar-logo svg {
+  @apply size-4;
 }
 
-.sidebar-footer-user {
-  @apply grid flex-1 text-left text-sm leading-tight px-2 py-1.5;
+.dashboard-sidebar-name {
+  @apply text-sm font-semibold text-(--el-800) leading-none tracking-tight;
 }
 
-.sidebar-footer-user-name {
-  @apply truncate font-semibold;
+/* Nav groups ——————————————————————————————————————————————————————————————— */
+
+.dashboard-sidebar-group {
+  @apply flex flex-col gap-0.5 px-3 py-2;
 }
 
-.sidebar-footer-user-email {
-  @apply truncate text-xs;
-  @apply text-(--muted-foreground);
+.dashboard-sidebar-label {
+  @apply text-[11px] font-medium uppercase tracking-[0.04em] text-(--el-400) px-2 pb-1 select-none;
 }
 
-.sidebar-footer-user-badge {
-  @apply inline-block px-2 py-0.5 mt-1 text-xs font-medium rounded-full bg-(--sidebar-accent) text-(--sidebar-accent-foreground) w-fit;
+/* Nav items ——————————————————————————————————————————————————————————————— */
+
+.dashboard-sidebar-item {
+  @apply relative;
+}
+
+.dashboard-sidebar-link {
+  @apply flex items-center gap-2.5 h-8 px-2 rounded-(--radius-md) text-[13px] font-normal text-(--el-600) transition-colors duration-150 cursor-pointer select-none;
+}
+
+.dashboard-sidebar-link:hover {
+  @apply bg-(--el-50) text-(--el-800);
+}
+
+.dashboard-sidebar-link[data-active="true"] {
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary) font-medium;
+}
+
+.dashboard-sidebar-link svg {
+  @apply size-4 shrink-0 text-(--el-500);
+}
+
+.dashboard-sidebar-link:hover svg {
+  @apply text-(--el-700);
+}
+
+.dashboard-sidebar-link[data-active="true"] svg {
+  @apply text-(--accent-primary);
+}
+
+.dashboard-sidebar-link span {
+  @apply truncate;
+}
+
+/* Footer —————————————————————————————————————————————————————————————————— */
+
+.dashboard-sidebar-footer {
+  @apply flex items-center gap-3 px-4 py-3 border-t border-(--border-subtle) mt-auto;
+}
+
+.dashboard-sidebar-avatar {
+  @apply flex items-center justify-center size-8 rounded-full bg-(--el-100) text-(--el-600) text-[11px] font-semibold uppercase shrink-0 select-none;
+}
+
+.dashboard-sidebar-user {
+  @apply flex flex-col min-w-0;
+}
+
+.dashboard-sidebar-user-name {
+  @apply text-[13px] font-medium text-(--el-800) truncate leading-tight;
+}
+
+.dashboard-sidebar-user-email {
+  @apply text-[11px] text-(--el-400) truncate leading-tight;
 }

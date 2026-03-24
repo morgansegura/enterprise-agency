@@ -1,0 +1,148 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Page Card — Enterprise table row variant
+   ============================================================================ */
+
+/* Row-level card (used inside content-table) */
+.page-row {
+  @apply flex items-center cursor-pointer transition-colors;
+  @apply hover:bg-(--el-50);
+}
+
+.page-row-updating {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Title cell */
+.page-row-title {
+  @apply flex-1 min-w-0 flex items-center gap-2 px-3 py-2.5;
+}
+
+.page-row-title-link {
+  @apply text-sm font-semibold text-(--foreground) truncate;
+  @apply hover:underline;
+}
+
+/* Homepage badge */
+.page-row-home-badge {
+  @apply inline-flex items-center gap-1 px-1.5 py-0.5 shrink-0;
+  @apply text-[11px] font-medium rounded-[3px];
+  @apply bg-blue-100 text-blue-700;
+}
+
+/* Slug cell */
+.page-row-slug {
+  @apply w-48 px-3 py-2.5 hidden md:block;
+}
+
+.page-row-slug-text {
+  @apply text-sm text-(--el-400) truncate block;
+}
+
+/* Status cell */
+.page-row-status {
+  @apply w-28 px-3 py-2.5;
+}
+
+/* Date cell */
+.page-row-date {
+  @apply w-36 px-3 py-2.5 hidden lg:block;
+}
+
+.page-row-date-text {
+  @apply text-sm text-(--el-400);
+}
+
+/* Actions cell */
+.page-row-actions {
+  @apply w-12 px-3 py-2.5 flex items-center justify-end;
+}
+
+.page-row-actions-trigger {
+  @apply h-7 w-7 opacity-0 transition-opacity;
+}
+
+.page-row:hover .page-row-actions-trigger {
+  @apply opacity-100;
+}
+
+/* ============================================================================
+   Status pills (page-specific semantic colors)
+   ============================================================================ */
+
+.page-status-pill {
+  @apply inline-flex items-center gap-1 px-2 py-0.5;
+  @apply text-[11px] font-medium leading-tight rounded-[3px];
+}
+
+.page-status-draft {
+  @apply bg-amber-100 text-amber-700;
+}
+
+.page-status-published {
+  @apply bg-green-100 text-green-700;
+}
+
+/* ============================================================================
+   Page table structure
+   ============================================================================ */
+
+.page-table {
+  @apply w-full;
+}
+
+.page-table-header {
+  @apply border-b border-(--border-subtle);
+}
+
+.page-table-header-row {
+  @apply flex items-center;
+}
+
+.page-table-header-cell {
+  @apply px-3 py-2.5 text-left;
+  @apply text-[11px] font-normal uppercase tracking-wider;
+  @apply text-(--el-400) select-none;
+}
+
+.page-table-body {
+  @apply divide-y divide-(--border-subtle);
+}
+
+/* ============================================================================
+   Empty state
+   ============================================================================ */
+
+.page-list-empty {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+}
+
+.page-list-empty-icon {
+  @apply h-12 w-12 text-(--el-300) mb-4;
+}
+
+.page-list-empty h3 {
+  @apply text-base font-medium text-(--foreground) mb-1;
+}
+
+.page-list-empty p {
+  @apply text-sm text-(--el-400) mb-6;
+}
+
+/* ============================================================================
+   Pagination
+   ============================================================================ */
+
+.page-list-pagination {
+  @apply flex items-center justify-between pt-4 px-3;
+  @apply border-t border-(--border-subtle);
+}
+
+.page-list-pagination-info {
+  @apply text-sm text-(--el-400);
+}
+
+.page-list-pagination-controls {
+  @apply flex items-center gap-1;
+}

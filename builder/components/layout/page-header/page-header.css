@@ -64,7 +64,7 @@
 }
 
 .page-header-search-input {
-  @apply pl-10 h-10;
+  @apply pl-10 h-10 bg-(--el-50) border border-(--border-subtle);
 }
 
 /* Filter Select */

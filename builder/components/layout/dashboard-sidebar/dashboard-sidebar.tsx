@@ -2,31 +2,17 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
+  LayoutDashboard,
+  Users,
+  Building2,
   Pyramid,
-  CircleGaugeIcon,
-  PanelsTopLeftIcon,
-  GlobeLockIcon,
 } from "lucide-react";
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-} from "@/components/ui/sidebar";
-import { NavLink } from "@/components/ui/nav-link";
 
 import "./dashboard-sidebar.css";
 
-interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
+interface DashboardSidebarProps {
   user: {
     email: string;
     firstName: string;
@@ -36,103 +22,105 @@ interface DashboardSidebarProps extends React.ComponentProps<typeof Sidebar> {
   onLogout: () => void;
 }
 
-const mainMenuItems = [
-  {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: CircleGaugeIcon,
-  },
+/* ── Menu definitions ──────────────────────────────────────────────────── */
+
+const mainItems = [
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
 ];
 
-const adminMenuItems = [
-  {
-    title: "Manage Clients",
-    url: "/dashboard/clients",
-    icon: PanelsTopLeftIcon,
-  },
-  {
-    title: "Manage Users",
-    url: "/dashboard/users",
-    icon: GlobeLockIcon,
-  },
+const managementItems = [
+  { title: "Clients", url: "/dashboard/clients", icon: Building2 },
+  { title: "Users", url: "/dashboard/users", icon: Users },
 ];
 
-export function DashboardSidebar({
-  user,
-  onLogout: _onLogout,
-  ...props
-}: DashboardSidebarProps) {
+/* ── Nav link ──────────────────────────────────────────────────────────── */
+
+function SidebarNavLink({
+  href,
+  icon: Icon,
+  title,
+}: {
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+}) {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard">
-                <div className="sidebar-header-icon">
-                  <Pyramid />
-                </div>
-                <div className="sidebar-header-text">
-                  <span className="sidebar-header-title">Web & Funnel</span>
-                  <span className="sidebar-header-subtitle">Builder</span>
-                </div>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+    <li className="dashboard-sidebar-item">
+      <Link
+        href={href}
+        className="dashboard-sidebar-link"
+        data-active={isActive}
+      >
+        <Icon />
+        <span>{title}</span>
+      </Link>
+    </li>
+  );
+}
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {mainMenuItems.map((item) => (
-                <NavLink
+/* ── Component ─────────────────────────────────────────────────────────── */
+
+export function DashboardSidebar({ user }: DashboardSidebarProps) {
+  const initials =
+    (user.firstName?.[0] ?? "") + (user.lastName?.[0] ?? "");
+
+  return (
+    <aside className="dashboard-sidebar">
+      {/* Header */}
+      <div className="dashboard-sidebar-header">
+        <div className="dashboard-sidebar-logo">
+          <Pyramid />
+        </div>
+        <span className="dashboard-sidebar-name">Enterprise</span>
+      </div>
+
+      {/* Navigation */}
+      <nav>
+        {/* Main */}
+        <div className="dashboard-sidebar-group">
+          <ul>
+            {mainItems.map((item) => (
+              <SidebarNavLink
+                key={item.url}
+                href={item.url}
+                icon={item.icon}
+                title={item.title}
+              />
+            ))}
+          </ul>
+        </div>
+
+        {/* Management — admin only */}
+        {user.isSuperAdmin && (
+          <div className="dashboard-sidebar-group">
+            <div className="dashboard-sidebar-label">Management</div>
+            <ul>
+              {managementItems.map((item) => (
+                <SidebarNavLink
                   key={item.url}
                   href={item.url}
-                  icon={<item.icon />}
+                  icon={item.icon}
                   title={item.title}
                 />
               ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {user.isSuperAdmin && (
-          <SidebarGroup>
-            <SidebarGroupLabel>Administration</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {adminMenuItems.map((item) => (
-                  <NavLink
-                    key={item.url}
-                    href={item.url}
-                    icon={<item.icon />}
-                    title={item.title}
-                  />
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+            </ul>
+          </div>
         )}
-      </SidebarContent>
+      </nav>
 
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <div className="sidebar-footer-user">
-              <span className="sidebar-footer-user-name">
-                {user.firstName} {user.lastName}
-              </span>
-              <span className="sidebar-footer-user-email">{user.email}</span>
-              {user.isSuperAdmin && (
-                <span className="sidebar-footer-user-badge">Super Admin</span>
-              )}
-            </div>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+      {/* Footer — user info */}
+      <div className="dashboard-sidebar-footer">
+        <div className="dashboard-sidebar-avatar">{initials}</div>
+        <div className="dashboard-sidebar-user">
+          <span className="dashboard-sidebar-user-name">
+            {user.firstName} {user.lastName}
+          </span>
+          <span className="dashboard-sidebar-user-email">{user.email}</span>
+        </div>
+      </div>
+    </aside>
   );
 }

@@ -34,13 +34,11 @@ export default function PagesPage({
   const publishPage = usePublishPage(id);
   const unpublishPage = useUnpublishPage(id);
 
-  // Track which pages are being updated
   const [updatingIds, setUpdatingIds] = React.useState<string[]>([]);
   const [search, setSearch] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState("all");
-  const [viewMode, setViewMode] = React.useState<"grid" | "list">("list");
 
-  // Convert pages to PageCardData format and filter
+  // Convert and filter pages
   const pageCardData: PageCardData[] = React.useMemo(() => {
     if (!pages) return [];
     return pages
@@ -147,7 +145,7 @@ export default function PagesPage({
   }
 
   return (
-    <div className="flex-1 p-8 space-y-6">
+    <div className="flex-1 flex flex-col gap-6 p-8">
       <PageHeader
         title="Pages"
         icon={FileText}
@@ -167,12 +165,8 @@ export default function PagesPage({
         ]}
         filterValue={statusFilter}
         onFilterChange={setStatusFilter}
-        showViewToggle
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
       />
 
-      {/* Content */}
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -182,13 +176,11 @@ export default function PagesPage({
           pages={pageCardData}
           actions={pageActions}
           updatingIds={updatingIds}
-          showSearch={false}
-          showFilters={false}
-          showViewToggle={false}
-          showDate={true}
-          showHomepageToggle={true}
-          view={viewMode}
-          emptyMessage="No pages yet. Create your first page to get started."
+          showDate
+          showHomepageToggle
+          emptyTitle="No pages yet"
+          emptyMessage="Create your first page to get started"
+          onCreateFirst={() => router.push(`/${id}/pages/new`)}
         />
       )}
     </div>

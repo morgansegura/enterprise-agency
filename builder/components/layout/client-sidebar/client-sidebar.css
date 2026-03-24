@@ -1,71 +1,119 @@
 @reference "tailwindcss";
 
-.client-sidebar-logo {
-  @apply flex aspect-square size-8 items-center justify-center rounded-sm bg-(--primary) text-(--primary-foreground) shrink-0;
+/* =========================================================================
+ * Client Sidebar
+ * Enterprise-grade navigation for the client workspace view.
+ * Sits inside a Radix SidebarProvider — uses sidebar primitives.
+ * Tokens: --el-*, --accent-primary-*, --border-subtle, --font-system
+ * ========================================================================= */
+
+/* Root override — apply system font + base text size */
+.client-sidebar {
+  @apply font-(family-name:--font-system) text-[13px];
 }
 
-.client-sidebar-header-text {
-  @apply grid flex-1 text-left text-sm leading-tight overflow-hidden;
-}
-
-.client-sidebar-title {
-  @apply truncate font-semibold;
-}
-
-.client-sidebar-subtitle {
-  @apply truncate text-xs text-(--muted-foreground);
-}
+/* Back link ——————————————————————————————————————————————————————————————— */
 
 .client-sidebar-back {
-  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply flex items-center gap-2 h-8 px-2 rounded-(--radius-md) text-[13px] text-(--el-400) transition-colors duration-150 cursor-pointer select-none;
 }
 
-/* Icon mode - hide text elements when collapsed */
+.client-sidebar-back:hover {
+  @apply bg-(--el-50) text-(--el-700);
+}
+
+.client-sidebar-back svg {
+  @apply size-4 shrink-0;
+}
+
+/* Icon mode — hide back text */
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-header-text {
+  .client-sidebar-back span {
   @apply hidden;
 }
 
-[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-back
-  span {
-  @apply hidden;
-}
-
-/* Header container */
-.client-sidebar-header {
-  @apply overflow-hidden;
-}
-
-/* Center header menu in icon mode - maintain full width */
-[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-header
-  [data-sidebar="menu"] {
-  @apply w-full items-center;
-}
-
-/* Center logo menu item in icon mode - maintain full width */
-[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-header
-  [data-sidebar="menu-item"] {
-  @apply w-full justify-center;
-}
-
-/* Center logo button in icon mode */
-[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-header
-  [data-sidebar="menu-button"] {
-  @apply justify-center p-0 size-10;
-}
-
-/* Center logo in icon mode */
-[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-logo {
-  @apply mx-auto;
-}
-
-/* Center back button in footer when collapsed */
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
   .client-sidebar-back {
   @apply justify-center;
+}
+
+/* Group labels ————————————————————————————————————————————————————————————— */
+
+.client-sidebar-label {
+  @apply text-[11px] font-medium uppercase tracking-[0.04em] text-(--el-400) px-2 pb-1 pt-2 select-none;
+}
+
+/* Nav items ——————————————————————————————————————————————————————————————— */
+
+.client-sidebar-link {
+  @apply flex items-center gap-2.5 h-8 px-2 rounded-(--radius-md) text-[13px] font-normal text-(--el-600) transition-colors duration-150 cursor-pointer select-none;
+}
+
+.client-sidebar-link:hover {
+  @apply bg-(--el-50) text-(--el-800);
+}
+
+.client-sidebar-link[data-active="true"] {
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary) font-medium;
+}
+
+.client-sidebar-link svg {
+  @apply size-4 shrink-0 text-(--el-500);
+}
+
+.client-sidebar-link:hover svg {
+  @apply text-(--el-700);
+}
+
+.client-sidebar-link[data-active="true"] svg {
+  @apply text-(--accent-primary);
+}
+
+.client-sidebar-link span {
+  @apply truncate;
+}
+
+/* Icon mode — hide text, center icons */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-link {
+  @apply justify-center px-0;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-link span {
+  @apply hidden;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-label {
+  @apply h-0 opacity-0 overflow-hidden p-0;
+}
+
+/* Editor action buttons ——————————————————————————————————————————————————— */
+
+.client-sidebar-action {
+  @apply flex items-center gap-2.5 h-8 px-2 rounded-(--radius-md) text-[13px] font-normal text-(--el-600) transition-colors duration-150 cursor-pointer select-none w-full;
+}
+
+.client-sidebar-action:hover {
+  @apply bg-(--el-50) text-(--el-800);
+}
+
+.client-sidebar-action svg {
+  @apply size-4 shrink-0 text-(--el-500);
+}
+
+.client-sidebar-action:hover svg {
+  @apply text-(--el-700);
+}
+
+/* Icon mode — hide text in actions */
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-action {
+  @apply justify-center px-0;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-action span {
+  @apply hidden;
 }

@@ -1,6 +1,7 @@
 export {
   ContentList,
   StatusDropdown,
+  StatusPill,
   statusConfig,
   type StatusKey,
   type ContentItem,
@@ -8,4 +9,5 @@ export {
   type FilterOption,
   type MenuAction,
   type BadgeConfig,
+  type ColumnDef,
 } from "./content-list";
