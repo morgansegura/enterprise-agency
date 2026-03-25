@@ -177,8 +177,11 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   };
   const newCSS = generateTenantCSS(newDesignTokens);
 
-  // Handle font configuration
-  const fontConfig = fonts || defaultFontConfig;
+  // Handle font configuration — merge with defaults to ensure roles always exist
+  const fontConfig: FontConfig = {
+    definitions: fonts?.definitions || defaultFontConfig.definitions,
+    roles: fonts?.roles || defaultFontConfig.roles,
+  };
   const googleFontsUrl = buildGoogleFontsUrl(fontConfig.definitions);
   const fontCSS = generateFontCSS(fontConfig);
 

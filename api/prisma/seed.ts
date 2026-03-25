@@ -1253,10 +1253,21 @@ async function main() {
           },
         },
         fonts: {
-          definitions: [{ family: "Inter", weights: [400, 500, 600, 700] }],
-          variables: {
-            "--font-primary": "Inter, system-ui, sans-serif",
-            "--font-secondary": "Inter, system-ui, sans-serif",
+          definitions: [
+            {
+              id: "primary",
+              family: "Inter",
+              weights: [400, 500, 600, 700],
+              category: "sans-serif",
+            },
+          ],
+          roles: {
+            heading: "primary",
+            body: "primary",
+            button: "primary",
+            link: "primary",
+            caption: "primary",
+            navigation: "primary",
           },
         },
       },
