@@ -33,7 +33,7 @@
   @apply z-20;
   @apply bg-(--builder-card) border border-(--builder-border);
   @apply shadow-md;
-  animation: toolbar-enter 100ms ease-out;
+  @apply animate-[toolbar-enter_100ms_ease-out];
 }
 
 @keyframes toolbar-enter {
