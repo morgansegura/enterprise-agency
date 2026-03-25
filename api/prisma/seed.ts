@@ -945,7 +945,8 @@ async function main() {
   });
   logger.info("   ✅ Created main navigation menu");
 
-  const defaultHeader = await prisma.header.create({
+  // Create DB records (used for builder CRUD, not directly in site config)
+  await prisma.header.create({
     data: {
       tenantId: agencyTenant.id,
       name: "Default Header",
@@ -990,7 +991,7 @@ async function main() {
   });
   logger.info("   ✅ Created default header");
 
-  const defaultFooter = await prisma.footer.create({
+  await prisma.footer.create({
     data: {
       tenantId: agencyTenant.id,
       name: "Default Footer",
@@ -1041,81 +1042,95 @@ async function main() {
   await prisma.tenant.update({
     where: { id: agencyTenant.id },
     data: {
+      // headerConfig shape must match client HeaderConfig type exactly
       headerConfig: {
         default: {
-          id: defaultHeader.id,
           template: "standard",
           behavior: {
             position: "sticky",
-            scrollEffect: "shadow",
+            showShadowOnScroll: true,
           },
-          logo: {
-            text: "Web and Funnel",
-            position: "left",
-          },
+          logo: null,
           navigation: {
             menuId: mainMenu.id,
-            position: "center",
             style: "horizontal",
+            variant: "default",
+            dropdownTrigger: "hover",
           },
           actions: {
             items: [
               {
                 type: "button",
-                label: "Get Started",
-                href: "/contact",
-                variant: "default",
-                size: "sm",
+                data: {
+                  text: "Get Started",
+                  url: "/contact",
+                  variant: "default",
+                },
               },
             ],
           },
-          styling: {
-            height: "64px",
-            background: "var(--background)",
-            text: "var(--foreground)",
-            border: "1px solid var(--border)",
-          },
           mobile: {
-            breakpoint: 768,
-            menuType: "drawer",
+            breakpoint: "md",
+            type: "drawer",
+            menuId: mainMenu.id,
           },
         },
       },
+      // footerConfig shape must match client FooterConfig type exactly
       footerConfig: {
         default: {
-          id: defaultFooter.id,
-          template: "columns",
+          template: "2-column",
           columns: [
             {
-              title: "Company",
+              _key: "col-company",
               blocks: [
                 {
+                  _type: "heading-block",
+                  _key: "footer-company-title",
+                  data: {
+                    text: "Company",
+                    level: "h4",
+                    size: "sm",
+                    weight: "semibold",
+                  },
+                },
+                {
                   _type: "text-block",
-                  _key: "footer-company",
+                  _key: "footer-company-links",
                   data: {
                     content:
-                      "[About](/about) · [Services](/services) · [Blog](/blog) · [Contact](/contact)",
+                      "[About](/about)\n[Services](/services)\n[Blog](/blog)\n[Contact](/contact)",
                     size: "sm",
                   },
                 },
               ],
             },
             {
-              title: "Legal",
+              _key: "col-legal",
               blocks: [
                 {
+                  _type: "heading-block",
+                  _key: "footer-legal-title",
+                  data: {
+                    text: "Legal",
+                    level: "h4",
+                    size: "sm",
+                    weight: "semibold",
+                  },
+                },
+                {
                   _type: "text-block",
-                  _key: "footer-legal",
+                  _key: "footer-legal-links",
                   data: {
                     content:
-                      "[Privacy](/privacy-policy) · [Terms](/terms-of-service) · [Cookies](/cookie-policy)",
+                      "[Privacy Policy](/privacy-policy)\n[Terms of Service](/terms-of-service)\n[Cookie Policy](/cookie-policy)",
                     size: "sm",
                   },
                 },
               ],
             },
           ],
-          bottom: {
+          bottomBar: {
             left: [
               {
                 _type: "text-block",
@@ -1128,24 +1143,60 @@ async function main() {
             ],
           },
           styling: {
-            background: "var(--card)",
-            text: "var(--muted-foreground)",
-            border: "1px solid var(--border)",
-            padding: "3rem 1.5rem 1.5rem",
+            background: "muted",
+            spacing: "lg",
+            divider: true,
           },
         },
       },
+      // menusConfig shape must match client Menu type exactly
       menusConfig: {
         [mainMenu.id]: {
           id: mainMenu.id,
           name: "Main Navigation",
           slug: "main-navigation",
+          location: "header",
           items: [
-            { id: "nav-home", label: "Home", url: "/home" },
-            { id: "nav-about", label: "About", url: "/about" },
-            { id: "nav-services", label: "Services", url: "/services" },
-            { id: "nav-blog", label: "Blog", url: "/blog" },
-            { id: "nav-contact", label: "Contact", url: "/contact" },
+            {
+              id: "nav-home",
+              label: "Home",
+              type: "custom",
+              url: "/home",
+              order: 0,
+              openInNewTab: false,
+            },
+            {
+              id: "nav-about",
+              label: "About",
+              type: "custom",
+              url: "/about",
+              order: 1,
+              openInNewTab: false,
+            },
+            {
+              id: "nav-services",
+              label: "Services",
+              type: "custom",
+              url: "/services",
+              order: 2,
+              openInNewTab: false,
+            },
+            {
+              id: "nav-blog",
+              label: "Blog",
+              type: "custom",
+              url: "/blog",
+              order: 3,
+              openInNewTab: false,
+            },
+            {
+              id: "nav-contact",
+              label: "Contact",
+              type: "custom",
+              url: "/contact",
+              order: 4,
+              openInNewTab: false,
+            },
           ],
         },
       },
