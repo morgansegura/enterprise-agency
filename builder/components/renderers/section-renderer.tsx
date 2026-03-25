@@ -72,10 +72,17 @@ export function SectionRenderer({
   const sectionAlign = alignClasses[align] || "";
 
   return (
-    <section className={cn(sectionBackground, sectionAlign)}>
+    <section
+      className={cn(sectionBackground, sectionAlign)}
+      data-block-key={section._key}
+    >
       <div className={cn(sectionSpacing, sectionWidth)}>
         {containers.map((container) => (
-          <div key={container._key} className="space-y-4">
+          <div
+            key={container._key}
+            className="space-y-4"
+            data-block-key={container._key}
+          >
             {container.blocks?.map((block) => (
               <BlockRenderer
                 key={block._key}

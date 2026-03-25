@@ -61,7 +61,11 @@ export function BlockRenderer({ block, breakpoint = "desktop" }: Props) {
     return <div className="animate-pulse bg-muted h-12 rounded-md" />;
   }
 
-  return <Component block={block} breakpoint={breakpoint} />;
+  return (
+    <div data-block-key={block._key}>
+      <Component block={block} breakpoint={breakpoint} />
+    </div>
+  );
 }
 
 /**

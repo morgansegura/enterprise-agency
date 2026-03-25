@@ -182,6 +182,31 @@ export default function EditPagePage({
     null,
   );
 
+  // Sync selection highlight to preview DOM
+  React.useEffect(() => {
+    const prev = document.querySelector("[data-block-key].is-preview-selected");
+    prev?.classList.remove("is-preview-selected");
+    if (selectedBlockKey) {
+      const el = document.querySelector(
+        `[data-block-key="${selectedBlockKey}"]`,
+      );
+      el?.classList.add("is-preview-selected");
+      el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [selectedBlockKey]);
+
+  // Sync hover highlight to preview DOM
+  React.useEffect(() => {
+    const prev = document.querySelector("[data-block-key].is-preview-hovered");
+    prev?.classList.remove("is-preview-hovered");
+    if (hoveredBlockKey && hoveredBlockKey !== selectedBlockKey) {
+      const el = document.querySelector(
+        `[data-block-key="${hoveredBlockKey}"]`,
+      );
+      el?.classList.add("is-preview-hovered");
+    }
+  }, [hoveredBlockKey, selectedBlockKey]);
+
   // UI Store for block selection in sidebar
   const { selectBlock } = useUIStore();
 

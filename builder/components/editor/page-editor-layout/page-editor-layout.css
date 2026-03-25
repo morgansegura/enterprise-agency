@@ -95,6 +95,19 @@
 }
 
 /* =============================================================================
+ * Selection highlight in preview — applied via JS data attribute
+ * ============================================================================= */
+
+.page-editor-canvas-content [data-block-key].is-preview-selected {
+  @apply outline-2 outline-dashed outline-(--builder-primary) -outline-offset-2 rounded-sm;
+}
+
+.page-editor-canvas-content [data-block-key].is-preview-hovered {
+  @apply outline-1 outline-dashed -outline-offset-1 rounded-sm;
+  outline-color: color-mix(in srgb, var(--builder-primary) 50%, transparent);
+}
+
+/* =============================================================================
  * Preview Mode
  * ============================================================================= */
 
