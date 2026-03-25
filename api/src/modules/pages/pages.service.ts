@@ -14,6 +14,7 @@ import { PaginatedResponse } from "@/common/dto/response.dto";
 import { CreatePageDto } from "./dto/create-page.dto";
 import { UpdatePageDto } from "./dto/update-page.dto";
 import { StructureValidationService } from "./services/structure-validation.service";
+import { PageVersionService } from "./services/page-version.service";
 import { RevalidationService } from "@/modules/revalidation/revalidation.service";
 
 /**
@@ -29,6 +30,7 @@ export class PagesService {
   constructor(
     private prisma: PrismaService,
     private structureValidation: StructureValidationService,
+    private pageVersionService: PageVersionService,
     private revalidationService: RevalidationService,
     private audit: AuditLogService,
   ) {}
@@ -244,6 +246,7 @@ export class PagesService {
     id: string,
     updateData: UpdatePageDto,
     tenantTier?: TenantTier,
+    userId?: string,
   ) {
     // Verify page belongs to tenant and get existing data
     const existing = await this.findOne(tenantId, id);
@@ -364,6 +367,16 @@ export class PagesService {
       resourceType: "page",
       resourceId: page.id,
     });
+
+    // Create version snapshot when content changes
+    if (userId && updateData.sections) {
+      this.pageVersionService
+        .createVersion({ pageId: id, userId })
+        .catch((err) => {
+          this.logger.error(`Failed to create version for page ${id}:`, err);
+        });
+    }
+
     return page;
   }
 
@@ -385,10 +398,22 @@ export class PagesService {
     return { success: true, id };
   }
 
-  async publish(tenantId: string, id: string) {
+  async publish(tenantId: string, id: string, userId?: string) {
     const page = await this.update(tenantId, id, {
       status: "published",
     });
+
+    // Create version snapshot on publish
+    if (userId) {
+      this.pageVersionService
+        .createVersion({ pageId: id, userId, changeNote: "Published" })
+        .catch((err) => {
+          this.logger.error(
+            `Failed to create publish version for page ${id}:`,
+            err,
+          );
+        });
+    }
 
     // Trigger cache revalidation (fire and forget)
     this.revalidationService

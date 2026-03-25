@@ -122,9 +122,16 @@ export class PagesController {
     @TenantId() tenantId: string,
     @Param("id") id: string,
     @Body() updatePageDto: UpdatePageDto,
+    @CurrentUser() user: { id: string },
     @CurrentTenant() tenant?: TenantInfo,
   ) {
-    return this.pagesService.update(tenantId, id, updatePageDto, tenant?.tier);
+    return this.pagesService.update(
+      tenantId,
+      id,
+      updatePageDto,
+      tenant?.tier,
+      user.id,
+    );
   }
 
   /**
@@ -144,8 +151,12 @@ export class PagesController {
    */
   @Post(":id/publish")
   @Permissions(Permission.PAGES_PUBLISH)
-  publish(@TenantId() tenantId: string, @Param("id") id: string) {
-    return this.pagesService.publish(tenantId, id);
+  publish(
+    @TenantId() tenantId: string,
+    @Param("id") id: string,
+    @CurrentUser() user: { id: string },
+  ) {
+    return this.pagesService.publish(tenantId, id, user.id);
   }
 
   /**
