@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 .not-found {
   @apply flex min-h-[60vh] flex-col items-center justify-center px-8 py-16 text-center;
 }
