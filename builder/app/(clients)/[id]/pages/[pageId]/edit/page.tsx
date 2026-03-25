@@ -22,6 +22,7 @@ import {
   EditableHeader,
   SettingsPanel,
 } from "@/components/editor";
+import { PageLayers } from "@/components/editor/page-layers/page-layers";
 import { PageRenderer } from "@/components/renderers/page-renderer";
 import { HeaderRenderer } from "@/components/headers";
 import { Eye } from "lucide-react";
@@ -835,6 +836,26 @@ export default function EditPagePage({
         onUnpublish={handleUnpublish}
         onPreview={handlePreview}
         onGeneratePreviewLink={handleGeneratePreviewLink}
+        leftPanel={
+          <PageLayers
+            sections={sections}
+            selectedKey={selectedBlockKey}
+            hoveredKey={hoveredBlockKey}
+            onSelectSection={(sectionIndex, key) => {
+              setSelectedBlockKey(key);
+              selectBlock(sectionIndex, 0, 0, key);
+            }}
+            onSelectContainer={(sectionIndex, containerIndex, key) => {
+              setSelectedBlockKey(key);
+              selectBlock(sectionIndex, containerIndex, 0, key);
+            }}
+            onSelectBlock={(sectionIndex, containerIndex, blockIndex, key) => {
+              setSelectedBlockKey(key);
+              selectBlock(sectionIndex, containerIndex, blockIndex, key);
+            }}
+            onHover={setHoveredBlockKey}
+          />
+        }
         versions={versions}
         onRestoreVersion={(versionId) => {
           restoreVersion.mutate(
