@@ -20,7 +20,7 @@
 .edit-product-back {
   @apply flex items-center justify-center h-8 w-8 rounded-md;
   @apply hover:bg-(--el-100) transition-colors cursor-pointer;
-  color: var(--text-tertiary);
+  @apply text-(--text-tertiary);
 }
 
 .edit-product-back svg {
@@ -32,13 +32,11 @@
 }
 
 .edit-product-title {
-  @apply text-lg font-semibold;
-  color: var(--foreground);
+  @apply text-lg font-semibold text-(--foreground);
 }
 
 .edit-product-slug {
-  @apply text-xs;
-  color: var(--text-tertiary);
+  @apply text-xs text-(--text-tertiary);
 }
 
 .edit-product-actions {
@@ -59,21 +57,21 @@
 
 .edit-product-tab {
   @apply relative px-4 py-3 text-sm font-medium cursor-pointer transition-colors;
-  color: var(--text-tertiary);
+  @apply text-(--text-tertiary);
 }
 
 .edit-product-tab:hover {
-  color: var(--foreground);
+  @apply text-(--foreground);
 }
 
 .edit-product-tab-active {
-  color: var(--foreground);
+  @apply text-(--foreground);
 }
 
 .edit-product-tab-active::after {
   content: "";
   @apply absolute bottom-0 left-0 right-0 h-0.5;
-  background: var(--foreground);
+  @apply bg-(--foreground);
 }
 
 /* ============================================================================
@@ -111,9 +109,7 @@
   @apply fixed bottom-0 left-0 right-0 z-20;
   @apply flex items-center justify-end gap-3;
   @apply px-6 py-3;
-  background: var(--el-0);
-  border-top: 1px solid var(--border-default);
-  box-shadow: var(--shadow-md);
+  @apply bg-(--el-0) border-t border-(--border-default) shadow-md;
 }
 
 .edit-product-footer-hidden {
@@ -144,9 +140,7 @@
 }
 
 .edit-product-skeleton-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md);
   @apply p-5 flex flex-col gap-4;
 }
 
@@ -156,5 +150,5 @@
 
 .edit-product-error {
   @apply flex items-center justify-center py-16 text-center;
-  color: var(--status-error);
+  @apply text-(--status-error);
 }

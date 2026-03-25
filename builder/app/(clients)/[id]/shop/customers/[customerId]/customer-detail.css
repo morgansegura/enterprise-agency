@@ -20,7 +20,7 @@
 .customer-detail-back {
   @apply flex items-center justify-center h-8 w-8 rounded-md;
   @apply hover:bg-(--el-100) transition-colors cursor-pointer;
-  color: var(--text-tertiary);
+  @apply text-(--text-tertiary);
 }
 
 .customer-detail-back svg {
@@ -32,13 +32,11 @@
 }
 
 .customer-detail-title {
-  @apply text-lg font-semibold;
-  color: var(--foreground);
+  @apply text-lg font-semibold text-(--foreground);
 }
 
 .customer-detail-email {
-  @apply text-sm;
-  color: var(--text-tertiary);
+  @apply text-sm text-(--text-tertiary);
 }
 
 .customer-detail-actions {
@@ -77,10 +75,7 @@
    ============================================================================ */
 
 .customer-detail-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  @apply overflow-hidden;
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md) overflow-hidden;
 }
 
 .customer-detail-card-header {
@@ -88,9 +83,7 @@
 }
 
 .customer-detail-card-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--foreground);
+  @apply text-sm font-semibold text-(--foreground);
 }
 
 .customer-detail-card-body {
@@ -105,9 +98,7 @@
   @apply fixed bottom-0 left-0 right-0 z-20;
   @apply flex items-center justify-end gap-3;
   @apply px-6 py-3;
-  background: var(--el-0);
-  border-top: 1px solid var(--border-default);
-  box-shadow: var(--shadow-md);
+  @apply bg-(--el-0) border-t border-(--border-default) shadow-md;
 }
 
 .customer-detail-footer-hidden {
@@ -138,9 +129,7 @@
 }
 
 .customer-detail-skeleton-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md);
   @apply p-5 flex flex-col gap-4;
 }
 
@@ -150,5 +139,5 @@
 
 .customer-detail-error {
   @apply flex items-center justify-center py-16 text-center;
-  color: var(--status-error);
+  @apply text-(--status-error);
 }

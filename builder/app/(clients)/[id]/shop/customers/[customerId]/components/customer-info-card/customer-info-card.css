@@ -9,12 +9,8 @@
 }
 
 .customer-info-field-label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-  @apply flex items-center gap-1.5;
+  @apply text-[11px] font-medium uppercase tracking-[0.04em];
+  @apply text-(--text-tertiary) flex items-center gap-1.5;
 }
 
 .customer-info-field-label svg {
@@ -22,8 +18,7 @@
 }
 
 .customer-info-field-input {
-  height: 40px;
-  border-radius: 3px;
+  @apply h-10 rounded-[3px];
 }
 
 .customer-info-field-row {
@@ -45,11 +40,9 @@
 }
 
 .customer-info-toggle-label {
-  @apply text-sm font-medium;
-  color: var(--foreground);
+  @apply text-sm font-medium text-(--foreground);
 }
 
 .customer-info-toggle-description {
-  @apply text-xs;
-  color: var(--text-tertiary);
+  @apply text-xs text-(--text-tertiary);
 }

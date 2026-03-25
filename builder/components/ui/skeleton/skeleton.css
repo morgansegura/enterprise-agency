@@ -12,10 +12,8 @@
 
 /* Shimmer animation */
 [data-slot="skeleton"][data-animation="shimmer"]::after {
+  @apply absolute inset-0 -translate-x-full;
   content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
   background: linear-gradient(
     90deg,
     transparent,
@@ -27,9 +25,8 @@
 
 /* Wave animation */
 [data-slot="skeleton"][data-animation="wave"]::after {
+  @apply absolute inset-0;
   content: "";
-  position: absolute;
-  inset: 0;
   background: linear-gradient(
     90deg,
     transparent 0%,
@@ -41,7 +38,7 @@
 
 /* None animation */
 [data-slot="skeleton"][data-animation="none"] {
-  animation: none;
+  @apply animate-none;
 }
 
 /* Skeleton variants */
@@ -75,10 +72,8 @@
 }
 
 [data-slot="image-placeholder"][data-animation="shimmer"]::after {
+  @apply absolute inset-0 -translate-x-full;
   content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
   background: linear-gradient(
     90deg,
     transparent,

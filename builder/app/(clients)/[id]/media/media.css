@@ -16,38 +16,30 @@
 .media-upload-zone {
   @apply mx-6 mt-6 mb-4;
   @apply flex flex-col items-center justify-center gap-2 py-8;
-  border: 2px dashed var(--border-default);
-  border-radius: var(--radius-md);
-  background: var(--el-50);
-  cursor: pointer;
+  @apply border-2 border-dashed border-(--border-default) rounded-(--radius-md);
+  @apply bg-(--el-50) cursor-pointer;
   transition: border-color var(--duration-normal) var(--ease-out),
               background var(--duration-normal) var(--ease-out);
 }
 
 .media-upload-zone:hover {
-  border-color: var(--accent-primary);
-  background: var(--accent-primary-subtle);
+  @apply border-(--accent-primary) bg-(--accent-primary-subtle);
 }
 
 .media-upload-zone-active {
-  border-color: var(--accent-primary);
-  background: var(--accent-primary-subtle);
+  @apply border-(--accent-primary) bg-(--accent-primary-subtle);
 }
 
 .media-upload-zone-icon {
-  @apply h-10 w-10;
-  color: var(--text-tertiary);
+  @apply h-10 w-10 text-(--text-tertiary);
 }
 
 .media-upload-zone-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  @apply text-sm font-medium text-(--text-secondary);
 }
 
 .media-upload-zone-hint {
-  font-size: 12px;
-  color: var(--text-tertiary);
+  @apply text-xs text-(--text-tertiary);
 }
 
 /* ============================================================================
@@ -56,7 +48,7 @@
 
 .media-toolbar {
   @apply flex items-center gap-3 px-6 py-3;
-  border-bottom: 1px solid var(--border-subtle);
+  @apply border-b border-(--border-subtle);
 }
 
 .media-toolbar-search {
@@ -65,13 +57,11 @@
 
 .media-toolbar-search-icon {
   @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4;
-  color: var(--text-tertiary);
+  @apply text-(--text-tertiary);
 }
 
 .media-toolbar-search-input {
-  @apply pl-9;
-  height: 36px;
-  border-radius: 3px;
+  @apply pl-9 h-9 rounded-[3px];
 }
 
 .media-toolbar-filters {
@@ -79,8 +69,7 @@
 }
 
 .media-toolbar-filter-select {
-  @apply w-[140px];
-  height: 36px;
+  @apply w-[140px] h-9;
 }
 
 /* ============================================================================
@@ -92,31 +81,30 @@
 }
 
 .media-grid-inner {
-  @apply grid gap-4;
-  grid-template-columns: repeat(2, 1fr);
+  @apply grid gap-4 grid-cols-2;
 }
 
 @media (min-width: 640px) {
   .media-grid-inner {
-    grid-template-columns: repeat(3, 1fr);
+    @apply grid-cols-3;
   }
 }
 
 @media (min-width: 768px) {
   .media-grid-inner {
-    grid-template-columns: repeat(4, 1fr);
+    @apply grid-cols-4;
   }
 }
 
 @media (min-width: 1024px) {
   .media-grid-inner {
-    grid-template-columns: repeat(5, 1fr);
+    @apply grid-cols-5;
   }
 }
 
 @media (min-width: 1280px) {
   .media-grid-inner {
-    grid-template-columns: repeat(6, 1fr);
+    @apply grid-cols-6;
   }
 }
 
@@ -126,21 +114,18 @@
 
 .media-thumb {
   @apply relative cursor-pointer overflow-hidden;
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  aspect-ratio: 1;
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md);
+  @apply aspect-square;
   transition: border-color var(--duration-normal) var(--ease-out),
               box-shadow var(--duration-normal) var(--ease-out);
 }
 
 .media-thumb:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-sm);
+  @apply border-(--border-strong) shadow-sm;
 }
 
 .media-thumb-selected {
-  border-color: var(--accent-primary);
+  @apply border-(--accent-primary);
   box-shadow: 0 0 0 2px var(--accent-primary-subtle);
 }
 
@@ -151,27 +136,22 @@
 /* File type overlay for non-image files */
 .media-thumb-overlay {
   @apply absolute inset-0 flex flex-col items-center justify-center gap-1;
-  background: var(--el-50);
+  @apply bg-(--el-50);
 }
 
 .media-thumb-overlay-icon {
-  @apply h-8 w-8;
-  color: var(--text-tertiary);
+  @apply h-8 w-8 text-(--text-tertiary);
 }
 
 .media-thumb-overlay-label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--text-tertiary);
+  @apply text-[11px] font-medium uppercase tracking-[0.03em];
+  @apply text-(--text-tertiary);
 }
 
 /* Filename strip */
 .media-thumb-name {
   @apply absolute bottom-0 left-0 right-0 px-2 py-1.5 truncate;
-  font-size: 11px;
-  color: var(--el-0);
+  @apply text-[11px] text-(--el-0);
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
 }
 
@@ -179,8 +159,7 @@
 .media-thumb-check {
   @apply absolute top-2 right-2 h-5 w-5;
   @apply flex items-center justify-center rounded-full;
-  background: var(--accent-primary);
-  color: var(--accent-primary-foreground);
+  @apply bg-(--accent-primary) text-(--accent-primary-foreground);
 }
 
 .media-thumb-check svg {
@@ -193,8 +172,7 @@
 
 .media-detail-preview {
   @apply flex items-center justify-center min-h-[240px] overflow-hidden;
-  background: var(--el-50);
-  border-radius: var(--radius-md);
+  @apply bg-(--el-50) rounded-(--radius-md);
 }
 
 .media-detail-preview img {
@@ -206,18 +184,12 @@
 }
 
 .media-detail-meta-label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-  @apply mb-0.5;
+  @apply text-[11px] font-medium uppercase tracking-[0.04em];
+  @apply text-(--text-tertiary) mb-0.5;
 }
 
 .media-detail-meta-value {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--foreground);
+  @apply text-[13px] font-medium text-(--foreground);
 }
 
 .media-detail-url {
@@ -225,12 +197,8 @@
 }
 
 .media-detail-url-label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-  @apply mb-1.5;
+  @apply text-[11px] font-medium uppercase tracking-[0.04em];
+  @apply text-(--text-tertiary) mb-1.5;
 }
 
 .media-detail-url-row {
@@ -238,9 +206,7 @@
 }
 
 .media-detail-url-input {
-  @apply flex-1 font-mono text-xs;
-  height: 36px;
-  border-radius: 3px;
+  @apply flex-1 font-mono text-xs h-9 rounded-[3px];
 }
 
 .media-detail-actions {
@@ -256,21 +222,15 @@
 }
 
 .media-empty-icon {
-  @apply h-16 w-16 mb-4;
-  color: var(--el-300);
+  @apply h-16 w-16 mb-4 text-(--el-300);
 }
 
 .media-empty h3 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--foreground);
-  @apply mb-1;
+  @apply text-base font-medium text-(--foreground) mb-1;
 }
 
 .media-empty p {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  @apply mb-6;
+  @apply text-[13px] text-(--text-tertiary) mb-6;
 }
 
 /* ============================================================================
@@ -278,16 +238,15 @@
    ============================================================================ */
 
 .media-skeleton-grid {
-  @apply grid gap-4 px-6 py-4;
-  grid-template-columns: repeat(4, 1fr);
+  @apply grid gap-4 px-6 py-4 grid-cols-4;
 }
 
 @media (max-width: 768px) {
   .media-skeleton-grid {
-    grid-template-columns: repeat(2, 1fr);
+    @apply grid-cols-2;
   }
 }
 
 .media-skeleton-thumb {
-  @apply rounded-[var(--radius-md)] aspect-square;
+  @apply rounded-(--radius-md) aspect-square;
 }

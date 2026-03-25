@@ -10,13 +10,11 @@
 
 .customer-address-card {
   @apply p-4 rounded-md border;
-  border-color: var(--border-default);
-  background: var(--el-50);
+  @apply border-(--border-default) bg-(--el-50);
 }
 
 .customer-address-card-default {
-  border-color: var(--status-info);
-  background: var(--status-info-subtle);
+  @apply border-(--status-info) bg-(--status-info-subtle);
 }
 
 .customer-address-card-header {
@@ -34,12 +32,11 @@
 
 .customer-address-action {
   @apply h-6 w-6 flex items-center justify-center rounded cursor-pointer transition-colors;
-  color: var(--text-tertiary);
+  @apply text-(--text-tertiary);
 }
 
 .customer-address-action:hover {
-  color: var(--foreground);
-  background: var(--el-100);
+  @apply text-(--foreground) bg-(--el-100);
 }
 
 .customer-address-action svg {
@@ -47,18 +44,15 @@
 }
 
 .customer-address-action-danger:hover {
-  color: var(--status-error);
-  background: var(--status-error-subtle);
+  @apply text-(--status-error) bg-(--status-error-subtle);
 }
 
 .customer-address-name {
-  @apply text-sm font-medium;
-  color: var(--foreground);
+  @apply text-sm font-medium text-(--foreground);
 }
 
 .customer-address-line {
-  @apply text-sm;
-  color: var(--el-500);
+  @apply text-sm text-(--el-500);
 }
 
 .customer-addresses-empty {
@@ -66,8 +60,7 @@
 }
 
 .customer-addresses-empty p {
-  @apply text-sm;
-  color: var(--text-tertiary);
+  @apply text-sm text-(--text-tertiary);
 }
 
 /* Form fields within address form */
@@ -77,12 +70,8 @@
 }
 
 .customer-addresses-field-label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-  @apply flex items-center gap-1.5;
+  @apply text-[11px] font-medium uppercase tracking-[0.04em];
+  @apply text-(--text-tertiary) flex items-center gap-1.5;
 }
 
 .customer-addresses-field-label svg {
@@ -90,8 +79,7 @@
 }
 
 .customer-addresses-field-input {
-  height: 40px;
-  border-radius: 3px;
+  @apply h-10 rounded-[3px];
 }
 
 .customer-addresses-field-row {

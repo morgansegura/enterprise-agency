@@ -9,19 +9,16 @@
 
 .clients-table {
   @apply w-full text-sm;
-  border-collapse: separate;
-  border-spacing: 0;
+  @apply border-separate border-spacing-0;
 }
 
 .clients-table-header {
-  @apply sticky top-0 z-10;
-  background: var(--surface-raised);
+  @apply sticky top-0 z-10 bg-(--surface-raised);
 }
 
 .clients-table-header th {
   @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap;
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--border-default);
+  @apply text-(--text-secondary) border-b border-(--border-default);
 }
 
 .clients-table-body tr {
@@ -29,26 +26,23 @@
 }
 
 .clients-table-body tr:hover {
-  background: var(--surface-raised);
+  @apply bg-(--surface-raised);
 }
 
 .clients-table-body td {
   @apply px-4 py-3 whitespace-nowrap;
-  color: var(--text-primary);
-  border-bottom: 1px solid var(--border-subtle);
+  @apply text-(--text-primary) border-b border-(--border-subtle);
 }
 
 /* Columns
  * -------------------------------------------------------------------------- */
 
 .clients-col-name {
-  @apply font-medium;
-  color: var(--text-primary);
+  @apply font-medium text-(--text-primary);
 }
 
 .clients-col-slug {
-  @apply font-mono text-xs;
-  color: var(--text-secondary);
+  @apply font-mono text-xs text-(--text-secondary);
 }
 
 .clients-col-pages {
@@ -56,8 +50,7 @@
 }
 
 .clients-col-updated {
-  @apply text-xs;
-  color: var(--text-secondary);
+  @apply text-xs text-(--text-secondary);
 }
 
 .clients-col-actions {
@@ -72,18 +65,15 @@
 }
 
 .clients-status-active {
-  background: var(--status-success-subtle);
-  color: var(--status-success);
+  @apply bg-(--status-success-subtle) text-(--status-success);
 }
 
 .clients-status-inactive {
-  background: var(--el-100);
-  color: var(--text-secondary);
+  @apply bg-(--el-100) text-(--text-secondary);
 }
 
 .clients-status-suspended {
-  background: var(--status-error-subtle);
-  color: var(--status-error);
+  @apply bg-(--status-error-subtle) text-(--status-error);
 }
 
 /* Tier badges
@@ -94,13 +84,11 @@
 }
 
 .clients-tier-builder {
-  background: var(--accent-primary-subtle);
-  color: var(--accent-primary);
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary);
 }
 
 .clients-tier-content-editor {
-  background: var(--el-100);
-  color: var(--text-secondary);
+  @apply bg-(--el-100) text-(--text-secondary);
 }
 
 /* Empty state
@@ -111,18 +99,15 @@
 }
 
 .clients-empty-icon {
-  @apply h-16 w-16 mb-4;
-  color: var(--text-tertiary);
+  @apply h-16 w-16 mb-4 text-(--text-tertiary);
 }
 
 .clients-empty h3 {
-  @apply text-lg font-medium mb-2;
-  color: var(--text-primary);
+  @apply text-lg font-medium mb-2 text-(--text-primary);
 }
 
 .clients-empty p {
-  @apply mb-6 max-w-sm;
-  color: var(--text-secondary);
+  @apply mb-6 max-w-sm text-(--text-secondary);
 }
 
 /* Skeleton rows
@@ -130,7 +115,7 @@
 
 .clients-skeleton-row {
   @apply flex items-center gap-6 px-4 py-4;
-  border-bottom: 1px solid var(--border-subtle);
+  @apply border-b border-(--border-subtle);
 }
 
 /* Actions trigger

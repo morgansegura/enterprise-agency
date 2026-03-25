@@ -27,12 +27,8 @@
 
 .team-table-header-cell {
   @apply px-4 py-3 text-left;
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-  @apply select-none;
+  @apply text-[11px] font-medium uppercase tracking-[0.04em];
+  @apply text-(--text-tertiary) select-none;
 }
 
 .team-table-header-name {
@@ -104,38 +100,30 @@
 /* Name column */
 .team-member-avatar {
   @apply h-8 w-8 rounded-full flex items-center justify-center shrink-0;
-  background: var(--el-100);
+  @apply bg-(--el-100);
 }
 
 .team-member-avatar-letter {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  @apply text-xs font-semibold text-(--text-secondary);
 }
 
 .team-member-name-text {
   @apply flex items-center gap-1.5 truncate;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--foreground);
+  @apply text-[13px] font-semibold text-(--foreground);
 }
 
 .team-member-owner-icon {
-  @apply h-3.5 w-3.5;
-  color: var(--accent-primary);
+  @apply h-3.5 w-3.5 text-(--accent-primary);
 }
 
 /* Email column */
 .team-member-email {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  @apply truncate;
+  @apply text-[13px] text-(--text-tertiary) truncate;
 }
 
 /* Joined column */
 .team-member-joined {
-  font-size: 13px;
-  color: var(--text-tertiary);
+  @apply text-[13px] text-(--text-tertiary);
 }
 
 /* ============================================================================
@@ -145,8 +133,7 @@
 .team-role-pill {
   @apply inline-flex items-center px-2 py-0.5;
   @apply rounded-[3px];
-  font-size: 11px;
-  font-weight: 500;
+  @apply text-[11px] font-medium;
 }
 
 .team-role-owner {
@@ -172,8 +159,7 @@
 .team-status-pill {
   @apply inline-flex items-center gap-1 px-2 py-0.5;
   @apply rounded-[3px];
-  font-size: 11px;
-  font-weight: 500;
+  @apply text-[11px] font-medium;
 }
 
 .team-status-active {
@@ -213,21 +199,15 @@
 }
 
 .team-empty-icon {
-  @apply h-16 w-16 mb-4;
-  color: var(--el-300);
+  @apply h-16 w-16 mb-4 text-(--el-300);
 }
 
 .team-empty h3 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--foreground);
-  @apply mb-1;
+  @apply text-base font-medium text-(--foreground) mb-1;
 }
 
 .team-empty p {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  @apply mb-6;
+  @apply text-[13px] text-(--text-tertiary) mb-6;
 }
 
 /* ============================================================================

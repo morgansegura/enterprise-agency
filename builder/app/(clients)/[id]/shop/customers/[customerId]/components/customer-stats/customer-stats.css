@@ -17,16 +17,12 @@
 }
 
 .customer-stats-label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
+  @apply text-[11px] font-medium uppercase tracking-[0.04em];
+  @apply text-(--text-tertiary);
 }
 
 .customer-stats-value {
-  @apply text-lg font-semibold tabular-nums;
-  color: var(--foreground);
+  @apply text-lg font-semibold tabular-nums text-(--foreground);
 }
 
 .customer-stats-account-badge {

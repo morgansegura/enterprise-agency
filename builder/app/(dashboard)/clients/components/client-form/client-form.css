@@ -14,7 +14,7 @@
 
 @media (max-width: 768px) {
   .client-form-columns {
-    grid-template-columns: 1fr;
+    @apply grid-cols-1;
   }
 }
 
@@ -31,23 +31,19 @@
 
 .client-form-card {
   @apply rounded-lg border p-0 overflow-hidden;
-  background: var(--surface);
-  border-color: var(--border-default);
+  @apply bg-(--surface) border-(--border-default);
 }
 
 .client-form-card-header {
-  @apply px-6 py-4;
-  border-bottom: 1px solid var(--border-subtle);
+  @apply px-6 py-4 border-b border-(--border-subtle);
 }
 
 .client-form-card-title {
-  @apply text-sm font-semibold;
-  color: var(--text-primary);
+  @apply text-sm font-semibold text-(--text-primary);
 }
 
 .client-form-card-description {
-  @apply text-xs mt-1;
-  color: var(--text-secondary);
+  @apply text-xs mt-1 text-(--text-secondary);
 }
 
 .client-form-card-body {
@@ -72,28 +68,23 @@
 }
 
 .client-form-field-label {
-  @apply flex items-center gap-1.5 text-xs font-medium;
-  color: var(--text-primary);
+  @apply flex items-center gap-1.5 text-xs font-medium text-(--text-primary);
 }
 
 .client-form-field-label svg {
-  @apply h-3.5 w-3.5;
-  color: var(--text-tertiary);
+  @apply h-3.5 w-3.5 text-(--text-tertiary);
 }
 
 .client-form-field-input {
-  @apply h-9;
-  background: var(--input-bg);
+  @apply h-9 bg-(--input-bg);
 }
 
 .client-form-field-hint {
-  @apply text-xs;
-  color: var(--text-tertiary);
+  @apply text-xs text-(--text-tertiary);
 }
 
 .client-form-field-error {
-  @apply text-xs;
-  color: var(--status-error);
+  @apply text-xs text-(--status-error);
 }
 
 /* Submit section (create mode sidebar)
@@ -101,7 +92,7 @@
 
 .client-form-submit-section {
   @apply flex flex-col gap-3 px-6 py-5;
-  border-top: 1px solid var(--border-subtle);
+  @apply border-t border-(--border-subtle);
 }
 
 /* Meta info row (edit mode sidebar)
@@ -109,8 +100,7 @@
 
 .client-form-meta {
   @apply flex flex-col gap-2 px-6 py-4 text-xs;
-  border-top: 1px solid var(--border-subtle);
-  color: var(--text-tertiary);
+  @apply border-t border-(--border-subtle) text-(--text-tertiary);
 }
 
 .client-form-meta-item {
@@ -118,8 +108,7 @@
 }
 
 .client-form-meta-label {
-  @apply font-medium;
-  color: var(--text-secondary);
+  @apply font-medium text-(--text-secondary);
 }
 
 /* Features list (edit mode)
@@ -131,8 +120,7 @@
 
 .client-form-feature-tag {
   @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
-  background: var(--el-100);
-  color: var(--text-secondary);
+  @apply bg-(--el-100) text-(--text-secondary);
 }
 
 /* Footer bar (edit mode)
@@ -142,8 +130,7 @@
   @apply fixed bottom-0 left-0 right-0 z-50;
   @apply flex items-center justify-end gap-3 px-6 py-3;
   @apply border-t transition-transform duration-200;
-  background: var(--surface);
-  border-color: var(--border-default);
+  @apply bg-(--surface) border-(--border-default);
 }
 
 .client-form-footer-hidden {

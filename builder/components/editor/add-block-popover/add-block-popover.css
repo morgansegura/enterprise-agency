@@ -1,158 +1,103 @@
+@reference "tailwindcss";
+
 /* =============================================================================
  * Add Block Popover - Scalable block picker with categories
  * ============================================================================= */
 
 .add-block-popover {
-  width: 420px;
-  padding: 0;
-  max-height: 500px;
-  display: flex;
-  flex-direction: column;
+  @apply w-[420px] p-0 max-h-[500px] flex flex-col;
 }
 
 /* Search bar - sticky at top */
 .add-block-search {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  @apply flex items-center gap-2 px-4 py-3 shrink-0;
   border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
 }
 
 .add-block-search-input {
-  border: 0;
-  box-shadow: none;
-  padding: 0.25rem 0.625rem;
-  border-radius: 0.125rem;
-  height: auto;
-  font-size: 0.875rem;
-  background: transparent;
+  @apply border-0 shadow-none px-2.5 py-1 rounded-sm h-auto text-sm bg-transparent;
 }
 
 .add-block-search-input:focus-visible {
-  outline: none;
-  ring: 0;
+  @apply outline-none ring-0;
 }
 
 /* Category tabs - horizontal scroll */
 .add-block-tabs {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.5rem 0.75rem;
+  @apply flex items-center gap-1 px-3 py-2 overflow-x-auto shrink-0;
   border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  flex-shrink: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
 .add-block-tabs::-webkit-scrollbar {
-  display: none;
+  @apply hidden;
 }
 
 .add-block-tab {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border-radius: 0.375rem;
-  white-space: nowrap;
-  color: var(--muted-foreground);
-  background: transparent;
-  transition: color 150ms, background-color 150ms;
-  cursor: pointer;
-  border: none;
+  @apply px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap bg-transparent cursor-pointer border-none;
+  @apply text-(--muted-foreground);
+  @apply transition-colors duration-150;
 }
 
 .add-block-tab:hover {
-  color: var(--foreground);
-  background: var(--muted);
+  @apply text-(--foreground) bg-(--muted);
 }
 
 .add-block-tab.active {
-  color: var(--foreground);
-  background: var(--muted);
+  @apply text-(--foreground) bg-(--muted);
 }
 
 /* Scrollable content area */
 .add-block-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0.75rem;
-  min-height: 0;
+  @apply flex-1 overflow-y-auto p-3 min-h-0;
 }
 
 /* Category section */
 .add-block-category {
-  margin-bottom: 1rem;
+  @apply mb-4;
 }
 
 .add-block-category:last-child {
-  margin-bottom: 0;
+  @apply mb-0;
 }
 
 .add-block-category-title {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--muted-foreground);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
-  padding: 0 0.5rem;
+  @apply text-xs font-semibold uppercase tracking-wide mb-2 px-2;
+  @apply text-(--muted-foreground);
 }
 
 /* Block grid - 2 columns */
 .add-block-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.25rem;
+  @apply grid grid-cols-2 gap-1;
 }
 
 /* Block item button */
 .add-block-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  color: var(--foreground);
-  font-size: 0.875rem;
-  border-radius: 0.375rem;
-  transition: background-color 150ms;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  text-align: left;
-  width: 100%;
+  @apply flex items-center gap-3 px-3 py-2 text-sm rounded-md cursor-pointer border-none bg-transparent text-left w-full;
+  @apply text-(--foreground);
+  @apply transition-colors duration-150;
 }
 
 .add-block-item:hover {
-  background: var(--muted);
+  @apply bg-(--muted);
 }
 
 .add-block-item-icon {
-  flex-shrink: 0;
-  color: var(--muted-foreground);
+  @apply shrink-0;
+  @apply text-(--muted-foreground);
 }
 
 .add-block-item:hover .add-block-item-icon {
-  color: var(--foreground);
+  @apply text-(--foreground);
 }
 
 .add-block-item-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @apply overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 /* Empty state */
 .add-block-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 2rem 0;
-  font-size: 0.875rem;
-  color: var(--muted-foreground);
+  @apply flex flex-col items-center justify-center gap-2 py-8 text-sm;
+  @apply text-(--muted-foreground);
 }

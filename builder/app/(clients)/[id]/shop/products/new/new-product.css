@@ -20,7 +20,7 @@
 .new-product-back {
   @apply flex items-center justify-center h-8 w-8 rounded-md;
   @apply hover:bg-(--el-100) transition-colors cursor-pointer;
-  color: var(--text-tertiary);
+  @apply text-(--text-tertiary);
 }
 
 .new-product-back svg {
@@ -28,8 +28,7 @@
 }
 
 .new-product-title {
-  @apply text-lg font-semibold;
-  color: var(--foreground);
+  @apply text-lg font-semibold text-(--foreground);
 }
 
 .new-product-actions {
@@ -71,7 +70,5 @@
   @apply fixed bottom-0 left-0 right-0 z-20;
   @apply flex items-center justify-end gap-3;
   @apply px-6 py-3;
-  background: var(--el-0);
-  border-top: 1px solid var(--border-default);
-  box-shadow: var(--shadow-md);
+  @apply bg-(--el-0) border-t border-(--border-default) shadow-md;
 }

@@ -9,19 +9,16 @@
 
 .users-table {
   @apply w-full text-sm;
-  border-collapse: separate;
-  border-spacing: 0;
+  @apply border-separate border-spacing-0;
 }
 
 .users-table-header {
-  @apply sticky top-0 z-10;
-  background: var(--surface-raised);
+  @apply sticky top-0 z-10 bg-(--surface-raised);
 }
 
 .users-table-header th {
   @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap;
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--border-default);
+  @apply text-(--text-secondary) border-b border-(--border-default);
 }
 
 .users-table-body tr {
@@ -29,13 +26,12 @@
 }
 
 .users-table-body tr:hover {
-  background: var(--surface-raised);
+  @apply bg-(--surface-raised);
 }
 
 .users-table-body td {
   @apply px-4 py-3 whitespace-nowrap;
-  color: var(--text-primary);
-  border-bottom: 1px solid var(--border-subtle);
+  @apply text-(--text-primary) border-b border-(--border-subtle);
 }
 
 /* Name cell with avatar
@@ -48,23 +44,19 @@
 .users-avatar {
   @apply flex items-center justify-center h-8 w-8 rounded-full shrink-0;
   @apply text-xs font-semibold;
-  background: var(--el-100);
-  color: var(--text-secondary);
+  @apply bg-(--el-100) text-(--text-secondary);
 }
 
 .users-col-name {
-  @apply font-medium leading-tight;
-  color: var(--text-primary);
+  @apply font-medium leading-tight text-(--text-primary);
 }
 
 .users-col-email {
-  @apply text-xs leading-tight;
-  color: var(--text-secondary);
+  @apply text-xs leading-tight text-(--text-secondary);
 }
 
 .users-col-last-login {
-  @apply text-xs;
-  color: var(--text-secondary);
+  @apply text-xs text-(--text-secondary);
 }
 
 .users-col-actions {
@@ -79,18 +71,15 @@
 }
 
 .users-status-active {
-  background: var(--status-success-subtle);
-  color: var(--status-success);
+  @apply bg-(--status-success-subtle) text-(--status-success);
 }
 
 .users-status-inactive {
-  background: var(--el-100);
-  color: var(--text-secondary);
+  @apply bg-(--el-100) text-(--text-secondary);
 }
 
 .users-status-pending {
-  background: var(--status-warning-subtle);
-  color: var(--status-warning);
+  @apply bg-(--status-warning-subtle) text-(--status-warning);
 }
 
 /* Role badges
@@ -101,36 +90,30 @@
 }
 
 .users-role-owner {
-  background: #fdf4ff;
-  color: #a21caf;
+  @apply bg-fuchsia-50 text-fuchsia-700;
 }
 
 .users-role-admin {
-  background: var(--accent-primary-subtle);
-  color: var(--accent-primary);
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary);
 }
 
 .users-role-developer {
-  background: #ecfdf5;
-  color: #059669;
+  @apply bg-emerald-50 text-emerald-600;
 }
 
 .users-role-designer {
-  background: #fff7ed;
-  color: #c2410c;
+  @apply bg-orange-50 text-orange-700;
 }
 
 .users-role-content-manager {
-  background: var(--el-100);
-  color: var(--text-secondary);
+  @apply bg-(--el-100) text-(--text-secondary);
 }
 
 /* Super admin indicator
  * -------------------------------------------------------------------------- */
 
 .users-super-admin-icon {
-  @apply h-3.5 w-3.5 inline-block ml-1;
-  color: var(--accent-primary);
+  @apply h-3.5 w-3.5 inline-block ml-1 text-(--accent-primary);
 }
 
 /* Empty state
@@ -141,18 +124,15 @@
 }
 
 .users-empty-icon {
-  @apply h-16 w-16 mb-4;
-  color: var(--text-tertiary);
+  @apply h-16 w-16 mb-4 text-(--text-tertiary);
 }
 
 .users-empty h3 {
-  @apply text-lg font-medium mb-2;
-  color: var(--text-primary);
+  @apply text-lg font-medium mb-2 text-(--text-primary);
 }
 
 .users-empty p {
-  @apply mb-6 max-w-sm;
-  color: var(--text-secondary);
+  @apply mb-6 max-w-sm text-(--text-secondary);
 }
 
 /* Skeleton rows
@@ -160,7 +140,7 @@
 
 .users-skeleton-row {
   @apply flex items-center gap-6 px-4 py-4;
-  border-bottom: 1px solid var(--border-subtle);
+  @apply border-b border-(--border-subtle);
 }
 
 /* Actions trigger

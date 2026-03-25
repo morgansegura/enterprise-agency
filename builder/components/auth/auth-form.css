@@ -7,7 +7,7 @@
 
 .auth-layout {
   @apply min-h-screen flex items-center justify-center;
-  background-color: var(--el-50);
+  @apply bg-(--el-50);
   font-family: var(--font-system);
 }
 
@@ -17,10 +17,9 @@
  * ============================================================================= */
 
 .auth-card {
-  @apply w-full;
-  max-width: 380px;
+  @apply w-full max-w-[380px];
   padding: var(--sp-8) var(--sp-8) var(--sp-6);
-  background-color: var(--el-0);
+  @apply bg-(--el-0);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
@@ -38,18 +37,15 @@
 }
 
 .auth-logo {
+  @apply text-[16px] font-semibold leading-none tracking-tight;
   font-family: var(--font-system);
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
+  @apply text-(--text-primary);
   margin-bottom: var(--sp-1);
 }
 
 .auth-subtitle {
-  font-size: 13px;
-  color: var(--text-secondary);
+  @apply text-[13px];
+  @apply text-(--text-secondary);
   line-height: var(--leading-normal);
 }
 
@@ -74,30 +70,24 @@
 
 /* Labels — 11px, uppercase feel without being uppercase */
 .auth-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  line-height: 1;
-  letter-spacing: 0.01em;
+  @apply text-[11px] font-medium leading-none tracking-[0.01em];
+  @apply text-(--text-secondary);
 }
 
 /* Inputs — 40px height, clean borders */
 .auth-input {
-  @apply w-full;
-  height: 40px;
+  @apply w-full h-[40px] text-[13px] outline-none;
   padding: 0 var(--sp-3);
   font-family: var(--font-system);
-  font-size: 13px;
-  color: var(--text-primary);
-  background-color: var(--input-bg);
+  @apply text-(--text-primary);
+  @apply bg-(--input-bg);
   border: 1px solid var(--input-border);
   border-radius: var(--radius-sm);
-  outline: none;
-  transition: border-color 0.15s ease;
+  @apply transition-colors duration-150 ease-in-out;
 }
 
 .auth-input::placeholder {
-  color: var(--input-placeholder);
+  @apply text-(--input-placeholder);
 }
 
 .auth-input:hover {
@@ -124,21 +114,16 @@
 
 /* Primary submit button — solid accent, 36px */
 .auth-submit {
-  @apply w-full flex items-center justify-center;
-  height: 36px;
+  @apply w-full flex items-center justify-center h-[36px] text-[13px] font-medium border-none cursor-pointer;
   font-family: var(--font-system);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--accent-primary-foreground);
-  background-color: var(--accent-primary);
-  border: none;
+  @apply text-(--accent-primary-foreground);
+  @apply bg-(--accent-primary);
   border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background-color 0.15s ease;
+  @apply transition-colors duration-150 ease-in-out;
 }
 
 .auth-submit:hover:not(:disabled) {
-  background-color: var(--accent-primary-hover);
+  @apply bg-(--accent-primary-hover);
 }
 
 .auth-submit:disabled {
@@ -155,26 +140,23 @@
 }
 
 .auth-forgot-link {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  transition: color 0.15s ease;
+  @apply text-[11px] no-underline;
+  @apply text-(--text-tertiary);
+  @apply transition-colors duration-150 ease-in-out;
 }
 
 .auth-forgot-link:hover {
-  color: var(--text-primary);
+  @apply text-(--text-primary);
 }
 
 .auth-back-link {
-  @apply flex justify-center;
-  font-size: 12px;
-  color: var(--text-tertiary);
-  text-decoration: none;
-  transition: color 0.15s ease;
+  @apply flex justify-center text-[12px] no-underline;
+  @apply text-(--text-tertiary);
+  @apply transition-colors duration-150 ease-in-out;
 }
 
 .auth-back-link:hover {
-  color: var(--text-primary);
+  @apply text-(--text-primary);
 }
 
 /* =============================================================================
@@ -182,10 +164,10 @@
  * ============================================================================= */
 
 .auth-field-error {
-  font-size: 11px;
-  color: var(--status-error);
+  @apply text-[11px];
+  @apply text-(--status-error);
   padding: var(--sp-2) var(--sp-3);
-  background-color: var(--status-error-subtle);
+  @apply bg-(--status-error-subtle);
   border: 1px solid var(--status-error);
   border-radius: var(--radius-sm);
 }
@@ -195,10 +177,10 @@
  * ============================================================================= */
 
 .auth-success-message {
-  font-size: 12px;
-  color: var(--status-success);
+  @apply text-[12px];
+  @apply text-(--status-success);
   padding: var(--sp-2) var(--sp-3);
-  background-color: var(--status-success-subtle);
+  @apply bg-(--status-success-subtle);
   border: 1px solid var(--status-success);
   border-radius: var(--radius-sm);
 }

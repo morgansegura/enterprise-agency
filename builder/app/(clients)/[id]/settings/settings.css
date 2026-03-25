@@ -18,8 +18,7 @@
 }
 
 .settings-page-header p {
-  @apply text-sm mt-1;
-  color: var(--text-tertiary);
+  @apply text-sm mt-1 text-(--text-tertiary);
 }
 
 /* ============================================================================
@@ -54,10 +53,7 @@
    ============================================================================ */
 
 .settings-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  @apply overflow-hidden;
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md) overflow-hidden;
 }
 
 .settings-card-header {
@@ -65,14 +61,11 @@
 }
 
 .settings-card-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--foreground);
+  @apply text-sm font-semibold text-(--foreground);
 }
 
 .settings-card-description {
-  @apply text-xs mt-1;
-  color: var(--text-tertiary);
+  @apply text-xs mt-1 text-(--text-tertiary);
 }
 
 .settings-card-body {
@@ -88,12 +81,8 @@
 }
 
 .settings-field-label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-  @apply flex items-center gap-1.5;
+  @apply text-[11px] font-medium uppercase tracking-[0.04em];
+  @apply text-(--text-tertiary) flex items-center gap-1.5;
 }
 
 .settings-field-label svg {
@@ -101,17 +90,15 @@
 }
 
 .settings-field-input {
-  height: 40px;
-  border-radius: 3px;
+  @apply h-10 rounded-[3px];
 }
 
 .settings-field-textarea {
-  border-radius: 3px;
+  @apply rounded-[3px];
 }
 
 .settings-field-hint {
-  font-size: 11px;
-  color: var(--text-tertiary);
+  @apply text-[11px] text-(--text-tertiary);
 }
 
 /* Two-column field row */
@@ -135,10 +122,7 @@
    ============================================================================ */
 
 .settings-plan-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  @apply overflow-hidden;
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md) overflow-hidden;
 }
 
 .settings-plan-header {
@@ -146,9 +130,7 @@
 }
 
 .settings-plan-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--foreground);
+  @apply text-sm font-semibold text-(--foreground);
 }
 
 .settings-plan-body {
@@ -174,13 +156,11 @@
 }
 
 .settings-plan-feature {
-  @apply flex items-center gap-2 text-sm;
-  color: var(--text-secondary);
+  @apply flex items-center gap-2 text-sm text-(--text-secondary);
 }
 
 .settings-plan-feature svg {
-  @apply h-4 w-4 shrink-0;
-  color: var(--status-success);
+  @apply h-4 w-4 shrink-0 text-(--status-success);
 }
 
 /* Upgrade CTA */
@@ -189,16 +169,11 @@
 }
 
 .settings-upgrade-heading {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--foreground);
-  @apply mb-1;
+  @apply text-sm font-semibold text-(--foreground) mb-1;
 }
 
 .settings-upgrade-text {
-  font-size: 12px;
-  color: var(--text-tertiary);
-  @apply mb-4;
+  @apply text-xs text-(--text-tertiary) mb-4;
 }
 
 /* ============================================================================
@@ -209,9 +184,7 @@
   @apply fixed bottom-0 left-0 right-0 z-20;
   @apply flex items-center justify-end gap-3;
   @apply px-6 py-3;
-  background: var(--el-0);
-  border-top: 1px solid var(--border-default);
-  box-shadow: var(--shadow-md);
+  @apply bg-(--el-0) border-t border-(--border-default) shadow-md;
 }
 
 .settings-footer-hidden {
@@ -242,9 +215,7 @@
 }
 
 .settings-skeleton-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md);
   @apply p-5 flex flex-col gap-4;
 }
 
@@ -254,5 +225,5 @@
 
 .settings-error {
   @apply flex items-center justify-center py-16 text-center;
-  color: var(--status-error);
+  @apply text-(--status-error);
 }

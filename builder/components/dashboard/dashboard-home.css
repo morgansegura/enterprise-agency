@@ -33,9 +33,7 @@
 }
 
 .dashboard-stat-card {
-  @apply bg-(--el-0) border border-(--border-default) p-4;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xs);
+  @apply bg-(--el-0) border border-(--border-default) p-4 rounded-(--radius-md) shadow-(--shadow-xs);
 }
 
 .dashboard-stat-label {
@@ -75,9 +73,7 @@
    ============================================================================= */
 
 .dashboard-stat-skeleton {
-  @apply bg-(--el-0) border border-(--border-default) p-4 flex flex-col gap-3;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xs);
+  @apply bg-(--el-0) border border-(--border-default) p-4 flex flex-col gap-3 rounded-(--radius-md) shadow-(--shadow-xs);
 }
 
 /* =============================================================================
@@ -101,9 +97,7 @@
 }
 
 .dashboard-table {
-  @apply w-full bg-(--el-0) border border-(--border-default) overflow-hidden;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xs);
+  @apply w-full bg-(--el-0) border border-(--border-default) overflow-hidden rounded-(--radius-md) shadow-(--shadow-xs);
 }
 
 .dashboard-table-head {
@@ -190,10 +184,10 @@
 
 /* Status Pill */
 .dashboard-status-pill {
-  @apply inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium leading-tight;
-  border-radius: var(--radius-sm);
+  @apply inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium leading-tight rounded-(--radius-sm);
 }
 
+/* Status Variants */
 .dashboard-status-active {
   @apply bg-green-50 text-green-700;
 }
@@ -208,8 +202,7 @@
 
 /* Tier Badge */
 .dashboard-tier-badge {
-  @apply inline-flex items-center px-1.5 py-0.5 text-[11px] font-medium leading-tight;
-  border-radius: var(--radius-sm);
+  @apply inline-flex items-center px-1.5 py-0.5 text-[11px] font-medium leading-tight rounded-(--radius-sm);
 }
 
 .dashboard-tier-builder {
@@ -261,8 +254,7 @@
 
 .dashboard-error {
   @apply flex items-center gap-2 px-4 py-3 text-[13px] text-(--status-error);
-  @apply bg-(--status-error-subtle) border border-red-200;
-  border-radius: var(--radius-md);
+  @apply bg-(--status-error-subtle) border border-red-200 rounded-(--radius-md);
 }
 
 .dashboard-error-icon {

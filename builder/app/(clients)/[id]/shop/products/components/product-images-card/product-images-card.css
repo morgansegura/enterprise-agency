@@ -7,28 +7,23 @@
 .product-form-image-upload {
   @apply border-2 border-dashed rounded-md p-8 flex flex-col items-center justify-center gap-3;
   @apply cursor-pointer transition-colors;
-  border-color: var(--border-default);
-  background: var(--el-50);
+  @apply border-(--border-default) bg-(--el-50);
 }
 
 .product-form-image-upload:hover {
-  border-color: var(--el-300);
-  background: var(--el-100);
+  @apply border-(--el-300) bg-(--el-100);
 }
 
 .product-form-image-upload svg {
-  @apply h-8 w-8;
-  color: var(--el-300);
+  @apply h-8 w-8 text-(--el-300);
 }
 
 .product-form-image-upload-text {
-  @apply text-sm font-medium;
-  color: var(--foreground);
+  @apply text-sm font-medium text-(--foreground);
 }
 
 .product-form-image-upload-hint {
-  @apply text-xs;
-  color: var(--text-tertiary);
+  @apply text-xs text-(--text-tertiary);
 }
 
 .product-form-image-grid {

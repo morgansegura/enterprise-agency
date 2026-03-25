@@ -20,7 +20,7 @@
 .order-detail-back {
   @apply flex items-center justify-center h-8 w-8 rounded-md;
   @apply hover:bg-(--el-100) transition-colors cursor-pointer;
-  color: var(--text-tertiary);
+  @apply text-(--text-tertiary);
 }
 
 .order-detail-back svg {
@@ -28,13 +28,11 @@
 }
 
 .order-detail-title {
-  @apply text-lg font-semibold;
-  color: var(--foreground);
+  @apply text-lg font-semibold text-(--foreground);
 }
 
 .order-detail-date {
-  @apply text-sm;
-  color: var(--text-tertiary);
+  @apply text-sm text-(--text-tertiary);
 }
 
 .order-detail-actions {
@@ -73,10 +71,7 @@
    ============================================================================ */
 
 .order-detail-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  @apply overflow-hidden;
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md) overflow-hidden;
 }
 
 .order-detail-card-header {
@@ -84,9 +79,7 @@
 }
 
 .order-detail-card-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--foreground);
+  @apply text-sm font-semibold text-(--foreground);
 }
 
 .order-detail-card-body {
@@ -117,9 +110,7 @@
 }
 
 .order-detail-skeleton-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md);
   @apply p-5 flex flex-col gap-4;
 }
 
@@ -129,5 +120,5 @@
 
 .order-detail-error {
   @apply flex items-center justify-center py-16 text-center;
-  color: var(--status-error);
+  @apply text-(--status-error);
 }

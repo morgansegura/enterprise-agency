@@ -2,10 +2,9 @@
 
 /* Skeleton card matches auth-card dimensions */
 .login-skeleton-card {
-  @apply w-full;
-  max-width: 380px;
+  @apply w-full max-w-[380px];
   padding: var(--sp-8) var(--sp-8) var(--sp-6);
-  background-color: var(--el-0);
+  @apply bg-(--el-0);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
@@ -53,13 +52,11 @@
 }
 
 .login-skeleton-input {
-  @apply w-full;
-  height: 40px;
+  @apply w-full h-[40px];
   border-radius: var(--radius-sm);
 }
 
 .login-skeleton-button {
-  @apply w-full;
-  height: 36px;
+  @apply w-full h-[36px];
   border-radius: var(--radius-sm);
 }

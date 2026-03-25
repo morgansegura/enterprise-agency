@@ -13,21 +13,16 @@
 }
 
 .order-detail-info-label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
+  @apply text-[11px] font-medium uppercase tracking-[0.04em];
+  @apply text-(--text-tertiary);
 }
 
 .order-detail-info-value {
-  @apply text-sm;
-  color: var(--foreground);
+  @apply text-sm text-(--foreground);
 }
 
 .order-detail-info-value a {
-  color: var(--status-info);
-  @apply hover:underline;
+  @apply text-(--status-info) hover:underline;
 }
 
 /* ============================================================================

@@ -1,14 +1,11 @@
+@reference "tailwindcss";
+
 /* List Card - Reusable list item styles */
 
 .list-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.75rem;
+  @apply flex items-center gap-4 p-3 rounded-lg cursor-pointer;
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  transition: border-color 150ms, background-color 150ms;
-  cursor: pointer;
+  @apply transition-colors duration-150;
 }
 
 .list-card:hover {
@@ -16,7 +13,7 @@
 }
 
 .list-card-static {
-  cursor: default;
+  @apply cursor-default;
 }
 
 .list-card-static:hover {
@@ -24,24 +21,17 @@
 }
 
 .list-card-updating {
-  opacity: 0.6;
-  pointer-events: none;
+  @apply opacity-60 pointer-events-none;
 }
 
 /* Avatar/Icon container */
 .list-card-avatar {
-  height: 2.5rem;
-  width: 2.5rem;
-  flex-shrink: 0;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--muted);
+  @apply h-10 w-10 shrink-0 rounded-full flex items-center justify-center;
+  @apply bg-(--muted);
 }
 
 .list-card-avatar-rounded {
-  border-radius: 0.5rem;
+  @apply rounded-lg;
 }
 
 .list-card-avatar-primary {
@@ -49,71 +39,47 @@
 }
 
 .list-card-avatar > svg {
-  height: 1.25rem;
-  width: 1.25rem;
-  color: var(--primary);
+  @apply h-5 w-5;
+  @apply text-(--primary);
 }
 
 .list-card-avatar > span {
-  font-size: 0.875rem;
-  font-weight: 500;
+  @apply text-sm font-medium;
 }
 
 /* Content area */
 .list-card-content {
-  flex: 1;
-  min-width: 0;
+  @apply flex-1 min-w-0;
 }
 
 /* Title */
 .list-card-title {
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
+  @apply font-medium overflow-hidden text-ellipsis whitespace-nowrap flex items-center gap-1.5;
 }
 
 /* Description */
 .list-card-description {
-  font-size: 0.875rem;
-  color: var(--muted-foreground);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @apply text-sm overflow-hidden text-ellipsis whitespace-nowrap;
+  @apply text-(--muted-foreground);
 }
 
 /* Badge (role, type, etc.) */
 .list-card-badge {
-  padding: 0.125rem 0.5rem;
-  border-radius: 9999px;
-  flex-shrink: 0;
-  background: var(--muted);
-  color: var(--muted-foreground);
-  font-size: 0.875rem;
+  @apply px-2 py-0.5 rounded-full shrink-0 text-sm;
+  @apply bg-(--muted) text-(--muted-foreground);
 }
 
 /* Status indicator with icon */
 .list-card-status {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  flex-shrink: 0;
-  padding: 0.125rem 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
+  @apply flex items-center gap-1 shrink-0 px-2 py-0.5 rounded-full text-sm;
 }
 
 .list-card-status > svg {
-  height: 0.75rem;
-  width: 0.75rem;
+  @apply h-3 w-3;
 }
 
 /* Meta text (date, count) */
 .list-card-meta {
-  font-size: 0.875rem;
-  color: var(--muted-foreground);
-  flex-shrink: 0;
+  @apply text-sm shrink-0;
+  @apply text-(--muted-foreground);
 }

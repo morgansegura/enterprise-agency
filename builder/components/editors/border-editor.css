@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /* =============================================================================
  * Border Editor
  * ============================================================================= */
@@ -7,37 +9,29 @@
 }
 
 .border-editor-section {
-  margin-bottom: 1rem;
+  @apply mb-4;
 }
 
 .border-editor-section:last-child {
-  margin-bottom: 0;
+  @apply mb-0;
 }
 
 .border-editor-title {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--muted-foreground);
-  margin-bottom: 0.5rem;
+  @apply text-[0.6875rem] font-semibold uppercase tracking-wide mb-2;
+  @apply text-(--muted-foreground);
 }
 
 /* Row layout */
 .border-editor-row {
-  display: flex;
-  gap: 0.5rem;
+  @apply flex gap-2;
 }
 
 /* Field layout */
 .border-editor-field {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  @apply flex-1 flex flex-col gap-1;
 }
 
 .border-editor-label {
-  font-size: 0.75rem;
-  color: var(--foreground);
+  @apply text-xs;
+  @apply text-(--foreground);
 }

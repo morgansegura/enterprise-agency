@@ -6,10 +6,7 @@
 
 /* Cards */
 .product-form-card {
-  background: var(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  @apply overflow-hidden;
+  @apply bg-(--el-0) border border-(--border-default) rounded-(--radius-md) overflow-hidden;
 }
 
 .product-form-card-header {
@@ -17,14 +14,11 @@
 }
 
 .product-form-card-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--foreground);
+  @apply text-sm font-semibold text-(--foreground);
 }
 
 .product-form-card-description {
-  @apply text-xs mt-1;
-  color: var(--text-tertiary);
+  @apply text-xs mt-1 text-(--text-tertiary);
 }
 
 .product-form-card-body {
