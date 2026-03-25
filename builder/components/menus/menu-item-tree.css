@@ -1,79 +1,54 @@
+@reference "tailwindcss";
+
 .menu-item-tree {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+  @apply flex flex-col gap-(--space-4);
 }
 
 .menu-item-tree-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @apply flex items-center justify-between;
 }
 
 .menu-item-tree-title {
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  color: var(--color-text);
+  @apply text-(length:--text-sm) font-(--font-medium) text-(--color-text);
 }
 
 .menu-item-tree-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  padding: var(--space-8);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
-  text-align: center;
+  @apply flex flex-col items-center justify-center gap-(--space-3) p-(--space-8) border border-dashed border-(--color-border) rounded-(--radius-md) text-(--color-text-muted) text-center;
 }
 
 .menu-item-tree-list {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
+  @apply flex flex-col border border-(--color-border) rounded-(--radius-md) overflow-hidden;
 }
 
 .menu-item-tree-item {
-  border-bottom: 1px solid var(--color-border);
+  @apply border-b border-(--color-border);
 }
 
 .menu-item-tree-item:last-child {
-  border-bottom: none;
+  @apply border-b-0;
 }
 
 .menu-item-tree-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  background: var(--color-bg);
+  @apply flex items-center gap-(--space-2) px-(--space-3) py-(--space-2) bg-(--color-bg);
 }
 
 .menu-item-tree-item[data-depth="1"] .menu-item-tree-row {
+  @apply bg-(--color-bg-subtle);
   padding-left: calc(var(--space-6) + var(--space-3));
-  background: var(--color-bg-subtle);
 }
 
 .menu-item-tree-item[data-depth="2"] .menu-item-tree-row {
+  @apply bg-(--color-bg-muted);
   padding-left: calc(var(--space-12) + var(--space-3));
-  background: var(--color-bg-muted);
 }
 
 .menu-item-tree-item[data-depth="3"] .menu-item-tree-row {
+  @apply bg-(--color-bg-muted);
   padding-left: calc(var(--space-16) + var(--space-6));
-  background: var(--color-bg-muted);
 }
 
 .menu-item-tree-drag {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-muted);
-  cursor: grab;
+  @apply flex items-center justify-center text-(--color-text-muted) cursor-grab;
 }
 
 .menu-item-tree-drag:active {
@@ -81,146 +56,101 @@
 }
 
 .menu-item-tree-drag svg {
-  width: var(--size-4);
-  height: var(--size-4);
+  @apply size-(--size-4);
 }
 
 .menu-item-tree-expand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--size-5);
-  height: var(--size-5);
-  padding: 0;
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  transition: background-color 150ms ease;
+  @apply flex items-center justify-center size-(--size-5) p-0 bg-none border-none text-(--color-text-muted) cursor-pointer rounded-(--radius-sm) transition-colors duration-150 ease-in-out;
 }
 
 .menu-item-tree-expand:hover:not(:disabled) {
-  background: var(--color-bg-hover);
+  @apply bg-(--color-bg-hover);
 }
 
 .menu-item-tree-expand:disabled {
-  cursor: default;
+  @apply cursor-default;
 }
 
 .menu-item-tree-expand svg {
-  width: var(--size-4);
-  height: var(--size-4);
+  @apply size-(--size-4);
 }
 
 .menu-item-tree-expand-placeholder {
-  width: var(--size-4);
-  height: var(--size-4);
+  @apply size-(--size-4);
 }
 
 .menu-item-tree-content {
-  flex: 1;
-  min-width: 0;
+  @apply flex-1 min-w-0;
 }
 
 .menu-item-tree-display {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: 100%;
-  padding: var(--space-1) var(--space-2);
-  background: none;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  text-align: left;
-  transition: background-color 150ms ease;
+  @apply flex items-center gap-(--space-3) w-full px-(--space-2) py-(--space-1) bg-none border-none rounded-(--radius-sm) cursor-pointer text-left transition-colors duration-150 ease-in-out;
 }
 
 .menu-item-tree-display:hover {
-  background: var(--color-bg-hover);
+  @apply bg-(--color-bg-hover);
 }
 
 .menu-item-tree-label {
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  color: var(--color-text);
+  @apply text-(length:--text-sm) font-(--font-medium) text-(--color-text);
 }
 
 .menu-item-tree-url {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @apply text-(length:--text-xs) text-(--color-text-muted) overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 .menu-item-tree-external-icon {
-  width: var(--size-3);
-  height: var(--size-3);
-  color: var(--color-text-muted);
-  flex-shrink: 0;
+  @apply size-(--size-3) text-(--color-text-muted) shrink-0;
 }
 
 .menu-item-tree-edit {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-wrap: wrap;
+  @apply flex items-center gap-(--space-2) flex-wrap;
 }
 
 .menu-item-tree-input-label {
-  flex: 1;
-  min-width: 120px;
+  @apply flex-1 min-w-[120px];
 }
 
 .menu-item-tree-input-url {
-  flex: 2;
-  min-width: 150px;
+  @apply flex-[2] min-w-[150px];
 }
 
 .menu-item-tree-input-target {
-  width: 120px;
+  @apply w-[120px];
 }
 
 .menu-item-tree-target-option {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  @apply flex items-center gap-(--space-2);
 }
 
 .menu-item-tree-target-option svg {
-  width: var(--size-3);
-  height: var(--size-3);
+  @apply size-(--size-3);
 }
 
 .menu-item-tree-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
+  @apply flex items-center gap-(--space-1);
 }
 
 .menu-item-tree-actions button {
-  color: var(--color-text-muted);
+  @apply text-(--color-text-muted);
 }
 
 .menu-item-tree-actions button:hover {
-  color: var(--color-text);
+  @apply text-(--color-text);
 }
 
 .menu-item-tree-actions svg {
-  width: var(--size-4);
-  height: var(--size-4);
+  @apply size-(--size-4);
 }
 
 .menu-item-tree-move-up {
-  transform: rotate(-90deg);
+  @apply -rotate-90;
 }
 
 .menu-item-tree-move-down {
-  transform: rotate(90deg);
+  @apply rotate-90;
 }
 
 .menu-item-tree-children {
-  border-top: 1px solid var(--color-border);
+  @apply border-t border-(--color-border);
 }
