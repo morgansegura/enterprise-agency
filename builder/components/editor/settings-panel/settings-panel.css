@@ -1,156 +1,96 @@
+@reference "tailwindcss";
+
 /* =============================================================================
- * Settings Panel - Webflow-style right sidebar (280px compact)
+ * Settings Panel — right sidebar (280px)
  * ============================================================================= */
 
 .settings-panel {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 280px;
-  height: 100%;
-  background: var(--background);
-  border-left: 1px solid var(--border);
-  overflow: hidden;
-  /* Smooth slide transition */
-  transform: translateX(0);
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.2s ease-out;
+  @apply relative flex flex-col w-[280px] h-full overflow-hidden;
+  @apply bg-(--background) border-l border-(--border);
+  @apply translate-x-0 transition-all duration-250 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
 
-/* Panel closed state - slide out to the right */
 .settings-panel:not(.open) {
-  transform: translateX(100%);
-  opacity: 0;
-  pointer-events: none;
+  @apply translate-x-full opacity-0 pointer-events-none;
 }
 
-/* Panel wrapper - sits beside canvas, not over it */
 .settings-panel-wrapper {
-  position: relative;
-  width: 280px;
-  height: 100%;
-  flex-shrink: 0;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  /* Ensure it stays in flow */
-  display: flex;
+  @apply relative w-[280px] h-full shrink-0 flex overflow-hidden;
+  @apply transition-[width] duration-250 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
 
 .settings-panel-wrapper.collapsed {
-  width: 0;
+  @apply w-0;
 }
 
-/* Panel fills its wrapper */
 .settings-panel-wrapper .settings-panel {
-  position: relative;
-  width: 280px;
+  @apply relative w-[280px];
 }
 
-/* Toggle button when panel is closed */
 .settings-panel-toggle {
-  position: fixed;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 40;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-right: none;
-  border-radius: var(--radius) 0 0 var(--radius);
-  padding: 0.25rem;
-  transition: opacity 0.2s ease-out;
+  @apply fixed right-0 top-1/2 -translate-y-1/2 z-40;
+  @apply bg-(--background) border border-(--border) border-r-0;
+  @apply rounded-l-md p-1;
+  @apply transition-opacity duration-200;
 }
 
 /* =============================================================================
- * Header (40px)
+ * Header
  * ============================================================================= */
 
 .settings-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0 0.75rem;
-  height: 40px;
-  border-bottom: 1px solid var(--border);
-  background: var(--background);
+  @apply flex items-center justify-between gap-2 px-3 h-10;
+  @apply border-b border-(--border) bg-(--background);
 }
 
 .settings-panel-selector {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--foreground);
+  @apply flex items-center gap-2 py-1;
+  @apply text-xs font-medium text-(--foreground);
 }
 
 .settings-panel-selector-name {
-  font-weight: 600;
+  @apply font-semibold;
 }
 
 /* =============================================================================
- * Tabs (40px)
+ * Tabs
  * ============================================================================= */
 
 .settings-panel-tabs {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  margin: 10px 12px;
-  padding: 3px;
-  background: var(--muted);
-  border-radius: 6px;
+  @apply inline-flex items-center gap-0.5 mx-3 my-2.5 p-[3px];
+  @apply bg-(--muted) rounded-md;
 }
 
 .settings-panel-tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted-foreground);
-  background: transparent;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s ease;
+  @apply flex items-center justify-center;
+  @apply px-3 py-[5px];
+  @apply text-xs font-medium text-(--muted-foreground);
+  @apply bg-transparent border-none rounded-sm cursor-pointer;
+  @apply transition-all duration-150;
 }
 
 .settings-panel-tab:hover {
-  color: var(--foreground);
+  @apply text-(--foreground);
 }
 
 .settings-panel-tab.active {
-  color: var(--foreground);
-  background: var(--background);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  @apply text-(--foreground) bg-(--background) shadow-sm;
 }
 
 /* =============================================================================
- * Content & Sections
+ * Content
  * ============================================================================= */
 
 .settings-panel-content {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  @apply flex-1 overflow-y-auto overflow-x-hidden;
 }
 
 .settings-panel-sections {
-  padding: 0;
+  @apply p-0;
 }
 
 .settings-panel-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 3rem 1.5rem;
-  text-align: center;
+  @apply flex flex-col items-center justify-center gap-4 px-6 py-12 text-center;
 }
 
 /* =============================================================================
@@ -158,47 +98,34 @@
  * ============================================================================= */
 
 .property-section {
-  border-top: 1px solid var(--border);
+  @apply border-t border-(--border);
 }
 
 .property-section:first-child {
-  border-top: none;
+  @apply border-t-0;
 }
 
 .property-section-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px 12px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: left;
+  @apply flex items-center gap-2 w-full px-3 py-2.5;
+  @apply bg-transparent border-none cursor-pointer text-left;
 }
 
 .property-section-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--foreground);
+  @apply text-[13px] font-medium text-(--foreground);
 }
 
 .property-section-chevron {
-  width: 12px;
-  height: 12px;
-  color: var(--muted-foreground);
-  transition: transform 0.15s ease;
-  flex-shrink: 0;
+  @apply size-3 text-(--muted-foreground) shrink-0;
+  @apply transition-transform duration-150;
 }
 
 .property-section-chevron--closed {
-  transform: rotate(-90deg);
+  @apply -rotate-90;
 }
 
 .property-section-content {
-  display: grid;
+  @apply grid transition-[grid-template-rows] duration-150;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.15s ease;
 }
 
 .property-section-content--open {
@@ -210,16 +137,11 @@
 }
 
 .property-section-inner {
-  overflow: hidden;
-  padding: 0 12px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  @apply overflow-hidden px-3 pb-3 flex flex-col gap-2.5;
 }
 
 .property-section-content--closed .property-section-inner {
-  padding-top: 0;
-  padding-bottom: 0;
+  @apply py-0;
 }
 
 /* =============================================================================
@@ -227,60 +149,39 @@
  * ============================================================================= */
 
 .property-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 32px;
+  @apply flex items-center justify-between gap-3 min-h-8;
 }
 
 .property-row--stacked {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 6px;
+  @apply flex-col items-stretch gap-1.5;
 }
 
 .property-row-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted-foreground);
-  white-space: nowrap;
+  @apply text-xs font-medium text-(--muted-foreground) whitespace-nowrap;
 }
 
 .property-row-responsive {
-  width: 5px;
-  height: 5px;
-  background: var(--primary);
-  border-radius: 50%;
+  @apply size-[5px] bg-(--primary) rounded-full;
 }
 
 .property-row-control {
-  flex-shrink: 0;
+  @apply shrink-0;
 }
 
 .property-row--stacked .property-row-control {
-  width: 100%;
+  @apply w-full;
 }
 
 .property-row-help {
-  font-size: 11px;
-  color: var(--muted-foreground);
-  margin-top: 4px;
+  @apply text-[11px] text-(--muted-foreground) mt-1;
 }
 
-/* Compact row - inline label and control */
 .property-row-compact {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 32px;
+  @apply flex items-center justify-between gap-3 min-h-8;
 }
 
 .property-row-compact .property-row-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted-foreground);
+  @apply text-xs font-medium text-(--muted-foreground);
 }
 
 /* =============================================================================
@@ -288,33 +189,27 @@
  * ============================================================================= */
 
 .property-grid {
-  display: grid;
-  gap: 10px;
+  @apply grid gap-2.5;
 }
 
 .property-grid--cols-2 {
-  grid-template-columns: repeat(2, 1fr);
+  @apply grid-cols-2;
 }
 
 .property-grid--cols-3 {
-  grid-template-columns: repeat(3, 1fr);
+  @apply grid-cols-3;
 }
 
 .property-grid--cols-4 {
-  grid-template-columns: repeat(4, 1fr);
+  @apply grid-cols-4;
 }
 
-/* Property cell - stacked label + control */
 .property-cell {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  @apply flex flex-col gap-1;
 }
 
 .property-cell-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted-foreground);
+  @apply text-xs font-medium text-(--muted-foreground);
 }
 
 /* =============================================================================
@@ -322,62 +217,43 @@
  * ============================================================================= */
 
 .property-toggle {
-  display: inline-flex;
-  gap: 2px;
-  padding: 3px;
-  background: var(--muted);
-  border-radius: 6px;
+  @apply inline-flex gap-0.5 p-[3px] bg-(--muted) rounded-md;
 }
 
 .property-toggle--full {
-  display: flex;
-  width: 100%;
+  @apply flex w-full;
 }
 
 .property-toggle--full .property-toggle-btn {
-  flex: 1;
+  @apply flex-1;
 }
 
 .property-toggle-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 5px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted-foreground);
-  background: transparent;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  white-space: nowrap;
+  @apply flex items-center justify-center gap-1;
+  @apply px-2.5 py-[5px];
+  @apply text-xs font-medium text-(--muted-foreground);
+  @apply bg-transparent border-none rounded-sm cursor-pointer;
+  @apply transition-all duration-150 whitespace-nowrap;
 }
 
 .property-toggle-btn:hover {
-  color: var(--foreground);
+  @apply text-(--foreground);
 }
 
 .property-toggle-btn--active {
-  background: var(--background);
-  color: var(--foreground);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  @apply bg-(--background) text-(--foreground) shadow-sm;
 }
 
 .property-toggle-icon {
-  display: flex;
-  align-items: center;
+  @apply flex items-center;
 }
 
 .property-toggle-icon svg {
-  width: 12px;
-  height: 12px;
+  @apply size-3;
 }
 
 .property-toggle-label {
-  font-size: 0.6875rem;
-  font-weight: 500;
+  @apply text-[11px] font-medium;
 }
 
 /* =============================================================================
@@ -385,73 +261,52 @@
  * ============================================================================= */
 
 .property-select {
-  height: 32px;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 0 10px;
-  background: var(--muted);
-  border: none;
-  border-radius: 6px;
-  color: var(--foreground);
+  @apply h-8 px-2.5 text-xs font-medium;
+  @apply bg-(--muted) text-(--foreground) border-none rounded-md;
 }
 
 .property-select:hover {
-  background: var(--accent);
+  @apply bg-(--accent);
 }
 
 .property-select-option {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+  @apply flex justify-between w-full;
 }
 
 .property-select-description {
-  color: var(--muted-foreground);
-  margin-left: 8px;
+  @apply text-(--muted-foreground) ml-2;
 }
 
 /* =============================================================================
- * Legacy Settings Section (Collapsible) - Keep for backwards compat
+ * Legacy Settings Section
  * ============================================================================= */
 
 .settings-section {
-  border-bottom: 1px solid var(--border);
+  @apply border-b border-(--border);
 }
 
 .settings-section:last-child {
-  border-bottom: none;
+  @apply border-b-0;
 }
 
 .settings-section-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0.625rem 0.75rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted-foreground);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.1s ease;
+  @apply flex items-center justify-between w-full;
+  @apply px-3 py-2.5;
+  @apply text-[11px] font-semibold uppercase tracking-wide;
+  @apply text-(--muted-foreground) bg-transparent border-none cursor-pointer;
+  @apply transition-all duration-100;
 }
 
 .settings-section-trigger:hover {
-  background: var(--muted);
-  color: var(--foreground);
+  @apply bg-(--muted) text-(--foreground);
 }
 
 .settings-section-trigger-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  @apply flex items-center gap-2;
 }
 
 .settings-section-content {
-  padding: 0 0.75rem 0.75rem;
+  @apply px-3 pb-3;
 }
 
 /* =============================================================================
@@ -459,44 +314,27 @@
  * ============================================================================= */
 
 .settings-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.25rem 0;
+  @apply flex items-center justify-between gap-3 py-1;
 }
 
 .settings-row-full {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.25rem 0;
+  @apply flex flex-col gap-1 py-1;
 }
 
 .settings-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--foreground);
-  white-space: nowrap;
+  @apply text-xs font-medium text-(--foreground) whitespace-nowrap;
 }
 
 .settings-select {
-  width: auto;
-  min-width: 100px;
-  height: 28px;
-  font-size: 0.8125rem;
+  @apply w-auto min-w-[100px] h-7 text-[13px];
 }
 
 .settings-input {
-  height: 28px;
-  font-size: 0.8125rem;
+  @apply h-7 text-[13px];
 }
 
 .settings-input-sm {
-  width: 56px;
-  height: 28px;
-  font-size: 0.8125rem;
-  text-align: center;
+  @apply w-14 h-7 text-[13px] text-center;
 }
 
 /* =============================================================================
@@ -504,63 +342,42 @@
  * ============================================================================= */
 
 .toggle-group {
-  display: inline-flex;
-  gap: 2px;
-  padding: 3px;
-  background: var(--muted);
-  border-radius: 6px;
+  @apply inline-flex gap-0.5 p-[3px] bg-(--muted) rounded-md;
 }
 
 .toggle-group-btn {
-  padding: 5px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted-foreground);
-  background: transparent;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  white-space: nowrap;
+  @apply px-2.5 py-[5px] text-xs font-medium;
+  @apply text-(--muted-foreground) bg-transparent border-none rounded-sm;
+  @apply cursor-pointer transition-all duration-150 whitespace-nowrap;
 }
 
 .toggle-group-btn:hover {
-  color: var(--foreground);
+  @apply text-(--foreground);
 }
 
 .toggle-group-btn.active {
-  background: var(--background);
-  color: var(--foreground);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  @apply bg-(--background) text-(--foreground) shadow-sm;
 }
 
 /* =============================================================================
- * Responsive (Mobile only - true mobile, not tablets)
+ * Mobile
  * ============================================================================= */
 
 @media (max-width: 640px) {
   .settings-panel-wrapper {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 280px;
-    z-index: 50;
+    @apply fixed right-0 top-0 bottom-0 w-[280px] z-50;
   }
 
   .settings-panel-wrapper.collapsed {
-    width: 280px; /* Keep width on mobile, just slide */
-    pointer-events: none;
+    @apply w-[280px] pointer-events-none;
   }
 
   .settings-panel-wrapper.collapsed .settings-panel-toggle {
-    pointer-events: auto;
+    @apply pointer-events-auto;
   }
 
   .settings-panel-wrapper .settings-panel {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+    @apply absolute inset-0 w-full;
+    @apply shadow-xl;
   }
 }
