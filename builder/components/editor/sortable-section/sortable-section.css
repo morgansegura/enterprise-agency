@@ -1,7 +1,10 @@
 @reference "tailwindcss";
 
 /* =============================================================================
- * Sortable Section - Webflow-style smooth interactions
+ * Sortable Section — Enterprise editor interactions
+ *
+ * Clean hover states, subtle controls, professional feel.
+ * Section chrome is invisible until you interact.
  * ============================================================================= */
 
 .sortable-section {
@@ -9,54 +12,62 @@
 }
 
 .sortable-section.is-dragging {
-  @apply opacity-50 cursor-grabbing;
+  @apply opacity-50;
+  cursor: grabbing;
 }
 
 /* =============================================================================
- * Section Visual - refined hover states
+ * Section Visual — the rendered section wrapper
  * ============================================================================= */
 
 .section-visual {
-  @apply relative transition-colors duration-300 ease-out outline-2 outline-(--builder-primary)/0 -outline-offset-2;
-  /* Use box-shadow for smoother transitions than border */
-  box-shadow: inset 0 0 0 0 transparent;
-  transition: box-shadow 200ms ease-out;
+  @apply relative;
+  transition: outline 200ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
 }
 
+/* Section label — appears on hover */
 .sortable-section-label {
-  @apply absolute flex items-center gap-2 z-10 pl-2 pr-1 py-0.5 text-(--builder-primary-foreground) bg-(--builder-primary) font-semibold left-[2px] text-sm opacity-0 pointer-events-none rounded-b-xs;
-  @apply transition-opacity ease-out duration-300;
+  @apply absolute flex items-center gap-1.5 z-10;
+  @apply px-2 py-0.5 text-xs font-medium;
+  @apply left-0 top-0 opacity-0 pointer-events-none;
+  @apply transition-opacity duration-200;
+  background: var(--builder-primary);
+  color: var(--builder-primary-foreground);
+  border-radius: 0 0 6px 0;
 
   svg {
-    @apply stroke-(--builder-primary-foreground);
+    @apply size-3;
+    color: var(--builder-primary-foreground);
   }
 }
+
 .sortable-section:hover > .sortable-section-label,
 .sortable-section-label.is-selected {
   @apply opacity-100 pointer-events-auto;
 }
 
-/* Section hover - only show when NOT hovering a child container */
+/* Section hover outline — only when NOT hovering a child */
 .sortable-section:hover > .section-visual:not(:has(.sortable-container:hover)) {
-  @apply outline-2 outline-(--builder-primary) -outline-offset-2;
+  outline: 2px solid var(--builder-primary);
+  outline-offset: -2px;
 }
 
-/* Hide all section highlights when any nested element is hovered */
+/* Hide section outline when hovering nested elements */
 .sortable-section:has(.sortable-container:hover) > .section-visual,
 .sortable-section:has(.block-wrapper:hover) > .section-visual {
-  outline: none !important;
-  box-shadow: none !important;
+  outline-color: transparent !important;
 }
 
-/* Selected state for sidebar editing */
+/* Selected state */
 .section-visual.is-selected {
   outline: 2px solid var(--builder-primary);
   outline-offset: -2px;
-  background: color-mix(in srgb, var(--builder-primary) 3%, transparent);
 }
 
 /* =============================================================================
- * Add Section Buttons - smooth reveal
+ * Add Section Controls — appear between sections on hover
  * ============================================================================= */
 
 .section-add-above,
@@ -64,8 +75,8 @@
   @apply absolute left-0 right-0 z-30;
   @apply flex justify-center;
   opacity: 0;
-  transition: opacity 150ms ease-out;
   pointer-events: none;
+  transition: opacity 150ms ease-out;
 }
 
 .section-add-above {
@@ -78,22 +89,18 @@
   transform: translateY(50%);
 }
 
-/* Show buttons only when hovering section (not container or block) */
+/* Show only when hovering section directly */
 .sortable-section:hover
-  > .section-visual:not(:has(.sortable-container:hover)):not(
-    :has(.block-wrapper:hover)
-  )
+  > .section-visual:not(:has(.sortable-container:hover)):not(:has(.block-wrapper:hover))
   .section-add-above,
 .sortable-section:hover
-  > .section-visual:not(:has(.sortable-container:hover)):not(
-    :has(.block-wrapper:hover)
-  )
+  > .section-visual:not(:has(.sortable-container:hover)):not(:has(.block-wrapper:hover))
   .section-add-below {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Hide buttons when hovering containers or blocks */
+/* Hide when hovering containers or blocks */
 .sortable-section:has(.sortable-container:hover) .section-add-above,
 .sortable-section:has(.sortable-container:hover) .section-add-below,
 .sortable-section:has(.block-wrapper:hover) .section-add-above,
@@ -102,24 +109,19 @@
   pointer-events: none !important;
 }
 
-/* Add section button styling */
+/* Add section button */
 .section-add-btn {
-  @apply px-3 py-1;
-  @apply text-xs font-medium tracking-wide;
+  @apply px-3 py-1 text-xs font-medium;
   background: var(--builder-primary);
   color: var(--builder-primary-foreground);
   border-radius: 9999px;
-  box-shadow:
-    0 2px 8px color-mix(in srgb, var(--builder-primary) 30%, transparent),
-    0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--builder-primary) 25%, transparent);
   transition: all 120ms ease-out;
 }
 
 .section-add-btn:hover {
   transform: scale(1.02);
-  box-shadow:
-    0 4px 12px color-mix(in srgb, var(--builder-primary) 40%, transparent),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--builder-primary) 35%, transparent);
 }
 
 .section-add-btn:active {
@@ -127,9 +129,9 @@
 }
 
 /* =============================================================================
- * Section Container
+ * Section Container wrapper
  * ============================================================================= */
 
-.section-container {
+.section-containers {
   @apply min-h-[40px];
 }

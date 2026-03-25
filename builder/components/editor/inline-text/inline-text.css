@@ -1,15 +1,23 @@
 @reference "tailwindcss";
 
+/* =============================================================================
+ * Inline Text — contenteditable WYSIWYG text editing
+ *
+ * Renders as the text will appear to visitors.
+ * Placeholder shown when empty, using currentColor for section awareness.
+ * ============================================================================= */
+
 .inline-text {
   @apply outline-none;
   @apply min-h-[1em];
+  cursor: text;
 }
 
-/* Placeholder using ::before pseudo-element */
+/* Placeholder — adapts to section background via currentColor */
 .inline-text--empty:empty::before {
   content: attr(data-placeholder);
-  @apply text-(--muted-foreground);
   @apply pointer-events-none;
+  opacity: 0.4;
 }
 
 .inline-text:focus {

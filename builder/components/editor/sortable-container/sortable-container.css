@@ -1,67 +1,64 @@
+@reference "tailwindcss";
+
 /* =============================================================================
- * Sortable Container - Webflow-style smooth interactions
+ * Sortable Container — subtle interaction layer
+ *
+ * Containers are structural — they shouldn't be visually prominent.
+ * Show dashed outline only when directly hovered (not when child is hovered).
  * ============================================================================= */
 
 .sortable-container {
-  position: relative;
+  @apply relative;
 }
 
-/* =============================================================================
- * Container Visual - only show when directly hovered
- * ============================================================================= */
-
+/* Container visual wrapper */
 .container-visual {
-  transition: background-color 150ms ease-out;
-}
-
-/* Container hover - only when NOT hovering a block inside */
-.sortable-container.is-hovered:not(:has(.block-wrapper:hover)) .container-visual {
-  outline: 1.5px dashed var(--builder-primary);
+  transition: outline 150ms ease-out;
+  outline: 1.5px dashed transparent;
   outline-offset: -1.5px;
+  border-radius: 4px;
 }
 
-/* Hide container outline when hovering blocks */
+/* Hover — only when NOT hovering a block inside */
+.sortable-container.is-hovered:not(:has(.block-wrapper:hover)) .container-visual {
+  outline-color: color-mix(in srgb, var(--builder-primary) 50%, transparent);
+}
+
+/* Hide outline when hovering blocks */
 .sortable-container:has(.block-wrapper:hover) .container-visual {
-  outline: none !important;
+  outline-color: transparent !important;
 }
 
-/* Hide container controls when hovering blocks */
+/* Hide controls when hovering blocks */
 .sortable-container:has(.block-wrapper:hover) .container-controls {
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
-/* Selected state for sidebar editing */
+/* Selected state */
 .container-visual.is-selected {
   outline: 2px dashed var(--builder-primary);
   outline-offset: -2px;
-  background: color-mix(in srgb, var(--builder-primary) 3%, transparent);
 }
 
-
 /* =============================================================================
- * Empty Container State - clean, minimal
+ * Empty Container — clean prompt to add blocks
  * ============================================================================= */
 
 .container-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60px;
-  padding: 1rem;
+  @apply flex items-center justify-center;
+  min-height: 48px;
+  padding: 0.75rem;
 }
 
 .container-empty button {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 500;
+  @apply flex items-center gap-1.5;
+  @apply px-3 py-1.5;
+  @apply text-xs font-medium;
   color: var(--builder-muted-foreground);
   background: transparent;
-  border: 1px solid var(--builder-border);
-  border-radius: 0.375rem;
+  border: 1px dashed var(--builder-border);
+  border-radius: 6px;
   transition: all 120ms ease-out;
 }
 

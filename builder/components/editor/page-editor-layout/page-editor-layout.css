@@ -1,78 +1,135 @@
 @reference "tailwindcss";
 
-/* Editor layout - full page like HTML document */
+/* =============================================================================
+ * Page Editor Layout — Enterprise canvas-focused editor
+ *
+ * Structure: toolbar (top) → body (canvas + right panel)
+ * Canvas renders the page as it will appear to visitors.
+ * ============================================================================= */
+
 .page-editor-layout {
-  @apply h-screen flex flex-col w-full bg-(--background);
+  @apply h-screen flex flex-col w-full;
+  background: var(--builder-background);
 }
 
-/* Toolbar */
+/* =============================================================================
+ * Toolbar — clean, compact, functional
+ * ============================================================================= */
+
 .page-editor-toolbar {
-  @apply flex items-center justify-between px-4 py-1 border-b border-(--border) bg-(--card) z-10;
+  @apply flex items-center justify-between px-3 h-11 z-10;
+  background: var(--builder-card);
+  border-bottom: 1px solid var(--builder-border);
 }
 
 .page-editor-toolbar-left {
-  @apply flex items-center gap-2 flex-1;
+  @apply flex items-center gap-2 flex-1 min-w-0;
 }
 
 .page-editor-toolbar-trigger {
-  @apply relative cursor-pointer rounded-md flex items-center justify-center w-7 h-7 -ml-1;
+  @apply relative cursor-pointer rounded-md flex items-center justify-center w-7 h-7 -ml-0.5;
+  @apply transition-colors duration-150;
 
   & svg {
-    @apply size-5 stroke-(--muted-foreground) transition-colors duration-200;
+    @apply size-4;
+    color: var(--builder-muted-foreground);
+  }
+
+  &:hover {
+    background: var(--builder-muted);
   }
 
   &:hover svg {
-    @apply stroke-(--foreground);
+    color: var(--builder-foreground);
   }
 }
 
 .page-editor-toolbar-center {
-  @apply flex items-center justify-center flex-1;
+  @apply flex items-center justify-center;
 }
 
 .page-editor-toolbar-right {
-  @apply flex items-center gap-2 flex-1 justify-end;
+  @apply flex items-center gap-1.5 flex-1 justify-end;
 }
 
-.page-editor-title {
-  @apply text-base font-semibold text-(--foreground) m-0;
-}
-
+/* Save status indicator */
 .page-editor-status {
-  @apply text-xs text-(--muted-foreground);
-  @apply whitespace-nowrap;
-  @apply min-w-[180px]; /* Prevent layout shift */
+  @apply text-xs whitespace-nowrap;
+  color: var(--builder-muted-foreground);
+  min-width: 120px;
 }
 
 .page-editor-status.saving {
   @apply animate-pulse;
+  color: var(--builder-primary);
 }
 
 .page-editor-status.unsaved {
-  @apply text-amber-500;
+  color: var(--status-warning);
 }
 
-/* Editor Body - content area fills remaining space */
+.page-editor-status.saved {
+  color: var(--builder-muted-foreground);
+}
+
+/* =============================================================================
+ * Editor Body — canvas + optional right panel
+ * ============================================================================= */
+
 .page-editor-body {
-  @apply flex-1 flex overflow-hidden;
+  @apply flex-1 flex overflow-hidden min-h-0;
 }
 
-/* Canvas - takes remaining space, scrolls independently */
+/* =============================================================================
+ * Canvas — the editing surface
+ *
+ * Subtle neutral background so page content stands out.
+ * The canvas content area is where sections/blocks render.
+ * ============================================================================= */
+
 .page-editor-canvas {
-  @apply flex-1 flex flex-col h-screen relative overflow-y-auto p-4 bg-(--builder-body) min-h-0;
+  @apply flex-1 flex flex-col relative overflow-y-auto min-h-0;
+  background: var(--builder-body, var(--el-100, #f5f5f5));
+  /* Subtle canvas pattern for visual clarity */
+  background-image:
+    radial-gradient(circle, var(--el-200, #e5e5e5) 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
 }
 
 .page-editor-canvas-content {
   @apply flex-1;
+  /* Canvas content gets a clean white surface for the actual page */
+  max-width: 1280px;
+  margin: 1.5rem auto;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  min-height: calc(100vh - 200px);
 }
 
-/* Preview Mode */
+/* =============================================================================
+ * Preview Mode — hide editor chrome, show pure page
+ * ============================================================================= */
+
 .page-editor-layout[data-preview-mode="true"] {
   .page-editor-toolbar {
-    @apply bg-transparent border-b-0;
+    background: transparent;
+    border-bottom: none;
   }
 
   .page-editor-canvas {
-    @apply bg-(--background);
+    background: var(--builder-background);
+    background-image: none;
+  }
+
+  .page-editor-canvas-content {
+    margin: 0 auto;
+    border-radius: 0;
+    box-shadow: none;
+    max-width: none;
   }
 }

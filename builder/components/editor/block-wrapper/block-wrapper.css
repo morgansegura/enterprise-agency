@@ -1,48 +1,50 @@
 @reference "tailwindcss";
 
 /* =============================================================================
- * Block Wrapper - Webflow-style smooth interactions
+ * Block Wrapper — clean selection & hover states
+ *
+ * Minimal chrome: blocks look exactly as they will on the live site.
+ * Selection/hover indicated by subtle outline, not background tint.
  * ============================================================================= */
 
 .block-wrapper {
   @apply relative;
+  border-radius: 4px;
+  transition: outline 150ms ease-out;
+  outline: 2px solid transparent;
+  outline-offset: -1px;
 }
 
-/* Subtle hover - light background tint */
+/* Hover — subtle outline */
 .block-wrapper:hover {
-  background: color-mix(in srgb, var(--builder-primary) 5%, transparent);
-  border-radius: 4px;
+  outline-color: color-mix(in srgb, var(--builder-primary) 40%, transparent);
 }
 
-/* Selected state - stronger background tint, no border */
+/* Selected — solid outline */
 .block-wrapper.is-selected {
-  background: color-mix(in srgb, var(--builder-primary) 12%, transparent);
-  border-radius: 4px;
+  outline-color: var(--builder-primary);
 }
 
-/* Hovered state (from layers popover) */
+/* Hovered from layers panel */
 .block-wrapper.is-hovered {
-  background: color-mix(in srgb, var(--builder-primary) 8%, transparent);
-  border-radius: 4px;
+  outline-color: color-mix(in srgb, var(--builder-primary) 60%, transparent);
 }
 
 /* =============================================================================
- * Floating Toolbar - smooth entrance
+ * Floating Toolbar — appears above selected block
  * ============================================================================= */
 
 .block-toolbar {
-  @apply absolute -top-11 left-1/2 -translate-x-1/2;
-  @apply bg-(--builder-card) rounded-lg;
-  @apply px-1.5 py-1;
+  @apply absolute -top-10 left-1/2 -translate-x-1/2;
+  @apply rounded-lg px-1 py-0.5;
   @apply flex items-center gap-0.5;
   @apply z-20;
-  /* Refined shadow and border */
+  background: var(--builder-card);
   border: 1px solid var(--builder-border);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
-    0 2px 4px rgba(0, 0, 0, 0.04);
-  /* Smooth entrance animation */
-  animation: toolbar-enter 150ms ease-out;
+    0 1px 3px rgba(0, 0, 0, 0.04);
+  animation: toolbar-enter 120ms ease-out;
 }
 
 @keyframes toolbar-enter {
@@ -57,15 +59,14 @@
 }
 
 .block-toolbar button {
-  @apply h-7 w-7;
-  @apply text-(--builder-muted-foreground);
-  @apply rounded-md;
+  @apply h-7 w-7 rounded-md;
   @apply flex items-center justify-center;
-  transition: all 120ms ease-out;
+  color: var(--builder-muted-foreground);
+  transition: all 100ms ease-out;
 }
 
 .block-toolbar button:hover {
-  @apply text-(--builder-foreground);
+  color: var(--builder-foreground);
   background: var(--builder-muted);
 }
 
@@ -78,26 +79,22 @@
   background: var(--builder-border);
 }
 
-.block-toolbar-delete {
-  @apply text-(--builder-muted-foreground);
-}
-
 .block-toolbar-delete:hover {
-  @apply text-(--builder-destructive);
+  color: var(--builder-destructive) !important;
   background: color-mix(in srgb, var(--builder-destructive) 10%, transparent) !important;
 }
 
 /* =============================================================================
- * Content area
+ * Content area — clean, no interference with block rendering
  * ============================================================================= */
 
 .block-content {
   @apply relative;
 }
 
-/* Ensure content is interactive */
 .block-content [contenteditable="true"] {
   @apply outline-none;
+  cursor: text;
 }
 
 .block-content [contenteditable="true"]:focus {
