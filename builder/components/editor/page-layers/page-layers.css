@@ -1,53 +1,110 @@
 @reference "tailwindcss";
 
+/* =============================================================================
+ * Page Layers — Content tree (Jira-style collapsible hierarchy)
+ * ============================================================================= */
+
 .page-layers {
-  @apply p-4;
+  @apply flex flex-col h-full overflow-hidden;
+  @apply bg-(--background) border-r border-(--border);
 }
 
-.page-layers-empty {
-  @apply py-8 px-4 text-center;
+.page-layers-header {
+  @apply flex items-center gap-2 px-3 h-10;
+  @apply text-xs font-semibold uppercase tracking-wide;
+  @apply text-(--muted-foreground);
+  @apply border-b border-(--border);
+}
+
+.page-layers-header-icon {
+  @apply size-3.5;
 }
 
 .page-layers-tree {
-  @apply flex flex-col gap-1;
+  @apply flex-1 overflow-y-auto p-1.5;
+}
+
+.page-layers-empty {
+  @apply flex flex-col items-center justify-center gap-2 py-12 px-4 text-center;
+}
+
+.page-layers-empty-icon {
+  @apply size-8 text-(--muted-foreground) opacity-40;
+}
+
+.page-layers-empty p {
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.page-layers-empty span {
+  @apply text-xs text-(--muted-foreground);
+}
+
+/* =============================================================================
+ * Layer Items — rows in the tree
+ * ============================================================================= */
+
+.layer-group {
+  @apply flex flex-col;
 }
 
 .layer-item {
-  @apply text-sm;
+  @apply flex items-center gap-1.5 px-2 py-1 rounded-sm cursor-pointer;
+  @apply text-xs transition-colors duration-100;
 }
 
-.layer-item-content {
-  @apply flex items-center gap-2 p-2 rounded-sm cursor-pointer transition-colors;
-}
-
-.layer-item-content:hover {
+.layer-item:hover {
   @apply bg-(--accent);
 }
 
-.layer-item-toggle {
-  @apply flex items-center justify-center w-4 h-4 border-none bg-transparent cursor-pointer p-0 text-(--muted-foreground);
+.layer-item.is-selected {
+  @apply bg-(--accent) text-(--accent-foreground);
 }
 
-.layer-item-spacer {
-  @apply w-4;
+.layer-item.is-hovered {
+  @apply bg-(--accent) opacity-80;
 }
 
-.layer-item-type {
-  @apply inline-flex items-center px-1.5 py-0.5 bg-(--muted) border border-(--border) rounded-sm text-xs text-(--muted-foreground) font-medium;
+/* Indent levels */
+.layer-item-section {
+  @apply font-medium text-(--foreground);
 }
 
-.layer-item-name {
-  @apply flex-1 text-(--foreground) font-medium;
+.layer-item-container {
+  @apply pl-5 text-(--muted-foreground);
 }
 
-.layer-item-visibility {
-  @apply flex items-center justify-center w-5 h-5 border-none bg-transparent cursor-pointer p-0 text-(--muted-foreground) opacity-0 transition-opacity;
+.layer-item-block {
+  @apply pl-9 text-(--foreground);
 }
 
-.layer-item-content:hover .layer-item-visibility {
-  @apply opacity-100;
+/* Toggle button */
+.layer-toggle {
+  @apply flex items-center justify-center size-4 p-0;
+  @apply border-none bg-transparent cursor-pointer;
+  @apply text-(--muted-foreground);
 }
 
-.layer-item-children {
-  @apply mt-1;
+.layer-toggle-icon {
+  @apply size-3;
+}
+
+/* Type icon */
+.layer-type-icon {
+  @apply size-3.5 shrink-0 text-(--muted-foreground);
+}
+
+.layer-item.is-selected .layer-type-icon {
+  @apply text-(--foreground);
+}
+
+/* Label */
+.layer-label {
+  @apply flex-1 truncate;
+}
+
+/* Count badge */
+.layer-badge {
+  @apply text-[10px] font-medium px-1.5 py-0.5 rounded-full;
+  @apply bg-(--muted) text-(--muted-foreground);
 }

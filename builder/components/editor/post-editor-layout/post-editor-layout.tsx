@@ -148,7 +148,7 @@ export function PostEditorLayout({
               {activeRightTab === "settings" && (
                 <PostSettings post={post} onChange={onPostChange} />
               )}
-              {activeRightTab === "layers" && <PageLayers />}
+              {activeRightTab === "layers" && <PageLayers sections={[]} />}
             </div>
           )}
         </aside>

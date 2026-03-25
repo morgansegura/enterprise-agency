@@ -52,6 +52,8 @@ interface PageEditorLayoutProps {
   isPublished?: boolean;
   hasUnsavedChanges?: boolean;
   lastSaved?: Date | null;
+  /** Left panel content (PageLayers tree) */
+  leftPanel?: React.ReactNode;
   /** Right panel content (SettingsPanel) */
   rightPanel?: React.ReactNode;
   children: React.ReactNode;
@@ -83,6 +85,7 @@ export function PageEditorLayout({
   isPublished = false,
   hasUnsavedChanges = false,
   lastSaved,
+  leftPanel,
   rightPanel,
   children,
 }: PageEditorLayoutProps) {
@@ -264,12 +267,16 @@ export function PageEditorLayout({
         </div>
       </div>
 
-      {/* Editor Body - Canvas + Right Panel */}
-      {/* ResponsiveProvider wraps both canvas and settings panel so they share breakpoint context */}
+      {/* Editor Body - Left Tree + Canvas + Right Panel */}
       <ResponsiveProvider breakpoint={breakpoint} isBuilder={true}>
         <div className="page-editor-body">
+          {/* Left Panel (Content Tree) */}
+          {leftPanel && (
+            <aside className="page-editor-left-panel">{leftPanel}</aside>
+          )}
+
+          {/* Center Canvas (Live Preview) */}
           <main className="page-editor-canvas">
-            {/* design-preview class enables section token styles for WYSIWYG parity */}
             <div className="page-editor-canvas-content design-preview">
               {children}
             </div>

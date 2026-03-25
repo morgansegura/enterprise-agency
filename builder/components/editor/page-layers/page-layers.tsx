@@ -1,91 +1,266 @@
 "use client";
 
-import { ChevronRight, Eye, EyeOff } from "lucide-react";
+import * as React from "react";
+import {
+  ChevronRight,
+  ChevronDown,
+  Layers,
+  Box,
+  Type,
+  Heading,
+  Image,
+  MousePointerClick,
+  LayoutGrid,
+  Minus,
+  Space,
+  Quote,
+  List,
+  Video,
+  Music,
+  Map,
+  Code,
+  BarChart3,
+  Smile,
+  CreditCard,
+  Columns3,
+  Rows3,
+  AlignVerticalSpaceAround,
+  ShoppingCart,
+  Package,
+} from "lucide-react";
+import type { Section, Block } from "@/lib/hooks/use-pages";
+import { cn } from "@/lib/utils";
+
 import "./page-layers.css";
 
-interface Layer {
-  id: string;
-  type: string;
-  name: string;
-  visible: boolean;
-  children?: Layer[];
+// Block type → icon mapping
+const blockIcons: Record<string, React.ElementType> = {
+  "heading-block": Heading,
+  "text-block": Type,
+  "rich-text-block": Type,
+  "image-block": Image,
+  "button-block": MousePointerClick,
+  "card-block": CreditCard,
+  "video-block": Video,
+  "audio-block": Music,
+  "list-block": List,
+  "quote-block": Quote,
+  "divider-block": Minus,
+  "spacer-block": Space,
+  "embed-block": Code,
+  "icon-block": Smile,
+  "stats-block": BarChart3,
+  "map-block": Map,
+  "logo-block": Image,
+  "accordion-block": Rows3,
+  "tabs-block": Columns3,
+  "container-block": Box,
+  "grid-block": LayoutGrid,
+  "flex-block": Columns3,
+  "stack-block": AlignVerticalSpaceAround,
+  "product-grid-block": ShoppingCart,
+  "product-detail-block": Package,
+  "cart-block": ShoppingCart,
+  "checkout-block": CreditCard,
+};
+
+// Get a readable label from block data
+function getBlockLabel(block: Block): string {
+  const data = block.data as Record<string, unknown>;
+  if (data?.text && typeof data.text === "string") {
+    return data.text.slice(0, 40) || block._type.replace("-block", "");
+  }
+  if (data?.content && typeof data.content === "string") {
+    return data.content.slice(0, 40) || block._type.replace("-block", "");
+  }
+  return block._type
+    .replace("-block", "")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 interface PageLayersProps {
-  layers?: Layer[];
+  sections: Section[];
+  selectedKey?: string | null;
+  hoveredKey?: string | null;
+  onSelectSection?: (sectionIndex: number, key: string) => void;
+  onSelectContainer?: (
+    sectionIndex: number,
+    containerIndex: number,
+    key: string,
+  ) => void;
+  onSelectBlock?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+    key: string,
+  ) => void;
+  onHover?: (key: string | null) => void;
 }
 
-// Mock layers for now
-const mockLayers: Layer[] = [
-  {
-    id: "section-1",
-    type: "section",
-    name: "Hero Section",
-    visible: true,
-    children: [
-      { id: "heading-1", type: "heading", name: "Main Heading", visible: true },
-      {
-        id: "paragraph-1",
-        type: "paragraph",
-        name: "Description",
-        visible: true,
-      },
-    ],
-  },
-];
+export function PageLayers({
+  sections,
+  selectedKey,
+  hoveredKey,
+  onSelectSection,
+  onSelectContainer,
+  onSelectBlock,
+  onHover,
+}: PageLayersProps) {
+  const [collapsed, setCollapsed] = React.useState<Set<string>>(new Set());
 
-export function PageLayers({ layers = mockLayers }: PageLayersProps) {
+  const toggleCollapse = (key: string) => {
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
+  if (sections.length === 0) {
+    return (
+      <div className="page-layers">
+        <div className="page-layers-empty">
+          <Layers className="page-layers-empty-icon" />
+          <p>No content yet</p>
+          <span>Add a section to get started</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page-layers">
-      {layers.length === 0 ? (
-        <div className="page-layers-empty">
-          <p className="text-sm text-muted-foreground">
-            No blocks yet. Drag blocks from the library to get started.
-          </p>
-        </div>
-      ) : (
-        <div className="page-layers-tree">
-          {layers.map((layer) => (
-            <LayerItem key={layer.id} layer={layer} level={0} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function LayerItem({ layer, level }: { layer: Layer; level: number }) {
-  const hasChildren = layer.children && layer.children.length > 0;
-
-  return (
-    <div className="layer-item" style={{ paddingLeft: `${level * 16}px` }}>
-      <div className="layer-item-content">
-        {hasChildren && (
-          <button className="layer-item-toggle">
-            <ChevronRight className="h-3 w-3" />
-          </button>
-        )}
-        {!hasChildren && <span className="layer-item-spacer" />}
-
-        <span className="layer-item-type">{layer.type}</span>
-        <span className="layer-item-name">{layer.name}</span>
-
-        <button className="layer-item-visibility">
-          {layer.visible ? (
-            <Eye className="h-3 w-3" />
-          ) : (
-            <EyeOff className="h-3 w-3" />
-          )}
-        </button>
+      <div className="page-layers-header">
+        <Layers className="page-layers-header-icon" />
+        <span>Layers</span>
       </div>
+      <div className="page-layers-tree">
+        {sections.map((section, sectionIndex) => {
+          const sectionKey = section._key;
+          const isSectionCollapsed = collapsed.has(sectionKey);
+          const containers = section.containers ?? [];
 
-      {hasChildren && (
-        <div className="layer-item-children">
-          {layer.children!.map((child) => (
-            <LayerItem key={child.id} layer={child} level={level + 1} />
-          ))}
-        </div>
-      )}
+          return (
+            <div key={sectionKey} className="layer-group">
+              {/* Section row */}
+              <div
+                className={cn(
+                  "layer-item layer-item-section",
+                  selectedKey === sectionKey && "is-selected",
+                  hoveredKey === sectionKey && "is-hovered",
+                )}
+                onClick={() => onSelectSection?.(sectionIndex, sectionKey)}
+                onMouseEnter={() => onHover?.(sectionKey)}
+                onMouseLeave={() => onHover?.(null)}
+              >
+                <button
+                  className="layer-toggle"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleCollapse(sectionKey);
+                  }}
+                >
+                  {isSectionCollapsed ? (
+                    <ChevronRight className="layer-toggle-icon" />
+                  ) : (
+                    <ChevronDown className="layer-toggle-icon" />
+                  )}
+                </button>
+                <Box className="layer-type-icon" />
+                <span className="layer-label">Section {sectionIndex + 1}</span>
+                <span className="layer-badge">
+                  {containers.reduce(
+                    (sum, c) => sum + (c.blocks?.length ?? 0),
+                    0,
+                  )}
+                </span>
+              </div>
+
+              {/* Containers and blocks */}
+              {!isSectionCollapsed &&
+                containers.map((container, containerIndex) => {
+                  const containerKey = container._key;
+                  const isContainerCollapsed = collapsed.has(containerKey);
+                  const blocks = (container.blocks ?? []) as Block[];
+
+                  return (
+                    <div key={containerKey} className="layer-group">
+                      {/* Container row */}
+                      <div
+                        className={cn(
+                          "layer-item layer-item-container",
+                          selectedKey === containerKey && "is-selected",
+                          hoveredKey === containerKey && "is-hovered",
+                        )}
+                        onClick={() =>
+                          onSelectContainer?.(
+                            sectionIndex,
+                            containerIndex,
+                            containerKey,
+                          )
+                        }
+                        onMouseEnter={() => onHover?.(containerKey)}
+                        onMouseLeave={() => onHover?.(null)}
+                      >
+                        <button
+                          className="layer-toggle"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleCollapse(containerKey);
+                          }}
+                        >
+                          {isContainerCollapsed ? (
+                            <ChevronRight className="layer-toggle-icon" />
+                          ) : (
+                            <ChevronDown className="layer-toggle-icon" />
+                          )}
+                        </button>
+                        <LayoutGrid className="layer-type-icon" />
+                        <span className="layer-label">
+                          Container {containerIndex + 1}
+                        </span>
+                        <span className="layer-badge">{blocks.length}</span>
+                      </div>
+
+                      {/* Block rows */}
+                      {!isContainerCollapsed &&
+                        blocks.map((block, blockIndex) => {
+                          const Icon = blockIcons[block._type] || Box;
+                          return (
+                            <div
+                              key={block._key}
+                              className={cn(
+                                "layer-item layer-item-block",
+                                selectedKey === block._key && "is-selected",
+                                hoveredKey === block._key && "is-hovered",
+                              )}
+                              onClick={() =>
+                                onSelectBlock?.(
+                                  sectionIndex,
+                                  containerIndex,
+                                  blockIndex,
+                                  block._key,
+                                )
+                              }
+                              onMouseEnter={() => onHover?.(block._key)}
+                              onMouseLeave={() => onHover?.(null)}
+                            >
+                              <Icon className="layer-type-icon" />
+                              <span className="layer-label">
+                                {getBlockLabel(block)}
+                              </span>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  );
+                })}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
