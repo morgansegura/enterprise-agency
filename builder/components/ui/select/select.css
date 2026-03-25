@@ -1,82 +1,5 @@
 @reference "tailwindcss";
 
-/* Keyframe Animations */
-@keyframes select-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes select-fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes select-zoom-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes select-zoom-out {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-}
-
-@keyframes select-slide-in-from-top {
-  from {
-    transform: translateY(-0.5rem);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes select-slide-in-from-bottom {
-  from {
-    transform: translateY(0.5rem);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes select-slide-in-from-left {
-  from {
-    transform: translateX(-0.5rem);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes select-slide-in-from-right {
-  from {
-    transform: translateX(0.5rem);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
 /* Select Trigger */
 [data-slot="select-trigger"] {
   @apply flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-(--input) bg-transparent px-3 py-2 text-sm shadow-sm ring-(--offset-background) transition-all outline-none disabled:cursor-not-allowed disabled:opacity-50;
@@ -106,31 +29,27 @@
 }
 
 [data-slot="select-content"][data-state="open"] {
-  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out;
+  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out];
 }
 
 [data-slot="select-content"][data-state="closed"] {
-  animation: select-fade-out 150ms ease-in, select-zoom-out 150ms ease-in;
+  @apply animate-[select-fade-out_150ms_ease-in,select-zoom-out_150ms_ease-in];
 }
 
 [data-slot="select-content"][data-state="open"][data-side="bottom"] {
-  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out,
-    select-slide-in-from-top 150ms ease-out;
+  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out,select-slide-in-from-top_150ms_ease-out];
 }
 
 [data-slot="select-content"][data-state="open"][data-side="top"] {
-  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out,
-    select-slide-in-from-bottom 150ms ease-out;
+  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out,select-slide-in-from-bottom_150ms_ease-out];
 }
 
 [data-slot="select-content"][data-state="open"][data-side="left"] {
-  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out,
-    select-slide-in-from-right 150ms ease-out;
+  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out,select-slide-in-from-right_150ms_ease-out];
 }
 
 [data-slot="select-content"][data-state="open"][data-side="right"] {
-  animation: select-fade-in 150ms ease-out, select-zoom-in 150ms ease-out,
-    select-slide-in-from-left 150ms ease-out;
+  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out,select-slide-in-from-left_150ms_ease-out];
 }
 
 [data-slot="select-content"][data-position="popper"][data-side="bottom"] {

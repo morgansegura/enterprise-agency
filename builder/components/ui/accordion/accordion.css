@@ -1,27 +1,5 @@
 @reference "tailwindcss";
 
-@keyframes accordion-down {
-  from {
-    height: 0;
-    opacity: 0;
-  }
-  to {
-    height: var(--radix-accordion-content-height);
-    opacity: 1;
-  }
-}
-
-@keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-    opacity: 1;
-  }
-  to {
-    height: 0;
-    opacity: 0;
-  }
-}
-
 /* Accordion Item */
 [data-slot="accordion-item"] {
   @apply border-b border-(--border);
@@ -59,11 +37,11 @@
 }
 
 [data-slot="accordion-content"][data-state="open"] {
-  animation: accordion-down 200ms ease-out;
+  @apply animate-[accordion-down_200ms_ease-out];
 }
 
 [data-slot="accordion-content"][data-state="closed"] {
-  animation: accordion-up 200ms ease-out;
+  @apply animate-[accordion-up_200ms_ease-out];
 }
 
 [data-slot="accordion-content-inner"] {

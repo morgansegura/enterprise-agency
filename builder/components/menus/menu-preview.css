@@ -193,12 +193,7 @@
 }
 
 .menu-preview-hover-anim-bounce .menu-preview-link:hover {
-  animation: menu-bounce 400ms ease;
-}
-
-@keyframes menu-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  @apply animate-[menu-bounce_400ms_ease];
 }
 
 /* Dropdown */
@@ -225,31 +220,16 @@
 }
 
 .menu-preview-dropdown-anim-fade .menu-preview-dropdown {
-  animation: dropdown-fade 200ms ease;
+  @apply animate-[dropdown-fade_200ms_ease];
 }
 
 .menu-preview-dropdown-anim-slide .menu-preview-dropdown {
-  animation: dropdown-slide 200ms ease;
+  @apply animate-[dropdown-slide_200ms_ease];
 }
 
 .menu-preview-dropdown-anim-scale .menu-preview-dropdown {
-  animation: dropdown-scale 200ms ease;
+  @apply animate-[dropdown-scale_200ms_ease];
   transform-origin: top center;
-}
-
-@keyframes dropdown-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes dropdown-slide {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes dropdown-scale {
-  from { opacity: 0; transform: scaleY(0.95); }
-  to { opacity: 1; transform: scaleY(1); }
 }
 
 /* Dropdown shadow */
@@ -290,10 +270,7 @@
   border-radius: var(--radius-xl);
 }
 
-/* Active state */
-.menu-preview-active-none .menu-preview-item-active .menu-preview-link {
-  /* no effect */
-}
+/* Active state — "none" intentionally has no styles */
 
 .menu-preview-active-underline .menu-preview-item-active .menu-preview-link {
   text-decoration: underline;

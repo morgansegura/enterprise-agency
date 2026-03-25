@@ -1,28 +1,5 @@
 @reference "tailwindcss";
 
-/* Toast animations */
-@keyframes toast-slide-in {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes toast-slide-out {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
 /* Toast container - bottom right */
 .toast-container {
   @apply fixed bottom-4 right-4 z-100 flex flex-col gap-2;
@@ -34,11 +11,11 @@
   @apply pointer-events-auto;
   @apply flex items-start gap-3 p-4 rounded-lg shadow-lg;
   @apply border bg-(--background) text-(--foreground);
-  animation: toast-slide-in 0.2s ease-out;
+  @apply animate-[toast-slide-in_0.2s_ease-out];
 }
 
 .toast-exiting {
-  animation: toast-slide-out 0.15s ease-in forwards;
+  @apply animate-[toast-slide-out_0.15s_ease-in_forwards];
 }
 
 /* Toast variants */

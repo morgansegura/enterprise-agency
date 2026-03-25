@@ -1,0 +1,181 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * Centralized animation utility classes
+ *
+ * Reusable animation classes that reference keyframes from keyframes.css.
+ * Use @apply animate-[name_duration_easing] in component CSS or apply
+ * these classes directly.
+ * ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+ * Editor
+ * ----------------------------------------------------------------------------- */
+
+.animate-toolbar-enter {
+  @apply animate-[toolbar-enter_100ms_ease-out];
+}
+
+/* -----------------------------------------------------------------------------
+ * Skeleton / Loaders
+ * ----------------------------------------------------------------------------- */
+
+.animate-shimmer {
+  @apply animate-[shimmer_1.5s_infinite];
+}
+
+.animate-wave {
+  @apply animate-[wave_1.8s_ease-in-out_infinite];
+}
+
+.animate-spin-loader {
+  @apply animate-[spin_1s_linear_infinite];
+}
+
+.animate-dots {
+  @apply animate-[dots_1.4s_ease-in-out_infinite_both];
+}
+
+.animate-bars {
+  @apply animate-[bars_1.2s_ease-in-out_infinite];
+}
+
+.animate-logo-pulse {
+  @apply animate-[logo-pulse_2s_ease-in-out_infinite];
+}
+
+.animate-progress {
+  @apply animate-[progress_2s_ease-in-out_infinite];
+}
+
+/* -----------------------------------------------------------------------------
+ * Sheet
+ * ----------------------------------------------------------------------------- */
+
+.animate-sheet-fade-in {
+  @apply animate-[sheet-fade-in_150ms_ease-out];
+}
+
+.animate-sheet-fade-out {
+  @apply animate-[sheet-fade-out_150ms_ease-in];
+}
+
+.animate-sheet-slide-in-from-right {
+  @apply animate-[sheet-slide-in-from-right_500ms_ease-out];
+}
+
+.animate-sheet-slide-out-to-right {
+  @apply animate-[sheet-slide-out-to-right_300ms_ease-in];
+}
+
+.animate-sheet-slide-in-from-left {
+  @apply animate-[sheet-slide-in-from-left_500ms_ease-out];
+}
+
+.animate-sheet-slide-out-to-left {
+  @apply animate-[sheet-slide-out-to-left_300ms_ease-in];
+}
+
+.animate-sheet-slide-in-from-top {
+  @apply animate-[sheet-slide-in-from-top_500ms_ease-out];
+}
+
+.animate-sheet-slide-out-to-top {
+  @apply animate-[sheet-slide-out-to-top_300ms_ease-in];
+}
+
+.animate-sheet-slide-in-from-bottom {
+  @apply animate-[sheet-slide-in-from-bottom_500ms_ease-out];
+}
+
+.animate-sheet-slide-out-to-bottom {
+  @apply animate-[sheet-slide-out-to-bottom_300ms_ease-in];
+}
+
+/* -----------------------------------------------------------------------------
+ * Dropdown Menu
+ * ----------------------------------------------------------------------------- */
+
+.animate-dropdown-zoom-in {
+  @apply animate-[dropdown-zoom-in_150ms_ease-out];
+}
+
+.animate-dropdown-zoom-out {
+  @apply animate-[dropdown-zoom-out_150ms_ease-in];
+}
+
+/* -----------------------------------------------------------------------------
+ * Toast
+ * ----------------------------------------------------------------------------- */
+
+.animate-toast-slide-in {
+  @apply animate-[toast-slide-in_0.2s_ease-out];
+}
+
+.animate-toast-slide-out {
+  @apply animate-[toast-slide-out_0.15s_ease-in_forwards];
+}
+
+/* -----------------------------------------------------------------------------
+ * Select
+ * ----------------------------------------------------------------------------- */
+
+.animate-select-open {
+  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out];
+}
+
+.animate-select-close {
+  @apply animate-[select-fade-out_150ms_ease-in,select-zoom-out_150ms_ease-in];
+}
+
+/* -----------------------------------------------------------------------------
+ * Tenant Switcher
+ * ----------------------------------------------------------------------------- */
+
+.animate-pulse-loading {
+  @apply animate-[pulse_2s_ease-in-out_infinite];
+}
+
+/* -----------------------------------------------------------------------------
+ * Tooltip
+ * ----------------------------------------------------------------------------- */
+
+.animate-tooltip-zoom-in {
+  @apply animate-[tooltip-zoom-in_150ms_ease-out];
+}
+
+.animate-tooltip-zoom-out {
+  @apply animate-[tooltip-zoom-out_150ms_ease-in];
+}
+
+/* -----------------------------------------------------------------------------
+ * Accordion
+ * ----------------------------------------------------------------------------- */
+
+.animate-accordion-down {
+  @apply animate-[accordion-down_200ms_ease-out];
+}
+
+.animate-accordion-up {
+  @apply animate-[accordion-up_200ms_ease-out];
+}
+
+/* -----------------------------------------------------------------------------
+ * Menu Preview
+ * ----------------------------------------------------------------------------- */
+
+.animate-menu-bounce {
+  @apply animate-[menu-bounce_400ms_ease];
+}
+
+.animate-dropdown-fade {
+  @apply animate-[dropdown-fade_200ms_ease];
+}
+
+.animate-dropdown-slide {
+  @apply animate-[dropdown-slide_200ms_ease];
+}
+
+.animate-dropdown-scale {
+  @apply animate-[dropdown-scale_200ms_ease];
+}
