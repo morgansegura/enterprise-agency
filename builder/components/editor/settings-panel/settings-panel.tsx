@@ -1234,7 +1234,26 @@ function HeadingBlockSettings({
   block: Block;
   onChange: (block: Block) => void;
 }) {
-  return <HeadingSettings block={block} onChange={onChange} />;
+  const data = block.data as Record<string, unknown>;
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <>
+      <PropertySection title="Content" icon={<Type className="h-3.5 w-3.5" />}>
+        <PropertyRow label="Text" stacked>
+          <Input
+            value={(data.text as string) || ""}
+            onChange={(e) => handleChange("text", e.target.value)}
+            placeholder="Heading text"
+            className="settings-input"
+          />
+        </PropertyRow>
+      </PropertySection>
+      <HeadingSettings block={block} onChange={onChange} />
+    </>
+  );
 }
 
 function TextBlockSettings({
@@ -1282,23 +1301,39 @@ function TextBlockSettings({
   ];
 
   return (
-    <PropertySection title="Typography" icon={<Type className="h-3.5 w-3.5" />}>
-      <PropertyRow label="Size">
-        <PropertySelect
-          value={size}
-          options={sizeOptions}
-          onChange={(v) => handleDataChange("size", v)}
-        />
-      </PropertyRow>
-      <PropertyRow label="Align" stacked>
-        <PropertyToggle
-          value={align}
-          options={alignOptions}
-          onChange={(v) => handleDataChange("align", v)}
-          fullWidth
-        />
-      </PropertyRow>
-    </PropertySection>
+    <>
+      <PropertySection title="Content" icon={<Type className="h-3.5 w-3.5" />}>
+        <PropertyRow label="Text" stacked>
+          <textarea
+            value={(data.content as string) || ""}
+            onChange={(e) => handleDataChange("content", e.target.value)}
+            placeholder="Enter text content..."
+            rows={4}
+            className="settings-input w-full resize-y text-sm rounded-md border border-input bg-background px-3 py-2"
+          />
+        </PropertyRow>
+      </PropertySection>
+      <PropertySection
+        title="Typography"
+        icon={<Type className="h-3.5 w-3.5" />}
+      >
+        <PropertyRow label="Size">
+          <PropertySelect
+            value={size}
+            options={sizeOptions}
+            onChange={(v) => handleDataChange("size", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Align" stacked>
+          <PropertyToggle
+            value={align}
+            options={alignOptions}
+            onChange={(v) => handleDataChange("align", v)}
+            fullWidth
+          />
+        </PropertyRow>
+      </PropertySection>
+    </>
   );
 }
 
@@ -1322,6 +1357,14 @@ function ButtonBlockSettings({
 
   return (
     <PropertySection title="Button" icon={<Box className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Label" stacked>
+        <Input
+          value={(block.data?.text as string) || ""}
+          onChange={(e) => handleDataChange("text", e.target.value)}
+          placeholder="Button text"
+          className="settings-input"
+        />
+      </PropertyRow>
       <PropertyRow label="Variant">
         <PropertySelect
           value={(block.data?.variant as string) || "default"}
