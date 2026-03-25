@@ -5,6 +5,13 @@ import { config } from "dotenv";
 
 config();
 
+const logger = {
+  info: (...args: unknown[]) =>
+    process.stdout.write(args.map(String).join(" ") + "\n"),
+  error: (...args: unknown[]) =>
+    process.stderr.write(args.map(String).join(" ") + "\n"),
+};
+
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
 });
@@ -732,7 +739,7 @@ const DEFAULT_PAGES: DefaultPage[] = [
 // ============================================================================
 
 async function createDefaultPages(tenantId: string, authorId: string) {
-  console.log("   📄 Creating default pages...");
+  logger.info("   📄 Creating default pages...");
 
   const now = new Date();
 
@@ -755,7 +762,7 @@ async function createDefaultPages(tenantId: string, authorId: string) {
     });
   }
 
-  console.log(`   ✅ Created ${DEFAULT_PAGES.length} default pages`);
+  logger.info(`   ✅ Created ${DEFAULT_PAGES.length} default pages`);
 }
 
 // ============================================================================
@@ -763,24 +770,28 @@ async function createDefaultPages(tenantId: string, authorId: string) {
 // ============================================================================
 
 async function main() {
-  console.log("🌱 Seeding Web and Funnel platform database...\n");
+  logger.info("🌱 Seeding Web and Funnel platform database...\n");
 
   // Clean existing data (development only)
-  console.log("🧹 Cleaning existing data...");
+  logger.info("🧹 Cleaning existing data...");
   await prisma.tenantUser.deleteMany();
   await prisma.projectAssignment.deleteMany();
   await prisma.page.deleteMany();
   await prisma.post.deleteMany();
+  await prisma.header.deleteMany();
+  await prisma.footer.deleteMany();
+  await prisma.menu.deleteMany();
+  await prisma.redirect.deleteMany();
   await prisma.asset.deleteMany();
   await prisma.tenant.deleteMany();
   await prisma.user.deleteMany();
-  console.log("   ✅ Database cleaned\n");
+  logger.info("   ✅ Database cleaned\n");
 
   // ============================================================================
   // 1. CREATE AGENCY OWNER (Morgan Segura)
   // ============================================================================
 
-  console.log("👤 Creating agency owner...");
+  logger.info("👤 Creating agency owner...");
   const hashedPassword = await bcrypt.hash("S3GuRa536!!1980", 10);
 
   const agencyOwner = await prisma.user.create({
@@ -796,13 +807,13 @@ async function main() {
     },
   });
 
-  console.log(`   ✅ Created: ${agencyOwner.email}\n`);
+  logger.info(`   ✅ Created: ${agencyOwner.email}\n`);
 
   // ============================================================================
   // 2. CREATE WEB AND FUNNEL AGENCY TENANT
   // ============================================================================
 
-  console.log("🏢 Creating Web and Funnel agency tenant...");
+  logger.info("🏢 Creating Web and Funnel agency tenant...");
 
   const agencyTenant = await prisma.tenant.create({
     data: {
@@ -877,7 +888,7 @@ async function main() {
     },
   });
 
-  console.log(
+  logger.info(
     `   ✅ Created: ${agencyTenant.businessName} (${agencyTenant.slug})\n`,
   );
 
@@ -885,7 +896,7 @@ async function main() {
   // 3. LINK OWNER TO AGENCY TENANT
   // ============================================================================
 
-  console.log("🔗 Linking owner to agency tenant...");
+  logger.info("🔗 Linking owner to agency tenant...");
 
   await prisma.tenantUser.create({
     data: {
@@ -902,61 +913,363 @@ async function main() {
     },
   });
 
-  console.log("   ✅ Owner linked\n");
+  logger.info("   ✅ Owner linked\n");
 
   // ============================================================================
-  // 4. CREATE DEFAULT PAGES FOR AGENCY
+  // 4. CREATE DEFAULT MENU, HEADER, FOOTER
   // ============================================================================
 
-  console.log("📄 Creating default pages for agency...");
+  logger.info("🧭 Creating default navigation...");
+
+  const mainMenu = await prisma.menu.create({
+    data: {
+      tenantId: agencyTenant.id,
+      name: "Main Navigation",
+      slug: "main-navigation",
+      type: "horizontal",
+      isDefault: true,
+      items: [
+        { id: "nav-home", label: "Home", url: "/home" },
+        { id: "nav-about", label: "About", url: "/about" },
+        { id: "nav-services", label: "Services", url: "/services" },
+        { id: "nav-blog", label: "Blog", url: "/blog" },
+        { id: "nav-contact", label: "Contact", url: "/contact" },
+      ],
+      style: {
+        spacing: "md",
+        fontSize: "sm",
+        fontWeight: "500",
+        textTransform: "none",
+      },
+    },
+  });
+  logger.info("   ✅ Created main navigation menu");
+
+  const defaultHeader = await prisma.header.create({
+    data: {
+      tenantId: agencyTenant.id,
+      name: "Default Header",
+      slug: "default",
+      behavior: "STICKY",
+      isDefault: true,
+      menuId: mainMenu.id,
+      zones: {
+        logo: {
+          position: "left",
+          text: "Web and Funnel",
+        },
+        navigation: {
+          menuId: mainMenu.id,
+          position: "center",
+        },
+        actions: {
+          items: [
+            {
+              type: "button",
+              label: "Get Started",
+              href: "/contact",
+              variant: "default",
+              size: "sm",
+            },
+          ],
+        },
+      },
+      style: {
+        backgroundColor: "var(--background)",
+        textColor: "var(--foreground)",
+        height: "64px",
+        padding: "0 1.5rem",
+        borderBottom: "1px solid var(--border)",
+      },
+      mobileMenu: {
+        type: "drawer",
+        breakpoint: 768,
+        animation: "slide",
+      },
+    },
+  });
+  logger.info("   ✅ Created default header");
+
+  const defaultFooter = await prisma.footer.create({
+    data: {
+      tenantId: agencyTenant.id,
+      name: "Default Footer",
+      slug: "default",
+      layout: "columns",
+      isDefault: true,
+      zones: {
+        columns: [
+          {
+            title: "Company",
+            links: [
+              { label: "About Us", url: "/about" },
+              { label: "Services", url: "/services" },
+              { label: "Blog", url: "/blog" },
+              { label: "Contact", url: "/contact" },
+            ],
+          },
+          {
+            title: "Legal",
+            links: [
+              { label: "Privacy Policy", url: "/privacy-policy" },
+              { label: "Terms of Service", url: "/terms-of-service" },
+              { label: "Cookie Policy", url: "/cookie-policy" },
+              { label: "Accessibility", url: "/accessibility" },
+            ],
+          },
+        ],
+        bottom: {
+          copyright: `© ${new Date().getFullYear()} Web and Funnel. All rights reserved.`,
+        },
+      },
+      style: {
+        backgroundColor: "var(--card)",
+        textColor: "var(--muted-foreground)",
+        padding: "3rem 1.5rem 1.5rem",
+        borderTop: "1px solid var(--border)",
+      },
+    },
+  });
+  logger.info("   ✅ Created default footer");
+
+  // ============================================================================
+  // 5. UPDATE TENANT WITH SITE CONFIG + DESIGN TOKENS
+  // ============================================================================
+
+  logger.info("🎨 Setting up site config and design tokens...");
+
+  await prisma.tenant.update({
+    where: { id: agencyTenant.id },
+    data: {
+      headerConfig: {
+        default: {
+          id: defaultHeader.id,
+          template: "standard",
+          behavior: {
+            position: "sticky",
+            scrollEffect: "shadow",
+          },
+          logo: {
+            text: "Web and Funnel",
+            position: "left",
+          },
+          navigation: {
+            menuId: mainMenu.id,
+            position: "center",
+            style: "horizontal",
+          },
+          actions: {
+            items: [
+              {
+                type: "button",
+                label: "Get Started",
+                href: "/contact",
+                variant: "default",
+                size: "sm",
+              },
+            ],
+          },
+          styling: {
+            height: "64px",
+            background: "var(--background)",
+            text: "var(--foreground)",
+            border: "1px solid var(--border)",
+          },
+          mobile: {
+            breakpoint: 768,
+            menuType: "drawer",
+          },
+        },
+      },
+      footerConfig: {
+        default: {
+          id: defaultFooter.id,
+          template: "columns",
+          columns: [
+            {
+              title: "Company",
+              blocks: [
+                {
+                  _type: "text-block",
+                  _key: "footer-company",
+                  data: {
+                    content:
+                      "[About](/about) · [Services](/services) · [Blog](/blog) · [Contact](/contact)",
+                    size: "sm",
+                  },
+                },
+              ],
+            },
+            {
+              title: "Legal",
+              blocks: [
+                {
+                  _type: "text-block",
+                  _key: "footer-legal",
+                  data: {
+                    content:
+                      "[Privacy](/privacy-policy) · [Terms](/terms-of-service) · [Cookies](/cookie-policy)",
+                    size: "sm",
+                  },
+                },
+              ],
+            },
+          ],
+          bottom: {
+            left: [
+              {
+                _type: "text-block",
+                _key: "footer-copyright",
+                data: {
+                  content: `© ${new Date().getFullYear()} Web and Funnel. All rights reserved.`,
+                  size: "xs",
+                },
+              },
+            ],
+          },
+          styling: {
+            background: "var(--card)",
+            text: "var(--muted-foreground)",
+            border: "1px solid var(--border)",
+            padding: "3rem 1.5rem 1.5rem",
+          },
+        },
+      },
+      menusConfig: {
+        [mainMenu.id]: {
+          id: mainMenu.id,
+          name: "Main Navigation",
+          slug: "main-navigation",
+          items: [
+            { id: "nav-home", label: "Home", url: "/home" },
+            { id: "nav-about", label: "About", url: "/about" },
+            { id: "nav-services", label: "Services", url: "/services" },
+            { id: "nav-blog", label: "Blog", url: "/blog" },
+            { id: "nav-contact", label: "Contact", url: "/contact" },
+          ],
+        },
+      },
+      designTokens: {
+        colors: {
+          primary: {
+            "50": "#eef2ff",
+            "100": "#e0e7ff",
+            "200": "#c7d2fe",
+            "300": "#a5b4fc",
+            "400": "#818cf8",
+            "500": "#6366f1",
+            "600": "#4f46e5",
+            "700": "#4338ca",
+            "800": "#3730a3",
+            "900": "#312e81",
+            "950": "#1e1b4b",
+          },
+          neutral: {
+            "50": "#fafafa",
+            "100": "#f5f5f5",
+            "200": "#e5e5e5",
+            "300": "#d4d4d4",
+            "400": "#a3a3a3",
+            "500": "#737373",
+            "600": "#525252",
+            "700": "#404040",
+            "800": "#262626",
+            "900": "#171717",
+            "950": "#0a0a0a",
+          },
+        },
+        semantic: {
+          primary: "#6366f1",
+          primaryForeground: "#ffffff",
+          secondary: "#f5f5f5",
+          secondaryForeground: "#171717",
+          accent: "#f59e0b",
+          accentForeground: "#ffffff",
+          background: "#ffffff",
+          foreground: "#0a0a0a",
+          card: "#ffffff",
+          cardForeground: "#0a0a0a",
+          muted: "#f5f5f5",
+          mutedForeground: "#737373",
+          border: "#e5e5e5",
+          input: "#e5e5e5",
+          ring: "#6366f1",
+        },
+        typography: {
+          fontFamily: {
+            primary: "Inter",
+            secondary: "Inter",
+          },
+        },
+        fonts: {
+          definitions: [{ family: "Inter", weights: [400, 500, 600, 700] }],
+          variables: {
+            "--font-primary": "Inter, system-ui, sans-serif",
+            "--font-secondary": "Inter, system-ui, sans-serif",
+          },
+        },
+      },
+    },
+  });
+
+  logger.info("   ✅ Site config and design tokens configured");
+
+  // ============================================================================
+  // 6. CREATE DEFAULT PAGES FOR AGENCY
+  // ============================================================================
+
+  logger.info("📄 Creating default pages for agency...");
   await createDefaultPages(agencyTenant.id, agencyOwner.id);
 
   // ============================================================================
   // SUMMARY
   // ============================================================================
 
-  console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("🎉 Web and Funnel platform seeded successfully!");
-  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+  logger.info("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  logger.info("🎉 Web and Funnel platform seeded successfully!");
+  logger.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
-  console.log("🏢 Agency Tenant:");
-  console.log("   Name: Web and Funnel");
-  console.log("   Slug: web-and-funnel");
-  console.log("   Type: AGENCY (Primary Tenant)");
-  console.log("   Status: Active\n");
+  logger.info("🏢 Agency Tenant:");
+  logger.info("   Name: Web and Funnel");
+  logger.info("   Slug: web-and-funnel");
+  logger.info("   Type: AGENCY (Primary Tenant)");
+  logger.info("   Status: Active\n");
 
-  console.log("👤 Agency Owner:");
-  console.log("   Email: morgansegura@gmail.com");
-  console.log("   Role: Super Admin + Owner\n");
+  logger.info("👤 Agency Owner:");
+  logger.info("   Email: morgansegura@gmail.com");
+  logger.info("   Role: Super Admin + Owner\n");
 
-  console.log("📄 Default Pages Created:");
-  console.log("   • Coming Soon (Published - Home Page)");
-  console.log("   • Home (Draft)");
-  console.log("   • About (Draft)");
-  console.log("   • Contact (Draft)");
-  console.log("   • Blog (Draft)");
-  console.log("   • FAQ (Draft)");
-  console.log("   • Under Construction (Draft)");
-  console.log("   • 404 (Draft)");
-  console.log("   • Privacy Policy (Draft)");
-  console.log("   • Terms of Service (Draft)");
-  console.log("   • Cookie Policy (Draft)");
-  console.log("   • Accessibility (Draft)\n");
+  logger.info("🧭 Navigation:");
+  logger.info("   • Main Navigation (5 links)");
+  logger.info("   • Default Header (sticky, logo + nav + CTA)");
+  logger.info("   • Default Footer (2 columns + copyright)\n");
 
-  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("📌 Next steps:");
-  console.log("   1. Start the API: pnpm --filter api dev");
-  console.log("   2. Start the Builder: pnpm --filter builder dev");
-  console.log("   3. Start the Client: pnpm --filter client dev");
-  console.log(
+  logger.info("🎨 Design System:");
+  logger.info("   • Indigo primary, neutral grays");
+  logger.info("   • Inter font family");
+  logger.info("   • Full semantic color tokens\n");
+
+  logger.info("📄 Default Pages Created:");
+  logger.info("   • Coming Soon (Published - Home Page)");
+  logger.info("   • Home, About, Services, Contact (Draft)");
+  logger.info("   • Blog, FAQ (Draft)");
+  logger.info("   • Legal: Privacy, Terms, Cookies, Accessibility (Draft)");
+  logger.info("   • System: Under Construction, 404 (Draft)\n");
+
+  logger.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  logger.info("📌 Next steps:");
+  logger.info("   1. Start the API: pnpm --filter api dev");
+  logger.info("   2. Start the Builder: pnpm --filter builder dev");
+  logger.info("   3. Start the Client: pnpm --filter client dev");
+  logger.info(
     "   4. Login at http://localhost:3001 with morgansegura@gmail.com",
   );
-  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+  logger.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 }
 
 main()
   .catch((e) => {
-    console.error("❌ Seed failed:", e);
+    logger.error("❌ Seed failed:", e);
     process.exit(1);
   })
   .finally(async () => {
