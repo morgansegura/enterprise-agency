@@ -108,3 +108,46 @@
   @apply text-[10px] font-medium px-1.5 py-0.5 rounded-full;
   @apply bg-(--muted) text-(--muted-foreground);
 }
+
+/* =============================================================================
+ * Action buttons — appear on selected items
+ * ============================================================================= */
+
+.layer-actions {
+  @apply flex items-center gap-0.5 ml-auto;
+}
+
+.layer-action {
+  @apply flex items-center justify-center size-5 p-0;
+  @apply border-none bg-transparent cursor-pointer rounded-sm;
+  @apply text-(--muted-foreground) opacity-60;
+  @apply transition-all duration-100;
+}
+
+.layer-action:hover {
+  @apply opacity-100 bg-(--muted);
+}
+
+.layer-action-danger:hover {
+  @apply text-(--destructive);
+}
+
+/* =============================================================================
+ * Add Section button
+ * ============================================================================= */
+
+.page-layers-footer {
+  @apply p-2 border-t border-(--border);
+}
+
+.layer-add-btn {
+  @apply flex items-center justify-center gap-1.5 w-full;
+  @apply px-3 py-1.5 text-xs font-medium;
+  @apply border border-dashed border-(--border) rounded-md;
+  @apply text-(--muted-foreground) bg-transparent;
+  @apply cursor-pointer transition-all duration-100;
+}
+
+.layer-add-btn:hover {
+  @apply text-(--foreground) bg-(--muted) border-(--muted-foreground);
+}

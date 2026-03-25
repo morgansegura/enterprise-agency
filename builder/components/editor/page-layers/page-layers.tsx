@@ -27,6 +27,11 @@ import {
   AlignVerticalSpaceAround,
   ShoppingCart,
   Package,
+  Plus,
+  Trash2,
+  Copy,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 import type { Section, Block } from "@/lib/hooks/use-pages";
 import { cn } from "@/lib/utils";
@@ -96,6 +101,30 @@ interface PageLayersProps {
     key: string,
   ) => void;
   onHover?: (key: string | null) => void;
+  // Actions
+  onAddSection?: () => void;
+  onDeleteSection?: (sectionIndex: number) => void;
+  onAddBlock?: (sectionIndex: number, containerIndex: number) => void;
+  onDeleteBlock?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => void;
+  onDuplicateBlock?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => void;
+  onMoveBlockUp?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => void;
+  onMoveBlockDown?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+  ) => void;
 }
 
 export function PageLayers({
@@ -106,6 +135,13 @@ export function PageLayers({
   onSelectContainer,
   onSelectBlock,
   onHover,
+  onAddSection,
+  onDeleteSection,
+  onAddBlock,
+  onDeleteBlock,
+  onDuplicateBlock,
+  onMoveBlockUp,
+  onMoveBlockDown,
 }: PageLayersProps) {
   const [collapsed, setCollapsed] = React.useState<Set<string>>(new Set());
 
@@ -121,10 +157,20 @@ export function PageLayers({
   if (sections.length === 0) {
     return (
       <div className="page-layers">
+        <div className="page-layers-header">
+          <Layers className="page-layers-header-icon" />
+          <span>Layers</span>
+        </div>
         <div className="page-layers-empty">
           <Layers className="page-layers-empty-icon" />
           <p>No content yet</p>
           <span>Add a section to get started</span>
+          {onAddSection && (
+            <button className="layer-add-btn" onClick={onAddSection}>
+              <Plus className="size-3" />
+              Add Section
+            </button>
+          )}
         </div>
       </div>
     );
@@ -176,6 +222,18 @@ export function PageLayers({
                     0,
                   )}
                 </span>
+                {selectedKey === sectionKey && onDeleteSection && (
+                  <button
+                    className="layer-action"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteSection(sectionIndex);
+                    }}
+                    title="Delete section"
+                  >
+                    <Trash2 className="size-3" />
+                  </button>
+                )}
               </div>
 
               {/* Containers and blocks */}
@@ -222,6 +280,18 @@ export function PageLayers({
                           Container {containerIndex + 1}
                         </span>
                         <span className="layer-badge">{blocks.length}</span>
+                        {onAddBlock && (
+                          <button
+                            className="layer-action"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onAddBlock(sectionIndex, containerIndex);
+                            }}
+                            title="Add block"
+                          >
+                            <Plus className="size-3" />
+                          </button>
+                        )}
                       </div>
 
                       {/* Block rows */}
@@ -251,6 +321,75 @@ export function PageLayers({
                               <span className="layer-label">
                                 {getBlockLabel(block)}
                               </span>
+                              {selectedKey === block._key && (
+                                <div className="layer-actions">
+                                  {onMoveBlockUp && blockIndex > 0 && (
+                                    <button
+                                      className="layer-action"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        onMoveBlockUp(
+                                          sectionIndex,
+                                          containerIndex,
+                                          blockIndex,
+                                        );
+                                      }}
+                                      title="Move up"
+                                    >
+                                      <ArrowUp className="size-3" />
+                                    </button>
+                                  )}
+                                  {onMoveBlockDown &&
+                                    blockIndex < blocks.length - 1 && (
+                                      <button
+                                        className="layer-action"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          onMoveBlockDown(
+                                            sectionIndex,
+                                            containerIndex,
+                                            blockIndex,
+                                          );
+                                        }}
+                                        title="Move down"
+                                      >
+                                        <ArrowDown className="size-3" />
+                                      </button>
+                                    )}
+                                  {onDuplicateBlock && (
+                                    <button
+                                      className="layer-action"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        onDuplicateBlock(
+                                          sectionIndex,
+                                          containerIndex,
+                                          blockIndex,
+                                        );
+                                      }}
+                                      title="Duplicate"
+                                    >
+                                      <Copy className="size-3" />
+                                    </button>
+                                  )}
+                                  {onDeleteBlock && (
+                                    <button
+                                      className="layer-action layer-action-danger"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        onDeleteBlock(
+                                          sectionIndex,
+                                          containerIndex,
+                                          blockIndex,
+                                        );
+                                      }}
+                                      title="Delete"
+                                    >
+                                      <Trash2 className="size-3" />
+                                    </button>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
@@ -261,6 +400,14 @@ export function PageLayers({
           );
         })}
       </div>
+      {onAddSection && (
+        <div className="page-layers-footer">
+          <button className="layer-add-btn" onClick={onAddSection}>
+            <Plus className="size-3" />
+            Add Section
+          </button>
+        </div>
+      )}
     </div>
   );
 }
