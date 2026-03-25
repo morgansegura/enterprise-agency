@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.new-footer-form {
+  @apply flex flex-col gap-6;
+}
+
+.new-footer-form-content {
+  @apply flex flex-col gap-5;
+}
+
+.new-footer-default-field {
+  @apply flex items-center justify-between rounded-lg border p-4;
+}
+
+.new-footer-default-field-content {
+  @apply space-y-0.5;
+}
+
+.new-footer-actions {
+  @apply flex justify-end gap-3;
+}
+
+.footer-layout-icon {
+  @apply h-4 w-4 shrink-0 text-muted-foreground;
+}
+
+.footer-layout-option {
+  @apply flex items-center gap-3;
+}
+
+.footer-layout-option-text {
+  @apply flex flex-col;
+}
+
+.footer-layout-option-label {
+  @apply text-sm font-medium;
+}
+
+.footer-layout-option-description {
+  @apply text-xs text-muted-foreground;
+}

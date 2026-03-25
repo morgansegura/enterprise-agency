@@ -1,0 +1,96 @@
+@reference "tailwindcss";
+
+/* Layout */
+.edit-footer-layout {
+  @apply flex h-full;
+}
+
+.edit-footer-canvas {
+  @apply flex-1 overflow-auto bg-muted/30 p-6;
+}
+
+.edit-footer-canvas-inner {
+  @apply mx-auto max-w-5xl;
+}
+
+.edit-footer-settings {
+  @apply w-80 shrink-0 overflow-y-auto border-l bg-background p-4;
+  @apply flex flex-col gap-4;
+}
+
+.edit-footer-settings-fields {
+  @apply flex flex-col gap-4;
+}
+
+.edit-footer-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.edit-footer-toggle-row {
+  @apply flex items-center justify-between;
+}
+
+/* Loading / error */
+.edit-footer-loading {
+  @apply flex flex-col items-center justify-center gap-3 py-20 text-muted-foreground;
+}
+
+.edit-footer-error {
+  @apply flex flex-col items-center justify-center gap-4 py-20 text-muted-foreground;
+}
+
+.edit-footer-spinner {
+  @apply h-4 w-4 animate-spin;
+}
+
+.edit-footer-save-icon {
+  @apply h-4 w-4;
+}
+
+/* Preview */
+.edit-footer-preview {
+  @apply rounded-lg shadow-md;
+}
+
+.edit-footer-preview-label {
+  @apply mb-4 text-xs font-medium uppercase tracking-wider opacity-50;
+}
+
+/* Zone grid layouts */
+.edit-footer-zones {
+  @apply flex flex-col gap-4;
+}
+
+.edit-footer-zones-columns {
+  @apply grid grid-cols-4 gap-4;
+}
+
+.edit-footer-zones-stacked {
+  @apply grid grid-cols-3 gap-4;
+}
+
+.edit-footer-zones-simple {
+  @apply flex flex-col gap-4;
+}
+
+.edit-footer-zones-minimal {
+  @apply flex flex-col gap-4;
+}
+
+.edit-footer-zones-centered {
+  @apply flex flex-col items-center gap-4;
+}
+
+/* Zone editor */
+.edit-footer-zone {
+  @apply flex flex-col gap-1.5;
+}
+
+.edit-footer-zone-label {
+  @apply text-xs font-medium uppercase tracking-wider opacity-60;
+}
+
+.edit-footer-zone-input {
+  @apply w-full resize-none rounded border border-white/10 bg-white/5 px-3 py-2 text-sm;
+  @apply placeholder:text-current/30 focus:border-white/20 focus:outline-none;
+}
