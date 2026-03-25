@@ -517,6 +517,9 @@
   --builder-input: var(--el-150);
   --builder-ring: var(--accent-primary);
 
+  /* Canvas — the editing surface background (subtle contrast from chrome) */
+  --builder-body: var(--el-100);
+
   /* Sidebar — clean, minimal */
   --sidebar: var(--el-0);
   --sidebar-foreground: var(--el-800);

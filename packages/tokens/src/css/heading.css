@@ -10,8 +10,10 @@
 .heading {
   position: relative;
   font-family: var(--font-heading, inherit);
-  line-height: var(--line-height-tight);
-  max-width: clamp(20ch, 50vw + 10ch, 75ch);
+  line-height: var(--line-height-tight, 1.25);
+  color: inherit;
+  min-height: 1em;
+  width: 100%;
 }
 
 /* ===== HEADING SIZES ===== */
