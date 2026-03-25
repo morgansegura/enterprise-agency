@@ -2,72 +2,53 @@
 
 /* =============================================================================
  * Sortable Container — subtle interaction layer
- *
- * Containers are structural — they shouldn't be visually prominent.
- * Show dashed outline only when directly hovered (not when child is hovered).
  * ============================================================================= */
 
 .sortable-container {
   @apply relative;
 }
 
-/* Container visual wrapper */
 .container-visual {
-  transition: outline 150ms ease-out;
-  outline: 1.5px dashed transparent;
-  outline-offset: -1.5px;
-  border-radius: 4px;
+  @apply rounded-sm transition-all duration-150 ease-out;
+  @apply outline-[1.5px] outline-dashed outline-transparent -outline-offset-[1.5px];
 }
 
-/* Hover — only when NOT hovering a block inside */
 .sortable-container.is-hovered:not(:has(.block-wrapper:hover)) .container-visual {
   outline-color: color-mix(in srgb, var(--builder-primary) 50%, transparent);
 }
 
-/* Hide outline when hovering blocks */
 .sortable-container:has(.block-wrapper:hover) .container-visual {
-  outline-color: transparent !important;
+  @apply outline-transparent;
 }
 
-/* Hide controls when hovering blocks */
 .sortable-container:has(.block-wrapper:hover) .container-controls {
-  opacity: 0 !important;
-  pointer-events: none !important;
+  @apply opacity-0 pointer-events-none;
 }
 
-/* Selected state */
 .container-visual.is-selected {
-  outline: 2px dashed var(--builder-primary);
-  outline-offset: -2px;
+  @apply outline-2 outline-dashed outline-(--builder-primary) -outline-offset-2;
 }
 
-/* =============================================================================
- * Empty Container — clean prompt to add blocks
- * ============================================================================= */
-
+/* Empty container prompt */
 .container-empty {
-  @apply flex items-center justify-center;
-  min-height: 48px;
-  padding: 0.75rem;
+  @apply flex items-center justify-center min-h-12 p-3;
 }
 
 .container-empty button {
   @apply flex items-center gap-1.5;
   @apply px-3 py-1.5;
   @apply text-xs font-medium;
-  color: var(--builder-muted-foreground);
-  background: transparent;
-  border: 1px dashed var(--builder-border);
-  border-radius: 6px;
-  transition: all 120ms ease-out;
+  @apply rounded-md;
+  @apply border border-dashed border-(--builder-border);
+  @apply text-(--builder-muted-foreground) bg-transparent;
+  @apply transition-all duration-100 ease-out;
 }
 
 .container-empty button:hover {
-  color: var(--builder-foreground);
-  background: var(--builder-muted);
-  border-color: var(--builder-muted-foreground);
+  @apply text-(--builder-foreground) bg-(--builder-muted);
+  @apply border-(--builder-muted-foreground);
 }
 
 .container-empty button:active {
-  transform: scale(0.97);
+  @apply scale-97;
 }

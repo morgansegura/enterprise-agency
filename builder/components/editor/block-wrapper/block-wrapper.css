@@ -1,37 +1,29 @@
 @reference "tailwindcss";
 
 /* =============================================================================
- * Block Wrapper — clean selection & hover states
- *
- * Minimal chrome: blocks look exactly as they will on the live site.
- * Selection/hover indicated by subtle outline, not background tint.
+ * Block Wrapper — clean selection & hover via outline
  * ============================================================================= */
 
 .block-wrapper {
-  @apply relative;
-  border-radius: 4px;
-  transition: outline 150ms ease-out;
-  outline: 2px solid transparent;
-  outline-offset: -1px;
+  @apply relative rounded-sm;
+  @apply transition-all duration-150 ease-out;
+  @apply outline-2 outline-solid outline-transparent -outline-offset-1;
 }
 
-/* Hover — subtle outline */
 .block-wrapper:hover {
   outline-color: color-mix(in srgb, var(--builder-primary) 40%, transparent);
 }
 
-/* Selected — solid outline */
 .block-wrapper.is-selected {
-  outline-color: var(--builder-primary);
+  @apply outline-(--builder-primary);
 }
 
-/* Hovered from layers panel */
 .block-wrapper.is-hovered {
   outline-color: color-mix(in srgb, var(--builder-primary) 60%, transparent);
 }
 
 /* =============================================================================
- * Floating Toolbar — appears above selected block
+ * Floating Toolbar — above selected block
  * ============================================================================= */
 
 .block-toolbar {
@@ -39,53 +31,37 @@
   @apply rounded-lg px-1 py-0.5;
   @apply flex items-center gap-0.5;
   @apply z-20;
-  background: var(--builder-card);
-  border: 1px solid var(--builder-border);
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.08),
-    0 1px 3px rgba(0, 0, 0, 0.04);
-  animation: toolbar-enter 120ms ease-out;
-}
-
-@keyframes toolbar-enter {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  @apply bg-(--builder-card) border border-(--builder-border);
+  @apply shadow-md;
+  @apply animate-in fade-in slide-in-from-bottom-1 duration-100;
 }
 
 .block-toolbar button {
   @apply h-7 w-7 rounded-md;
   @apply flex items-center justify-center;
-  color: var(--builder-muted-foreground);
-  transition: all 100ms ease-out;
+  @apply text-(--builder-muted-foreground);
+  @apply transition-all duration-100 ease-out;
 }
 
 .block-toolbar button:hover {
-  color: var(--builder-foreground);
-  background: var(--builder-muted);
+  @apply text-(--builder-foreground) bg-(--builder-muted);
 }
 
 .block-toolbar button:active {
-  transform: scale(0.95);
+  @apply scale-95;
 }
 
 .block-toolbar-separator {
-  @apply w-px h-4 mx-0.5;
-  background: var(--builder-border);
+  @apply w-px h-4 mx-0.5 bg-(--builder-border);
 }
 
 .block-toolbar-delete:hover {
-  color: var(--builder-destructive) !important;
+  @apply text-(--builder-destructive);
   background: color-mix(in srgb, var(--builder-destructive) 10%, transparent) !important;
 }
 
 /* =============================================================================
- * Content area — clean, no interference with block rendering
+ * Content area
  * ============================================================================= */
 
 .block-content {
@@ -93,8 +69,7 @@
 }
 
 .block-content [contenteditable="true"] {
-  @apply outline-none;
-  cursor: text;
+  @apply outline-none cursor-text;
 }
 
 .block-content [contenteditable="true"]:focus {

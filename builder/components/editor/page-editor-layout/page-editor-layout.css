@@ -2,24 +2,20 @@
 
 /* =============================================================================
  * Page Editor Layout — Enterprise canvas-focused editor
- *
- * Structure: toolbar (top) → body (canvas + right panel)
- * Canvas renders the page as it will appear to visitors.
  * ============================================================================= */
 
 .page-editor-layout {
   @apply h-screen flex flex-col w-full;
-  background: var(--builder-background);
+  @apply bg-(--builder-background);
 }
 
 /* =============================================================================
- * Toolbar — clean, compact, functional
+ * Toolbar
  * ============================================================================= */
 
 .page-editor-toolbar {
   @apply flex items-center justify-between px-3 h-11 z-10;
-  background: var(--builder-card);
-  border-bottom: 1px solid var(--builder-border);
+  @apply bg-(--builder-card) border-b border-(--builder-border);
 }
 
 .page-editor-toolbar-left {
@@ -31,16 +27,15 @@
   @apply transition-colors duration-150;
 
   & svg {
-    @apply size-4;
-    color: var(--builder-muted-foreground);
+    @apply size-4 text-(--builder-muted-foreground);
   }
 
   &:hover {
-    background: var(--builder-muted);
+    @apply bg-(--builder-muted);
   }
 
   &:hover svg {
-    color: var(--builder-foreground);
+    @apply text-(--builder-foreground);
   }
 }
 
@@ -52,28 +47,21 @@
   @apply flex items-center gap-1.5 flex-1 justify-end;
 }
 
-/* Save status indicator */
 .page-editor-status {
-  @apply text-xs whitespace-nowrap;
-  color: var(--builder-muted-foreground);
-  min-width: 120px;
+  @apply text-xs whitespace-nowrap min-w-30;
+  @apply text-(--builder-muted-foreground);
 }
 
 .page-editor-status.saving {
-  @apply animate-pulse;
-  color: var(--builder-primary);
+  @apply animate-pulse text-(--builder-primary);
 }
 
 .page-editor-status.unsaved {
-  color: var(--status-warning);
-}
-
-.page-editor-status.saved {
-  color: var(--builder-muted-foreground);
+  @apply text-(--status-warning);
 }
 
 /* =============================================================================
- * Editor Body — canvas + optional right panel
+ * Editor Body
  * ============================================================================= */
 
 .page-editor-body {
@@ -81,55 +69,38 @@
 }
 
 /* =============================================================================
- * Canvas — the editing surface
- *
- * Subtle neutral background so page content stands out.
- * The canvas content area is where sections/blocks render.
+ * Canvas — editing surface with dot-grid background
  * ============================================================================= */
 
 .page-editor-canvas {
   @apply flex-1 flex flex-col relative overflow-y-auto min-h-0;
-  background: var(--builder-body, var(--el-100, #f5f5f5));
-  /* Subtle canvas pattern for visual clarity */
+  @apply bg-(--builder-body);
   background-image:
     radial-gradient(circle, var(--el-200, #e5e5e5) 0.5px, transparent 0.5px);
   background-size: 24px 24px;
 }
 
 .page-editor-canvas-content {
-  @apply flex-1;
-  /* Canvas content gets a clean white surface for the actual page */
-  max-width: 1280px;
-  margin: 1.5rem auto;
-  width: 100%;
-  background: white;
-  border-radius: 8px;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.06),
-    0 1px 2px rgba(0, 0, 0, 0.04);
-  overflow: hidden;
-  min-height: calc(100vh - 200px);
+  @apply flex-1 mx-auto my-6 w-full overflow-hidden;
+  @apply bg-white rounded-lg shadow-sm;
+  @apply max-w-7xl min-h-[calc(100vh-200px)];
 }
 
 /* =============================================================================
- * Preview Mode — hide editor chrome, show pure page
+ * Preview Mode
  * ============================================================================= */
 
 .page-editor-layout[data-preview-mode="true"] {
   .page-editor-toolbar {
-    background: transparent;
-    border-bottom: none;
+    @apply bg-transparent border-b-0;
   }
 
   .page-editor-canvas {
-    background: var(--builder-background);
+    @apply bg-(--builder-background);
     background-image: none;
   }
 
   .page-editor-canvas-content {
-    margin: 0 auto;
-    border-radius: 0;
-    box-shadow: none;
-    max-width: none;
+    @apply m-0 rounded-none shadow-none max-w-none;
   }
 }

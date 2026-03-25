@@ -2,9 +2,6 @@
 
 /* =============================================================================
  * Sortable Section — Enterprise editor interactions
- *
- * Clean hover states, subtle controls, professional feel.
- * Section chrome is invisible until you interact.
  * ============================================================================= */
 
 .sortable-section {
@@ -12,34 +9,29 @@
 }
 
 .sortable-section.is-dragging {
-  @apply opacity-50;
-  cursor: grabbing;
+  @apply opacity-50 cursor-grabbing;
 }
 
 /* =============================================================================
- * Section Visual — the rendered section wrapper
+ * Section Visual
  * ============================================================================= */
 
 .section-visual {
-  @apply relative;
-  transition: outline 200ms ease-out;
-  outline: 2px solid transparent;
-  outline-offset: -2px;
+  @apply relative transition-all duration-200 ease-out;
+  @apply outline-2 outline-solid outline-transparent -outline-offset-2;
 }
 
-/* Section label — appears on hover */
+/* Section label — top-left badge on hover */
 .sortable-section-label {
   @apply absolute flex items-center gap-1.5 z-10;
   @apply px-2 py-0.5 text-xs font-medium;
   @apply left-0 top-0 opacity-0 pointer-events-none;
   @apply transition-opacity duration-200;
-  background: var(--builder-primary);
-  color: var(--builder-primary-foreground);
-  border-radius: 0 0 6px 0;
+  @apply bg-(--builder-primary) text-(--builder-primary-foreground);
+  @apply rounded-br-md;
 
   svg {
-    @apply size-3;
-    color: var(--builder-primary-foreground);
+    @apply size-3 text-(--builder-primary-foreground);
   }
 }
 
@@ -48,45 +40,40 @@
   @apply opacity-100 pointer-events-auto;
 }
 
-/* Section hover outline — only when NOT hovering a child */
+/* Section hover outline */
 .sortable-section:hover > .section-visual:not(:has(.sortable-container:hover)) {
-  outline: 2px solid var(--builder-primary);
-  outline-offset: -2px;
+  @apply outline-(--builder-primary);
 }
 
-/* Hide section outline when hovering nested elements */
+/* Hide when hovering nested elements */
 .sortable-section:has(.sortable-container:hover) > .section-visual,
 .sortable-section:has(.block-wrapper:hover) > .section-visual {
-  outline-color: transparent !important;
+  @apply outline-transparent;
 }
 
 /* Selected state */
 .section-visual.is-selected {
-  outline: 2px solid var(--builder-primary);
-  outline-offset: -2px;
+  @apply outline-2 outline-solid outline-(--builder-primary) -outline-offset-2;
 }
 
 /* =============================================================================
- * Add Section Controls — appear between sections on hover
+ * Add Section Controls
  * ============================================================================= */
 
 .section-add-above,
 .section-add-below {
   @apply absolute left-0 right-0 z-30;
   @apply flex justify-center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 150ms ease-out;
+  @apply opacity-0 pointer-events-none;
+  @apply transition-opacity duration-150;
 }
 
 .section-add-above {
-  top: -1px;
-  transform: translateY(-50%);
+  @apply top-0 -translate-y-1/2;
 }
 
 .section-add-below {
-  bottom: -1px;
-  transform: translateY(50%);
+  @apply bottom-0 translate-y-1/2;
 }
 
 /* Show only when hovering section directly */
@@ -96,36 +83,32 @@
 .sortable-section:hover
   > .section-visual:not(:has(.sortable-container:hover)):not(:has(.block-wrapper:hover))
   .section-add-below {
-  opacity: 1;
-  pointer-events: auto;
+  @apply opacity-100 pointer-events-auto;
 }
 
-/* Hide when hovering containers or blocks */
+/* Hide when hovering children */
 .sortable-section:has(.sortable-container:hover) .section-add-above,
 .sortable-section:has(.sortable-container:hover) .section-add-below,
 .sortable-section:has(.block-wrapper:hover) .section-add-above,
 .sortable-section:has(.block-wrapper:hover) .section-add-below {
-  opacity: 0 !important;
-  pointer-events: none !important;
+  @apply opacity-0 pointer-events-none;
 }
 
 /* Add section button */
 .section-add-btn {
   @apply px-3 py-1 text-xs font-medium;
-  background: var(--builder-primary);
-  color: var(--builder-primary-foreground);
-  border-radius: 9999px;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--builder-primary) 25%, transparent);
-  transition: all 120ms ease-out;
+  @apply bg-(--builder-primary) text-(--builder-primary-foreground);
+  @apply rounded-full;
+  @apply shadow-md;
+  @apply transition-all duration-100 ease-out;
 }
 
 .section-add-btn:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--builder-primary) 35%, transparent);
+  @apply scale-[1.02] shadow-lg;
 }
 
 .section-add-btn:active {
-  transform: scale(0.98);
+  @apply scale-[0.98];
 }
 
 /* =============================================================================
@@ -133,5 +116,5 @@
  * ============================================================================= */
 
 .section-containers {
-  @apply min-h-[40px];
+  @apply min-h-10;
 }
