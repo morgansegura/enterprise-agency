@@ -1,16 +1,25 @@
-import { IsString, IsEnum, IsOptional } from "class-validator";
+import { IsString, IsEnum, IsOptional, IsBoolean } from "class-validator";
 
 export class LogoBlockDataDto {
   @IsString()
-  logoKey: string;
+  src: string;
 
-  @IsOptional()
-  @IsEnum(["sm", "md", "lg", "xl"])
-  size?: string;
+  @IsString()
+  alt: string;
 
   @IsOptional()
   @IsString()
   href?: string;
+
+  @IsEnum(["sm", "md", "lg", "xl"])
+  size: string;
+
+  @IsEnum(["left", "center", "right"])
+  align: string;
+
+  @IsOptional()
+  @IsBoolean()
+  openInNewTab?: boolean;
 }
 
 export class LogoBlockDto {

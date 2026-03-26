@@ -1,5 +1,4 @@
 import type { QuoteBlockData } from "@/lib/blocks";
-import Image from "next/image";
 import "./quote-block.css";
 
 type QuoteBlockProps = {
@@ -11,28 +10,31 @@ type QuoteBlockProps = {
  * Content block (leaf node) - cannot have children
  */
 export function QuoteBlock({ data }: QuoteBlockProps) {
-  const { quote, author, role, avatar, variant = "default" } = data;
+  const {
+    text,
+    author,
+    title,
+    size = "md",
+    align = "left",
+    variant = "default",
+  } = data;
 
   return (
-    <blockquote data-slot="quote-block" data-variant={variant}>
-      <p data-slot="quote-block-text">{quote}</p>
-      {author || avatar ? (
+    <blockquote
+      data-slot="quote-block"
+      data-variant={variant}
+      data-size={size}
+      data-align={align}
+    >
+      <p data-slot="quote-block-text">{text}</p>
+      {author || title ? (
         <footer data-slot="quote-block-footer">
-          {avatar ? (
-            <Image
-              data-slot="quote-block-avatar"
-              src={avatar.url}
-              alt={avatar.alt || author || ""}
-              width={avatar.width || 48}
-              height={avatar.height || 48}
-            />
+          {author ? (
+            <cite data-slot="quote-block-author">{author}</cite>
           ) : null}
-          <div data-slot="quote-block-citation">
-            {author ? (
-              <cite data-slot="quote-block-author">{author}</cite>
-            ) : null}
-            {role ? <span data-slot="quote-block-role">{role}</span> : null}
-          </div>
+          {title ? (
+            <span data-slot="quote-block-title">{title}</span>
+          ) : null}
         </footer>
       ) : null}
     </blockquote>

@@ -1,0 +1,47 @@
+@reference "tailwindcss";
+
+/* Base layout */
+[data-slot="columns-block"] {
+  @apply grid w-full;
+}
+
+/* Column count */
+[data-slot="columns-block"][data-count="2"] {
+  @apply grid-cols-2;
+}
+
+[data-slot="columns-block"][data-count="3"] {
+  @apply grid-cols-3;
+}
+
+[data-slot="columns-block"][data-count="4"] {
+  @apply grid-cols-4;
+}
+
+/* Gap sizes */
+[data-slot="columns-block"][data-gap="none"] {
+  @apply gap-0;
+}
+
+[data-slot="columns-block"][data-gap="sm"] {
+  @apply gap-[var(--spacing-block-sm)];
+}
+
+[data-slot="columns-block"][data-gap="md"] {
+  @apply gap-[var(--spacing-block-md)];
+}
+
+[data-slot="columns-block"][data-gap="lg"] {
+  @apply gap-[var(--spacing-block-lg)];
+}
+
+[data-slot="columns-block"][data-gap="xl"] {
+  @apply gap-[var(--spacing-container)];
+}
+
+/* Responsive stacking - stack to single column on mobile */
+@media (max-width: 768px) {
+  [data-slot="columns-block"][data-responsive="true"] {
+    @apply grid-cols-1;
+  }
+}

@@ -67,6 +67,8 @@ export {
   type RichTextBlockData,
   type ImageBlockData,
   type ButtonBlockData,
+  type CardImageData,
+  type CardLinkData,
   type CardBlockData,
   type VideoBlockData,
   type AudioBlockData,
@@ -78,8 +80,11 @@ export {
   type SpacerBlockData,
   type EmbedBlockData,
   type IconBlockData,
+  type StatItem,
   type StatsBlockData,
+  type MapMarker,
   type MapBlockData,
+  type LogoBlockData,
   // E-commerce block data
   type ProductGridBlockData,
   type ProductDetailBlockData,
@@ -89,6 +94,7 @@ export {
   type GridLayoutData,
   type FlexLayoutData,
   type StackLayoutData,
+  type ColumnsLayoutData,
   type ContainerLayoutData,
   // Block unions
   type ContentBlock,

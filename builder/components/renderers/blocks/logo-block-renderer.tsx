@@ -4,18 +4,18 @@ import { cn } from "@/lib/utils";
 
 interface LogoBlockData {
   src: string;
-  alt?: string;
+  alt: string;
   href?: string;
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-  align?: "left" | "center" | "right";
+  size: "sm" | "md" | "lg" | "xl";
+  align: "left" | "center" | "right";
+  openInNewTab?: boolean;
 }
 
 const sizeClasses = {
-  xs: "h-6",
   sm: "h-8",
-  md: "h-10",
-  lg: "h-12",
-  xl: "h-16",
+  md: "h-12",
+  lg: "h-16",
+  xl: "h-24",
 };
 
 const alignClasses = {
@@ -26,7 +26,14 @@ const alignClasses = {
 
 export default function LogoBlockRenderer({ block }: BlockRendererProps) {
   const data = block.data as unknown as LogoBlockData;
-  const { src, alt = "Logo", href, size = "md", align = "left" } = data;
+  const {
+    src,
+    alt = "Logo",
+    href,
+    size = "md",
+    align = "left",
+    openInNewTab,
+  } = data;
 
   if (!src) {
     return (
@@ -45,7 +52,12 @@ export default function LogoBlockRenderer({ block }: BlockRendererProps) {
   return (
     <div className={cn("flex", alignClasses[align])}>
       {href ? (
-        <a href={href} className="inline-block">
+        <a
+          href={href}
+          target={openInNewTab ? "_blank" : undefined}
+          rel={openInNewTab ? "noopener noreferrer" : undefined}
+          className="inline-block"
+        >
           {logoImage}
         </a>
       ) : (

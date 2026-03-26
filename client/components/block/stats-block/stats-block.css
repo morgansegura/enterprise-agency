@@ -1,43 +1,68 @@
 @reference "tailwindcss";
 
+/* Container */
 [data-slot="stats-block"] {
-  @apply flex flex-col gap-2;
+  @apply grid gap-6;
 }
 
-[data-slot="stats-block"][data-variant="card"] {
-  @apply border border-(--border) rounded-lg p-6 bg-(--card);
+[data-slot="stats-block"][data-layout="horizontal"] {
+  @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
 }
 
-[data-slot="stats-block"][data-variant="minimal"] {
-  @apply gap-1;
+[data-slot="stats-block"][data-layout="vertical"] {
+  @apply grid-cols-1;
 }
 
+/* Variant: highlighted */
+[data-slot="stats-block"][data-variant="highlighted"]
+  [data-slot="stats-block-item"] {
+  @apply bg-(--primary)/5 border border-(--primary)/20 rounded-lg p-6;
+}
+
+/* Variant: bordered */
+[data-slot="stats-block"][data-variant="bordered"]
+  [data-slot="stats-block-item"] {
+  @apply border-2 border-(--border) rounded-lg p-6;
+}
+
+/* Item */
+[data-slot="stats-block-item"] {
+  @apply flex flex-col gap-2 text-center;
+}
+
+/* Header */
 [data-slot="stats-block-header"] {
-  @apply flex items-center gap-3;
+  @apply flex items-center justify-center gap-3;
 }
 
+/* Icon */
 [data-slot="stats-block-icon"] {
   @apply text-2xl text-(--primary);
 }
 
+/* Value */
 [data-slot="stats-block-value"] {
   @apply text-3xl font-bold text-(--foreground);
 }
 
+/* Meta */
 [data-slot="stats-block-meta"] {
   @apply flex flex-col gap-1;
 }
 
+/* Label */
 [data-slot="stats-block-label"] {
   @apply text-sm font-medium text-(--muted-foreground);
 }
 
+/* Description */
 [data-slot="stats-block-description"] {
   @apply text-xs text-(--muted-foreground);
 }
 
+/* Trend */
 [data-slot="stats-block-trend"] {
-  @apply inline-flex items-center gap-1 text-sm font-medium;
+  @apply inline-flex items-center justify-center gap-1 text-sm font-medium;
 }
 
 [data-slot="stats-block-trend"][data-direction="up"] {

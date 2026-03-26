@@ -24,12 +24,12 @@ const objectFitClasses: Record<string, string> = {
  * Supports responsive overrides for objectFit
  */
 export function ImageBlock({ data, priority = false }: ImageBlockProps) {
-  const { url, alt = "", caption, width, height, objectFit = "cover" } = data;
+  const { src, alt = "", caption, width, height, objectFit = "cover" } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);
 
-  if (!url || !alt) return null;
+  if (!src || !alt) return null;
 
   // Simple rendering without responsive overrides
   if (!hasOverrides) {
@@ -37,7 +37,7 @@ export function ImageBlock({ data, priority = false }: ImageBlockProps) {
       <figure data-slot="image-block">
         <div data-slot="image-block-wrapper" data-object-fit={objectFit}>
           <Image
-            src={url}
+            src={src}
             alt={alt}
             width={width || 1200}
             height={height || 630}
@@ -69,7 +69,7 @@ export function ImageBlock({ data, priority = false }: ImageBlockProps) {
     <figure data-slot="image-block">
       <div data-slot="image-block-wrapper" className={responsiveClasses}>
         <Image
-          src={url}
+          src={src}
           alt={alt}
           width={width || 1200}
           height={height || 630}

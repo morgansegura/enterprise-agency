@@ -4,18 +4,42 @@
  * Logo Block Styles
  */
 
-.logo-block {
+[data-slot="logo-block"] {
   @apply flex;
 }
 
-.logo-block[data-alignment="left"] {
+[data-slot="logo-block"][data-align="left"] {
   @apply justify-start;
 }
 
-.logo-block[data-alignment="center"] {
+[data-slot="logo-block"][data-align="center"] {
   @apply justify-center;
 }
 
-.logo-block[data-alignment="right"] {
+[data-slot="logo-block"][data-align="right"] {
   @apply justify-end;
+}
+
+[data-slot="logo-link"] {
+  @apply inline-block;
+}
+
+[data-slot="logo-image"] {
+  @apply w-auto object-contain;
+}
+
+[data-slot="logo-image"][data-size="sm"] {
+  @apply h-8;
+}
+
+[data-slot="logo-image"][data-size="md"] {
+  @apply h-12;
+}
+
+[data-slot="logo-image"][data-size="lg"] {
+  @apply h-16;
+}
+
+[data-slot="logo-image"][data-size="xl"] {
+  @apply h-24;
 }

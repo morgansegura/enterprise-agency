@@ -1,41 +1,25 @@
-import {
-  IsString,
-  IsEnum,
-  IsOptional,
-  IsBoolean,
-  ValidateNested,
-} from "class-validator";
-import { Type } from "class-transformer";
+import { IsString, IsEnum, IsOptional, IsBoolean } from "class-validator";
 
-export class LogoLinkDto {
+export class LogoBlockDataDto {
   @IsString()
-  href: string;
+  src: string;
+
+  @IsString()
+  alt: string;
+
+  @IsOptional()
+  @IsString()
+  href?: string;
+
+  @IsEnum(["sm", "md", "lg", "xl"])
+  size: string;
+
+  @IsEnum(["left", "center", "right"])
+  align: string;
 
   @IsOptional()
   @IsBoolean()
   openInNewTab?: boolean;
-}
-
-export class LogoBlockDataDto {
-  @IsEnum(["primary", "icon", "custom"])
-  logoId: "primary" | "icon" | "custom"; // References Tenant.logosConfig
-
-  @IsOptional()
-  @IsString()
-  width?: string; // CSS width
-
-  @IsOptional()
-  @IsString()
-  height?: string; // CSS height
-
-  @IsOptional()
-  @IsEnum(["left", "center", "right"])
-  align?: "left" | "center" | "right";
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => LogoLinkDto)
-  link?: LogoLinkDto;
 }
 
 export class LogoBlockDto {

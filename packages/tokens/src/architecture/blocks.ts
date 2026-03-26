@@ -188,7 +188,7 @@ export type RichTextBlockData = {
 
 /** Image block data */
 export type ImageBlockData = {
-  url: string;
+  src: string;
   alt?: string;
   caption?: string;
   width?: number;
@@ -211,14 +211,33 @@ export type ButtonBlockData = {
   size?: "default" | "sm" | "lg" | "icon";
 };
 
+/** Card block image */
+export type CardImageData = {
+  src: string;
+  alt: string;
+  aspectRatio?: string;
+};
+
+/** Card block link */
+export type CardLinkData = {
+  href: string;
+  text?: string;
+  openInNewTab?: boolean;
+};
+
 /** Card block data */
 export type CardBlockData = {
-  title?: string;
+  image?: CardImageData;
+  title: string;
   description?: string;
-  image?: ImageBlockData;
-  imagePosition?: "top" | "left" | "background";
-  actions?: ButtonBlockData[];
-  variant?: "default" | "elevated" | "outlined";
+  footer?: string;
+  link?: CardLinkData;
+  variant?: "default" | "bordered" | "elevated";
+  padding?: "none" | "sm" | "md" | "lg";
+  _responsive?: {
+    tablet?: Partial<Omit<CardBlockData, "_responsive">>;
+    mobile?: Partial<Omit<CardBlockData, "_responsive">>;
+  };
 };
 
 /** Video block data */
@@ -253,11 +272,12 @@ export type ListBlockData = {
 
 /** Quote block data */
 export type QuoteBlockData = {
-  quote: string;
+  text: string;
   author?: string;
-  role?: string;
-  avatar?: ImageBlockData;
-  variant?: "default" | "bordered" | "card";
+  title?: string;
+  size?: "sm" | "md" | "lg";
+  align?: "left" | "center" | "right";
+  variant?: "default" | "bordered" | "highlighted";
 };
 
 /** Accordion block data */
@@ -311,8 +331,8 @@ export type IconBlockData = {
   position?: "top" | "left" | "right" | "bottom";
 };
 
-/** Stats block data */
-export type StatsBlockData = {
+/** A single stat item inside a stats block */
+export type StatItem = {
   value: string | number;
   label: string;
   description?: string;
@@ -321,17 +341,44 @@ export type StatsBlockData = {
     value: string;
     direction: "up" | "down";
   };
-  variant?: "default" | "card" | "minimal";
+};
+
+/** Stats block data */
+export type StatsBlockData = {
+  stats: StatItem[];
+  layout?: "horizontal" | "vertical";
+  variant?: "default" | "highlighted" | "bordered";
+};
+
+/** Map marker */
+export type MapMarker = {
+  lat: number;
+  lng: number;
+  title?: string;
+  description?: string;
 };
 
 /** Map block data */
 export type MapBlockData = {
-  address?: string;
-  latitude?: number;
-  longitude?: number;
-  zoom?: number;
-  height?: number;
-  provider?: "google" | "openstreetmap";
+  center: {
+    lat: number;
+    lng: number;
+  };
+  zoom: number;
+  markers?: MapMarker[];
+  height: "sm" | "md" | "lg" | "xl";
+  style: "default" | "satellite" | "terrain";
+  embedUrl?: string;
+};
+
+/** Logo block data */
+export type LogoBlockData = {
+  src: string;
+  alt: string;
+  href?: string;
+  size: "sm" | "md" | "lg" | "xl";
+  align: "left" | "center" | "right";
+  openInNewTab?: boolean;
 };
 
 // ========================================
@@ -434,6 +481,13 @@ export type StackLayoutData = {
   align?: BlockAlignItems;
 };
 
+/** Columns layout configuration */
+export type ColumnsLayoutData = {
+  count: "2" | "3" | "4";
+  gap?: "none" | "sm" | "md" | "lg" | "xl";
+  responsive?: boolean;
+};
+
 /** Container layout configuration (width constraints without layout logic) */
 export type ContainerLayoutData = {
   width?: "narrow" | "wide" | "full";
@@ -467,14 +521,7 @@ export type ContentBlock =
   | { _type: "icon-block"; _key: string; data: IconBlockData }
   | { _type: "stats-block"; _key: string; data: StatsBlockData }
   | { _type: "map-block"; _key: string; data: MapBlockData }
-  | {
-      _type: "logo-block";
-      _key: string;
-      logo: string;
-      size?: string;
-      alignment?: string;
-      clickable?: boolean;
-    }
+  | { _type: "logo-block"; _key: string; data: LogoBlockData }
   | { _type: "product-grid-block"; _key: string; data: ProductGridBlockData }
   | {
       _type: "product-detail-block";
@@ -512,6 +559,12 @@ export type ShallowContainerBlock =
       _key: string;
       data: StackLayoutData;
       blocks: ContentBlock[];
+    }
+  | {
+      _type: "columns-block";
+      _key: string;
+      data: ColumnsLayoutData;
+      blocks: ContentBlock[];
     };
 
 /**
@@ -541,6 +594,12 @@ export type DeepContainerBlock =
       _type: "stack-block";
       _key: string;
       data: StackLayoutData;
+      blocks: (ContentBlock | ShallowContainerBlock)[];
+    }
+  | {
+      _type: "columns-block";
+      _key: string;
+      data: ColumnsLayoutData;
       blocks: (ContentBlock | ShallowContainerBlock)[];
     };
 

@@ -5,40 +5,45 @@ type MapBlockProps = {
   data: MapBlockData;
 };
 
+const heightMap: Record<MapBlockData["height"], string> = {
+  sm: "250px",
+  md: "400px",
+  lg: "550px",
+  xl: "700px",
+};
+
 /**
  * MapBlock - Renders location maps
  * Content block (leaf node) - cannot have children
  */
 export function MapBlock({ data }: MapBlockProps) {
   const {
-    address,
-    latitude,
-    longitude,
-    zoom = 15,
-    height = 400,
-    provider = "openstreetmap",
+    center,
+    zoom = 12,
+    height = "md",
+    embedUrl,
   } = data;
 
-  // Build embed URL based on provider
-  const getEmbedUrl = () => {
-    if (provider === "google" && (latitude || address)) {
-      const q = latitude
-        ? `${latitude},${longitude}`
-        : encodeURIComponent(address || "");
-      return `https://maps.google.com/maps?q=${q}&z=${zoom}&output=embed`;
-    }
+  const resolvedHeight = heightMap[height];
 
-    // OpenStreetMap
-    if (latitude && longitude) {
-      return `https://www.openstreetmap.org/export/embed.html?bbox=${longitude - 0.01},${latitude - 0.01},${longitude + 0.01},${latitude + 0.01}&layer=mapnik&marker=${latitude},${longitude}`;
-    }
+  if (embedUrl) {
+    const src = extractIframeSrc(embedUrl);
+    return (
+      <div data-slot="map-block" data-height={height}>
+        <iframe
+          data-slot="map-block-iframe"
+          src={src}
+          style={{ height: resolvedHeight }}
+          title="Embedded map"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+        />
+      </div>
+    );
+  }
 
-    return null;
-  };
-
-  const embedUrl = getEmbedUrl();
-
-  if (!embedUrl) {
+  if (!center) {
     return (
       <div data-slot="map-block-error">
         <p>Map location data is missing or invalid.</p>
@@ -46,15 +51,31 @@ export function MapBlock({ data }: MapBlockProps) {
     );
   }
 
+  const osmUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${center.lng - 0.01},${center.lat - 0.01},${center.lng + 0.01},${center.lat + 0.01}&layer=mapnik&marker=${center.lat},${center.lng}`;
+
   return (
-    <div data-slot="map-block">
+    <div data-slot="map-block" data-height={height}>
       <iframe
         data-slot="map-block-iframe"
-        src={embedUrl}
-        style={{ height: `${height}px` }}
-        title={address || "Map location"}
+        src={osmUrl}
+        style={{ height: resolvedHeight }}
+        title={`Map: ${center.lat.toFixed(4)}, ${center.lng.toFixed(4)}`}
         loading="lazy"
+        allowFullScreen
       />
     </div>
   );
+}
+
+/**
+ * Extracts the src URL from an iframe string,
+ * or returns the value as-is if it's already a URL.
+ */
+function extractIframeSrc(input: string): string {
+  const trimmed = input.trim();
+  if (trimmed.startsWith("<")) {
+    const match = trimmed.match(/src=["']([^"']+)["']/);
+    return match?.[1] ?? trimmed;
+  }
+  return trimmed;
 }

@@ -16,17 +16,20 @@ import { createPublicApiClient } from "@/lib/public-api-client";
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4002";
+  const api = await createPublicApiClient();
+  const tenantSlug = api.getSlug();
+  const baseUrl = `${siteUrl}/${tenantSlug}`;
 
   // Static pages with high priority
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: siteUrl,
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1.0,
     },
     {
-      url: `${siteUrl}/about`,
+      url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
@@ -37,13 +40,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let dynamicPages: MetadataRoute.Sitemap = [];
 
   try {
-    const api = await createPublicApiClient();
     const { pages } = await api.listPages();
 
     dynamicPages = pages
       .filter((page) => !["home", "about"].includes(page.slug)) // Exclude static pages
       .map((page) => ({
-        url: `${siteUrl}/${page.slug}`,
+        url: `${baseUrl}/${page.slug}`,
         lastModified: page.updatedAt ? new Date(page.updatedAt) : new Date(),
         changeFrequency: "weekly" as const,
         priority: 0.7,

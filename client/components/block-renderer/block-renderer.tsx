@@ -33,6 +33,7 @@ import { ContainerBlock } from "@/components/block/container-block";
 import { GridBlock } from "@/components/block/grid-block";
 import { FlexBlock } from "@/components/block/flex-block";
 import { StackBlock } from "@/components/block/stack-block";
+import { ColumnsBlock } from "@/components/block/columns-block";
 
 /**
  * BlockRenderer - Renders an array of blocks recursively
@@ -95,6 +96,16 @@ function renderBlock(block: RootBlock): React.ReactNode {
       case "stack-block":
         return (
           <StackBlock
+            key={block._key}
+            data={block.data}
+            blocks={block.blocks}
+            renderBlock={renderBlock}
+          />
+        );
+
+      case "columns-block":
+        return (
+          <ColumnsBlock
             key={block._key}
             data={block.data}
             blocks={block.blocks}
@@ -166,7 +177,7 @@ function renderBlock(block: RootBlock): React.ReactNode {
       return <MapBlock key={block._key} data={block.data} />;
 
     case "logo-block":
-      return <LogoBlock key={block._key} block={block} />;
+      return <LogoBlock key={block._key} data={block.data} />;
 
     // E-Commerce blocks
     case "product-grid-block":

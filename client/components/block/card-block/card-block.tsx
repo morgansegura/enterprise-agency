@@ -1,13 +1,4 @@
 import type { CardBlockData } from "@/lib/blocks";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ButtonBlock } from "@/components/block/button-block";
-import Image from "next/image";
 import "./card-block.css";
 
 type CardBlockProps = {
@@ -15,84 +6,84 @@ type CardBlockProps = {
 };
 
 /**
- * CardBlock - Renders feature cards with title, description, image, and actions
+ * CardBlock - Renders cards with optional image, title, description, footer, and link
  * Content block (leaf node) - cannot have children
  */
 export function CardBlock({ data }: CardBlockProps) {
   const {
+    image,
     title,
     description,
-    image,
-    imagePosition = "top",
-    actions,
+    footer,
+    link,
     variant = "default",
+    padding = "md",
   } = data;
 
-  return (
-    <Card
+  const content = (
+    <div
       data-slot="card-block"
       data-variant={variant}
-      data-image-position={imagePosition}
+      data-padding={padding}
     >
-      {image && imagePosition === "top" ? (
-        <div data-slot="card-block-image-top">
-          <Image
-            src={image.url}
-            alt={image.alt || ""}
-            width={image.width || 400}
-            height={image.height || 225}
-            data-object-fit={image.objectFit || "cover"}
+      {image?.src ? (
+        <div data-slot="card-block-image">
+          {/* eslint-disable-next-line @next/next/no-img-element -- dynamic CMS images */}
+          <img
+            src={image.src}
+            alt={image.alt}
+            data-slot="card-block-img"
           />
         </div>
       ) : null}
 
-      {image && imagePosition === "background" ? (
-        <div data-slot="card-block-image-background">
-          <Image
-            src={image.url}
-            alt={image.alt || ""}
-            fill
-            data-object-fit={image.objectFit || "cover"}
-          />
-          <div data-slot="card-block-overlay" />
-        </div>
-      ) : null}
+      <div data-slot="card-block-body">
+        <h3 data-slot="card-block-title">{title}</h3>
 
-      <div
-        data-slot="card-block-content-wrapper"
-        data-image-position={imagePosition}
-      >
-        {image && imagePosition === "left" ? (
-          <div data-slot="card-block-image-left">
-            <Image
-              src={image.url}
-              alt={image.alt || ""}
-              width={image.width || 200}
-              height={image.height || 200}
-              data-object-fit={image.objectFit || "cover"}
-            />
-          </div>
+        {description ? (
+          <p data-slot="card-block-description">{description}</p>
         ) : null}
 
-        <div data-slot="card-block-text">
-          {title || description ? (
-            <CardHeader>
-              {title ? <CardTitle>{title}</CardTitle> : null}
-              {description ? (
-                <CardDescription>{description}</CardDescription>
-              ) : null}
-            </CardHeader>
-          ) : null}
+        {footer ? (
+          <p data-slot="card-block-footer">{footer}</p>
+        ) : null}
 
-          {actions && actions.length > 0 ? (
-            <CardFooter data-slot="card-block-actions">
-              {actions.map((action, index) => (
-                <ButtonBlock key={index} data={action} />
-              ))}
-            </CardFooter>
-          ) : null}
-        </div>
+        {link?.href && !linkWrapsCard(link) ? (
+          <a
+            href={link.href}
+            data-slot="card-block-link"
+            {...(link.openInNewTab
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+          >
+            {link.text || "Learn more \u2192"}
+          </a>
+        ) : null}
       </div>
-    </Card>
+    </div>
   );
+
+  if (link?.href && linkWrapsCard(link)) {
+    return (
+      <a
+        href={link.href}
+        data-slot="card-block-wrapper"
+        {...(link.openInNewTab
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : {})}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return content;
+}
+
+/**
+ * If the link has no display text, wrap the entire card as a clickable link.
+ * If the link has display text, render it as an inline link inside the card body.
+ */
+function linkWrapsCard(link: { text?: string }): boolean {
+  return !link.text;
 }
