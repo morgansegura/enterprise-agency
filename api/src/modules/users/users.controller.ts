@@ -27,13 +27,13 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get("me")
-  async getCurrentUser(@CurrentUser() user: { id: string; sessionId: string }) {
+  async getCurrentUser(@CurrentUser() user: { id: string }) {
     return this.usersService.findByClerkId(user.id);
   }
 
   @Patch("me")
   async updateCurrentUser(
-    @CurrentUser() user: { id: string; sessionId: string },
+    @CurrentUser() user: { id: string },
     @Body() updateData: UpdateUserDto,
   ) {
     return this.usersService.update(user.id, updateData);

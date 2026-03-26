@@ -97,7 +97,7 @@ export class TenantsController {
   @UseGuards(RolesGuard)
   @Roles(TenantRole.SUPERADMIN, TenantRole.AGENCY_ADMIN)
   async cloneFromTemplate(
-    @CurrentUser() currentUser: { id: string; sessionId: string },
+    @CurrentUser() currentUser: { id: string },
     @Body() cloneData: CloneTenantDto,
   ) {
     return this.tenantsService.cloneFromTemplate(cloneData, currentUser.id);
@@ -108,9 +108,7 @@ export class TenantsController {
    * GET /tenants/accessible
    */
   @Get("accessible")
-  async getAccessibleTenants(
-    @CurrentUser() currentUser: { id: string; sessionId: string },
-  ) {
+  async getAccessibleTenants(@CurrentUser() currentUser: { id: string }) {
     return this.tenantsService.getAccessibleTenants(currentUser.id);
   }
 
@@ -136,7 +134,7 @@ export class TenantsController {
 
   @Post()
   async createTenant(
-    @CurrentUser() currentUser: { id: string; sessionId: string },
+    @CurrentUser() currentUser: { id: string },
     @Body() createData: CreateTenantDto,
   ) {
     // currentUser.id is already the database user ID from JWT
@@ -323,7 +321,7 @@ export class TenantsController {
   @Get(":id/access")
   async checkTenantAccess(
     @Param("id") tenantId: string,
-    @CurrentUser() currentUser: { id: string; sessionId: string },
+    @CurrentUser() currentUser: { id: string },
   ) {
     return this.tenantsService.checkUserTenantAccess(currentUser.id, tenantId);
   }

@@ -62,7 +62,7 @@ export class PagesController {
   @RequireTier("BUILDER")
   create(
     @TenantId() tenantId: string,
-    @CurrentUser() user: { id: string; sessionId: string },
+    @CurrentUser() user: { id: string },
     @Body() createPageDto: CreatePageDto,
   ) {
     return this.pagesService.create(tenantId, user.id, createPageDto);
@@ -178,7 +178,7 @@ export class PagesController {
   @RequireTier("BUILDER")
   duplicate(
     @TenantId() tenantId: string,
-    @CurrentUser() user: { id: string; sessionId: string },
+    @CurrentUser() user: { id: string },
     @Param("id") id: string,
   ) {
     return this.pagesService.duplicate(tenantId, user.id, id);

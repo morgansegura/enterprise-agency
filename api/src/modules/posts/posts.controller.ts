@@ -31,7 +31,7 @@ export class PostsController {
   @Permissions(Permission.BLOG_CREATE)
   create(
     @TenantId() tenantId: string,
-    @CurrentUser() user: { id: string; sessionId: string },
+    @CurrentUser() user: { id: string },
     @Body() createPostDto: CreatePostDto,
   ) {
     return this.postsService.create(tenantId, user.id, createPostDto);
@@ -115,7 +115,7 @@ export class PostsController {
   @Permissions(Permission.BLOG_CREATE)
   duplicate(
     @TenantId() tenantId: string,
-    @CurrentUser() user: { id: string; sessionId: string },
+    @CurrentUser() user: { id: string },
     @Param("id") id: string,
   ) {
     return this.postsService.duplicate(tenantId, user.id, id);
