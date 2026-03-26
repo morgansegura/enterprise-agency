@@ -1,0 +1,107 @@
+@reference "tailwindcss";
+
+/* Container */
+[data-slot="pricing-block"] {
+  @apply flex flex-col gap-10;
+}
+
+/* Header */
+[data-slot="pricing-block-header"] {
+  @apply text-center flex flex-col gap-2;
+}
+
+[data-slot="pricing-block-heading"] {
+  @apply text-3xl font-bold text-(--foreground);
+}
+
+[data-slot="pricing-block-description"] {
+  @apply text-base text-(--muted-foreground) max-w-2xl mx-auto;
+}
+
+/* Grid */
+[data-slot="pricing-block-grid"] {
+  @apply grid gap-6 grid-cols-1;
+}
+
+[data-slot="pricing-block-grid"][data-count="2"] {
+  @apply sm:grid-cols-2;
+}
+
+[data-slot="pricing-block-grid"][data-count="3"] {
+  @apply sm:grid-cols-2 lg:grid-cols-3;
+}
+
+[data-slot="pricing-block-grid"][data-count="4"] {
+  @apply sm:grid-cols-2 lg:grid-cols-4;
+}
+
+/* Tier */
+[data-slot="pricing-block-tier"] {
+  @apply flex flex-col gap-6 border border-(--border) rounded-lg p-6;
+}
+
+[data-slot="pricing-block-tier"][data-highlighted="true"] {
+  @apply border-(--primary) ring-2 ring-(--primary)/20 relative;
+}
+
+/* Variant: bordered */
+[data-slot="pricing-block"][data-variant="bordered"]
+  [data-slot="pricing-block-tier"] {
+  @apply border-2;
+}
+
+/* Variant: elevated */
+[data-slot="pricing-block"][data-variant="elevated"]
+  [data-slot="pricing-block-tier"] {
+  @apply shadow-lg border-0;
+}
+
+[data-slot="pricing-block"][data-variant="elevated"]
+  [data-slot="pricing-block-tier"][data-highlighted="true"] {
+  @apply shadow-xl scale-105;
+}
+
+/* Tier header */
+[data-slot="pricing-block-tier-header"] {
+  @apply flex flex-col gap-2;
+}
+
+[data-slot="pricing-block-tier-name"] {
+  @apply text-lg font-semibold text-(--foreground);
+}
+
+[data-slot="pricing-block-tier-price"] {
+  @apply text-4xl font-bold text-(--foreground);
+}
+
+[data-slot="pricing-block-tier-period"] {
+  @apply text-base font-normal text-(--muted-foreground);
+}
+
+[data-slot="pricing-block-tier-description"] {
+  @apply text-sm text-(--muted-foreground);
+}
+
+/* Features */
+[data-slot="pricing-block-features"] {
+  @apply flex flex-col gap-3 flex-1 list-none p-0 m-0;
+}
+
+[data-slot="pricing-block-feature"] {
+  @apply flex items-start gap-2 text-sm text-(--foreground);
+}
+
+[data-slot="pricing-block-feature-check"] {
+  @apply text-(--primary) font-bold shrink-0;
+}
+
+/* CTA */
+[data-slot="pricing-block-cta"] {
+  @apply inline-flex items-center justify-center rounded-md px-4 py-2.5 text-sm font-medium
+    bg-(--muted) text-(--foreground) no-underline transition-colors
+    hover:bg-(--muted-foreground)/20;
+}
+
+[data-slot="pricing-block-cta"][data-highlighted="true"] {
+  @apply bg-(--primary) text-(--primary-foreground) hover:bg-(--primary)/90;
+}

@@ -21,6 +21,12 @@ import { IconBlock } from "@/components/block/icon-block";
 import { StatsBlock } from "@/components/block/stats-block";
 import { MapBlock } from "@/components/block/map-block";
 import { LogoBlock } from "@/components/block/logo-block";
+import { TestimonialBlock } from "@/components/block/testimonial-block";
+import { PricingBlock } from "@/components/block/pricing-block";
+import { HeroBlock } from "@/components/block/hero-block";
+import { CtaBlock } from "@/components/block/cta-block";
+import { TeamBlock } from "@/components/block/team-block";
+import { LogoBarBlock } from "@/components/block/logo-bar-block";
 
 // E-Commerce blocks
 import { ProductGridBlock } from "@/components/block/product-grid-block";
@@ -178,6 +184,24 @@ function renderBlock(block: RootBlock): React.ReactNode {
 
     case "logo-block":
       return <LogoBlock key={block._key} data={block.data} />;
+
+    case "testimonial-block":
+      return <TestimonialBlock key={block._key} data={block.data} />;
+
+    case "pricing-block":
+      return <PricingBlock key={block._key} data={block.data} />;
+
+    case "hero-block":
+      return <HeroBlock key={block._key} data={block.data} />;
+
+    case "cta-block":
+      return <CtaBlock key={block._key} data={block.data} />;
+
+    case "team-block":
+      return <TeamBlock key={block._key} data={block.data} />;
+
+    case "logo-bar-block":
+      return <LogoBarBlock key={block._key} data={block.data} />;
 
     // E-Commerce blocks
     case "product-grid-block":

@@ -85,6 +85,16 @@ export {
   type MapMarker,
   type MapBlockData,
   type LogoBlockData,
+  // Composite block data (Temlis themes)
+  type HeroBlockData,
+  type TestimonialItem,
+  type TestimonialBlockData,
+  type PricingTier,
+  type PricingBlockData,
+  type TeamMember,
+  type TeamBlockData,
+  type LogoBarBlockData,
+  type CtaBlockData,
   // E-commerce block data
   type ProductGridBlockData,
   type ProductDetailBlockData,

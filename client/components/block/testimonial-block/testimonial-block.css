@@ -1,0 +1,82 @@
+@reference "tailwindcss";
+
+/* Container */
+[data-slot="testimonial-block"] {
+  @apply grid gap-6;
+}
+
+[data-slot="testimonial-block"][data-columns="1"] {
+  @apply grid-cols-1;
+}
+
+[data-slot="testimonial-block"][data-columns="2"] {
+  @apply grid-cols-1 sm:grid-cols-2;
+}
+
+[data-slot="testimonial-block"][data-columns="3"] {
+  @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+[data-slot="testimonial-block"][data-layout="single"] {
+  @apply grid-cols-1 max-w-2xl mx-auto;
+}
+
+/* Card */
+[data-slot="testimonial-block-card"] {
+  @apply flex flex-col gap-4;
+}
+
+/* Variant: card */
+[data-slot="testimonial-block"][data-variant="card"]
+  [data-slot="testimonial-block-card"] {
+  @apply bg-(--card) border border-(--border) rounded-lg p-6 shadow-sm;
+}
+
+/* Variant: minimal */
+[data-slot="testimonial-block"][data-variant="minimal"]
+  [data-slot="testimonial-block-card"] {
+  @apply border-l-2 border-(--primary) pl-6;
+}
+
+/* Rating */
+[data-slot="testimonial-block-rating"] {
+  @apply flex gap-0.5;
+}
+
+[data-slot="testimonial-block-star"] {
+  @apply text-lg text-(--muted-foreground)/30;
+}
+
+[data-slot="testimonial-block-star"][data-filled="true"] {
+  @apply text-amber-400;
+}
+
+/* Quote */
+[data-slot="testimonial-block-quote"] {
+  @apply text-(--foreground) text-base leading-relaxed italic;
+}
+
+/* Author */
+[data-slot="testimonial-block-author"] {
+  @apply flex items-center gap-3 mt-auto;
+}
+
+/* Avatar */
+[data-slot="testimonial-block-avatar"] {
+  @apply size-10 rounded-full object-cover;
+}
+
+/* Info */
+[data-slot="testimonial-block-info"] {
+  @apply flex flex-col;
+}
+
+/* Name */
+[data-slot="testimonial-block-name"] {
+  @apply text-sm font-semibold text-(--foreground);
+}
+
+/* Role */
+[data-slot="testimonial-block-role"] {
+  @apply text-xs text-(--muted-foreground);
+}

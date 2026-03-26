@@ -33,6 +33,16 @@ export {
   type StatsBlockData,
   type MapMarker,
   type MapBlockData,
+  // Composite block data
+  type HeroBlockData,
+  type TestimonialItem,
+  type TestimonialBlockData,
+  type PricingTier,
+  type PricingBlockData,
+  type TeamMember,
+  type TeamBlockData,
+  type LogoBarBlockData,
+  type CtaBlockData,
   // E-commerce block data
   type ProductGridBlockData,
   type ProductDetailBlockData,

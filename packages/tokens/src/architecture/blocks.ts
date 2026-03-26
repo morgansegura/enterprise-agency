@@ -382,6 +382,98 @@ export type LogoBlockData = {
 };
 
 // ========================================
+// Composite Block Data Types (Temlis themes)
+// ========================================
+
+/** Hero block data — landing page hero sections */
+export type HeroBlockData = {
+  heading: string;
+  subheading?: string;
+  description?: string;
+  primaryCta?: { text: string; href: string };
+  secondaryCta?: { text: string; href: string };
+  image?: { src: string; alt: string };
+  layout?: "centered" | "split-right" | "split-left";
+  overlay?: boolean;
+  align?: "left" | "center" | "right";
+  size?: "sm" | "md" | "lg";
+};
+
+/** A single testimonial item */
+export type TestimonialItem = {
+  quote: string;
+  name: string;
+  role?: string;
+  company?: string;
+  avatar?: string;
+  rating?: number;
+};
+
+/** Testimonial block data — customer quotes */
+export type TestimonialBlockData = {
+  testimonials: TestimonialItem[];
+  layout?: "grid" | "carousel" | "single";
+  columns?: 1 | 2 | 3;
+  variant?: "default" | "card" | "minimal";
+  showRating?: boolean;
+};
+
+/** A single pricing tier */
+export type PricingTier = {
+  name: string;
+  price: string;
+  period?: string;
+  description?: string;
+  features: string[];
+  cta: { text: string; href: string };
+  highlighted?: boolean;
+};
+
+/** Pricing block data — pricing table */
+export type PricingBlockData = {
+  tiers: PricingTier[];
+  heading?: string;
+  description?: string;
+  variant?: "default" | "bordered" | "elevated";
+};
+
+/** A single team member */
+export type TeamMember = {
+  name: string;
+  role: string;
+  image?: string;
+  bio?: string;
+  social?: { platform: string; url: string }[];
+};
+
+/** Team block data — team member grid */
+export type TeamBlockData = {
+  members: TeamMember[];
+  columns?: 2 | 3 | 4;
+  variant?: "default" | "card" | "minimal";
+  showBio?: boolean;
+  showSocial?: boolean;
+};
+
+/** Logo bar block data — client/partner logos */
+export type LogoBarBlockData = {
+  logos: { src: string; alt: string; href?: string }[];
+  heading?: string;
+  variant?: "default" | "grayscale" | "bordered";
+  size?: "sm" | "md" | "lg";
+};
+
+/** CTA block data — call-to-action banner */
+export type CtaBlockData = {
+  heading: string;
+  description?: string;
+  primaryCta: { text: string; href: string };
+  secondaryCta?: { text: string; href: string };
+  variant?: "default" | "highlighted" | "minimal";
+  align?: "left" | "center";
+};
+
+// ========================================
 // E-Commerce Block Data Types
 // ========================================
 
@@ -522,6 +614,12 @@ export type ContentBlock =
   | { _type: "stats-block"; _key: string; data: StatsBlockData }
   | { _type: "map-block"; _key: string; data: MapBlockData }
   | { _type: "logo-block"; _key: string; data: LogoBlockData }
+  | { _type: "hero-block"; _key: string; data: HeroBlockData }
+  | { _type: "testimonial-block"; _key: string; data: TestimonialBlockData }
+  | { _type: "pricing-block"; _key: string; data: PricingBlockData }
+  | { _type: "team-block"; _key: string; data: TeamBlockData }
+  | { _type: "logo-bar-block"; _key: string; data: LogoBarBlockData }
+  | { _type: "cta-block"; _key: string; data: CtaBlockData }
   | { _type: "product-grid-block"; _key: string; data: ProductGridBlockData }
   | {
       _type: "product-detail-block";

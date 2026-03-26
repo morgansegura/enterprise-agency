@@ -1,0 +1,90 @@
+@reference "tailwindcss";
+
+/* ========================================
+ * Team Block
+ * ======================================== */
+
+/* Container */
+[data-slot="team-block"] {
+  @apply grid gap-8;
+}
+
+/* --- Columns --- */
+
+[data-slot="team-block"][data-columns="2"] {
+  @apply grid-cols-1 sm:grid-cols-2;
+}
+
+[data-slot="team-block"][data-columns="3"] {
+  @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+[data-slot="team-block"][data-columns="4"] {
+  @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
+}
+
+/* --- Member --- */
+
+[data-slot="team-block-member"] {
+  @apply flex flex-col items-center text-center;
+}
+
+/* --- Variant: card --- */
+
+[data-slot="team-block"][data-variant="card"] [data-slot="team-block-member"] {
+  @apply rounded-lg border border-border bg-card p-6 shadow-sm;
+}
+
+/* --- Variant: minimal --- */
+
+[data-slot="team-block"][data-variant="minimal"] [data-slot="team-block-member"] {
+  @apply gap-2;
+}
+
+/* --- Image --- */
+
+[data-slot="team-block-image"] {
+  @apply mb-4 overflow-hidden rounded-full;
+}
+
+[data-slot="team-block-img"] {
+  @apply h-24 w-24 object-cover;
+}
+
+/* --- Info --- */
+
+[data-slot="team-block-info"] {
+  @apply flex flex-col gap-1;
+}
+
+/* --- Name --- */
+
+[data-slot="team-block-name"] {
+  @apply text-lg font-semibold text-(--foreground);
+}
+
+/* --- Role --- */
+
+[data-slot="team-block-role"] {
+  @apply text-sm text-(--muted-foreground);
+}
+
+/* --- Bio --- */
+
+[data-slot="team-block-bio"] {
+  @apply mt-2 text-sm text-(--muted-foreground) leading-relaxed;
+}
+
+/* --- Social --- */
+
+[data-slot="team-block-social"] {
+  @apply mt-3 flex items-center justify-center gap-3;
+}
+
+[data-slot="team-block-social-link"] {
+  @apply text-sm text-(--primary);
+}
+
+[data-slot="team-block-social-link"]:hover {
+  @apply underline;
+}
