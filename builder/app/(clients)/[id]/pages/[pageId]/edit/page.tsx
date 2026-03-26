@@ -967,177 +967,22 @@ export default function EditPagePage({
           />
         }
       >
-        {/* Canvas Content */}
-        <BlockEditorProvider>
-          <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
-            <ResponsivePreview breakpoint={breakpoint} className="h-full">
-              <div
-                className="page-editor-canvas-content"
-                onClick={handleCanvasClick}
-              >
-                {/* Editable Header */}
-                <EditableHeader
-                  tenantId={id}
-                  headerId={localPage.headerId}
-                  onHeaderChange={(headerId) =>
-                    handlePageChange("headerId", headerId)
-                  }
-                />
-
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={handleSectionDragEnd}
-                >
-                  <SortableContext
-                    items={sections.map((section) => section._key)}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    <div>
-                      {sections.map((section, sectionIndex) => (
-                        <SortableSection
-                          key={section._key}
-                          section={section}
-                          sectionIndex={sectionIndex}
-                          onSectionChange={(updatedSection) =>
-                            handleSectionChange(sectionIndex, updatedSection)
-                          }
-                          onDelete={() => handleSectionDelete(sectionIndex)}
-                          onAddSectionAbove={() =>
-                            handleAddSectionAt(sectionIndex)
-                          }
-                          onAddSectionBelow={() =>
-                            handleAddSectionAt(sectionIndex + 1)
-                          }
-                          onDuplicate={() =>
-                            handleSectionDuplicate(sectionIndex)
-                          }
-                          onMoveUp={() => handleSectionMoveUp(sectionIndex)}
-                          onMoveDown={() => handleSectionMoveDown(sectionIndex)}
-                          onAddContainer={() =>
-                            handleAddContainerToSection(sectionIndex)
-                          }
-                          selectedBlockKey={selectedBlockKey}
-                          onSelectBlock={setSelectedBlockKey}
-                          hoveredBlockKey={hoveredBlockKey}
-                          onHoverBlock={setHoveredBlockKey}
-                          isFirst={sectionIndex === 0}
-                          isLast={sectionIndex === sections.length - 1}
-                          onAddBlockToContainer={(
-                            containerIndex: number,
-                            blockType: string,
-                          ) =>
-                            handleAddBlockToContainer(
-                              sectionIndex,
-                              containerIndex,
-                              blockType,
-                            )
-                          }
-                          renderContainerBlocks={(
-                            containerIndex: number,
-                            container: Container,
-                          ) => {
-                            const blocks = container.blocks ?? [];
-                            if (blocks.length === 0) {
-                              return null;
-                            }
-                            return (
-                              <DndContext
-                                sensors={sensors}
-                                collisionDetection={closestCenter}
-                                onDragEnd={(event) =>
-                                  handleBlockDragEnd(
-                                    event,
-                                    sectionIndex,
-                                    containerIndex,
-                                  )
-                                }
-                              >
-                                <SortableContext
-                                  items={blocks.map(
-                                    (block: Block) => block._key,
-                                  )}
-                                  strategy={verticalListSortingStrategy}
-                                >
-                                  <div className="space-y-4">
-                                    {blocks.map(
-                                      (block: Block, blockIndex: number) => (
-                                        <SortableBlockItem
-                                          key={block._key}
-                                          block={block}
-                                          onChange={(updatedBlock: Block) =>
-                                            handleBlockChange(
-                                              sectionIndex,
-                                              containerIndex,
-                                              blockIndex,
-                                              updatedBlock,
-                                            )
-                                          }
-                                          onDelete={() =>
-                                            handleBlockDelete(
-                                              sectionIndex,
-                                              containerIndex,
-                                              blockIndex,
-                                            )
-                                          }
-                                          onDuplicate={() =>
-                                            handleBlockDuplicate(
-                                              sectionIndex,
-                                              containerIndex,
-                                              blockIndex,
-                                            )
-                                          }
-                                          onMoveUp={() =>
-                                            handleBlockMoveUp(
-                                              sectionIndex,
-                                              containerIndex,
-                                              blockIndex,
-                                            )
-                                          }
-                                          onMoveDown={() =>
-                                            handleBlockMoveDown(
-                                              sectionIndex,
-                                              containerIndex,
-                                              blockIndex,
-                                            )
-                                          }
-                                          tenantId={id}
-                                          isSelected={
-                                            selectedBlockKey === block._key
-                                          }
-                                          isHovered={
-                                            hoveredBlockKey === block._key
-                                          }
-                                          onSelect={() => {
-                                            setSelectedBlockKey(block._key);
-                                            selectBlock(
-                                              sectionIndex,
-                                              containerIndex,
-                                              blockIndex,
-                                              block._key,
-                                            );
-                                          }}
-                                          isFirst={blockIndex === 0}
-                                          isLast={
-                                            blockIndex === blocks.length - 1
-                                          }
-                                        />
-                                      ),
-                                    )}
-                                  </div>
-                                </SortableContext>
-                              </DndContext>
-                            );
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </SortableContext>
-                </DndContext>
-              </div>
-            </ResponsivePreview>
-          </ResponsiveProvider>
-        </BlockEditorProvider>
+        {/* CMS Preview — read-only live preview of the page */}
+        <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
+          <ResponsivePreview breakpoint={breakpoint} className="h-full">
+            <div className="page-editor-canvas-content design-preview">
+              <PageRenderer
+                page={{
+                  id: pageId,
+                  title: localPage.title,
+                  slug: localPage.slug,
+                  sections,
+                }}
+                breakpoint={breakpoint}
+              />
+            </div>
+          </ResponsivePreview>
+        </ResponsiveProvider>
       </PageEditorLayout>
     </>
   );
