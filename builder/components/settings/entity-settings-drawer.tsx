@@ -31,6 +31,9 @@ import {
   Truck,
   Box,
 } from "lucide-react";
+import { toast } from "sonner";
+import { useUpdatePage } from "@/lib/hooks/use-pages";
+import { useUpdatePost } from "@/lib/hooks/use-posts";
 import { PageSettingsPanel } from "./entity-panels/page-settings-panel";
 import { PostSettingsPanel } from "./entity-panels/post-settings-panel";
 import { ProductSettingsPanel } from "./entity-panels/product-settings-panel";
@@ -149,10 +152,15 @@ export function EntitySettingsDrawer({
   const [hasChanges, setHasChanges] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
 
-  // Entity data state - in a real app, this would come from a query
+  // Entity data state
   const [entityData, setEntityData] = React.useState<Record<string, unknown>>(
     {},
   );
+
+  // API hooks for saving
+  const tenantId = context?.tenantId || "";
+  const updatePage = useUpdatePage(tenantId);
+  const updatePost = useUpdatePost(tenantId);
 
   // Reset tab when entity changes
   React.useEffect(() => {
@@ -166,13 +174,25 @@ export function EntitySettingsDrawer({
     setHasChanges(true);
   };
 
-  // Handle save
+  // Handle save — dispatches to the correct API hook
   const handleSave = async () => {
+    if (!context || !isEditContext(context)) return;
+
     setIsSaving(true);
     try {
-      // TODO: Implement actual save logic based on entity type
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      const entityType = panelConfig?.entityType;
+      const entityId = context.entityId;
+
+      if (entityType === "page") {
+        await updatePage.mutateAsync({ id: entityId, data: entityData });
+      } else if (entityType === "post") {
+        await updatePost.mutateAsync({ id: entityId, data: entityData });
+      }
+
       setHasChanges(false);
+      toast.success("Settings saved");
+    } catch {
+      toast.error("Failed to save settings");
     } finally {
       setIsSaving(false);
     }
