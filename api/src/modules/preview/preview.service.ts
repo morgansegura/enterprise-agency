@@ -263,7 +263,7 @@ export class PreviewService {
   private buildPreviewUrl(token: string): string {
     const clientUrl = this.configService.get<string>(
       "CLIENT_PREVIEW_URL",
-      "http://localhost:3000",
+      "http://localhost:4002",
     );
     return `${clientUrl}/api/preview?token=${token}`;
   }

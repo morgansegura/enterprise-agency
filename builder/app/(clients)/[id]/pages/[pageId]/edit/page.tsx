@@ -33,6 +33,7 @@ import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ResponsiveProvider } from "@/lib/responsive/context";
 import { useIsBuilder } from "@/lib/hooks/use-tier";
+import { useTenant } from "@/lib/hooks/use-tenants";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
 
@@ -121,6 +122,7 @@ export default function EditPagePage({
   const { id, pageId } = resolvedParams;
   // const router = useRouter();
   const { data: page, isLoading, error } = usePage(id, pageId);
+  const { data: tenant } = useTenant(id);
   const isBuilder = useIsBuilder(id);
   const updatePage = useUpdatePage(id);
   const publishPage = usePublishPage(id);
@@ -449,7 +451,7 @@ export default function EditPagePage({
       const result = await createPreviewToken.mutateAsync({
         contentType: "page",
         contentId: pageId,
-        expiresInHours: 168, // 7 days
+        expiresIn: "7d",
       });
 
       // Copy to clipboard
@@ -756,6 +758,8 @@ export default function EditPagePage({
         onUnpublish={handleUnpublish}
         onPreview={handlePreview}
         onGeneratePreviewLink={handleGeneratePreviewLink}
+        pageSlug={localPage.slug}
+        tenantSlug={tenant?.slug}
         leftPanel={
           <PageLayers
             sections={sections}

@@ -15,6 +15,7 @@ import {
   Check,
   Link,
   ExternalLink,
+  Globe,
   History,
   PanelRightOpen,
 } from "lucide-react";
@@ -44,6 +45,10 @@ interface PageEditorLayoutProps {
   onUnpublish?: () => void;
   onPreview?: () => void;
   onGeneratePreviewLink?: () => void;
+  /** Slug for "View Live Site" link */
+  pageSlug?: string;
+  /** Tenant slug for building client URL */
+  tenantSlug?: string;
   versions?: PageVersion[];
   onRestoreVersion?: (versionId: string) => void;
   onViewAllHistory?: () => void;
@@ -77,6 +82,8 @@ export function PageEditorLayout({
   onUnpublish,
   onPreview,
   onGeneratePreviewLink,
+  pageSlug,
+  tenantSlug,
   versions = [],
   onRestoreVersion,
   onViewAllHistory,
@@ -200,13 +207,25 @@ export function PageEditorLayout({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={onPreview}>
-                <ExternalLink className="h-4 w-4 " />
+                <ExternalLink className="h-4 w-4" />
                 Open Preview
               </DropdownMenuItem>
               {onGeneratePreviewLink && (
                 <DropdownMenuItem onClick={onGeneratePreviewLink}>
-                  <Link className="h-4 w-4 " />
+                  <Link className="h-4 w-4" />
                   Copy Shareable Link
+                </DropdownMenuItem>
+              )}
+              {isPublished && tenantSlug && (
+                <DropdownMenuItem asChild>
+                  <a
+                    href={`${process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:4002"}/${tenantSlug}${pageSlug && pageSlug !== "home" ? `/${pageSlug}` : ""}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Globe className="h-4 w-4" />
+                    View Live Site
+                  </a>
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>

@@ -362,16 +362,16 @@ export function useCreatePreviewToken(_tenantId: string) {
     mutationFn: ({
       contentType,
       contentId,
-      expiresInHours = 24,
+      expiresIn = "24h",
     }: {
       contentType: "page" | "post";
       contentId: string;
-      expiresInHours?: number;
+      expiresIn?: string;
     }) =>
-      apiClient.post<PreviewToken>("/preview/generate", {
+      apiClient.post<PreviewToken>("/preview/token", {
         contentType,
         contentId,
-        expiresInHours,
+        expiresIn,
       }),
     onSuccess: () => {
       logger.log("Preview token generated");
