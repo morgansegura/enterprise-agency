@@ -478,6 +478,171 @@ const implementedBlocks: BlockRegistration[] = [
   },
 
   {
+    type: "hero-block",
+    displayName: "Hero",
+    category: "content",
+    icon: "Layout",
+    description: "Landing page hero section",
+    component: () =>
+      import("@/components/blocks/hero-block-editor").then((mod) => ({
+        default: mod.HeroBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `hero-${Date.now()}`,
+      _type: "hero-block",
+      data: {
+        heading: "Your Headline Here",
+        subheading: "Supporting text for your hero section",
+        layout: "centered",
+        size: "lg",
+        align: "center",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "cta-block",
+    displayName: "CTA",
+    category: "content",
+    icon: "Megaphone",
+    description: "Call-to-action banner",
+    component: () =>
+      import("@/components/blocks/cta-block-editor").then((mod) => ({
+        default: mod.CtaBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `cta-${Date.now()}`,
+      _type: "cta-block",
+      data: {
+        heading: "Ready to get started?",
+        description: "Join thousands of satisfied customers today.",
+        primaryCta: { text: "Get Started", href: "#" },
+        variant: "default",
+        align: "center",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "testimonial-block",
+    displayName: "Testimonials",
+    category: "content",
+    icon: "MessageSquareQuote",
+    description: "Customer testimonials and reviews",
+    component: () =>
+      import("@/components/blocks/testimonial-block-editor").then((mod) => ({
+        default: mod.TestimonialBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `testimonial-${Date.now()}`,
+      _type: "testimonial-block",
+      data: {
+        testimonials: [
+          {
+            quote: "This product changed everything for us.",
+            name: "Jane Smith",
+            role: "CEO",
+            company: "Acme Inc.",
+            rating: 5,
+          },
+        ],
+        layout: "grid",
+        columns: 2,
+        variant: "card",
+        showRating: true,
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "pricing-block",
+    displayName: "Pricing",
+    category: "content",
+    icon: "DollarSign",
+    description: "Pricing table with tiers",
+    component: () =>
+      import("@/components/blocks/pricing-block-editor").then((mod) => ({
+        default: mod.PricingBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `pricing-${Date.now()}`,
+      _type: "pricing-block",
+      data: {
+        tiers: [
+          {
+            name: "Starter",
+            price: "$29",
+            period: "/month",
+            features: ["Feature one", "Feature two"],
+            cta: { text: "Get Started", href: "#" },
+          },
+          {
+            name: "Pro",
+            price: "$79",
+            period: "/month",
+            features: ["Everything in Starter", "Feature three", "Feature four"],
+            cta: { text: "Go Pro", href: "#" },
+            highlighted: true,
+          },
+        ],
+        variant: "default",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "team-block",
+    displayName: "Team",
+    category: "content",
+    icon: "Users",
+    description: "Team member grid",
+    component: () =>
+      import("@/components/blocks/team-block-editor").then((mod) => ({
+        default: mod.TeamBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `team-${Date.now()}`,
+      _type: "team-block",
+      data: {
+        members: [
+          { name: "Team Member", role: "Role Title" },
+        ],
+        columns: 3,
+        variant: "card",
+        showBio: false,
+        showSocial: false,
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "logo-bar-block",
+    displayName: "Logo Bar",
+    category: "content",
+    icon: "Grip",
+    description: "Client or partner logo strip",
+    component: () =>
+      import("@/components/blocks/logo-bar-block-editor").then((mod) => ({
+        default: mod.LogoBarBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `logo-bar-${Date.now()}`,
+      _type: "logo-bar-block",
+      data: {
+        logos: [],
+        variant: "grayscale",
+        size: "md",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
     type: "container-block",
     displayName: "Container",
     category: "layout",
