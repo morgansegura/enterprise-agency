@@ -525,3 +525,82 @@ export function useActiveTenant() {
       : null,
   };
 }
+
+// ============================================================================
+// Template Management
+// ============================================================================
+
+export interface TenantTemplate {
+  id: string;
+  slug: string;
+  businessName: string;
+  templateName: string;
+  templateDescription?: string;
+  tier: TenantTier;
+  businessType?: string;
+  createdAt: string;
+  _count?: {
+    pages?: number;
+    headers?: number;
+    footers?: number;
+    menus?: number;
+  };
+}
+
+export function useTemplates() {
+  return useQuery<TenantTemplate[]>({
+    queryKey: ["tenants", "templates"] as const,
+    queryFn: () =>
+      apiClient.get<TenantTemplate[]>("/tenants/templates"),
+  });
+}
+
+export function useMarkAsTemplate() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      tenantId,
+      templateName,
+      templateDescription,
+    }: {
+      tenantId: string;
+      templateName?: string;
+      templateDescription?: string;
+    }) =>
+      apiClient.post(`/tenants/${tenantId}/mark-as-template`, {
+        templateName,
+        templateDescription,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.all() });
+      queryClient.invalidateQueries({
+        queryKey: ["tenants", "templates"],
+      });
+    },
+    onError: (error) => {
+      logger.error("Failed to mark as template", error as Error);
+    },
+  });
+}
+
+export function useCloneTemplate() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: {
+      templateId: string;
+      businessName: string;
+      slug: string;
+      contactEmail?: string;
+      tier?: TenantTier;
+    }) => apiClient.post<Tenant>("/tenants/clone", data),
+    onSuccess: (newTenant) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tenants.all() });
+      logger.log("Tenant cloned from template", { tenantId: newTenant.id });
+    },
+    onError: (error) => {
+      logger.error("Failed to clone from template", error as Error);
+    },
+  });
+}

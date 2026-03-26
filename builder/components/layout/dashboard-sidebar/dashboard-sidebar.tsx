@@ -3,7 +3,13 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Building2, Pyramid } from "lucide-react";
+import {
+  LayoutDashboard,
+  Users,
+  Building2,
+  Pyramid,
+  LayoutTemplate,
+} from "lucide-react";
 
 import "./dashboard-sidebar.css";
 
@@ -25,6 +31,7 @@ const mainItems = [
 
 const managementItems = [
   { title: "Clients", url: "/dashboard/clients", icon: Building2 },
+  { title: "Templates", url: "/dashboard/templates", icon: LayoutTemplate },
   { title: "Users", url: "/dashboard/users", icon: Users },
 ];
 
