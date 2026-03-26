@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-// import { useRouter } from "next/navigation";
 import {
   usePage,
   useUpdatePage,
@@ -11,11 +10,13 @@ import {
   usePageVersions,
   useRestorePageVersion,
   type Section,
-  type Block,
-  type Container,
   type PageSeo,
 } from "@/lib/hooks/use-pages";
 import { useAutoSave } from "@/lib/hooks/use-auto-save";
+import {
+  usePageEditor,
+  createDefaultSection,
+} from "@/lib/hooks/use-page-editor";
 import {
   PageEditorLayout,
   PageSettingsDrawer,
@@ -26,7 +27,6 @@ import { PageRenderer } from "@/components/renderers/page-renderer";
 import { HeaderRenderer } from "@/components/headers";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
-import { blockRegistry } from "@/lib/editor";
 import { logger } from "@/lib/logger";
 import { toast } from "sonner";
 import { Eye } from "lucide-react";
@@ -37,81 +37,9 @@ import { useTenant } from "@/lib/hooks/use-tenants";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
 
-/**
- * Create a default container with empty blocks
- */
-function createDefaultContainer(): Container {
-  return {
-    _type: "container",
-    _key: `container-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-    layout: { type: "stack", gap: "md" },
-    paddingX: "md",
-    blocks: [],
-  };
-}
-
-/**
- * Create a default section with one container
- * Starts with nice defaults - can be customized later
- */
-function createDefaultSection(): Section {
-  return {
-    _type: "section",
-    _key: `section-${Date.now()}`,
-    width: "container",
-    paddingTop: "lg",
-    paddingBottom: "lg",
-    containers: [createDefaultContainer()],
-  };
-}
-
-/**
- * Get blocks from a specific container in a section
- */
-function getContainerBlocks(section: Section, containerIndex: number): Block[] {
-  return section.containers?.[containerIndex]?.blocks ?? [];
-}
-
-/**
- * Update blocks in a specific container
- */
-function updateContainerBlocks(
-  section: Section,
-  containerIndex: number,
-  blocks: Block[],
-): Section {
-  const containers = section.containers ?? [createDefaultContainer()];
-  const newContainers = [...containers];
-  if (newContainers[containerIndex]) {
-    newContainers[containerIndex] = {
-      ...newContainers[containerIndex],
-      blocks,
-    };
-  }
-  return { ...section, containers: newContainers };
-}
-
-/**
- * Create a default block using the block registry
- */
-function createDefaultBlock(blockType: string): Block {
-  // Use block registry to create default block
-  const defaultBlock = blockRegistry.createDefault(blockType);
-
-  if (!defaultBlock) {
-    // Fallback if block type not registered
-    logger.warn(
-      `Block type "${blockType}" not found in registry, using fallback`,
-    );
-    return {
-      _key: `block-${Date.now()}`,
-      _type: blockType,
-      data: {},
-    };
-  }
-
-  return defaultBlock;
-}
+// =============================================================================
+// Page Editor
+// =============================================================================
 
 export default function EditPagePage({
   params,
@@ -120,7 +48,6 @@ export default function EditPagePage({
 }) {
   const resolvedParams = React.use(params);
   const { id, pageId } = resolvedParams;
-  // const router = useRouter();
   const { data: page, isLoading, error } = usePage(id, pageId);
   const { data: tenant } = useTenant(id);
   const isBuilder = useIsBuilder(id);
@@ -131,8 +58,13 @@ export default function EditPagePage({
   const { data: versions = [] } = usePageVersions(id, pageId);
   const restoreVersion = useRestorePageVersion(id);
 
-  // Initialize sections from page content or create default
-  const [sections, setSections] = React.useState<Section[]>([]);
+  // Section/block operations (extracted hook)
+  const initialSections = React.useMemo(
+    () =>
+      (page?.content?.sections as Section[]) ?? [createDefaultSection()],
+    [page],
+  );
+  const editor = usePageEditor(initialSections);
 
   // Breakpoint state for responsive preview
   const [breakpoint, setBreakpoint] = React.useState<Breakpoint>("desktop");
@@ -140,22 +72,20 @@ export default function EditPagePage({
   // Modal states
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
 
-  // Preview mode from context (controls parent layout visibility)
+  // Preview mode from context
   const {
     isPreviewMode: previewMode,
     togglePreviewMode,
     setPageContext,
   } = usePreviewMode();
 
-  // Selection state for WYSIWYG editing
-  const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(
-    null,
-  );
-
-  // Hover state for layers popover
-  const [hoveredBlockKey, setHoveredBlockKey] = React.useState<string | null>(
-    null,
-  );
+  // Selection & hover state
+  const [selectedBlockKey, setSelectedBlockKey] = React.useState<
+    string | null
+  >(null);
+  const [hoveredBlockKey, setHoveredBlockKey] = React.useState<
+    string | null
+  >(null);
 
   // Sync selection highlight to preview DOM
   React.useEffect(() => {
@@ -210,16 +140,6 @@ export default function EditPagePage({
     },
   });
 
-  // Sync sections with page data
-  React.useEffect(() => {
-    if (page?.content?.sections) {
-      setSections(page.content.sections as Section[]);
-    } else {
-      // Create default section if none exists
-      setSections([createDefaultSection()]);
-    }
-  }, [page]);
-
   // Sync local page state with fetched page data
   React.useEffect(() => {
     if (page) {
@@ -240,15 +160,12 @@ export default function EditPagePage({
   React.useEffect(() => {
     const title = localPage.title || page?.title || "Untitled";
     setPageContext({ type: "Page", title });
-
-    // Clear context when unmounting
     return () => setPageContext(null);
   }, [localPage.title, page?.title, setPageContext]);
 
-  // Track if initial load is complete to avoid auto-saving on mount
-  const initialLoadRef = React.useRef(true);
+  // --- Auto-save wiring ---
 
-  // Store autoSave functions in refs to avoid stale closures
+  const initialLoadRef = React.useRef(true);
   const saveRef = React.useRef(autoSave.save);
   const saveNowRef = React.useRef(autoSave.saveNow);
   React.useEffect(() => {
@@ -256,37 +173,8 @@ export default function EditPagePage({
     saveNowRef.current = autoSave.saveNow;
   }, [autoSave.save, autoSave.saveNow]);
 
-  // Keyboard shortcut: Cmd+S / Ctrl+S to save
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
-        e.preventDefault();
-        saveNowRef.current({
-          title: localPage.title,
-          slug: localPage.slug,
-          template: localPage.template,
-          seo: localPage.seo,
-          headerId: localPage.headerId,
-          footerId: localPage.footerId,
-          isHomePage: localPage.isHomePage,
-          sections,
-        });
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [localPage, sections]);
-
-  // Trigger auto-save when content changes (after initial load)
-  React.useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
-      return;
-    }
-
-    // Debounced save of current page state
-    saveRef.current({
+  const buildSavePayload = React.useCallback(
+    () => ({
       title: localPage.title,
       slug: localPage.slug,
       template: localPage.template,
@@ -294,18 +182,31 @@ export default function EditPagePage({
       headerId: localPage.headerId,
       footerId: localPage.footerId,
       isHomePage: localPage.isHomePage,
-      sections,
-    });
-  }, [
-    sections,
-    localPage.title,
-    localPage.slug,
-    localPage.template,
-    localPage.seo,
-    localPage.headerId,
-    localPage.footerId,
-    localPage.isHomePage,
-  ]);
+      sections: editor.sections,
+    }),
+    [localPage, editor.sections],
+  );
+
+  // Keyboard shortcut: Cmd+S / Ctrl+S
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+        e.preventDefault();
+        saveNowRef.current(buildSavePayload());
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [buildSavePayload]);
+
+  // Trigger debounced auto-save on content changes
+  React.useEffect(() => {
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      return;
+    }
+    saveRef.current(buildSavePayload());
+  }, [buildSavePayload]);
 
   // Listen for block additions from BlocksLibrary
   React.useEffect(() => {
@@ -314,95 +215,38 @@ export default function EditPagePage({
         blockId: string;
         blockType: string;
       }>;
-      const { blockType } = customEvent.detail;
-
-      // Create new block based on type
-      const newBlock = createDefaultBlock(blockType);
-
-      // Add to first section's first container
-      setSections((prevSections) => {
-        const updatedSections = [...prevSections];
-        if (updatedSections.length === 0) {
-          const newSection = createDefaultSection();
-          newSection.containers[0].blocks = [newBlock];
-          updatedSections.push(newSection);
-        } else {
-          // Add to first section's first container
-          const blocks = getContainerBlocks(updatedSections[0], 0);
-          updatedSections[0] = updateContainerBlocks(updatedSections[0], 0, [
-            ...blocks,
-            newBlock,
-          ]);
-        }
-        return updatedSections;
-      });
-
-      toast.success("Block added!");
+      editor.handleAddBlockToContainer(0, 0, customEvent.detail.blockType);
     };
-
     window.addEventListener("add-block", handleAddBlock);
     return () => window.removeEventListener("add-block", handleAddBlock);
-  }, []);
+  }, [editor]);
+
+  // --- Early returns ---
 
   if (isLoading) return <div>Loading page...</div>;
   if (error) return <div>Error loading page: {error.message}</div>;
   if (!page) return <div>Page not found</div>;
 
-  const handleSave = () => {
-    // Use autoSave.saveNow to ensure lastSaved timestamp is updated
-    autoSave.saveNow({
-      title: localPage.title,
-      slug: localPage.slug,
-      template: localPage.template,
-      seo: localPage.seo,
-      headerId: localPage.headerId,
-      footerId: localPage.footerId,
-      isHomePage: localPage.isHomePage,
-      sections,
-    });
-  };
+  // --- Handlers ---
+
+  const handleSave = () => autoSave.saveNow(buildSavePayload());
 
   const handlePublish = async () => {
     const isCurrentlyPublished = page?.status === "published";
-
     if (isCurrentlyPublished) {
-      // Unpublish
       if (
         confirm("Unpublish this page? It will no longer be visible publicly.")
       ) {
         unpublishPage.mutate(pageId, {
-          onSuccess: () => {
-            toast.success("Page unpublished");
-          },
-          onError: () => {
-            toast.error("Failed to unpublish page");
-          },
+          onSuccess: () => toast.success("Page unpublished"),
+          onError: () => toast.error("Failed to unpublish page"),
         });
       }
     } else {
-      // Save first, then publish
-      const confirmed = confirm(
-        "Publish this page? It will be visible to the public.",
-      );
-      if (!confirmed) return;
-
+      if (!confirm("Publish this page? It will be visible to the public."))
+        return;
       try {
-        // Save current changes (don't send status - publish will set it)
-        await updatePage.mutateAsync({
-          id: pageId,
-          data: {
-            title: localPage.title,
-            slug: localPage.slug,
-            template: localPage.template,
-            seo: localPage.seo,
-            headerId: localPage.headerId,
-            footerId: localPage.footerId,
-            isHomePage: localPage.isHomePage,
-            sections,
-          },
-        });
-
-        // Then publish (await to ensure it completes)
+        await updatePage.mutateAsync({ id: pageId, data: buildSavePayload() });
         await publishPage.mutateAsync(pageId);
         toast.success("Page published successfully!");
       } catch {
@@ -411,50 +255,30 @@ export default function EditPagePage({
     }
   };
 
-  const handlePageChange = (field: string, value: unknown) => {
-    setLocalPage((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-    logger.debug("Page field changed", { field, value });
-  };
-
-  const handlePreview = () => {
-    // Toggle preview mode (hides parent layout chrome via context)
-    togglePreviewMode();
-    // Clear selection when entering preview mode
-    if (!previewMode) {
-      setSelectedBlockKey(null);
-    }
-  };
-
   const handleUnpublish = () => {
     if (
       confirm("Unpublish this page? It will no longer be visible publicly.")
     ) {
       unpublishPage.mutate(pageId, {
-        onSuccess: () => {
-          toast.success("Page unpublished");
-        },
-        onError: () => {
-          toast.error("Failed to unpublish page");
-        },
+        onSuccess: () => toast.success("Page unpublished"),
+        onError: () => toast.error("Failed to unpublish page"),
       });
     }
   };
 
-  const handleGeneratePreviewLink = async () => {
-    // Flush any pending saves first
-    autoSave.flush();
+  const handlePreview = () => {
+    togglePreviewMode();
+    if (!previewMode) setSelectedBlockKey(null);
+  };
 
+  const handleGeneratePreviewLink = async () => {
+    autoSave.flush();
     try {
       const result = await createPreviewToken.mutateAsync({
         contentType: "page",
         contentId: pageId,
         expiresIn: "7d",
       });
-
-      // Copy to clipboard
       await navigator.clipboard.writeText(result.previewUrl);
       toast.success("Preview link copied to clipboard!");
     } catch {
@@ -462,253 +286,16 @@ export default function EditPagePage({
     }
   };
 
-  const handleBlockChange = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockIndex: number,
-    updatedBlock: Block,
-  ) => {
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      const blocks = getContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-      );
-      const newBlocks = blocks.map((block: Block, idx: number) =>
-        idx === blockIndex ? updatedBlock : block,
-      );
-      updatedSections[sectionIndex] = updateContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-        newBlocks,
-      );
-      return updatedSections;
-    });
+  const handlePageChange = (field: string, value: unknown) => {
+    setLocalPage((prev) => ({ ...prev, [field]: value }));
+    logger.debug("Page field changed", { field, value });
   };
 
-  const handleBlockDelete = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockIndex: number,
-  ) => {
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      const blocks = getContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-      );
-      const newBlocks = blocks.filter(
-        (_: Block, idx: number) => idx !== blockIndex,
-      );
-      updatedSections[sectionIndex] = updateContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-        newBlocks,
-      );
-      return updatedSections;
-    });
-    setSelectedBlockKey(null);
-    toast.success("Block deleted");
-  };
+  // --- Preview mode render ---
 
-  const handleBlockDuplicate = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockIndex: number,
-  ) => {
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      const blocks = getContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-      );
-      const block = blocks[blockIndex];
-      const duplicatedBlock = {
-        ...block,
-        _key: `block-${Date.now()}`,
-      };
-      const newBlocks = [
-        ...blocks.slice(0, blockIndex + 1),
-        duplicatedBlock,
-        ...blocks.slice(blockIndex + 1),
-      ];
-      updatedSections[sectionIndex] = updateContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-        newBlocks,
-      );
-      return updatedSections;
-    });
-    toast.success("Block duplicated");
-  };
-
-  const handleBlockMoveUp = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockIndex: number,
-  ) => {
-    if (blockIndex === 0) return;
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      const blocks = [
-        ...getContainerBlocks(updatedSections[sectionIndex], containerIndex),
-      ];
-      [blocks[blockIndex - 1], blocks[blockIndex]] = [
-        blocks[blockIndex],
-        blocks[blockIndex - 1],
-      ];
-      updatedSections[sectionIndex] = updateContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-        blocks,
-      );
-      return updatedSections;
-    });
-  };
-
-  const handleBlockMoveDown = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockIndex: number,
-  ) => {
-    setSections((prevSections) => {
-      const blocks = getContainerBlocks(
-        prevSections[sectionIndex],
-        containerIndex,
-      );
-      if (blockIndex >= blocks.length - 1) return prevSections;
-      const updatedSections = [...prevSections];
-      const newBlocks = [...blocks];
-      [newBlocks[blockIndex], newBlocks[blockIndex + 1]] = [
-        newBlocks[blockIndex + 1],
-        newBlocks[blockIndex],
-      ];
-      updatedSections[sectionIndex] = updateContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-        newBlocks,
-      );
-      return updatedSections;
-    });
-  };
-
-  const handleSectionChange = (
-    sectionIndex: number,
-    updatedSection: Section,
-  ) => {
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      updatedSections[sectionIndex] = updatedSection;
-      return updatedSections;
-    });
-  };
-
-  const handleSectionDelete = (sectionIndex: number) => {
-    setSections((prevSections) =>
-      prevSections.filter((_, idx) => idx !== sectionIndex),
-    );
-    toast.success("Section deleted");
-  };
-
-  const handleAddSectionAt = (index: number) => {
-    const newSection = createDefaultSection();
-
-    setSections((prevSections) => {
-      const updated = [...prevSections];
-      updated.splice(index, 0, newSection);
-      return updated;
-    });
-    toast.success("Section added");
-  };
-
-  const handleSectionDuplicate = (sectionIndex: number) => {
-    setSections((prevSections) => {
-      const section = prevSections[sectionIndex];
-      // Duplicate all containers with new keys
-      const duplicatedContainers = (section.containers ?? []).map(
-        (container, idx) => ({
-          ...container,
-          _key: `container-${Date.now()}-${idx}`,
-          blocks: (container.blocks ?? []).map((block: Block) => ({
-            ...block,
-            _key: `block-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-          })),
-        }),
-      );
-      const duplicated: Section = {
-        ...section,
-        _key: `section-${Date.now()}`,
-        containers: duplicatedContainers,
-      };
-      const updated = [...prevSections];
-      updated.splice(sectionIndex + 1, 0, duplicated);
-      return updated;
-    });
-    toast.success("Section duplicated");
-  };
-
-  const handleSectionMoveUp = (sectionIndex: number) => {
-    if (sectionIndex === 0) return;
-    setSections((prevSections) => {
-      const updated = [...prevSections];
-      [updated[sectionIndex - 1], updated[sectionIndex]] = [
-        updated[sectionIndex],
-        updated[sectionIndex - 1],
-      ];
-      return updated;
-    });
-  };
-
-  const handleSectionMoveDown = (sectionIndex: number) => {
-    setSections((prevSections) => {
-      if (sectionIndex >= prevSections.length - 1) return prevSections;
-      const updated = [...prevSections];
-      [updated[sectionIndex], updated[sectionIndex + 1]] = [
-        updated[sectionIndex + 1],
-        updated[sectionIndex],
-      ];
-      return updated;
-    });
-  };
-
-  const handleAddBlockToContainer = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockType: string,
-  ) => {
-    const newBlock = createDefaultBlock(blockType);
-    setSections((prevSections) => {
-      const updated = [...prevSections];
-      const blocks = getContainerBlocks(updated[sectionIndex], containerIndex);
-      updated[sectionIndex] = updateContainerBlocks(
-        updated[sectionIndex],
-        containerIndex,
-        [...blocks, newBlock],
-      );
-      return updated;
-    });
-    toast.success("Block added!");
-  };
-
-  const handleAddContainerToSection = (sectionIndex: number) => {
-    const newContainer = createDefaultContainer();
-    setSections((prevSections) => {
-      const updated = [...prevSections];
-      const containers = updated[sectionIndex].containers ?? [];
-      updated[sectionIndex] = {
-        ...updated[sectionIndex],
-        containers: [...containers, newContainer],
-      };
-      return updated;
-    });
-    toast.success("Container added!");
-  };
-
-  // Preview mode - show rendered page without any editor chrome
   if (previewMode) {
     return (
       <div className="min-h-screen bg-background">
-        {/* Floating exit button */}
         <Button
           variant="secondary"
           size="sm"
@@ -718,17 +305,13 @@ export default function EditPagePage({
           <Eye className="h-4 w-4" />
           Exit Preview
         </Button>
-
-        {/* Header */}
         <HeaderRenderer tenantId={id} headerId={localPage.headerId} />
-
-        {/* Pure page render */}
         <PageRenderer
           page={{
             id: pageId,
             title: localPage.title,
             slug: localPage.slug,
-            sections,
+            sections: editor.sections,
           }}
           breakpoint={breakpoint}
         />
@@ -736,9 +319,10 @@ export default function EditPagePage({
     );
   }
 
+  // --- Editor render ---
+
   return (
     <>
-      {/* Page Settings Drawer */}
       <PageSettingsDrawer
         open={settingsModalOpen}
         onOpenChange={setSettingsModalOpen}
@@ -762,7 +346,7 @@ export default function EditPagePage({
         tenantSlug={tenant?.slug}
         leftPanel={
           <PageLayers
-            sections={sections}
+            sections={editor.sections}
             selectedKey={selectedBlockKey}
             hoveredKey={hoveredBlockKey}
             onSelectSection={(sectionIndex, key) => {
@@ -778,15 +362,15 @@ export default function EditPagePage({
               selectBlock(sectionIndex, containerIndex, blockIndex, key);
             }}
             onHover={setHoveredBlockKey}
-            onAddSection={() => handleAddSectionAt(sections.length)}
-            onDeleteSection={handleSectionDelete}
-            onAddBlock={(si, ci, blockType) =>
-              handleAddBlockToContainer(si, ci, blockType)
+            onAddSection={() =>
+              editor.handleAddSectionAt(editor.sections.length)
             }
-            onDeleteBlock={handleBlockDelete}
-            onDuplicateBlock={handleBlockDuplicate}
-            onMoveBlockUp={handleBlockMoveUp}
-            onMoveBlockDown={handleBlockMoveDown}
+            onDeleteSection={editor.handleSectionDelete}
+            onAddBlock={editor.handleAddBlockToContainer}
+            onDeleteBlock={editor.handleBlockDelete}
+            onDuplicateBlock={editor.handleBlockDuplicate}
+            onMoveBlockUp={editor.handleBlockMoveUp}
+            onMoveBlockDown={editor.handleBlockMoveDown}
           />
         }
         versions={versions}
@@ -807,10 +391,10 @@ export default function EditPagePage({
         lastSaved={autoSave.lastSaved}
         rightPanel={
           <SettingsPanel
-            sections={sections}
-            onSectionChange={handleSectionChange}
+            sections={editor.sections}
+            onSectionChange={editor.handleSectionChange}
             onContainerChange={(sectionIndex, containerIndex, container) => {
-              setSections((prevSections) => {
+              editor.setSections((prevSections) => {
                 const updated = [...prevSections];
                 const containers = [
                   ...(updated[sectionIndex].containers ?? []),
@@ -823,27 +407,13 @@ export default function EditPagePage({
                 return updated;
               });
             }}
-            onBlockChange={(
-              sectionIndex,
-              containerIndex,
-              blockIndex,
-              block,
-            ) => {
-              handleBlockChange(
-                sectionIndex,
-                containerIndex,
-                blockIndex,
-                block,
-              );
-            }}
-            // Section actions
-            onSectionMoveUp={handleSectionMoveUp}
-            onSectionMoveDown={handleSectionMoveDown}
-            onSectionDuplicate={handleSectionDuplicate}
-            onSectionDelete={handleSectionDelete}
-            // Container actions
+            onBlockChange={editor.handleBlockChange}
+            onSectionMoveUp={editor.handleSectionMoveUp}
+            onSectionMoveDown={editor.handleSectionMoveDown}
+            onSectionDuplicate={editor.handleSectionDuplicate}
+            onSectionDelete={editor.handleSectionDelete}
             onContainerDelete={(sectionIndex, containerIndex) => {
-              setSections((prevSections) => {
+              editor.setSections((prevSections) => {
                 const updated = [...prevSections];
                 const containers = [
                   ...(updated[sectionIndex].containers ?? []),
@@ -856,17 +426,14 @@ export default function EditPagePage({
                 return updated;
               });
             }}
-            // Container actions - add container
-            onAddContainer={handleAddContainerToSection}
-            // Block actions
-            onBlockMoveUp={handleBlockMoveUp}
-            onBlockMoveDown={handleBlockMoveDown}
-            onBlockDuplicate={handleBlockDuplicate}
-            onBlockDelete={handleBlockDelete}
+            onAddContainer={editor.handleAddContainerToSection}
+            onBlockMoveUp={editor.handleBlockMoveUp}
+            onBlockMoveDown={editor.handleBlockMoveDown}
+            onBlockDuplicate={editor.handleBlockDuplicate}
+            onBlockDelete={editor.handleBlockDelete}
           />
         }
       >
-        {/* CMS Preview — read-only live preview of the page */}
         <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
           <ResponsivePreview breakpoint={breakpoint} className="h-full">
             <div className="page-editor-canvas-content design-preview">
@@ -875,7 +442,7 @@ export default function EditPagePage({
                   id: pageId,
                   title: localPage.title,
                   slug: localPage.slug,
-                  sections,
+                  sections: editor.sections,
                 }}
                 breakpoint={breakpoint}
               />
