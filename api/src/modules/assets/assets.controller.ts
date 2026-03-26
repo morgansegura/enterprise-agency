@@ -15,7 +15,6 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AssetsService } from "./assets.service";
-import { UsersService } from "@/modules/users/users.service";
 import { UpdateAssetDto } from "./dto/update-asset.dto";
 import { UploadAssetDto } from "./dto/upload-asset.dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
@@ -29,10 +28,7 @@ import { TenantId } from "@/common/decorators/tenant.decorator";
 @Controller("assets")
 @UseGuards(JwtAuthGuard, TenantAccessGuard, PermissionGuard)
 export class AssetsController {
-  constructor(
-    private readonly assetsService: AssetsService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly assetsService: AssetsService) {}
 
   @Post("upload")
   @Permissions(Permission.MEDIA_UPLOAD)
@@ -40,13 +36,10 @@ export class AssetsController {
   async upload(
     @UploadedFile() file: Express.Multer.File,
     @TenantId() tenantId: string,
-    @CurrentUser() currentUser: { id: string; sessionId: string },
+    @CurrentUser() currentUser: { id: string },
     @Body() uploadDto: UploadAssetDto,
   ) {
-    // Get database user ID from Clerk ID
-    const user = await this.usersService.findByClerkId(currentUser.id);
-
-    return this.assetsService.upload(file, tenantId, user.id, {
+    return this.assetsService.upload(file, tenantId, currentUser.id, {
       altText: uploadDto.altText,
       usageContext: uploadDto.usageContext,
     });
