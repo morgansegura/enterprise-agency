@@ -129,7 +129,7 @@ export class TenantsService {
         tenantUsers: {
           create: {
             userId: creatorUserId,
-            role: "owner",
+            role: "AGENCY_ADMIN",
             permissions: {
               pages: { view: true, create: true, edit: true, delete: true },
               posts: { view: true, create: true, edit: true, delete: true },
