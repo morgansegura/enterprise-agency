@@ -32,6 +32,7 @@ import {
   Layers,
   Loader2,
   Search,
+  Sparkles,
 } from "lucide-react";
 import { ColorPicker } from "@/components/ui/color-picker";
 import {
@@ -108,7 +109,7 @@ import {
   type ComponentSettingsData,
   defaultComponentSettings,
 } from "./component-settings-panel";
-import { type ThemePreset } from "./theme-presets";
+import { ThemePresets, type ThemePreset } from "./theme-presets";
 import {
   LoadingSettingsPanel,
   type LoadingSettingsData,
@@ -139,13 +140,12 @@ type SettingsTab =
   | "cards";
 
 const navItems: SettingsNavItem<SettingsTab>[] = [
-  // TODO: Re-enable when settings are wired to CSS variables and presets can be previewed
-  // {
-  //   id: "presets",
-  //   label: "Theme Presets",
-  //   icon: Sparkles,
-  //   description: "Quick start themes",
-  // },
+  {
+    id: "presets",
+    label: "Theme Presets",
+    icon: Sparkles,
+    description: "Quick start themes",
+  },
   {
     id: "site",
     label: "Site",
@@ -888,7 +888,7 @@ export function GlobalSettingsDrawer({
     }));
   };
 
-  const _handleApplyThemePreset = (preset: ThemePreset) => {
+  const handleApplyThemePreset = (preset: ThemePreset) => {
     setLocalTokens((prev) => ({
       ...prev,
       colorSettings: preset.colors,
@@ -924,6 +924,14 @@ export function GlobalSettingsDrawer({
             <Loader2 className="h-3 w-3 animate-spin" />
             Saving...
           </div>
+        )}
+
+        {/* Theme Presets */}
+        {activeTab === "presets" && (
+          <ThemePresets
+            onApplyTheme={handleApplyThemePreset}
+            currentThemeId={localTokens.activeThemeId}
+          />
         )}
 
         {/* Site Settings - Branding & Identity */}

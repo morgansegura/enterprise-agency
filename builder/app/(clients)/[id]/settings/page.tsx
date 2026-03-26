@@ -3,7 +3,11 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useTenant, useUpdateTenant } from "@/lib/hooks/use-tenants";
+import {
+  useTenant,
+  useUpdateTenant,
+  useMarkAsTemplate,
+} from "@/lib/hooks/use-tenants";
 import { useUploadAsset } from "@/lib/hooks/use-assets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +25,7 @@ import {
   Layers,
   Palette,
   Headphones,
+  LayoutTemplate,
 } from "lucide-react";
 
 import "./settings.css";
@@ -34,6 +39,7 @@ export default function SettingsPage() {
   const tenantId = params?.id as string;
   const { data: tenant, isLoading, error } = useTenant(tenantId);
   const updateTenant = useUpdateTenant();
+  const markAsTemplate = useMarkAsTemplate();
   const uploadAsset = useUploadAsset(tenantId);
 
   const [formData, setFormData] = useState({
@@ -420,6 +426,75 @@ export default function SettingsPage() {
                     </p>
                     <Button disabled className="w-full">
                       Contact Us to Upgrade
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Template */}
+            <div className="settings-card">
+              <div className="settings-card-header">
+                <h2 className="settings-card-title">
+                  <LayoutTemplate className="inline h-4 w-4 mr-1.5" />
+                  Template
+                </h2>
+                <p className="settings-card-description">
+                  Make this site cloneable for new clients
+                </p>
+              </div>
+              <div className="settings-card-body">
+                {(tenant as { isTemplate?: boolean })?.isTemplate ? (
+                  <div className="flex flex-col gap-3">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-green-700 bg-green-100 px-2 py-1 rounded w-fit">
+                      <Check className="h-3 w-3" />
+                      Active Template
+                    </span>
+                    <p className="text-xs text-muted-foreground">
+                      This site appears in the Templates gallery and can be
+                      cloned to create new client sites.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={async () => {
+                        try {
+                          await markAsTemplate.mutateAsync({
+                            tenantId,
+                          });
+                          toast.success("Template status removed");
+                        } catch {
+                          toast.error("Failed to update template status");
+                        }
+                      }}
+                      disabled={markAsTemplate.isPending}
+                    >
+                      Remove Template
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <p className="text-xs text-muted-foreground">
+                      Mark this site as a template to make it available for
+                      cloning in the Templates gallery.
+                    </p>
+                    <Button
+                      size="sm"
+                      onClick={async () => {
+                        try {
+                          await markAsTemplate.mutateAsync({
+                            tenantId,
+                            templateName: tenant?.businessName,
+                          });
+                          toast.success("Marked as template");
+                        } catch {
+                          toast.error("Failed to mark as template");
+                        }
+                      }}
+                      disabled={markAsTemplate.isPending}
+                    >
+                      <LayoutTemplate className="h-3.5 w-3.5" />
+                      Mark as Template
                     </Button>
                   </div>
                 )}

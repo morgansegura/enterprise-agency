@@ -47,7 +47,10 @@ function SidebarNavLink({
   title: string;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive =
+    href === "/dashboard"
+      ? pathname === href
+      : pathname === href || pathname?.startsWith(href + "/");
 
   return (
     <li className="dashboard-sidebar-item">
