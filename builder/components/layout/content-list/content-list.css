@@ -26,8 +26,8 @@
 }
 
 .content-table-header-cell {
-  @apply px-3 py-2.5 text-left;
-  @apply text-[11px] font-normal uppercase tracking-wider;
+  @apply px-3 py-2 text-left;
+  @apply text-[11px] font-semibold uppercase tracking-[0.04em];
   @apply text-(--el-400) select-none;
 }
 
@@ -68,7 +68,7 @@
 
 /* Table Cells */
 .content-table-cell {
-  @apply px-3 py-2.5;
+  @apply px-3 py-2;
 }
 
 .content-table-cell-title {
@@ -76,7 +76,7 @@
 }
 
 .content-table-cell-title-text {
-  @apply text-sm font-semibold text-(--foreground) truncate;
+  @apply text-[13px] font-medium text-(--foreground) truncate;
 }
 
 .content-table-cell-slug {
@@ -84,7 +84,7 @@
 }
 
 .content-table-cell-slug-text {
-  @apply text-sm text-(--el-400) truncate;
+  @apply text-[13px] text-(--el-400) truncate;
 }
 
 .content-table-cell-status {
@@ -96,7 +96,7 @@
 }
 
 .content-table-cell-date-text {
-  @apply text-sm text-(--el-400);
+  @apply text-[13px] text-(--el-400);
 }
 
 .content-table-cell-actions {
@@ -233,7 +233,7 @@
    ============================================================================ */
 
 .content-table-skeleton-row {
-  @apply flex items-center gap-4 px-3 py-2.5;
+  @apply flex items-center gap-4 px-3 py-2;
   @apply border-b border-(--border-subtle);
 }
 

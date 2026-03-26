@@ -1,15 +1,15 @@
 @reference "tailwindcss";
 
 .layout-heading {
-  @apply grid grid-cols-2;
+  @apply flex items-center justify-between gap-4;
 }
 
 .layout-heading-title {
-  @apply text-3xl font-bold tracking-tight;
+  @apply text-xl font-semibold tracking-tight;
 }
 
 .layout-heading-description {
-  @apply mt-2 text-sm text-(--muted-foreground);
+  @apply mt-0.5 text-[13px] text-(--muted-foreground);
 }
 
 .layout-heading-content {
@@ -17,13 +17,13 @@
 }
 
 .layout-heading-actions {
-  @apply flex justify-end space-x-3;
+  @apply flex items-center gap-2;
 }
 
 .layout-heading-back-navigation {
-  @apply mb-3;
+  @apply mb-2;
 
   button {
-    @apply text-xs px-1.5 h-7 rounded-full;
+    @apply text-xs px-1.5 h-6 rounded-full;
   }
 }

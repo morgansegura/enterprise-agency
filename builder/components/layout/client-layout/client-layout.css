@@ -3,8 +3,9 @@
 .client-layout {
   @apply relative overflow-hidden flex flex-col bg-(--builder-card);
 }
+
 .client-layout-header {
-  @apply flex h-12 shrink-0 items-center gap-2 px-2 border-b border-(--border) justify-between;
+  @apply flex h-10 shrink-0 items-center gap-2 px-3 border-b border-(--border) justify-between;
 }
 
 .client-layout-header-left {
@@ -12,26 +13,26 @@
 }
 
 .client-layout-header-center {
-  @apply flex-1 flex items-center justify-center gap-1.5;
+  @apply flex-1 flex items-center justify-center gap-1;
 }
 
 .client-layout-header-context-type {
-  @apply text-sm text-(--muted-foreground);
+  @apply text-[12px] text-(--muted-foreground);
 }
 
 .client-layout-header-context-title {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-[12px] font-medium text-(--foreground);
 }
 
 .client-layout-header-trigger {
   @apply relative cursor-pointer rounded-md flex items-center justify-center;
 
   & svg {
-    @apply size-5 stroke-(--muted-foreground) transition-colors duration-300 ease-out;
+    @apply size-4 stroke-(--muted-foreground) transition-colors duration-300 ease-out;
   }
 
   &:hover svg {
-    @apply size-5 outline-inherit stroke-(--foreground);
+    @apply size-4 outline-inherit stroke-(--foreground);
   }
 }
 
@@ -40,7 +41,7 @@
 }
 
 .client-layout-header-right {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-1.5;
 }
 
 .client-layout-main {
@@ -52,7 +53,7 @@
 }
 
 .client-layout-loading-text {
-  @apply text-(--muted-foreground);
+  @apply text-(--muted-foreground) text-[13px];
 }
 
 /* Preview mode - full screen without chrome */
@@ -65,5 +66,5 @@
 }
 
 .client-layout-header-logo-text {
-  @apply text-sm font-semibold;
+  @apply text-[13px] font-semibold;
 }

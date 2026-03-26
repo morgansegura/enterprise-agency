@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import {
   ArrowLeft,
+  ChevronRight,
   FileText,
   Newspaper,
   Tags,
@@ -53,6 +55,12 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
+interface NavSection {
+  label: string;
+  items: NavItem[];
+  defaultOpen?: boolean;
+}
+
 /* ── Internal nav link ─────────────────────────────────────────────────── */
 
 function ClientNavLink({
@@ -65,7 +73,8 @@ function ClientNavLink({
   title: string;
 }) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive =
+    pathname === href || pathname?.startsWith(href + "/");
 
   return (
     <SidebarMenuItem>
@@ -77,6 +86,46 @@ function ClientNavLink({
   );
 }
 
+/* ── Collapsible section ───────────────────────────────────────────────── */
+
+function SidebarSection({
+  label,
+  items,
+  defaultOpen = true,
+}: NavSection) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <SidebarGroup>
+      <button
+        type="button"
+        className="client-sidebar-section-toggle"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <ChevronRight
+          className="client-sidebar-section-chevron"
+          data-open={isOpen}
+        />
+        <span>{label}</span>
+      </button>
+      {isOpen && (
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {items.map((item) => (
+              <ClientNavLink
+                key={item.url}
+                href={item.url}
+                icon={item.icon}
+                title={item.title}
+              />
+            ))}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      )}
+    </SidebarGroup>
+  );
+}
+
 /* ── Component ─────────────────────────────────────────────────────────── */
 
 export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
@@ -85,30 +134,52 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
   const { data: _tenant } = useTenant(tenantId);
   const { openPageSettings, openGlobalSettings } = useUIStore();
 
-  /* Menu definitions */
-
-  const contentItems: NavItem[] = [
-    { title: "Pages", url: `/${tenantId}/pages`, icon: FileText },
-    { title: "Blog", url: `/${tenantId}/posts`, icon: Newspaper },
-    { title: "Tags", url: `/${tenantId}/tags`, icon: Tags },
-    { title: "Media", url: `/${tenantId}/media`, icon: Image },
-  ];
-
-  const commerceItems: NavItem[] = [
-    { title: "Products", url: `/${tenantId}/shop/products`, icon: Package },
-    { title: "Orders", url: `/${tenantId}/shop/orders`, icon: Receipt },
-    { title: "Customers", url: `/${tenantId}/shop/customers`, icon: Users },
-  ];
-
-  const configurationItems: NavItem[] = [
-    { title: "Headers", url: `/${tenantId}/headers`, icon: PanelTop },
-    { title: "Footers", url: `/${tenantId}/footers`, icon: PanelBottom },
-    { title: "Menus", url: `/${tenantId}/menus`, icon: Menu },
-    { title: "Settings", url: `/${tenantId}/settings`, icon: Settings },
-  ];
-
-  const managementItems: NavItem[] = [
-    { title: "Team", url: `/${tenantId}/team`, icon: UserCog },
+  /* Section definitions */
+  const sections: NavSection[] = [
+    {
+      label: "Content",
+      defaultOpen: true,
+      items: [
+        { title: "Pages", url: `/${tenantId}/pages`, icon: FileText },
+        { title: "Blog", url: `/${tenantId}/posts`, icon: Newspaper },
+        { title: "Tags", url: `/${tenantId}/tags`, icon: Tags },
+        { title: "Media", url: `/${tenantId}/media`, icon: Image },
+      ],
+    },
+    {
+      label: "Commerce",
+      defaultOpen: true,
+      items: [
+        {
+          title: "Products",
+          url: `/${tenantId}/shop/products`,
+          icon: Package,
+        },
+        { title: "Orders", url: `/${tenantId}/shop/orders`, icon: Receipt },
+        {
+          title: "Customers",
+          url: `/${tenantId}/shop/customers`,
+          icon: Users,
+        },
+      ],
+    },
+    {
+      label: "Configuration",
+      defaultOpen: true,
+      items: [
+        { title: "Headers", url: `/${tenantId}/headers`, icon: PanelTop },
+        { title: "Footers", url: `/${tenantId}/footers`, icon: PanelBottom },
+        { title: "Menus", url: `/${tenantId}/menus`, icon: Menu },
+        { title: "Settings", url: `/${tenantId}/settings`, icon: Settings },
+      ],
+    },
+    {
+      label: "Management",
+      defaultOpen: false,
+      items: [
+        { title: "Team", url: `/${tenantId}/team`, icon: UserCog },
+      ],
+    },
   ];
 
   return (
@@ -126,77 +197,10 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent>
-        {/* Content */}
-        {tenantId && (
-          <>
-            <SidebarGroup>
-              <div className="client-sidebar-label">Content</div>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {contentItems.map((item) => (
-                    <ClientNavLink
-                      key={item.url}
-                      href={item.url}
-                      icon={item.icon}
-                      title={item.title}
-                    />
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-
-            {/* Commerce */}
-            <SidebarGroup>
-              <div className="client-sidebar-label">Commerce</div>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {commerceItems.map((item) => (
-                    <ClientNavLink
-                      key={item.url}
-                      href={item.url}
-                      icon={item.icon}
-                      title={item.title}
-                    />
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-
-            {/* Configuration */}
-            <SidebarGroup>
-              <div className="client-sidebar-label">Configuration</div>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {configurationItems.map((item) => (
-                    <ClientNavLink
-                      key={item.url}
-                      href={item.url}
-                      icon={item.icon}
-                      title={item.title}
-                    />
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-
-            {/* Management */}
-            <SidebarGroup>
-              <div className="client-sidebar-label">Management</div>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {managementItems.map((item) => (
-                    <ClientNavLink
-                      key={item.url}
-                      href={item.url}
-                      icon={item.icon}
-                      title={item.title}
-                    />
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </>
-        )}
+        {tenantId &&
+          sections.map((section) => (
+            <SidebarSection key={section.label} {...section} />
+          ))}
       </SidebarContent>
 
       {/* Footer — editor actions + collapse trigger */}

@@ -1,27 +1,28 @@
 @reference "tailwindcss";
 
-/* Page Header Container */
+/* Page Header — Jira-style dense header with toolbar */
+
 .page-header {
-  @apply flex flex-col gap-6;
+  @apply flex flex-col gap-4;
 }
 
 /* Header Row - Title & Actions */
 .page-header-row {
-  @apply flex items-start justify-between gap-4;
+  @apply flex items-center justify-between gap-4;
 }
 
 .page-header-title-section {
-  @apply flex items-center gap-4;
+  @apply flex items-center gap-3;
 }
 
 .page-header-icon {
   @apply flex items-center justify-center;
-  @apply w-12 h-12 rounded-xl;
+  @apply w-8 h-8 rounded-lg;
   @apply bg-(--primary)/10 text-(--primary);
 }
 
 .page-header-icon svg {
-  @apply h-6 w-6;
+  @apply h-4 w-4;
 }
 
 .page-header-text {
@@ -29,57 +30,57 @@
 }
 
 .page-header-title {
-  @apply text-2xl font-semibold tracking-tight text-(--foreground);
+  @apply text-xl font-semibold tracking-tight text-(--foreground);
 }
 
 .page-header-count {
-  @apply inline-flex font-bold px-1 h-4.5 items-center rounded-sm text-xs text-(--muted-foreground) bg-(--border);
+  @apply inline-flex font-semibold px-1.5 h-5 items-center rounded text-[11px] text-(--muted-foreground) bg-(--border);
 }
 
 .page-header-actions {
-  @apply flex items-center gap-3;
+  @apply flex items-center gap-2;
 }
 
-/* Toolbar Row - Search, Filters, View Toggle */
+/* Toolbar Row — compact */
 .page-header-toolbar {
-  @apply flex items-center justify-between gap-4;
+  @apply flex items-center justify-between gap-3;
 }
 
 .page-header-toolbar-left {
-  @apply flex items-center gap-3 flex-1;
+  @apply flex items-center gap-2 flex-1;
 }
 
 .page-header-toolbar-right {
-  @apply flex items-center gap-3;
+  @apply flex items-center gap-2;
 }
 
-/* Search */
+/* Search — compact */
 .page-header-search {
-  @apply relative flex-1 max-w-md;
+  @apply relative flex-1 max-w-sm;
 }
 
 .page-header-search-icon {
-  @apply absolute left-3 top-1/2 -translate-y-1/2;
-  @apply h-4 w-4 text-(--muted-foreground);
+  @apply absolute left-2.5 top-1/2 -translate-y-1/2;
+  @apply h-3.5 w-3.5 text-(--muted-foreground);
 }
 
 .page-header-search-input {
-  @apply pl-10 h-10 bg-(--el-50) border border-(--border-subtle);
+  @apply pl-8 h-8 text-[13px] bg-(--el-50) border border-(--border-subtle);
 }
 
-/* Filter Select */
+/* Filter Select — compact */
 .page-header-filter-select {
-  @apply w-36 h-10;
+  @apply w-32 h-8;
 }
 
-/* View Toggle */
+/* View Toggle — compact */
 .page-header-view-toggle {
   @apply flex items-center p-0.5 rounded-md;
   @apply bg-(--muted) gap-0.5;
 }
 
 .page-header-view-toggle button {
-  @apply h-9 w-9;
+  @apply h-7 w-7;
 }
 
 .page-header-view-toggle button svg {
