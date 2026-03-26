@@ -14,13 +14,16 @@ import {
   type Block,
   type Container,
 } from "@/lib/hooks/use-pages";
+import {
+  usePageEditor,
+  createDefaultSection,
+} from "@/lib/hooks/use-page-editor";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
 import { SortableSection } from "@/components/editor/sortable-section";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
-import { blockRegistry } from "@/lib/editor";
 import { logger } from "@/lib/logger";
 import { toast } from "sonner";
 import {
@@ -41,77 +44,6 @@ import {
 import { PanelsTopLeft, Newspaper, Store, PlusCircle } from "lucide-react";
 import { PostEditorLayout } from "@/components/editor/post-editor-layout";
 import { useUIStore } from "@/lib/stores/ui-store";
-
-/**
- * Create a default container with empty blocks
- */
-function createDefaultContainer(): Container {
-  return {
-    _type: "container",
-    _key: `container-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-    layout: { type: "stack", gap: "md" },
-    blocks: [],
-  };
-}
-
-/**
- * Create a default section with one container
- */
-function createDefaultSection(): Section {
-  return {
-    _type: "section",
-    _key: `section-${Date.now()}`,
-    containers: [createDefaultContainer()],
-  };
-}
-
-/**
- * Get blocks from a specific container in a section
- */
-function getContainerBlocks(section: Section, containerIndex: number): Block[] {
-  return section.containers?.[containerIndex]?.blocks ?? [];
-}
-
-/**
- * Update blocks in a specific container
- */
-function updateContainerBlocks(
-  section: Section,
-  containerIndex: number,
-  blocks: Block[],
-): Section {
-  const containers = section.containers ?? [createDefaultContainer()];
-  const newContainers = [...containers];
-  if (newContainers[containerIndex]) {
-    newContainers[containerIndex] = {
-      ...newContainers[containerIndex],
-      blocks,
-    };
-  }
-  return { ...section, containers: newContainers };
-}
-
-/**
- * Create a default block using the block registry
- */
-function createDefaultBlock(blockType: string): Block {
-  // Use block registry to create default block
-  const defaultBlock = blockRegistry.createDefault(blockType);
-
-  if (!defaultBlock) {
-    // Fallback if block type not registered
-    logger.warn(
-      `Block type "${blockType}" not found in registry, using fallback`,
-    );
-    return {
-      _key: `block-${Date.now()}`,
-      _type: blockType,
-      data: {},
-    };
-  }
-
-  return defaultBlock;
-}
 
 export default function EditPostPage({
   params,
@@ -134,8 +66,13 @@ export default function EditPostPage({
     }),
   );
 
-  // Initialize sections from post content or create default
-  const [sections, setSections] = React.useState<Section[]>([]);
+  // Section/block operations (shared hook)
+  const initialSections = React.useMemo(
+    () =>
+      (post?.content?.sections as Section[]) ?? [createDefaultSection()],
+    [post],
+  );
+  const editor = usePageEditor(initialSections);
 
   // Breakpoint state for responsive preview
   const [breakpoint, setBreakpoint] = React.useState<Breakpoint>("desktop");
@@ -148,16 +85,6 @@ export default function EditPostPage({
   // UI Store for block selection in sidebar
   const { selectBlock } = useUIStore();
 
-  // Sync sections with post data
-  React.useEffect(() => {
-    if (post?.content?.sections) {
-      setSections(post.content.sections as Section[]);
-    } else {
-      // Create default section if none exists
-      setSections([createDefaultSection()]);
-    }
-  }, [post]);
-
   // Listen for block additions from BlocksLibrary
   React.useEffect(() => {
     const handleAddBlock = (event: Event) => {
@@ -165,34 +92,11 @@ export default function EditPostPage({
         blockId: string;
         blockType: string;
       }>;
-      const { blockType } = customEvent.detail;
-
-      // Create new block based on type
-      const newBlock = createDefaultBlock(blockType);
-
-      // Add to first section's first container
-      setSections((prevSections) => {
-        const updatedSections = [...prevSections];
-        if (updatedSections.length === 0) {
-          const newSection = createDefaultSection();
-          newSection.containers[0].blocks = [newBlock];
-          updatedSections.push(newSection);
-        } else {
-          const blocks = getContainerBlocks(updatedSections[0], 0);
-          updatedSections[0] = updateContainerBlocks(updatedSections[0], 0, [
-            ...blocks,
-            newBlock,
-          ]);
-        }
-        return updatedSections;
-      });
-
-      toast.success("Block added!");
+      editor.handleAddBlockToContainer(0, 0, customEvent.detail.blockType);
     };
-
     window.addEventListener("add-block", handleAddBlock);
     return () => window.removeEventListener("add-block", handleAddBlock);
-  }, []);
+  }, [editor]);
 
   if (isLoading) return <div>Loading post...</div>;
   if (error) return <div>Error loading post: {error.message}</div>;
@@ -204,7 +108,7 @@ export default function EditPostPage({
       data: {
         title: post.title,
         content: {
-          sections,
+          sections: editor.sections,
         },
       },
     });
@@ -241,7 +145,7 @@ export default function EditPostPage({
           data: {
             title: post?.title || "",
             content: {
-              sections,
+              sections: editor.sections,
             },
           },
         });
@@ -266,52 +170,18 @@ export default function EditPostPage({
     logger.debug("Post field changed", { field, value });
   };
 
-  const handleBlockChange = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockIndex: number,
-    updatedBlock: Block,
-  ) => {
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      const blocks = getContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-      );
-      const newBlocks = blocks.map((block: Block, idx: number) =>
-        idx === blockIndex ? updatedBlock : block,
-      );
-      updatedSections[sectionIndex] = updateContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-        newBlocks,
-      );
-      return updatedSections;
-    });
-  };
-
-  const handleBlockDelete = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockIndex: number,
-  ) => {
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      const blocks = getContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-      );
-      const newBlocks = blocks.filter(
-        (_: Block, idx: number) => idx !== blockIndex,
-      );
-      updatedSections[sectionIndex] = updateContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-        newBlocks,
-      );
-      return updatedSections;
-    });
-    toast.success("Block deleted");
+  const handleSectionDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = editor.sections.findIndex(
+      (section) => section._key === active.id,
+    );
+    const newIndex = editor.sections.findIndex(
+      (section) => section._key === over.id,
+    );
+    if (oldIndex !== -1 && newIndex !== -1) {
+      editor.setSections(arrayMove(editor.sections, oldIndex, newIndex));
+    }
   };
 
   const handleBlockDragEnd = (
@@ -320,116 +190,18 @@ export default function EditPostPage({
     containerIndex: number,
   ) => {
     const { active, over } = event;
-
-    if (!over || active.id === over.id) {
-      return;
+    if (!over || active.id === over.id) return;
+    const blocks = editor.sections[sectionIndex]?.containers?.[containerIndex]?.blocks ?? [];
+    const oldIndex = blocks.findIndex((b: Block) => b._key === active.id);
+    const newIndex = blocks.findIndex((b: Block) => b._key === over.id);
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const newBlocks = arrayMove(blocks, oldIndex, newIndex);
+      const updated = [...editor.sections];
+      const containers = [...(updated[sectionIndex].containers ?? [])];
+      containers[containerIndex] = { ...containers[containerIndex], blocks: newBlocks };
+      updated[sectionIndex] = { ...updated[sectionIndex], containers };
+      editor.setSections(updated);
     }
-
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      const blocks = getContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-      );
-
-      const oldIndex = blocks.findIndex(
-        (block: Block) => block._key === active.id,
-      );
-      const newIndex = blocks.findIndex(
-        (block: Block) => block._key === over.id,
-      );
-
-      if (oldIndex !== -1 && newIndex !== -1) {
-        const newBlocks = arrayMove(blocks, oldIndex, newIndex);
-        updatedSections[sectionIndex] = updateContainerBlocks(
-          updatedSections[sectionIndex],
-          containerIndex,
-          newBlocks,
-        );
-      }
-
-      return updatedSections;
-    });
-  };
-
-  const handleAddBlockToContainer = (
-    sectionIndex: number,
-    containerIndex: number,
-    blockType: string,
-  ) => {
-    const newBlock = createDefaultBlock(blockType);
-    setSections((prevSections) => {
-      const updated = [...prevSections];
-      const blocks = getContainerBlocks(updated[sectionIndex], containerIndex);
-      updated[sectionIndex] = updateContainerBlocks(
-        updated[sectionIndex],
-        containerIndex,
-        [...blocks, newBlock],
-      );
-      return updated;
-    });
-    toast.success("Block added!");
-  };
-
-  const handleAddContainerToSection = (sectionIndex: number) => {
-    const newContainer = createDefaultContainer();
-    setSections((prevSections) => {
-      const updated = [...prevSections];
-      const containers = updated[sectionIndex].containers ?? [];
-      updated[sectionIndex] = {
-        ...updated[sectionIndex],
-        containers: [...containers, newContainer],
-      };
-      return updated;
-    });
-    toast.success("Container added!");
-  };
-
-  const handleSectionDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over || active.id === over.id) {
-      return;
-    }
-
-    setSections((prevSections) => {
-      const oldIndex = prevSections.findIndex(
-        (section) => section._key === active.id,
-      );
-      const newIndex = prevSections.findIndex(
-        (section) => section._key === over.id,
-      );
-
-      if (oldIndex !== -1 && newIndex !== -1) {
-        return arrayMove(prevSections, oldIndex, newIndex);
-      }
-
-      return prevSections;
-    });
-  };
-
-  const handleSectionChange = (
-    sectionIndex: number,
-    updatedSection: Section,
-  ) => {
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      updatedSections[sectionIndex] = updatedSection;
-      return updatedSections;
-    });
-  };
-
-  const handleSectionDelete = (sectionIndex: number) => {
-    setSections((prevSections) =>
-      prevSections.filter((_, idx) => idx !== sectionIndex),
-    );
-    toast.success("Section deleted");
-  };
-
-  const handleAddSection = () => {
-    const newSection = createDefaultSection();
-    setSections((prevSections) => [...prevSections, newSection]);
-    toast.success("Section added");
   };
 
   return (
@@ -491,29 +263,29 @@ export default function EditPostPage({
                 onDragEnd={handleSectionDragEnd}
               >
                 <SortableContext
-                  items={sections.map((section) => section._key)}
+                  items={editor.sections.map((section) => section._key)}
                   strategy={verticalListSortingStrategy}
                 >
                   <div>
-                    {sections.map((section, sectionIndex) => (
+                    {editor.sections.map((section, sectionIndex) => (
                       <SortableSection
                         key={section._key}
                         section={section}
                         sectionIndex={sectionIndex}
                         onSectionChange={(updatedSection) =>
-                          handleSectionChange(sectionIndex, updatedSection)
+                          editor.handleSectionChange(sectionIndex, updatedSection)
                         }
-                        onDelete={() => handleSectionDelete(sectionIndex)}
+                        onDelete={() => editor.handleSectionDelete(sectionIndex)}
                         onAddContainer={() =>
-                          handleAddContainerToSection(sectionIndex)
+                          editor.handleAddContainerToSection(sectionIndex)
                         }
                         isFirst={sectionIndex === 0}
-                        isLast={sectionIndex === sections.length - 1}
+                        isLast={sectionIndex === editor.sections.length - 1}
                         onAddBlockToContainer={(
                           containerIndex: number,
                           blockType: string,
                         ) =>
-                          handleAddBlockToContainer(
+                          editor.handleAddBlockToContainer(
                             sectionIndex,
                             containerIndex,
                             blockType,
@@ -550,7 +322,7 @@ export default function EditPostPage({
                                         key={block._key}
                                         block={block}
                                         onChange={(updatedBlock: Block) =>
-                                          handleBlockChange(
+                                          editor.handleBlockChange(
                                             sectionIndex,
                                             containerIndex,
                                             blockIndex,
@@ -558,7 +330,7 @@ export default function EditPostPage({
                                           )
                                         }
                                         onDelete={() =>
-                                          handleBlockDelete(
+                                          editor.handleBlockDelete(
                                             sectionIndex,
                                             containerIndex,
                                             blockIndex,
@@ -596,7 +368,7 @@ export default function EditPostPage({
                     <Button
                       variant="outline"
                       size="lg"
-                      onClick={handleAddSection}
+                      onClick={() => editor.handleAddSectionAt(editor.sections.length)}
                       className="w-full border-2 border-dashed hover:border-primary hover:bg-primary/5"
                     >
                       <PlusCircle className="h-4 w-4 " />
@@ -612,7 +384,7 @@ export default function EditPostPage({
                   Content Data (Debug)
                 </summary>
                 <pre className="mt-2 p-4 bg-muted rounded text-xs overflow-auto max-h-96">
-                  {JSON.stringify({ sections }, null, 2)}
+                  {JSON.stringify({ sections: editor.sections }, null, 2)}
                 </pre>
               </details>
             </CardContent>
