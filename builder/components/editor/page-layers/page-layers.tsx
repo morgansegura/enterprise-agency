@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { AddBlockPopover } from "@/components/editor/add-block-popover/add-block-popover";
 import {
   ChevronRight,
   ChevronDown,
@@ -104,7 +105,11 @@ interface PageLayersProps {
   // Actions
   onAddSection?: () => void;
   onDeleteSection?: (sectionIndex: number) => void;
-  onAddBlock?: (sectionIndex: number, containerIndex: number) => void;
+  onAddBlock?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockType: string,
+  ) => void;
   onDeleteBlock?: (
     sectionIndex: number,
     containerIndex: number,
@@ -281,16 +286,19 @@ export function PageLayers({
                         </span>
                         <span className="layer-badge">{blocks.length}</span>
                         {onAddBlock && (
-                          <button
-                            className="layer-action"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onAddBlock(sectionIndex, containerIndex);
-                            }}
-                            title="Add block"
+                          <AddBlockPopover
+                            onAddBlock={(blockType) =>
+                              onAddBlock(sectionIndex, containerIndex, blockType)
+                            }
                           >
-                            <Plus className="size-3" />
-                          </button>
+                            <button
+                              className="layer-action"
+                              onClick={(e) => e.stopPropagation()}
+                              title="Add block"
+                            >
+                              <Plus className="size-3" />
+                            </button>
+                          </AddBlockPopover>
                         )}
                       </div>
 

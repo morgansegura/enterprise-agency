@@ -881,8 +881,8 @@ export default function EditPagePage({
             onHover={setHoveredBlockKey}
             onAddSection={() => handleAddSectionAt(sections.length)}
             onDeleteSection={handleSectionDelete}
-            onAddBlock={(si, ci) =>
-              handleAddBlockToContainer(si, ci, "text-block")
+            onAddBlock={(si, ci, blockType) =>
+              handleAddBlockToContainer(si, ci, blockType)
             }
             onDeleteBlock={handleBlockDelete}
             onDuplicateBlock={handleBlockDuplicate}
