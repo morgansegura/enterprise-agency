@@ -93,6 +93,40 @@ const implementedRenderers: BlockRendererRegistration[] = [
   },
 
   // ==========================================================================
+  // Composite blocks (Temlis themes)
+  // ==========================================================================
+  {
+    type: "hero-block",
+    component: () =>
+      import("@/components/renderers/blocks/hero-block-renderer"),
+  },
+  {
+    type: "cta-block",
+    component: () =>
+      import("@/components/renderers/blocks/cta-block-renderer"),
+  },
+  {
+    type: "testimonial-block",
+    component: () =>
+      import("@/components/renderers/blocks/testimonial-block-renderer"),
+  },
+  {
+    type: "pricing-block",
+    component: () =>
+      import("@/components/renderers/blocks/pricing-block-renderer"),
+  },
+  {
+    type: "team-block",
+    component: () =>
+      import("@/components/renderers/blocks/team-block-renderer"),
+  },
+  {
+    type: "logo-bar-block",
+    component: () =>
+      import("@/components/renderers/blocks/logo-bar-block-renderer"),
+  },
+
+  // ==========================================================================
   // Media blocks (local - not yet migrated)
   // ==========================================================================
   {
