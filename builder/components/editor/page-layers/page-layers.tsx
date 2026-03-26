@@ -288,7 +288,11 @@ export function PageLayers({
                         {onAddBlock && (
                           <AddBlockPopover
                             onAddBlock={(blockType) =>
-                              onAddBlock(sectionIndex, containerIndex, blockType)
+                              onAddBlock(
+                                sectionIndex,
+                                containerIndex,
+                                blockType,
+                              )
                             }
                           >
                             <button

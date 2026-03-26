@@ -19,41 +19,22 @@ import { useAutoSave } from "@/lib/hooks/use-auto-save";
 import {
   PageEditorLayout,
   PageSettingsDrawer,
-  EditableHeader,
   SettingsPanel,
 } from "@/components/editor";
 import { PageLayers } from "@/components/editor/page-layers/page-layers";
 import { PageRenderer } from "@/components/renderers/page-renderer";
 import { HeaderRenderer } from "@/components/headers";
-import { Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { SortableBlockItem } from "@/components/blocks/sortable-block-item";
-import { SortableSection } from "@/components/editor/sortable-section";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
 import { blockRegistry } from "@/lib/editor";
 import { logger } from "@/lib/logger";
 import { toast } from "sonner";
+import { Eye } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ResponsiveProvider } from "@/lib/responsive/context";
 import { useIsBuilder } from "@/lib/hooks/use-tier";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
-import { BlockEditorProvider } from "@/components/editor/block-editor-context";
 import { useUIStore } from "@/lib/stores/ui-store";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 
 /**
  * Create a default container with empty blocks
@@ -147,14 +128,6 @@ export default function EditPagePage({
   const createPreviewToken = useCreatePreviewToken(id);
   const { data: versions = [] } = usePageVersions(id, pageId);
   const restoreVersion = useRestorePageVersion(id);
-
-  // Drag-and-drop sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
 
   // Initialize sections from page content or create default
   const [sections, setSections] = React.useState<Section[]>([]);
@@ -614,84 +587,6 @@ export default function EditPagePage({
         newBlocks,
       );
       return updatedSections;
-    });
-  };
-
-  // Clear selection when clicking on canvas background
-  const handleCanvasClick = (e: React.MouseEvent) => {
-    // Check if we clicked on a block wrapper or its children
-    const target = e.target as HTMLElement;
-    const isBlockClick = target.closest(".block-wrapper");
-    const isPanelClick = target.closest(".block-wrapper__panel");
-    const isDialogClick = target.closest('[role="dialog"]');
-    const isPopoverClick = target.closest(
-      "[data-radix-popper-content-wrapper]",
-    );
-
-    // Only deselect if not clicking on a block, panel, dialog, or popover
-    if (!isBlockClick && !isPanelClick && !isDialogClick && !isPopoverClick) {
-      setSelectedBlockKey(null);
-    }
-  };
-
-  const handleBlockDragEnd = (
-    event: DragEndEvent,
-    sectionIndex: number,
-    containerIndex: number,
-  ) => {
-    const { active, over } = event;
-
-    if (!over || active.id === over.id) {
-      return;
-    }
-
-    setSections((prevSections) => {
-      const updatedSections = [...prevSections];
-      const blocks = getContainerBlocks(
-        updatedSections[sectionIndex],
-        containerIndex,
-      );
-
-      const oldIndex = blocks.findIndex(
-        (block: Block) => block._key === active.id,
-      );
-      const newIndex = blocks.findIndex(
-        (block: Block) => block._key === over.id,
-      );
-
-      if (oldIndex !== -1 && newIndex !== -1) {
-        const newBlocks = arrayMove(blocks, oldIndex, newIndex);
-        updatedSections[sectionIndex] = updateContainerBlocks(
-          updatedSections[sectionIndex],
-          containerIndex,
-          newBlocks,
-        );
-      }
-
-      return updatedSections;
-    });
-  };
-
-  const handleSectionDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over || active.id === over.id) {
-      return;
-    }
-
-    setSections((prevSections) => {
-      const oldIndex = prevSections.findIndex(
-        (section) => section._key === active.id,
-      );
-      const newIndex = prevSections.findIndex(
-        (section) => section._key === over.id,
-      );
-
-      if (oldIndex !== -1 && newIndex !== -1) {
-        return arrayMove(prevSections, oldIndex, newIndex);
-      }
-
-      return prevSections;
     });
   };
 
