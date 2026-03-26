@@ -118,6 +118,7 @@ export class TenantsService {
         businessType: createData.businessType,
         contactEmail: createData.contactEmail,
         contactPhone: createData.contactPhone,
+        tier: "BUILDER",
         // Hierarchy fields
         parentTenantId: createData.parentTenantId,
         tenantType: createData.tenantType || "CLIENT",

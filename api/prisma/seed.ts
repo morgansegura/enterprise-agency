@@ -821,6 +821,7 @@ async function main() {
       businessName: "Web and Funnel",
       businessType: "agency",
       status: "active",
+      tier: "BUILDER",
       isPrimaryTenant: true,
       tenantType: "AGENCY",
       clientType: "BUSINESS",
