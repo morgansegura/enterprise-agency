@@ -1,5 +1,4 @@
 @reference "tailwindcss";
 
-.auth-layout {
-  @apply min-h-screen flex items-center justify-center bg-(--builder-card);
-}
+/* Styles for auth-layout are defined in components/auth/auth-form.css */
+/* This file exists for the AuthLayout component import but defers to auth-form.css */

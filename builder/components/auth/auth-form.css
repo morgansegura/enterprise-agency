@@ -8,7 +8,7 @@
 .auth-layout {
   @apply min-h-screen flex items-center justify-center;
   @apply bg-(--el-50);
-  font-family: var(--font-system);
+  @apply font-(family-name:--font-system);
 }
 
 /* =============================================================================
@@ -17,12 +17,9 @@
  * ============================================================================= */
 
 .auth-card {
-  @apply w-full max-w-[380px];
-  padding: var(--sp-8) var(--sp-8) var(--sp-6);
+  @apply w-full max-w-[380px] px-8 pt-8 pb-6;
   @apply bg-(--el-0);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  @apply border border-(--border-default) rounded-(--radius-md) shadow-(--shadow-md);
 }
 
 /* =============================================================================
@@ -31,22 +28,18 @@
  * ============================================================================= */
 
 .auth-header {
-  @apply flex flex-col items-center;
-  margin-bottom: var(--sp-6);
-  gap: var(--sp-1);
+  @apply flex flex-col items-center mb-6 gap-1;
 }
 
 .auth-logo {
-  @apply text-[16px] font-semibold leading-none tracking-tight;
-  font-family: var(--font-system);
+  @apply text-[16px] font-semibold leading-none tracking-tight mb-1;
+  @apply font-(family-name:--font-system);
   @apply text-(--text-primary);
-  margin-bottom: var(--sp-1);
 }
 
 .auth-subtitle {
-  @apply text-[13px];
+  @apply text-[13px] leading-normal;
   @apply text-(--text-secondary);
-  line-height: var(--leading-normal);
 }
 
 /* =============================================================================
@@ -54,35 +47,30 @@
  * ============================================================================= */
 
 .auth-form {
-  @apply flex flex-col;
-  gap: var(--sp-5);
+  @apply flex flex-col gap-5;
 }
 
 .auth-fields {
-  @apply flex flex-col;
-  gap: var(--sp-4);
+  @apply flex flex-col gap-4;
 }
 
 .auth-field {
-  @apply flex flex-col;
-  gap: var(--sp-1-5);
+  @apply flex flex-col gap-1.5;
 }
 
-/* Labels — 11px, uppercase feel without being uppercase */
+/* Labels */
 .auth-label {
   @apply text-[11px] font-medium leading-none tracking-[0.01em];
   @apply text-(--text-secondary);
 }
 
-/* Inputs — 40px height, clean borders */
+/* Inputs */
 .auth-input {
-  @apply w-full h-[40px] text-[13px] outline-none;
-  padding: 0 var(--sp-3);
-  font-family: var(--font-system);
+  @apply w-full h-10 text-[13px] outline-none px-3;
+  @apply font-(family-name:--font-system);
   @apply text-(--text-primary);
   @apply bg-(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: var(--radius-sm);
+  @apply border border-(--input-border) rounded-(--radius-sm);
   @apply transition-colors duration-150 ease-in-out;
 }
 
@@ -91,12 +79,11 @@
 }
 
 .auth-input:hover {
-  border-color: var(--input-border-hover);
+  @apply border-(--input-border-hover);
 }
 
 .auth-input:focus {
-  border-color: var(--input-border-focus);
-  box-shadow: 0 0 0 1px var(--input-border-focus);
+  @apply border-(--input-border-focus) ring-1 ring-(--input-border-focus);
 }
 
 .auth-input:disabled {
@@ -108,17 +95,16 @@
  * ============================================================================= */
 
 .auth-actions {
-  @apply flex flex-col;
-  gap: var(--sp-3);
+  @apply flex flex-col gap-3;
 }
 
-/* Primary submit button — solid accent, 36px */
+/* Primary submit button */
 .auth-submit {
-  @apply w-full flex items-center justify-center h-[36px] text-[13px] font-medium border-none cursor-pointer;
-  font-family: var(--font-system);
+  @apply w-full flex items-center justify-center h-9 text-[13px] font-medium border-none cursor-pointer;
+  @apply font-(family-name:--font-system);
   @apply text-(--accent-primary-foreground);
   @apply bg-(--accent-primary);
-  border-radius: var(--radius-sm);
+  @apply rounded-(--radius-sm);
   @apply transition-colors duration-150 ease-in-out;
 }
 
@@ -135,8 +121,7 @@
  * ============================================================================= */
 
 .auth-forgot {
-  @apply flex justify-end;
-  margin-top: calc(-1 * var(--sp-2));
+  @apply flex justify-end -mt-2;
 }
 
 .auth-forgot-link {
@@ -160,16 +145,14 @@
 }
 
 /* =============================================================================
- * Field Error (inline, for reset-password mismatch)
+ * Field Error
  * ============================================================================= */
 
 .auth-field-error {
-  @apply text-[11px];
+  @apply text-[11px] px-3 py-2;
   @apply text-(--status-error);
-  padding: var(--sp-2) var(--sp-3);
   @apply bg-(--status-error-subtle);
-  border: 1px solid var(--status-error);
-  border-radius: var(--radius-sm);
+  @apply border border-(--status-error) rounded-(--radius-sm);
 }
 
 /* =============================================================================
@@ -177,10 +160,8 @@
  * ============================================================================= */
 
 .auth-success-message {
-  @apply text-[12px];
+  @apply text-[12px] px-3 py-2;
   @apply text-(--status-success);
-  padding: var(--sp-2) var(--sp-3);
   @apply bg-(--status-success-subtle);
-  border: 1px solid var(--status-success);
-  border-radius: var(--radius-sm);
+  @apply border border-(--status-success) rounded-(--radius-sm);
 }
