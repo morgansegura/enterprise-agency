@@ -248,6 +248,130 @@ function cardBlock(
 }
 
 /**
+ * Create a hero block
+ */
+function heroBlock(
+  key: string,
+  heading: string,
+  options: {
+    subheading?: string;
+    description?: string;
+    primaryCta?: { text: string; href: string };
+    secondaryCta?: { text: string; href: string };
+    layout?: "centered" | "split-right" | "split-left";
+    size?: "sm" | "md" | "lg";
+    align?: "left" | "center" | "right";
+  } = {},
+) {
+  return {
+    _type: "hero-block",
+    _key: key,
+    data: {
+      heading,
+      layout: options.layout || "centered",
+      size: options.size || "lg",
+      align: options.align || "center",
+      ...(options.subheading && { subheading: options.subheading }),
+      ...(options.description && { description: options.description }),
+      ...(options.primaryCta && { primaryCta: options.primaryCta }),
+      ...(options.secondaryCta && { secondaryCta: options.secondaryCta }),
+    },
+  };
+}
+
+/**
+ * Create a CTA block
+ */
+function ctaBlock(
+  key: string,
+  heading: string,
+  options: {
+    description?: string;
+    primaryCta: { text: string; href: string };
+    secondaryCta?: { text: string; href: string };
+    variant?: "default" | "highlighted" | "minimal";
+    align?: "left" | "center";
+  },
+) {
+  return {
+    _type: "cta-block",
+    _key: key,
+    data: {
+      heading,
+      primaryCta: options.primaryCta,
+      variant: options.variant || "default",
+      align: options.align || "center",
+      ...(options.description && { description: options.description }),
+      ...(options.secondaryCta && { secondaryCta: options.secondaryCta }),
+    },
+  };
+}
+
+/**
+ * Create a testimonial block
+ */
+function testimonialBlock(
+  key: string,
+  testimonials: Array<{
+    quote: string;
+    name: string;
+    role?: string;
+    company?: string;
+    rating?: number;
+  }>,
+  options: {
+    layout?: "grid" | "carousel" | "single";
+    columns?: 1 | 2 | 3;
+    variant?: "default" | "card" | "minimal";
+    showRating?: boolean;
+  } = {},
+) {
+  return {
+    _type: "testimonial-block",
+    _key: key,
+    data: {
+      testimonials,
+      layout: options.layout || "grid",
+      columns: options.columns || 2,
+      variant: options.variant || "card",
+      showRating: options.showRating ?? true,
+    },
+  };
+}
+
+/**
+ * Create a pricing block
+ */
+function pricingBlock(
+  key: string,
+  tiers: Array<{
+    name: string;
+    price: string;
+    period?: string;
+    description?: string;
+    features: string[];
+    cta: { text: string; href: string };
+    highlighted?: boolean;
+  }>,
+  options: {
+    heading?: string;
+    description?: string;
+    variant?: "default" | "bordered" | "elevated";
+  } = {},
+) {
+  return {
+    _type: "pricing-block",
+    _key: key,
+    data: {
+      tiers,
+      variant: options.variant || "default",
+      ...(options.heading && { heading: options.heading }),
+      ...(options.description && { description: options.description }),
+    },
+  };
+}
+
+/**
  * Create a button block
  */
 function buttonBlock(
@@ -362,43 +486,22 @@ export function generateDefaultPages(
           {
             _type: "section",
             _key: "home-hero",
-            background: "primary",
             paddingY: "2xl",
             width: "wide",
             align: "center",
-            minHeight: "70vh",
-            verticalAlign: "center",
             containers: [
               {
                 _type: "container",
                 _key: "home-hero-content",
-                layout: { type: "stack", gap: "lg", align: "center" },
-                maxWidth: "3xl",
+                layout: { type: "stack", align: "center" },
                 blocks: [
-                  headingBlock("hero-title", `Welcome to ${businessName}`, {
-                    level: "h1",
-                    size: "5xl",
-                    align: "center",
-                    weight: "bold",
-                  }),
-                  textBlock(
-                    "hero-subtitle",
-                    "Your compelling tagline goes here. Tell visitors what makes you special and why they should choose you.",
-                    { size: "xl", align: "center", variant: "lead" },
-                  ),
-                ],
-              },
-              {
-                _type: "container",
-                _key: "home-hero-cta",
-                layout: { type: "flex", gap: "md", justify: "center" },
-                blocks: [
-                  buttonBlock("cta-primary", "Get Started", "/contact", {
-                    variant: "default",
-                    size: "lg",
-                  }),
-                  buttonBlock("cta-secondary", "Learn More", "/about", {
-                    variant: "outline",
+                  heroBlock("hero", `Welcome to ${businessName}`, {
+                    subheading: "Professional Solutions",
+                    description:
+                      "Your compelling tagline goes here. Tell visitors what makes you special and why they should choose you.",
+                    primaryCta: { text: "Get Started", href: "/contact" },
+                    secondaryCta: { text: "Learn More", href: "/about" },
+                    layout: "centered",
                     size: "lg",
                   }),
                 ],
@@ -528,11 +631,64 @@ export function generateDefaultPages(
             ],
           },
 
+          // Testimonials
+          {
+            _type: "section",
+            _key: "home-testimonials",
+            background: "muted",
+            paddingY: "2xl",
+            width: "wide",
+            align: "center",
+            containers: [
+              {
+                _type: "container",
+                _key: "home-testimonials-header",
+                layout: { type: "stack", gap: "md", align: "center" },
+                maxWidth: "2xl",
+                blocks: [
+                  headingBlock("testimonials-title", "What Our Clients Say", {
+                    level: "h2",
+                    size: "3xl",
+                    align: "center",
+                  }),
+                ],
+              },
+              {
+                _type: "container",
+                _key: "home-testimonials-grid",
+                layout: { type: "stack", align: "center" },
+                blocks: [
+                  testimonialBlock(
+                    "testimonials",
+                    [
+                      {
+                        quote:
+                          "Working with this team transformed our online presence. Highly recommend!",
+                        name: "Sarah Johnson",
+                        role: "CEO",
+                        company: "Acme Corp",
+                        rating: 5,
+                      },
+                      {
+                        quote:
+                          "Professional, responsive, and delivered beyond expectations.",
+                        name: "Michael Chen",
+                        role: "Marketing Director",
+                        company: "TechFlow",
+                        rating: 5,
+                      },
+                    ],
+                    { columns: 2, variant: "card", showRating: true },
+                  ),
+                ],
+              },
+            ],
+          },
+
           // CTA Section
           {
             _type: "section",
             _key: "home-cta",
-            background: "primary",
             paddingY: "2xl",
             width: "wide",
             align: "center",
@@ -540,22 +696,14 @@ export function generateDefaultPages(
               {
                 _type: "container",
                 _key: "home-cta-content",
-                layout: { type: "stack", gap: "lg", align: "center" },
-                maxWidth: "2xl",
+                layout: { type: "stack", align: "center" },
                 blocks: [
-                  headingBlock("cta-title", "Ready to Get Started?", {
-                    level: "h2",
-                    size: "3xl",
-                    align: "center",
-                  }),
-                  textBlock(
-                    "cta-body",
-                    "Let's discuss how we can help you achieve your goals. Reach out today for a free consultation.",
-                    { align: "center", size: "lg" },
-                  ),
-                  buttonBlock("cta-contact", "Contact Us", "/contact", {
-                    variant: "default",
-                    size: "lg",
+                  ctaBlock("cta", "Ready to Get Started?", {
+                    description:
+                      "Let's discuss how we can help you achieve your goals. Reach out today for a free consultation.",
+                    primaryCta: { text: "Contact Us", href: "/contact" },
+                    secondaryCta: { text: "View Pricing", href: "/pricing" },
+                    variant: "highlighted",
                   }),
                 ],
               },
@@ -680,6 +828,107 @@ export function generateDefaultPages(
                     "Start a Conversation",
                     "/contact",
                     { variant: "default", size: "lg" },
+                  ),
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
+
+    // Pricing - DRAFT
+    {
+      slug: "pricing",
+      title: "Pricing",
+      pageType: "content",
+      isSystemPage: false,
+      isHomePage: false,
+      status: "draft",
+      metaTitle: (name) => `Pricing - ${name}`,
+      metaDescription: (name) =>
+        `View pricing plans and packages from ${name}.`,
+      content: {
+        sections: [
+          {
+            _type: "section",
+            _key: "pricing-hero",
+            background: "white",
+            paddingY: "xl",
+            width: "wide",
+            align: "center",
+            containers: [
+              {
+                _type: "container",
+                _key: "pricing-header",
+                layout: { type: "stack", gap: "md", align: "center" },
+                maxWidth: "2xl",
+                blocks: [
+                  headingBlock("pricing-title", "Simple, Transparent Pricing", {
+                    level: "h1",
+                    size: "4xl",
+                    align: "center",
+                  }),
+                  textBlock(
+                    "pricing-intro",
+                    "Choose the plan that fits your needs. All plans include our core features.",
+                    { size: "lg", align: "center" },
+                  ),
+                ],
+              },
+              {
+                _type: "container",
+                _key: "pricing-table",
+                layout: { type: "stack", align: "center" },
+                blocks: [
+                  pricingBlock(
+                    "pricing",
+                    [
+                      {
+                        name: "Starter",
+                        price: "$49",
+                        period: "/month",
+                        description: "For small businesses getting started",
+                        features: [
+                          "Up to 5 pages",
+                          "Basic SEO",
+                          "Content editing",
+                          "Email support",
+                        ],
+                        cta: { text: "Get Started", href: "/contact" },
+                      },
+                      {
+                        name: "Professional",
+                        price: "$149",
+                        period: "/month",
+                        description: "For growing businesses",
+                        features: [
+                          "Unlimited pages",
+                          "Advanced SEO tools",
+                          "Visual page builder",
+                          "Analytics dashboard",
+                          "Priority support",
+                          "Team access (5 users)",
+                        ],
+                        cta: { text: "Go Professional", href: "/contact" },
+                        highlighted: true,
+                      },
+                      {
+                        name: "Enterprise",
+                        price: "Custom",
+                        description: "For large organizations",
+                        features: [
+                          "Everything in Professional",
+                          "Custom integrations",
+                          "White-label options",
+                          "API access",
+                          "Dedicated account manager",
+                          "SLA guarantee",
+                        ],
+                        cta: { text: "Contact Sales", href: "/contact" },
+                      },
+                    ],
+                    { variant: "elevated" },
                   ),
                 ],
               },
