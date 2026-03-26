@@ -1,6 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 
+import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
@@ -78,6 +79,13 @@ export function ClientLayout({
     logout();
     router.push("/");
   };
+
+  // Redirect to login when not authenticated
+  React.useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [loading, user, router]);
 
   if (loading) {
     return (

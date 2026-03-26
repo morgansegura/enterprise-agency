@@ -62,6 +62,13 @@ export function EditorShell({
     router.push("/");
   };
 
+  // Redirect to login when not authenticated
+  React.useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [loading, user, router]);
+
   if (loading) {
     return (
       <div className="editor-shell-loading">

@@ -1,5 +1,5 @@
 @reference "tailwindcss";
 
 .auth-layout {
-  @apply relative;
+  @apply min-h-screen flex items-center justify-center bg-(--builder-card);
 }
