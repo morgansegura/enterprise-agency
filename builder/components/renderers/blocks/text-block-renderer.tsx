@@ -1,5 +1,12 @@
+"use client";
+
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import LinkExtension from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 interface TextBlockData {
   text?: string;
@@ -10,7 +17,6 @@ interface TextBlockData {
   maxWidth?: string;
 }
 
-// Match editor's TextBlockEditor maps exactly
 const sizeClasses: Record<string, string> = {
   xs: "text-xs",
   sm: "text-sm",
@@ -32,7 +38,11 @@ const variantClasses: Record<string, string> = {
   caption: "text-[var(--el-500)] text-sm",
 };
 
-export default function TextBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
+export default function TextBlockRenderer({
+  block,
+  onChange,
+  isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as TextBlockData;
   const {
     text,
@@ -43,65 +53,80 @@ export default function TextBlockRenderer({ block, onChange, isEditing }: BlockR
     maxWidth,
   } = data;
 
-  const hasHtml = Boolean(html);
   const textClasses = cn(
     sizeClasses[size] || sizeClasses.md,
     alignClasses[align] || alignClasses.left,
     variantClasses[variant] || variantClasses.body,
   );
 
-  // Render HTML content if available (from TipTap)
-  if (hasHtml) {
+  const wrapperStyle = {
+    maxWidth: maxWidth || "none",
+    margin: align === "center" ? ("0 auto" as const) : undefined,
+  };
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: false,
+      }),
+      LinkExtension.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: "text-[var(--accent-primary)] underline",
+        },
+      }),
+      Placeholder.configure({
+        placeholder: "Type some text...",
+      }),
+    ],
+    content: html || (text ? `<p>${text}</p>` : ""),
+    immediatelyRender: false,
+    editable: !!isEditing,
+    onUpdate: ({ editor: e }) => {
+      if (onChange) {
+        onChange({
+          ...block,
+          data: {
+            ...block.data,
+            text: e.getText(),
+            html: e.getHTML(),
+          },
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(!!isEditing);
+    }
+  }, [editor, isEditing]);
+
+  // Read-only
+  if (!isEditing || !editor) {
+    if (html) {
+      return (
+        <div style={wrapperStyle}>
+          <div
+            className={cn("prose prose-sm max-w-none", textClasses)}
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        </div>
+      );
+    }
     return (
-      <div
-        style={{
-          maxWidth: maxWidth || "none",
-          margin: align === "center" ? "0 auto" : undefined,
-        }}
-      >
-        <div
-          className={cn("prose prose-sm max-w-none", textClasses)}
-          dangerouslySetInnerHTML={{ __html: html! }}
-        />
+      <div style={wrapperStyle}>
+        <p className={textClasses}>{text}</p>
       </div>
     );
   }
 
-  // Plain text — contentEditable in edit mode
-  if (isEditing && onChange) {
-    return (
-      <div
-        style={{
-          maxWidth: maxWidth || "none",
-          margin: align === "center" ? "0 auto" : undefined,
-        }}
-      >
-        <p
-          className={textClasses}
-          contentEditable
-          suppressContentEditableWarning
-          onBlur={(e: React.FocusEvent<HTMLParagraphElement>) => {
-            const newText = e.currentTarget.textContent || "";
-            if (newText !== text) {
-              onChange({ ...block, data: { ...block.data, text: newText } });
-            }
-          }}
-          style={{ outline: "none", cursor: "text" }}
-        >
-          {text}
-        </p>
-      </div>
-    );
-  }
-
+  // Edit mode — TipTap
   return (
-    <div
-      style={{
-        maxWidth: maxWidth || "none",
-        margin: align === "center" ? "0 auto" : undefined,
-      }}
-    >
-      <p className={textClasses}>{text}</p>
+    <div style={wrapperStyle}>
+      <div className={cn("prose prose-sm max-w-none", textClasses)}>
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 }

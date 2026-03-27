@@ -475,6 +475,7 @@ export default function EditPagePage({
         <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
           <ResponsivePreview breakpoint={breakpoint} className="h-full">
             <div className="page-editor-canvas-content design-preview">
+              <HeaderRenderer tenantId={id} headerId={localPage.headerId} />
               {editor.sections.every(
                 (s) =>
                   !s.containers?.length ||
