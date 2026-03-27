@@ -34,6 +34,10 @@
   }
 }
 
+.page-editor-toolbar-divider {
+  @apply w-px h-4 bg-(--border-default) mx-1;
+}
+
 .page-editor-toolbar-center {
   @apply flex items-center justify-center gap-1;
 }

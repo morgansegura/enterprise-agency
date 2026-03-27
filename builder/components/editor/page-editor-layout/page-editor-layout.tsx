@@ -15,9 +15,11 @@ import {
   Check,
   History,
   PanelRightOpen,
+  ArrowLeft,
 } from "lucide-react";
 import { type Breakpoint } from "../breakpoint-selector";
 import { CanvasToolbar } from "../canvas-toolbar";
+import { useParams } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
@@ -91,6 +93,8 @@ export function PageEditorLayout({
   const { rightPanelOpen, toggleRightPanel } = useUIStore();
   const { setHasCustomToolbar } = usePreviewModeOptional();
 
+  const params = useParams();
+
   // Tell parent layout we have our own toolbar
   React.useEffect(() => {
     setHasCustomToolbar(true);
@@ -130,6 +134,10 @@ export function PageEditorLayout({
       {/* Editor Toolbar */}
       <div className="page-editor-toolbar">
         <div className="page-editor-toolbar-left">
+          <a href={`/${params?.id}/pages`} className="page-editor-toolbar-btn" title="Back to pages">
+            <ArrowLeft className="size-4" />
+          </a>
+          <div className="page-editor-toolbar-divider" />
           {saveStatusElement}
 
           {versions.length > 0 && (

@@ -8,7 +8,6 @@ import {
   ButtonBlock,
   SpacerBlock,
   DividerBlock,
-  ImageBlock,
   QuoteBlock,
   IconBlock,
   ListBlock,
@@ -71,7 +70,8 @@ const implementedRenderers: BlockRendererRegistration[] = [
   },
   {
     type: "image-block",
-    component: () => Promise.resolve({ default: ImageBlock }),
+    component: () =>
+      import("@/components/renderers/blocks/image-block-renderer"),
   },
 
   // ==========================================================================
