@@ -3,30 +3,16 @@ import {
   type BlockRendererRegistration,
 } from "./block-renderer-registry";
 
-// Import shared block renderers from @enterprise/blocks
-import {
-  ButtonBlock,
-  SpacerBlock,
-  DividerBlock,
-  QuoteBlock,
-  IconBlock,
-  ListBlock,
-  ContainerBlock,
-  GridBlock,
-  FlexBlock,
-  StackBlock,
-} from "@enterprise/blocks";
-
 /**
  * Implemented Block Renderer Registrations
  *
- * Registers all block renderers for client-side page rendering.
- * Uses shared components from @enterprise/blocks where available.
+ * ALL renderers use local components for canvas editing support (onChange/isEditing).
+ * The @enterprise/blocks package renderers are only used by the client app.
  */
 
 const implementedRenderers: BlockRendererRegistration[] = [
   // ==========================================================================
-  // Content blocks — use local renderers for inline editing (TipTap)
+  // Text content blocks (TipTap inline editing)
   // ==========================================================================
   {
     type: "heading-block",
@@ -43,40 +29,45 @@ const implementedRenderers: BlockRendererRegistration[] = [
     component: () =>
       import("@/components/renderers/blocks/rich-text-block-renderer"),
   },
-  // Content blocks (from @enterprise/blocks — read-only)
+
+  // ==========================================================================
+  // Content blocks (local renderers with canvas editing)
+  // ==========================================================================
   {
     type: "button-block",
-    component: () => Promise.resolve({ default: ButtonBlock }),
-  },
-  {
-    type: "spacer-block",
-    component: () => Promise.resolve({ default: SpacerBlock }),
-  },
-  {
-    type: "divider-block",
-    component: () => Promise.resolve({ default: DividerBlock }),
-  },
-  {
-    type: "quote-block",
-    component: () => Promise.resolve({ default: QuoteBlock }),
-  },
-  {
-    type: "list-block",
-    component: () => Promise.resolve({ default: ListBlock }),
-  },
-  {
-    type: "icon-block",
-    component: () => Promise.resolve({ default: IconBlock }),
+    component: () =>
+      import("@/components/renderers/blocks/button-block-renderer"),
   },
   {
     type: "image-block",
     component: () =>
       import("@/components/renderers/blocks/image-block-renderer"),
   },
-
-  // ==========================================================================
-  // Content blocks (local - not yet migrated)
-  // ==========================================================================
+  {
+    type: "quote-block",
+    component: () =>
+      import("@/components/renderers/blocks/quote-block-renderer"),
+  },
+  {
+    type: "list-block",
+    component: () =>
+      import("@/components/renderers/blocks/list-block-renderer"),
+  },
+  {
+    type: "icon-block",
+    component: () =>
+      import("@/components/renderers/blocks/icon-block-renderer"),
+  },
+  {
+    type: "divider-block",
+    component: () =>
+      import("@/components/renderers/blocks/divider-block-renderer"),
+  },
+  {
+    type: "spacer-block",
+    component: () =>
+      import("@/components/renderers/blocks/spacer-block-renderer"),
+  },
   {
     type: "card-block",
     component: () =>
@@ -94,7 +85,7 @@ const implementedRenderers: BlockRendererRegistration[] = [
   },
 
   // ==========================================================================
-  // Composite blocks (Temlis themes)
+  // Composite blocks (sections with multiple sub-elements)
   // ==========================================================================
   {
     type: "hero-block",
@@ -128,7 +119,7 @@ const implementedRenderers: BlockRendererRegistration[] = [
   },
 
   // ==========================================================================
-  // Media blocks (local - not yet migrated)
+  // Media blocks
   // ==========================================================================
   {
     type: "video-block",
@@ -151,7 +142,7 @@ const implementedRenderers: BlockRendererRegistration[] = [
   },
 
   // ==========================================================================
-  // Interactive blocks (local - not yet migrated)
+  // Interactive blocks
   // ==========================================================================
   {
     type: "accordion-block",
@@ -165,32 +156,32 @@ const implementedRenderers: BlockRendererRegistration[] = [
   },
 
   // ==========================================================================
-  // Layout/Container blocks (from @enterprise/blocks)
+  // Layout/Container blocks (local renderers, pass through isEditing)
   // ==========================================================================
   {
     type: "container-block",
-    component: () => Promise.resolve({ default: ContainerBlock }),
+    component: () =>
+      import("@/components/renderers/blocks/container-block-renderer"),
     isContainer: true,
   },
   {
     type: "stack-block",
-    component: () => Promise.resolve({ default: StackBlock }),
+    component: () =>
+      import("@/components/renderers/blocks/stack-block-renderer"),
     isContainer: true,
   },
   {
     type: "flex-block",
-    component: () => Promise.resolve({ default: FlexBlock }),
+    component: () =>
+      import("@/components/renderers/blocks/flex-block-renderer"),
     isContainer: true,
   },
   {
     type: "grid-block",
-    component: () => Promise.resolve({ default: GridBlock }),
+    component: () =>
+      import("@/components/renderers/blocks/grid-block-renderer"),
     isContainer: true,
   },
-
-  // ==========================================================================
-  // Layout blocks (local - not yet migrated)
-  // ==========================================================================
   {
     type: "columns-block",
     component: () =>
