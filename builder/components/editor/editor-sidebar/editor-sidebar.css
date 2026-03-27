@@ -27,3 +27,50 @@
 .editor-sidebar-content {
   @apply flex-1 overflow-y-auto;
 }
+
+/* Pages panel */
+.editor-pages-list {
+  @apply flex flex-col p-1.5 gap-0.5;
+}
+
+.editor-pages-item {
+  @apply flex items-center gap-2 px-2.5 py-2 rounded-[3px] cursor-pointer;
+  @apply text-[13px] text-(--el-600);
+  @apply bg-transparent border-none text-left w-full;
+  @apply transition-colors duration-100;
+}
+
+.editor-pages-item:hover {
+  @apply bg-(--accent-primary-subtle)/50 text-(--el-800);
+}
+
+.editor-pages-item[data-active] {
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary) font-medium;
+}
+
+.editor-pages-item-title {
+  @apply flex-1 truncate;
+}
+
+.editor-pages-item-status {
+  @apply text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-[3px];
+}
+
+.editor-pages-item-status[data-status="published"] {
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
+.editor-pages-item-status[data-status="draft"] {
+  @apply bg-(--el-100) text-(--el-400);
+}
+
+.editor-pages-add {
+  @apply flex items-center gap-2 px-2.5 py-2 mt-1 rounded-[3px];
+  @apply text-[13px] font-medium text-(--accent-primary) no-underline;
+  @apply border border-dashed border-(--border-default);
+  @apply transition-colors duration-100;
+}
+
+.editor-pages-add:hover {
+  @apply bg-(--accent-primary-subtle)/30 border-(--accent-primary);
+}
