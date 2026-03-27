@@ -24,6 +24,7 @@ import { EditorSidebar } from "@/components/editor/editor-sidebar";
 import { BlocksLibrary } from "@/components/editor/blocks-library";
 import { PageRenderer } from "@/components/renderers/page-renderer";
 import { HeaderRenderer } from "@/components/headers";
+import { FooterRenderer } from "@/components/editor/footer-renderer";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
 import { logger } from "@/lib/logger";
@@ -591,6 +592,7 @@ export default function EditPagePage({
                   breakpoint={breakpoint}
                 />
               )}
+              <FooterRenderer tenantId={id} footerId={localPage.footerId} />
             </div>
           </ResponsivePreview>
         </ResponsiveProvider>
