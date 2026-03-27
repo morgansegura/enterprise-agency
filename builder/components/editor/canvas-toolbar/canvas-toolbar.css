@@ -1,0 +1,55 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * Canvas Toolbar — Wix-style floating bottom toolbar
+ * ============================================================================= */
+
+.canvas-toolbar {
+  @apply fixed bottom-4 left-1/2 -translate-x-1/2 z-50;
+  @apply flex items-center gap-0.5 px-1.5 py-1 rounded-full;
+  @apply bg-(--el-900) shadow-2xl;
+  @apply border border-(--el-700);
+}
+
+.canvas-toolbar-group {
+  @apply flex items-center gap-0.5;
+}
+
+.canvas-toolbar-divider {
+  @apply w-px h-5 bg-(--el-700) mx-1;
+}
+
+.canvas-toolbar-btn {
+  @apply flex items-center justify-center size-8 rounded-full;
+  @apply text-(--el-400) cursor-pointer;
+  @apply bg-transparent border-none;
+  @apply transition-colors duration-100;
+}
+
+.canvas-toolbar-btn:hover {
+  @apply text-(--el-0) bg-(--el-700);
+}
+
+.canvas-toolbar-btn[data-active="true"] {
+  @apply text-(--el-0) bg-(--accent-primary);
+}
+
+.canvas-toolbar-btn:disabled {
+  @apply opacity-30 cursor-not-allowed;
+}
+
+.canvas-toolbar-btn svg {
+  @apply size-4;
+}
+
+/* Zoom display */
+.canvas-toolbar-zoom {
+  @apply flex items-center gap-1 px-2 h-8 rounded-full;
+  @apply text-[12px] font-medium text-(--el-400);
+  @apply cursor-pointer bg-transparent border-none;
+  @apply transition-colors duration-100;
+}
+
+.canvas-toolbar-zoom:hover {
+  @apply text-(--el-0) bg-(--el-700);
+}

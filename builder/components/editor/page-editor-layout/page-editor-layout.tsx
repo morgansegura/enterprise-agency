@@ -16,7 +16,8 @@ import {
   History,
   PanelRightOpen,
 } from "lucide-react";
-import { BreakpointSelector, type Breakpoint } from "../breakpoint-selector";
+import { type Breakpoint } from "../breakpoint-selector";
+import { CanvasToolbar } from "../canvas-toolbar";
 import { formatDistanceToNow } from "date-fns";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
@@ -167,14 +168,7 @@ export function PageEditorLayout({
           )}
         </div>
 
-        <div className="page-editor-toolbar-center">
-          {onBreakpointChange && (
-            <BreakpointSelector
-              value={breakpoint}
-              onChange={onBreakpointChange}
-            />
-          )}
-        </div>
+        <div className="page-editor-toolbar-center" />
 
         <div className="page-editor-toolbar-right">
           <button className="page-editor-toolbar-btn" onClick={onPreview}>
@@ -241,6 +235,12 @@ export function PageEditorLayout({
             <div className="page-editor-canvas-content design-preview">
               {children}
             </div>
+            {onBreakpointChange && (
+              <CanvasToolbar
+                breakpoint={breakpoint}
+                onBreakpointChange={onBreakpointChange}
+              />
+            )}
           </main>
 
           {/* Right Panel (Settings) */}
