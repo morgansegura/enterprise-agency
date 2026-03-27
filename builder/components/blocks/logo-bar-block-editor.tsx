@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element, jsx-a11y/alt-text -- dynamic CMS images with unknown dimensions */
 
 import { useState } from "react";
 import { Label } from "@/components/ui/label";

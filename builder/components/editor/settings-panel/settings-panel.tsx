@@ -16,9 +16,6 @@ import {
   Grid3X3,
   Settings2,
   EyeOff,
-  Monitor,
-  Tablet,
-  Smartphone,
   ChevronUp,
   ChevronDown,
   Copy,
@@ -118,44 +115,6 @@ interface SettingsPanelProps {
   ) => void;
 }
 
-// =============================================================================
-// Breakpoint Indicator - Shows which device size is being edited
-// =============================================================================
-
-function BreakpointIndicator() {
-  const breakpoint = useCurrentBreakpoint();
-
-  const icons = {
-    desktop: Monitor,
-    tablet: Tablet,
-    mobile: Smartphone,
-  };
-
-  const labels = {
-    desktop: "Desktop",
-    tablet: "Tablet",
-    mobile: "Mobile",
-  };
-
-  const Icon = icons[breakpoint];
-
-  return (
-    <div
-      className={cn(
-        "flex items-center gap-1 px-2 py-1 rounded text-xs font-medium",
-        breakpoint === "desktop" && "bg-[var(--el-100)] text-[var(--el-500)]",
-        breakpoint === "tablet" &&
-          "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-        breakpoint === "mobile" &&
-          "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-      )}
-      title={`Editing ${labels[breakpoint]} styles`}
-    >
-      <Icon className="h-3 w-3" />
-      <span>{labels[breakpoint]}</span>
-    </div>
-  );
-}
 
 // =============================================================================
 // Actions Bar - Move, Clone, Delete buttons
@@ -597,7 +556,6 @@ function SectionStyleSettings({
   const borderBottom = getValue<string>("borderBottom", "none");
   const borderLeft = getValue<string>("borderLeft", "none");
   const borderRight = getValue<string>("borderRight", "none");
-  const _borderColor = getValue<string>("borderColor", "");
   const borderRadius = getValue<string>("borderRadius", "none");
   const shadow = getValue<string>("shadow", "none");
 

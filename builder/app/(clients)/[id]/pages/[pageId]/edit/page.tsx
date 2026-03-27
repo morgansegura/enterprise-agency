@@ -13,10 +13,7 @@ import {
   type PageSeo,
 } from "@/lib/hooks/use-pages";
 import { useAutoSave } from "@/lib/hooks/use-auto-save";
-import {
-  usePageEditor,
-  createDefaultSection,
-} from "@/lib/hooks/use-page-editor";
+import { usePageEditor } from "@/lib/hooks/use-page-editor";
 import {
   PageEditorLayout,
   PageSettingsDrawer,
@@ -539,7 +536,7 @@ export default function EditPagePage({
                   }}
                   isEditing
                   onBlockChange={(sectionIndex, containerIndex, blockIndex, updatedBlock) => {
-                    editor.handleBlockChange(sectionIndex, containerIndex, blockIndex, updatedBlock as import("@/lib/hooks/use-pages").Block);
+                    editor.handleBlockChange(sectionIndex, containerIndex, blockIndex, updatedBlock as Section["containers"][0]["blocks"][0]);
                   }}
                   breakpoint={breakpoint}
                 />
