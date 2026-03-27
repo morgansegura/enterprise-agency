@@ -21,7 +21,7 @@
 }
 
 .footer-layout-icon {
-  @apply h-4 w-4 shrink-0 text-muted-foreground;
+  @apply h-4 w-4 shrink-0 text-(--el-500);
 }
 
 .footer-layout-option {
@@ -37,5 +37,5 @@
 }
 
 .footer-layout-option-description {
-  @apply text-xs text-muted-foreground;
+  @apply text-xs text-(--el-500);
 }

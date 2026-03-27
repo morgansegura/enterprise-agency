@@ -6,7 +6,7 @@
 }
 
 .edit-footer-canvas {
-  @apply flex-1 overflow-auto bg-muted/30 p-6;
+  @apply flex-1 overflow-auto bg-(--el-100)/30 p-6;
 }
 
 .edit-footer-canvas-inner {
@@ -14,7 +14,7 @@
 }
 
 .edit-footer-settings {
-  @apply w-80 shrink-0 overflow-y-auto border-l bg-background p-4;
+  @apply w-80 shrink-0 overflow-y-auto border-l bg-(--el-0) p-4;
   @apply flex flex-col gap-4;
 }
 
@@ -32,11 +32,11 @@
 
 /* Loading / error */
 .edit-footer-loading {
-  @apply flex flex-col items-center justify-center gap-3 py-20 text-muted-foreground;
+  @apply flex flex-col items-center justify-center gap-3 py-20 text-(--el-500);
 }
 
 .edit-footer-error {
-  @apply flex flex-col items-center justify-center gap-4 py-20 text-muted-foreground;
+  @apply flex flex-col items-center justify-center gap-4 py-20 text-(--el-500);
 }
 
 .edit-footer-spinner {
