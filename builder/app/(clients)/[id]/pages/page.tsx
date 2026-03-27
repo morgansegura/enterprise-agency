@@ -16,7 +16,7 @@ import {
   type PageCardActions,
 } from "@/components/ui/page-card";
 import { PageHeader } from "@/components/layout/page-header";
-import { FileText, Loader2 } from "lucide-react";
+import { FileText } from "lucide-react";
 import { toast } from "sonner";
 
 export default function PagesPage({
@@ -168,8 +168,15 @@ export default function PagesPage({
       />
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-[var(--el-500)]" />
+        <div className="space-y-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-4 px-3 py-2.5 border-b border-[var(--border-subtle)]">
+              <div className="h-4 flex-1 bg-[var(--el-100)] rounded animate-pulse" />
+              <div className="h-4 w-32 bg-[var(--el-100)] rounded animate-pulse" />
+              <div className="h-4 w-20 bg-[var(--el-100)] rounded animate-pulse" />
+              <div className="h-4 w-24 bg-[var(--el-100)] rounded animate-pulse" />
+            </div>
+          ))}
         </div>
       ) : (
         <PageList

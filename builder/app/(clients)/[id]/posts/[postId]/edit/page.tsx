@@ -98,9 +98,37 @@ export default function EditPostPage({
     return () => window.removeEventListener("add-block", handleAddBlock);
   }, [editor]);
 
-  if (isLoading) return <div>Loading post...</div>;
-  if (error) return <div>Error loading post: {error.message}</div>;
-  if (!post) return <div>Post not found</div>;
+  if (isLoading) {
+    return (
+      <div className="flex h-full">
+        <div className="w-[220px] border-r border-[var(--border-default)] p-3 space-y-3">
+          <div className="h-4 w-16 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-8 w-full bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-8 w-3/4 bg-[var(--el-100)] rounded animate-pulse ml-4" />
+        </div>
+        <div className="flex-1 p-8 space-y-6">
+          <div className="h-10 w-1/3 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-4 w-full bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-4 w-5/6 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-4 w-2/3 bg-[var(--el-100)] rounded animate-pulse" />
+        </div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <span className="text-[14px] text-[var(--status-error)]">Error loading post: {error.message}</span>
+      </div>
+    );
+  }
+  if (!post) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <span className="text-[14px] text-[var(--el-500)]">Post not found</span>
+      </div>
+    );
+  }
 
   const handleSave = () => {
     updatePost.mutate({

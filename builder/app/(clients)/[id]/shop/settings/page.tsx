@@ -113,8 +113,14 @@ export default function PaymentSettingsPage({
 
   if (isLoading) {
     return (
-      <div className="p-6 flex items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-[var(--el-500)]" />
+      <div className="p-4 space-y-4">
+        <div className="h-6 w-48 bg-[var(--el-100)] rounded animate-pulse" />
+        <div className="grid grid-cols-2 gap-4">
+          <div className="h-10 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-10 bg-[var(--el-100)] rounded animate-pulse" />
+        </div>
+        <div className="h-10 bg-[var(--el-100)] rounded animate-pulse" />
+        <div className="h-10 bg-[var(--el-100)] rounded animate-pulse" />
       </div>
     );
   }

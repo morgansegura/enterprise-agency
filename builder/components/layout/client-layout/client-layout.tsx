@@ -83,7 +83,10 @@ export function ClientLayout({
   if (loading) {
     return (
       <div className="client-layout-loading">
-        <div className="client-layout-loading-text">Loading...</div>
+        <div className="space-y-4 w-full max-w-md">
+          <div className="h-8 w-40 bg-[var(--el-100)] rounded animate-pulse mx-auto" />
+          <div className="h-4 w-56 bg-[var(--el-100)] rounded animate-pulse mx-auto" />
+        </div>
       </div>
     );
   }
