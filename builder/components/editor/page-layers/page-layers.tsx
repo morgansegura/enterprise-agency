@@ -162,10 +162,6 @@ export function PageLayers({
   if (sections.length === 0) {
     return (
       <div className="page-layers">
-        <div className="page-layers-header">
-          <Layers className="page-layers-header-icon" />
-          <span>Layers</span>
-        </div>
         <div className="page-layers-empty">
           <Layers className="page-layers-empty-icon" />
           <p>No content yet</p>
@@ -183,10 +179,6 @@ export function PageLayers({
 
   return (
     <div className="page-layers">
-      <div className="page-layers-header">
-        <Layers className="page-layers-header-icon" />
-        <span>Layers</span>
-      </div>
       <div className="page-layers-tree">
         {sections.map((section, sectionIndex) => {
           const sectionKey = section._key;

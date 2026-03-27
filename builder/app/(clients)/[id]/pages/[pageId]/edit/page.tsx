@@ -23,6 +23,8 @@ import {
   SettingsPanel,
 } from "@/components/editor";
 import { PageLayers } from "@/components/editor/page-layers/page-layers";
+import { EditorSidebar } from "@/components/editor/editor-sidebar";
+import { BlocksLibrary } from "@/components/editor/blocks-library";
 import { PageRenderer } from "@/components/renderers/page-renderer";
 import { HeaderRenderer } from "@/components/headers";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
@@ -383,32 +385,37 @@ export default function EditPagePage({
         pageSlug={localPage.slug}
         tenantSlug={tenant?.slug}
         leftPanel={
-          <PageLayers
-            sections={editor.sections}
-            selectedKey={selectedBlockKey}
-            hoveredKey={hoveredBlockKey}
-            onSelectSection={(sectionIndex, key) => {
-              setSelectedBlockKey(key);
-              selectSection(sectionIndex, key);
-            }}
-            onSelectContainer={(sectionIndex, containerIndex, key) => {
-              setSelectedBlockKey(key);
-              selectContainer(sectionIndex, containerIndex, key);
-            }}
-            onSelectBlock={(sectionIndex, containerIndex, blockIndex, key) => {
-              setSelectedBlockKey(key);
-              selectBlock(sectionIndex, containerIndex, blockIndex, key);
-            }}
-            onHover={setHoveredBlockKey}
-            onAddSection={() =>
-              editor.handleAddSectionAt(editor.sections.length)
+          <EditorSidebar
+            layersPanel={
+              <PageLayers
+                sections={editor.sections}
+                selectedKey={selectedBlockKey}
+                hoveredKey={hoveredBlockKey}
+                onSelectSection={(sectionIndex, key) => {
+                  setSelectedBlockKey(key);
+                  selectSection(sectionIndex, key);
+                }}
+                onSelectContainer={(sectionIndex, containerIndex, key) => {
+                  setSelectedBlockKey(key);
+                  selectContainer(sectionIndex, containerIndex, key);
+                }}
+                onSelectBlock={(sectionIndex, containerIndex, blockIndex, key) => {
+                  setSelectedBlockKey(key);
+                  selectBlock(sectionIndex, containerIndex, blockIndex, key);
+                }}
+                onHover={setHoveredBlockKey}
+                onAddSection={() =>
+                  editor.handleAddSectionAt(editor.sections.length)
+                }
+                onDeleteSection={editor.handleSectionDelete}
+                onAddBlock={editor.handleAddBlockToContainer}
+                onDeleteBlock={editor.handleBlockDelete}
+                onDuplicateBlock={editor.handleBlockDuplicate}
+                onMoveBlockUp={editor.handleBlockMoveUp}
+                onMoveBlockDown={editor.handleBlockMoveDown}
+              />
             }
-            onDeleteSection={editor.handleSectionDelete}
-            onAddBlock={editor.handleAddBlockToContainer}
-            onDeleteBlock={editor.handleBlockDelete}
-            onDuplicateBlock={editor.handleBlockDuplicate}
-            onMoveBlockUp={editor.handleBlockMoveUp}
-            onMoveBlockDown={editor.handleBlockMoveDown}
+            blocksPanel={<BlocksLibrary />}
           />
         }
         versions={versions}

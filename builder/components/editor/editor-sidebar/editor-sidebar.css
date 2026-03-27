@@ -1,0 +1,29 @@
+@reference "tailwindcss";
+
+.editor-sidebar {
+  @apply flex flex-col h-full overflow-hidden;
+}
+
+.editor-sidebar-tabs {
+  @apply flex border-b border-(--border-default) shrink-0;
+}
+
+.editor-sidebar-tab {
+  @apply flex-1 flex items-center justify-center gap-1.5 h-9;
+  @apply text-[12px] font-medium text-(--el-400);
+  @apply bg-transparent border-none cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.editor-sidebar-tab:hover {
+  @apply text-(--el-800);
+}
+
+.editor-sidebar-tab[data-active] {
+  @apply text-(--accent-primary);
+  @apply border-b-2 border-(--accent-primary);
+}
+
+.editor-sidebar-content {
+  @apply flex-1 overflow-y-auto;
+}

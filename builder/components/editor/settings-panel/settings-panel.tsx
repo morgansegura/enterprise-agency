@@ -368,14 +368,13 @@ export function SettingsPanel({
         className={cn("settings-panel", rightPanelOpen && "open")}
         style={{ width: rightPanelWidth }}
       >
-        {/* Panel Header */}
+        {/* Panel Header with Style/Settings tabs */}
         <div className="settings-panel-header">
           <div className="settings-panel-selector">
             {icon}
             <span className="settings-panel-selector-name">{title}</span>
           </div>
           <div className="flex items-center gap-1">
-            <BreakpointIndicator />
             <Button
               variant="ghost"
               size="icon"
