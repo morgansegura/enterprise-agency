@@ -6,32 +6,32 @@
 
 .position-picker-grid {
   @apply grid grid-cols-3 gap-1 p-1;
-  @apply bg-(--builder-muted) rounded-md;
-  @apply border border-(--builder-border);
+  @apply bg-(--el-100) rounded-md;
+  @apply border border-(--border-default);
 }
 
 .position-picker-cell {
   @apply w-6 h-6 rounded;
   @apply flex items-center justify-center;
-  @apply bg-(--builder-card) hover:bg-(--builder-accent);
+  @apply bg-(--el-0) hover:bg-(--accent-primary-subtle);
   @apply transition-colors duration-100;
   @apply cursor-pointer;
 }
 
 .position-picker-cell.is-selected {
-  @apply bg-(--builder-primary);
+  @apply bg-(--accent-primary);
 }
 
 .position-picker-dot {
   @apply w-2 h-2 rounded-full;
-  @apply bg-(--builder-muted-foreground);
+  @apply bg-(--el-500);
   @apply transition-colors duration-100;
 }
 
 .position-picker-cell:hover .position-picker-dot {
-  @apply bg-(--builder-foreground);
+  @apply bg-(--el-800);
 }
 
 .position-picker-cell.is-selected .position-picker-dot {
-  @apply bg-(--builder-primary-foreground);
+  @apply bg-(--accent-primary-foreground);
 }

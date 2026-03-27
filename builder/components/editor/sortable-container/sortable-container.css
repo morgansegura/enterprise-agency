@@ -14,7 +14,7 @@
 }
 
 .sortable-container.is-hovered:not(:has(.block-wrapper:hover)) .container-visual {
-  outline-color: color-mix(in srgb, var(--builder-primary) 50%, transparent);
+  outline-color: color-mix(in srgb, var(--accent-primary) 50%, transparent);
 }
 
 .sortable-container:has(.block-wrapper:hover) .container-visual {
@@ -26,7 +26,7 @@
 }
 
 .container-visual.is-selected {
-  @apply outline-2 outline-dashed outline-(--builder-primary) -outline-offset-2;
+  @apply outline-2 outline-dashed outline-(--accent-primary) -outline-offset-2;
 }
 
 /* Empty container prompt */
@@ -46,7 +46,7 @@
 
 .container-empty button:hover {
   @apply text-(--el-800) bg-(--el-100);
-  @apply border-(--builder-muted-foreground);
+  @apply border-(--el-500);
 }
 
 .container-empty button:active {

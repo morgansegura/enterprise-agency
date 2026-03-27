@@ -42,7 +42,7 @@
 
 /* Section hover outline */
 .sortable-section:hover > .section-visual:not(:has(.sortable-container:hover)) {
-  @apply outline-(--builder-primary);
+  @apply outline-(--accent-primary);
 }
 
 /* Hide when hovering nested elements */
@@ -53,7 +53,7 @@
 
 /* Selected state */
 .section-visual.is-selected {
-  @apply outline-2 outline-solid outline-(--builder-primary) -outline-offset-2;
+  @apply outline-2 outline-solid outline-(--accent-primary) -outline-offset-2;
 }
 
 /* =============================================================================

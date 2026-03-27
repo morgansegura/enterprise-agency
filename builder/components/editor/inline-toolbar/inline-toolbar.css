@@ -7,7 +7,7 @@
 .inline-toolbar {
   @apply flex items-center gap-[2px] px-1 py-[3px] rounded-lg z-10;
   @apply bg-(--el-0);
-  border: 1px solid var(--builder-border);
+  border: 1px solid var(--border-default);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
     0 2px 4px rgba(0, 0, 0, 0.04);
@@ -140,7 +140,7 @@
 /* Active state */
 .inline-toolbar-button.is-active {
   @apply text-(--accent-primary);
-  background: color-mix(in srgb, var(--builder-primary) 10%, transparent);
+  background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
 }
 
 /* =============================================================================
@@ -152,6 +152,6 @@
 }
 
 .inline-toolbar-button--destructive:hover:not(:disabled) {
-  @apply text-(--builder-destructive);
-  background: color-mix(in srgb, var(--builder-destructive) 10%, transparent);
+  @apply text-(--status-error);
+  background: color-mix(in srgb, var(--status-error) 10%, transparent);
 }

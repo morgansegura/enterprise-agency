@@ -2,7 +2,7 @@
 
 /* =============================================================================
    Header Library Picker
-   Uses --builder-* tokens (builder UI)
+   Uses enterprise design tokens
    ============================================================================= */
 
 .header-library-picker {
@@ -67,7 +67,7 @@
 }
 
 .header-library-preview-logo {
-  @apply w-6 h-3 rounded-sm bg-(--builder-foreground)/20;
+  @apply w-6 h-3 rounded-sm bg-(--el-800)/20;
 }
 
 .header-library-preview-menu {
@@ -77,7 +77,7 @@
 .header-library-preview-menu::before,
 .header-library-preview-menu::after {
   content: "";
-  @apply w-4 h-1.5 rounded-sm bg-(--builder-foreground)/15;
+  @apply w-4 h-1.5 rounded-sm bg-(--el-800)/15;
 }
 
 .header-library-preview-button {

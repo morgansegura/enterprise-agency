@@ -11,15 +11,15 @@
 }
 
 .block-wrapper:hover {
-  outline-color: color-mix(in srgb, var(--builder-primary) 40%, transparent);
+  outline-color: color-mix(in srgb, var(--accent-primary) 40%, transparent);
 }
 
 .block-wrapper.is-selected {
-  @apply outline-(--builder-primary);
+  @apply outline-(--accent-primary);
 }
 
 .block-wrapper.is-hovered {
-  outline-color: color-mix(in srgb, var(--builder-primary) 60%, transparent);
+  outline-color: color-mix(in srgb, var(--accent-primary) 60%, transparent);
 }
 
 /* =============================================================================
@@ -56,8 +56,8 @@
 }
 
 .block-toolbar-delete:hover {
-  @apply text-(--builder-destructive);
-  background: color-mix(in srgb, var(--builder-destructive) 10%, transparent) !important;
+  @apply text-(--status-error);
+  background: color-mix(in srgb, var(--status-error) 10%, transparent) !important;
 }
 
 /* =============================================================================
