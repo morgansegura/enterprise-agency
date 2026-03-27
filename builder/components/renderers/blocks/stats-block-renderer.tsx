@@ -39,12 +39,12 @@ export default function StatsBlockRenderer({ block }: BlockRendererProps) {
     <div className={cn(layoutClasses[layout], variantClasses[variant])}>
       {stats.map((stat, index) => (
         <div key={index} className={itemVariantClasses[variant]}>
-          <div className="text-3xl font-bold text-foreground">{stat.value}</div>
-          <div className="text-sm font-medium text-foreground mt-1">
+          <div className="text-3xl font-bold text-[var(--el-800)]">{stat.value}</div>
+          <div className="text-sm font-medium text-[var(--el-800)] mt-1">
             {stat.label}
           </div>
           {stat.description && (
-            <div className="text-xs text-muted-foreground mt-0.5">
+            <div className="text-xs text-[var(--el-500)] mt-0.5">
               {stat.description}
             </div>
           )}

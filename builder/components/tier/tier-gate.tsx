@@ -58,10 +58,10 @@ export function TierGate({
 
   // Show default upgrade prompt
   return (
-    <Card className="border-primary/20 bg-primary/5">
+    <Card className="border-primary/20 bg-[var(--accent-primary)]/5">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <Sparkles className="h-4 w-4 text-primary" />
+          <Sparkles className="h-4 w-4 text-[var(--accent-primary)]" />
           Upgrade to {requiredTier === "BUILDER"
             ? "Builder"
             : "Content Editor"}{" "}
@@ -70,8 +70,8 @@ export function TierGate({
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex items-start gap-3">
-          <Lock className="h-4 w-4 mt-0.5 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">
+          <Lock className="h-4 w-4 mt-0.5 text-[var(--el-500)]" />
+          <p className="text-sm text-[var(--el-500)]">
             {requiredTier === "BUILDER"
               ? "This feature requires the Builder tier. Upgrade to unlock full builder access, custom layouts, and advanced features."
               : "This feature requires the Content Editor tier or higher."}

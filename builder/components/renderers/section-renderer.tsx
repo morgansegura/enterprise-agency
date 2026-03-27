@@ -5,6 +5,9 @@ import { BlockRenderer } from "./block-renderer";
 interface SectionRendererProps {
   section: Section;
   breakpoint?: "desktop" | "tablet" | "mobile";
+  onBlockChange?: (sectionIndex: number, containerIndex: number, blockIndex: number, updatedBlock: Section["containers"][0]["blocks"][0]) => void;
+  sectionIndex?: number;
+  isEditing?: boolean;
 }
 
 // Match editor's SortableSection classes exactly
@@ -50,6 +53,9 @@ const alignClasses: Record<string, string> = {
 export function SectionRenderer({
   section,
   breakpoint = "desktop",
+  onBlockChange,
+  sectionIndex = 0,
+  isEditing,
 }: SectionRendererProps) {
   const {
     background = "none",
@@ -77,17 +83,29 @@ export function SectionRenderer({
       data-block-key={section._key}
     >
       <div className={cn(sectionSpacing, sectionWidth)}>
-        {containers.map((container) => (
+        {containers.map((container, containerIndex) => (
           <div
             key={container._key}
             className="space-y-4"
             data-block-key={container._key}
           >
-            {container.blocks?.map((block) => (
+            {container.blocks?.map((block, blockIndex) => (
               <BlockRenderer
                 key={block._key}
                 block={block}
                 breakpoint={breakpoint}
+                isEditing={isEditing}
+                onChange={
+                  onBlockChange
+                    ? (updatedBlock) =>
+                        onBlockChange(
+                          sectionIndex,
+                          containerIndex,
+                          blockIndex,
+                          updatedBlock,
+                        )
+                    : undefined
+                }
               />
             ))}
           </div>

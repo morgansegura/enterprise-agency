@@ -2,15 +2,15 @@
 
 /* Select Trigger */
 [data-slot="select-trigger"] {
-  @apply flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-(--input) bg-transparent px-3 py-2 text-sm shadow-sm ring-(--offset-background) transition-all outline-none disabled:cursor-not-allowed disabled:opacity-50;
+  @apply flex h-8 w-full items-center justify-between whitespace-nowrap rounded-[3px] border border-(--el-150) bg-transparent px-2.5 py-1 text-[14px] shadow-xs ring-(--offset-background) transition-all duration-100 outline-none disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 [data-slot="select-trigger"][data-placeholder] {
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
 }
 
 [data-slot="select-trigger"]:focus {
-  @apply ring-1 ring-(--ring);
+  @apply ring-1 ring-(--accent-primary);
 }
 
 [data-slot="select-trigger"] > span {
@@ -18,38 +18,38 @@
 }
 
 [data-slot="select-trigger-icon"] {
-  @apply h-4 w-4 opacity-50;
+  @apply h-3.5 w-3.5 opacity-50;
 }
 
 /* Select Content */
 [data-slot="select-content"] {
-  @apply relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-(--popover) text-(--popover-foreground) shadow-md;
+  @apply relative z-50 min-w-[8rem] overflow-hidden rounded-[3px] border bg-(--el-0) text-(--el-800) shadow-md;
   max-height: min(var(--radix-select-content-available-height, 300px), 300px);
   transform-origin: var(--radix-select-content-transform-origin);
 }
 
 [data-slot="select-content"][data-state="open"] {
-  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out];
+  @apply animate-[select-fade-in_100ms_ease-out,select-zoom-in_100ms_ease-out];
 }
 
 [data-slot="select-content"][data-state="closed"] {
-  @apply animate-[select-fade-out_150ms_ease-in,select-zoom-out_150ms_ease-in];
+  @apply animate-[select-fade-out_100ms_ease-in,select-zoom-out_100ms_ease-in];
 }
 
 [data-slot="select-content"][data-state="open"][data-side="bottom"] {
-  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out,select-slide-in-from-top_150ms_ease-out];
+  @apply animate-[select-fade-in_100ms_ease-out,select-zoom-in_100ms_ease-out,select-slide-in-from-top_100ms_ease-out];
 }
 
 [data-slot="select-content"][data-state="open"][data-side="top"] {
-  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out,select-slide-in-from-bottom_150ms_ease-out];
+  @apply animate-[select-fade-in_100ms_ease-out,select-zoom-in_100ms_ease-out,select-slide-in-from-bottom_100ms_ease-out];
 }
 
 [data-slot="select-content"][data-state="open"][data-side="left"] {
-  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out,select-slide-in-from-right_150ms_ease-out];
+  @apply animate-[select-fade-in_100ms_ease-out,select-zoom-in_100ms_ease-out,select-slide-in-from-right_100ms_ease-out];
 }
 
 [data-slot="select-content"][data-state="open"][data-side="right"] {
-  @apply animate-[select-fade-in_150ms_ease-out,select-zoom-in_150ms_ease-out,select-slide-in-from-left_150ms_ease-out];
+  @apply animate-[select-fade-in_100ms_ease-out,select-zoom-in_100ms_ease-out,select-slide-in-from-left_100ms_ease-out];
 }
 
 [data-slot="select-content"][data-position="popper"][data-side="bottom"] {
@@ -81,16 +81,16 @@
 
 /* Select Label */
 [data-slot="select-label"] {
-  @apply px-2 py-1.5 text-sm font-semibold;
+  @apply px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-(--el-500);
 }
 
 /* Select Item */
 [data-slot="select-item"] {
-  @apply relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none transition-colors;
+  @apply relative flex w-full cursor-default select-none items-center rounded-[3px] py-1.5 pl-2 pr-8 text-[14px] outline-none transition-colors duration-100;
 }
 
 [data-slot="select-item"]:focus {
-  @apply bg-(--accent) text-(--accent-foreground);
+  @apply bg-(--accent-primary-subtle) text-(--el-800);
 }
 
 [data-slot="select-item"][data-disabled] {
@@ -102,23 +102,23 @@
 }
 
 [data-slot="select-item-indicator"] svg {
-  @apply h-4 w-4;
+  @apply h-3.5 w-3.5;
 }
 
 /* Select Separator */
 [data-slot="select-separator"] {
-  @apply -mx-1 my-1 h-px bg-(--muted);
+  @apply -mx-1 my-1 h-px bg-(--el-100);
 }
 
 /* Select Scroll Buttons */
 [data-slot="select-scroll-button"] {
-  @apply flex cursor-default items-center justify-center py-1;
+  @apply flex cursor-default items-center justify-center py-0.5;
 }
 
 [data-slot="select-scroll-button"] svg {
-  @apply h-4 w-4;
+  @apply h-3.5 w-3.5;
 }
 
 .dark [data-slot="select-trigger"] {
-  @apply bg-(--input)/30;
+  @apply bg-(--el-150)/30;
 }

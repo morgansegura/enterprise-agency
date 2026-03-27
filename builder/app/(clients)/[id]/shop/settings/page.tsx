@@ -114,7 +114,7 @@ export default function PaymentSettingsPage({
   if (isLoading) {
     return (
       <div className="p-6 flex items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <Loader2 className="h-6 w-6 animate-spin text-[var(--el-500)]" />
       </div>
     );
   }
@@ -122,7 +122,7 @@ export default function PaymentSettingsPage({
   if (error) {
     return (
       <div className="p-6">
-        <div className="flex items-center gap-2 text-destructive">
+        <div className="flex items-center gap-2 text-[var(--status-error)]">
           <AlertCircle className="h-5 w-5" />
           <span>Error loading payment configuration</span>
         </div>
@@ -207,7 +207,7 @@ export default function PaymentSettingsPage({
                     href="https://dashboard.stripe.com/apikeys"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary underline"
+                    className="text-[var(--accent-primary)] underline"
                   >
                     Stripe Dashboard
                   </a>
@@ -227,7 +227,7 @@ export default function PaymentSettingsPage({
                     onChange={(e) => setStripePublishableKey(e.target.value)}
                   />
                   {config?.stripe?.publishableKey && !stripePublishableKey && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[var(--el-500)]">
                       Current: {config.stripe.publishableKey.substring(0, 20)}
                       ...
                     </p>
@@ -257,7 +257,7 @@ export default function PaymentSettingsPage({
                     value={stripeSecretKey}
                     onChange={(e) => setStripeSecretKey(e.target.value)}
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Secret keys are never displayed after saving
                   </p>
                 </div>
@@ -271,9 +271,9 @@ export default function PaymentSettingsPage({
                     value={stripeWebhookSecret}
                     onChange={(e) => setStripeWebhookSecret(e.target.value)}
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Webhook URL:{" "}
-                    <code className="bg-muted px-1 rounded">
+                    <code className="bg-[var(--el-100)] px-1 rounded">
                       /api/payments/webhooks/stripe/{id}
                     </code>
                   </p>
@@ -315,7 +315,7 @@ export default function PaymentSettingsPage({
                     href="https://developer.squareup.com/apps"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary underline"
+                    className="text-[var(--accent-primary)] underline"
                   >
                     Square Developer Dashboard
                   </a>
@@ -332,7 +332,7 @@ export default function PaymentSettingsPage({
                     onChange={(e) => setSquareApplicationId(e.target.value)}
                   />
                   {config?.square?.applicationId && !squareApplicationId && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[var(--el-500)]">
                       Current: {config.square.applicationId.substring(0, 15)}...
                     </p>
                   )}
@@ -361,7 +361,7 @@ export default function PaymentSettingsPage({
                     value={squareAccessToken}
                     onChange={(e) => setSquareAccessToken(e.target.value)}
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Access tokens are never displayed after saving
                   </p>
                 </div>
@@ -376,7 +376,7 @@ export default function PaymentSettingsPage({
                     onChange={(e) => setSquareLocationId(e.target.value)}
                   />
                   {config?.square?.locationId && !squareLocationId && (
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[var(--el-500)]">
                       Current: {config.square.locationId}
                     </p>
                   )}
@@ -391,9 +391,9 @@ export default function PaymentSettingsPage({
                     value={squareWebhookKey}
                     onChange={(e) => setSquareWebhookKey(e.target.value)}
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Webhook URL:{" "}
-                    <code className="bg-muted px-1 rounded">
+                    <code className="bg-[var(--el-100)] px-1 rounded">
                       /api/payments/webhooks/square/{id}
                     </code>
                   </p>

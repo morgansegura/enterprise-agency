@@ -5,12 +5,12 @@
  * ============================================================================= */
 
 .section-group {
-  @apply border border-(--border) rounded-lg bg-(--background) overflow-hidden;
+  @apply border border-(--border-default) rounded-lg bg-(--el-0) overflow-hidden;
 }
 
 /* Header */
 .section-group__header {
-  @apply flex items-center justify-between px-3 py-2 bg-(--muted)/30;
+  @apply flex items-center justify-between px-3 py-2 bg-(--el-100)/30;
 }
 
 .section-group__toggle {
@@ -18,7 +18,7 @@
 }
 
 .section-group__chevron {
-  @apply w-4 h-4 text-(--muted-foreground) transition-transform duration-150;
+  @apply w-4 h-4 text-(--el-500) transition-transform duration-150;
 }
 
 .section-group__chevron--collapsed {
@@ -30,7 +30,7 @@
 }
 
 .section-group__count {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .section-group__actions {
@@ -42,7 +42,7 @@
 }
 
 .section-group__action-btn {
-  @apply w-7 h-7 text-(--muted-foreground) hover:text-(--destructive);
+  @apply w-7 h-7 text-(--el-500) hover:text-(--status-error);
 }
 
 .section-group__action-btn svg {
@@ -51,7 +51,7 @@
 
 /* Body */
 .section-group__body {
-  @apply border-t border-(--border);
+  @apply border-t border-(--border-default);
 }
 
 .section-group__blocks {
@@ -59,14 +59,14 @@
 }
 
 .section-group__empty {
-  @apply p-6 text-center text-sm text-(--muted-foreground);
+  @apply p-6 text-center text-sm text-(--el-500);
 }
 
 /* Add block button */
 .section-group__add-btn {
   @apply w-full flex items-center justify-center gap-1.5 px-3 py-2
-    text-sm text-(--muted-foreground) hover:text-(--foreground) hover:bg-(--muted)/50
-    border-t border-(--border) cursor-pointer transition-colors;
+    text-sm text-(--el-500) hover:text-(--el-800) hover:bg-(--el-100)/50
+    border-t border-(--border-default) cursor-pointer transition-colors;
 }
 
 .section-group__add-icon {

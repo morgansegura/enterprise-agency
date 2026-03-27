@@ -5,7 +5,7 @@
  * ============================================================================= */
 
 .block-list {
-  @apply w-[480px] shrink-0 border-r border-(--border) bg-(--background) overflow-hidden flex flex-col;
+  @apply w-[480px] shrink-0 border-r border-(--border-default) bg-(--el-0) overflow-hidden flex flex-col;
 }
 
 .block-list__content {

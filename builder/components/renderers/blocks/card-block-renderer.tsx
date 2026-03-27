@@ -15,7 +15,7 @@ interface CardBlockData {
 const variantClasses = {
   default: "bg-card border border-border shadow-sm",
   outline: "border border-border",
-  ghost: "bg-muted/50",
+  ghost: "bg-[var(--el-100)]/50",
 };
 
 const paddingClasses = {
@@ -55,7 +55,7 @@ export default function CardBlockRenderer({ block }: BlockRendererProps) {
           </h3>
         )}
         {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
+          <p className="text-sm text-[var(--el-500)]">{description}</p>
         )}
       </div>
     </>

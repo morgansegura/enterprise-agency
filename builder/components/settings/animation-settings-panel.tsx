@@ -264,7 +264,7 @@ function AnimationPreview({ presetKey, animation }: AnimationPreviewProps) {
       <button
         onClick={playAnimation}
         disabled={isPlaying}
-        className="p-3 rounded-lg border bg-muted/50 hover:bg-muted transition-colors disabled:opacity-50"
+        className="p-3 rounded-lg border bg-[var(--el-100)]/50 hover:bg-[var(--el-100)] transition-colors disabled:opacity-50"
       >
         <div key={key} style={getAnimationStyle()}>
           {getPreviewIcon()}
@@ -274,7 +274,7 @@ function AnimationPreview({ presetKey, animation }: AnimationPreviewProps) {
         <span className="text-sm font-medium capitalize">
           {presetKey.replace(/([A-Z])/g, " $1").trim()}
         </span>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-[var(--el-500)]">
           {preset.duration}ms • {preset.timing}
         </p>
       </div>
@@ -319,7 +319,7 @@ function PresetEditor({
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1">
-          <Label className="text-xs text-muted-foreground">Duration</Label>
+          <Label className="text-xs text-[var(--el-500)]">Duration</Label>
           <Select
             value={preset.duration}
             onValueChange={(v) => onChange({ ...preset, duration: v })}
@@ -338,7 +338,7 @@ function PresetEditor({
         </div>
 
         <div className="space-y-1">
-          <Label className="text-xs text-muted-foreground">Timing</Label>
+          <Label className="text-xs text-[var(--el-500)]">Timing</Label>
           <Select
             value={preset.timing}
             onValueChange={(v) => onChange({ ...preset, timing: v })}
@@ -358,7 +358,7 @@ function PresetEditor({
 
         {showDistance && "distance" in preset && (
           <div className="space-y-1 col-span-2">
-            <Label className="text-xs text-muted-foreground">Distance</Label>
+            <Label className="text-xs text-[var(--el-500)]">Distance</Label>
             <Select
               value={(preset as SlidePreset).distance}
               onValueChange={(v) =>
@@ -381,7 +381,7 @@ function PresetEditor({
 
         {showScale && scaleType && (
           <div className="space-y-1 col-span-2">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-xs text-[var(--el-500)]">
               Scale {scaleType === "from" ? "From" : "To"}
             </Label>
             <Select
@@ -436,14 +436,14 @@ function CollapsibleSection({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors rounded-lg">
+      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-[var(--el-100)]/50 hover:bg-[var(--el-100)] transition-colors rounded-lg">
         <div className="flex items-center gap-2">
           {icon}
           <span className="text-sm font-medium">{title}</span>
         </div>
         <ChevronDown
           className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform",
+            "h-4 w-4 text-[var(--el-500)] transition-transform",
             open && "rotate-180",
           )}
         />
@@ -527,7 +527,7 @@ export function AnimationSettingsPanel({
           {/* Fade Animations */}
           <CollapsibleSection
             title="Fade Animations"
-            icon={<Sparkles className="h-4 w-4 text-muted-foreground" />}
+            icon={<Sparkles className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-3">
               <PresetEditor
@@ -546,7 +546,7 @@ export function AnimationSettingsPanel({
           {/* Slide Animations */}
           <CollapsibleSection
             title="Slide Animations"
-            icon={<ArrowUp className="h-4 w-4 text-muted-foreground" />}
+            icon={<ArrowUp className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-3">
               <PresetEditor
@@ -579,7 +579,7 @@ export function AnimationSettingsPanel({
           {/* Scale Animations */}
           <CollapsibleSection
             title="Scale Animations"
-            icon={<ZoomIn className="h-4 w-4 text-muted-foreground" />}
+            icon={<ZoomIn className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-3">
               <PresetEditor
@@ -602,7 +602,7 @@ export function AnimationSettingsPanel({
           {/* Other Animations */}
           <CollapsibleSection
             title="Other Animations"
-            icon={<Zap className="h-4 w-4 text-muted-foreground" />}
+            icon={<Zap className="h-4 w-4 text-[var(--el-500)]" />}
             defaultOpen={false}
           >
             <div className="space-y-3">
@@ -632,7 +632,7 @@ export function AnimationSettingsPanel({
             <div className="flex items-center justify-between p-4 rounded-lg border">
               <div>
                 <Label>Reduced Motion</Label>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-[var(--el-500)] mt-1">
                   Respect user preference for reduced motion
                 </p>
               </div>
@@ -690,7 +690,7 @@ export function AnimationSettingsPanel({
           {/* Timing Function Curves */}
           <CollapsibleSection
             title="Custom Timing Functions"
-            icon={<Timer className="h-4 w-4 text-muted-foreground" />}
+            icon={<Timer className="h-4 w-4 text-[var(--el-500)]" />}
             defaultOpen={false}
           >
             <div className="space-y-3">
@@ -704,7 +704,7 @@ export function AnimationSettingsPanel({
                   <Label className="capitalize">
                     {key.replace(/([A-Z])/g, " $1")}
                   </Label>
-                  <code className="text-xs bg-muted px-2 py-1 rounded">
+                  <code className="text-xs bg-[var(--el-100)] px-2 py-1 rounded">
                     {animation.timing[key]}
                   </code>
                 </div>
@@ -715,7 +715,7 @@ export function AnimationSettingsPanel({
 
         {/* Preview Tab */}
         <TabsContent value="preview" className="space-y-4 mt-6">
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-sm text-[var(--el-500)] mb-4">
             Click on any animation to preview it. All animations use your
             configured settings.
           </p>

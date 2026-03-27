@@ -5,23 +5,23 @@
 }
 
 .field-renderer__placeholder {
-  @apply flex flex-col gap-1.5 p-3 border border-dashed border-(--muted-foreground)/30 rounded-md bg-(--muted)/30;
+  @apply flex flex-col gap-1.5 p-3 border border-dashed border-(--muted-foreground)/30 rounded-md bg-(--el-100)/30;
 }
 
 .field-renderer__placeholder-label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .field-renderer__placeholder-type {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .field-renderer__json-input {
-  @apply w-full p-2 font-mono text-xs border border-(--input) rounded-md bg-(--background);
-  @apply focus:outline-none focus:ring-2 focus:ring-(--ring);
+  @apply w-full p-2 font-mono text-xs border border-(--el-150) rounded-md bg-(--el-0);
+  @apply focus:outline-none focus:ring-2 focus:ring-(--accent-primary);
 }
 
 .field-renderer__unsupported {
-  @apply p-3 border border-dashed border-(--destructive)/50 rounded-md bg-(--destructive)/10;
-  @apply text-sm text-(--destructive);
+  @apply p-3 border border-dashed border-(--destructive)/50 rounded-md bg-(--status-error)/10;
+  @apply text-sm text-(--status-error);
 }

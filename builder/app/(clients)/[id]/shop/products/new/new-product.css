@@ -28,7 +28,7 @@
 }
 
 .new-product-title {
-  @apply text-lg font-semibold text-(--foreground);
+  @apply text-lg font-semibold text-(--el-800);
 }
 
 .new-product-actions {

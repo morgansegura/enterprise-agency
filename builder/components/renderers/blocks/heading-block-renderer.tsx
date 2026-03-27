@@ -1,4 +1,10 @@
+"use client";
+
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { useEffect } from "react";
 
 interface HeadingBlockData {
   text: string;
@@ -45,9 +51,6 @@ interface HeadingBlockData {
   opacity?: number;
 }
 
-/**
- * Get the closest opacity preset value
- */
 function getOpacityPreset(opacity: number | undefined): string | undefined {
   if (opacity === undefined) return undefined;
   if (opacity <= 10) return "10";
@@ -58,13 +61,11 @@ function getOpacityPreset(opacity: number | undefined): string | undefined {
   return "100";
 }
 
-/**
- * HeadingBlockRenderer - Preview/Export Version
- *
- * Uses data-* attributes for styling (matching HeadingBlockEditor and client).
- * This ensures WYSIWYG parity between builder and frontend.
- */
-export default function HeadingBlockRenderer({ block }: BlockRendererProps) {
+export default function HeadingBlockRenderer({
+  block,
+  onChange,
+  isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as HeadingBlockData;
   const {
     text,
@@ -85,7 +86,6 @@ export default function HeadingBlockRenderer({ block }: BlockRendererProps) {
 
   const Tag = level;
 
-  // Build data attributes for CSS-based styling (matching client's Heading component)
   const dataAttributes: Record<string, string | undefined> = {
     "data-size": size,
     "data-weight": weight,
@@ -101,14 +101,73 @@ export default function HeadingBlockRenderer({ block }: BlockRendererProps) {
     "data-color": color,
   };
 
-  // Filter out undefined values
   const filteredDataAttributes = Object.fromEntries(
     Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
   );
 
+  // TipTap editor for inline editing
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        // Only allow inline formatting for headings — no blocks
+        blockquote: false,
+        bulletList: false,
+        orderedList: false,
+        codeBlock: false,
+        horizontalRule: false,
+        heading: false,
+      }),
+      Placeholder.configure({
+        placeholder: "Type a heading...",
+      }),
+    ],
+    content: text ? `<p>${text}</p>` : "",
+    immediatelyRender: false,
+    editable: !!isEditing,
+    onUpdate: ({ editor: e }) => {
+      if (onChange) {
+        // Strip tags to get plain text for the heading
+        const newText = e.getText();
+        // But keep HTML for rich formatting (bold, italic, etc.)
+        const newHtml = e.getHTML();
+        onChange({
+          ...block,
+          data: {
+            ...block.data,
+            text: newText,
+            html: newHtml,
+          },
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(!!isEditing);
+    }
+  }, [editor, isEditing]);
+
+  // Read-only — plain text output
+  if (!isEditing || !editor) {
+    return (
+      <Tag className="heading" {...filteredDataAttributes}>
+        {text}
+      </Tag>
+    );
+  }
+
+  // Edit mode — TipTap inline editor styled as the heading
   return (
-    <Tag className="heading" {...filteredDataAttributes}>
-      {text}
+    <Tag
+      className="heading"
+      {...filteredDataAttributes}
+      style={{ cursor: "text" }}
+    >
+      <EditorContent
+        editor={editor}
+        style={{ outline: "none" }}
+      />
     </Tag>
   );
 }

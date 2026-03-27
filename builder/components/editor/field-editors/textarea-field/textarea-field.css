@@ -13,11 +13,11 @@
 }
 
 .textarea-field__label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .textarea-field__required {
-  @apply ml-0.5 text-(--destructive);
+  @apply ml-0.5 text-(--status-error);
 }
 
 .textarea-field__input {
@@ -33,15 +33,15 @@
 }
 
 .textarea-field__description {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .textarea-field__error {
-  @apply text-xs text-(--destructive);
+  @apply text-xs text-(--status-error);
 }
 
 .textarea-field__char-count {
-  @apply text-xs text-(--muted-foreground) ml-auto;
+  @apply text-xs text-(--el-500) ml-auto;
 }
 
 .textarea-field__char-count--warn {

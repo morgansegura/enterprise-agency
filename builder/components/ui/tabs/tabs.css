@@ -1,25 +1,25 @@
 @reference "tailwindcss";
 
-/* Tabs List */
+/* Tabs List — Jira-style underline tabs */
 [data-slot="tabs-list"] {
-  @apply inline-flex h-9 items-center justify-center rounded-lg bg-(--muted) p-1 text-(--muted-foreground);
+  @apply inline-flex h-8 items-center justify-center rounded-[3px] bg-(--el-100) p-0.5 text-(--el-500);
 }
 
 /* Tabs Trigger */
 [data-slot="tabs-trigger"] {
-  @apply inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium;
-  @apply ring-offset-(--background) transition-all;
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply inline-flex items-center justify-center whitespace-nowrap rounded-[3px] px-3 py-1 text-[14px] font-medium;
+  @apply ring-offset-(--el-0) transition-all duration-100;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-primary) focus-visible:ring-offset-1;
   @apply disabled:pointer-events-none disabled:opacity-50;
 }
 
 [data-slot="tabs-trigger"][data-state="active"] {
-  @apply bg-(--background) text-(--foreground) shadow;
+  @apply bg-(--el-0) text-(--el-800) shadow-sm;
 }
 
 /* Tabs Content */
 [data-slot="tabs-content"] {
   @apply mt-2;
-  @apply ring-offset-(--background);
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply ring-offset-(--el-0);
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-primary) focus-visible:ring-offset-1;
 }

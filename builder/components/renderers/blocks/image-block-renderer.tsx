@@ -41,7 +41,7 @@ export default function ImageBlockRenderer({ block }: BlockRendererProps) {
 
   if (!src) {
     return (
-      <div className="flex items-center justify-center bg-muted text-muted-foreground p-8 rounded-md">
+      <div className="flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] p-8 rounded-md">
         No image set
       </div>
     );
@@ -72,7 +72,7 @@ export default function ImageBlockRenderer({ block }: BlockRendererProps) {
     return (
       <figure>
         {content}
-        <figcaption className="mt-2 text-center text-sm text-muted-foreground">
+        <figcaption className="mt-2 text-center text-sm text-[var(--el-500)]">
           {caption}
         </figcaption>
       </figure>

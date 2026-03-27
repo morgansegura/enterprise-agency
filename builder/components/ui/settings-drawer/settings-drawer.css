@@ -14,13 +14,13 @@
 /* Sidebar */
 .settings-drawer-sidebar {
   @apply w-[280px] shrink-0 h-full;
-  @apply border-r border-(--border);
-  @apply bg-(--muted)/30;
+  @apply border-r border-(--border-default);
+  @apply bg-(--el-100)/30;
   @apply flex flex-col;
 }
 
 .settings-drawer-header {
-  @apply border-b border-(--border);
+  @apply border-b border-(--border-default);
 }
 
 /* Navigation */
@@ -31,18 +31,18 @@
 
 .settings-drawer-nav-item {
   @apply flex items-center gap-3 w-full;
-  @apply px-4 py-3 rounded-lg;
+  @apply px-4 py-3 rounded-[3px];
   @apply text-left;
-  @apply text-(--muted-foreground);
-  @apply hover:bg-(--muted) hover:text-(--foreground);
+  @apply text-(--el-500);
+  @apply hover:bg-(--el-100) hover:text-(--el-800);
   @apply transition-colors;
   @apply cursor-pointer;
   @apply border-2 border-transparent; /* Reserve space for active border */
 }
 
 .settings-drawer-nav-item.is-active {
-  @apply bg-(--muted)/75 text-(--primary);
-  @apply border-2 border-(--primary)/30;
+  @apply bg-(--el-100)/75 text-(--accent-primary);
+  @apply border-2 border-(--accent-primary)/30;
 }
 
 .settings-drawer-nav-text {
@@ -50,20 +50,20 @@
 }
 
 .settings-drawer-nav-label {
-  @apply font-semibold text-sm;
+  @apply font-semibold text-[14px];
 }
 
 .settings-drawer-nav-desc {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-[12px] text-(--el-500);
 }
 
 .settings-drawer-nav-item.is-active .settings-drawer-nav-desc {
-  @apply text-(--primary)/70;
+  @apply text-(--accent-primary)/70;
 }
 
 /* Footer with save button */
 .settings-drawer-footer {
-  @apply mt-auto p-4 border-t border-(--border);
+  @apply mt-auto p-4 border-t border-(--border-default);
 }
 
 /* Content area */
@@ -86,16 +86,16 @@
 }
 
 .settings-grid-title {
-  @apply bg-(--background) text-xs font-semibold text-(--muted-foreground) uppercase tracking-wide mb-6 border inline-flex px-1.5 py-0.5 rounded-sm;
-  @apply after:-z-[1] after:content-[''] after:absolute after:h-px after:bg-(--border) after:translate-y-2.5 after:w-full after:inset-x-0;
+  @apply bg-(--el-0) text-[12px] font-semibold text-(--el-500) uppercase tracking-wide mb-6 border inline-flex px-1.5 py-0.5 rounded-sm;
+  @apply after:-z-[1] after:content-[''] after:absolute after:h-px after:bg-(--border-default) after:translate-y-2.5 after:w-full after:inset-x-0;
 }
 
 .settings-section-title {
-  @apply text-xl font-semibold text-(--foreground) mb-2 font-(family-name:--font-heading);
+  @apply text-xl font-semibold text-(--el-800) mb-2 font-(family-name:--font-heading);
 }
 
 .settings-section-description {
-  @apply text-sm text-(--muted-foreground) mb-6;
+  @apply text-[14px] text-(--el-500) mb-6;
 }
 
 .settings-grid {
@@ -103,8 +103,8 @@
 }
 
 .settings-placeholder {
-  @apply text-sm text-(--muted-foreground);
-  @apply p-8 border border-dashed border-(--border) rounded-lg;
+  @apply text-[14px] text-(--el-500);
+  @apply p-8 border border-dashed border-(--border-default) rounded-[3px];
   @apply text-center;
 }
 
@@ -123,7 +123,7 @@
 }
 
 .settings-field-inline > label {
-  @apply text-sm text-(--foreground) shrink-0;
+  @apply text-[14px] text-(--el-800) shrink-0;
 }
 
 /* Compact field - tighter spacing */
@@ -132,7 +132,7 @@
 }
 
 .settings-field-compact > label {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-[12px] text-(--el-500);
 }
 
 /* Compact grid - tighter gaps */
@@ -142,10 +142,10 @@
 
 .settings-textarea {
   @apply flex min-h-[120px] w-full rounded-md;
-  @apply border border-(--input) bg-(--background);
-  @apply px-3 py-2 text-sm font-mono;
-  @apply ring-offset-(--background);
-  @apply placeholder:text-(--muted-foreground);
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply border border-(--el-150) bg-(--el-0);
+  @apply px-3 py-2 text-[14px] font-mono;
+  @apply ring-offset-(--el-0);
+  @apply placeholder:text-(--el-500);
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-primary) focus-visible:ring-offset-2;
   @apply disabled:cursor-not-allowed disabled:opacity-50;
 }

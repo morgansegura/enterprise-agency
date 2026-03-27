@@ -58,7 +58,7 @@
 
 /* Table Row */
 .content-table-row {
-  @apply flex items-center cursor-pointer transition-colors;
+  @apply flex items-center cursor-pointer transition-colors duration-100;
   @apply hover:bg-(--el-50);
 }
 
@@ -76,7 +76,7 @@
 }
 
 .content-table-cell-title-text {
-  @apply text-[13px] font-medium text-(--foreground) truncate;
+  @apply text-[14px] font-medium text-(--el-800) truncate;
 }
 
 .content-table-cell-slug {
@@ -84,7 +84,7 @@
 }
 
 .content-table-cell-slug-text {
-  @apply text-[13px] text-(--el-400) truncate;
+  @apply text-[14px] text-(--el-400) truncate;
 }
 
 .content-table-cell-status {
@@ -96,7 +96,7 @@
 }
 
 .content-table-cell-date-text {
-  @apply text-[13px] text-(--el-400);
+  @apply text-[14px] text-(--el-400);
 }
 
 .content-table-cell-actions {
@@ -196,7 +196,7 @@
 }
 
 .content-list-empty h3 {
-  @apply text-base font-medium text-(--foreground) mb-1;
+  @apply text-base font-medium text-(--el-800) mb-1;
 }
 
 .content-list-empty p {
@@ -208,7 +208,7 @@
    ============================================================================ */
 
 .content-list-error {
-  @apply p-6 text-center text-(--destructive);
+  @apply p-6 text-center text-(--status-error);
 }
 
 /* ============================================================================
@@ -246,8 +246,8 @@
 }
 
 .content-card {
-  @apply bg-(--card) border border-(--border-subtle) rounded-lg overflow-hidden cursor-pointer transition-all;
-  @apply hover:border-(--primary) hover:shadow-md;
+  @apply bg-(--el-0) border border-(--border-subtle) rounded-[3px] overflow-hidden cursor-pointer transition-all duration-100;
+  @apply hover:border-(--accent-primary) hover:shadow-md;
 }
 
 .content-card-thumbnail {
@@ -279,9 +279,9 @@
 }
 
 .content-card-title {
-  @apply text-sm font-semibold text-(--foreground) truncate;
+  @apply text-[14px] font-medium text-(--el-800) truncate;
 }
 
 .content-card-meta {
-  @apply text-xs text-(--el-400) mt-1;
+  @apply text-[12px] text-(--el-400) mt-1;
 }

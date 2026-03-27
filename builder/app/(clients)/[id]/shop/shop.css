@@ -5,7 +5,7 @@
    ============================================================================ */
 
 .shop-dashboard {
-  @apply space-y-6;
+  @apply flex flex-col gap-3 p-4 bg-(--el-0) rounded-[3px] border border-(--border)/50 shadow-xs;
 }
 
 /* Stats Grid */
@@ -23,7 +23,7 @@
 }
 
 .shop-stat-label {
-  @apply text-sm font-medium text-(--el-400);
+  @apply text-[12px] font-medium text-(--el-400);
 }
 
 .shop-stat-icon {
@@ -31,7 +31,7 @@
 }
 
 .shop-stat-value {
-  @apply text-2xl font-bold text-(--foreground);
+  @apply text-xl font-bold text-(--el-800);
 }
 
 .shop-stat-subtext {
@@ -63,7 +63,7 @@
 }
 
 .shop-link-card-title {
-  @apply text-base font-semibold text-(--foreground);
+  @apply text-base font-semibold text-(--el-800);
 }
 
 .shop-link-card-description {
@@ -93,7 +93,7 @@
 }
 
 .shop-recent-orders-title {
-  @apply text-base font-semibold text-(--foreground);
+  @apply text-base font-semibold text-(--el-800);
 }
 
 .shop-recent-orders-body {
@@ -110,7 +110,7 @@
 }
 
 .shop-recent-order-number {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .shop-recent-order-email {
@@ -122,7 +122,7 @@
 }
 
 .shop-recent-order-total {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .shop-recent-order-status {

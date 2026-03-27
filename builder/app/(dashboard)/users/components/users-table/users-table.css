@@ -8,7 +8,7 @@
  * -------------------------------------------------------------------------- */
 
 .users-table {
-  @apply w-full text-sm;
+  @apply w-full text-[14px];
   @apply border-separate border-spacing-0;
 }
 
@@ -17,12 +17,12 @@
 }
 
 .users-table-header th {
-  @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap;
+  @apply px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider whitespace-nowrap;
   @apply text-(--text-secondary) border-b border-(--border-default);
 }
 
 .users-table-body tr {
-  @apply transition-colors;
+  @apply transition-colors duration-100;
 }
 
 .users-table-body tr:hover {
@@ -30,7 +30,7 @@
 }
 
 .users-table-body td {
-  @apply px-4 py-3 whitespace-nowrap;
+  @apply px-3 py-2.5 whitespace-nowrap;
   @apply text-(--text-primary) border-b border-(--border-subtle);
 }
 
@@ -43,7 +43,7 @@
 
 .users-avatar {
   @apply flex items-center justify-center h-8 w-8 rounded-full shrink-0;
-  @apply text-xs font-semibold;
+  @apply text-[11px] font-bold;
   @apply bg-(--el-100) text-(--text-secondary);
 }
 
@@ -67,7 +67,7 @@
  * -------------------------------------------------------------------------- */
 
 .users-status-pill {
-  @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[3px] text-[11px] font-medium;
 }
 
 .users-status-active {
@@ -86,7 +86,7 @@
  * -------------------------------------------------------------------------- */
 
 .users-role-badge {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-[3px] text-[11px] font-medium;
 }
 
 .users-role-owner {
@@ -120,15 +120,15 @@
  * -------------------------------------------------------------------------- */
 
 .users-empty {
-  @apply flex flex-col items-center justify-center py-20 text-center;
+  @apply flex flex-col items-center justify-center py-16 text-center;
 }
 
 .users-empty-icon {
-  @apply h-16 w-16 mb-4 text-(--text-tertiary);
+  @apply h-12 w-12 mb-4 text-(--text-tertiary);
 }
 
 .users-empty h3 {
-  @apply text-lg font-medium mb-2 text-(--text-primary);
+  @apply text-base font-medium mb-2 text-(--text-primary);
 }
 
 .users-empty p {
@@ -147,5 +147,5 @@
  * -------------------------------------------------------------------------- */
 
 .users-actions-trigger {
-  @apply h-8 w-8;
+  @apply h-7 w-7;
 }

@@ -411,15 +411,15 @@ export function PageLayers({
             </div>
           );
         })}
+        {onAddSection && (
+          <div className="mt-2 px-1">
+            <button className="layer-add-btn" onClick={onAddSection}>
+              <Plus className="size-3.5" />
+              Add Section
+            </button>
+          </div>
+        )}
       </div>
-      {onAddSection && (
-        <div className="page-layers-footer">
-          <button className="layer-add-btn" onClick={onAddSection}>
-            <Plus className="size-3" />
-            Add Section
-          </button>
-        </div>
-      )}
     </div>
   );
 }

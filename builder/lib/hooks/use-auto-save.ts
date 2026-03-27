@@ -1,12 +1,10 @@
 import { useCallback, useRef, useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { logger } from "../logger";
-import { queryKeys } from "./query-keys";
 import type { Page } from "./use-pages";
 
 interface AutoSaveOptions {
-  tenantId: string;
   pageId: string;
   debounceMs?: number;
   onSaveStart?: () => void;
@@ -22,14 +20,12 @@ interface AutoSaveState {
 }
 
 export function useAutoSave({
-  tenantId,
   pageId,
   debounceMs = 2000,
   onSaveStart,
   onSaveSuccess,
   onSaveError,
 }: AutoSaveOptions) {
-  const queryClient = useQueryClient();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pendingDataRef = useRef<Partial<Page> | null>(null);
 
@@ -54,9 +50,8 @@ export function useAutoSave({
         lastSaved: new Date(),
         hasUnsavedChanges: false,
       }));
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.pages.detail(tenantId, pageId),
-      });
+      // Don't invalidate queries — local state is already current.
+      // Refetching causes editor re-sync → triggers another save → infinite loop.
       logger.log("Auto-save completed");
       onSaveSuccess?.();
     },

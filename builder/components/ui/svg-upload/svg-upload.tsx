@@ -158,11 +158,11 @@ export function SvgUpload({
   const previewClasses = cn(
     "relative flex items-center justify-center rounded-lg border-2 border-dashed transition-colors",
     aspectRatio === "square" ? "h-24 w-24" : "h-20 w-48",
-    isDragging && "border-primary bg-primary/5",
+    isDragging && "border-primary bg-[var(--accent-primary)]/5",
     !isDragging &&
       !value &&
       "border-muted-foreground/25 hover:border-muted-foreground/50",
-    value && "border-transparent bg-muted",
+    value && "border-transparent bg-[var(--el-100)]",
     className,
   );
 
@@ -178,7 +178,7 @@ export function SvgUpload({
                 variant="ghost"
                 size="sm"
                 onClick={handlePaste}
-                className="h-6 px-2 text-xs text-muted-foreground"
+                className="h-6 px-2 text-xs text-[var(--el-500)]"
               >
                 <Code className="h-3 w-3 mr-1" />
                 Edit
@@ -188,7 +188,7 @@ export function SvgUpload({
                 variant="ghost"
                 size="sm"
                 onClick={handleRemove}
-                className="h-6 px-2 text-xs text-muted-foreground hover:text-destructive"
+                className="h-6 px-2 text-xs text-[var(--el-500)] hover:text-[var(--status-error)]"
               >
                 <X className="h-3 w-3 mr-1" />
                 Remove
@@ -253,13 +253,13 @@ export function SvgUpload({
           {value ? (
             <div
               className={cn(
-                "flex items-center justify-center text-foreground",
+                "flex items-center justify-center text-[var(--el-800)]",
                 aspectRatio === "square" ? "h-16 w-16" : "h-12 w-40",
               )}
               dangerouslySetInnerHTML={{ __html: value }}
             />
           ) : (
-            <div className="flex flex-col items-center gap-1 text-muted-foreground">
+            <div className="flex flex-col items-center gap-1 text-[var(--el-500)]">
               {isDragging ? (
                 <>
                   <Upload className="h-6 w-6" />
@@ -277,10 +277,10 @@ export function SvgUpload({
       )}
 
       {description && !isEditing && (
-        <p className="text-xs text-muted-foreground">{description}</p>
+        <p className="text-xs text-[var(--el-500)]">{description}</p>
       )}
 
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && <p className="text-xs text-[var(--status-error)]">{error}</p>}
     </div>
   );
 }

@@ -19,18 +19,18 @@
 
 .footer-library-item {
   @apply relative flex flex-col;
-  @apply border border-(--builder-border) rounded-lg overflow-hidden;
-  @apply bg-(--builder-card) hover:border-(--builder-primary)/50;
+  @apply border border-(--border-default) rounded-lg overflow-hidden;
+  @apply bg-(--el-0) hover:border-(--accent-primary)/50;
   @apply cursor-pointer transition-all;
 }
 
 .footer-library-item.is-selected {
-  @apply border-(--builder-primary) ring-2 ring-(--builder-primary)/20;
+  @apply border-(--accent-primary) ring-2 ring-(--builder-primary)/20;
 }
 
 .footer-library-preview {
   @apply h-24 p-4;
-  @apply bg-(--builder-muted)/50;
+  @apply bg-(--el-100)/50;
   @apply flex items-center justify-center;
 }
 
@@ -40,23 +40,23 @@
 
 .footer-library-name {
   @apply flex items-center gap-1.5;
-  @apply text-sm font-medium text-(--builder-foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .footer-library-layout {
-  @apply text-xs text-(--builder-muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .footer-library-check {
   @apply absolute top-2 right-2;
   @apply w-6 h-6 flex items-center justify-center;
-  @apply bg-(--builder-primary) text-(--builder-primary-foreground) rounded-full;
+  @apply bg-(--accent-primary) text-(--accent-primary-foreground) rounded-full;
 }
 
 .footer-library-loading,
 .footer-library-empty {
   @apply flex flex-col items-center justify-center gap-4 py-12;
-  @apply text-sm text-(--builder-muted-foreground);
+  @apply text-sm text-(--el-500);
 }
 
 /* Preview Layouts */

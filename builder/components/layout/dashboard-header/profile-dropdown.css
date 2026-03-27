@@ -1,11 +1,11 @@
 @reference "tailwindcss";
 
 .profile-dropdown-avatar {
-  @apply flex h-8 w-8 items-center justify-center rounded-full bg-(--primary) text-(--primary-foreground);
+  @apply flex h-8 w-8 items-center justify-center rounded-full bg-(--accent-primary) text-(--primary-foreground);
 }
 
 .profile-dropdown-avatar-initials {
-  @apply text-sm font-medium text-(--secondary-foreground);
+  @apply text-[14px] font-medium text-(--secondary-foreground);
 }
 
 .profile-dropdown-user-info {
@@ -13,11 +13,11 @@
 }
 
 .profile-dropdown-user-name {
-  @apply text-sm font-medium leading-none;
+  @apply text-[14px] font-medium leading-none;
 }
 
 .profile-dropdown-user-email {
-  @apply text-xs leading-none text-(--muted-foreground);
+  @apply text-xs leading-none text-(--el-500);
 }
 
 .profile-dropdown-user-role {

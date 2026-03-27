@@ -165,16 +165,19 @@ export async function refreshToken(): Promise<boolean> {
   try {
     logger.log("Refreshing access token");
 
-    await apiClient.authPost<void>("/refresh");
+    const success = await apiClient.refreshTokenIfNeeded();
 
-    logger.log("Token refreshed successfully");
-    return true;
+    if (success) {
+      logger.log("Token refreshed successfully");
+      return true;
+    }
+
+    logger.log("Token refresh failed — session expired");
+    useAuthStore.getState().logout();
+    return false;
   } catch (error) {
     logger.error("Token refresh failed", error as Error);
-
-    // Clear store on refresh failure
     useAuthStore.getState().logout();
-
     return false;
   }
 }

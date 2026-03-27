@@ -59,9 +59,10 @@ export default function EditPagePage({
   const restoreVersion = useRestorePageVersion(id);
 
   // Section/block operations (extracted hook)
+  // Don't use createDefaultSection() as fallback — that creates empty content
+  // that gets auto-saved and overwrites real data
   const initialSections = React.useMemo(
-    () =>
-      (page?.content?.sections as Section[]) ?? [createDefaultSection()],
+    () => (page?.content?.sections as Section[]) ?? [],
     [page],
   );
   const editor = usePageEditor(initialSections);
@@ -113,7 +114,7 @@ export default function EditPagePage({
   }, [hoveredBlockKey, selectedBlockKey]);
 
   // UI Store for block selection in sidebar
-  const { selectBlock } = useUIStore();
+  const { selectBlock, selectSection, selectContainer } = useUIStore();
 
   // Local page state for editing
   const [localPage, setLocalPage] = React.useState({
@@ -129,11 +130,10 @@ export default function EditPagePage({
 
   // Auto-save hook
   const autoSave = useAutoSave({
-    tenantId: id,
     pageId,
     debounceMs: 3000,
     onSaveSuccess: () => {
-      toast.success("Changes saved", { duration: 2000 });
+      toast("Saved", { duration: 1500, id: "auto-save", position: "bottom-right" });
     },
     onSaveError: (error) => {
       toast.error(`Failed to save: ${error.message}`);
@@ -165,7 +165,6 @@ export default function EditPagePage({
 
   // --- Auto-save wiring ---
 
-  const initialLoadRef = React.useRef(true);
   const saveRef = React.useRef(autoSave.save);
   const saveNowRef = React.useRef(autoSave.saveNow);
   React.useEffect(() => {
@@ -200,12 +199,15 @@ export default function EditPagePage({
   }, [buildSavePayload]);
 
   // Trigger debounced auto-save on content changes
+  const saveCountRef = React.useRef(0);
   React.useEffect(() => {
-    if (initialLoadRef.current) {
-      initialLoadRef.current = false;
+    saveCountRef.current++;
+    if (saveCountRef.current <= 2) {
+      // Skip first 2 renders (initial + hydration)
       return;
     }
-    saveRef.current(buildSavePayload());
+    const payload = buildSavePayload();
+    saveRef.current(payload);
   }, [buildSavePayload]);
 
   // Listen for block additions from BlocksLibrary
@@ -223,9 +225,45 @@ export default function EditPagePage({
 
   // --- Early returns ---
 
-  if (isLoading) return <div>Loading page...</div>;
-  if (error) return <div>Error loading page: {error.message}</div>;
-  if (!page) return <div>Page not found</div>;
+  if (isLoading) {
+    return (
+      <div className="flex h-full">
+        <div className="w-[220px] border-r border-[var(--border-default)] p-3 space-y-3">
+          <div className="h-4 w-16 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-8 w-full bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-8 w-3/4 bg-[var(--el-100)] rounded animate-pulse ml-4" />
+        </div>
+        <div className="flex-1 p-8 space-y-6">
+          <div className="h-10 w-1/3 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-4 w-full bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-4 w-5/6 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-4 w-2/3 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-48 w-full bg-[var(--el-100)] rounded animate-pulse" />
+        </div>
+        <div className="w-[280px] border-l border-[var(--border-default)] p-3 space-y-3">
+          <div className="h-4 w-20 bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-8 w-full bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-8 w-full bg-[var(--el-100)] rounded animate-pulse" />
+        </div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <span className="text-[14px] text-[var(--status-error)]">
+          Error loading page: {error.message}
+        </span>
+      </div>
+    );
+  }
+  if (!page) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <span className="text-[14px] text-[var(--el-500)]">Page not found</span>
+      </div>
+    );
+  }
 
   // --- Handlers ---
 
@@ -295,7 +333,7 @@ export default function EditPagePage({
 
   if (previewMode) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[var(--el-0)]">
         <Button
           variant="secondary"
           size="sm"
@@ -351,11 +389,11 @@ export default function EditPagePage({
             hoveredKey={hoveredBlockKey}
             onSelectSection={(sectionIndex, key) => {
               setSelectedBlockKey(key);
-              selectBlock(sectionIndex, 0, 0, key);
+              selectSection(sectionIndex, key);
             }}
             onSelectContainer={(sectionIndex, containerIndex, key) => {
               setSelectedBlockKey(key);
-              selectBlock(sectionIndex, containerIndex, 0, key);
+              selectContainer(sectionIndex, containerIndex, key);
             }}
             onSelectBlock={(sectionIndex, containerIndex, blockIndex, key) => {
               setSelectedBlockKey(key);
@@ -437,15 +475,67 @@ export default function EditPagePage({
         <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
           <ResponsivePreview breakpoint={breakpoint} className="h-full">
             <div className="page-editor-canvas-content design-preview">
-              <PageRenderer
-                page={{
-                  id: pageId,
-                  title: localPage.title,
-                  slug: localPage.slug,
-                  sections: editor.sections,
-                }}
-                breakpoint={breakpoint}
-              />
+              {editor.sections.every(
+                (s) =>
+                  !s.containers?.length ||
+                  s.containers.every((c) => !c.blocks?.length),
+              ) ? (
+                <div className="flex flex-col items-center justify-center min-h-[60vh] gap-5">
+                  <div className="flex flex-col items-center gap-2 text-center max-w-sm">
+                    <p className="text-[18px] font-semibold text-[var(--el-800)]">
+                      This page is empty
+                    </p>
+                    <p className="text-[14px] text-[var(--el-500)] leading-relaxed">
+                      Add content to start building. You can add headings,
+                      text, images, and more from the blocks panel.
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="default"
+                      onClick={() => {
+                        if (editor.sections.length === 0) {
+                          editor.handleAddSectionAt(0);
+                        }
+                        // Use setTimeout to let the section state update
+                        setTimeout(() => {
+                          editor.handleAddBlockToContainer(0, 0, "heading");
+                          editor.handleAddBlockToContainer(0, 0, "rich-text");
+                        }, 0);
+                      }}
+                    >
+                      Add starter content
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        if (editor.sections.length === 0) {
+                          editor.handleAddSectionAt(0);
+                        }
+                        setTimeout(() => {
+                          editor.handleAddBlockToContainer(0, 0, "heading");
+                        }, 0);
+                      }}
+                    >
+                      Add empty block
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <PageRenderer
+                  page={{
+                    id: pageId,
+                    title: localPage.title,
+                    slug: localPage.slug,
+                    sections: editor.sections,
+                  }}
+                  isEditing
+                  onBlockChange={(sectionIndex, containerIndex, blockIndex, updatedBlock) => {
+                    editor.handleBlockChange(sectionIndex, containerIndex, blockIndex, updatedBlock as import("@/lib/hooks/use-pages").Block);
+                  }}
+                  breakpoint={breakpoint}
+                />
+              )}
             </div>
           </ResponsivePreview>
         </ResponsiveProvider>

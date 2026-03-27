@@ -234,7 +234,7 @@ export function EntitySettingsDrawer({
           title="Settings"
           titleIcon={<Settings className="size-4" />}
         >
-          <div className="p-4 text-sm text-muted-foreground">
+          <div className="p-4 text-sm text-[var(--el-500)]">
             <p>No settings available for this view.</p>
             <p className="mt-2">
               Navigate to a page, post, or product editor to access settings.
@@ -242,7 +242,7 @@ export function EntitySettingsDrawer({
           </div>
         </SettingsDrawerSidebar>
         <SettingsDrawerContent>
-          <div className="flex items-center justify-center h-full text-muted-foreground">
+          <div className="flex items-center justify-center h-full text-[var(--el-500)]">
             <div className="text-center">
               <Settings className="size-12 mx-auto mb-4 opacity-50" />
               <p>Select an item to edit to view its settings</p>

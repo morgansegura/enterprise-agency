@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
+ 
 
 import * as React from "react";
 import Link from "next/link";
@@ -18,10 +18,7 @@ import { ClientSidebar } from "@/components/layout/client-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { ThemeSwitcher } from "@/components/layout/dashboard-header/theme-switcher";
 import { ProfileDropdown } from "@/components/layout/dashboard-header/profile-dropdown";
-import { TenantLogo } from "@/components/ui/tenant-logo";
-
 import "./client-layout.css";
-import { WFLogoIcon } from "@/components/editor/client-logos/wf-logo";
 
 function ClientContent({
   user,
@@ -71,10 +68,6 @@ export function ClientLayout({
     tenantId && tenant?.businessName ? tenant.businessName : "Web & Funnel";
   const brandHref = tenantId ? `/${tenantId}` : "/clients";
 
-  // Custom icon from tenant settings (prefer SVG, fallback to URL)
-  const tenantIconSvg = (tenant as { iconSvg?: string } | undefined)?.iconSvg;
-  const tenantIconUrl = (tenant as { iconUrl?: string } | undefined)?.iconUrl;
-
   const handleLogout = () => {
     logout();
     router.push("/");
@@ -105,30 +98,10 @@ export function ClientLayout({
         {!hasCustomToolbar ? (
           <header className="client-layout-header">
             <div className="client-layout-header-left">
-              <Link href={brandHref}>
-                <div className="client-layout-header-logo">
-                  {tenantIconSvg ? (
-                    <TenantLogo
-                      svg={tenantIconSvg}
-                      variant="icon"
-                      size="sm"
-                      alt={brandName}
-                    />
-                  ) : tenantIconUrl ? (
-                    <img
-                      src={tenantIconUrl}
-                      alt={brandName}
-                      className="h-4 w-4 object-contain"
-                    />
-                  ) : (
-                    <WFLogoIcon size="sm" />
-                  )}
-                  <div className="client-layout-header-logo-text">
-                    <span className="client-layout-header-logo-title">
-                      {brandName}
-                    </span>
-                  </div>
-                </div>
+              <Link href={brandHref} className="client-layout-header-logo">
+                <span className="client-layout-header-logo-text">
+                  {brandName}
+                </span>
               </Link>
 
               <Separator

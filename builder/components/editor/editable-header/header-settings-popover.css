@@ -19,7 +19,7 @@
 }
 
 .header-settings-section-title {
-  @apply text-xs font-semibold tracking-wide text-(--builder-muted-foreground);
+  @apply text-xs font-semibold tracking-wide text-(--el-500);
 }
 
 .header-settings-field {
@@ -35,6 +35,6 @@
 }
 
 .header-settings-button.is-active {
-  @apply bg-(--builder-primary) text-(--builder-primary-foreground);
-  @apply hover:bg-(--builder-primary) hover:text-(--builder-primary-foreground);
+  @apply bg-(--accent-primary) text-(--accent-primary-foreground);
+  @apply hover:bg-(--accent-primary) hover:text-(--accent-primary-foreground);
 }

@@ -126,13 +126,13 @@ export function LogoBarBlockEditor({
         onClick={() => setIsEditing(true)}
       >
         {block.data.heading && (
-          <p className="text-sm text-muted-foreground text-center mb-3">
+          <p className="text-sm text-[var(--el-500)] text-center mb-3">
             {block.data.heading}
           </p>
         )}
         <div className="flex items-center justify-center gap-6 flex-wrap">
           {block.data.logos.length === 0 ? (
-            <div className="text-center text-muted-foreground py-4">
+            <div className="text-center text-[var(--el-500)] py-4">
               No logos yet. Click to add logos...
             </div>
           ) : (
@@ -149,9 +149,9 @@ export function LogoBarBlockEditor({
                   />
                 ) : (
                   <div
-                    className={`${sizeStyles[size as keyof typeof sizeStyles]} w-20 bg-muted rounded flex items-center justify-center`}
+                    className={`${sizeStyles[size as keyof typeof sizeStyles]} w-20 bg-[var(--el-100)] rounded flex items-center justify-center`}
                   >
-                    <Image className="h-4 w-4 text-muted-foreground" />
+                    <Image className="h-4 w-4 text-[var(--el-500)]" />
                   </div>
                 )}
               </div>
@@ -224,7 +224,7 @@ export function LogoBarBlockEditor({
             {block.data.logos.map((logo, index) => (
               <div
                 key={index}
-                className="border rounded-lg p-3 space-y-2 bg-muted/30"
+                className="border rounded-lg p-3 space-y-2 bg-[var(--el-100)]/30"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -235,7 +235,7 @@ export function LogoBarBlockEditor({
                         className="h-6 w-auto object-contain"
                       />
                     ) : (
-                      <Image className="h-4 w-4 text-muted-foreground shrink-0" />
+                      <Image className="h-4 w-4 text-[var(--el-500)] shrink-0" />
                     )}
                     <span className="text-sm truncate">
                       {logo.alt || `Logo ${index + 1}`}
@@ -294,7 +294,7 @@ export function LogoBarBlockEditor({
               </div>
             ))}
             {block.data.logos.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-sm text-[var(--el-500)] text-center py-4">
                 No logos yet. Click &quot;Add Logo&quot; to start.
               </p>
             )}
@@ -346,18 +346,18 @@ export function LogoBarBlockEditor({
           </ResponsiveField>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           {block.data.heading && (
-            <p className="text-sm text-muted-foreground text-center mb-3">
+            <p className="text-sm text-[var(--el-500)] text-center mb-3">
               {block.data.heading}
             </p>
           )}
           <div className="flex items-center justify-center gap-6 flex-wrap">
             {block.data.logos.length === 0 ? (
-              <div className="text-center text-muted-foreground py-4">
+              <div className="text-center text-[var(--el-500)] py-4">
                 No logos yet
               </div>
             ) : (
@@ -374,9 +374,9 @@ export function LogoBarBlockEditor({
                     />
                   ) : (
                     <div
-                      className={`${sizeStyles[size as keyof typeof sizeStyles]} w-20 bg-muted rounded flex items-center justify-center`}
+                      className={`${sizeStyles[size as keyof typeof sizeStyles]} w-20 bg-[var(--el-100)] rounded flex items-center justify-center`}
                     >
-                      <Image className="h-4 w-4 text-muted-foreground" />
+                      <Image className="h-4 w-4 text-[var(--el-500)]" />
                     </div>
                   )}
                 </div>

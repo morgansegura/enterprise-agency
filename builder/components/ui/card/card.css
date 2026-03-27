@@ -2,30 +2,30 @@
 
 /* Card */
 [data-slot="card"] {
-  @apply rounded-xl border bg-(--card) text-(--card-foreground) shadow;
+  @apply rounded-[3px] border bg-(--el-0) text-(--el-800) shadow-xs;
 }
 
 /* Card Header */
 [data-slot="card-header"] {
-  @apply flex flex-col gap-1.5 p-6;
+  @apply flex flex-col gap-1 p-4;
 }
 
 /* Card Title */
 [data-slot="card-title"] {
-  @apply font-semibold leading-none tracking-tight;
+  @apply text-[14px] font-semibold leading-none tracking-tight;
 }
 
 /* Card Description */
 [data-slot="card-description"] {
-  @apply text-sm text-(--muted-foreground);
+  @apply text-[12px] text-(--el-500);
 }
 
 /* Card Content */
 [data-slot="card-content"] {
-  @apply p-6 pt-0;
+  @apply p-4 pt-0;
 }
 
 /* Card Footer */
 [data-slot="card-footer"] {
-  @apply flex items-center p-6 pt-0;
+  @apply flex items-center p-4 pt-0;
 }

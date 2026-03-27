@@ -89,8 +89,8 @@ export function CtaBlockEditor({
   const align = block.data.align || "center";
 
   const variantStyles = {
-    default: "bg-muted/30",
-    highlighted: "bg-primary/10 border border-primary/20",
+    default: "bg-[var(--el-100)]/30",
+    highlighted: "bg-[var(--accent-primary)]/10 border border-primary/20",
     minimal: "",
   };
 
@@ -112,7 +112,7 @@ export function CtaBlockEditor({
             {block.data.heading || "CTA Heading"}
           </h3>
           {block.data.description && (
-            <p className="text-sm text-muted-foreground mt-2">
+            <p className="text-sm text-[var(--el-500)] mt-2">
               {block.data.description}
             </p>
           )}
@@ -191,7 +191,7 @@ export function CtaBlockEditor({
         </FormItem>
 
         <div className="border rounded-lg p-3 space-y-3">
-          <p className="text-xs font-medium text-muted-foreground uppercase">
+          <p className="text-xs font-medium text-[var(--el-500)] uppercase">
             Primary CTA
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -221,7 +221,7 @@ export function CtaBlockEditor({
         </div>
 
         <div className="border rounded-lg p-3 space-y-3">
-          <p className="text-xs font-medium text-muted-foreground uppercase">
+          <p className="text-xs font-medium text-[var(--el-500)] uppercase">
             Secondary CTA
           </p>
           <div className="grid grid-cols-2 gap-3">

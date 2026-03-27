@@ -10,6 +10,10 @@ export interface BlockRendererProps<T extends Block = Block> {
   block: T;
   /** Current breakpoint for responsive rendering */
   breakpoint?: "desktop" | "tablet" | "mobile";
+  /** If provided, the block is editable — call this to update block data */
+  onChange?: (updatedBlock: T) => void;
+  /** Whether the block is in editor mode (canvas editing) */
+  isEditing?: boolean;
 }
 
 /**

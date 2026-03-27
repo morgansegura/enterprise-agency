@@ -5,7 +5,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import {
-  ArrowLeft,
   ChevronRight,
   FileText,
   Newspaper,
@@ -15,7 +14,6 @@ import {
   Receipt,
   Users,
   Settings,
-  Globe,
   PanelTop,
   PanelBottom,
   Menu,
@@ -31,10 +29,10 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
+  SidebarSeparator,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useTenant } from "@/lib/hooks/use-tenants";
-import { useUIStore } from "@/lib/stores/ui-store";
 
 import "./client-sidebar.css";
 
@@ -73,8 +71,7 @@ function ClientNavLink({
   title: string;
 }) {
   const pathname = usePathname();
-  const isActive =
-    pathname === href || pathname?.startsWith(href + "/");
+  const isActive = pathname === href || pathname?.startsWith(href + "/");
 
   return (
     <SidebarMenuItem>
@@ -88,11 +85,7 @@ function ClientNavLink({
 
 /* ── Collapsible section ───────────────────────────────────────────────── */
 
-function SidebarSection({
-  label,
-  items,
-  defaultOpen = true,
-}: NavSection) {
+function SidebarSection({ label, items, defaultOpen = true }: NavSection) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -131,8 +124,10 @@ function SidebarSection({
 export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
   const params = useParams();
   const tenantId = params?.id as string;
-  const { data: _tenant } = useTenant(tenantId);
-  const { openPageSettings, openGlobalSettings } = useUIStore();
+  const { data: tenant } = useTenant(tenantId);
+
+  const tenantName = tenant?.businessName || "Project";
+  const tenantInitial = tenantName.charAt(0).toUpperCase();
 
   /* Section definitions */
   const sections: NavSection[] = [
@@ -184,17 +179,20 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
 
   return (
     <Sidebar collapsible="icon" className="client-sidebar" {...props}>
-      {/* Back to dashboard */}
+      {/* Project header — Jira-style project identity */}
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <Link href="/dashboard" className="client-sidebar-back">
-              <ArrowLeft />
-              <span>Dashboard</span>
-            </Link>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <Link href="/clients" className="client-sidebar-project">
+          <div className="client-sidebar-project-avatar">
+            {tenantInitial}
+          </div>
+          <div className="client-sidebar-project-info">
+            <span className="client-sidebar-project-name">{tenantName}</span>
+            <span className="client-sidebar-project-type">CMS Project</span>
+          </div>
+        </Link>
       </SidebarHeader>
+
+      <SidebarSeparator />
 
       <SidebarContent>
         {tenantId &&
@@ -203,35 +201,8 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
           ))}
       </SidebarContent>
 
-      {/* Footer — editor actions + collapse trigger */}
+      {/* Footer — collapse toggle */}
       <SidebarFooter>
-        <SidebarGroup>
-          <div className="client-sidebar-label">Editor</div>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <button
-                  type="button"
-                  className="client-sidebar-action"
-                  onClick={openPageSettings}
-                >
-                  <Settings />
-                  <span>Page Settings</span>
-                </button>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <button
-                  type="button"
-                  className="client-sidebar-action"
-                  onClick={openGlobalSettings}
-                >
-                  <Globe />
-                  <span>Global Settings</span>
-                </button>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
         <SidebarTrigger />
       </SidebarFooter>
     </Sidebar>

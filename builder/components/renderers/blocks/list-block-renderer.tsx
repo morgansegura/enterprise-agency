@@ -33,7 +33,7 @@ export default function ListBlockRenderer({ block }: BlockRendererProps) {
     if (style === "check") {
       return (
         <li key={index} className="flex items-start gap-2">
-          <span className="text-primary mt-0.5">✓</span>
+          <span className="text-[var(--accent-primary)] mt-0.5">✓</span>
           <span>{item.text}</span>
         </li>
       );
@@ -41,7 +41,7 @@ export default function ListBlockRenderer({ block }: BlockRendererProps) {
     if (style === "arrow") {
       return (
         <li key={index} className="flex items-start gap-2">
-          <span className="text-primary mt-0.5">→</span>
+          <span className="text-[var(--accent-primary)] mt-0.5">→</span>
           <span>{item.text}</span>
         </li>
       );

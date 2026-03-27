@@ -36,7 +36,7 @@
 }
 
 .customer-address-action:hover {
-  @apply text-(--foreground) bg-(--el-100);
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 .customer-address-action svg {
@@ -48,7 +48,7 @@
 }
 
 .customer-address-name {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .customer-address-line {

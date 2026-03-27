@@ -2,13 +2,13 @@
 
 .format-toolbar {
   @apply flex items-center gap-1;
-  @apply bg-(--popover) border border-(--border) rounded-lg shadow-lg;
+  @apply bg-(--popover) border border-(--border-default) rounded-lg shadow-lg;
   @apply p-1;
 }
 
 .format-toolbar__group {
   @apply flex items-center;
-  @apply border-l border-(--border) pl-1 ml-1;
+  @apply border-l border-(--border-default) pl-1 ml-1;
 }
 
 .format-toolbar__group:first-child {

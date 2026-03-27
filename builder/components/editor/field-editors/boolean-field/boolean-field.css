@@ -18,16 +18,16 @@
 }
 
 .boolean-field__switch {
-  @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-(--muted) transition-colors;
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-(--el-100) transition-colors;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-primary) focus-visible:ring-offset-2;
 }
 
 .boolean-field__switch--checked {
-  @apply bg-(--primary);
+  @apply bg-(--accent-primary);
 }
 
 .boolean-field__switch-thumb {
-  @apply pointer-events-none block h-5 w-5 rounded-full bg-(--background) shadow-lg ring-0 transition-transform;
+  @apply pointer-events-none block h-5 w-5 rounded-full bg-(--el-0) shadow-lg ring-0 transition-transform;
 }
 
 .boolean-field__switch--checked .boolean-field__switch-thumb {
@@ -35,7 +35,7 @@
 }
 
 .boolean-field__switch-label {
-  @apply text-sm font-medium text-(--foreground) cursor-pointer;
+  @apply text-sm font-medium text-(--el-800) cursor-pointer;
 }
 
 /* Checkbox variant */
@@ -44,8 +44,8 @@
 }
 
 .boolean-field__checkbox {
-  @apply h-4 w-4 rounded border border-(--input) bg-(--background) text-(--primary);
-  @apply focus:ring-2 focus:ring-(--ring) focus:ring-offset-2;
+  @apply h-4 w-4 rounded border border-(--el-150) bg-(--el-0) text-(--accent-primary);
+  @apply focus:ring-2 focus:ring-(--accent-primary) focus:ring-offset-2;
 }
 
 .boolean-field__checkbox--error {
@@ -53,11 +53,11 @@
 }
 
 .boolean-field__checkbox-label {
-  @apply text-sm font-medium text-(--foreground) cursor-pointer;
+  @apply text-sm font-medium text-(--el-800) cursor-pointer;
 }
 
 .boolean-field__description {
-  @apply text-xs text-(--muted-foreground) ml-14;
+  @apply text-xs text-(--el-500) ml-14;
 }
 
 .boolean-field[data-variant="checkbox"] .boolean-field__description {
@@ -65,5 +65,5 @@
 }
 
 .boolean-field__error {
-  @apply text-xs text-(--destructive);
+  @apply text-xs text-(--status-error);
 }

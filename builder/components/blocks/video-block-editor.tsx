@@ -84,20 +84,20 @@ export function VideoBlockEditor({
         onClick={() => setIsEditing(true)}
       >
         <div
-          className={`relative ${aspectRatioMap[aspectRatio]} bg-muted rounded overflow-hidden`}
+          className={`relative ${aspectRatioMap[aspectRatio]} bg-[var(--el-100)] rounded overflow-hidden`}
         >
           {block.data.url ? (
             <div className="flex items-center justify-center h-full">
-              <Video className="h-12 w-12 text-muted-foreground" />
-              <span className="ml-2 text-sm text-muted-foreground">
+              <Video className="h-12 w-12 text-[var(--el-500)]" />
+              <span className="ml-2 text-sm text-[var(--el-500)]">
                 Video: {provider}
               </span>
             </div>
           ) : (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <Video className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">
+                <Video className="h-12 w-12 mx-auto text-[var(--el-500)] mb-2" />
+                <p className="text-sm text-[var(--el-500)]">
                   No video URL set
                 </p>
               </div>
@@ -150,7 +150,7 @@ export function VideoBlockEditor({
             onChange={(e) => handleDataChange("url", e.target.value)}
             placeholder="https://youtube.com/watch?v=... or direct video URL"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Supports YouTube, Vimeo, or direct video URLs
           </p>
         </FormItem>
@@ -253,16 +253,16 @@ export function VideoBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <div
-            className={`relative ${aspectRatioMap[aspectRatio]} bg-muted rounded overflow-hidden`}
+            className={`relative ${aspectRatioMap[aspectRatio]} bg-[var(--el-100)] rounded overflow-hidden`}
           >
             <div className="flex items-center justify-center h-full">
-              <Video className="h-12 w-12 text-muted-foreground" />
-              <span className="ml-2 text-sm text-muted-foreground">
+              <Video className="h-12 w-12 text-[var(--el-500)]" />
+              <span className="ml-2 text-sm text-[var(--el-500)]">
                 {block.data.url ? `Video: ${provider}` : "No video URL"}
               </span>
             </div>

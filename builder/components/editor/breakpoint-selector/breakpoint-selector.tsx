@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/ui/button";
 import { Monitor, Tablet, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -33,61 +32,37 @@ const breakpoints = [
   },
 ];
 
-/**
- * Breakpoint Selector
- *
- * Allows switching between different viewport sizes for responsive preview.
- *
- * Features:
- * - Desktop, tablet, and mobile breakpoints
- * - Visual icons for each breakpoint
- * - Active state indication
- * - Keyboard accessible
- *
- * Usage:
- * ```tsx
- * const [breakpoint, setBreakpoint] = useState<Breakpoint>("desktop");
- *
- * <BreakpointSelector
- *   value={breakpoint}
- *   onChange={setBreakpoint}
- * />
- * ```
- */
 export function BreakpointSelector({
   value,
   onChange,
 }: BreakpointSelectorProps) {
   return (
-    <div className="flex items-center gap-1 border bg-(--border)/50 rounded-sm">
+    <div className="flex items-center p-0.5 rounded-[3px] bg-[var(--el-100)] gap-0.5">
       {breakpoints.map((breakpoint) => {
         const Icon = breakpoint.icon;
         const isActive = value === breakpoint.value;
 
         return (
-          <Button
+          <button
             key={breakpoint.value}
-            variant={isActive ? "outline" : "ghost"}
-            size="sm"
+            type="button"
             onClick={() => onChange(breakpoint.value)}
             className={cn(
-              "gap-2 rounded-sm",
-              !isActive && "hover:bg-background",
+              "flex items-center justify-center size-7 rounded-[3px] transition-colors duration-100 cursor-pointer",
+              isActive
+                ? "bg-[var(--el-0)] text-[var(--el-800)] shadow-sm"
+                : "text-[var(--el-400)] hover:text-[var(--el-800)]",
             )}
             title={`${breakpoint.label} (${breakpoint.width})`}
           >
-            <Icon className="h-4 w-4" />
-            {/* <span className="hidden sm:inline">{breakpoint.label}</span> */}
-          </Button>
+            <Icon className="size-4" />
+          </button>
         );
       })}
     </div>
   );
 }
 
-/**
- * Get viewport width for breakpoint
- */
 export function getBreakpointWidth(breakpoint: Breakpoint): string {
   const bp = breakpoints.find((b) => b.value === breakpoint);
   return bp?.width || "100%";

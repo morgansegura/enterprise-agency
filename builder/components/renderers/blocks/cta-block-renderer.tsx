@@ -26,10 +26,10 @@ export default function CtaBlockRenderer({ block }: BlockRendererProps) {
       className={cn(
         "w-full rounded-lg px-8 py-10",
         variant === "highlighted"
-          ? "bg-primary text-primary-foreground"
+          ? "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]"
           : variant === "minimal"
             ? "border border-border"
-            : "bg-muted/50",
+            : "bg-[var(--el-100)]/50",
         align === "center" ? "text-center" : "text-left",
       )}
     >
@@ -39,8 +39,8 @@ export default function CtaBlockRenderer({ block }: BlockRendererProps) {
           className={cn(
             "mt-2 text-sm",
             variant === "highlighted"
-              ? "text-primary-foreground/80"
-              : "text-muted-foreground",
+              ? "text-[var(--accent-primary-foreground)]/80"
+              : "text-[var(--el-500)]",
           )}
         >
           {description}
@@ -56,8 +56,8 @@ export default function CtaBlockRenderer({ block }: BlockRendererProps) {
           className={cn(
             "inline-flex items-center px-4 py-2 rounded-md text-sm font-medium",
             variant === "highlighted"
-              ? "bg-background text-foreground"
-              : "bg-primary text-primary-foreground",
+              ? "bg-[var(--el-0)] text-[var(--el-800)]"
+              : "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]",
           )}
         >
           {primaryCta?.text || "Get Started"}
@@ -67,7 +67,7 @@ export default function CtaBlockRenderer({ block }: BlockRendererProps) {
             className={cn(
               "inline-flex items-center px-4 py-2 rounded-md border text-sm font-medium",
               variant === "highlighted"
-                ? "border-primary-foreground/30 text-primary-foreground"
+                ? "border-primary-foreground/30 text-[var(--accent-primary-foreground)]"
                 : "border-border",
             )}
           >

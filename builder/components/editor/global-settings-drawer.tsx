@@ -346,7 +346,7 @@ export function GlobalSettingsDrawer({
 
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                <Loader2 className="h-8 w-8 animate-spin text-[var(--el-500)]" />
               </div>
             ) : (
               <>

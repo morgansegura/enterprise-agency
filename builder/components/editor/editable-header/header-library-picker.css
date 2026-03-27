@@ -14,7 +14,7 @@
 }
 
 .header-library-loading {
-  @apply text-sm text-(--builder-muted-foreground) text-center py-8;
+  @apply text-sm text-(--el-500) text-center py-8;
 }
 
 /* =============================================================================
@@ -23,13 +23,13 @@
 
 .header-library-item {
   @apply flex items-center gap-3 p-2 rounded-lg;
-  @apply border border-(--builder-border) bg-(--builder-background);
+  @apply border border-(--border-default) bg-(--el-50);
   @apply text-left transition-all cursor-pointer;
-  @apply hover:border-(--builder-primary)/50 hover:bg-(--builder-muted)/50;
+  @apply hover:border-(--accent-primary)/50 hover:bg-(--el-100)/50;
 }
 
 .header-library-item.is-selected {
-  @apply border-(--builder-primary) bg-(--builder-primary)/5;
+  @apply border-(--accent-primary) bg-(--accent-primary)/5;
 }
 
 .header-library-item-create {
@@ -42,16 +42,16 @@
 
 .header-library-item-preview {
   @apply w-24 h-12 rounded-md overflow-hidden;
-  @apply bg-(--builder-muted) border border-(--builder-border);
+  @apply bg-(--el-100) border border-(--border-default);
   @apply flex items-center justify-center;
 }
 
 .header-library-item-none {
-  @apply text-xs text-(--builder-muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .header-library-item-new {
-  @apply text-(--builder-muted-foreground);
+  @apply text-(--el-500);
 }
 
 .header-library-preview-bar {
@@ -81,7 +81,7 @@
 }
 
 .header-library-preview-button {
-  @apply w-6 h-3 rounded-sm bg-(--builder-primary)/30;
+  @apply w-6 h-3 rounded-sm bg-(--accent-primary)/30;
 }
 
 /* =============================================================================
@@ -97,9 +97,9 @@
 }
 
 .header-library-item-desc {
-  @apply text-xs text-(--builder-muted-foreground) capitalize;
+  @apply text-xs text-(--el-500) capitalize;
 }
 
 .header-library-item-check {
-  @apply h-5 w-5 text-(--builder-primary);
+  @apply h-5 w-5 text-(--accent-primary);
 }

@@ -1,11 +1,17 @@
 @reference "tailwindcss";
 
 .client-layout {
-  @apply relative overflow-hidden flex flex-col bg-(--builder-card);
+  @apply relative overflow-hidden flex flex-col bg-(--el-100)/40;
 }
 
+/* =========================================================================
+ * Top bar — Jira-style global navigation
+ * 44px height, subtle bottom border, clear visual weight.
+ * ========================================================================= */
+
 .client-layout-header {
-  @apply flex h-10 shrink-0 items-center gap-2 px-3 border-b border-(--border) justify-between;
+  @apply flex h-11 shrink-0 items-center gap-2 px-4;
+  @apply bg-(--el-0) border-b border-(--border-default) justify-between;
 }
 
 .client-layout-header-left {
@@ -13,26 +19,34 @@
 }
 
 .client-layout-header-center {
-  @apply flex-1 flex items-center justify-center gap-1;
+  @apply flex-1 flex items-center justify-center gap-1.5;
 }
 
 .client-layout-header-context-type {
-  @apply text-[12px] text-(--muted-foreground);
+  @apply text-[12px] text-(--el-500);
+}
+
+.client-layout-header-context-separator {
+  @apply text-[12px] text-(--el-500)/40 mx-0.5;
 }
 
 .client-layout-header-context-title {
-  @apply text-[12px] font-medium text-(--foreground);
+  @apply text-[12px] font-medium text-(--el-800);
 }
 
 .client-layout-header-trigger {
-  @apply relative cursor-pointer rounded-md flex items-center justify-center;
+  @apply relative cursor-pointer rounded-sm flex items-center justify-center size-7;
 
   & svg {
-    @apply size-4 stroke-(--muted-foreground) transition-colors duration-300 ease-out;
+    @apply size-4 stroke-(--muted-foreground) transition-colors duration-150;
+  }
+
+  &:hover {
+    @apply bg-(--el-100);
   }
 
   &:hover svg {
-    @apply size-4 outline-inherit stroke-(--foreground);
+    @apply stroke-(--foreground);
   }
 }
 
@@ -44,8 +58,21 @@
   @apply flex items-center gap-1.5;
 }
 
+/* =========================================================================
+ * Main content area — sits on recessed background
+ * ========================================================================= */
+
 .client-layout-main {
-  @apply flex-1 overflow-y-auto;
+  @apply flex-1 overflow-hidden;
+}
+
+/* Editor pages fill full bleed, list pages get padding + scroll */
+.client-layout-main:has(.page-editor-layout) {
+  @apply p-0;
+}
+
+.client-layout-main:not(:has(.page-editor-layout)) {
+  @apply p-3 overflow-y-auto;
 }
 
 .client-layout-loading {
@@ -53,18 +80,23 @@
 }
 
 .client-layout-loading-text {
-  @apply text-(--muted-foreground) text-[13px];
+  @apply text-(--el-500) text-[13px];
 }
 
-/* Preview mode - full screen without chrome */
+/* Preview mode — full screen without chrome */
 .client-layout-preview {
-  @apply min-h-screen w-full bg-(--background);
+  @apply min-h-screen w-full bg-(--el-0);
 }
+
+/* =========================================================================
+ * Header branding
+ * ========================================================================= */
 
 .client-layout-header-logo {
-  @apply flex items-center gap-2 text-(--muted-foreground) font-(family-name:--font-heading);
+  @apply flex items-center text-(--el-800) font-(family-name:--font-heading);
+  @apply hover:text-(--el-800)/80 transition-colors duration-100;
 }
 
 .client-layout-header-logo-text {
-  @apply text-[13px] font-semibold;
+  @apply text-[15px] font-bold tracking-tight;
 }

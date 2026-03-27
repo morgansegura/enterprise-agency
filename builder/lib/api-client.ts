@@ -140,11 +140,11 @@ export class ApiClient {
     this.isRefreshing = true;
     this.refreshPromise = (async () => {
       try {
-        await fetch(`${this.authBaseUrl}/refresh`, {
+        const res = await fetch(`${this.authBaseUrl}/refresh`, {
           method: "POST",
           credentials: "include",
         });
-        return true;
+        return res.ok;
       } catch {
         return false;
       } finally {

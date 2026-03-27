@@ -82,7 +82,7 @@ export function SpacerBlockEditor({
         style={{ height: heightMap[height] }}
       >
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+          <div className="flex items-center gap-2 text-[var(--el-500)] text-sm">
             <MoveVertical className="h-4 w-4" />
             <span>Spacer ({height})</span>
           </div>
@@ -152,17 +152,17 @@ export function SpacerBlockEditor({
             </SelectContent>
           </Select>
         </ResponsiveField>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-[var(--el-500)]">
           Creates vertical spacing between content blocks
         </p>
 
         {/* Visual preview */}
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <div
-            className="bg-primary/10 border-2 border-dashed border-primary/30 rounded"
+            className="bg-[var(--accent-primary)]/10 border-2 border-dashed border-primary/30 rounded"
             style={{ height: heightMap[height] }}
           />
         </div>

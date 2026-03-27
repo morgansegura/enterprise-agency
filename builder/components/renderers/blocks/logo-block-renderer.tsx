@@ -38,7 +38,7 @@ export default function LogoBlockRenderer({ block }: BlockRendererProps) {
   if (!src) {
     return (
       <div className={cn("flex", alignClasses[align])}>
-        <div className="bg-muted text-muted-foreground text-sm px-4 py-2 rounded">
+        <div className="bg-[var(--el-100)] text-[var(--el-500)] text-sm px-4 py-2 rounded">
           No logo set
         </div>
       </div>

@@ -1,13 +1,13 @@
 @reference "tailwindcss";
 
 .dashboard-header {
-  @apply mb-8;
+  @apply mb-4;
 }
 
 .dashboard-header-title {
-  @apply text-3xl font-bold text-gray-900;
+  @apply text-base font-semibold tracking-tight text-(--el-800);
 }
 
 .dashboard-header-description {
-  @apply mt-2 text-gray-600;
+  @apply mt-0.5 text-[12px] text-(--el-500);
 }

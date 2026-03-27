@@ -187,13 +187,13 @@ export function PricingBlockEditor({
           </h3>
         )}
         {block.data.description && (
-          <p className="text-sm text-muted-foreground text-center mb-4">
+          <p className="text-sm text-[var(--el-500)] text-center mb-4">
             {block.data.description}
           </p>
         )}
         <div className="grid grid-cols-3 gap-4">
           {block.data.tiers.length === 0 ? (
-            <div className="col-span-full text-center text-muted-foreground py-4">
+            <div className="col-span-full text-center text-[var(--el-500)] py-4">
               No pricing tiers yet. Click to add tiers...
             </div>
           ) : (
@@ -208,12 +208,12 @@ export function PricingBlockEditor({
                 <div className="text-2xl font-bold mt-1">
                   {tier.price || "$0"}
                   {tier.period && (
-                    <span className="text-sm font-normal text-muted-foreground">
+                    <span className="text-sm font-normal text-[var(--el-500)]">
                       {tier.period}
                     </span>
                   )}
                 </div>
-                <div className="text-xs text-muted-foreground mt-2">
+                <div className="text-xs text-[var(--el-500)] mt-2">
                   {tier.features.length} feature
                   {tier.features.length !== 1 ? "s" : ""}
                 </div>
@@ -319,7 +319,7 @@ export function PricingBlockEditor({
             {block.data.tiers.map((tier, index) => (
               <div
                 key={index}
-                className="border rounded-lg p-3 space-y-2 bg-muted/30"
+                className="border rounded-lg p-3 space-y-2 bg-[var(--el-100)]/30"
               >
                 <div className="flex items-start justify-between gap-2">
                   <Button
@@ -330,7 +330,7 @@ export function PricingBlockEditor({
                     <div className="text-sm font-medium">
                       {tier.name || `Tier ${index + 1}`}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-[var(--el-500)]">
                       {tier.price || "$0"}
                       {tier.period}
                       {tier.highlighted && " (highlighted)"}
@@ -525,15 +525,15 @@ export function PricingBlockEditor({
               </div>
             ))}
             {block.data.tiers.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-sm text-[var(--el-500)] text-center py-4">
                 No tiers yet. Click &quot;Add Tier&quot; to start.
               </p>
             )}
           </div>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           {block.data.heading && (
@@ -542,13 +542,13 @@ export function PricingBlockEditor({
             </h3>
           )}
           {block.data.description && (
-            <p className="text-sm text-muted-foreground text-center mb-4">
+            <p className="text-sm text-[var(--el-500)] text-center mb-4">
               {block.data.description}
             </p>
           )}
           <div className="grid grid-cols-3 gap-4">
             {block.data.tiers.length === 0 ? (
-              <div className="col-span-full text-center text-muted-foreground py-4">
+              <div className="col-span-full text-center text-[var(--el-500)] py-4">
                 No tiers yet
               </div>
             ) : (
@@ -563,13 +563,13 @@ export function PricingBlockEditor({
                   <div className="text-2xl font-bold mt-1">
                     {tier.price || "$0"}
                     {tier.period && (
-                      <span className="text-sm font-normal text-muted-foreground">
+                      <span className="text-sm font-normal text-[var(--el-500)]">
                         {tier.period}
                       </span>
                     )}
                   </div>
                   {tier.description && (
-                    <p className="text-xs text-muted-foreground mt-2">
+                    <p className="text-xs text-[var(--el-500)] mt-2">
                       {tier.description}
                     </p>
                   )}
@@ -581,7 +581,7 @@ export function PricingBlockEditor({
                       ))}
                   </ul>
                   <div className="mt-3">
-                    <span className="text-xs font-medium text-primary">
+                    <span className="text-xs font-medium text-[var(--accent-primary)]">
                       {tier.cta.text || "Get Started"}
                     </span>
                   </div>

@@ -19,7 +19,7 @@
 }
 
 .product-form-image-upload-text {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .product-form-image-upload-hint {

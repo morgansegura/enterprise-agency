@@ -512,7 +512,7 @@
   --builder-secondary-foreground: var(--el-800);
   --builder-muted: var(--el-100);
   --builder-muted-foreground: var(--el-500);
-  --builder-accent: var(--el-50);
+  --builder-accent: var(--accent-primary-subtle);
   --builder-accent-foreground: var(--el-800);
   --builder-destructive: var(--status-error);
   --builder-border: var(--el-150);
@@ -527,8 +527,8 @@
   --sidebar-foreground: var(--el-800);
   --sidebar-primary: var(--accent-primary);
   --sidebar-primary-foreground: var(--accent-primary-foreground);
-  --sidebar-accent: var(--el-50);
-  --sidebar-accent-foreground: var(--el-800);
+  --sidebar-accent: var(--accent-primary-subtle);
+  --sidebar-accent-foreground: var(--accent-primary);
   --sidebar-border: var(--el-100);
   --sidebar-ring: var(--accent-primary);
 
@@ -634,7 +634,15 @@
 
 @layer base {
   * {
-    @apply border-(--border) outline-(--ring)/50;
+    @apply border-(--border);
+    outline-color: var(--accent-primary);
+  }
+  *:focus {
+    outline: none;
+  }
+  *:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
   }
   body,
   html {

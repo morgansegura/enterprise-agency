@@ -29,10 +29,10 @@ export function HeightControl({
   return (
     <div className={cn("space-y-2", className)}>
       <div className="flex items-center justify-between">
-        <Label className="text-xs font-medium text-muted-foreground">
+        <Label className="text-xs font-medium text-[var(--el-500)]">
           {label}
         </Label>
-        <span className="text-xs text-muted-foreground tabular-nums">
+        <span className="text-xs text-[var(--el-500)] tabular-nums">
           {value}
           {unit}
         </span>

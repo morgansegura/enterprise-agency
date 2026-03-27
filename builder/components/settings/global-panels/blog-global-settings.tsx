@@ -102,7 +102,7 @@ export function BlogGlobalSettings({
                 placeholder="A blog about..."
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Shown in RSS feeds and meta tags
               </p>
             </SettingsField>
@@ -153,7 +153,7 @@ export function BlogGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Show Excerpts</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Display post summaries on listing pages
                   </p>
                 </div>
@@ -188,7 +188,7 @@ export function BlogGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Featured Images</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Show featured images on post cards
                   </p>
                 </div>
@@ -206,7 +206,7 @@ export function BlogGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Show Author</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Display author name on posts
                   </p>
                 </div>
@@ -222,7 +222,7 @@ export function BlogGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Show Date</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Display publish date on posts
                   </p>
                 </div>
@@ -238,7 +238,7 @@ export function BlogGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Show Read Time</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Display estimated reading time
                   </p>
                 </div>
@@ -265,7 +265,7 @@ export function BlogGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Enable Comments</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Allow visitors to comment on posts
                   </p>
                 </div>
@@ -307,7 +307,7 @@ export function BlogGlobalSettings({
                       <Label className="text-sm font-medium">
                         Require Approval
                       </Label>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-[var(--el-500)]">
                         First comment from new users requires approval
                       </p>
                     </div>
@@ -336,7 +336,7 @@ export function BlogGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Enable RSS</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Provide an RSS feed for your blog
                   </p>
                 </div>
@@ -371,7 +371,7 @@ export function BlogGlobalSettings({
                       <Label className="text-sm font-medium">
                         Full Content in Feed
                       </Label>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-[var(--el-500)]">
                         Include complete post content (vs. excerpt only)
                       </p>
                     </div>
@@ -400,7 +400,7 @@ export function BlogGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Enable Sharing</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Show social share buttons on posts
                   </p>
                 </div>

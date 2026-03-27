@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BRAND_NAME } from "@/lib/constants";
 import {
   LayoutDashboard,
   Users,
@@ -78,7 +79,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         <div className="dashboard-sidebar-logo">
           <Pyramid />
         </div>
-        <span className="dashboard-sidebar-name">Enterprise</span>
+        <span className="dashboard-sidebar-name">{BRAND_NAME}</span>
       </div>
 
       {/* Navigation */}

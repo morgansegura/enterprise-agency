@@ -293,7 +293,7 @@ export function BlockSettingsPopover({
                     </SelectTrigger>
                     <SelectContent className="max-h-[300px]">
                       {/* Popular fonts */}
-                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                      <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)]">
                         Popular
                       </div>
                       {googleFonts
@@ -306,7 +306,7 @@ export function BlockSettingsPopover({
                           </SelectItem>
                         ))}
                       {/* Sans-serif */}
-                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                      <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)] border-t mt-1 pt-2">
                         Sans-serif
                       </div>
                       {googleFonts
@@ -319,7 +319,7 @@ export function BlockSettingsPopover({
                           </SelectItem>
                         ))}
                       {/* Serif */}
-                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                      <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)] border-t mt-1 pt-2">
                         Serif
                       </div>
                       {googleFonts
@@ -330,7 +330,7 @@ export function BlockSettingsPopover({
                           </SelectItem>
                         ))}
                       {/* Display */}
-                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+                      <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)] border-t mt-1 pt-2">
                         Display
                       </div>
                       {googleFonts

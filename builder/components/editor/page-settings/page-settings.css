@@ -13,7 +13,7 @@
 }
 
 .page-settings-section-title {
-  @apply text-xs uppercase font-semibold mb-4 border-b inline-flex tracking-wide text-(--muted-foreground);
+  @apply text-xs uppercase font-semibold mb-4 border-b inline-flex tracking-wide text-(--el-500);
 }
 
 .page-settings-field {

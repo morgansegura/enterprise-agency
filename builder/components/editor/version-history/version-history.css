@@ -10,12 +10,12 @@
 
 .version-skeleton {
   @apply flex flex-col gap-(--spacing-2) p-(--spacing-3);
-  @apply rounded-md bg-(--muted);
+  @apply rounded-md bg-(--el-100);
 }
 
 .version-history-empty {
   @apply flex flex-col items-center justify-center gap-(--spacing-2) p-(--spacing-8);
-  @apply text-center text-(--muted-foreground);
+  @apply text-center text-(--el-500);
 }
 
 .version-history-empty p {
@@ -28,7 +28,7 @@
 
 .version-history-error {
   @apply p-(--spacing-4) text-center;
-  @apply text-(--destructive) bg-(--destructive)/10 rounded-md;
+  @apply text-(--status-error) bg-(--status-error)/10 rounded-md;
 }
 
 .version-list {
@@ -37,16 +37,16 @@
 
 .version-item {
   @apply flex flex-col gap-(--spacing-2) p-(--spacing-3);
-  @apply border border-(--border) rounded-md bg-(--background);
+  @apply border border-(--border-default) rounded-md bg-(--el-0);
   @apply transition-colors;
 }
 
 .version-item:hover {
-  @apply border-(--primary);
+  @apply border-(--accent-primary);
 }
 
 .version-item-current {
-  @apply border-(--primary) bg-(--primary)/5;
+  @apply border-(--accent-primary) bg-(--accent-primary)/5;
 }
 
 .version-header {
@@ -61,7 +61,7 @@
 .version-badge {
   @apply px-(--spacing-1-5) py-(--spacing-0-5);
   @apply text-xs font-medium;
-  @apply text-(--primary) bg-(--primary)/15 rounded-sm;
+  @apply text-(--accent-primary) bg-(--accent-primary)/15 rounded-sm;
 }
 
 .version-restore-btn {
@@ -74,9 +74,9 @@
 
 .version-meta-item {
   @apply inline-flex items-center gap-(--spacing-1);
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .version-note {
-  @apply text-xs text-(--muted-foreground) italic m-0;
+  @apply text-xs text-(--el-500) italic m-0;
 }

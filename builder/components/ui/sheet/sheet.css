@@ -16,8 +16,8 @@
 
 /* Content */
 [data-slot="sheet-content"] {
-  @apply fixed z-50 flex flex-col gap-4 shadow-lg;
-  @apply bg-(--background);
+  @apply fixed z-50 flex flex-col gap-3 shadow-lg;
+  @apply bg-(--el-0);
 }
 
 /* Content - Right Side */
@@ -32,11 +32,11 @@
 }
 
 [data-slot="sheet-content"][data-side="right"][data-state="closed"] {
-  @apply animate-[sheet-slide-out-to-right_300ms_ease-in];
+  @apply animate-[sheet-slide-out-to-right_150ms_ease-in];
 }
 
 [data-slot="sheet-content"][data-side="right"][data-state="open"] {
-  @apply animate-[sheet-slide-in-from-right_500ms_ease-out];
+  @apply animate-[sheet-slide-in-from-right_200ms_ease-out];
 }
 
 /* Content - Left Side */
@@ -51,11 +51,11 @@
 }
 
 [data-slot="sheet-content"][data-side="left"][data-state="closed"] {
-  @apply animate-[sheet-slide-out-to-left_300ms_ease-in];
+  @apply animate-[sheet-slide-out-to-left_150ms_ease-in];
 }
 
 [data-slot="sheet-content"][data-side="left"][data-state="open"] {
-  @apply animate-[sheet-slide-in-from-left_500ms_ease-out];
+  @apply animate-[sheet-slide-in-from-left_200ms_ease-out];
 }
 
 /* Content - Top Side */
@@ -64,11 +64,11 @@
 }
 
 [data-slot="sheet-content"][data-side="top"][data-state="closed"] {
-  @apply animate-[sheet-slide-out-to-top_300ms_ease-in];
+  @apply animate-[sheet-slide-out-to-top_150ms_ease-in];
 }
 
 [data-slot="sheet-content"][data-side="top"][data-state="open"] {
-  @apply animate-[sheet-slide-in-from-top_500ms_ease-out];
+  @apply animate-[sheet-slide-in-from-top_200ms_ease-out];
 }
 
 /* Content - Bottom Side */
@@ -79,23 +79,23 @@
 }
 
 [data-slot="sheet-content"][data-side="bottom"][data-state="closed"] {
-  @apply animate-[sheet-slide-out-to-bottom_300ms_ease-in];
+  @apply animate-[sheet-slide-out-to-bottom_150ms_ease-in];
 }
 
 [data-slot="sheet-content"][data-side="bottom"][data-state="open"] {
-  @apply animate-[sheet-slide-in-from-bottom_500ms_ease-out];
+  @apply animate-[sheet-slide-in-from-bottom_200ms_ease-out];
 }
 
 /* Close Button */
 .sheet-close-button {
   @apply absolute top-4 right-6 rounded-xs opacity-70 transition-opacity;
   @apply hover:opacity-100;
-  @apply focus:outline-hidden focus:ring-2 focus:ring-(--ring) focus:ring-offset-2 ring-offset-(--background);
+  @apply focus:outline-hidden focus:ring-2 focus:ring-(--accent-primary) focus:ring-offset-2 ring-offset-(--el-0);
   @apply disabled:pointer-events-none;
 }
 
 .sheet-close-button[data-state="open"] {
-  @apply bg-(--secondary);
+  @apply bg-(--el-100);
 }
 
 .sheet-close-button svg {
@@ -114,10 +114,10 @@
 
 /* Title */
 [data-slot="sheet-title"] {
-  @apply font-semibold text-(--foreground);
+  @apply font-semibold text-(--el-800);
 }
 
 /* Description */
 [data-slot="sheet-description"] {
-  @apply text-sm text-(--muted-foreground);
+  @apply text-[14px] text-(--el-500);
 }

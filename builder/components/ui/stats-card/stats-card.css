@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .stats-card {
-  @apply bg-(--card) overflow-hidden shadow rounded-lg border border-(--border);
+  @apply bg-(--el-0) overflow-hidden shadow rounded-lg border border-(--border-default);
 }
 
 .stats-card-content {
@@ -41,9 +41,9 @@
 }
 
 .stats-card-label {
-  @apply text-sm font-medium text-(--muted-foreground) truncate;
+  @apply text-[12px] font-medium text-(--el-500) truncate;
 }
 
 .stats-card-value {
-  @apply text-3xl font-semibold text-(--foreground);
+  @apply text-3xl font-semibold text-(--el-800);
 }

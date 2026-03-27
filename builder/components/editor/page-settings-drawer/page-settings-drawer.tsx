@@ -216,12 +216,12 @@ function GeneralSettings({ page, onChange }: SettingsPanelProps) {
         <SettingsField>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Home className="size-4 text-muted-foreground" />
+              <Home className="size-4 text-[var(--el-500)]" />
               <div>
                 <Label htmlFor="page-is-home" className="text-sm font-medium">
                   Set as Home Page
                 </Label>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-[var(--el-500)]">
                   This page will be shown when visitors access the site root
                 </p>
               </div>
@@ -298,7 +298,7 @@ function LayoutSettings({
               ))}
             </SelectContent>
           </Select>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Choose a specific header or use the tenant default
           </p>
         </SettingsField>
@@ -320,7 +320,7 @@ function LayoutSettings({
               {/* Footer options will be added when Footer API is built */}
             </SelectContent>
           </Select>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Choose a specific footer or use the tenant default
           </p>
         </SettingsField>

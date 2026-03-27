@@ -5,7 +5,7 @@
 }
 
 .border-control-label {
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
 }
 
 .border-control-row {
@@ -21,7 +21,7 @@
 }
 
 .border-control-unit {
-  @apply absolute right-2 text-xs text-(--muted-foreground) pointer-events-none;
+  @apply absolute right-2 text-xs text-(--el-500) pointer-events-none;
 }
 
 .border-control-style {

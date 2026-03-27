@@ -344,7 +344,7 @@ export function AddBlockPopover({
       >
         {/* Search */}
         <div className="add-block-search">
-          <Search className="h-4 w-4 text-muted-foreground" />
+          <Search className="h-4 w-4 text-[var(--el-500)]" />
           <Input
             placeholder="Search blocks..."
             value={search}
@@ -384,7 +384,7 @@ export function AddBlockPopover({
         <div className="add-block-content">
           {filteredBlocks.length === 0 ? (
             <div className="add-block-empty">
-              <Sparkles className="h-8 w-8 text-muted-foreground/50" />
+              <Sparkles className="h-8 w-8 text-[var(--el-500)]/50" />
               <p>No blocks found</p>
             </div>
           ) : activeCategory === "all" ? (

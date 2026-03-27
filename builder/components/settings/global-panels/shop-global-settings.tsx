@@ -109,7 +109,7 @@ export function ShopGlobalSettings({
                 placeholder="orders@example.com"
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Used for order notifications
               </p>
             </SettingsField>
@@ -166,7 +166,7 @@ export function ShopGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Guest Checkout</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Allow customers to checkout without an account
                   </p>
                 </div>
@@ -186,7 +186,7 @@ export function ShopGlobalSettings({
                   <Label className="text-sm font-medium">
                     Require Phone Number
                   </Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Make phone number required at checkout
                   </p>
                 </div>
@@ -206,7 +206,7 @@ export function ShopGlobalSettings({
                   <Label className="text-sm font-medium">
                     Terms & Conditions
                   </Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Require acceptance before checkout
                   </p>
                 </div>
@@ -247,7 +247,7 @@ export function ShopGlobalSettings({
                 <div className="flex items-center gap-2">
                   <div>
                     <Label className="text-sm font-medium">Stripe</Label>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[var(--el-500)]">
                       Accept cards via Stripe
                     </p>
                   </div>
@@ -293,7 +293,7 @@ export function ShopGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Square</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Accept payments via Square
                   </p>
                 </div>
@@ -348,7 +348,7 @@ export function ShopGlobalSettings({
                 placeholder="0.00"
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Orders above this amount get free shipping (leave empty to
                 disable)
               </p>
@@ -371,7 +371,7 @@ export function ShopGlobalSettings({
                 placeholder="0.00"
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Default shipping cost for all orders
               </p>
             </SettingsField>
@@ -386,7 +386,7 @@ export function ShopGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">Enable Tax</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Calculate tax on orders
                   </p>
                 </div>
@@ -423,7 +423,7 @@ export function ShopGlobalSettings({
                       <Label className="text-sm font-medium">
                         Tax Included in Prices
                       </Label>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-[var(--el-500)]">
                         Product prices already include tax
                       </p>
                     </div>
@@ -460,7 +460,7 @@ export function ShopGlobalSettings({
                 }
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Get notified when stock falls below this number
               </p>
             </SettingsField>

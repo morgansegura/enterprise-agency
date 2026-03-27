@@ -2,7 +2,7 @@
 
 .footer-settings-popover {
   @apply w-[320px] p-0;
-  @apply bg-(--card) border border-(--border) rounded-xl shadow-xl;
+  @apply bg-(--el-0) border border-(--border-default) rounded-xl shadow-xl;
 }
 
 .footer-settings-tabs {
@@ -11,12 +11,12 @@
 
 .footer-settings-tabs-list {
   @apply w-full grid grid-cols-3 p-1 h-auto gap-1;
-  @apply bg-(--muted)/50 rounded-t-xl;
+  @apply bg-(--el-100)/50 rounded-t-xl;
 }
 
 .footer-settings-tabs-list button {
   @apply text-xs py-1.5 px-2;
-  @apply data-[state=active]:bg-(--background) data-[state=active]:shadow-sm;
+  @apply data-[state=active]:bg-(--el-0) data-[state=active]:shadow-sm;
 }
 
 .footer-settings-content {
@@ -28,7 +28,7 @@
 }
 
 .footer-settings-section-title {
-  @apply text-xs font-semibold tracking-wide text-(--muted-foreground);
+  @apply text-xs font-semibold tracking-wide text-(--el-500);
 }
 
 .footer-settings-field {
@@ -36,9 +36,9 @@
 }
 
 .footer-settings-field label {
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
 }
 
 .footer-settings-hint {
-  @apply text-xs text-(--muted-foreground) mt-1;
+  @apply text-xs text-(--el-500) mt-1;
 }

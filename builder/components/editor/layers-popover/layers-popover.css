@@ -5,8 +5,8 @@
 }
 
 .layers-title {
-  @apply text-xs font-semibold uppercase text-(--foreground);
-  @apply px-3 py-2 border-b border-(--border);
+  @apply text-xs font-semibold uppercase text-(--el-800);
+  @apply px-3 py-2 border-b border-(--border-default);
 }
 
 .layers-list {
@@ -14,28 +14,28 @@
 }
 
 .layers-empty {
-  @apply text-sm text-(--muted-foreground) text-center py-8;
+  @apply text-sm text-(--el-500) text-center py-8;
 }
 
 .layers-item {
   @apply flex items-center gap-3 w-full px-3 py-3;
-  @apply text-(--foreground) text-sm;
+  @apply text-(--el-800) text-sm;
   @apply rounded-lg;
   @apply border border-transparent;
-  @apply hover:bg-(--muted) transition-colors;
+  @apply hover:bg-(--el-100) transition-colors;
   @apply cursor-pointer;
 }
 
 .layers-item.is-selected {
-  @apply border-(--primary) bg-(--primary)/5;
+  @apply border-(--accent-primary) bg-(--accent-primary)/5;
 }
 
 .layers-item.is-hovered {
-  @apply bg-(--muted)/50 rounded-sm outline-none;
+  @apply bg-(--el-100)/50 rounded-sm outline-none;
 }
 
 .layers-item svg {
-  @apply text-(--muted-foreground) shrink-0;
+  @apply text-(--el-500) shrink-0;
 }
 
 .layers-item span {

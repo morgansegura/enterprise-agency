@@ -1,12 +1,12 @@
 @reference "tailwindcss";
 
 [data-slot="textarea"] {
-  @apply flex w-full min-h-[80px] rounded-md border border-(--input) bg-(--background) px-3 py-2;
-  @apply text-sm text-(--foreground);
-  @apply ring-offset-(--background);
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--ring) focus-visible:ring-offset-2;
+  @apply flex w-full min-h-[72px] rounded-[3px] border border-(--el-150) bg-(--el-0) px-2.5 py-2;
+  @apply text-[14px] text-(--el-800);
+  @apply ring-offset-(--el-0);
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-primary) focus-visible:ring-offset-1;
   @apply disabled:cursor-not-allowed disabled:opacity-50;
-  @apply placeholder:text-(--muted-foreground);
+  @apply placeholder:text-(--el-500);
   @apply resize-y;
   font-family: inherit;
   line-height: 1.5;

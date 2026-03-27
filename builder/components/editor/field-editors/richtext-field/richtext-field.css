@@ -13,15 +13,15 @@
 }
 
 .richtext-field__label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .richtext-field__required {
-  @apply ml-0.5 text-(--destructive);
+  @apply ml-0.5 text-(--status-error);
 }
 
 .richtext-field__editor {
-  @apply border border-(--border) rounded-md overflow-hidden;
+  @apply border border-(--border-default) rounded-md overflow-hidden;
 }
 
 .richtext-field__editor--error {
@@ -29,11 +29,11 @@
 }
 
 .richtext-field__toolbar {
-  @apply flex items-center gap-0.5 p-1.5 border-b border-(--border) bg-(--muted) flex-wrap;
+  @apply flex items-center gap-0.5 p-1.5 border-b border-(--border-default) bg-(--el-100) flex-wrap;
 }
 
 .richtext-field__toolbar-btn {
-  @apply flex items-center justify-center w-7 h-7 rounded border-none bg-transparent text-(--muted-foreground) cursor-pointer transition-colors;
+  @apply flex items-center justify-center w-7 h-7 rounded border-none bg-transparent text-(--el-500) cursor-pointer transition-colors;
 }
 
 .richtext-field__toolbar-btn svg {
@@ -41,11 +41,11 @@
 }
 
 .richtext-field__toolbar-btn:hover {
-  @apply text-(--foreground) bg-(--background);
+  @apply text-(--el-800) bg-(--el-0);
 }
 
 .richtext-field__toolbar-btn--active {
-  @apply text-(--primary) bg-(--background);
+  @apply text-(--accent-primary) bg-(--el-0);
 }
 
 .richtext-field__content {
@@ -72,30 +72,30 @@
 }
 
 .richtext-field__content .tiptap blockquote {
-  @apply border-l-[3px] border-(--border) pl-3 my-2 text-(--muted-foreground);
+  @apply border-l-[3px] border-(--border-default) pl-3 my-2 text-(--el-500);
 }
 
 .richtext-field__content .tiptap code {
-  @apply bg-(--muted) px-1 py-0.5 rounded text-[0.85em];
+  @apply bg-(--el-100) px-1 py-0.5 rounded text-[0.85em];
 }
 
 .richtext-field__content .tiptap pre {
-  @apply bg-(--muted) p-3 rounded-md overflow-x-auto;
+  @apply bg-(--el-100) p-3 rounded-md overflow-x-auto;
 }
 
 .richtext-field__content .tiptap a {
-  @apply text-(--primary) underline;
+  @apply text-(--accent-primary) underline;
 }
 
 .richtext-field__content .tiptap .is-empty::before {
-  @apply text-(--muted-foreground) pointer-events-none float-left h-0;
+  @apply text-(--el-500) pointer-events-none float-left h-0;
   content: attr(data-placeholder);
 }
 
 .richtext-field__description {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .richtext-field__error {
-  @apply text-xs text-(--destructive);
+  @apply text-xs text-(--status-error);
 }

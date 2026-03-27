@@ -1,9 +1,9 @@
 @reference "tailwindcss";
 
 .auth-guard-loading {
-  @apply min-h-screen flex items-center justify-center bg-(--muted);
+  @apply min-h-screen flex items-center justify-center bg-(--el-100);
 }
 
 .auth-guard-spinner {
-  @apply text-center text-lg text-(--muted-foreground);
+  @apply text-center text-lg text-(--el-500);
 }

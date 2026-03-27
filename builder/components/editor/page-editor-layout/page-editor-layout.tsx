@@ -13,14 +13,9 @@ import {
   Eye,
   ChevronDown,
   Check,
-  Link,
-  ExternalLink,
-  Globe,
   History,
   PanelRightOpen,
 } from "lucide-react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
 import { BreakpointSelector, type Breakpoint } from "../breakpoint-selector";
 import { formatDistanceToNow } from "date-fns";
 import { useUIStore } from "@/lib/stores/ui-store";
@@ -81,12 +76,8 @@ export function PageEditorLayout({
   onPublish,
   onUnpublish,
   onPreview,
-  onGeneratePreviewLink,
-  pageSlug,
-  tenantSlug,
   versions = [],
   onRestoreVersion,
-  onViewAllHistory,
   previewMode = false,
   isSaving = false,
   isPublished = false,
@@ -138,55 +129,44 @@ export function PageEditorLayout({
       {/* Editor Toolbar */}
       <div className="page-editor-toolbar">
         <div className="page-editor-toolbar-left">
-          <SidebarTrigger className="page-editor-toolbar-trigger" />
-          <Separator orientation="vertical" className="h-4 mx-2" />
           {saveStatusElement}
-          {/* History Dropdown */}
+
           {versions.length > 0 && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground"
-                >
-                  <History className="h-4 w-4" />
-                  History
-                  <ChevronDown className="h-3 w-3 ml-1" />
-                </Button>
+                <button className="page-editor-toolbar-btn">
+                  <History className="size-3.5" />
+                  <span>History</span>
+                  <ChevronDown className="size-3" />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-64">
-                {versions.slice(0, 5).map((version) => (
-                  <DropdownMenuItem
-                    key={version.id}
-                    onClick={() => onRestoreVersion?.(version.id)}
-                    className="flex flex-col items-start gap-0.5"
-                  >
-                    <span className="font-medium text-sm">
-                      Version {version.version}
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(version.createdAt), {
-                        addSuffix: true,
-                      })}
-                      {version.changeNote && ` · ${version.changeNote}`}
-                    </span>
-                  </DropdownMenuItem>
-                ))}
-                {onViewAllHistory && (
-                  <>
-                    <div className="border-t my-1" />
-                    <DropdownMenuItem onClick={onViewAllHistory}>
-                      <span className="text-sm text-primary">
-                        View all history
-                      </span>
+              <DropdownMenuContent align="start" className="w-56">
+                {versions.slice(0, 5).map((version, i) => (
+                  <React.Fragment key={version.id}>
+                    {i > 0 && (
+                      <div className="h-px bg-[var(--border-default)] mx-1" />
+                    )}
+                    <DropdownMenuItem
+                      onClick={() => onRestoreVersion?.(version.id)}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <span className="font-medium text-[14px]">
+                          Version {version.version}
+                        </span>
+                        <span className="text-[12px] text-[var(--el-400)]">
+                          {formatDistanceToNow(new Date(version.createdAt), {
+                            addSuffix: true,
+                          })}
+                        </span>
+                      </div>
                     </DropdownMenuItem>
-                  </>
-                )}
+                  </React.Fragment>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
           )}
         </div>
+
         <div className="page-editor-toolbar-center">
           {onBreakpointChange && (
             <BreakpointSelector
@@ -195,61 +175,25 @@ export function PageEditorLayout({
             />
           )}
         </div>
-        <div className="page-editor-toolbar-right">
-          {/* Preview Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <Eye className="h-4 w-4" />
-                Preview
-                <ChevronDown className="h-3 w-3 ml-1" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={onPreview}>
-                <ExternalLink className="h-4 w-4" />
-                Open Preview
-              </DropdownMenuItem>
-              {onGeneratePreviewLink && (
-                <DropdownMenuItem onClick={onGeneratePreviewLink}>
-                  <Link className="h-4 w-4" />
-                  Copy Shareable Link
-                </DropdownMenuItem>
-              )}
-              {isPublished && tenantSlug && (
-                <DropdownMenuItem asChild>
-                  <a
-                    href={`${process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:4002"}/${tenantSlug}${pageSlug && pageSlug !== "home" ? `/${pageSlug}` : ""}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Globe className="h-4 w-4" />
-                    View Live Site
-                  </a>
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
 
-          {/* Save Button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onSave}
-            disabled={isSaving}
-          >
-            <Save className="h-4 w-4" />
+        <div className="page-editor-toolbar-right">
+          <button className="page-editor-toolbar-btn" onClick={onPreview}>
+            <Eye className="size-4" />
+            <span>Preview</span>
+          </button>
+
+          <Button variant="outline" onClick={onSave} disabled={isSaving}>
+            <Save className="size-4" />
             Save
           </Button>
 
-          {/* Publish Button */}
           {isPublished ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button size="sm" variant="secondary">
-                  <Check className="h-4 w-4" />
+                <Button className="bg-[var(--status-success)] text-white hover:bg-[var(--status-success)]/90">
+                  <Check className="size-4" />
                   Published
-                  <ChevronDown className="h-3 w-3 ml-1" />
+                  <ChevronDown className="size-3" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -259,7 +203,7 @@ export function PageEditorLayout({
                 {onUnpublish && (
                   <DropdownMenuItem
                     onClick={onUnpublish}
-                    className="text-destructive"
+                    className="text-[var(--status-error)]"
                   >
                     Unpublish
                   </DropdownMenuItem>
@@ -267,21 +211,19 @@ export function PageEditorLayout({
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button size="sm" onClick={onPublish}>
+            <Button onClick={onPublish}>
               Publish
             </Button>
           )}
 
-          {/* Right Panel Toggle */}
           {rightPanel && !rightPanelOpen && (
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
+              className="page-editor-toolbar-btn"
               onClick={toggleRightPanel}
               title="Open settings panel"
             >
-              <PanelRightOpen className="h-4 w-4" />
-            </Button>
+              <PanelRightOpen className="size-4" />
+            </button>
           )}
         </div>
       </div>

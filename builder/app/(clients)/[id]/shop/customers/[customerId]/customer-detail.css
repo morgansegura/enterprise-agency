@@ -32,7 +32,7 @@
 }
 
 .customer-detail-title {
-  @apply text-lg font-semibold text-(--foreground);
+  @apply text-lg font-semibold text-(--el-800);
 }
 
 .customer-detail-email {
@@ -83,7 +83,7 @@
 }
 
 .customer-detail-card-title {
-  @apply text-sm font-semibold text-(--foreground);
+  @apply text-sm font-semibold text-(--el-800);
 }
 
 .customer-detail-card-body {

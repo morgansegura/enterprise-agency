@@ -82,9 +82,9 @@ export function LogoBlockEditor({
             />
           ) : (
             <div
-              className={`${sizeClasses[size]} w-24 bg-muted rounded flex items-center justify-center`}
+              className={`${sizeClasses[size]} w-24 bg-[var(--el-100)] rounded flex items-center justify-center`}
             >
-              <ImageIcon className="h-6 w-6 text-muted-foreground" />
+              <ImageIcon className="h-6 w-6 text-[var(--el-500)]" />
             </div>
           )}
         </div>
@@ -139,7 +139,7 @@ export function LogoBlockEditor({
             onChange={(e) => handleDataChange("alt", e.target.value)}
             placeholder="Company logo"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Required for accessibility
           </p>
         </FormItem>
@@ -208,8 +208,8 @@ export function LogoBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">Preview:</p>
           <div className={`flex ${alignClasses[align]}`}>
             {block.data.src ? (
               <img
@@ -219,9 +219,9 @@ export function LogoBlockEditor({
               />
             ) : (
               <div
-                className={`${sizeClasses[size]} w-24 bg-muted rounded flex items-center justify-center`}
+                className={`${sizeClasses[size]} w-24 bg-[var(--el-100)] rounded flex items-center justify-center`}
               >
-                <ImageIcon className="h-6 w-6 text-muted-foreground" />
+                <ImageIcon className="h-6 w-6 text-[var(--el-500)]" />
               </div>
             )}
           </div>

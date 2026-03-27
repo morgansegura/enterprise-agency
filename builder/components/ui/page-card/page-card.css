@@ -6,7 +6,7 @@
 
 /* Row-level card (used inside content-table) */
 .page-row {
-  @apply flex items-center cursor-pointer transition-colors;
+  @apply flex items-center cursor-pointer transition-colors duration-100;
   @apply hover:bg-(--el-50);
 }
 
@@ -16,51 +16,51 @@
 
 /* Title cell */
 .page-row-title {
-  @apply flex-1 min-w-0 flex items-center gap-2 px-3 py-2.5;
+  @apply flex-1 min-w-0 flex items-center gap-2 px-3 py-2;
 }
 
 .page-row-title-link {
-  @apply text-sm font-semibold text-(--foreground) truncate;
+  @apply text-[14px] font-medium text-(--el-800) truncate;
   @apply hover:underline;
 }
 
 /* Homepage badge */
 .page-row-home-badge {
   @apply inline-flex items-center gap-1 px-1.5 py-0.5 shrink-0;
-  @apply text-[11px] font-medium rounded-[3px];
+  @apply text-[10px] font-medium rounded-sm;
   @apply bg-blue-100 text-blue-700;
 }
 
 /* Slug cell */
 .page-row-slug {
-  @apply w-48 px-3 py-2.5 hidden md:block;
+  @apply w-44 px-3 py-2 hidden md:block;
 }
 
 .page-row-slug-text {
-  @apply text-sm text-(--el-400) truncate block;
+  @apply text-[14px] text-(--el-400) truncate block;
 }
 
 /* Status cell */
 .page-row-status {
-  @apply w-28 px-3 py-2.5;
+  @apply w-24 px-3 py-2;
 }
 
 /* Date cell */
 .page-row-date {
-  @apply w-36 px-3 py-2.5 hidden lg:block;
+  @apply w-32 px-3 py-2 hidden lg:block;
 }
 
 .page-row-date-text {
-  @apply text-sm text-(--el-400);
+  @apply text-[14px] text-(--el-400);
 }
 
 /* Actions cell */
 .page-row-actions {
-  @apply w-12 px-3 py-2.5 flex items-center justify-end;
+  @apply w-10 px-2 py-2 flex items-center justify-end;
 }
 
 .page-row-actions-trigger {
-  @apply h-7 w-7 opacity-0 transition-opacity;
+  @apply h-6 w-6 opacity-0 transition-opacity duration-100;
 }
 
 .page-row:hover .page-row-actions-trigger {
@@ -72,8 +72,8 @@
    ============================================================================ */
 
 .page-status-pill {
-  @apply inline-flex items-center gap-1 px-2 py-0.5;
-  @apply text-[11px] font-medium leading-tight rounded-[3px];
+  @apply inline-flex items-center gap-1 px-1.5 py-0.5;
+  @apply text-[10px] font-bold uppercase leading-tight rounded-sm tracking-wide;
 }
 
 .page-status-draft {
@@ -101,8 +101,8 @@
 }
 
 .page-table-header-cell {
-  @apply px-3 py-2.5 text-left;
-  @apply text-[11px] font-normal uppercase tracking-wider;
+  @apply px-3 py-2 text-left;
+  @apply text-[11px] font-semibold uppercase tracking-wider;
   @apply text-(--el-400) select-none;
 }
 
@@ -123,7 +123,7 @@
 }
 
 .page-list-empty h3 {
-  @apply text-base font-medium text-(--foreground) mb-1;
+  @apply text-base font-medium text-(--el-800) mb-1;
 }
 
 .page-list-empty p {

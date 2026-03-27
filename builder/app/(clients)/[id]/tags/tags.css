@@ -5,5 +5,5 @@
    ============================================================================ */
 
 .tags-page {
-  @apply flex-1 flex flex-col gap-6 p-8;
+  @apply flex-1 flex flex-col gap-3 p-4 bg-(--el-0) rounded-[3px] border border-(--border)/50 shadow-xs;
 }

@@ -127,15 +127,15 @@ export function ImageBlockEditor({
             />
           </div>
         ) : (
-          <div className="flex items-center justify-center p-12 bg-muted/30">
+          <div className="flex items-center justify-center p-12 bg-[var(--el-100)]/30">
             <div className="text-center">
-              <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground">No image set</p>
+              <ImageIcon className="h-12 w-12 mx-auto text-[var(--el-500)] mb-2" />
+              <p className="text-sm text-[var(--el-500)]">No image set</p>
             </div>
           </div>
         )}
         {block.data.caption && (
-          <p className="text-sm text-muted-foreground p-2 text-center">
+          <p className="text-sm text-[var(--el-500)] p-2 text-center">
             {block.data.caption}
           </p>
         )}
@@ -310,8 +310,8 @@ export function ImageBlockEditor({
         </Accordion>
 
         {block.data.src && (
-          <div className="border rounded-lg p-4 bg-muted/30">
-            <p className="text-xs text-muted-foreground mb-2">
+          <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+            <p className="text-xs text-[var(--el-500)] mb-2">
               Preview ({breakpoint}):
             </p>
             <div

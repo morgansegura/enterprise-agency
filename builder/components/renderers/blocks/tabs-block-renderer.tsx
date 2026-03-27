@@ -17,25 +17,25 @@ interface TabsBlockData {
 
 const tabListVariantClasses = {
   default: "border-b border-border",
-  pills: "bg-muted p-1 rounded-lg",
+  pills: "bg-[var(--el-100)] p-1 rounded-lg",
   underline: "border-b border-border",
 };
 
 const tabVariantClasses = {
   default: {
     base: "px-4 py-2 text-sm font-medium transition-colors",
-    active: "border-b-2 border-primary text-primary -mb-px",
-    inactive: "text-muted-foreground hover:text-foreground",
+    active: "border-b-2 border-primary text-[var(--accent-primary)] -mb-px",
+    inactive: "text-[var(--el-500)] hover:text-[var(--el-800)]",
   },
   pills: {
     base: "px-4 py-2 text-sm font-medium rounded-md transition-colors",
-    active: "bg-background text-foreground shadow-sm",
-    inactive: "text-muted-foreground hover:text-foreground",
+    active: "bg-[var(--el-0)] text-[var(--el-800)] shadow-sm",
+    inactive: "text-[var(--el-500)] hover:text-[var(--el-800)]",
   },
   underline: {
     base: "px-4 py-2 text-sm font-medium transition-colors",
-    active: "border-b-2 border-primary text-primary -mb-px",
-    inactive: "text-muted-foreground hover:text-foreground",
+    active: "border-b-2 border-primary text-[var(--accent-primary)] -mb-px",
+    inactive: "text-[var(--el-500)] hover:text-[var(--el-800)]",
   },
 };
 
@@ -47,7 +47,7 @@ export default function TabsBlockRenderer({ block }: BlockRendererProps) {
 
   if (tabs.length === 0) {
     return (
-      <div className="text-muted-foreground text-sm">No tabs configured</div>
+      <div className="text-[var(--el-500)] text-sm">No tabs configured</div>
     );
   }
 

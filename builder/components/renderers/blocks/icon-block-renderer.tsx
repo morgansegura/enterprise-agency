@@ -21,9 +21,9 @@ const sizeClasses = {
 };
 
 const colorClasses = {
-  default: "text-foreground",
-  muted: "text-muted-foreground",
-  primary: "text-primary",
+  default: "text-[var(--el-800)]",
+  muted: "text-[var(--el-500)]",
+  primary: "text-[var(--accent-primary)]",
   secondary: "text-secondary",
 };
 
@@ -50,7 +50,7 @@ export default function IconBlockRenderer({ block }: BlockRendererProps) {
 
   if (!IconComponent) {
     return (
-      <div className="text-muted-foreground text-sm">
+      <div className="text-[var(--el-500)] text-sm">
         Icon &quot;{icon}&quot; not found
       </div>
     );

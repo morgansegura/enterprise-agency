@@ -95,14 +95,14 @@ export function DividerBlockEditor({
       >
         <div className="relative">
           <hr
-            className={`border-0 ${color === "muted" ? "bg-muted-foreground/30" : "bg-border"}`}
+            className={`border-0 ${color === "muted" ? "bg-[var(--el-500)]/30" : "bg-border"}`}
             style={{
               height: thicknessMap[thickness],
               borderStyle: style,
             }}
           />
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="bg-background px-2 py-1 rounded border text-xs text-muted-foreground flex items-center gap-1">
+            <div className="bg-[var(--el-0)] px-2 py-1 rounded border text-xs text-[var(--el-500)] flex items-center gap-1">
               <Minus className="h-3 w-3" />
               <span>Divider ({style})</span>
             </div>
@@ -203,7 +203,7 @@ export function DividerBlockEditor({
             </SelectContent>
           </Select>
         </ResponsiveField>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-[var(--el-500)]">
           Space above and below the divider
         </p>
 
@@ -224,12 +224,12 @@ export function DividerBlockEditor({
         </div>
 
         {/* Visual preview */}
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <hr
-            className={`border-0 ${color === "muted" ? "bg-muted-foreground/30" : "bg-border"}`}
+            className={`border-0 ${color === "muted" ? "bg-[var(--el-500)]/30" : "bg-border"}`}
             style={{
               height: thicknessMap[thickness],
               borderStyle: style,

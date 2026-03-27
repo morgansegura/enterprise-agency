@@ -104,14 +104,14 @@ export function ListBlockEditor({
 
   const getListIcon = (index: number) => {
     if (style === "checkmarks") {
-      return <Check className="h-4 w-4 text-primary flex-shrink-0" />;
+      return <Check className="h-4 w-4 text-[var(--accent-primary)] flex-shrink-0" />;
     }
     if (style === "bullets") {
       return <Circle className="h-2 w-2 fill-current flex-shrink-0 mt-2" />;
     }
     if (style === "numbers" || ordered) {
       return (
-        <span className="font-semibold text-primary flex-shrink-0">
+        <span className="font-semibold text-[var(--accent-primary)] flex-shrink-0">
           {index + 1}.
         </span>
       );
@@ -129,7 +129,7 @@ export function ListBlockEditor({
       >
         <ListTag className={spacingMap[spacing]}>
           {block.data.items.length === 0 ? (
-            <li className="text-muted-foreground">
+            <li className="text-[var(--el-500)]">
               No items yet. Click to add items...
             </li>
           ) : (
@@ -212,7 +212,7 @@ export function ListBlockEditor({
               </FormItem>
             ))}
             {block.data.items.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-sm text-[var(--el-500)] text-center py-4">
                 No items yet. Click &quot;Add Item&quot; to start.
               </p>
             )}
@@ -262,13 +262,13 @@ export function ListBlockEditor({
           </ResponsiveField>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <ListTag className={spacingMap[spacing]}>
             {block.data.items.length === 0 ? (
-              <li className="text-muted-foreground">
+              <li className="text-[var(--el-500)]">
                 No items yet. Add items above.
               </li>
             ) : (

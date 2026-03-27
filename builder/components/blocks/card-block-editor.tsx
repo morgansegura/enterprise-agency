@@ -171,19 +171,19 @@ export function CardBlockEditor({
               {block.data.title || "Card Title"}
             </h3>
             {block.data.description && (
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-[var(--el-500)] mt-1">
                 {block.data.description}
               </p>
             )}
             {block.data.footer && (
-              <p className="text-xs text-muted-foreground mt-2">
+              <p className="text-xs text-[var(--el-500)] mt-2">
                 {block.data.footer}
               </p>
             )}
             {block.data.link && (
               <a
                 href={block.data.link.href}
-                className="text-sm text-primary mt-2 inline-block"
+                className="text-sm text-[var(--accent-primary)] mt-2 inline-block"
               >
                 {block.data.link.text || "Learn more →"}
               </a>
@@ -403,10 +403,10 @@ export function CardBlockEditor({
           </ResponsiveField>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">Preview:</p>
           <div
-            className={`${variantStyles[variant]} rounded-lg overflow-hidden bg-background`}
+            className={`${variantStyles[variant]} rounded-lg overflow-hidden bg-[var(--el-0)]`}
           >
             {block.data.image && block.data.image.src && (
               <div className="relative aspect-video">
@@ -422,19 +422,19 @@ export function CardBlockEditor({
                 {block.data.title || "Card Title"}
               </h3>
               {block.data.description && (
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-[var(--el-500)] mt-1">
                   {block.data.description}
                 </p>
               )}
               {block.data.footer && (
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="text-xs text-[var(--el-500)] mt-2">
                   {block.data.footer}
                 </p>
               )}
               {block.data.link && block.data.link.href && (
                 <a
                   href={block.data.link.href}
-                  className="text-sm text-primary mt-2 inline-block"
+                  className="text-sm text-[var(--accent-primary)] mt-2 inline-block"
                 >
                   {block.data.link.text || "Learn more →"}
                 </a>

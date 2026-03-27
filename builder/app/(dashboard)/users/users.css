@@ -5,5 +5,5 @@
  * ============================================================================= */
 
 .users-page {
-  @apply flex flex-col gap-6;
+  @apply flex flex-col gap-3 p-4 bg-(--el-0) rounded-[3px] border border-(--border)/50 shadow-xs;
 }

@@ -106,7 +106,7 @@ export default function NewCustomerPage({
                       aria-invalid={!!errors.firstName}
                     />
                     {errors.firstName && (
-                      <p className="text-sm text-destructive">
+                      <p className="text-sm text-[var(--status-error)]">
                         {errors.firstName.message}
                       </p>
                     )}
@@ -121,7 +121,7 @@ export default function NewCustomerPage({
                       aria-invalid={!!errors.lastName}
                     />
                     {errors.lastName && (
-                      <p className="text-sm text-destructive">
+                      <p className="text-sm text-[var(--status-error)]">
                         {errors.lastName.message}
                       </p>
                     )}
@@ -138,7 +138,7 @@ export default function NewCustomerPage({
                     aria-invalid={!!errors.email}
                   />
                   {errors.email && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-sm text-[var(--status-error)]">
                       {errors.email.message}
                     </p>
                   )}

@@ -224,7 +224,7 @@ export function PostSettingsPanel({
                     <button
                       type="button"
                       onClick={() => handleRemoveTag(tag)}
-                      className="ml-1 hover:text-destructive"
+                      className="ml-1 hover:text-[var(--status-error)]"
                     >
                       <X className="size-3" />
                     </button>

@@ -26,7 +26,7 @@
 }
 
 .team-table-header-cell {
-  @apply px-4 py-3 text-left;
+  @apply px-3 py-2.5 text-left;
   @apply text-[11px] font-medium uppercase tracking-[0.04em];
   @apply text-(--text-tertiary) select-none;
 }
@@ -64,13 +64,13 @@
 }
 
 .team-table-row {
-  @apply flex items-center transition-colors;
+  @apply flex items-center transition-colors duration-100;
   @apply hover:bg-(--el-50);
 }
 
 /* Table Cells */
 .team-table-cell {
-  @apply px-4 py-3;
+  @apply px-3 py-2.5;
 }
 
 .team-table-cell-name {
@@ -104,12 +104,12 @@
 }
 
 .team-member-avatar-letter {
-  @apply text-xs font-semibold text-(--text-secondary);
+  @apply text-[11px] font-bold text-(--text-secondary);
 }
 
 .team-member-name-text {
   @apply flex items-center gap-1.5 truncate;
-  @apply text-[13px] font-semibold text-(--foreground);
+  @apply text-[14px] font-semibold text-(--el-800);
 }
 
 .team-member-owner-icon {
@@ -118,12 +118,12 @@
 
 /* Email column */
 .team-member-email {
-  @apply text-[13px] text-(--text-tertiary) truncate;
+  @apply text-[14px] text-(--text-tertiary) truncate;
 }
 
 /* Joined column */
 .team-member-joined {
-  @apply text-[13px] text-(--text-tertiary);
+  @apply text-[14px] text-(--text-tertiary);
 }
 
 /* ============================================================================
@@ -195,19 +195,19 @@
    ============================================================================ */
 
 .team-empty {
-  @apply flex flex-col items-center justify-center py-20 text-center;
+  @apply flex flex-col items-center justify-center py-16 text-center;
 }
 
 .team-empty-icon {
-  @apply h-16 w-16 mb-4 text-(--el-300);
+  @apply h-12 w-12 mb-4 text-(--el-300);
 }
 
 .team-empty h3 {
-  @apply text-base font-medium text-(--foreground) mb-1;
+  @apply text-base font-medium text-(--el-800) mb-1;
 }
 
 .team-empty p {
-  @apply text-[13px] text-(--text-tertiary) mb-6;
+  @apply text-[14px] text-(--text-tertiary) mb-6;
 }
 
 /* ============================================================================
@@ -215,6 +215,6 @@
    ============================================================================ */
 
 .team-skeleton-row {
-  @apply flex items-center gap-4 px-4 py-3;
+  @apply flex items-center gap-4 px-3 py-2.5;
   @apply border-b border-(--border-subtle);
 }

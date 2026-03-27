@@ -22,7 +22,7 @@ export default function AudioBlockRenderer({ block }: BlockRendererProps) {
 
   if (!src) {
     return (
-      <div className="flex items-center justify-center bg-muted text-muted-foreground p-4 rounded-md">
+      <div className="flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] p-4 rounded-md">
         No audio file set
       </div>
     );
@@ -32,8 +32,8 @@ export default function AudioBlockRenderer({ block }: BlockRendererProps) {
     <div className="bg-card border border-border rounded-lg p-4">
       {(title || artist) && (
         <div className="mb-3">
-          {title && <h4 className="font-medium text-foreground">{title}</h4>}
-          {artist && <p className="text-sm text-muted-foreground">{artist}</p>}
+          {title && <h4 className="font-medium text-[var(--el-800)]">{title}</h4>}
+          {artist && <p className="text-sm text-[var(--el-500)]">{artist}</p>}
         </div>
       )}
       <audio

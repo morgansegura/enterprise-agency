@@ -4,10 +4,12 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAuthStore } from "@/lib/stores/auth-store";
+import { refreshToken } from "@/lib/auth";
 import { SessionWarningDialog } from "@/components/auth/session-warning-dialog";
 
 const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes
 const WARNING_BEFORE_TIMEOUT = 2 * 60 * 1000; // 2 minutes
+const TOKEN_REFRESH_INTERVAL = 12 * 60 * 1000; // 12 minutes (before 15-min expiry)
 const ACTIVITY_EVENTS = [
   "mousemove",
   "mousedown",
@@ -77,6 +79,23 @@ export function SessionManager() {
     setShowWarning(false);
     toast.success("Session extended");
   }, [resetInactivityTimer]);
+
+  // Proactive token refresh — refresh before the 15-minute access token expires
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const refreshInterval = setInterval(async () => {
+      const success = await refreshToken();
+      if (!success) {
+        clearInterval(refreshInterval);
+      }
+    }, TOKEN_REFRESH_INTERVAL);
+
+    // Also refresh immediately on mount to ensure a fresh token
+    refreshToken();
+
+    return () => clearInterval(refreshInterval);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!isAuthenticated) return;

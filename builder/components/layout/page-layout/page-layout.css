@@ -1,7 +1,8 @@
 @reference "tailwindcss";
 
 .page-layout {
-  @apply flex flex-col gap-4 p-5 h-full min-h-0;
+  @apply flex flex-col gap-3 p-4 h-full min-h-0;
+  @apply bg-(--el-0) rounded-[3px] shadow-xs border border-(--border-default)/50;
 }
 
 .page-layout-no-padding {
@@ -13,11 +14,11 @@
 }
 
 .page-layout-toolbar {
-  @apply flex items-center justify-between gap-3 shrink-0;
+  @apply flex items-center justify-between gap-2 shrink-0;
 }
 
 .page-layout-content {
-  @apply relative flex-1 min-h-0 overflow-y-auto pb-4;
+  @apply relative flex-1 min-h-0 overflow-y-auto pb-3;
 }
 
 /* Max width variants */

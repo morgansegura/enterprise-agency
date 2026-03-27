@@ -360,7 +360,7 @@ export function ContentList<T extends ContentItem>({
               <DropdownMenuItem
                 className={
                   action.destructive
-                    ? "text-destructive focus:text-destructive [&>svg]:text-destructive"
+                    ? "text-[var(--status-error)] focus:text-[var(--status-error)] [&>svg]:text-[var(--status-error)]"
                     : ""
                 }
                 onClick={() => action.onClick(item)}

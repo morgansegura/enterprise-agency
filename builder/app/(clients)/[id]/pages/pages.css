@@ -13,11 +13,11 @@
 }
 
 .pages-header-title h1 {
-  @apply text-2xl font-bold text-(--foreground);
+  @apply text-2xl font-bold text-(--el-800);
 }
 
 .pages-header-count {
-  @apply text-sm text-(--muted-foreground) bg-(--muted) px-2 py-0.5 rounded;
+  @apply text-sm text-(--el-500) bg-(--el-100) px-2 py-0.5 rounded;
 }
 
 .pages-toolbar {
@@ -29,7 +29,7 @@
 }
 
 .pages-search-icon {
-  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--muted-foreground);
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--el-500);
 }
 
 .pages-search-input {
@@ -53,15 +53,15 @@
 }
 
 .page-card {
-  @apply bg-(--card) border border-(--border) rounded-lg overflow-hidden cursor-pointer transition-all hover:border-(--primary) hover:shadow-md;
+  @apply bg-(--el-0) border border-(--border) rounded-lg overflow-hidden cursor-pointer transition-all hover:border-(--accent-primary) hover:shadow-md;
 }
 
 .page-card-thumbnail {
-  @apply aspect-video bg-(--muted) flex items-center justify-center;
+  @apply aspect-video bg-(--el-100) flex items-center justify-center;
 }
 
 .page-card-thumbnail-icon {
-  @apply h-12 w-12 text-(--muted-foreground);
+  @apply h-12 w-12 text-(--el-500);
 }
 
 .page-card-content {
@@ -149,11 +149,11 @@
 }
 
 .page-card-title {
-  @apply font-medium text-(--foreground) truncate;
+  @apply font-medium text-(--el-800) truncate;
 }
 
 .page-card-meta {
-  @apply text-xs text-(--muted-foreground) mt-1;
+  @apply text-xs text-(--el-500) mt-1;
 }
 
 .pages-list {
@@ -161,11 +161,11 @@
 }
 
 .page-list-item {
-  @apply flex items-center gap-4 p-3 bg-(--card) border border-(--border) rounded-lg cursor-pointer transition-colors hover:bg-(--muted);
+  @apply flex items-center gap-4 p-3 bg-(--el-0) border border-(--border) rounded-lg cursor-pointer transition-colors hover:bg-(--el-100);
 }
 
 .page-list-item-icon {
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
 }
 
 .page-list-item-content {
@@ -173,7 +173,7 @@
 }
 
 .page-list-item-title {
-  @apply font-medium text-(--foreground) truncate flex items-center gap-2;
+  @apply font-medium text-(--el-800) truncate flex items-center gap-2;
 }
 
 .page-list-item-home-badge {
@@ -181,11 +181,11 @@
 }
 
 .page-list-item-slug {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .page-list-item-date {
-  @apply text-sm text-(--muted-foreground);
+  @apply text-sm text-(--el-500);
 }
 
 .pages-empty {
@@ -193,15 +193,15 @@
 }
 
 .pages-empty-icon {
-  @apply h-16 w-16 text-(--muted-foreground) mb-4;
+  @apply h-16 w-16 text-(--el-500) mb-4;
 }
 
 .pages-empty h3 {
-  @apply text-lg font-medium text-(--foreground) mb-2;
+  @apply text-lg font-medium text-(--el-800) mb-2;
 }
 
 .pages-empty p {
-  @apply text-(--muted-foreground) mb-4;
+  @apply text-(--el-500) mb-4;
 }
 
 .pages-error {

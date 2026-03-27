@@ -2,20 +2,24 @@
 
 /* Form Item */
 [data-slot="form-item"] {
-  @apply flex flex-col gap-2;
+  @apply flex flex-col gap-1.5;
 }
 
 /* Form Label */
+[data-slot="form-label"] {
+  @apply text-[12px] font-semibold;
+}
+
 [data-slot="form-label"][data-error="true"] {
-  @apply text-(--destructive);
+  @apply text-(--status-error);
 }
 
 /* Form Description */
 [data-slot="form-description"] {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-[11px] text-(--el-500);
 }
 
 /* Form Message */
 [data-slot="form-message"] {
-  @apply text-xs font-medium text-(--destructive);
+  @apply text-[11px] font-medium text-(--status-error);
 }

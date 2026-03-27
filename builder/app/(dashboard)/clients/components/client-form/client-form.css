@@ -8,7 +8,7 @@
  * -------------------------------------------------------------------------- */
 
 .client-form-columns {
-  @apply grid gap-6;
+  @apply grid gap-4;
   grid-template-columns: 2fr 1fr;
 }
 
@@ -19,18 +19,18 @@
 }
 
 .client-form-main {
-  @apply flex flex-col gap-6;
+  @apply flex flex-col gap-4;
 }
 
 .client-form-sidebar {
-  @apply flex flex-col gap-6;
+  @apply flex flex-col gap-4;
 }
 
 /* Cards
  * -------------------------------------------------------------------------- */
 
 .client-form-card {
-  @apply rounded-lg border p-0 overflow-hidden;
+  @apply rounded-[3px] border p-0 overflow-hidden;
   @apply bg-(--surface) border-(--border-default);
 }
 
@@ -39,11 +39,11 @@
 }
 
 .client-form-card-title {
-  @apply text-sm font-semibold text-(--text-primary);
+  @apply text-[14px] font-semibold text-(--text-primary);
 }
 
 .client-form-card-description {
-  @apply text-xs mt-1 text-(--text-secondary);
+  @apply text-[12px] mt-1 text-(--text-secondary);
 }
 
 .client-form-card-body {
@@ -68,7 +68,7 @@
 }
 
 .client-form-field-label {
-  @apply flex items-center gap-1.5 text-xs font-medium text-(--text-primary);
+  @apply flex items-center gap-1.5 text-[12px] font-medium text-(--text-primary);
 }
 
 .client-form-field-label svg {
@@ -80,11 +80,11 @@
 }
 
 .client-form-field-hint {
-  @apply text-xs text-(--text-tertiary);
+  @apply text-[12px] text-(--text-tertiary);
 }
 
 .client-form-field-error {
-  @apply text-xs text-(--status-error);
+  @apply text-[12px] text-(--status-error);
 }
 
 /* Submit section (create mode sidebar)
@@ -99,7 +99,7 @@
  * -------------------------------------------------------------------------- */
 
 .client-form-meta {
-  @apply flex flex-col gap-2 px-6 py-4 text-xs;
+  @apply flex flex-col gap-2 px-6 py-4 text-[12px];
   @apply border-t border-(--border-subtle) text-(--text-tertiary);
 }
 
@@ -119,7 +119,7 @@
 }
 
 .client-form-feature-tag {
-  @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  @apply inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium;
   @apply bg-(--el-100) text-(--text-secondary);
 }
 

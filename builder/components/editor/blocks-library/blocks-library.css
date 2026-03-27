@@ -1,13 +1,31 @@
 @reference "tailwindcss";
 
+/* Block item info */
 .block-info {
-  @apply grid flex-1 text-left text-sm leading-tight;
+  @apply grid flex-1 text-left text-[13px] leading-tight;
 }
 
 .block-name {
-  @apply truncate font-medium;
+  @apply truncate font-medium text-(--el-800);
 }
 
 .block-description {
-  @apply truncate text-xs text-(--muted-foreground);
+  @apply truncate text-[11px] text-(--el-400);
+}
+
+/* Override accordion styling for blocks library categories */
+.blocks-library [data-slot="accordion-item"] {
+  @apply border-b-0;
+}
+
+.blocks-library [data-slot="accordion-item"] + [data-slot="accordion-item"] {
+  @apply border-t border-(--border-default) mt-1 pt-1;
+}
+
+.blocks-library [data-slot="accordion-trigger"] {
+  @apply text-[11px] font-bold uppercase tracking-wider text-(--el-400) py-2;
+}
+
+.blocks-library [data-slot="accordion-content-inner"] {
+  @apply pb-1 pt-0 space-y-0;
 }

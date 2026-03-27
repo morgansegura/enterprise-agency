@@ -84,7 +84,7 @@ export function SectionSettings({
             <SelectItem value="card">Card</SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-[var(--el-500)]">
           Background style for this section
         </p>
       </FormItem>
@@ -109,7 +109,7 @@ export function SectionSettings({
             <SelectItem value="2xl">2XL</SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-[var(--el-500)]">
           Vertical padding (top/bottom)
         </p>
       </FormItem>
@@ -131,7 +131,7 @@ export function SectionSettings({
             <SelectItem value="full">Full Width</SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-[var(--el-500)]">
           Maximum content width for this section
         </p>
       </FormItem>
@@ -152,7 +152,7 @@ export function SectionSettings({
             <SelectItem value="right">Right</SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-[var(--el-500)]">
           Horizontal alignment of section content
         </p>
       </FormItem>

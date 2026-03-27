@@ -356,7 +356,7 @@ function SettingRow({ label, description, children }: SettingRowProps) {
       <div>
         <Label className="text-sm">{label}</Label>
         {description && (
-          <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+          <p className="text-xs text-[var(--el-500)] mt-0.5">{description}</p>
         )}
       </div>
       <div className="flex-shrink-0">{children}</div>
@@ -385,14 +385,14 @@ function CollapsibleSection({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors rounded-lg">
+      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-[var(--el-100)]/50 hover:bg-[var(--el-100)] transition-colors rounded-lg">
         <div className="flex items-center gap-2">
           {icon}
           <span className="text-sm font-medium">{title}</span>
         </div>
         <ChevronDown
           className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform",
+            "h-4 w-4 text-[var(--el-500)] transition-transform",
             open && "rotate-180",
           )}
         />
@@ -521,7 +521,7 @@ export function ComponentSettingsPanel({
           {/* Dropdown Settings */}
           <CollapsibleSection
             title="Dropdown Menu"
-            icon={<Menu className="h-4 w-4 text-muted-foreground" />}
+            icon={<Menu className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Border Radius">
@@ -600,7 +600,7 @@ export function ComponentSettingsPanel({
           {/* Modal Settings */}
           <CollapsibleSection
             title="Modal / Dialog"
-            icon={<Layers className="h-4 w-4 text-muted-foreground" />}
+            icon={<Layers className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Border Radius">
@@ -694,7 +694,7 @@ export function ComponentSettingsPanel({
           {/* Drawer Settings */}
           <CollapsibleSection
             title="Drawer / Side Panel"
-            icon={<PanelLeft className="h-4 w-4 text-muted-foreground" />}
+            icon={<PanelLeft className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Border Radius">
@@ -774,7 +774,7 @@ export function ComponentSettingsPanel({
           {/* Tabs Settings */}
           <CollapsibleSection
             title="Tabs"
-            icon={<LayoutGrid className="h-4 w-4 text-muted-foreground" />}
+            icon={<LayoutGrid className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Variant">
@@ -834,7 +834,7 @@ export function ComponentSettingsPanel({
           {/* Tooltip Settings */}
           <CollapsibleSection
             title="Tooltip"
-            icon={<MessageSquare className="h-4 w-4 text-muted-foreground" />}
+            icon={<MessageSquare className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Border Radius">
@@ -883,7 +883,7 @@ export function ComponentSettingsPanel({
           {/* Badge Settings */}
           <CollapsibleSection
             title="Badge"
-            icon={<Badge className="h-4 w-4 text-muted-foreground" />}
+            icon={<Badge className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Border Radius">
@@ -960,7 +960,7 @@ export function ComponentSettingsPanel({
           {/* Avatar Settings */}
           <CollapsibleSection
             title="Avatar"
-            icon={<User className="h-4 w-4 text-muted-foreground" />}
+            icon={<User className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Border Radius">
@@ -1004,7 +1004,7 @@ export function ComponentSettingsPanel({
         <TabsContent value="nav" className="space-y-6 mt-6">
           <CollapsibleSection
             title="Header Navigation"
-            icon={<Navigation className="h-4 w-4 text-muted-foreground" />}
+            icon={<Navigation className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Height">
@@ -1072,7 +1072,7 @@ export function ComponentSettingsPanel({
         <TabsContent value="mobile" className="space-y-6 mt-6">
           <CollapsibleSection
             title="Mobile Drawer"
-            icon={<Smartphone className="h-4 w-4 text-muted-foreground" />}
+            icon={<Smartphone className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Position">
@@ -1119,7 +1119,7 @@ export function ComponentSettingsPanel({
 
           <CollapsibleSection
             title="Mobile Navigation"
-            icon={<Menu className="h-4 w-4 text-muted-foreground" />}
+            icon={<Menu className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="space-y-2">
               <SettingRow label="Menu Position">

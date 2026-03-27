@@ -4,9 +4,11 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 import { login } from "@/lib/auth";
 import { AuthError, getErrorMessage } from "@/lib/errors";
 import { logger } from "@/lib/logger";
+import { BRAND_NAME } from "@/lib/constants";
 
 import "./auth-form.css";
 
@@ -15,6 +17,7 @@ export function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -49,7 +52,7 @@ export function LoginForm() {
   return (
     <div className="auth-card">
       <div className="auth-header">
-        <span className="auth-logo">Enterprise</span>
+        <span className="auth-logo">{BRAND_NAME}</span>
         <p className="auth-subtitle">Sign in to your account</p>
       </div>
 
@@ -76,16 +79,26 @@ export function LoginForm() {
             <label htmlFor="password" className="auth-label">
               Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="auth-input"
-            />
+            <div className="auth-password-wrapper">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="auth-input auth-input-password"
+              />
+              <button
+                type="button"
+                className="auth-password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </button>
+            </div>
             <div className="auth-forgot">
               <Link href="/forgot-password" className="auth-forgot-link">
                 Forgot password?

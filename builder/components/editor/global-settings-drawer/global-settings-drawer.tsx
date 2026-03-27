@@ -1095,7 +1095,7 @@ function TypographySettingsPanel({
         <div className="flex items-center justify-between">
           <div>
             <h4 className="font-medium text-sm">{label.name}</h4>
-            <p className="text-xs text-muted-foreground">{label.description}</p>
+            <p className="text-xs text-[var(--el-500)]">{label.description}</p>
           </div>
         </div>
 
@@ -1120,7 +1120,7 @@ function TypographySettingsPanel({
             </SelectTrigger>
             <SelectContent className="max-h-[300px]">
               {/* Popular fonts */}
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+              <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)]">
                 Popular
               </div>
               {googleFonts
@@ -1134,7 +1134,7 @@ function TypographySettingsPanel({
                 ))}
 
               {/* Sans-serif */}
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+              <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)] border-t mt-1 pt-2">
                 Sans-serif
               </div>
               {googleFonts
@@ -1146,7 +1146,7 @@ function TypographySettingsPanel({
                 ))}
 
               {/* Serif */}
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+              <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)] border-t mt-1 pt-2">
                 Serif
               </div>
               {googleFonts
@@ -1158,7 +1158,7 @@ function TypographySettingsPanel({
                 ))}
 
               {/* Display */}
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+              <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)] border-t mt-1 pt-2">
                 Display
               </div>
               {googleFonts
@@ -1170,7 +1170,7 @@ function TypographySettingsPanel({
                 ))}
 
               {/* Monospace */}
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+              <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)] border-t mt-1 pt-2">
                 Monospace
               </div>
               {googleFonts
@@ -1182,7 +1182,7 @@ function TypographySettingsPanel({
                 ))}
 
               {/* Handwriting */}
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-1 pt-2">
+              <div className="px-2 py-1.5 text-xs font-semibold text-[var(--el-500)] border-t mt-1 pt-2">
                 Handwriting
               </div>
               {googleFonts
@@ -1206,8 +1206,8 @@ function TypographySettingsPanel({
                 className={cn(
                   "flex items-center gap-1.5 px-2 py-1 rounded border text-xs cursor-pointer transition-colors",
                   def.weights.includes(weight)
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background hover:bg-muted",
+                    ? "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)] border-primary"
+                    : "bg-[var(--el-0)] hover:bg-[var(--el-100)]",
                 )}
               >
                 <Checkbox
@@ -1224,7 +1224,7 @@ function TypographySettingsPanel({
         {/* Preview */}
         <div className="pt-2 border-t">
           <p
-            className="text-sm text-muted-foreground"
+            className="text-sm text-[var(--el-500)]"
             style={{
               fontFamily: `'${def.family}', ${def.category || "sans-serif"}`,
               fontWeight:
@@ -1246,7 +1246,7 @@ function TypographySettingsPanel({
       {/* Font Definitions */}
       <SettingsGridBlock title="Font Definitions">
         <div className="col-span-2 space-y-4">
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-sm text-[var(--el-500)] mb-4">
             Define up to 3 fonts that can be used across your site. Each font
             can be assigned to different UI elements.
           </p>
@@ -1259,7 +1259,7 @@ function TypographySettingsPanel({
       {/* Font Roles */}
       <SettingsGridBlock title="Font Assignments">
         <div className="col-span-2 space-y-4">
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-sm text-[var(--el-500)] mb-4">
             Assign fonts to different UI elements. Components will use these
             defaults unless overridden.
           </p>
@@ -1274,7 +1274,7 @@ function TypographySettingsPanel({
                   >
                     <div>
                       <span className="font-medium text-sm">{label.name}</span>
-                      <span className="text-xs text-muted-foreground ml-2">
+                      <span className="text-xs text-[var(--el-500)] ml-2">
                         {label.description}
                       </span>
                     </div>
@@ -1490,7 +1490,7 @@ function ButtonSettingsPanel({
             <SelectItem key={opt.value} value={opt.value}>
               <span className="flex justify-between w-full">
                 <span>{opt.label}</span>
-                <span className="text-muted-foreground ml-2">
+                <span className="text-[var(--el-500)] ml-2">
                   {opt.description}
                 </span>
               </span>
@@ -1527,8 +1527,8 @@ function ButtonSettingsPanel({
               className={cn(
                 "px-4 py-2 text-sm font-medium rounded-md transition-colors",
                 activeSize === size
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80",
+                  ? "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]"
+                  : "bg-[var(--el-100)] text-[var(--el-500)] hover:bg-[var(--el-100)]/80",
               )}
             >
               {size.toUpperCase()}
@@ -1721,7 +1721,7 @@ function InputSettingsPanel({
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">
+                    <span className="text-[var(--el-500)] ml-2">
                       {opt.description}
                     </span>
                   </span>
@@ -1745,7 +1745,7 @@ function InputSettingsPanel({
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">
+                    <span className="text-[var(--el-500)] ml-2">
                       {opt.description}
                     </span>
                   </span>
@@ -1771,7 +1771,7 @@ function InputSettingsPanel({
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">
+                    <span className="text-[var(--el-500)] ml-2">
                       {opt.description}
                     </span>
                   </span>
@@ -1795,7 +1795,7 @@ function InputSettingsPanel({
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">
+                    <span className="text-[var(--el-500)] ml-2">
                       {opt.description}
                     </span>
                   </span>
@@ -1821,7 +1821,7 @@ function InputSettingsPanel({
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">
+                    <span className="text-[var(--el-500)] ml-2">
                       {opt.description}
                     </span>
                   </span>
@@ -1845,7 +1845,7 @@ function InputSettingsPanel({
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">
+                    <span className="text-[var(--el-500)] ml-2">
                       {opt.description}
                     </span>
                   </span>
@@ -1871,7 +1871,7 @@ function InputSettingsPanel({
                 <SelectItem key={opt.value} value={opt.value}>
                   <span className="flex justify-between w-full">
                     <span>{opt.label}</span>
-                    <span className="text-muted-foreground ml-2">
+                    <span className="text-[var(--el-500)] ml-2">
                       {opt.description}
                     </span>
                   </span>
@@ -1978,7 +1978,7 @@ function CardSettingsPanel({
             <SelectItem key={opt.value} value={opt.value}>
               <span className="flex justify-between w-full">
                 <span>{opt.label}</span>
-                <span className="text-muted-foreground ml-2">
+                <span className="text-[var(--el-500)] ml-2">
                   {opt.description}
                 </span>
               </span>
@@ -2207,7 +2207,7 @@ function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">
-                <span className="text-muted-foreground">
+                <span className="text-[var(--el-500)]">
                   No homepage (Coming Soon page)
                 </span>
               </SelectItem>
@@ -2215,11 +2215,11 @@ function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
                 <SelectItem key={page.id} value={page.id}>
                   <span className="flex items-center gap-2">
                     <span>{page.title}</span>
-                    <span className="text-muted-foreground text-xs">
+                    <span className="text-[var(--el-500)] text-xs">
                       /{page.slug}
                     </span>
                     {page.isHomePage && (
-                      <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                      <span className="text-xs bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] px-1.5 py-0.5 rounded">
                         Current
                       </span>
                     )}
@@ -2228,7 +2228,7 @@ function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
               ))}
             </SelectContent>
           </Select>
-          <p className="text-xs text-muted-foreground mt-2">
+          <p className="text-xs text-[var(--el-500)] mt-2">
             The homepage is the default page visitors see when they visit your
             site. Only published pages can be set as the homepage.
           </p>
@@ -2242,11 +2242,11 @@ function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
             {pages.map((page) => (
               <div
                 key={page.id}
-                className="flex items-center justify-between p-2 rounded-md border bg-background"
+                className="flex items-center justify-between p-2 rounded-md border bg-[var(--el-0)]"
               >
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-sm">{page.title}</span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-[var(--el-500)]">
                     /{page.slug}
                   </span>
                 </div>
@@ -2262,7 +2262,7 @@ function SiteSettingsPanel({ tenantId }: SiteSettingsPanelProps) {
                     {page.status === "published" ? "Published" : "Draft"}
                   </span>
                   {page.isHomePage && (
-                    <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">
+                    <span className="text-xs bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] px-2 py-0.5 rounded">
                       Homepage
                     </span>
                   )}

@@ -145,7 +145,7 @@ export function PageSettingsModal({
               <h4 className="page-settings-modal-section-title">
                 Layout Options
               </h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-[var(--el-500)]">
                 Configure page layout settings like header, footer, and content
                 width.
               </p>
@@ -201,7 +201,7 @@ export function PageSettingsModal({
               <h4 className="page-settings-modal-section-title">
                 Page Styling
               </h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-[var(--el-500)]">
                 Override global styles for this specific page.
               </p>
 
@@ -227,7 +227,7 @@ export function PageSettingsModal({
                 <Label htmlFor="modal-custom-css">Custom CSS</Label>
                 <textarea
                   id="modal-custom-css"
-                  className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-mono"
+                  className="flex min-h-[120px] w-full rounded-md border border-[var(--el-150)] bg-[var(--el-0)] px-3 py-2 text-sm ring-offset-[var(--el-0)] placeholder:text-[var(--el-500)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-mono"
                   placeholder="/* Custom CSS for this page */"
                 />
               </FormItem>

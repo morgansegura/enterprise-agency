@@ -177,10 +177,10 @@ function ColorScalePreview({
   return (
     <div className={cn("space-y-2", className)}>
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+        <span className="text-xs font-medium text-[var(--el-500)] uppercase tracking-wide">
           {label} Scale
         </span>
-        <span className="text-xs text-muted-foreground">{baseColor}</span>
+        <span className="text-xs text-[var(--el-500)]">{baseColor}</span>
       </div>
       <div className="flex rounded-lg overflow-hidden border">
         {shades.map((shade) => (
@@ -253,7 +253,7 @@ function ColorSwatchInput({
       <div className="flex items-center justify-between">
         <Label className="text-sm">{label}</Label>
         {description && (
-          <span className="text-xs text-muted-foreground">{description}</span>
+          <span className="text-xs text-[var(--el-500)]">{description}</span>
         )}
       </div>
       <div className="flex gap-2">
@@ -268,7 +268,7 @@ function ColorSwatchInput({
           onBlur={handleInputBlur}
           className={cn(
             "h-9 font-mono text-sm",
-            !isValid && "border-destructive focus-visible:ring-destructive",
+            !isValid && "border-destructive focus-visible:ring-[var(--status-error)]",
           )}
           placeholder="#000000"
         />
@@ -290,9 +290,9 @@ function ColorSwatchInput({
       </div>
       {showForeground && foregroundValue && (
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-xs text-muted-foreground">Foreground:</span>
+          <span className="text-xs text-[var(--el-500)]">Foreground:</span>
           <ColorPicker value={foregroundValue} onChange={onForegroundChange!} />
-          <span className="text-xs font-mono text-muted-foreground">
+          <span className="text-xs font-mono text-[var(--el-500)]">
             {foregroundValue}
           </span>
           <ContrastBadge background={value} foreground={foregroundValue} />
@@ -352,14 +352,14 @@ function CollapsibleSection({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors rounded-lg">
+      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-[var(--el-100)]/50 hover:bg-[var(--el-100)] transition-colors rounded-lg">
         <div className="flex items-center gap-2">
           {icon}
           <span className="text-sm font-medium">{title}</span>
         </div>
         <ChevronDown
           className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform",
+            "h-4 w-4 text-[var(--el-500)] transition-transform",
             open && "rotate-180",
           )}
         />
@@ -688,7 +688,7 @@ export function ColorSettingsPanel({
           {/* Status Colors */}
           <CollapsibleSection
             title="Status Colors"
-            icon={<AlertCircle className="h-4 w-4 text-muted-foreground" />}
+            icon={<AlertCircle className="h-4 w-4 text-[var(--el-500)]" />}
             defaultOpen={false}
           >
             <div className="grid gap-4">
@@ -730,7 +730,7 @@ export function ColorSettingsPanel({
           {/* Chart Colors */}
           <CollapsibleSection
             title="Chart Colors"
-            icon={<LayoutGrid className="h-4 w-4 text-muted-foreground" />}
+            icon={<LayoutGrid className="h-4 w-4 text-[var(--el-500)]" />}
             defaultOpen={false}
           >
             <div className="space-y-4">
@@ -742,7 +742,7 @@ export function ColorSettingsPanel({
                         value={colors.chart[key]}
                         onChange={(v) => updateChart(key, v)}
                       />
-                      <span className="text-[10px] text-muted-foreground text-center block">
+                      <span className="text-[10px] text-[var(--el-500)] text-center block">
                         {i + 1}
                       </span>
                     </div>
@@ -864,7 +864,7 @@ export function ColorSettingsPanel({
           {/* Links */}
           <CollapsibleSection
             title="Link Colors"
-            icon={<LinkIcon className="h-4 w-4 text-muted-foreground" />}
+            icon={<LinkIcon className="h-4 w-4 text-[var(--el-500)]" />}
           >
             <div className="grid gap-4">
               <ColorSwatchInput

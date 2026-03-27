@@ -122,10 +122,10 @@ const alignMap: Record<string, string> = {
 };
 
 const variantMap: Record<string, string> = {
-  body: "text-foreground",
-  muted: "text-muted-foreground",
-  caption: "text-muted-foreground text-sm",
-  lead: "text-muted-foreground text-lg",
+  body: "text-[var(--el-800)]",
+  muted: "text-[var(--el-500)]",
+  caption: "text-[var(--el-500)] text-sm",
+  lead: "text-[var(--el-500)] text-lg",
 };
 
 const weightMap: Record<string, string> = {
@@ -194,12 +194,12 @@ const maxWidthMap: Record<string, string> = {
 };
 
 const colorMap: Record<string, string> = {
-  default: "text-foreground",
-  primary: "text-primary",
+  default: "text-[var(--el-800)]",
+  primary: "text-[var(--accent-primary)]",
   secondary: "text-secondary",
-  muted: "text-muted-foreground",
+  muted: "text-[var(--el-500)]",
   accent: "text-accent",
-  destructive: "text-destructive",
+  destructive: "text-[var(--status-error)]",
 };
 
 const columnsMap: Record<number, string> = {
@@ -396,7 +396,7 @@ export function TextBlockEditor({
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: "text-primary underline cursor-pointer",
+          class: "text-[var(--accent-primary)] underline cursor-pointer",
         },
       }),
       Placeholder.configure({

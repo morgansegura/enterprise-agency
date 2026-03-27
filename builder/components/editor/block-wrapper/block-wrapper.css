@@ -31,7 +31,7 @@
   @apply rounded-lg px-1 py-0.5;
   @apply flex items-center gap-0.5;
   @apply z-20;
-  @apply bg-(--builder-card) border border-(--builder-border);
+  @apply bg-(--el-0) border border-(--border-default);
   @apply shadow-md;
   @apply animate-[toolbar-enter_100ms_ease-out];
 }
@@ -39,12 +39,12 @@
 .block-toolbar button {
   @apply h-7 w-7 rounded-md;
   @apply flex items-center justify-center;
-  @apply text-(--builder-muted-foreground);
+  @apply text-(--el-500);
   @apply transition-all duration-100 ease-out;
 }
 
 .block-toolbar button:hover {
-  @apply text-(--builder-foreground) bg-(--builder-muted);
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 .block-toolbar button:active {
@@ -52,7 +52,7 @@
 }
 
 .block-toolbar-separator {
-  @apply w-px h-4 mx-0.5 bg-(--builder-border);
+  @apply w-px h-4 mx-0.5 bg-(--border-default);
 }
 
 .block-toolbar-delete:hover {

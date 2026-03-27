@@ -697,7 +697,7 @@ function ThemePreviewCard({
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
-            <Icon className="h-5 w-5 text-muted-foreground" />
+            <Icon className="h-5 w-5 text-[var(--el-500)]" />
             <CardTitle className="text-base">{preset.name}</CardTitle>
           </div>
           {isActive && (
@@ -806,7 +806,7 @@ export function ThemePresets({
     <div className={cn("space-y-6", className)}>
       <div>
         <h3 className="text-lg font-semibold mb-1">Theme Presets</h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-[var(--el-500)]">
           Start with a pre-designed theme and customize it to match your brand.
         </p>
       </div>
@@ -836,7 +836,7 @@ export function ThemePresets({
       </Tabs>
 
       {filteredPresets.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground">
+        <div className="text-center py-12 text-[var(--el-500)]">
           No themes found in this category.
         </div>
       )}

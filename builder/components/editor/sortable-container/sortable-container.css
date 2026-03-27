@@ -39,13 +39,13 @@
   @apply px-3 py-1.5;
   @apply text-xs font-medium;
   @apply rounded-md;
-  @apply border border-dashed border-(--builder-border);
-  @apply text-(--builder-muted-foreground) bg-transparent;
+  @apply border border-dashed border-(--border-default);
+  @apply text-(--el-500) bg-transparent;
   @apply transition-all duration-100 ease-out;
 }
 
 .container-empty button:hover {
-  @apply text-(--builder-foreground) bg-(--builder-muted);
+  @apply text-(--el-800) bg-(--el-100);
   @apply border-(--builder-muted-foreground);
 }
 

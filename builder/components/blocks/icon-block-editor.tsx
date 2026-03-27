@@ -86,10 +86,10 @@ export function IconBlockEditor({
   };
 
   const colorMap = {
-    default: "text-foreground",
-    primary: "text-primary",
+    default: "text-[var(--el-800)]",
+    primary: "text-[var(--accent-primary)]",
     secondary: "text-secondary",
-    muted: "text-muted-foreground",
+    muted: "text-[var(--el-500)]",
   };
 
   const alignMap = {
@@ -174,7 +174,7 @@ export function IconBlockEditor({
             onChange={(e) => handleDataChange("icon", e.target.value)}
             placeholder="e.g., Star, Heart, Check"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Enter a Lucide icon name. See{" "}
             <a
               href="https://lucide.dev/icons"
@@ -189,7 +189,7 @@ export function IconBlockEditor({
         </FormItem>
 
         <FormItem>
-          <Label className="text-xs text-muted-foreground">Quick Select:</Label>
+          <Label className="text-xs text-[var(--el-500)]">Quick Select:</Label>
           <div className="flex flex-wrap gap-2 mt-1">
             {commonIcons.map(({ name, component: Icon }) => (
               <Button
@@ -279,8 +279,8 @@ export function IconBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <div className={`flex items-center gap-3 ${alignMap[align]}`}>

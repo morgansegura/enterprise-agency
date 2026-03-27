@@ -82,22 +82,22 @@ export function PagePicker({
           disabled={disabled}
           className={cn(
             "w-full justify-between font-normal",
-            !value && "text-muted-foreground",
+            !value && "text-[var(--el-500)]",
             className,
           )}
         >
           {selectedPage ? (
             <span className="flex items-center gap-2 truncate">
-              <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <FileText className="h-4 w-4 shrink-0 text-[var(--el-500)]" />
               <span className="truncate">{selectedPage.title}</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[var(--el-500)]">
                 /{selectedPage.slug}
               </span>
             </span>
           ) : value === "none" || !value ? (
-            <span className="text-muted-foreground">{noneLabel}</span>
+            <span className="text-[var(--el-500)]">{noneLabel}</span>
           ) : (
-            <span className="text-muted-foreground">{placeholder}</span>
+            <span className="text-[var(--el-500)]">{placeholder}</span>
           )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -128,7 +128,7 @@ export function PagePicker({
                       value === "none" || !value ? "opacity-100" : "opacity-0",
                     )}
                   />
-                  <span className="text-muted-foreground">{noneLabel}</span>
+                  <span className="text-[var(--el-500)]">{noneLabel}</span>
                 </CommandItem>
               </CommandGroup>
             )}
@@ -158,11 +158,11 @@ export function PagePicker({
                         <span className="truncate font-medium">
                           {page.title}
                         </span>
-                        <span className="text-xs text-muted-foreground shrink-0">
+                        <span className="text-xs text-[var(--el-500)] shrink-0">
                           /{page.slug}
                         </span>
                         {page.isHomePage && (
-                          <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded shrink-0">
+                          <span className="text-xs bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] px-1.5 py-0.5 rounded shrink-0">
                             Current
                           </span>
                         )}
@@ -198,7 +198,7 @@ export function PagePicker({
                         <span className="truncate font-medium">
                           {page.title}
                         </span>
-                        <span className="text-xs text-muted-foreground shrink-0">
+                        <span className="text-xs text-[var(--el-500)] shrink-0">
                           /{page.slug}
                         </span>
                       </div>

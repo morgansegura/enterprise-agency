@@ -133,18 +133,18 @@ export function HeroBlockEditor({
         onClick={() => setIsEditing(true)}
       >
         <div
-          className={`${sizeStyles[size]} ${alignStyles[align]} px-8 bg-muted/30 rounded-lg`}
+          className={`${sizeStyles[size]} ${alignStyles[align]} px-8 bg-[var(--el-100)]/30 rounded-lg`}
         >
           <h2 className="text-2xl font-bold">
             {block.data.heading || "Hero Heading"}
           </h2>
           {block.data.subheading && (
-            <p className="text-lg text-muted-foreground mt-1">
+            <p className="text-lg text-[var(--el-500)] mt-1">
               {block.data.subheading}
             </p>
           )}
           {block.data.description && (
-            <p className="text-sm text-muted-foreground mt-2">
+            <p className="text-sm text-[var(--el-500)] mt-2">
               {block.data.description}
             </p>
           )}
@@ -237,7 +237,7 @@ export function HeroBlockEditor({
         </FormItem>
 
         <div className="border rounded-lg p-3 space-y-3">
-          <p className="text-xs font-medium text-muted-foreground uppercase">
+          <p className="text-xs font-medium text-[var(--el-500)] uppercase">
             Primary CTA
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -267,7 +267,7 @@ export function HeroBlockEditor({
         </div>
 
         <div className="border rounded-lg p-3 space-y-3">
-          <p className="text-xs font-medium text-muted-foreground uppercase">
+          <p className="text-xs font-medium text-[var(--el-500)] uppercase">
             Secondary CTA
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -297,7 +297,7 @@ export function HeroBlockEditor({
         </div>
 
         <div className="border rounded-lg p-3 space-y-3">
-          <p className="text-xs font-medium text-muted-foreground uppercase">
+          <p className="text-xs font-medium text-[var(--el-500)] uppercase">
             Background Image
           </p>
           <div className="grid grid-cols-2 gap-3">

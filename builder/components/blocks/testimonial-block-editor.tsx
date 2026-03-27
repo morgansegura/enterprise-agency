@@ -146,7 +146,7 @@ export function TestimonialBlockEditor({
           className={`grid ${layout === "single" ? "grid-cols-1" : columnClass[columns]} gap-4`}
         >
           {block.data.testimonials.length === 0 ? (
-            <div className="col-span-full text-center text-muted-foreground py-4">
+            <div className="col-span-full text-center text-[var(--el-500)] py-4">
               No testimonials yet. Click to add testimonials...
             </div>
           ) : (
@@ -161,7 +161,7 @@ export function TestimonialBlockEditor({
                 <div className="mt-2 text-xs font-medium">
                   {item.name || "Name"}
                   {item.role && (
-                    <span className="text-muted-foreground">
+                    <span className="text-[var(--el-500)]">
                       {" "}
                       &middot; {item.role}
                     </span>
@@ -233,7 +233,7 @@ export function TestimonialBlockEditor({
             {block.data.testimonials.map((item, index) => (
               <div
                 key={index}
-                className="border rounded-lg p-3 space-y-2 bg-muted/30"
+                className="border rounded-lg p-3 space-y-2 bg-[var(--el-100)]/30"
               >
                 <div className="flex items-start justify-between gap-2">
                   <Button
@@ -244,7 +244,7 @@ export function TestimonialBlockEditor({
                     <div className="text-sm font-medium">
                       {item.name || `Testimonial ${index + 1}`}
                     </div>
-                    <div className="text-xs text-muted-foreground truncate">
+                    <div className="text-xs text-[var(--el-500)] truncate">
                       {item.quote || "No quote yet"}
                     </div>
                   </Button>
@@ -362,7 +362,7 @@ export function TestimonialBlockEditor({
               </div>
             ))}
             {block.data.testimonials.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-sm text-[var(--el-500)] text-center py-4">
                 No testimonials yet. Click &quot;Add Testimonial&quot; to
                 start.
               </p>
@@ -463,15 +463,15 @@ export function TestimonialBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <div
             className={`grid ${layout === "single" ? "grid-cols-1" : columnClass[columns]} gap-4`}
           >
             {block.data.testimonials.length === 0 ? (
-              <div className="col-span-full text-center text-muted-foreground py-4">
+              <div className="col-span-full text-center text-[var(--el-500)] py-4">
                 No testimonials yet
               </div>
             ) : (
@@ -486,7 +486,7 @@ export function TestimonialBlockEditor({
                   <div className="mt-2 text-xs font-medium">
                     {item.name || "Name"}
                     {item.role && (
-                      <span className="text-muted-foreground">
+                      <span className="text-[var(--el-500)]">
                         {" "}
                         &middot; {item.role}
                       </span>

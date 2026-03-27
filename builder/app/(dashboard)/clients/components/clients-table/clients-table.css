@@ -1,14 +1,14 @@
 @reference "tailwindcss";
 
 /* =============================================================================
- * Clients Table
+ * Clients Table — Jira-density enterprise table
  * ============================================================================= */
 
 /* Table
  * -------------------------------------------------------------------------- */
 
 .clients-table {
-  @apply w-full text-sm;
+  @apply w-full text-[14px];
   @apply border-separate border-spacing-0;
 }
 
@@ -17,12 +17,12 @@
 }
 
 .clients-table-header th {
-  @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap;
+  @apply px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap;
   @apply text-(--text-secondary) border-b border-(--border-default);
 }
 
 .clients-table-body tr {
-  @apply transition-colors;
+  @apply transition-colors duration-100;
 }
 
 .clients-table-body tr:hover {
@@ -30,7 +30,7 @@
 }
 
 .clients-table-body td {
-  @apply px-4 py-3 whitespace-nowrap;
+  @apply px-3 py-2.5 whitespace-nowrap;
   @apply text-(--text-primary) border-b border-(--border-subtle);
 }
 
@@ -42,7 +42,7 @@
 }
 
 .clients-col-slug {
-  @apply font-mono text-xs text-(--text-secondary);
+  @apply font-mono text-[12px] text-(--text-secondary);
 }
 
 .clients-col-pages {
@@ -50,18 +50,18 @@
 }
 
 .clients-col-updated {
-  @apply text-xs text-(--text-secondary);
+  @apply text-[12px] text-(--text-secondary);
 }
 
 .clients-col-actions {
-  @apply text-right w-12;
+  @apply text-right w-10;
 }
 
-/* Status pills
+/* Status pills — Jira lozenge style
  * -------------------------------------------------------------------------- */
 
 .clients-status-pill {
-  @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  @apply inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-[3px] text-[11px] font-bold uppercase tracking-wide;
 }
 
 .clients-status-active {
@@ -76,11 +76,11 @@
   @apply bg-(--status-error-subtle) text-(--status-error);
 }
 
-/* Tier badges
+/* Tier badges — Jira lozenge style
  * -------------------------------------------------------------------------- */
 
 .clients-tier-badge {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[11px] font-bold uppercase tracking-wide;
 }
 
 .clients-tier-builder {
@@ -95,26 +95,26 @@
  * -------------------------------------------------------------------------- */
 
 .clients-empty {
-  @apply flex flex-col items-center justify-center py-20 text-center;
+  @apply flex flex-col items-center justify-center py-16 text-center;
 }
 
 .clients-empty-icon {
-  @apply h-16 w-16 mb-4 text-(--text-tertiary);
+  @apply h-12 w-12 mb-3 text-(--text-tertiary);
 }
 
 .clients-empty h3 {
-  @apply text-lg font-medium mb-2 text-(--text-primary);
+  @apply text-base font-medium mb-1 text-(--text-primary);
 }
 
 .clients-empty p {
-  @apply mb-6 max-w-sm text-(--text-secondary);
+  @apply mb-4 max-w-sm text-[14px] text-(--text-secondary);
 }
 
 /* Skeleton rows
  * -------------------------------------------------------------------------- */
 
 .clients-skeleton-row {
-  @apply flex items-center gap-6 px-4 py-4;
+  @apply flex items-center gap-4 px-3 py-3;
   @apply border-b border-(--border-subtle);
 }
 
@@ -122,5 +122,5 @@
  * -------------------------------------------------------------------------- */
 
 .clients-actions-trigger {
-  @apply h-8 w-8;
+  @apply h-7 w-7;
 }

@@ -40,7 +40,7 @@
 }
 
 .customer-info-toggle-label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .customer-info-toggle-description {

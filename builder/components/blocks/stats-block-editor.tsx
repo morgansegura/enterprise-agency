@@ -114,7 +114,7 @@ export function StatsBlockEditor({
 
   const variantStyles = {
     default: "",
-    highlighted: "bg-primary/5 border border-primary/20 rounded-lg p-4",
+    highlighted: "bg-[var(--accent-primary)]/5 border border-primary/20 rounded-lg p-4",
     bordered: "border-2 rounded-lg p-4",
   };
 
@@ -128,7 +128,7 @@ export function StatsBlockEditor({
           className={`grid ${layout === "horizontal" ? "grid-cols-3" : "grid-cols-1"} gap-4`}
         >
           {block.data.stats.length === 0 ? (
-            <div className="col-span-full text-center text-muted-foreground py-4">
+            <div className="col-span-full text-center text-[var(--el-500)] py-4">
               No stats yet. Click to add stats...
             </div>
           ) : (
@@ -137,14 +137,14 @@ export function StatsBlockEditor({
                 key={index}
                 className={`text-center ${variantStyles[variant]}`}
               >
-                <div className="text-3xl font-bold text-primary">
+                <div className="text-3xl font-bold text-[var(--accent-primary)]">
                   {stat.value || "0"}
                 </div>
                 <div className="text-sm font-medium mt-1">
                   {stat.label || "Label"}
                 </div>
                 {stat.description && (
-                  <div className="text-xs text-muted-foreground mt-1">
+                  <div className="text-xs text-[var(--el-500)] mt-1">
                     {stat.description}
                   </div>
                 )}
@@ -208,7 +208,7 @@ export function StatsBlockEditor({
             {block.data.stats.map((stat, index) => (
               <div
                 key={index}
-                className="border rounded-lg p-3 space-y-2 bg-muted/30"
+                className="border rounded-lg p-3 space-y-2 bg-[var(--el-100)]/30"
               >
                 <div className="flex items-start justify-between gap-2">
                   <Button
@@ -216,7 +216,7 @@ export function StatsBlockEditor({
                     onClick={() => toggleStat(index)}
                     className="flex-1 text-left"
                   >
-                    <div className="font-bold text-lg text-primary">
+                    <div className="font-bold text-lg text-[var(--accent-primary)]">
                       {stat.value || "0"}
                     </div>
                     <div className="text-sm font-medium">
@@ -286,7 +286,7 @@ export function StatsBlockEditor({
                         }
                         placeholder="e.g., TrendingUp"
                       />
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-[var(--el-500)] mt-1">
                         Lucide icon name
                       </p>
                     </FormItem>
@@ -295,7 +295,7 @@ export function StatsBlockEditor({
               </div>
             ))}
             {block.data.stats.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-sm text-[var(--el-500)] text-center py-4">
                 No stats yet. Click &quot;Add Stat&quot; to start.
               </p>
             )}
@@ -344,15 +344,15 @@ export function StatsBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <div
             className={`grid ${layout === "horizontal" ? "grid-cols-3" : "grid-cols-1"} gap-4`}
           >
             {block.data.stats.length === 0 ? (
-              <div className="col-span-full text-center text-muted-foreground py-4">
+              <div className="col-span-full text-center text-[var(--el-500)] py-4">
                 No stats yet
               </div>
             ) : (
@@ -361,14 +361,14 @@ export function StatsBlockEditor({
                   key={index}
                   className={`text-center ${variantStyles[variant]}`}
                 >
-                  <div className="text-3xl font-bold text-primary">
+                  <div className="text-3xl font-bold text-[var(--accent-primary)]">
                     {stat.value || "0"}
                   </div>
                   <div className="text-sm font-medium mt-1">
                     {stat.label || "Label"}
                   </div>
                   {stat.description && (
-                    <div className="text-xs text-muted-foreground mt-1">
+                    <div className="text-xs text-[var(--el-500)] mt-1">
                       {stat.description}
                     </div>
                   )}

@@ -1,37 +1,37 @@
 @reference "tailwindcss";
 
 [data-slot="tooltip-content"] {
-  @apply z-50 w-fit rounded-md px-3 py-1.5 text-xs text-balance;
-  @apply bg-(--foreground) text-(--background);
+  @apply z-50 w-fit rounded-[3px] px-2.5 py-1 text-[12px] text-balance;
+  @apply bg-(--el-800) text-(--el-0);
   transform-origin: var(--radix-tooltip-content-transform-origin);
 }
 
 [data-slot="tooltip-content"][data-state="open"] {
-  @apply animate-[tooltip-zoom-in_150ms_ease-out];
+  @apply animate-[tooltip-zoom-in_100ms_ease-out];
 }
 
 [data-slot="tooltip-content"][data-state="closed"] {
-  @apply animate-[tooltip-zoom-out_150ms_ease-in];
+  @apply animate-[tooltip-zoom-out_100ms_ease-in];
 }
 
 [data-slot="tooltip-content"][data-state="open"][data-side="bottom"] {
-  @apply animate-[tooltip-zoom-in_150ms_ease-out,tooltip-slide-in-from-top_150ms_ease-out];
+  @apply animate-[tooltip-zoom-in_100ms_ease-out,tooltip-slide-in-from-top_100ms_ease-out];
 }
 
 [data-slot="tooltip-content"][data-state="open"][data-side="left"] {
-  @apply animate-[tooltip-zoom-in_150ms_ease-out,tooltip-slide-in-from-right_150ms_ease-out];
+  @apply animate-[tooltip-zoom-in_100ms_ease-out,tooltip-slide-in-from-right_100ms_ease-out];
 }
 
 [data-slot="tooltip-content"][data-state="open"][data-side="right"] {
-  @apply animate-[tooltip-zoom-in_150ms_ease-out,tooltip-slide-in-from-left_150ms_ease-out];
+  @apply animate-[tooltip-zoom-in_100ms_ease-out,tooltip-slide-in-from-left_100ms_ease-out];
 }
 
 [data-slot="tooltip-content"][data-state="open"][data-side="top"] {
-  @apply animate-[tooltip-zoom-in_150ms_ease-out,tooltip-slide-in-from-bottom_150ms_ease-out];
+  @apply animate-[tooltip-zoom-in_100ms_ease-out,tooltip-slide-in-from-bottom_100ms_ease-out];
 }
 
 .tooltip-arrow {
   @apply z-50 size-2.5 rotate-45 rounded-[2px];
-  @apply bg-(--foreground) fill-(--foreground);
+  @apply bg-(--el-800) fill-(--foreground);
   translate: 0 calc(-50% - 2px);
 }

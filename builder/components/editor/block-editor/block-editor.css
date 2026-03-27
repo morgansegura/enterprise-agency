@@ -7,18 +7,18 @@
 
 /* Editor Loading State */
 [data-slot="editor-loading"] {
-  @apply flex items-center justify-center p-8 text-(--muted-foreground);
+  @apply flex items-center justify-center p-8 text-(--el-500);
 }
 
 /* Editor Content */
 .block-editor-content {
-  @apply min-h-[200px] w-full rounded-lg border bg-(--background) p-4;
-  @apply focus:outline-none focus:ring-2 focus:ring-(--ring) focus:ring-offset-2;
+  @apply min-h-[200px] w-full rounded-lg border bg-(--el-0) p-4;
+  @apply focus:outline-none focus:ring-2 focus:ring-(--accent-primary) focus:ring-offset-2;
 }
 
 /* Placeholder */
 .block-editor-content .ProseMirror p.is-editor-empty:first-child::before {
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
   content: attr(data-placeholder);
   float: left;
   height: 0;
@@ -72,15 +72,15 @@
 }
 
 .block-editor-content .ProseMirror blockquote {
-  @apply border-l-4 border-(--border) pl-4 italic my-4;
+  @apply border-l-4 border-(--border-default) pl-4 italic my-4;
 }
 
 .block-editor-content .ProseMirror code {
-  @apply bg-(--muted) px-1.5 py-0.5 rounded text-sm;
+  @apply bg-(--el-100) px-1.5 py-0.5 rounded text-sm;
 }
 
 .block-editor-content .ProseMirror pre {
-  @apply bg-(--muted) p-4 rounded-lg mb-4 overflow-x-auto;
+  @apply bg-(--el-100) p-4 rounded-lg mb-4 overflow-x-auto;
 }
 
 .block-editor-content .ProseMirror pre code {
@@ -89,11 +89,11 @@
 
 /* Links */
 .block-editor-content .ProseMirror .editor-link {
-  @apply text-(--primary) underline cursor-pointer;
+  @apply text-(--accent-primary) underline cursor-pointer;
 }
 
 .block-editor-content .ProseMirror .editor-link:hover {
-  @apply text-(--primary)/80;
+  @apply text-(--accent-primary)/80;
 }
 
 /* Images */
@@ -104,5 +104,5 @@
 /* Selection */
 .block-editor-content .ProseMirror::selection,
 .block-editor-content .ProseMirror *::selection {
-  @apply bg-(--accent);
+  @apply bg-(--accent-primary-subtle);
 }

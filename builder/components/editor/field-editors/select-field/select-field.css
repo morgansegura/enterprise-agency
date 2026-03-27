@@ -13,11 +13,11 @@
 }
 
 .select-field__label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .select-field__required {
-  @apply ml-0.5 text-(--destructive);
+  @apply ml-0.5 text-(--status-error);
 }
 
 .select-field__trigger {
@@ -29,9 +29,9 @@
 }
 
 .select-field__description {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .select-field__error {
-  @apply text-xs text-(--destructive);
+  @apply text-xs text-(--status-error);
 }

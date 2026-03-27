@@ -54,7 +54,7 @@ export function AudioBlockEditor({
         onClick={() => setIsEditing(true)}
       >
         <div className="flex items-center gap-3">
-          <Music className="h-8 w-8 text-primary flex-shrink-0" />
+          <Music className="h-8 w-8 text-[var(--accent-primary)] flex-shrink-0" />
           <div className="flex-1 min-w-0">
             {block.data.title || block.data.artist ? (
               <>
@@ -62,13 +62,13 @@ export function AudioBlockEditor({
                   {block.data.title || "Untitled"}
                 </p>
                 {block.data.artist && (
-                  <p className="text-xs text-muted-foreground truncate">
+                  <p className="text-xs text-[var(--el-500)] truncate">
                     {block.data.artist}
                   </p>
                 )}
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-[var(--el-500)]">
                 {block.data.src ? "Audio file" : "No audio file set"}
               </p>
             )}
@@ -115,7 +115,7 @@ export function AudioBlockEditor({
             onChange={(e) => handleDataChange("src", e.target.value)}
             placeholder="https://example.com/audio.mp3"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Supports MP3, WAV, OGG formats
           </p>
         </FormItem>
@@ -183,10 +183,10 @@ export function AudioBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">Preview:</p>
           <div className="flex items-center gap-3">
-            <Music className="h-8 w-8 text-primary flex-shrink-0" />
+            <Music className="h-8 w-8 text-[var(--accent-primary)] flex-shrink-0" />
             <div className="flex-1 min-w-0">
               {block.data.title || block.data.artist ? (
                 <>
@@ -194,13 +194,13 @@ export function AudioBlockEditor({
                     {block.data.title || "Untitled"}
                   </p>
                   {block.data.artist && (
-                    <p className="text-xs text-muted-foreground truncate">
+                    <p className="text-xs text-[var(--el-500)] truncate">
                       {block.data.artist}
                     </p>
                   )}
                 </>
               ) : (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[var(--el-500)]">
                   {block.data.src ? "Audio file" : "No audio file set"}
                 </p>
               )}

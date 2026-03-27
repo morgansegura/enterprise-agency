@@ -53,14 +53,14 @@ export default function TeamBlockRenderer({ block }: BlockRendererProps) {
               className="w-20 h-20 rounded-full object-cover mb-3"
             />
           ) : (
-            <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-3 text-2xl font-bold text-muted-foreground">
+            <div className="w-20 h-20 rounded-full bg-[var(--el-100)] flex items-center justify-center mb-3 text-2xl font-bold text-[var(--el-500)]">
               {member.name.charAt(0)}
             </div>
           )}
           <h4 className="text-sm font-semibold">{member.name}</h4>
-          <p className="text-xs text-muted-foreground">{member.role}</p>
+          <p className="text-xs text-[var(--el-500)]">{member.role}</p>
           {showBio && member.bio && (
-            <p className="text-xs text-muted-foreground mt-2 line-clamp-3">
+            <p className="text-xs text-[var(--el-500)] mt-2 line-clamp-3">
               {member.bio}
             </p>
           )}

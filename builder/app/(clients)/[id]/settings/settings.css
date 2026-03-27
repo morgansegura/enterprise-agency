@@ -10,15 +10,15 @@
 }
 
 .settings-page-header {
-  @apply px-6 pt-6 pb-4;
+  @apply px-4 pt-4 pb-3;
 }
 
 .settings-page-header h1 {
-  @apply text-lg font-semibold text-(--foreground);
+  @apply text-base font-semibold text-(--el-800);
 }
 
 .settings-page-header p {
-  @apply text-sm mt-1 text-(--text-tertiary);
+  @apply text-[12px] mt-0.5 text-(--text-tertiary);
 }
 
 /* ============================================================================
@@ -26,11 +26,11 @@
    ============================================================================ */
 
 .settings-page-body {
-  @apply flex-1 overflow-y-auto px-6 pb-24;
+  @apply flex-1 overflow-y-auto px-4 pb-20;
 }
 
 .settings-page-columns {
-  @apply grid gap-6;
+  @apply grid gap-4;
   grid-template-columns: 2fr 1fr;
 }
 
@@ -41,11 +41,11 @@
 }
 
 .settings-page-main {
-  @apply flex flex-col gap-6;
+  @apply flex flex-col gap-4;
 }
 
 .settings-page-sidebar {
-  @apply flex flex-col gap-6;
+  @apply flex flex-col gap-4;
 }
 
 /* ============================================================================
@@ -57,19 +57,19 @@
 }
 
 .settings-card-header {
-  @apply px-5 py-4 border-b border-(--border-subtle);
+  @apply px-4 py-3 border-b border-(--border-subtle);
 }
 
 .settings-card-title {
-  @apply text-sm font-semibold text-(--foreground);
+  @apply text-[14px] font-semibold text-(--el-800);
 }
 
 .settings-card-description {
-  @apply text-xs mt-1 text-(--text-tertiary);
+  @apply text-[12px] mt-0.5 text-(--text-tertiary);
 }
 
 .settings-card-body {
-  @apply px-5 py-5 flex flex-col gap-5;
+  @apply px-4 py-4 flex flex-col gap-4;
 }
 
 /* ============================================================================
@@ -114,7 +114,7 @@
 
 /* Branding row */
 .settings-branding-row {
-  @apply flex flex-wrap gap-6;
+  @apply flex flex-wrap gap-4;
 }
 
 /* ============================================================================
@@ -126,20 +126,20 @@
 }
 
 .settings-plan-header {
-  @apply px-5 py-4 border-b border-(--border-subtle) flex items-center justify-between;
+  @apply px-4 py-3 border-b border-(--border-subtle) flex items-center justify-between;
 }
 
 .settings-plan-title {
-  @apply text-sm font-semibold text-(--foreground);
+  @apply text-[14px] font-semibold text-(--el-800);
 }
 
 .settings-plan-body {
-  @apply px-5 py-5;
+  @apply px-4 py-4;
 }
 
 /* Tier badge */
 .settings-tier-pill {
-  @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
+  @apply inline-flex items-center px-2.5 py-1 rounded-[3px] text-[11px] font-semibold;
 }
 
 .settings-tier-pill-builder {
@@ -156,7 +156,7 @@
 }
 
 .settings-plan-feature {
-  @apply flex items-center gap-2 text-sm text-(--text-secondary);
+  @apply flex items-center gap-2 text-[14px] text-(--text-secondary);
 }
 
 .settings-plan-feature svg {
@@ -169,7 +169,7 @@
 }
 
 .settings-upgrade-heading {
-  @apply text-sm font-semibold text-(--foreground) mb-1;
+  @apply text-[14px] font-semibold text-(--el-800) mb-1;
 }
 
 .settings-upgrade-text {
@@ -183,7 +183,7 @@
 .settings-footer {
   @apply fixed bottom-0 left-0 right-0 z-20;
   @apply flex items-center justify-end gap-3;
-  @apply px-6 py-3;
+  @apply px-4 py-2.5;
   @apply bg-(--el-0) border-t border-(--border-default) shadow-md;
 }
 
@@ -204,7 +204,7 @@
 }
 
 .settings-skeleton-columns {
-  @apply grid gap-6;
+  @apply grid gap-4;
   grid-template-columns: 2fr 1fr;
 }
 

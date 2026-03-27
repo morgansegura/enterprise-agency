@@ -18,7 +18,7 @@
 
 .border-editor-title {
   @apply text-[0.6875rem] font-semibold uppercase tracking-wide mb-2;
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
 }
 
 /* Row layout */
@@ -33,5 +33,5 @@
 
 .border-editor-label {
   @apply text-xs;
-  @apply text-(--foreground);
+  @apply text-(--el-800);
 }

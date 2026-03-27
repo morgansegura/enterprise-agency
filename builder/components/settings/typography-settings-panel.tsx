@@ -343,7 +343,7 @@ function FontPicker({ value, onChange, category }: FontPickerProps) {
                 >
                   {font.family}
                 </span>
-                <span className="text-[10px] text-muted-foreground uppercase shrink-0 w-16 text-right">
+                <span className="text-[10px] text-[var(--el-500)] uppercase shrink-0 w-16 text-right">
                   {font.category}
                 </span>
               </div>
@@ -380,14 +380,14 @@ function TextStyleEditor({
     <div className="space-y-3 p-3 rounded-lg border bg-card">
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium">{label}</span>
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-[var(--el-500)]">
           {fontSizeOptions.find((o) => o.value === style.fontSize)?.px}
         </span>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1">
-          <Label className="text-xs text-muted-foreground">Size</Label>
+          <Label className="text-xs text-[var(--el-500)]">Size</Label>
           <Select
             value={style.fontSize}
             onValueChange={(v) => update("fontSize", v)}
@@ -406,7 +406,7 @@ function TextStyleEditor({
         </div>
 
         <div className="space-y-1">
-          <Label className="text-xs text-muted-foreground">Weight</Label>
+          <Label className="text-xs text-[var(--el-500)]">Weight</Label>
           <Select
             value={style.fontWeight}
             onValueChange={(v) => update("fontWeight", v)}
@@ -425,7 +425,7 @@ function TextStyleEditor({
         </div>
 
         <div className="space-y-1">
-          <Label className="text-xs text-muted-foreground">Line Height</Label>
+          <Label className="text-xs text-[var(--el-500)]">Line Height</Label>
           <Select
             value={style.lineHeight}
             onValueChange={(v) => update("lineHeight", v)}
@@ -444,7 +444,7 @@ function TextStyleEditor({
         </div>
 
         <div className="space-y-1">
-          <Label className="text-xs text-muted-foreground">
+          <Label className="text-xs text-[var(--el-500)]">
             Letter Spacing
           </Label>
           <Select
@@ -466,7 +466,7 @@ function TextStyleEditor({
 
         {showTextTransform && (
           <div className="space-y-1 col-span-2">
-            <Label className="text-xs text-muted-foreground">Transform</Label>
+            <Label className="text-xs text-[var(--el-500)]">Transform</Label>
             <Select
               value={style.textTransform || "none"}
               onValueChange={(v) =>
@@ -512,14 +512,14 @@ function CollapsibleSection({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors rounded-lg">
+      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-[var(--el-100)]/50 hover:bg-[var(--el-100)] transition-colors rounded-lg">
         <div className="flex items-center gap-2">
           {icon}
           <span className="text-sm font-medium">{title}</span>
         </div>
         <ChevronDown
           className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform",
+            "h-4 w-4 text-[var(--el-500)] transition-transform",
             open && "rotate-180",
           )}
         />
@@ -605,7 +605,7 @@ function TypographyPreview({ typography }: TypographyPreviewProps) {
     <div className="rounded-lg border bg-card p-6 space-y-6">
       {/* Headings Preview */}
       <div className="space-y-4">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+        <span className="text-xs font-medium text-[var(--el-500)] uppercase tracking-wide">
           Headings
         </span>
         <div style={{ fontFamily: getFontFamily("heading") }}>
@@ -620,7 +620,7 @@ function TypographyPreview({ typography }: TypographyPreviewProps) {
 
       {/* Body Preview */}
       <div className="space-y-3">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+        <span className="text-xs font-medium text-[var(--el-500)] uppercase tracking-wide">
           Body Text
         </span>
         <div style={{ fontFamily: getFontFamily("body") }}>
@@ -634,25 +634,25 @@ function TypographyPreview({ typography }: TypographyPreviewProps) {
 
       {/* Buttons & Links Preview */}
       <div className="space-y-3">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+        <span className="text-xs font-medium text-[var(--el-500)] uppercase tracking-wide">
           Buttons & Links
         </span>
         <div className="flex items-center gap-4">
           <button
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md"
+            className="px-4 py-2 bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)] rounded-md"
             style={{ fontFamily: getFontFamily("button") }}
           >
             Button Text
           </button>
           <a
             href="#"
-            className="text-primary underline"
+            className="text-[var(--accent-primary)] underline"
             style={{ fontFamily: getFontFamily("link") }}
           >
             Link Text
           </a>
           <span
-            className="text-sm text-muted-foreground"
+            className="text-sm text-[var(--el-500)]"
             style={{ fontFamily: getFontFamily("caption") }}
           >
             Caption text
@@ -748,7 +748,7 @@ export function TypographySettingsPanel({
             <CollapsibleSection
               key={font.id}
               title={fontSlotLabels[font.id].name}
-              icon={<Type className="h-4 w-4 text-muted-foreground" />}
+              icon={<Type className="h-4 w-4 text-[var(--el-500)]" />}
             >
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -780,7 +780,7 @@ export function TypographySettingsPanel({
                     </SelectContent>
                   </Select>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-[var(--el-500)]">
                   {fontSlotLabels[font.id].description}
                 </p>
               </div>
@@ -790,14 +790,14 @@ export function TypographySettingsPanel({
           {/* Font Roles */}
           <CollapsibleSection
             title="Font Role Assignments"
-            icon={<Type className="h-4 w-4 text-muted-foreground" />}
+            icon={<Type className="h-4 w-4 text-[var(--el-500)]" />}
             defaultOpen={false}
           >
             <div className="grid grid-cols-2 gap-x-4 gap-y-2">
               {(Object.keys(typography.roles) as Array<keyof FontRoles>).map(
                 (role) => (
                   <div key={role} className="flex items-center gap-2">
-                    <Label className="capitalize text-xs text-muted-foreground w-16 shrink-0">
+                    <Label className="capitalize text-xs text-[var(--el-500)] w-16 shrink-0">
                       {role}
                     </Label>
                     <Select
@@ -826,7 +826,7 @@ export function TypographySettingsPanel({
           {/* Base Font Size */}
           <CollapsibleSection
             title="Base Font Size"
-            icon={<Type className="h-4 w-4 text-muted-foreground" />}
+            icon={<Type className="h-4 w-4 text-[var(--el-500)]" />}
             defaultOpen={false}
           >
             <div className="space-y-4">
@@ -845,7 +845,7 @@ export function TypographySettingsPanel({
                 max={20}
                 step={1}
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-[var(--el-500)]">
                 This affects all rem-based font sizes throughout the site.
               </p>
             </div>

@@ -85,7 +85,7 @@
 
 /* Zone hover state - show boundaries */
 .header-canvas-zone:hover {
-  @apply bg-(--muted)/20 border-dashed border-(--border);
+  @apply bg-(--el-100)/20 border-dashed border-(--border);
 }
 
 .header-canvas-zone.is-empty {
@@ -93,13 +93,13 @@
 }
 
 .header-canvas-zone.is-empty:hover {
-  @apply border-(--primary)/50 bg-(--primary)/5;
+  @apply border-(--accent-primary)/50 bg-(--accent-primary)/5;
 }
 
 /* Zone labels on hover */
 .header-canvas-zone::before {
   @apply absolute -top-5 left-1/2 -translate-x-1/2;
-  @apply text-[10px] font-medium text-(--muted-foreground);
+  @apply text-[10px] font-medium text-(--el-500);
   @apply opacity-0 transition-opacity;
   @apply pointer-events-none;
 }
@@ -125,7 +125,7 @@
   @apply absolute -right-1 top-1/2 -translate-y-1/2;
   @apply flex items-center justify-center;
   @apply size-5 rounded-full;
-  @apply bg-(--primary) text-(--primary-foreground);
+  @apply bg-(--accent-primary) text-(--primary-foreground);
   @apply opacity-0 scale-75;
   @apply transition-all duration-150;
   @apply shadow-sm;
@@ -155,9 +155,9 @@
 
 .header-canvas-add-option {
   @apply flex items-center gap-2 px-2 py-1.5;
-  @apply text-sm text-(--foreground);
+  @apply text-sm text-(--el-800);
   @apply rounded-md cursor-pointer;
-  @apply hover:bg-(--muted);
+  @apply hover:bg-(--el-100);
   @apply transition-colors;
 }
 
@@ -179,8 +179,8 @@
 /* Placeholder style for unconfigured blocks */
 .header-canvas-placeholder {
   @apply flex items-center gap-2 px-3 py-2;
-  @apply text-xs text-(--muted-foreground);
-  @apply bg-(--muted)/50 rounded-md;
+  @apply text-xs text-(--el-500);
+  @apply bg-(--el-100)/50 rounded-md;
   @apply border border-dashed border-(--muted-foreground)/30;
 }
 
@@ -205,7 +205,7 @@
 
 .header-canvas-nav-item {
   @apply text-sm font-medium px-3 py-2 rounded-md;
-  @apply hover:bg-(--muted) transition-colors cursor-pointer;
+  @apply hover:bg-(--el-100) transition-colors cursor-pointer;
 }
 
 /* Button Styles */
@@ -214,7 +214,7 @@
 }
 
 .header-canvas-btn-primary {
-  @apply bg-(--primary) text-(--primary-foreground);
+  @apply bg-(--accent-primary) text-(--primary-foreground);
 }
 
 .header-canvas-btn-secondary {
@@ -226,22 +226,22 @@
 }
 
 .header-canvas-btn-ghost {
-  @apply bg-transparent hover:bg-(--muted);
+  @apply bg-transparent hover:bg-(--el-100);
 }
 
 /* Icon button */
 .header-canvas-icon-btn {
   @apply p-2 rounded-md;
-  @apply text-(--muted-foreground) hover:text-(--foreground);
-  @apply hover:bg-(--muted) transition-colors;
+  @apply text-(--el-500) hover:text-(--el-800);
+  @apply hover:bg-(--el-100) transition-colors;
 }
 
 /* Selection Info */
 .header-canvas-selection-info {
   @apply inline-flex items-center gap-1.5 mt-3 px-2.5 py-1;
   @apply text-xs;
-  @apply bg-(--primary)/10 text-(--primary) rounded-full;
-  @apply border border-(--primary)/20;
+  @apply bg-(--accent-primary)/10 text-(--accent-primary) rounded-full;
+  @apply border border-(--accent-primary)/20;
 }
 
 .header-canvas-selection-zone {

@@ -82,7 +82,7 @@ export function QuoteBlockEditor({
   const variantStyles = {
     default: "border-l-4 border-primary pl-4",
     bordered: "border-2 border-border rounded-lg p-4",
-    highlighted: "bg-muted/50 border-l-4 border-primary pl-4 py-2",
+    highlighted: "bg-[var(--el-100)]/50 border-l-4 border-primary pl-4 py-2",
   };
 
   if (!isEditing) {
@@ -98,7 +98,7 @@ export function QuoteBlockEditor({
             {block.data.text || "Quote text will appear here..."}
           </p>
           {(block.data.author || block.data.title) && (
-            <footer className="mt-2 text-sm text-muted-foreground">
+            <footer className="mt-2 text-sm text-[var(--el-500)]">
               {block.data.author && <span>— {block.data.author}</span>}
               {block.data.title && (
                 <span className="text-xs block ml-4">{block.data.title}</span>
@@ -237,8 +237,8 @@ export function QuoteBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <blockquote
@@ -248,7 +248,7 @@ export function QuoteBlockEditor({
               {block.data.text || "Quote text will appear here..."}
             </p>
             {(block.data.author || block.data.title) && (
-              <footer className="mt-2 text-sm text-muted-foreground">
+              <footer className="mt-2 text-sm text-[var(--el-500)]">
                 {block.data.author && <span>— {block.data.author}</span>}
                 {block.data.title && (
                   <span className="text-xs block ml-4">{block.data.title}</span>

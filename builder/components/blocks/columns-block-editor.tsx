@@ -98,13 +98,13 @@ export function ColumnsBlockEditor({
         <div className="flex items-center gap-2 mb-2">
           <Columns3 className="h-4 w-4" />
           <span className="text-sm font-medium">Columns</span>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-[var(--el-500)]">
             ({block.data.blocks.length} block
             {block.data.blocks.length !== 1 ? "s" : ""})
           </span>
         </div>
         <div className="rounded border border-dashed border-border/50 p-2 min-h-[60px]">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-[var(--el-500)]">
             {count} columns, {gap} gap{responsive && ", responsive"}
           </p>
         </div>
@@ -207,7 +207,7 @@ export function ColumnsBlockEditor({
           </div>
 
           {showBlockLibrary && (
-            <div className="mb-3 p-3 border rounded-lg bg-muted/30">
+            <div className="mb-3 p-3 border rounded-lg bg-[var(--el-100)]/30">
               <p className="text-xs font-medium mb-2">Select a block to add:</p>
               <div className="grid grid-cols-3 gap-2">
                 {availableBlocks.map((reg) => (
@@ -218,7 +218,7 @@ export function ColumnsBlockEditor({
                     className="p-2 text-xs border rounded hover:bg-accent hover:border-primary transition-colors text-left"
                   >
                     <div className="font-medium">{reg.displayName}</div>
-                    <div className="text-muted-foreground text-[10px]">
+                    <div className="text-[var(--el-500)] text-[10px]">
                       {reg.description}
                     </div>
                   </button>
@@ -237,7 +237,7 @@ export function ColumnsBlockEditor({
           )}
 
           {block.data.blocks.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8 border-2 border-dashed rounded">
+            <p className="text-sm text-[var(--el-500)] text-center py-8 border-2 border-dashed rounded">
               No blocks yet. Click &quot;Add Block&quot; to add content.
             </p>
           ) : (
@@ -257,12 +257,12 @@ export function ColumnsBlockEditor({
           )}
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">Preview:</p>
           <p className="text-xs">
             Columns: {count} columns, {gap} gap{responsive && ", responsive"}
           </p>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             {block.data.blocks.length} nested block
             {block.data.blocks.length !== 1 ? "s" : ""}
           </p>

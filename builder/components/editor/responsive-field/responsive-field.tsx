@@ -107,8 +107,8 @@ export function ResponsiveField({
                     className={cn(
                       "h-3 w-3",
                       breakpoint === "desktop"
-                        ? "text-primary"
-                        : "text-muted-foreground/40",
+                        ? "text-[var(--accent-primary)]"
+                        : "text-[var(--el-500)]/40",
                     )}
                   />
                   <Tablet
@@ -117,8 +117,8 @@ export function ResponsiveField({
                       hasTabletOverride
                         ? "text-blue-500"
                         : breakpoint === "tablet"
-                          ? "text-primary"
-                          : "text-muted-foreground/40",
+                          ? "text-[var(--accent-primary)]"
+                          : "text-[var(--el-500)]/40",
                     )}
                   />
                   <Smartphone
@@ -127,8 +127,8 @@ export function ResponsiveField({
                       hasMobileOverride
                         ? "text-blue-500"
                         : breakpoint === "mobile"
-                          ? "text-primary"
-                          : "text-muted-foreground/40",
+                          ? "text-[var(--accent-primary)]"
+                          : "text-[var(--el-500)]/40",
                     )}
                   />
                 </div>
@@ -167,7 +167,7 @@ export function ResponsiveField({
                   </div>
                 )}
                 {!hasTabletOverride && !hasMobileOverride && (
-                  <div className="text-muted-foreground">
+                  <div className="text-[var(--el-500)]">
                     No overrides set. Change the value while viewing tablet or
                     mobile to create an override.
                   </div>

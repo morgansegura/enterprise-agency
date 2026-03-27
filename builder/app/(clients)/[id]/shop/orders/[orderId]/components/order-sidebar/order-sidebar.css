@@ -18,7 +18,7 @@
 }
 
 .order-detail-info-value {
-  @apply text-sm text-(--foreground);
+  @apply text-sm text-(--el-800);
 }
 
 .order-detail-info-value a {

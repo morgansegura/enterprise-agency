@@ -3,86 +3,90 @@
 /* Page Header — Jira-style dense header with toolbar */
 
 .page-header {
-  @apply flex flex-col gap-4;
+  @apply flex flex-col gap-3;
 }
 
-/* Header Row - Title & Actions */
+/* Header Row — Title & Actions */
 .page-header-row {
-  @apply flex items-center justify-between gap-4;
+  @apply flex items-center justify-between gap-3;
 }
 
 .page-header-title-section {
-  @apply flex items-center gap-3;
+  @apply flex items-center gap-2.5;
 }
 
 .page-header-icon {
   @apply flex items-center justify-center;
-  @apply w-8 h-8 rounded-lg;
-  @apply bg-(--primary)/10 text-(--primary);
+  @apply w-7 h-7 rounded-md;
+  @apply bg-(--accent-primary)/10 text-(--accent-primary);
 }
 
 .page-header-icon svg {
-  @apply h-4 w-4;
+  @apply h-3.5 w-3.5;
 }
 
 .page-header-text {
-  @apply flex items-center gap-2;
+  @apply flex items-baseline gap-2;
 }
 
 .page-header-title {
-  @apply text-xl font-semibold tracking-tight text-(--foreground);
+  @apply text-base font-semibold tracking-tight text-(--el-800);
 }
 
 .page-header-count {
-  @apply inline-flex font-semibold px-1.5 h-5 items-center rounded text-[11px] text-(--muted-foreground) bg-(--border);
+  @apply inline-flex font-medium px-1.5 h-[18px] items-center rounded text-[10px] text-(--el-500) bg-(--border-default);
 }
 
 .page-header-actions {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-1.5;
 }
 
 /* Toolbar Row — compact */
 .page-header-toolbar {
-  @apply flex items-center justify-between gap-3;
+  @apply flex items-center justify-between gap-2;
 }
 
 .page-header-toolbar-left {
-  @apply flex items-center gap-2 flex-1;
+  @apply flex items-center gap-1.5 flex-1;
 }
 
 .page-header-toolbar-right {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-1.5;
 }
 
-/* Search — compact */
+/* Search — Jira-style border-only on white surface */
 .page-header-search {
-  @apply relative flex-1 max-w-sm;
+  @apply relative flex-1 max-w-xs;
 }
 
 .page-header-search-icon {
-  @apply absolute left-2.5 top-1/2 -translate-y-1/2;
-  @apply h-3.5 w-3.5 text-(--muted-foreground);
+  @apply absolute left-2 top-1/2 -translate-y-1/2;
+  @apply h-3.5 w-3.5 text-(--el-500);
 }
 
 .page-header-search-input {
-  @apply pl-8 h-8 text-[13px] bg-(--el-50) border border-(--border-subtle);
+  @apply pl-7 h-8 text-[14px] bg-transparent border border-(--border-default) rounded-[3px];
+}
+
+.page-header-search-input:focus {
+  @apply bg-(--el-0);
 }
 
 /* Filter Select — compact */
 .page-header-filter-select {
-  @apply w-32 h-8;
+  @apply w-28 h-8 text-[14px];
 }
 
 /* View Toggle — compact */
 .page-header-view-toggle {
-  @apply flex items-center p-0.5 rounded-md;
-  @apply bg-(--muted) gap-0.5;
+  @apply flex items-center p-0.5 rounded-sm;
+  @apply bg-(--el-100) gap-0.5;
 }
 
 .page-header-view-toggle button {
-  @apply h-7 w-7;
+  @apply h-6 w-6;
 }
 
 .page-header-view-toggle button svg {
-  @apply text-(--foreground);
+  @apply size-3.5 text-(--el-800);
 }

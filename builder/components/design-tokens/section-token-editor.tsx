@@ -21,7 +21,7 @@ export function SectionTokenEditor({ form }: SectionTokenEditorProps) {
     <div className="space-y-4">
       <div>
         <h4 className="text-sm font-medium mb-3">Section Spacing</h4>
-        <p className="text-xs text-muted-foreground mb-4">
+        <p className="text-xs text-[var(--el-500)] mb-4">
           Configure vertical spacing for different section sizes
         </p>
         <div className="grid grid-cols-2 gap-4">

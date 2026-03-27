@@ -27,7 +27,7 @@ export default function MapBlockRenderer({ block }: BlockRendererProps) {
     return (
       <div
         className={cn(
-          "flex items-center justify-center bg-muted text-muted-foreground rounded-lg",
+          "flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] rounded-lg",
           heightClasses[height],
         )}
       >

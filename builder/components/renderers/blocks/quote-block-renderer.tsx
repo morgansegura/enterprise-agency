@@ -25,7 +25,7 @@ const alignClasses = {
 const variantClasses = {
   default: "border-l-4 border-primary pl-4",
   bordered: "border border-border rounded-lg p-4",
-  highlighted: "bg-muted p-4 rounded-lg",
+  highlighted: "bg-[var(--el-100)] p-4 rounded-lg",
 };
 
 export default function QuoteBlockRenderer({ block }: BlockRendererProps) {
@@ -50,7 +50,7 @@ export default function QuoteBlockRenderer({ block }: BlockRendererProps) {
     >
       <p className="mb-2">{text}</p>
       {(author || source) && (
-        <footer className="text-sm text-muted-foreground not-italic">
+        <footer className="text-sm text-[var(--el-500)] not-italic">
           {author && <span className="font-medium">{author}</span>}
           {author && source && <span> — </span>}
           {source && <cite>{source}</cite>}

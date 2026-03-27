@@ -132,7 +132,7 @@ export default function ClientClientsPage() {
     return (
       <PageLayout title="Client's Clients" description="Error loading clients">
         <div className="flex items-center justify-center py-12">
-          <p className="text-destructive">{error.message}</p>
+          <p className="text-[var(--status-error)]">{error.message}</p>
         </div>
       </PageLayout>
     );
@@ -142,7 +142,7 @@ export default function ClientClientsPage() {
   const toolbar = (
     <>
       <div className="relative flex-1 max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--el-500)]" />
         <Input
           placeholder="Search clients..."
           value={search}
@@ -206,9 +206,9 @@ export default function ClientClientsPage() {
         </div>
       ) : filteredClients.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <Building2 className="h-16 w-16 text-muted-foreground mb-4" />
+          <Building2 className="h-16 w-16 text-[var(--el-500)] mb-4" />
           <h3 className="text-lg font-medium mb-2">No clients found</h3>
-          <p className="text-muted-foreground mb-4">
+          <p className="text-[var(--el-500)] mb-4">
             {search || statusFilter !== "all"
               ? "Try adjusting your filters"
               : "Add your first client to get started"}
@@ -236,12 +236,12 @@ export default function ClientClientsPage() {
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Building2 className="h-6 w-6 text-primary" />
+                    <div className="h-12 w-12 rounded-lg bg-[var(--accent-primary)]/10 flex items-center justify-center">
+                      <Building2 className="h-6 w-6 text-[var(--accent-primary)]" />
                     </div>
                     <div>
                       <h3 className="font-medium">{client.businessName}</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-[var(--el-500)]">
                         /{client.slug}
                       </p>
                     </div>
@@ -269,7 +269,7 @@ export default function ClientClientsPage() {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
-                        className="text-destructive"
+                        className="text-[var(--status-error)]"
                         onClick={() => handleDelete(client)}
                       >
                         <Trash2 className="h-4 w-4 " />
@@ -279,7 +279,7 @@ export default function ClientClientsPage() {
                   </DropdownMenu>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                  <span className="px-2 py-0.5 rounded-full bg-[var(--el-100)] text-[var(--el-500)]">
                     {clientTypeLabels[client.clientType || ""] ||
                       client.clientType ||
                       "Client"}
@@ -309,18 +309,18 @@ export default function ClientClientsPage() {
                 className="flex items-center gap-4 p-3 border rounded-lg hover:border-primary transition-colors cursor-pointer"
                 onClick={() => handleOpenPortal(client)}
               >
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                  <Building2 className="h-5 w-5 text-primary" />
+                <div className="h-10 w-10 rounded-lg bg-[var(--accent-primary)]/10 flex items-center justify-center shrink-0">
+                  <Building2 className="h-5 w-5 text-[var(--accent-primary)]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium truncate">
                     {client.businessName}
                   </h3>
-                  <p className="text-sm text-muted-foreground truncate">
+                  <p className="text-sm text-[var(--el-500)] truncate">
                     /{client.slug}
                   </p>
                 </div>
-                <span className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground text-sm shrink-0">
+                <span className="px-2 py-0.5 rounded-full bg-[var(--el-100)] text-[var(--el-500)] text-sm shrink-0">
                   {clientTypeLabels[client.clientType || ""] ||
                     client.clientType ||
                     "Client"}
@@ -331,7 +331,7 @@ export default function ClientClientsPage() {
                   <StatusIcon className="h-3 w-3" />
                   {status.label}
                 </span>
-                <span className="text-sm text-muted-foreground shrink-0 hidden lg:block">
+                <span className="text-sm text-[var(--el-500)] shrink-0 hidden lg:block">
                   {formatDate(client.updatedAt)}
                 </span>
                 <DropdownMenu>
@@ -355,7 +355,7 @@ export default function ClientClientsPage() {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                      className="text-destructive"
+                      className="text-[var(--status-error)]"
                       onClick={() => handleDelete(client)}
                     >
                       <Trash2 className="h-4 w-4 " />

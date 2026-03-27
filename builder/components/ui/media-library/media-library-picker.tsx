@@ -318,7 +318,7 @@ function AssetItem({
               : formatBytes(asset.sizeBytes)}
           </span>
         </div>
-        {isSelected && <Check className="h-4 w-4 text-primary" />}
+        {isSelected && <Check className="h-4 w-4 text-[var(--accent-primary)]" />}
         {isCurrent && !isSelected && (
           <span className="media-library-asset-current-badge">Current</span>
         )}

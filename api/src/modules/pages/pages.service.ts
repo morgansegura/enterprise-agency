@@ -293,6 +293,12 @@ export class PagesService {
     }
 
     // Build updated content structure
+    this.logger.debug(
+      `Update data keys: ${Object.keys(updateData).join(", ")}` +
+        (updateData.sections
+          ? ` | sections count: ${updateData.sections.length}`
+          : " | NO sections"),
+    );
     const updateDataWithTimestamps: Record<string, unknown> = { ...updateData };
 
     if (

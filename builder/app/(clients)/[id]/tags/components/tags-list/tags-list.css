@@ -6,7 +6,7 @@
 }
 
 .tags-name-text {
-  @apply text-sm font-semibold text-(--foreground) truncate;
+  @apply text-sm font-semibold text-(--el-800) truncate;
 }
 
 /* Count column */

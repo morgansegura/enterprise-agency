@@ -450,7 +450,7 @@ export default function SettingsPage() {
                       <Check className="h-3 w-3" />
                       Active Template
                     </span>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[var(--el-500)]">
                       This site appears in the Templates gallery and can be
                       cloned to create new client sites.
                     </p>
@@ -474,7 +474,7 @@ export default function SettingsPage() {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3">
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-[var(--el-500)]">
                       Mark this site as a template to make it available for
                       cloning in the Templates gallery.
                     </p>

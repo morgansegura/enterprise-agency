@@ -101,7 +101,7 @@ export function AccordionBlockEditor({
       >
         <div className={variantStyles[variant]}>
           {block.data.items.length === 0 ? (
-            <div className="p-4 text-center text-muted-foreground">
+            <div className="p-4 text-center text-[var(--el-500)]">
               No accordion items yet. Click to add items...
             </div>
           ) : (
@@ -171,13 +171,13 @@ export function AccordionBlockEditor({
             {block.data.items.map((item, index) => (
               <div
                 key={index}
-                className="border rounded-lg p-3 space-y-2 bg-muted/30"
+                className="border rounded-lg p-3 space-y-2 bg-[var(--el-100)]/30"
               >
                 <div className="flex items-start justify-between gap-2">
                   <button
                     type="button"
                     onClick={() => toggleItem(index)}
-                    className="flex-1 text-left font-medium text-sm hover:text-primary transition-colors"
+                    className="flex-1 text-left font-medium text-sm hover:text-[var(--accent-primary)] transition-colors"
                   >
                     {item.title || `Item ${index + 1}`}
                     <ChevronDown
@@ -246,7 +246,7 @@ export function AccordionBlockEditor({
               </div>
             ))}
             {block.data.items.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-sm text-[var(--el-500)] text-center py-4">
                 No items yet. Click &quot;Add Item&quot; to start.
               </p>
             )}
@@ -292,11 +292,11 @@ export function AccordionBlockEditor({
           </div>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">Preview:</p>
           <div className={variantStyles[variant]}>
             {block.data.items.length === 0 ? (
-              <div className="p-4 text-center text-muted-foreground">
+              <div className="p-4 text-center text-[var(--el-500)]">
                 No items yet
               </div>
             ) : (

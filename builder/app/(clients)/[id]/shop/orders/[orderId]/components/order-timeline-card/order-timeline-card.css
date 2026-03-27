@@ -26,7 +26,7 @@
 }
 
 .order-timeline-label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .order-timeline-date {

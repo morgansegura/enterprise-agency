@@ -32,8 +32,8 @@ const backgroundClasses = {
   white: "bg-white",
   gray: "bg-gray-100 dark:bg-gray-900",
   dark: "bg-gray-900 text-white",
-  primary: "bg-primary text-primary-foreground",
-  secondary: "bg-secondary text-secondary-foreground",
+  primary: "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]",
+  secondary: "bg-[var(--el-100)] text-[var(--el-800)]",
 };
 
 export default function ContainerBlockRenderer({

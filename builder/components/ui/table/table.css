@@ -7,7 +7,7 @@
 
 /* Table */
 [data-slot="table"] {
-  @apply w-full caption-bottom text-sm border;
+  @apply w-full caption-bottom text-[14px] border;
 }
 
 /* Table Header */
@@ -30,7 +30,7 @@
 
 /* Table Footer */
 [data-slot="table-footer"] {
-  @apply border-t bg-(--muted)/50 font-medium;
+  @apply border-t bg-(--el-100)/50 font-medium;
 }
 
 [data-slot="table-footer"] > tr:last-child {
@@ -39,16 +39,16 @@
 
 /* Table Row */
 [data-slot="table-row"] {
-  @apply border-b transition-colors hover:bg-(--muted)/50;
+  @apply border-b transition-colors duration-100 hover:bg-(--el-100)/50;
 }
 
 [data-slot="table-row"][data-state="selected"] {
-  @apply bg-(--muted);
+  @apply bg-(--el-100);
 }
 
 /* Table Head */
 [data-slot="table-head"] {
-  @apply h-10 px-2 text-left align-middle font-medium text-(--muted-foreground);
+  @apply h-8 px-2 text-left align-middle text-[11px] font-semibold uppercase tracking-wider text-(--el-500);
 }
 
 [data-slot="table-head"]:has([role="checkbox"]) {
@@ -61,7 +61,7 @@
 
 /* Table Cell */
 [data-slot="table-cell"] {
-  @apply p-2 align-middle;
+  @apply px-2 py-2 align-middle text-[14px];
 }
 
 [data-slot="table-cell"]:has([role="checkbox"]) {
@@ -74,5 +74,5 @@
 
 /* Table Caption */
 [data-slot="table-caption"] {
-  @apply mt-4 text-sm text-(--muted-foreground);
+  @apply mt-3 text-[12px] text-(--el-500);
 }

@@ -27,11 +27,11 @@
   @apply px-2 py-0.5 text-xs font-medium;
   @apply left-0 top-0 opacity-0 pointer-events-none;
   @apply transition-opacity duration-200;
-  @apply bg-(--builder-primary) text-(--builder-primary-foreground);
+  @apply bg-(--accent-primary) text-(--accent-primary-foreground);
   @apply rounded-br-md;
 
   svg {
-    @apply size-3 text-(--builder-primary-foreground);
+    @apply size-3 text-(--accent-primary-foreground);
   }
 }
 
@@ -97,7 +97,7 @@
 /* Add section button */
 .section-add-btn {
   @apply px-3 py-1 text-xs font-medium;
-  @apply bg-(--builder-primary) text-(--builder-primary-foreground);
+  @apply bg-(--accent-primary) text-(--accent-primary-foreground);
   @apply rounded-full;
   @apply shadow-md;
   @apply transition-all duration-100 ease-out;

@@ -36,16 +36,16 @@
 
 .add-block-tab {
   @apply px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap bg-transparent cursor-pointer border-none;
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
   @apply transition-colors duration-150;
 }
 
 .add-block-tab:hover {
-  @apply text-(--foreground) bg-(--muted);
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 .add-block-tab.active {
-  @apply text-(--foreground) bg-(--muted);
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 /* Scrollable content area */
@@ -64,7 +64,7 @@
 
 .add-block-category-title {
   @apply text-xs font-semibold uppercase tracking-wide mb-2 px-2;
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
 }
 
 /* Block grid - 2 columns */
@@ -75,21 +75,21 @@
 /* Block item button */
 .add-block-item {
   @apply flex items-center gap-3 px-3 py-2 text-sm rounded-md cursor-pointer border-none bg-transparent text-left w-full;
-  @apply text-(--foreground);
+  @apply text-(--el-800);
   @apply transition-colors duration-150;
 }
 
 .add-block-item:hover {
-  @apply bg-(--muted);
+  @apply bg-(--el-100);
 }
 
 .add-block-item-icon {
   @apply shrink-0;
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
 }
 
 .add-block-item:hover .add-block-item-icon {
-  @apply text-(--foreground);
+  @apply text-(--el-800);
 }
 
 .add-block-item-label {
@@ -99,5 +99,5 @@
 /* Empty state */
 .add-block-empty {
   @apply flex flex-col items-center justify-center gap-2 py-8 text-sm;
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
 }

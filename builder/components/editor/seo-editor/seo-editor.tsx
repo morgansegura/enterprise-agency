@@ -94,7 +94,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
             placeholder="SEO-optimized title (50-60 characters)"
             maxLength={60}
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             {seo.metaTitle?.length || 0}/60 characters
           </p>
         </FormItem>
@@ -109,7 +109,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
             rows={3}
             maxLength={160}
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             {seo.metaDescription?.length || 0}/160 characters
           </p>
         </FormItem>
@@ -122,7 +122,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
             onChange={(e) => handleKeywordsChange(e.target.value)}
             placeholder="keyword1, keyword2, keyword3"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Comma-separated list of relevant keywords
           </p>
         </FormItem>
@@ -136,7 +136,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
             onChange={(e) => updateSeo({ canonicalUrl: e.target.value })}
             placeholder="https://example.com/page"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Specify the preferred URL for this content
           </p>
         </FormItem>
@@ -182,7 +182,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                 onChange={(e) => updateOpenGraph({ image: e.target.value })}
                 placeholder="https://example.com/image.jpg"
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Recommended: 1200×630px
               </p>
             </FormItem>
@@ -269,7 +269,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                   seo.openGraph?.image || "https://example.com/image.jpg"
                 }
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Recommended: 1200×600px for large cards
               </p>
             </FormItem>
@@ -294,7 +294,7 @@ export function SeoEditor({ seo = {}, onChange }: SeoEditorProps) {
                 rows={10}
                 className="font-mono text-xs"
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Add structured data for rich search results
               </p>
             </FormItem>

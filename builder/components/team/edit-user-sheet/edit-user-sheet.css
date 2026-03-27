@@ -9,7 +9,7 @@
 }
 
 .edit-user-field label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-[14px] font-medium text-(--el-800);
 }
 
 .edit-user-info {
@@ -17,11 +17,11 @@
 }
 
 .edit-user-avatar {
-  @apply h-10 w-10 rounded-full bg-(--muted) flex items-center justify-center shrink-0;
+  @apply h-10 w-10 rounded-full bg-(--el-100) flex items-center justify-center shrink-0;
 }
 
 .edit-user-avatar span {
-  @apply text-sm font-medium;
+  @apply text-[14px] font-medium;
 }
 
 .edit-user-details {
@@ -29,11 +29,11 @@
 }
 
 .edit-user-name {
-  @apply text-sm font-medium truncate;
+  @apply text-[14px] font-medium truncate;
 }
 
 .edit-user-email {
-  @apply text-sm text-(--muted-foreground) truncate;
+  @apply text-[14px] text-(--el-500) truncate;
 }
 
 .edit-user-actions {

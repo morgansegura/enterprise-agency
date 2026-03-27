@@ -56,7 +56,7 @@ export function PostSettings({ post, onChange }: PostSettingsProps) {
             onChange={(e) => onChange("slug", e.target.value)}
             placeholder="post-slug"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             URL-friendly version of the title
           </p>
         </FormItem>
@@ -70,7 +70,7 @@ export function PostSettings({ post, onChange }: PostSettingsProps) {
             placeholder="Brief summary of the post"
             rows={3}
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Shown in post listings and meta descriptions
           </p>
         </FormItem>
@@ -102,7 +102,7 @@ export function PostSettings({ post, onChange }: PostSettingsProps) {
             }
             onChange={(e) => onChange("publishDate", e.target.value)}
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Schedule when this post should be published
           </p>
         </FormItem>
@@ -129,7 +129,7 @@ export function PostSettings({ post, onChange }: PostSettingsProps) {
               />
             </div>
           )}
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Main image for the post (shown in listings and social shares)
           </p>
         </FormItem>
@@ -152,7 +152,7 @@ export function PostSettings({ post, onChange }: PostSettingsProps) {
             }
             placeholder="News, Updates, Tutorial"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Comma-separated list of categories
           </p>
         </FormItem>
@@ -170,7 +170,7 @@ export function PostSettings({ post, onChange }: PostSettingsProps) {
             }
             placeholder="javascript, react, typescript"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Comma-separated list of tags
           </p>
         </FormItem>

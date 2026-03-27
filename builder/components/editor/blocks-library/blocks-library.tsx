@@ -264,7 +264,7 @@ export function BlocksLibrary() {
     <Accordion
       type="multiple"
       defaultValue={["content", "interactive", "media", "layout"]}
-      className="w-full px-2"
+      className="blocks-library w-full px-2"
     >
       <AccordionItem value="content">
         <AccordionTrigger>Content</AccordionTrigger>

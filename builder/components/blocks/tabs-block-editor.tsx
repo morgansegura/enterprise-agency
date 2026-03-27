@@ -84,7 +84,7 @@ export function TabsBlockEditor({
 
   const variantStyles = {
     default: "border-b",
-    pills: "bg-muted rounded-lg p-1",
+    pills: "bg-[var(--el-100)] rounded-lg p-1",
     underline: "",
   };
 
@@ -102,14 +102,14 @@ export function TabsBlockEditor({
       >
         <div className={`flex gap-1 ${variantStyles[variant]}`}>
           {block.data.tabs.length === 0 ? (
-            <div className="p-4 text-center text-muted-foreground">
+            <div className="p-4 text-center text-[var(--el-500)]">
               No tabs yet. Click to add tabs...
             </div>
           ) : (
             block.data.tabs.map((tab, index) => (
               <div
                 key={index}
-                className={`${tabStyles[variant]} text-sm font-medium ${index === defaultTab ? "text-primary" : "text-muted-foreground"}`}
+                className={`${tabStyles[variant]} text-sm font-medium ${index === defaultTab ? "text-[var(--accent-primary)]" : "text-[var(--el-500)]"}`}
               >
                 {tab.label || `Tab ${index + 1}`}
               </div>
@@ -174,8 +174,8 @@ export function TabsBlockEditor({
                     onClick={() => setActiveEditTab(index)}
                     className={`px-3 py-1.5 text-sm font-medium transition-colors ${
                       activeEditTab === index
-                        ? "text-primary border-b-2 border-primary"
-                        : "text-muted-foreground hover:text-foreground"
+                        ? "text-[var(--accent-primary)] border-b-2 border-primary"
+                        : "text-[var(--el-500)] hover:text-[var(--el-800)]"
                     }`}
                   >
                     {tab.label || `Tab ${index + 1}`}
@@ -184,7 +184,7 @@ export function TabsBlockEditor({
               </div>
 
               {/* Active tab editor */}
-              <div className="border rounded-lg p-3 space-y-3 bg-muted/30">
+              <div className="border rounded-lg p-3 space-y-3 bg-[var(--el-100)]/30">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">
                     Editing:{" "}
@@ -237,7 +237,7 @@ export function TabsBlockEditor({
                     }
                     placeholder="e.g., Star"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-[var(--el-500)] mt-1">
                     Lucide icon name
                   </p>
                 </FormItem>
@@ -246,7 +246,7 @@ export function TabsBlockEditor({
           )}
 
           {block.data.tabs.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">
+            <p className="text-sm text-[var(--el-500)] text-center py-4">
               No tabs yet. Click &quot;Add Tab&quot; to start.
             </p>
           )}
@@ -292,18 +292,18 @@ export function TabsBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">Preview:</p>
           <div className={`flex gap-1 ${variantStyles[variant]}`}>
             {block.data.tabs.length === 0 ? (
-              <div className="p-4 text-center text-muted-foreground">
+              <div className="p-4 text-center text-[var(--el-500)]">
                 No tabs yet
               </div>
             ) : (
               block.data.tabs.map((tab, index) => (
                 <div
                   key={index}
-                  className={`${tabStyles[variant]} text-sm font-medium ${index === defaultTab ? "text-primary" : "text-muted-foreground"}`}
+                  className={`${tabStyles[variant]} text-sm font-medium ${index === defaultTab ? "text-[var(--accent-primary)]" : "text-[var(--el-500)]"}`}
                 >
                   {tab.label || `Tab ${index + 1}`}
                 </div>

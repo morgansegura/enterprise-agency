@@ -168,14 +168,14 @@ function CollapsibleSection({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-muted/50 hover:bg-muted transition-colors rounded-lg">
+      <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 bg-[var(--el-100)]/50 hover:bg-[var(--el-100)] transition-colors rounded-lg">
         <div className="flex items-center gap-2">
           {icon}
           <span className="text-sm font-medium">{title}</span>
         </div>
         <ChevronDown
           className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform",
+            "h-4 w-4 text-[var(--el-500)] transition-transform",
             open && "rotate-180",
           )}
         />
@@ -229,12 +229,12 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
       {/* Title Template */}
       <CollapsibleSection
         title="Title Settings"
-        icon={<Search className="h-4 w-4 text-muted-foreground" />}
+        icon={<Search className="h-4 w-4 text-[var(--el-500)]" />}
       >
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Title Template
               </Label>
               <Input
@@ -242,12 +242,12 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
                 onChange={(e) => updateMeta("titleTemplate", e.target.value)}
                 placeholder="%s | Site Name"
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-[var(--el-500)]">
                 Use %s for page title, {"{siteName}"} for site name
               </p>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Separator</Label>
+              <Label className="text-xs text-[var(--el-500)]">Separator</Label>
               <Select
                 value={meta.titleSeparator}
                 onValueChange={(v) => updateMeta("titleSeparator", v)}
@@ -268,7 +268,7 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-xs text-[var(--el-500)]">
               Default Title (Fallback)
             </Label>
             <Input
@@ -283,15 +283,15 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
       {/* Description & Keywords */}
       <CollapsibleSection
         title="Description & Keywords"
-        icon={<FileCode className="h-4 w-4 text-muted-foreground" />}
+        icon={<FileCode className="h-4 w-4 text-[var(--el-500)]" />}
       >
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Default Meta Description
               </Label>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[var(--el-500)]">
                 {meta.defaultDescription.length}/160
               </span>
             </div>
@@ -305,7 +305,7 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-xs text-[var(--el-500)]">
               Default Keywords
             </Label>
             <div className="flex gap-2">
@@ -328,7 +328,7 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
                     {keyword}
                     <button
                       onClick={() => removeKeyword(keyword)}
-                      className="ml-1 hover:text-destructive"
+                      className="ml-1 hover:text-[var(--status-error)]"
                     >
                       ×
                     </button>
@@ -343,12 +343,12 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
       {/* Social / Open Graph */}
       <CollapsibleSection
         title="Social Sharing"
-        icon={<Globe className="h-4 w-4 text-muted-foreground" />}
+        icon={<Globe className="h-4 w-4 text-[var(--el-500)]" />}
         defaultOpen={false}
       >
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-xs text-[var(--el-500)]">
               Default OG Image URL
             </Label>
             <Input
@@ -356,14 +356,14 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
               onChange={(e) => updateMeta("defaultOgImage", e.target.value)}
               placeholder="https://example.com/og-image.jpg"
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-[var(--el-500)]">
               Recommended size: 1200x630 pixels
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Twitter Card Type
               </Label>
               <Select
@@ -384,7 +384,7 @@ function MetaSettingsTab({ meta, onChange }: MetaSettingsTabProps) {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Twitter @username
               </Label>
               <Input
@@ -422,12 +422,12 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
       {/* Organization */}
       <CollapsibleSection
         title="Organization Info"
-        icon={<Globe className="h-4 w-4 text-muted-foreground" />}
+        icon={<Globe className="h-4 w-4 text-[var(--el-500)]" />}
       >
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Organization Type
               </Label>
               <Select
@@ -453,7 +453,7 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Organization Name
               </Label>
               <Input
@@ -467,7 +467,7 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Logo URL</Label>
+            <Label className="text-xs text-[var(--el-500)]">Logo URL</Label>
             <Input
               value={schema.organizationLogo}
               onChange={(e) => updateSchema("organizationLogo", e.target.value)}
@@ -477,7 +477,7 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Phone</Label>
+              <Label className="text-xs text-[var(--el-500)]">Phone</Label>
               <Input
                 value={schema.telephone}
                 onChange={(e) => updateSchema("telephone", e.target.value)}
@@ -485,7 +485,7 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Email</Label>
+              <Label className="text-xs text-[var(--el-500)]">Email</Label>
               <Input
                 value={schema.email}
                 onChange={(e) => updateSchema("email", e.target.value)}
@@ -499,12 +499,12 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
       {/* Address */}
       <CollapsibleSection
         title="Address (Local SEO)"
-        icon={<MapPin className="h-4 w-4 text-muted-foreground" />}
+        icon={<MapPin className="h-4 w-4 text-[var(--el-500)]" />}
         defaultOpen={false}
       >
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-xs text-[var(--el-500)]">
               Street Address
             </Label>
             <Input
@@ -516,7 +516,7 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">City</Label>
+              <Label className="text-xs text-[var(--el-500)]">City</Label>
               <Input
                 value={schema.addressLocality}
                 onChange={(e) =>
@@ -526,7 +526,7 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 State/Region
               </Label>
               <Input
@@ -539,7 +539,7 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Postal Code
               </Label>
               <Input
@@ -549,7 +549,7 @@ function SchemaSettingsTab({ schema, onChange }: SchemaSettingsTabProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Country</Label>
+              <Label className="text-xs text-[var(--el-500)]">Country</Label>
               <Input
                 value={schema.addressCountry}
                 onChange={(e) => updateSchema("addressCountry", e.target.value)}
@@ -588,12 +588,12 @@ function AnalyticsSettingsTab({
       {/* Google */}
       <CollapsibleSection
         title="Google Analytics & Tag Manager"
-        icon={<BarChart3 className="h-4 w-4 text-muted-foreground" />}
+        icon={<BarChart3 className="h-4 w-4 text-[var(--el-500)]" />}
       >
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Google Analytics ID
               </Label>
               <Input
@@ -605,7 +605,7 @@ function AnalyticsSettingsTab({
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">
+              <Label className="text-xs text-[var(--el-500)]">
                 Google Tag Manager ID
               </Label>
               <Input
@@ -623,11 +623,11 @@ function AnalyticsSettingsTab({
       {/* Facebook */}
       <CollapsibleSection
         title="Facebook Pixel"
-        icon={<Eye className="h-4 w-4 text-muted-foreground" />}
+        icon={<Eye className="h-4 w-4 text-[var(--el-500)]" />}
         defaultOpen={false}
       >
         <div className="space-y-2">
-          <Label className="text-xs text-muted-foreground">
+          <Label className="text-xs text-[var(--el-500)]">
             Facebook Pixel ID
           </Label>
           <Input
@@ -641,12 +641,12 @@ function AnalyticsSettingsTab({
       {/* Custom Scripts */}
       <CollapsibleSection
         title="Custom Scripts"
-        icon={<Code className="h-4 w-4 text-muted-foreground" />}
+        icon={<Code className="h-4 w-4 text-[var(--el-500)]" />}
         defaultOpen={false}
       >
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-xs text-[var(--el-500)]">
               Head Scripts (before &lt;/head&gt;)
             </Label>
             <Textarea
@@ -659,7 +659,7 @@ function AnalyticsSettingsTab({
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-xs text-[var(--el-500)]">
               Body Scripts (before &lt;/body&gt;)
             </Label>
             <Textarea
@@ -711,7 +711,7 @@ function RedirectsTab({ redirects, onChange }: RedirectsTabProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-[var(--el-500)]">
           Manage URL redirects for your site
         </p>
         <Button size="sm" onClick={addRedirect}>
@@ -721,7 +721,7 @@ function RedirectsTab({ redirects, onChange }: RedirectsTabProps) {
       </div>
 
       {redirects.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground border border-dashed rounded-lg">
+        <div className="text-center py-8 text-[var(--el-500)] border border-dashed rounded-lg">
           No redirects configured
         </div>
       ) : (
@@ -744,7 +744,7 @@ function RedirectsTab({ redirects, onChange }: RedirectsTabProps) {
                     placeholder="/old-page"
                     className="h-9"
                   />
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  <ArrowRight className="h-4 w-4 text-[var(--el-500)]" />
                   <Input
                     value={redirect.to}
                     onChange={(e) =>
@@ -779,7 +779,7 @@ function RedirectsTab({ redirects, onChange }: RedirectsTabProps) {
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-9 w-9 text-muted-foreground hover:text-destructive"
+                  className="h-9 w-9 text-[var(--el-500)] hover:text-[var(--status-error)]"
                   onClick={() => removeRedirect(redirect.id)}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -822,7 +822,7 @@ export function SEOSettingsPanel({
     <div className={cn("space-y-6", className)}>
       <div>
         <h3 className="text-lg font-semibold mb-1">SEO & Analytics</h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-[var(--el-500)]">
           Configure search engine optimization, structured data, and tracking.
         </p>
       </div>

@@ -140,7 +140,7 @@ export function TeamBlockEditor({
           className={`grid grid-cols-${columns} gap-4`}
         >
           {block.data.members.length === 0 ? (
-            <div className="col-span-full text-center text-muted-foreground py-4">
+            <div className="col-span-full text-center text-[var(--el-500)] py-4">
               No team members yet. Click to add members...
             </div>
           ) : (
@@ -150,7 +150,7 @@ export function TeamBlockEditor({
                 className={`text-center ${variantStyles[variant]}`}
               >
                 {member.image && (
-                  <div className="w-16 h-16 rounded-full bg-muted mx-auto mb-2 overflow-hidden">
+                  <div className="w-16 h-16 rounded-full bg-[var(--el-100)] mx-auto mb-2 overflow-hidden">
                     <img
                       src={member.image}
                       alt={member.name}
@@ -161,7 +161,7 @@ export function TeamBlockEditor({
                 <div className="font-semibold text-sm">
                   {member.name || "Name"}
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-[var(--el-500)]">
                   {member.role || "Role"}
                 </div>
               </div>
@@ -224,7 +224,7 @@ export function TeamBlockEditor({
             {block.data.members.map((member, index) => (
               <div
                 key={index}
-                className="border rounded-lg p-3 space-y-2 bg-muted/30"
+                className="border rounded-lg p-3 space-y-2 bg-[var(--el-100)]/30"
               >
                 <div className="flex items-start justify-between gap-2">
                   <Button
@@ -235,7 +235,7 @@ export function TeamBlockEditor({
                     <div className="font-medium text-sm">
                       {member.name || `Member ${index + 1}`}
                     </div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-[var(--el-500)]">
                       {member.role || "No role set"}
                     </div>
                   </Button>
@@ -305,13 +305,13 @@ export function TeamBlockEditor({
                     </FormItem>
                     {member.social && member.social.length > 0 && (
                       <div className="space-y-1">
-                        <Label className="text-xs text-muted-foreground">
+                        <Label className="text-xs text-[var(--el-500)]">
                           Social Links
                         </Label>
                         {member.social.map((link, linkIndex) => (
                           <div
                             key={linkIndex}
-                            className="text-xs text-muted-foreground flex gap-2"
+                            className="text-xs text-[var(--el-500)] flex gap-2"
                           >
                             <span className="font-medium">
                               {link.platform}:
@@ -326,7 +326,7 @@ export function TeamBlockEditor({
               </div>
             ))}
             {block.data.members.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">
+              <p className="text-sm text-[var(--el-500)] text-center py-4">
                 No team members yet. Click &quot;Add Member&quot; to start.
               </p>
             )}
@@ -404,13 +404,13 @@ export function TeamBlockEditor({
           </div>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <div className={`grid grid-cols-${columns} gap-4`}>
             {block.data.members.length === 0 ? (
-              <div className="col-span-full text-center text-muted-foreground py-4">
+              <div className="col-span-full text-center text-[var(--el-500)] py-4">
                 No team members yet
               </div>
             ) : (
@@ -420,7 +420,7 @@ export function TeamBlockEditor({
                   className={`text-center ${variantStyles[variant]}`}
                 >
                   {member.image && (
-                    <div className="w-12 h-12 rounded-full bg-muted mx-auto mb-1 overflow-hidden">
+                    <div className="w-12 h-12 rounded-full bg-[var(--el-100)] mx-auto mb-1 overflow-hidden">
                       <img
                         src={member.image}
                         alt={member.name}
@@ -431,11 +431,11 @@ export function TeamBlockEditor({
                   <div className="font-semibold text-sm">
                     {member.name || "Name"}
                   </div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-[var(--el-500)]">
                     {member.role || "Role"}
                   </div>
                   {showBio && member.bio && (
-                    <div className="text-xs text-muted-foreground mt-1">
+                    <div className="text-xs text-[var(--el-500)] mt-1">
                       {member.bio}
                     </div>
                   )}

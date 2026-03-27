@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 label {
-  @apply text-sm font-medium leading-none;
+  @apply text-[12px] font-semibold leading-none text-(--el-800);
 }
 
 input:disabled + label,

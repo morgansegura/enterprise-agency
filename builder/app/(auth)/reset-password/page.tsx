@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { resetPassword } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/errors";
 import { logger } from "@/lib/logger";
+import { BRAND_NAME } from "@/lib/constants";
 
 import "@/components/auth/auth-form.css";
 
@@ -72,7 +73,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="auth-card">
       <div className="auth-header">
-        <span className="auth-logo">Enterprise</span>
+        <span className="auth-logo">{BRAND_NAME}</span>
         <p className="auth-subtitle">Set your new password</p>
       </div>
 

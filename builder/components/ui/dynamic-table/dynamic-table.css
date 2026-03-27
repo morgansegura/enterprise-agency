@@ -1,0 +1,51 @@
+@reference "tailwindcss";
+
+/* Sort button */
+[data-slot="dynamic-table-sort"] {
+  @apply flex items-center gap-1.5 text-left font-medium;
+  @apply hover:text-(--el-800) transition-colors duration-100;
+}
+
+/* Checkbox */
+[data-slot="dynamic-table-checkbox"] {
+  @apply size-4 rounded border border-(--border-default) accent-(--accent-primary);
+}
+
+/* Clickable rows */
+[data-slot="table-row"][data-clickable] {
+  @apply cursor-pointer;
+}
+
+/* Loading skeleton cells */
+[data-slot="dynamic-table-skeleton-cell"] {
+  @apply h-4 rounded bg-(--el-100) animate-pulse;
+}
+
+/* Empty state */
+[data-slot="dynamic-table-empty"] {
+  @apply py-8 text-center text-sm text-(--el-500);
+}
+
+/* Pagination */
+[data-slot="dynamic-table-pagination"] {
+  @apply flex items-center justify-between border-t px-2 py-3;
+}
+
+[data-slot="dynamic-table-page-info"] {
+  @apply text-xs text-(--el-500);
+}
+
+[data-slot="dynamic-table-page-buttons"] {
+  @apply flex items-center gap-1;
+}
+
+[data-slot="dynamic-table-page-buttons"] button {
+  @apply flex size-7 items-center justify-center rounded-sm;
+  @apply text-(--el-500) transition-colors duration-100;
+  @apply hover:bg-(--el-100) hover:text-(--el-800);
+  @apply disabled:opacity-30 disabled:pointer-events-none;
+}
+
+[data-slot="dynamic-table-page-buttons"] button:focus-visible {
+  @apply outline-2 outline-offset-2 outline-(--accent-primary);
+}

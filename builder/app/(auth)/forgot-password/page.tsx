@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { forgotPassword } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/errors";
 import { logger } from "@/lib/logger";
+import { BRAND_NAME } from "@/lib/constants";
 
 import "@/components/auth/auth-form.css";
 
@@ -37,7 +38,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="auth-card">
       <div className="auth-header">
-        <span className="auth-logo">Enterprise</span>
+        <span className="auth-logo">{BRAND_NAME}</span>
         <p className="auth-subtitle">
           Enter your email and we&apos;ll send you reset instructions
         </p>

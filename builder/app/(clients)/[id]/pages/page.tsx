@@ -134,7 +134,7 @@ export default function PagesPage({
 
   if (error) {
     return (
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 bg-(--card) rounded-md border border-(--border)/50 shadow-xs">
         <PageHeader
           title="Pages"
           icon={FileText}
@@ -145,7 +145,7 @@ export default function PagesPage({
   }
 
   return (
-    <div className="flex-1 flex flex-col gap-6 p-8">
+    <div className="flex-1 flex flex-col gap-3 p-4 bg-(--card) rounded-md border border-(--border)/50 shadow-xs">
       <PageHeader
         title="Pages"
         icon={FileText}
@@ -169,7 +169,7 @@ export default function PagesPage({
 
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          <Loader2 className="h-6 w-6 animate-spin text-[var(--el-500)]" />
         </div>
       ) : (
         <PageList

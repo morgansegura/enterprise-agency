@@ -70,7 +70,7 @@ export function RichTextBlockEditor({
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: "text-primary underline",
+          class: "text-[var(--accent-primary)] underline",
         },
       }),
       Placeholder.configure({
@@ -333,8 +333,8 @@ export function RichTextBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">Preview:</p>
           <div
             className={`prose prose-sm max-w-none ${sizeMap[size]} ${alignMap[align]}`}
             dangerouslySetInnerHTML={{

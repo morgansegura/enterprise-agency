@@ -1,11 +1,11 @@
 @reference "tailwindcss";
 
 .auth-form-container {
-  @apply min-h-screen flex items-center justify-center bg-(--muted);
+  @apply min-h-screen flex items-center justify-center bg-(--el-100);
 }
 
 .auth-form-card {
-  @apply max-w-md w-full space-y-8 p-8 bg-(--card) rounded-lg shadow;
+  @apply max-w-md w-full space-y-8 p-8 bg-(--el-0) rounded-lg shadow;
 }
 
 .auth-form-header {
@@ -17,7 +17,7 @@
 }
 
 .auth-form-subtitle {
-  @apply text-center text-sm text-(--muted-foreground);
+  @apply text-center text-sm text-(--el-500);
 }
 
 .auth-form {
@@ -49,11 +49,11 @@
 }
 
 .auth-form-label {
-  @apply block text-sm font-medium text-(--foreground);
+  @apply block text-sm font-medium text-(--el-800);
 }
 
 .auth-form-input {
-  @apply mt-1 block w-full px-3 py-2 border border-(--input) rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-(--ring) focus:border-(--ring);
+  @apply mt-1 block w-full px-3 py-2 border border-(--el-150) rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-(--accent-primary) focus:border-(--accent-primary);
 }
 
 .auth-form-actions {
@@ -61,7 +61,7 @@
 }
 
 .auth-form-submit {
-  @apply w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-(--primary-foreground) bg-(--primary) hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-(--ring) disabled:opacity-50;
+  @apply w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-(--primary-foreground) bg-(--accent-primary) hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-(--accent-primary) disabled:opacity-50;
 }
 
 .auth-form-link-container {
@@ -69,5 +69,5 @@
 }
 
 .auth-form-link {
-  @apply text-sm text-(--primary) hover:underline;
+  @apply text-sm text-(--accent-primary) hover:underline;
 }

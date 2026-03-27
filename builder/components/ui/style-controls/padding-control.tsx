@@ -37,7 +37,7 @@ export function PaddingControl({
 }: PaddingControlProps) {
   return (
     <div className={cn("space-y-1.5", className)}>
-      <Label className="text-xs font-medium text-muted-foreground">
+      <Label className="text-xs font-medium text-[var(--el-500)]">
         {label}
       </Label>
       <Select value={value} onValueChange={(v) => onChange(v as PaddingSize)}>

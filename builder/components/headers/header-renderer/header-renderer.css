@@ -2,7 +2,7 @@
 
 /* Base header styles */
 .header-renderer {
-  @apply relative w-full bg-(--background) border-b border-(--border);
+  @apply relative w-full bg-(--el-0) border-b border-(--border);
 }
 
 .header-container {
@@ -117,21 +117,21 @@
 }
 
 .header-menu-link {
-  @apply px-3 py-2 text-sm font-medium text-(--foreground);
-  @apply hover:text-(--primary) transition-colors;
+  @apply px-3 py-2 text-sm font-medium text-(--el-800);
+  @apply hover:text-(--accent-primary) transition-colors;
   @apply rounded-md;
 }
 
 .header-menu-link-highlight {
-  @apply bg-(--primary) text-(--primary-foreground);
-  @apply hover:bg-(--primary)/90;
+  @apply bg-(--accent-primary) text-(--primary-foreground);
+  @apply hover:bg-(--accent-primary)/90;
 }
 
 /* Dropdown menu */
 .header-submenu {
   @apply absolute top-full left-0 mt-1;
   @apply min-w-[200px] py-2;
-  @apply bg-(--card) border border-(--border) rounded-lg shadow-lg;
+  @apply bg-(--el-0) border border-(--border) rounded-lg shadow-lg;
   @apply list-none m-0 p-0;
   @apply opacity-0 invisible;
   @apply transition-all duration-200;
@@ -146,8 +146,8 @@
 }
 
 .header-submenu-link {
-  @apply block px-4 py-2 text-sm text-(--foreground);
-  @apply hover:bg-(--muted) transition-colors;
+  @apply block px-4 py-2 text-sm text-(--el-800);
+  @apply hover:bg-(--el-100) transition-colors;
 }
 
 /* Vertical menu */
@@ -163,8 +163,8 @@
 }
 
 .header-button-primary {
-  @apply bg-(--primary) text-(--primary-foreground);
-  @apply hover:bg-(--primary)/90;
+  @apply bg-(--accent-primary) text-(--primary-foreground);
+  @apply hover:bg-(--accent-primary)/90;
 }
 
 .header-button-secondary {
@@ -174,11 +174,11 @@
 
 .header-button-outline {
   @apply border border-(--border) bg-transparent;
-  @apply hover:bg-(--muted);
+  @apply hover:bg-(--el-100);
 }
 
 .header-button-ghost {
-  @apply bg-transparent hover:bg-(--muted);
+  @apply bg-transparent hover:bg-(--el-100);
 }
 
 /* Icon buttons */
@@ -186,8 +186,8 @@
 .header-cart-trigger,
 .header-account-trigger {
   @apply p-2 rounded-md;
-  @apply text-(--muted-foreground) hover:text-(--foreground);
-  @apply hover:bg-(--muted) transition-colors;
+  @apply text-(--el-500) hover:text-(--el-800);
+  @apply hover:bg-(--el-100) transition-colors;
 }
 
 .header-search-icon,
@@ -202,27 +202,27 @@
 }
 
 .header-skeleton {
-  @apply h-8 w-full max-w-md bg-(--muted) rounded;
+  @apply h-8 w-full max-w-md bg-(--el-100) rounded;
 }
 
 /* Empty state */
 .header-empty {
-  @apply bg-(--muted)/30;
+  @apply bg-(--el-100)/30;
 }
 
 .header-empty-text {
-  @apply text-sm text-(--muted-foreground) text-center py-2;
+  @apply text-sm text-(--el-500) text-center py-2;
 }
 
 /* Menu loading */
 .header-menu-loading {
-  @apply w-40 h-6 bg-(--muted) rounded animate-pulse;
+  @apply w-40 h-6 bg-(--el-100) rounded animate-pulse;
 }
 
 /* Zone placeholder (builder mode) */
 .header-zone-placeholder {
-  @apply text-xs text-(--muted-foreground) px-3 py-1.5 rounded;
-  @apply border border-dashed border-(--border) bg-(--muted)/30;
+  @apply text-xs text-(--el-500) px-3 py-1.5 rounded;
+  @apply border border-dashed border-(--border) bg-(--el-100)/30;
   @apply capitalize;
 }
 
@@ -230,8 +230,8 @@
 .header-builder-indicator {
   @apply absolute top-1 left-1/2 -translate-x-1/2;
   @apply flex items-center gap-1.5;
-  @apply text-[10px] font-medium text-(--muted-foreground);
-  @apply bg-(--background)/90 backdrop-blur-sm;
+  @apply text-[10px] font-medium text-(--el-500);
+  @apply bg-(--el-0)/90 backdrop-blur-sm;
   @apply px-2 py-0.5 rounded-sm;
   @apply border border-(--border);
   @apply z-10;
@@ -240,10 +240,10 @@
 .header-edit-button {
   @apply flex items-center justify-center;
   @apply size-4 rounded-sm;
-  @apply text-(--muted-foreground) hover:text-(--foreground);
-  @apply hover:bg-(--muted) transition-colors;
+  @apply text-(--el-500) hover:text-(--el-800);
+  @apply hover:bg-(--el-100) transition-colors;
 }
 
 .header-builder-empty {
-  @apply bg-(--muted)/30;
+  @apply bg-(--el-100)/30;
 }

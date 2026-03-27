@@ -5,15 +5,12 @@ import {
 
 // Import shared block renderers from @enterprise/blocks
 import {
-  HeadingBlock,
-  TextBlock,
   ButtonBlock,
   SpacerBlock,
   DividerBlock,
   ImageBlock,
   QuoteBlock,
   IconBlock,
-  RichTextBlock,
   ListBlock,
   ContainerBlock,
   GridBlock,
@@ -30,16 +27,24 @@ import {
 
 const implementedRenderers: BlockRendererRegistration[] = [
   // ==========================================================================
-  // Content blocks (from @enterprise/blocks)
+  // Content blocks — use local renderers for inline editing (TipTap)
   // ==========================================================================
   {
-    type: "text-block",
-    component: () => Promise.resolve({ default: TextBlock }),
+    type: "heading-block",
+    component: () =>
+      import("@/components/renderers/blocks/heading-block-renderer"),
   },
   {
-    type: "heading-block",
-    component: () => Promise.resolve({ default: HeadingBlock }),
+    type: "text-block",
+    component: () =>
+      import("@/components/renderers/blocks/text-block-renderer"),
   },
+  {
+    type: "rich-text-block",
+    component: () =>
+      import("@/components/renderers/blocks/rich-text-block-renderer"),
+  },
+  // Content blocks (from @enterprise/blocks — read-only)
   {
     type: "button-block",
     component: () => Promise.resolve({ default: ButtonBlock }),
@@ -51,10 +56,6 @@ const implementedRenderers: BlockRendererRegistration[] = [
   {
     type: "divider-block",
     component: () => Promise.resolve({ default: DividerBlock }),
-  },
-  {
-    type: "rich-text-block",
-    component: () => Promise.resolve({ default: RichTextBlock }),
   },
   {
     type: "quote-block",

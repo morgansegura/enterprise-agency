@@ -10,6 +10,8 @@ import {
 interface Props {
   block: Block;
   breakpoint?: "desktop" | "tablet" | "mobile";
+  onChange?: (updatedBlock: Block) => void;
+  isEditing?: boolean;
 }
 
 /**
@@ -18,7 +20,7 @@ interface Props {
  * Uses the block renderer registry to lazy-load the appropriate
  * renderer component based on block._type
  */
-export function BlockRenderer({ block, breakpoint = "desktop" }: Props) {
+export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditing }: Props) {
   const [Component, setComponent] =
     React.useState<React.ComponentType<BlockRendererProps> | null>(null);
   const [error, setError] = React.useState<string | null>(null);
@@ -51,19 +53,19 @@ export function BlockRenderer({ block, breakpoint = "desktop" }: Props) {
 
   if (error) {
     return (
-      <div className="bg-destructive/10 text-destructive text-sm p-4 rounded-md">
+      <div className="bg-[var(--status-error)]/10 text-[var(--status-error)] text-sm p-4 rounded-md">
         {error}
       </div>
     );
   }
 
   if (!Component) {
-    return <div className="animate-pulse bg-muted h-12 rounded-md" />;
+    return <div className="animate-pulse bg-[var(--el-100)] h-12 rounded-md" />;
   }
 
   return (
     <div data-block-key={block._key}>
-      <Component block={block} breakpoint={breakpoint} />
+      <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />
     </div>
   );
 }

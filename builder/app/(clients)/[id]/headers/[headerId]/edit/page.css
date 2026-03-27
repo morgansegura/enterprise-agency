@@ -6,7 +6,7 @@
 
 .header-editor-loading,
 .header-editor-error {
-  @apply flex flex-col items-center justify-center gap-4 py-16 text-(--muted-foreground);
+  @apply flex flex-col items-center justify-center gap-4 py-16 text-(--el-500);
 }
 
 /* =============================================================================
@@ -31,7 +31,7 @@
 
 .canvas-toolbar-area {
   @apply flex items-center justify-center py-2 px-4;
-  @apply bg-(--muted)/50 border-b border-(--border);
+  @apply bg-(--el-100)/50 border-b border-(--border);
 }
 
 .canvas-toolbar-area .block-toolbar {
@@ -47,7 +47,7 @@
 
 /* Fake page content for scroll testing */
 .canvas-page-content {
-  @apply w-full bg-(--muted)/30 min-h-96;
+  @apply w-full bg-(--el-100)/30 min-h-96;
   /* min-height: 800px; */
   /* background-image: linear-gradient(
     to bottom,
@@ -61,7 +61,7 @@
 
 .canvas-page-content::before {
   content: "Scroll to test header behavior";
-  @apply block text-center text-(--muted-foreground) text-sm pt-8;
+  @apply block text-center text-(--el-500) text-sm pt-8;
 }
 
 /* =============================================================================
@@ -69,7 +69,7 @@
    ============================================================================= */
 
 .canvas-wrapper {
-  @apply w-full bg-(--background) overflow-visible;
+  @apply w-full bg-(--el-0) overflow-visible;
   @apply sticky top-0 z-10;
 }
 
@@ -127,10 +127,10 @@
 .canvas-zone-add {
   @apply flex items-center justify-center;
   @apply size-5 rounded-full;
-  @apply bg-(--muted) text-(--muted-foreground);
+  @apply bg-(--el-100) text-(--el-500);
   @apply opacity-0 scale-90;
   @apply transition-all duration-150;
-  @apply hover:bg-(--primary) hover:text-(--primary-foreground);
+  @apply hover:bg-(--accent-primary) hover:text-(--primary-foreground);
 }
 
 .canvas-zone:hover .canvas-zone-add {
@@ -162,7 +162,7 @@
 .block-toolbar {
   @apply absolute -top-12 left-1/2 -translate-x-1/2;
   @apply flex items-center justify-center gap-1 px-2 py-1.5;
-  @apply bg-(--background) rounded-lg shadow-lg;
+  @apply bg-(--el-0) rounded-lg shadow-lg;
   @apply border border-(--border);
   @apply z-50;
   @apply whitespace-nowrap;
@@ -171,8 +171,8 @@
 .block-toolbar-btn {
   @apply flex items-center justify-center;
   @apply size-7 rounded-md;
-  @apply text-(--muted-foreground);
-  @apply hover:bg-(--muted) hover:text-(--foreground);
+  @apply text-(--el-500);
+  @apply hover:bg-(--el-100) hover:text-(--el-800);
   @apply transition-colors;
   @apply disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent;
 }
@@ -182,7 +182,7 @@
 }
 
 .block-toolbar-divider {
-  @apply w-px h-5 bg-(--border) mx-1;
+  @apply w-px h-5 bg-(--border-default) mx-1;
 }
 
 /* =============================================================================
@@ -191,8 +191,8 @@
 
 .canvas-placeholder {
   @apply flex items-center gap-2 px-3 py-2;
-  @apply text-xs text-(--muted-foreground);
-  @apply bg-(--muted)/50 rounded-md;
+  @apply text-xs text-(--el-500);
+  @apply bg-(--el-100)/50 rounded-md;
   @apply border border-dashed border-(--muted-foreground)/30;
 }
 
@@ -215,7 +215,7 @@
 
 .canvas-nav-item {
   @apply text-sm font-medium px-3 py-2 rounded-md;
-  @apply hover:bg-(--muted) transition-colors cursor-pointer;
+  @apply hover:bg-(--el-100) transition-colors cursor-pointer;
 }
 
 .canvas-btn {
@@ -223,7 +223,7 @@
 }
 
 .canvas-btn-primary {
-  @apply bg-(--primary) text-(--primary-foreground);
+  @apply bg-(--accent-primary) text-(--primary-foreground);
 }
 
 .canvas-btn-secondary {
@@ -235,11 +235,11 @@
 }
 
 .canvas-btn-ghost {
-  @apply bg-transparent hover:bg-(--muted);
+  @apply bg-transparent hover:bg-(--el-100);
 }
 
 .canvas-icon {
-  @apply size-5 text-(--muted-foreground);
+  @apply size-5 text-(--el-500);
 }
 
 /* =============================================================================
@@ -256,9 +256,9 @@
 
 .add-block-option {
   @apply flex items-center gap-2 px-2 py-1.5;
-  @apply text-sm text-(--foreground);
+  @apply text-sm text-(--el-800);
   @apply rounded-md cursor-pointer;
-  @apply hover:bg-(--muted);
+  @apply hover:bg-(--el-100);
   @apply transition-colors;
 }
 
@@ -279,7 +279,7 @@
 }
 
 .block-popover-header-icon {
-  @apply flex items-center justify-center size-6 rounded bg-(--muted);
+  @apply flex items-center justify-center size-6 rounded bg-(--el-100);
 }
 
 .block-popover-title {
@@ -295,7 +295,7 @@
 }
 
 .block-popover-field label {
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
 }
 
 .block-popover-divider {
@@ -304,12 +304,12 @@
 
 .block-popover-divider::before,
 .block-popover-divider::after {
-  @apply flex-1 h-px bg-(--border);
+  @apply flex-1 h-px bg-(--border-default);
   content: "";
 }
 
 .block-popover-divider span {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .block-popover-svg {
@@ -317,7 +317,7 @@
 }
 
 .block-popover-hint {
-  @apply text-xs text-(--muted-foreground) mt-1;
+  @apply text-xs text-(--el-500) mt-1;
 }
 
 .block-popover-tabs {
@@ -326,13 +326,13 @@
 
 .block-popover-tab {
   @apply px-2 py-1 text-xs font-medium rounded-md;
-  @apply text-(--muted-foreground) bg-transparent;
+  @apply text-(--el-500) bg-transparent;
   @apply transition-colors cursor-pointer;
-  @apply hover:text-(--foreground) hover:bg-(--muted)/50;
+  @apply hover:text-(--el-800) hover:bg-(--el-100)/50;
 }
 
 .block-popover-tab.active {
-  @apply text-(--foreground) bg-(--muted);
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 .block-popover-field-row {
@@ -340,7 +340,7 @@
 }
 
 .block-popover-field-row label {
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
 }
 
 /* =============================================================================
@@ -361,13 +361,13 @@
 
 .header-popover-tab {
   @apply inline-flex items-center gap-1 px-2 py-1.5 text-xs font-medium rounded-md;
-  @apply text-(--muted-foreground) bg-transparent;
+  @apply text-(--el-500) bg-transparent;
   @apply transition-colors cursor-pointer;
-  @apply hover:text-(--foreground) hover:bg-(--muted);
+  @apply hover:text-(--el-800) hover:bg-(--el-100);
 }
 
 .header-popover-tab.active {
-  @apply text-(--foreground) bg-(--muted);
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 .header-popover-content {
@@ -383,7 +383,7 @@
 }
 
 .header-popover-divider {
-  @apply h-px bg-(--border) my-3;
+  @apply h-px bg-(--border-default) my-3;
 }
 
 .header-popover-toggle-row {
@@ -422,15 +422,15 @@
 }
 
 .settings-tabs-list {
-  @apply inline-flex gap-1 rounded-lg bg-(--muted) p-1 mb-4;
+  @apply inline-flex gap-1 rounded-lg bg-(--el-100) p-1 mb-4;
 }
 
 .settings-tab {
   @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md;
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
   @apply transition-all cursor-pointer;
-  @apply hover:text-(--foreground);
-  @apply data-[state=active]:bg-(--background) data-[state=active]:text-(--foreground);
+  @apply hover:text-(--el-800);
+  @apply data-[state=active]:bg-(--el-0) data-[state=active]:text-(--el-800);
   @apply data-[state=active]:shadow-sm;
 }
 
@@ -468,11 +468,11 @@
 }
 
 .settings-label {
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
 }
 
 .settings-hint {
-  @apply text-xs text-(--muted-foreground) mt-1;
+  @apply text-xs text-(--el-500) mt-1;
 }
 
 .settings-field-row {
@@ -508,20 +508,20 @@
 .behavior-card {
   @apply flex items-start gap-3 p-3 rounded-lg border border-(--border);
   @apply text-left transition-all cursor-pointer;
-  @apply hover:border-(--primary)/50 hover:bg-(--muted)/50;
+  @apply hover:border-(--accent-primary)/50 hover:bg-(--el-100)/50;
 }
 
 .behavior-card-active {
-  @apply border-(--primary) bg-(--primary)/5;
+  @apply border-(--accent-primary) bg-(--accent-primary)/5;
 }
 
 .behavior-card-icon {
-  @apply flex items-center justify-center size-8 rounded-md bg-(--muted);
+  @apply flex items-center justify-center size-8 rounded-md bg-(--el-100);
   @apply shrink-0;
 }
 
 .behavior-card-active .behavior-card-icon {
-  @apply bg-(--primary)/10 text-(--primary);
+  @apply bg-(--accent-primary)/10 text-(--accent-primary);
 }
 
 .behavior-card-content {
@@ -533,5 +533,5 @@
 }
 
 .behavior-card-desc {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }

@@ -57,7 +57,7 @@ export function PostEditorLayout({
         <div className="page-editor-toolbar-left">
           <h2 className="text-lg font-semibold">{postTitle}</h2>
           {isSaving && (
-            <span className="text-sm text-muted-foreground">Saving...</span>
+            <span className="text-sm text-[var(--el-500)]">Saving...</span>
           )}
         </div>
         <div className="page-editor-toolbar-center">

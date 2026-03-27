@@ -70,7 +70,7 @@ export function VersionHistory({ tenantId, pageId }: VersionHistoryProps) {
     return (
       <div className="version-history">
         <div className="version-history-empty">
-          <History className="size-8 text-muted-foreground" />
+          <History className="size-8 text-[var(--el-500)]" />
           <p>No versions yet</p>
           <span>Version history will appear here as you make changes.</span>
         </div>

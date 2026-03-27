@@ -11,23 +11,23 @@
 :root {
   /* =========================================================================
    * Base Neutral Scale (21 steps)
-   * Pure neutral, no color bias
+   * Jira-aligned — warm slate undertone for professional feel
    * ========================================================================= */
   --base-0: #ffffff;
-  --base-50: #f8f8f8;
-  --base-100: #f0f0f0;
-  --base-150: #e0e0e0;
-  --base-200: #d0d0d0;
-  --base-250: #bfbfbf;
-  --base-300: #ababab;
-  --base-400: #8c8c8c;
-  --base-500: #707070;
-  --base-600: #555555;
-  --base-700: #3d3d3d;
-  --base-800: #2a2a2a;
-  --base-850: #1f1f1f;
-  --base-900: #161616;
-  --base-950: #0d0d0d;
+  --base-50: #fafbfc;
+  --base-100: #f4f5f7;
+  --base-150: #dfe1e6;
+  --base-200: #c1c7d0;
+  --base-250: #b3bac5;
+  --base-300: #a5adba;
+  --base-400: #97a0af;
+  --base-500: #6b778c;
+  --base-600: #505f79;
+  --base-700: #344563;
+  --base-800: #172b4d;
+  --base-850: #112240;
+  --base-900: #091e42;
+  --base-950: #061730;
   --base-1000: #000000;
 
   /* =========================================================================
@@ -52,23 +52,23 @@
   --el-1000: var(--base-1000);
 
   /* =========================================================================
-   * Status Colors
+   * Status Colors (Jira-aligned)
    * ========================================================================= */
-  --status-success: #16a34a;
-  --status-success-subtle: #f0fdf4;
-  --status-warning: #ca8a04;
-  --status-warning-subtle: #fefce8;
-  --status-error: #dc2626;
-  --status-error-subtle: #fef2f2;
-  --status-info: #2563eb;
-  --status-info-subtle: #eff6ff;
+  --status-success: #00875a;
+  --status-success-subtle: #e3fcef;
+  --status-warning: #ff991f;
+  --status-warning-subtle: #fffae6;
+  --status-error: #de350b;
+  --status-error-subtle: #ffebe6;
+  --status-info: #0065ff;
+  --status-info-subtle: #deebff;
 
   /* =========================================================================
-   * Brand Accent
+   * Brand Accent (Jira blue)
    * ========================================================================= */
-  --accent-primary: #1a73e8;
-  --accent-primary-hover: #1557b0;
-  --accent-primary-subtle: #e8f0fe;
+  --accent-primary: #0052cc;
+  --accent-primary-hover: #0065ff;
+  --accent-primary-subtle: #deebff;
   --accent-primary-foreground: #ffffff;
 
   /* =========================================================================
@@ -176,37 +176,37 @@
  * Dark Mode — Invert the elevation scale
  * ========================================================================= */
 .dark {
-  --el-0: var(--base-900);
-  --el-50: var(--base-850);
-  --el-100: var(--base-800);
-  --el-150: var(--base-700);
-  --el-200: var(--base-600);
-  --el-250: var(--base-500);
-  --el-300: var(--base-400);
-  --el-400: var(--base-300);
-  --el-500: var(--base-250);
-  --el-600: var(--base-200);
-  --el-700: var(--base-150);
-  --el-800: var(--base-100);
-  --el-850: var(--base-50);
-  --el-900: var(--base-0);
-  --el-950: var(--base-0);
-  --el-1000: var(--base-0);
+  --el-0: #1b2638;
+  --el-50: #1e2d42;
+  --el-100: #253552;
+  --el-150: #344563;
+  --el-200: #505f79;
+  --el-250: #5e6c84;
+  --el-300: #6b778c;
+  --el-400: #8993a4;
+  --el-500: #a5adba;
+  --el-600: #b3bac5;
+  --el-700: #c1c7d0;
+  --el-800: #dfe1e6;
+  --el-850: #ebecf0;
+  --el-900: #f4f5f7;
+  --el-950: #fafbfc;
+  --el-1000: #ffffff;
 
-  /* Status colors — slightly brighter in dark mode */
-  --status-success: #22c55e;
-  --status-success-subtle: #052e16;
-  --status-warning: #eab308;
-  --status-warning-subtle: #422006;
-  --status-error: #ef4444;
-  --status-error-subtle: #450a0a;
-  --status-info: #3b82f6;
-  --status-info-subtle: #172554;
+  /* Status colors — brighter for dark mode legibility */
+  --status-success: #36b37e;
+  --status-success-subtle: #0d3822;
+  --status-warning: #ffab00;
+  --status-warning-subtle: #3d2e00;
+  --status-error: #ff5630;
+  --status-error-subtle: #3d1008;
+  --status-info: #4c9aff;
+  --status-info-subtle: #0d2240;
 
   /* Accent */
-  --accent-primary: #4d9ef6;
-  --accent-primary-hover: #6db3ff;
-  --accent-primary-subtle: #172554;
+  --accent-primary: #4c9aff;
+  --accent-primary-hover: #79b8ff;
+  --accent-primary-subtle: #0d2240;
 
   /* Semantic re-derived from inverted elevation */
   --input-bg: var(--el-50);

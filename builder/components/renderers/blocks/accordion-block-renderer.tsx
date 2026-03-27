@@ -65,7 +65,7 @@ export default function AccordionBlockRenderer({ block }: BlockRendererProps) {
             <button
               type="button"
               className={cn(
-                "flex w-full items-center justify-between px-4 py-3 text-left font-medium transition-colors hover:bg-muted/50",
+                "flex w-full items-center justify-between px-4 py-3 text-left font-medium transition-colors hover:bg-[var(--el-100)]/50",
                 variant === "separated" && "rounded-lg",
               )}
               onClick={() => toggleItem(index)}
@@ -80,7 +80,7 @@ export default function AccordionBlockRenderer({ block }: BlockRendererProps) {
               />
             </button>
             {isOpen && (
-              <div className="px-4 pb-4 pt-0 text-sm text-muted-foreground">
+              <div className="px-4 pb-4 pt-0 text-sm text-[var(--el-500)]">
                 {item.content}
               </div>
             )}

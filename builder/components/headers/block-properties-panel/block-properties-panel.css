@@ -19,7 +19,7 @@
 }
 
 .block-properties-header-icon {
-  @apply flex items-center justify-center size-8 rounded-md bg-(--muted);
+  @apply flex items-center justify-center size-8 rounded-md bg-(--el-100);
 }
 
 .block-properties-title {
@@ -27,7 +27,7 @@
 }
 
 .block-properties-description {
-  @apply text-xs text-(--muted-foreground) mt-0.5;
+  @apply text-xs text-(--el-500) mt-0.5;
 }
 
 .block-properties-header-actions {
@@ -35,7 +35,7 @@
 }
 
 .block-properties-delete {
-  @apply text-(--muted-foreground) hover:text-(--destructive);
+  @apply text-(--el-500) hover:text-(--destructive);
 }
 
 /* Content */
@@ -67,11 +67,11 @@
 }
 
 .block-properties-field > label {
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
 }
 
 .block-properties-hint {
-  @apply text-xs text-(--muted-foreground) mt-1;
+  @apply text-xs text-(--el-500) mt-1;
 }
 
 /* Divider */
@@ -81,12 +81,12 @@
 
 .block-properties-divider::before,
 .block-properties-divider::after {
-  @apply flex-1 h-px bg-(--border);
+  @apply flex-1 h-px bg-(--border-default);
   content: "";
 }
 
 .block-properties-divider span {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 /* SVG Input */
@@ -96,7 +96,7 @@
 
 /* SVG Preview */
 .block-properties-svg-preview {
-  @apply p-4 bg-(--muted) rounded-md flex items-center justify-center mt-2;
+  @apply p-4 bg-(--el-100) rounded-md flex items-center justify-center mt-2;
   @apply border border-(--border);
 }
 

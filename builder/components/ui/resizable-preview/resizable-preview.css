@@ -8,7 +8,7 @@
   @apply relative;
   @apply rounded-lg;
   @apply border border-(--border);
-  @apply bg-(--background);
+  @apply bg-(--el-0);
   @apply transition-shadow duration-150;
   max-width: calc(100% - 24px); /* Account for resize handle */
 }
@@ -30,7 +30,7 @@
 }
 
 .resizable-preview-placeholder-block {
-  @apply h-64 rounded-lg bg-(--muted)/30;
+  @apply h-64 rounded-lg bg-(--el-100)/30;
 }
 
 .resizable-preview-placeholder-lines {
@@ -38,7 +38,7 @@
 }
 
 .resizable-preview-placeholder-line {
-  @apply h-4 rounded-full bg-(--muted)/40;
+  @apply h-4 rounded-full bg-(--el-100)/40;
 }
 
 /* Resize Handle */
@@ -52,7 +52,7 @@
 .resizable-preview-handle-bar {
   @apply w-1.5 h-16 max-h-[30%];
   @apply rounded-full;
-  @apply bg-(--border);
+  @apply bg-(--border-default);
   @apply transition-all duration-150;
 }
 
@@ -65,7 +65,7 @@
 /* Width Indicator */
 .resizable-preview-indicator {
   @apply flex items-center justify-center gap-2 mt-3;
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .resizable-preview-width {
@@ -74,6 +74,6 @@
 
 .resizable-preview-breakpoint {
   @apply px-2 py-0.5;
-  @apply bg-(--muted) rounded-full;
+  @apply bg-(--el-100) rounded-full;
   @apply text-[10px] font-medium uppercase tracking-wide;
 }

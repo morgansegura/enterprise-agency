@@ -32,7 +32,7 @@
 }
 
 .edit-product-title {
-  @apply text-lg font-semibold text-(--foreground);
+  @apply text-lg font-semibold text-(--el-800);
 }
 
 .edit-product-slug {
@@ -61,17 +61,17 @@
 }
 
 .edit-product-tab:hover {
-  @apply text-(--foreground);
+  @apply text-(--el-800);
 }
 
 .edit-product-tab-active {
-  @apply text-(--foreground);
+  @apply text-(--el-800);
 }
 
 .edit-product-tab-active::after {
   content: "";
   @apply absolute bottom-0 left-0 right-0 h-0.5;
-  @apply bg-(--foreground);
+  @apply bg-(--el-800);
 }
 
 /* ============================================================================

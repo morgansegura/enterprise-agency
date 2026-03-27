@@ -1,8 +1,7 @@
 @reference "tailwindcss";
 
 /* =============================================================================
- * Auth Layout
- * Shared full-screen centered layout for all auth pages
+ * Auth Layout — Jira-style centered login
  * ============================================================================= */
 
 .auth-layout {
@@ -12,33 +11,31 @@
 }
 
 /* =============================================================================
- * Auth Card
- * Centered card container — clean, minimal, enterprise
+ * Auth Card — clean white card, subtle shadow
  * ============================================================================= */
 
 .auth-card {
-  @apply w-full max-w-[380px] px-8 pt-8 pb-6;
+  @apply w-full max-w-[400px] px-10 pt-10 pb-8;
   @apply bg-(--el-0);
-  @apply border border-(--border-default) rounded-(--radius-md) shadow-(--shadow-md);
+  @apply border border-(--border-subtle) rounded-[3px] shadow-lg;
 }
 
 /* =============================================================================
- * Auth Header
- * Logo / title area at top of card
+ * Auth Header — centered branding
  * ============================================================================= */
 
 .auth-header {
-  @apply flex flex-col items-center mb-6 gap-1;
+  @apply flex flex-col items-center mb-8 gap-1.5;
 }
 
 .auth-logo {
-  @apply text-[16px] font-semibold leading-none tracking-tight mb-1;
-  @apply font-(family-name:--font-system);
-  @apply text-(--text-primary);
+  @apply text-[24px] font-semibold leading-none tracking-tight;
+  @apply font-(family-name:--font-heading);
+  @apply text-(--accent-primary);
 }
 
 .auth-subtitle {
-  @apply text-[13px] leading-normal;
+  @apply text-[14px] leading-normal;
   @apply text-(--text-secondary);
 }
 
@@ -58,20 +55,20 @@
   @apply flex flex-col gap-1.5;
 }
 
-/* Labels */
+/* Labels — Jira uses 12px semibold */
 .auth-label {
-  @apply text-[11px] font-medium leading-none tracking-[0.01em];
-  @apply text-(--text-secondary);
+  @apply text-[12px] font-semibold leading-none;
+  @apply text-(--text-primary);
 }
 
-/* Inputs */
+/* Inputs — 40px height, clear border, no background fill on focus */
 .auth-input {
-  @apply w-full h-10 text-[13px] outline-none px-3;
+  @apply w-full h-10 text-[14px] outline-none px-3;
   @apply font-(family-name:--font-system);
   @apply text-(--text-primary);
-  @apply bg-(--input-bg);
-  @apply border border-(--input-border) rounded-(--radius-sm);
-  @apply transition-colors duration-150 ease-in-out;
+  @apply bg-(--el-0);
+  @apply border border-(--border-default) rounded-[3px];
+  @apply transition-all duration-100;
 }
 
 .auth-input::placeholder {
@@ -83,11 +80,33 @@
 }
 
 .auth-input:focus {
-  @apply border-(--input-border-focus) ring-1 ring-(--input-border-focus);
+  @apply border-(--accent-primary) ring-2 ring-(--accent-primary)/20;
 }
 
 .auth-input:disabled {
   @apply opacity-50 cursor-not-allowed;
+}
+
+/* Password toggle */
+.auth-password-wrapper {
+  @apply relative;
+}
+
+.auth-input-password {
+  @apply pr-10;
+}
+
+.auth-password-toggle {
+  @apply absolute right-0 top-0 h-full px-3 flex items-center justify-center;
+  @apply text-(--text-tertiary) cursor-pointer transition-colors duration-100;
+}
+
+.auth-password-toggle:hover {
+  @apply text-(--text-primary);
+}
+
+.auth-password-toggle svg {
+  @apply size-4;
 }
 
 /* =============================================================================
@@ -95,21 +114,25 @@
  * ============================================================================= */
 
 .auth-actions {
-  @apply flex flex-col gap-3;
+  @apply flex flex-col gap-4;
 }
 
-/* Primary submit button */
+/* Submit — Jira-style full-width prominent button */
 .auth-submit {
-  @apply w-full flex items-center justify-center h-9 text-[13px] font-medium border-none cursor-pointer;
+  @apply w-full flex items-center justify-center h-10 text-[14px] font-semibold border-none cursor-pointer;
   @apply font-(family-name:--font-system);
   @apply text-(--accent-primary-foreground);
   @apply bg-(--accent-primary);
-  @apply rounded-(--radius-sm);
-  @apply transition-colors duration-150 ease-in-out;
+  @apply rounded-[3px];
+  @apply transition-colors duration-100;
 }
 
 .auth-submit:hover:not(:disabled) {
   @apply bg-(--accent-primary-hover);
+}
+
+.auth-submit:focus-visible {
+  @apply ring-2 ring-(--accent-primary)/50 ring-offset-2;
 }
 
 .auth-submit:disabled {
@@ -121,27 +144,27 @@
  * ============================================================================= */
 
 .auth-forgot {
-  @apply flex justify-end -mt-2;
+  @apply flex justify-end -mt-1;
 }
 
 .auth-forgot-link {
-  @apply text-[11px] no-underline;
-  @apply text-(--text-tertiary);
-  @apply transition-colors duration-150 ease-in-out;
+  @apply text-[12px] no-underline;
+  @apply text-(--accent-primary);
+  @apply transition-colors duration-100;
 }
 
 .auth-forgot-link:hover {
-  @apply text-(--text-primary);
+  @apply text-(--accent-primary-hover) underline;
 }
 
 .auth-back-link {
-  @apply flex justify-center text-[12px] no-underline;
-  @apply text-(--text-tertiary);
-  @apply transition-colors duration-150 ease-in-out;
+  @apply flex justify-center text-[14px] no-underline;
+  @apply text-(--accent-primary);
+  @apply transition-colors duration-100;
 }
 
 .auth-back-link:hover {
-  @apply text-(--text-primary);
+  @apply text-(--accent-primary-hover) underline;
 }
 
 /* =============================================================================
@@ -149,10 +172,10 @@
  * ============================================================================= */
 
 .auth-field-error {
-  @apply text-[11px] px-3 py-2;
+  @apply text-[12px] px-3 py-2;
   @apply text-(--status-error);
   @apply bg-(--status-error-subtle);
-  @apply border border-(--status-error) rounded-(--radius-sm);
+  @apply border border-(--status-error)/30 rounded-[3px];
 }
 
 /* =============================================================================
@@ -163,5 +186,5 @@
   @apply text-[12px] px-3 py-2;
   @apply text-(--status-success);
   @apply bg-(--status-success-subtle);
-  @apply border border-(--status-success) rounded-(--radius-sm);
+  @apply border border-(--status-success)/30 rounded-[3px];
 }

@@ -6,7 +6,7 @@
 
 .settings-panel {
   @apply relative flex flex-col w-[280px] h-full overflow-hidden;
-  @apply bg-(--background) border-l border-(--border);
+  @apply bg-(--el-0) border-l border-(--border-default);
   @apply translate-x-0 transition-all duration-250 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
 
@@ -29,7 +29,7 @@
 
 .settings-panel-toggle {
   @apply fixed right-0 top-1/2 -translate-y-1/2 z-40;
-  @apply bg-(--background) border border-(--border) border-r-0;
+  @apply bg-(--el-0) border border-(--border-default) border-r-0;
   @apply rounded-l-md p-1;
   @apply transition-opacity duration-200;
 }
@@ -39,13 +39,13 @@
  * ============================================================================= */
 
 .settings-panel-header {
-  @apply flex items-center justify-between gap-2 px-3 h-10;
-  @apply border-b border-(--border) bg-(--background);
+  @apply flex items-center justify-between gap-2 px-3 h-9;
+  @apply border-b border-(--border-default) bg-(--el-0);
 }
 
 .settings-panel-selector {
   @apply flex items-center gap-2 py-1;
-  @apply text-xs font-medium text-(--foreground);
+  @apply text-xs font-medium text-(--el-800);
 }
 
 .settings-panel-selector-name {
@@ -58,23 +58,23 @@
 
 .settings-panel-tabs {
   @apply inline-flex items-center gap-0.5 mx-3 my-2.5 p-[3px];
-  @apply bg-(--muted) rounded-md;
+  @apply bg-(--el-100) rounded-md;
 }
 
 .settings-panel-tab {
   @apply flex items-center justify-center;
   @apply px-3 py-[5px];
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
   @apply bg-transparent border-none rounded-sm cursor-pointer;
   @apply transition-all duration-150;
 }
 
 .settings-panel-tab:hover {
-  @apply text-(--foreground);
+  @apply text-(--el-800);
 }
 
 .settings-panel-tab.active {
-  @apply text-(--foreground) bg-(--background) shadow-sm;
+  @apply text-(--el-800) bg-(--el-0) shadow-sm;
 }
 
 /* =============================================================================
@@ -98,7 +98,7 @@
  * ============================================================================= */
 
 .property-section {
-  @apply border-t border-(--border);
+  @apply border-t border-(--border-default);
 }
 
 .property-section:first-child {
@@ -111,11 +111,11 @@
 }
 
 .property-section-title {
-  @apply text-[13px] font-medium text-(--foreground);
+  @apply text-[14px] font-medium text-(--el-800);
 }
 
 .property-section-chevron {
-  @apply size-3 text-(--muted-foreground) shrink-0;
+  @apply size-3 text-(--el-500) shrink-0;
   @apply transition-transform duration-150;
 }
 
@@ -157,11 +157,11 @@
 }
 
 .property-row-label {
-  @apply text-xs font-medium text-(--muted-foreground) whitespace-nowrap;
+  @apply text-xs font-medium text-(--el-500) whitespace-nowrap;
 }
 
 .property-row-responsive {
-  @apply size-[5px] bg-(--primary) rounded-full;
+  @apply size-[5px] bg-(--accent-primary) rounded-full;
 }
 
 .property-row-control {
@@ -173,7 +173,7 @@
 }
 
 .property-row-help {
-  @apply text-[11px] text-(--muted-foreground) mt-1;
+  @apply text-[11px] text-(--el-500) mt-1;
 }
 
 .property-row-compact {
@@ -181,7 +181,7 @@
 }
 
 .property-row-compact .property-row-label {
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
 }
 
 /* =============================================================================
@@ -209,7 +209,7 @@
 }
 
 .property-cell-label {
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
 }
 
 /* =============================================================================
@@ -217,7 +217,7 @@
  * ============================================================================= */
 
 .property-toggle {
-  @apply inline-flex gap-0.5 p-[3px] bg-(--muted) rounded-md;
+  @apply inline-flex gap-0.5 p-[3px] bg-(--el-100) rounded-md;
 }
 
 .property-toggle--full {
@@ -231,17 +231,17 @@
 .property-toggle-btn {
   @apply flex items-center justify-center gap-1;
   @apply px-2.5 py-[5px];
-  @apply text-xs font-medium text-(--muted-foreground);
+  @apply text-xs font-medium text-(--el-500);
   @apply bg-transparent border-none rounded-sm cursor-pointer;
   @apply transition-all duration-150 whitespace-nowrap;
 }
 
 .property-toggle-btn:hover {
-  @apply text-(--foreground);
+  @apply text-(--el-800);
 }
 
 .property-toggle-btn--active {
-  @apply bg-(--background) text-(--foreground) shadow-sm;
+  @apply bg-(--el-0) text-(--el-800) shadow-sm;
 }
 
 .property-toggle-icon {
@@ -262,11 +262,11 @@
 
 .property-select {
   @apply h-8 px-2.5 text-xs font-medium;
-  @apply bg-(--muted) text-(--foreground) border-none rounded-md;
+  @apply bg-(--el-100) text-(--el-800) border-none rounded-md;
 }
 
 .property-select:hover {
-  @apply bg-(--accent);
+  @apply bg-(--accent-primary-subtle);
 }
 
 .property-select-option {
@@ -274,7 +274,7 @@
 }
 
 .property-select-description {
-  @apply text-(--muted-foreground) ml-2;
+  @apply text-(--el-500) ml-2;
 }
 
 /* =============================================================================
@@ -282,7 +282,7 @@
  * ============================================================================= */
 
 .settings-section {
-  @apply border-b border-(--border);
+  @apply border-b border-(--border-default);
 }
 
 .settings-section:last-child {
@@ -293,12 +293,12 @@
   @apply flex items-center justify-between w-full;
   @apply px-3 py-2.5;
   @apply text-[11px] font-semibold uppercase tracking-wide;
-  @apply text-(--muted-foreground) bg-transparent border-none cursor-pointer;
+  @apply text-(--el-500) bg-transparent border-none cursor-pointer;
   @apply transition-all duration-100;
 }
 
 .settings-section-trigger:hover {
-  @apply bg-(--muted) text-(--foreground);
+  @apply bg-(--el-100) text-(--el-800);
 }
 
 .settings-section-trigger-left {
@@ -322,7 +322,7 @@
 }
 
 .settings-label {
-  @apply text-xs font-medium text-(--foreground) whitespace-nowrap;
+  @apply text-xs font-medium text-(--el-800) whitespace-nowrap;
 }
 
 .settings-select {
@@ -342,21 +342,21 @@
  * ============================================================================= */
 
 .toggle-group {
-  @apply inline-flex gap-0.5 p-[3px] bg-(--muted) rounded-md;
+  @apply inline-flex gap-0.5 p-[3px] bg-(--el-100) rounded-md;
 }
 
 .toggle-group-btn {
   @apply px-2.5 py-[5px] text-xs font-medium;
-  @apply text-(--muted-foreground) bg-transparent border-none rounded-sm;
+  @apply text-(--el-500) bg-transparent border-none rounded-sm;
   @apply cursor-pointer transition-all duration-150 whitespace-nowrap;
 }
 
 .toggle-group-btn:hover {
-  @apply text-(--foreground);
+  @apply text-(--el-800);
 }
 
 .toggle-group-btn.active {
-  @apply bg-(--background) text-(--foreground) shadow-sm;
+  @apply bg-(--el-0) text-(--el-800) shadow-sm;
 }
 
 /* =============================================================================

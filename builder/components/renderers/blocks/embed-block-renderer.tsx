@@ -19,7 +19,7 @@ export default function EmbedBlockRenderer({ block }: BlockRendererProps) {
 
   if (!html) {
     return (
-      <div className="flex items-center justify-center bg-muted text-muted-foreground p-8 rounded-md">
+      <div className="flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] p-8 rounded-md">
         No embed code set
       </div>
     );

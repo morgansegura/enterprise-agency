@@ -21,7 +21,7 @@
 
 .zone-panel-header {
   @apply flex items-center justify-between p-3;
-  @apply bg-(--muted)/50 border-b border-(--border);
+  @apply bg-(--el-100)/50 border-b border-(--border);
 }
 
 .zone-panel-header h4 {
@@ -34,7 +34,7 @@
 
 .zone-panel-empty {
   @apply flex items-center justify-center h-full min-h-[80px];
-  @apply text-sm text-(--muted-foreground);
+  @apply text-sm text-(--el-500);
 }
 
 .zone-panel-blocks {
@@ -47,7 +47,7 @@
 }
 
 .zone-block-header {
-  @apply flex items-center justify-between px-3 py-2 bg-(--background);
+  @apply flex items-center justify-between px-3 py-2 bg-(--el-0);
 }
 
 .zone-block-info {
@@ -55,7 +55,7 @@
 }
 
 .zone-block-info svg {
-  @apply size-4 text-(--muted-foreground);
+  @apply size-4 text-(--el-500);
 }
 
 .zone-block-actions {
@@ -63,7 +63,7 @@
 }
 
 .zone-block-actions button {
-  @apply text-(--muted-foreground) hover:text-(--foreground);
+  @apply text-(--el-500) hover:text-(--el-800);
 }
 
 .zone-block-actions svg {
@@ -92,7 +92,7 @@
 }
 
 .zone-block-field label {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .zone-block-svg-input {
@@ -101,7 +101,7 @@
 
 .zone-block-svg-preview {
   @apply flex items-center justify-center p-3 mt-2;
-  @apply bg-(--muted)/50 border border-(--border) rounded-md;
+  @apply bg-(--el-100)/50 border border-(--border) rounded-md;
 }
 
 .zone-block-svg-preview svg {
@@ -125,15 +125,15 @@
 }
 
 .zone-add-option:hover {
-  @apply bg-(--muted)/50 border-(--border);
+  @apply bg-(--el-100)/50 border-(--border);
 }
 
 .zone-add-option svg {
-  @apply size-5 text-(--muted-foreground);
+  @apply size-5 text-(--el-500);
 }
 
 .zone-add-option span {
-  @apply text-xs text-(--foreground);
+  @apply text-xs text-(--el-800);
 }
 
 /* Header Behavior (used in new header page) */
@@ -154,7 +154,7 @@
 }
 
 .header-behavior-option-description {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 /* New Header Page */
@@ -167,7 +167,7 @@
 }
 
 .new-header-default-field {
-  @apply flex items-center justify-between p-4 bg-(--muted)/50 rounded-md;
+  @apply flex items-center justify-between p-4 bg-(--el-100)/50 rounded-md;
 }
 
 .new-header-default-field-content {

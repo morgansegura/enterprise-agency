@@ -7,11 +7,11 @@
 }
 
 .tags-rename-dialog {
-  @apply bg-(--card) border border-(--border-subtle) rounded-lg p-6 w-full max-w-sm shadow-lg;
+  @apply bg-(--el-0) border border-(--border-subtle) rounded-lg p-6 w-full max-w-sm shadow-lg;
 }
 
 .tags-rename-dialog h3 {
-  @apply text-base font-semibold text-(--foreground) mb-4;
+  @apply text-base font-semibold text-(--el-800) mb-4;
 }
 
 .tags-rename-hint {

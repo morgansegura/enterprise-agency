@@ -113,7 +113,7 @@ export function WebsiteGlobalSettings({
                 placeholder="Your site's tagline"
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Brief description of your site
               </p>
             </SettingsField>
@@ -274,7 +274,7 @@ export function WebsiteGlobalSettings({
                 placeholder="Site Name | Tagline"
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Used when pages don&apos;t specify their own title
               </p>
             </SettingsField>
@@ -400,7 +400,7 @@ export function WebsiteGlobalSettings({
                   <Label className="text-sm font-medium">
                     Search Engine Indexing
                   </Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Allow search engines to index your site
                   </p>
                 </div>
@@ -418,7 +418,7 @@ export function WebsiteGlobalSettings({
               <div className="flex items-center justify-between">
                 <div>
                   <Label className="text-sm font-medium">XML Sitemap</Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Generate an XML sitemap for search engines
                   </p>
                 </div>
@@ -438,7 +438,7 @@ export function WebsiteGlobalSettings({
                   <Label className="text-sm font-medium">
                     Maintenance Mode
                   </Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-[var(--el-500)]">
                     Show maintenance page to visitors
                   </p>
                 </div>

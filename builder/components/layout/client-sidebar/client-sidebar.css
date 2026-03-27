@@ -2,7 +2,7 @@
 
 /* =========================================================================
  * Client Sidebar — Jira-style collapsible navigation
- * Dense, professional, collapsible sections with chevron toggles.
+ * Dense, professional, left-border active states, tight spacing.
  * ========================================================================= */
 
 /* Root — system font + dense text */
@@ -10,35 +10,49 @@
   @apply font-(family-name:--font-system) text-[13px];
 }
 
-/* Back link ——————————————————————————————————————————————————————————————— */
+/* Project header — Jira-style project identity ———————————————————————————— */
 
-.client-sidebar-back {
-  @apply flex items-center gap-2 h-7 px-2 rounded-(--radius-md) text-[12px] text-(--el-400) transition-colors duration-150 cursor-pointer select-none;
+.client-sidebar-project {
+  @apply flex items-center gap-2.5 px-2 py-1 rounded-sm cursor-pointer select-none transition-colors duration-100;
 }
 
-.client-sidebar-back:hover {
-  @apply bg-(--el-50) text-(--el-700);
+.client-sidebar-project:hover {
+  @apply bg-(--accent-primary-subtle)/50;
 }
 
-.client-sidebar-back svg {
-  @apply size-3.5 shrink-0;
+.client-sidebar-project-avatar {
+  @apply flex items-center justify-center size-7 rounded-md shrink-0;
+  @apply bg-(--accent-primary) text-(--accent-primary-foreground);
+  @apply text-[11px] font-bold uppercase;
 }
 
-/* Icon mode — hide back text */
+.client-sidebar-project-info {
+  @apply flex flex-col min-w-0;
+}
+
+.client-sidebar-project-name {
+  @apply text-[13px] font-semibold text-(--el-800) truncate leading-tight;
+}
+
+.client-sidebar-project-type {
+  @apply text-[11px] text-(--el-400) leading-tight;
+}
+
+/* Icon mode — hide project text, show just avatar */
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-back span {
+  .client-sidebar-project-info {
   @apply hidden;
 }
 
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-back {
-  @apply justify-center;
+  .client-sidebar-project {
+  @apply justify-center px-0;
 }
 
-/* Section toggle (replaces static labels) ————————————————————————————————— */
+/* Section toggle ————————————————————————————————————————————————————————— */
 
 .client-sidebar-section-toggle {
-  @apply flex items-center gap-1 w-full text-[11px] font-semibold uppercase tracking-[0.05em] text-(--el-400) px-2 py-1.5 select-none cursor-pointer transition-colors duration-150 rounded-(--radius-md);
+  @apply flex items-center gap-1 w-full text-[11px] font-semibold uppercase tracking-[0.05em] text-(--el-400) px-2 py-1 select-none cursor-pointer transition-colors duration-100 rounded-sm;
 }
 
 .client-sidebar-section-toggle:hover {
@@ -46,7 +60,7 @@
 }
 
 .client-sidebar-section-chevron {
-  @apply size-3 shrink-0 transition-transform duration-150;
+  @apply size-3 shrink-0 transition-transform duration-100;
 }
 
 .client-sidebar-section-chevron[data-open="true"] {
@@ -62,25 +76,31 @@
 /* Static group labels (footer only) ——————————————————————————————————————— */
 
 .client-sidebar-label {
-  @apply text-[11px] font-semibold uppercase tracking-[0.05em] text-(--el-400) px-2 pb-1 pt-1.5 select-none;
+  @apply text-[11px] font-semibold uppercase tracking-[0.05em] text-(--el-400) px-2 pb-0.5 pt-1 select-none;
 }
 
-/* Nav items — tight rows ——————————————————————————————————————————————————— */
+/* Nav items — Jira-style tight rows with left-border active ——————————————— */
 
 .client-sidebar-link {
-  @apply flex items-center gap-2 h-7 px-2 rounded-(--radius-md) text-[13px] font-normal text-(--el-600) transition-colors duration-150 cursor-pointer select-none;
+  @apply relative flex items-center gap-2 h-7 px-2 rounded-sm text-[13px] font-normal text-(--el-600) transition-colors duration-100 cursor-pointer select-none;
 }
 
 .client-sidebar-link:hover {
-  @apply bg-(--el-50) text-(--el-800);
+  @apply bg-(--accent-primary-subtle)/50 text-(--el-800);
 }
 
 .client-sidebar-link[data-active="true"] {
   @apply bg-(--accent-primary-subtle) text-(--accent-primary) font-medium;
 }
 
+/* Jira-style left border indicator on active */
+.client-sidebar-link[data-active="true"]::before {
+  content: "";
+  @apply absolute left-0 top-1 bottom-1 w-0.5 rounded-full bg-(--accent-primary);
+}
+
 .client-sidebar-link svg {
-  @apply size-3.5 shrink-0 text-(--el-500);
+  @apply size-4 shrink-0 text-(--el-500);
 }
 
 .client-sidebar-link:hover svg {
@@ -95,14 +115,19 @@
   @apply truncate;
 }
 
-/* Icon mode — hide text, center icons */
+/* Icon mode — square icon buttons */
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
   .client-sidebar-link {
-  @apply justify-center px-0;
+  @apply justify-center px-0 size-8 rounded-[3px];
 }
 
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
   .client-sidebar-link span {
+  @apply hidden;
+}
+
+[data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
+  .client-sidebar-link[data-active="true"]::before {
   @apply hidden;
 }
 
@@ -114,25 +139,25 @@
 /* Editor action buttons ——————————————————————————————————————————————————— */
 
 .client-sidebar-action {
-  @apply flex items-center gap-2 h-7 px-2 rounded-(--radius-md) text-[13px] font-normal text-(--el-600) transition-colors duration-150 cursor-pointer select-none w-full;
+  @apply flex items-center gap-2 h-7 px-2 rounded-sm text-[13px] font-normal text-(--el-600) transition-colors duration-100 cursor-pointer select-none w-full;
 }
 
 .client-sidebar-action:hover {
-  @apply bg-(--el-50) text-(--el-800);
+  @apply bg-(--accent-primary-subtle)/50 text-(--el-800);
 }
 
 .client-sidebar-action svg {
-  @apply size-3.5 shrink-0 text-(--el-500);
+  @apply size-4 shrink-0 text-(--el-500);
 }
 
 .client-sidebar-action:hover svg {
   @apply text-(--el-700);
 }
 
-/* Icon mode — hide text in actions */
+/* Icon mode — square icon buttons for actions */
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
   .client-sidebar-action {
-  @apply justify-center px-0;
+  @apply justify-center px-0 size-8 rounded-[3px];
 }
 
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]

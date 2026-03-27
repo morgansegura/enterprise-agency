@@ -9,11 +9,11 @@
 }
 
 .invite-user-field label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-[14px] font-medium text-(--el-800);
 }
 
 .invite-user-error {
-  @apply text-sm text-(--destructive);
+  @apply text-[14px] text-(--destructive);
 }
 
 .invite-user-actions {

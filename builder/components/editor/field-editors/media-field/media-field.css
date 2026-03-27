@@ -13,11 +13,11 @@
 }
 
 .media-field__label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .media-field__required {
-  @apply ml-0.5 text-(--destructive);
+  @apply ml-0.5 text-(--status-error);
 }
 
 .media-field__content {
@@ -33,7 +33,7 @@
 }
 
 .media-field__preview {
-  @apply relative rounded-md overflow-hidden border border-(--input) bg-(--muted);
+  @apply relative rounded-md overflow-hidden border border-(--el-150) bg-(--el-100);
   @apply aspect-square;
 }
 
@@ -46,11 +46,11 @@
 }
 
 .media-field__preview-icon-svg {
-  @apply w-8 h-8 text-(--muted-foreground);
+  @apply w-8 h-8 text-(--el-500);
 }
 
 .media-field__remove {
-  @apply absolute top-1 right-1 p-1 rounded-full bg-(--background)/80 hover:bg-(--destructive) hover:text-(--destructive-foreground);
+  @apply absolute top-1 right-1 p-1 rounded-full bg-(--el-0)/80 hover:bg-(--status-error) hover:text-(--destructive-foreground);
   @apply transition-colors;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .media-field__select-btn--error {
-  @apply border-(--destructive) text-(--destructive) hover:bg-(--destructive)/10;
+  @apply border-(--destructive) text-(--status-error) hover:bg-(--status-error)/10;
 }
 
 .media-field__select-icon {
@@ -71,9 +71,9 @@
 }
 
 .media-field__description {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .media-field__error {
-  @apply text-xs text-(--destructive);
+  @apply text-xs text-(--status-error);
 }

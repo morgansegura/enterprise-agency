@@ -27,12 +27,12 @@ const alignClasses: Record<string, string> = {
 };
 
 const variantClasses: Record<string, string> = {
-  body: "text-foreground",
-  muted: "text-muted-foreground",
-  caption: "text-muted-foreground text-sm",
+  body: "text-[var(--el-800)]",
+  muted: "text-[var(--el-500)]",
+  caption: "text-[var(--el-500)] text-sm",
 };
 
-export default function TextBlockRenderer({ block }: BlockRendererProps) {
+export default function TextBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as TextBlockData;
   const {
     text,
@@ -67,7 +67,33 @@ export default function TextBlockRenderer({ block }: BlockRendererProps) {
     );
   }
 
-  // Fallback to plain text
+  // Plain text — contentEditable in edit mode
+  if (isEditing && onChange) {
+    return (
+      <div
+        style={{
+          maxWidth: maxWidth || "none",
+          margin: align === "center" ? "0 auto" : undefined,
+        }}
+      >
+        <p
+          className={textClasses}
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={(e: React.FocusEvent<HTMLParagraphElement>) => {
+            const newText = e.currentTarget.textContent || "";
+            if (newText !== text) {
+              onChange({ ...block, data: { ...block.data, text: newText } });
+            }
+          }}
+          style={{ outline: "none", cursor: "text" }}
+        >
+          {text}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{

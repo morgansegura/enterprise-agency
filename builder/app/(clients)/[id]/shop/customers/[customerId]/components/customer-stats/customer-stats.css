@@ -22,7 +22,7 @@
 }
 
 .customer-stats-value {
-  @apply text-lg font-semibold tabular-nums text-(--foreground);
+  @apply text-lg font-semibold tabular-nums text-(--el-800);
 }
 
 .customer-stats-account-badge {

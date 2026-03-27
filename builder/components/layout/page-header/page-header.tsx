@@ -9,7 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 
 import "./page-header.css";
+import { Button } from "../../ui/button";
 
 // =============================================================================
 // Types

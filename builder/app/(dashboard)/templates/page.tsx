@@ -87,7 +87,7 @@ export default function TemplatesPage() {
           ))}
         </div>
       ) : !templates || templates.length === 0 ? (
-        <div className="text-center py-20 text-muted-foreground">
+        <div className="text-center py-20 text-[var(--el-500)]">
           <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
           <h3 className="text-base font-medium mb-1">No templates yet</h3>
           <p className="text-sm">
@@ -106,12 +106,12 @@ export default function TemplatesPage() {
                   {template.templateName || template.businessName}
                 </h3>
                 {template.templateDescription && (
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-[var(--el-500)] mt-1">
                     {template.templateDescription}
                   </p>
                 )}
               </div>
-              <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+              <div className="flex flex-wrap gap-3 text-xs text-[var(--el-500)]">
                 {template._count?.pages !== undefined && (
                   <span className="flex items-center gap-1">
                     <FileText className="h-3 w-3" />
@@ -138,11 +138,11 @@ export default function TemplatesPage() {
                 )}
               </div>
               <div className="flex items-center gap-2 mt-auto pt-2">
-                <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-[var(--el-100)] text-[var(--el-500)]">
                   {template.tier}
                 </span>
                 {template.businessType && (
-                  <span className="text-[11px] text-muted-foreground">
+                  <span className="text-[11px] text-[var(--el-500)]">
                     {template.businessType}
                   </span>
                 )}

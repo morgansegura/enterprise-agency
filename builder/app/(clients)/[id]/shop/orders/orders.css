@@ -5,7 +5,7 @@
    ============================================================================ */
 
 .orders-page {
-  @apply flex-1 space-y-6;
+  @apply flex-1 flex flex-col gap-3 p-4 bg-(--el-0) rounded-[3px] border border-(--border)/50 shadow-xs;
 }
 
 /* Stats Row */
@@ -23,7 +23,7 @@
 }
 
 .orders-stat-label {
-  @apply text-sm font-medium text-(--el-400);
+  @apply text-[14px] font-medium text-(--el-400);
 }
 
 .orders-stat-icon {
@@ -31,7 +31,7 @@
 }
 
 .orders-stat-value {
-  @apply text-2xl font-bold text-(--foreground);
+  @apply text-xl font-bold text-(--el-800);
 }
 
 /* Filters */
@@ -77,19 +77,19 @@
 }
 
 .orders-table-row {
-  @apply hover:bg-(--el-50) transition-colors;
+  @apply hover:bg-(--el-50) transition-colors duration-100;
 }
 
 .orders-table-row td {
-  @apply px-3 py-3 text-sm;
+  @apply px-3 py-3 text-[14px];
 }
 
 .orders-col-order {
-  @apply font-medium text-(--foreground);
+  @apply font-medium text-(--el-800);
 }
 
 .orders-col-customer-name {
-  @apply font-medium text-(--foreground);
+  @apply font-medium text-(--el-800);
 }
 
 .orders-col-customer-email {
@@ -97,7 +97,7 @@
 }
 
 .orders-col-total {
-  @apply text-right font-medium text-(--foreground);
+  @apply text-right font-medium text-(--el-800);
 }
 
 .orders-col-date {
@@ -169,7 +169,7 @@
 
 /* Empty State */
 .orders-empty {
-  @apply flex flex-col items-center justify-center py-20 text-center;
+  @apply flex flex-col items-center justify-center py-16 text-center;
 }
 
 .orders-empty-icon {
@@ -177,11 +177,11 @@
 }
 
 .orders-empty h3 {
-  @apply text-base font-medium text-(--foreground) mb-1;
+  @apply text-base font-medium text-(--el-800) mb-1;
 }
 
 .orders-empty p {
-  @apply text-sm text-(--el-400);
+  @apply text-[14px] text-(--el-400);
 }
 
 /* Skeleton */

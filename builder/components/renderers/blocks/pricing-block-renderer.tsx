@@ -32,7 +32,7 @@ export default function PricingBlockRenderer({ block }: BlockRendererProps) {
             <h3 className="text-xl font-bold">{heading}</h3>
           )}
           {description && (
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-[var(--el-500)] mt-1">
               {description}
             </p>
           )}
@@ -61,13 +61,13 @@ export default function PricingBlockRenderer({ block }: BlockRendererProps) {
             <div className="mt-2 flex items-baseline gap-1">
               <span className="text-3xl font-bold">{tier.price}</span>
               {tier.period && (
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-[var(--el-500)]">
                   {tier.period}
                 </span>
               )}
             </div>
             {tier.description && (
-              <p className="text-xs text-muted-foreground mt-2">
+              <p className="text-xs text-[var(--el-500)] mt-2">
                 {tier.description}
               </p>
             )}
@@ -77,7 +77,7 @@ export default function PricingBlockRenderer({ block }: BlockRendererProps) {
                   key={fi}
                   className="flex items-start gap-2 text-sm"
                 >
-                  <span className="text-primary mt-0.5">✓</span>
+                  <span className="text-[var(--accent-primary)] mt-0.5">✓</span>
                   {f}
                 </li>
               ))}
@@ -87,8 +87,8 @@ export default function PricingBlockRenderer({ block }: BlockRendererProps) {
                 className={cn(
                   "inline-flex w-full justify-center items-center px-4 py-2 rounded-md text-sm font-medium",
                   tier.highlighted
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-foreground",
+                    ? "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]"
+                    : "bg-[var(--el-100)] text-[var(--el-800)]",
                 )}
               >
                 {tier.cta?.text || "Choose Plan"}

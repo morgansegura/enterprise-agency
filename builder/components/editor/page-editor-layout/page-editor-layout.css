@@ -1,67 +1,62 @@
 @reference "tailwindcss";
 
 /* =============================================================================
- * Page Editor Layout — Enterprise canvas-focused editor
+ * Page Editor Layout — Jira-style 3-panel editor
  * ============================================================================= */
 
 .page-editor-layout {
-  @apply h-screen flex flex-col w-full;
-  @apply bg-(--builder-background);
+  @apply h-full flex flex-col w-full;
+  @apply bg-(--el-50);
 }
 
 /* =============================================================================
- * Toolbar
+ * Toolbar — Jira-style top bar matching admin header
  * ============================================================================= */
 
 .page-editor-toolbar {
-  @apply flex items-center justify-between px-3 h-11 z-10;
-  @apply bg-(--builder-card) border-b border-(--builder-border);
+  @apply flex items-center justify-between px-4 h-11 z-10;
+  @apply bg-(--el-0) border-b border-(--border-default);
 }
 
 .page-editor-toolbar-left {
-  @apply flex items-center gap-2 flex-1 min-w-0;
+  @apply flex items-center gap-3 flex-1 min-w-0;
 }
 
-.page-editor-toolbar-trigger {
-  @apply relative cursor-pointer rounded-md flex items-center justify-center w-7 h-7 -ml-0.5;
-  @apply transition-colors duration-150;
-
-  & svg {
-    @apply size-4 text-(--builder-muted-foreground);
-  }
+/* Toolbar text buttons — ghost-style with icon + label */
+.page-editor-toolbar-btn {
+  @apply flex items-center gap-1.5 px-2 h-7 rounded-[3px] cursor-pointer;
+  @apply text-[13px] font-medium text-(--el-500);
+  @apply bg-transparent border-none;
+  @apply transition-colors duration-100;
 
   &:hover {
-    @apply bg-(--builder-muted);
-  }
-
-  &:hover svg {
-    @apply text-(--builder-foreground);
+    @apply bg-(--accent-primary-subtle) text-(--el-800);
   }
 }
 
 .page-editor-toolbar-center {
-  @apply flex items-center justify-center;
+  @apply flex items-center justify-center gap-1;
 }
 
 .page-editor-toolbar-right {
-  @apply flex items-center gap-1.5 flex-1 justify-end;
+  @apply flex items-center gap-2 flex-1 justify-end;
 }
 
 .page-editor-status {
-  @apply text-xs whitespace-nowrap min-w-30;
-  @apply text-(--builder-muted-foreground);
+  @apply text-[12px] whitespace-nowrap min-w-30;
+  @apply text-(--el-400);
 }
 
 .page-editor-status.saving {
-  @apply animate-pulse text-(--builder-primary);
+  @apply animate-pulse text-(--accent-primary);
 }
 
 .page-editor-status.unsaved {
-  @apply text-(--status-warning);
+  @apply text-(--status-warning) font-medium;
 }
 
 /* =============================================================================
- * Editor Body
+ * Editor Body — 3-panel layout
  * ============================================================================= */
 
 .page-editor-body {
@@ -69,46 +64,43 @@
 }
 
 /* =============================================================================
- * Left Panel — content tree
+ * Left Panel — layers tree with proper panel chrome
  * ============================================================================= */
 
 .page-editor-left-panel {
-  @apply w-[240px] h-full shrink-0 overflow-hidden;
+  @apply w-[220px] h-full shrink-0 overflow-hidden;
+  @apply bg-(--el-0) border-r border-(--border-default);
 }
 
 /* =============================================================================
- * Canvas — editing surface with dot-grid background
+ * Canvas — clean editing surface
  * ============================================================================= */
 
 .page-editor-canvas {
   @apply flex-1 flex flex-col relative overflow-y-auto min-h-0;
-  @apply bg-(--builder-body);
-  background-image:
-    radial-gradient(circle, var(--el-200, #e5e5e5) 0.5px, transparent 0.5px);
-  background-size: 24px 24px;
+  @apply bg-white;
 }
 
 .page-editor-canvas-content {
-  @apply flex-1 mx-auto my-6 w-full overflow-hidden;
-  @apply bg-white rounded-lg shadow-sm;
-  @apply max-w-7xl min-h-[calc(100vh-200px)];
+  @apply w-full h-full overflow-hidden;
+  @apply bg-white;
 }
 
 /* =============================================================================
- * Selection highlight in preview — applied via JS data attribute
+ * Selection highlight in preview
  * ============================================================================= */
 
 .page-editor-canvas-content [data-block-key].is-preview-selected {
-  @apply outline-2 outline-dashed outline-(--builder-primary) -outline-offset-2 rounded-sm;
+  @apply outline-2 outline-dashed outline-(--accent-primary) -outline-offset-2 rounded-[3px];
 }
 
 .page-editor-canvas-content [data-block-key].is-preview-hovered {
-  @apply outline-1 outline-dashed -outline-offset-1 rounded-sm;
-  outline-color: color-mix(in srgb, var(--builder-primary) 50%, transparent);
+  @apply outline-1 outline-dashed -outline-offset-1 rounded-[3px];
+  outline-color: color-mix(in srgb, var(--accent-primary) 50%, transparent);
 }
 
 /* =============================================================================
- * Preview Mode
+ * Preview Mode — hide chrome
  * ============================================================================= */
 
 .page-editor-layout[data-preview-mode="true"] {
@@ -117,11 +109,11 @@
   }
 
   .page-editor-canvas {
-    @apply bg-(--builder-background);
+    @apply bg-(--el-0);
     background-image: none;
   }
 
   .page-editor-canvas-content {
-    @apply m-0 rounded-none shadow-none max-w-none;
+    @apply m-0 rounded-none shadow-none border-none max-w-none;
   }
 }

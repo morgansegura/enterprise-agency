@@ -73,10 +73,23 @@ function createDefaultBlock(blockType: string): Block {
 
 export function usePageEditor(initialSections: Section[]) {
   const [sections, setSections] = React.useState<Section[]>(initialSections);
+  const serverLoadedRef = React.useRef(false);
 
-  // Sync when initial data changes
+  // Sync from server until real page data arrives.
+  // Once the server data has loaded (page fetch complete), local state becomes authoritative.
   React.useEffect(() => {
-    setSections(initialSections);
+    if (!serverLoadedRef.current) {
+      setSections(initialSections);
+      // Consider loaded once we get data from the server (has _key from DB, not generated)
+      const isFromServer = initialSections.some(
+        (s) => s._key && !s._key.startsWith("section-"),
+      ) || initialSections.some(
+        (s) => s.containers?.some((c) => (c.blocks?.length ?? 0) > 0),
+      );
+      if (isFromServer) {
+        serverLoadedRef.current = true;
+      }
+    }
   }, [initialSections]);
 
   // --- Block operations ---

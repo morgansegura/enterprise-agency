@@ -9,6 +9,8 @@ import "@/lib/renderer/implemented-renderers";
 interface PageRendererProps {
   page: Page;
   breakpoint?: "desktop" | "tablet" | "mobile";
+  onBlockChange?: (sectionIndex: number, containerIndex: number, blockIndex: number, updatedBlock: unknown) => void;
+  isEditing?: boolean;
 }
 
 /**
@@ -23,13 +25,15 @@ interface PageRendererProps {
 export function PageRenderer({
   page,
   breakpoint = "desktop",
+  onBlockChange,
+  isEditing,
 }: PageRendererProps) {
   // Get sections from page data (supports both flat and nested structure)
   const sections: Section[] = page.sections || page.content?.sections || [];
 
   if (sections.length === 0) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center text-muted-foreground">
+      <div className="min-h-[50vh] flex items-center justify-center text-[var(--el-500)]">
         <p>This page has no content yet.</p>
       </div>
     );
@@ -37,11 +41,14 @@ export function PageRenderer({
 
   return (
     <div className="page-content">
-      {sections.map((section) => (
+      {sections.map((section, sectionIndex) => (
         <SectionRenderer
           key={section._key}
           section={section}
+          sectionIndex={sectionIndex}
           breakpoint={breakpoint}
+          onBlockChange={onBlockChange}
+          isEditing={isEditing}
         />
       ))}
     </div>
@@ -54,16 +61,16 @@ export function PageRenderer({
 export function PageRendererSkeleton() {
   return (
     <div className="animate-pulse space-y-8 p-8">
-      <div className="h-8 bg-muted rounded w-1/3" />
+      <div className="h-8 bg-[var(--el-100)] rounded w-1/3" />
       <div className="space-y-4">
-        <div className="h-4 bg-muted rounded w-full" />
-        <div className="h-4 bg-muted rounded w-5/6" />
-        <div className="h-4 bg-muted rounded w-4/6" />
+        <div className="h-4 bg-[var(--el-100)] rounded w-full" />
+        <div className="h-4 bg-[var(--el-100)] rounded w-5/6" />
+        <div className="h-4 bg-[var(--el-100)] rounded w-4/6" />
       </div>
-      <div className="h-48 bg-muted rounded" />
+      <div className="h-48 bg-[var(--el-100)] rounded" />
       <div className="space-y-4">
-        <div className="h-4 bg-muted rounded w-full" />
-        <div className="h-4 bg-muted rounded w-3/4" />
+        <div className="h-4 bg-[var(--el-100)] rounded w-full" />
+        <div className="h-4 bg-[var(--el-100)] rounded w-3/4" />
       </div>
     </div>
   );

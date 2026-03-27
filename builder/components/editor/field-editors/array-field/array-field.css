@@ -13,19 +13,19 @@
 }
 
 .array-field__label {
-  @apply text-sm font-medium text-(--foreground) flex items-center gap-2;
+  @apply text-sm font-medium text-(--el-800) flex items-center gap-2;
 }
 
 .array-field__required {
-  @apply text-(--destructive);
+  @apply text-(--status-error);
 }
 
 .array-field__count {
-  @apply text-(--muted-foreground) font-normal;
+  @apply text-(--el-500) font-normal;
 }
 
 .array-field__container {
-  @apply border border-(--input) rounded-md overflow-hidden;
+  @apply border border-(--el-150) rounded-md overflow-hidden;
 }
 
 .array-field__container--error {
@@ -38,7 +38,7 @@
 
 /* Item */
 .array-field__item {
-  @apply bg-(--background);
+  @apply bg-(--el-0);
 }
 
 .array-field__item--dragging {
@@ -46,12 +46,12 @@
 }
 
 .array-field__item-header {
-  @apply flex items-center gap-1 p-2 bg-(--muted)/30;
+  @apply flex items-center gap-1 p-2 bg-(--el-100)/30;
 }
 
 .array-field__item-drag {
-  @apply p-1 cursor-grab text-(--muted-foreground) hover:text-(--foreground);
-  @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-(--ring) rounded;
+  @apply p-1 cursor-grab text-(--el-500) hover:text-(--el-800);
+  @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-(--accent-primary) rounded;
 }
 
 .array-field__item-drag:active {
@@ -63,8 +63,8 @@
 }
 
 .array-field__item-toggle {
-  @apply p-1 text-(--muted-foreground) hover:text-(--foreground) rounded;
-  @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-(--ring);
+  @apply p-1 text-(--el-500) hover:text-(--el-800) rounded;
+  @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-(--accent-primary);
 }
 
 .array-field__item-toggle-icon {
@@ -76,7 +76,7 @@
 }
 
 .array-field__item-remove {
-  @apply text-(--muted-foreground) hover:text-(--destructive);
+  @apply text-(--el-500) hover:text-(--status-error);
 }
 
 .array-field__item-remove-icon {
@@ -93,12 +93,12 @@
 }
 
 .array-field__empty-text {
-  @apply text-sm text-(--muted-foreground);
+  @apply text-sm text-(--el-500);
 }
 
 /* Add button */
 .array-field__add-btn {
-  @apply w-full rounded-none border-0 border-t border-(--input);
+  @apply w-full rounded-none border-0 border-t border-(--el-150);
 }
 
 .array-field__add-icon {
@@ -107,13 +107,13 @@
 
 /* Placeholder for fields without renderer */
 .array-field__placeholder {
-  @apply p-2 bg-(--muted)/50 rounded text-sm text-(--muted-foreground);
+  @apply p-2 bg-(--el-100)/50 rounded text-sm text-(--el-500);
 }
 
 .array-field__description {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .array-field__error {
-  @apply text-xs text-(--destructive);
+  @apply text-xs text-(--status-error);
 }

@@ -206,7 +206,7 @@ export default function EditPostPage({
 
   return (
     <div className="flex">
-      <aside className="relative bg-white -m-4 w-12 border-r flex flex-col top-0 bottom-0 items-center space-y-4 py-4 text-muted-foreground">
+      <aside className="relative bg-white -m-4 w-12 border-r flex flex-col top-0 bottom-0 items-center space-y-4 py-4 text-[var(--el-500)]">
         <Button
           variant="ghost"
           size="icon-sm"
@@ -369,7 +369,7 @@ export default function EditPostPage({
                       variant="outline"
                       size="lg"
                       onClick={() => editor.handleAddSectionAt(editor.sections.length)}
-                      className="w-full border-2 border-dashed hover:border-primary hover:bg-primary/5"
+                      className="w-full border-2 border-dashed hover:border-primary hover:bg-[var(--accent-primary)]/5"
                     >
                       <PlusCircle className="h-4 w-4 " />
                       Add Section
@@ -383,7 +383,7 @@ export default function EditPostPage({
                 <summary className="cursor-pointer text-sm font-medium">
                   Content Data (Debug)
                 </summary>
-                <pre className="mt-2 p-4 bg-muted rounded text-xs overflow-auto max-h-96">
+                <pre className="mt-2 p-4 bg-[var(--el-100)] rounded text-xs overflow-auto max-h-96">
                   {JSON.stringify({ sections: editor.sections }, null, 2)}
                 </pre>
               </details>

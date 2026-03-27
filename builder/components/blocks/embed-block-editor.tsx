@@ -75,20 +75,20 @@ export function EmbedBlockEditor({
         onClick={() => setIsEditing(true)}
       >
         <div
-          className={`relative ${aspectRatioMap[aspectRatio]} bg-muted rounded overflow-hidden ${aspectRatio === "auto" ? "min-h-[200px]" : ""}`}
+          className={`relative ${aspectRatioMap[aspectRatio]} bg-[var(--el-100)] rounded overflow-hidden ${aspectRatio === "auto" ? "min-h-[200px]" : ""}`}
         >
           {block.data.html ? (
             <div className="flex items-center justify-center h-full">
-              <Code className="h-12 w-12 text-muted-foreground" />
-              <span className="ml-2 text-sm text-muted-foreground">
+              <Code className="h-12 w-12 text-[var(--el-500)]" />
+              <span className="ml-2 text-sm text-[var(--el-500)]">
                 Embedded content
               </span>
             </div>
           ) : (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <Code className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">
+                <Code className="h-12 w-12 mx-auto text-[var(--el-500)] mb-2" />
+                <p className="text-sm text-[var(--el-500)]">
                   No embed code set
                 </p>
               </div>
@@ -96,7 +96,7 @@ export function EmbedBlockEditor({
           )}
         </div>
         {block.data.caption && (
-          <p className="text-sm text-muted-foreground mt-2 text-center">
+          <p className="text-sm text-[var(--el-500)] mt-2 text-center">
             {block.data.caption}
           </p>
         )}
@@ -148,7 +148,7 @@ export function EmbedBlockEditor({
             rows={6}
             className="font-mono text-xs"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Paste embed code from platforms like YouTube, Twitter, CodePen, etc.
           </p>
         </div>
@@ -188,22 +188,22 @@ export function EmbedBlockEditor({
           />
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">
             Preview ({breakpoint}):
           </p>
           <div
-            className={`relative ${aspectRatioMap[aspectRatio]} bg-muted rounded overflow-hidden ${aspectRatio === "auto" ? "min-h-[200px]" : ""}`}
+            className={`relative ${aspectRatioMap[aspectRatio]} bg-[var(--el-100)] rounded overflow-hidden ${aspectRatio === "auto" ? "min-h-[200px]" : ""}`}
           >
             <div className="flex items-center justify-center h-full">
-              <Code className="h-12 w-12 text-muted-foreground" />
-              <span className="ml-2 text-sm text-muted-foreground">
+              <Code className="h-12 w-12 text-[var(--el-500)]" />
+              <span className="ml-2 text-sm text-[var(--el-500)]">
                 {block.data.html ? "Embedded content" : "No embed code"}
               </span>
             </div>
           </div>
           {block.data.caption && (
-            <p className="text-sm text-muted-foreground mt-2 text-center">
+            <p className="text-sm text-[var(--el-500)] mt-2 text-center">
               {block.data.caption}
             </p>
           )}

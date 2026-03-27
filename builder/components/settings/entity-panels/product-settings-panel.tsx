@@ -132,7 +132,7 @@ export function ProductSettingsPanel({
           <SettingsField>
             <Label htmlFor="product-price">Price</Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--el-500)]">
                 $
               </span>
               <Input
@@ -152,7 +152,7 @@ export function ProductSettingsPanel({
           <SettingsField>
             <Label htmlFor="compare-price">Compare at Price</Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--el-500)]">
                 $
               </span>
               <Input
@@ -169,7 +169,7 @@ export function ProductSettingsPanel({
                 disabled={isLoading}
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-[var(--el-500)] mt-1">
               Original price for showing discounts
             </p>
           </SettingsField>
@@ -177,7 +177,7 @@ export function ProductSettingsPanel({
           <SettingsField>
             <Label htmlFor="cost-per-item">Cost per Item</Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--el-500)]">
                 $
               </span>
               <Input
@@ -194,7 +194,7 @@ export function ProductSettingsPanel({
                 disabled={isLoading}
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-[var(--el-500)] mt-1">
               For profit calculations (not shown to customers)
             </p>
           </SettingsField>
@@ -215,7 +215,7 @@ export function ProductSettingsPanel({
                 >
                   Track Inventory
                 </Label>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-[var(--el-500)]">
                   Enable stock quantity tracking
                 </p>
               </div>
@@ -255,7 +255,7 @@ export function ProductSettingsPanel({
                 >
                   Allow Backorder
                 </Label>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-[var(--el-500)]">
                   Continue selling when out of stock
                 </p>
               </div>

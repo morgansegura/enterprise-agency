@@ -331,7 +331,7 @@ export default function ClientTeamPage() {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                          className="text-destructive"
+                          className="text-[var(--status-error)]"
                           onClick={() => handleRemove(member)}
                         >
                           <Trash2 className="h-4 w-4" />

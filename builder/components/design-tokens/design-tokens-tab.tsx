@@ -27,13 +27,13 @@ export function DesignTokensTab({ tenantId }: DesignTokensTabProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="flex items-start gap-4 p-6 bg-muted/50 rounded-lg border">
-          <div className="rounded-full bg-primary/10 p-3">
-            <Palette className="h-6 w-6 text-primary" />
+        <div className="flex items-start gap-4 p-6 bg-[var(--el-100)]/50 rounded-lg border">
+          <div className="rounded-full bg-[var(--accent-primary)]/10 p-3">
+            <Palette className="h-6 w-6 text-[var(--accent-primary)]" />
           </div>
           <div className="flex-1 space-y-2">
             <h3 className="font-semibold">Use the Theme Manager</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[var(--el-500)]">
               The new Theme Manager provides a comprehensive interface for
               customizing all design tokens including color scales, typography
               settings, spacing values, and more. Generate live CSS previews and
@@ -48,7 +48,7 @@ export function DesignTokensTab({ tenantId }: DesignTokensTabProps) {
           </div>
         </div>
 
-        <div className="text-xs text-muted-foreground space-y-2">
+        <div className="text-xs text-[var(--el-500)] space-y-2">
           <p className="font-medium">Available in Theme Manager:</p>
           <ul className="list-disc list-inside space-y-1 ml-2">
             <li>Complete color system with 11-shade scales</li>

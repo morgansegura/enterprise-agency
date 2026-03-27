@@ -93,7 +93,7 @@ export function TagsList({
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className="text-destructive focus:text-destructive [&>svg]:text-destructive"
+                    className="text-[var(--status-error)] focus:text-[var(--status-error)] [&>svg]:text-[var(--status-error)]"
                     onClick={() => onDelete(tag)}
                   >
                     <Trash2 className="h-4 w-4" />

@@ -28,7 +28,7 @@
 }
 
 .order-detail-title {
-  @apply text-lg font-semibold text-(--foreground);
+  @apply text-lg font-semibold text-(--el-800);
 }
 
 .order-detail-date {
@@ -79,7 +79,7 @@
 }
 
 .order-detail-card-title {
-  @apply text-sm font-semibold text-(--foreground);
+  @apply text-sm font-semibold text-(--el-800);
 }
 
 .order-detail-card-body {

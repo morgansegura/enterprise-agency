@@ -46,7 +46,7 @@ export default function VideoBlockRenderer({ block }: BlockRendererProps) {
 
   if (!url) {
     return (
-      <div className="flex items-center justify-center bg-muted text-muted-foreground p-8 rounded-md aspect-video">
+      <div className="flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] p-8 rounded-md aspect-video">
         No video URL set
       </div>
     );
@@ -65,7 +65,7 @@ export default function VideoBlockRenderer({ block }: BlockRendererProps) {
         <div
           className={cn(
             containerClass,
-            "flex items-center justify-center bg-muted text-muted-foreground",
+            "flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)]",
           )}
         >
           Invalid YouTube URL
@@ -98,7 +98,7 @@ export default function VideoBlockRenderer({ block }: BlockRendererProps) {
         <div
           className={cn(
             containerClass,
-            "flex items-center justify-center bg-muted text-muted-foreground",
+            "flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)]",
           )}
         >
           Invalid Vimeo URL

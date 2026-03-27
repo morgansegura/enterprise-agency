@@ -3,13 +3,12 @@
 /* List Card - Reusable list item styles */
 
 .list-card {
-  @apply flex items-center gap-4 p-3 rounded-lg cursor-pointer;
-  border: 1px solid var(--border);
-  @apply transition-colors duration-150;
+  @apply flex items-center gap-3 p-2.5 rounded-md cursor-pointer;
+  @apply border border-(--border-default) transition-colors duration-100;
 }
 
 .list-card:hover {
-  border-color: var(--primary);
+  @apply border-(--accent-primary);
 }
 
 .list-card-static {
@@ -27,7 +26,7 @@
 /* Avatar/Icon container */
 .list-card-avatar {
   @apply h-10 w-10 shrink-0 rounded-full flex items-center justify-center;
-  @apply bg-(--muted);
+  @apply bg-(--el-100);
 }
 
 .list-card-avatar-rounded {
@@ -40,7 +39,7 @@
 
 .list-card-avatar > svg {
   @apply h-5 w-5;
-  @apply text-(--primary);
+  @apply text-(--accent-primary);
 }
 
 .list-card-avatar > span {
@@ -60,13 +59,13 @@
 /* Description */
 .list-card-description {
   @apply text-sm overflow-hidden text-ellipsis whitespace-nowrap;
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
 }
 
 /* Badge (role, type, etc.) */
 .list-card-badge {
   @apply px-2 py-0.5 rounded-full shrink-0 text-sm;
-  @apply bg-(--muted) text-(--muted-foreground);
+  @apply bg-(--el-100) text-(--el-500);
 }
 
 /* Status indicator with icon */
@@ -81,5 +80,5 @@
 /* Meta text (date, count) */
 .list-card-meta {
   @apply text-sm shrink-0;
-  @apply text-(--muted-foreground);
+  @apply text-(--el-500);
 }

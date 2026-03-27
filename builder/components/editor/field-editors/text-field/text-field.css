@@ -13,11 +13,11 @@
 }
 
 .text-field__label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .text-field__required {
-  @apply ml-0.5 text-(--destructive);
+  @apply ml-0.5 text-(--status-error);
 }
 
 .text-field__input-wrapper {
@@ -25,11 +25,11 @@
 }
 
 .text-field__prefix {
-  @apply absolute left-3 text-sm text-(--muted-foreground);
+  @apply absolute left-3 text-sm text-(--el-500);
 }
 
 .text-field__suffix {
-  @apply absolute right-3 text-sm text-(--muted-foreground);
+  @apply absolute right-3 text-sm text-(--el-500);
 }
 
 .text-field__input--has-prefix {
@@ -45,9 +45,9 @@
 }
 
 .text-field__description {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .text-field__error {
-  @apply text-xs text-(--destructive);
+  @apply text-xs text-(--status-error);
 }

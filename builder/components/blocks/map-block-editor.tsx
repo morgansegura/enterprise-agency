@@ -93,16 +93,16 @@ export function MapBlockEditor({
         onClick={() => setIsEditing(true)}
       >
         <div
-          className={`${heightClasses[height]} bg-muted rounded flex items-center justify-center`}
+          className={`${heightClasses[height]} bg-[var(--el-100)] rounded flex items-center justify-center`}
         >
           <div className="text-center">
-            <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
-            <p className="text-sm text-muted-foreground">
+            <MapPin className="h-12 w-12 text-[var(--el-500)] mx-auto mb-2" />
+            <p className="text-sm text-[var(--el-500)]">
               {block.data.embedUrl
                 ? "Embedded Map"
                 : `Map: ${block.data.center.lat.toFixed(4)}, ${block.data.center.lng.toFixed(4)}`}
             </p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-[var(--el-500)] mt-1">
               Zoom: {zoom} | Style: {style}
             </p>
           </div>
@@ -150,7 +150,7 @@ export function MapBlockEditor({
             rows={3}
             className="font-mono text-xs"
           />
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Paste Google Maps embed code or just the src URL
           </p>
         </FormItem>
@@ -236,19 +236,19 @@ export function MapBlockEditor({
           </FormItem>
         </div>
 
-        <div className="border rounded-lg p-4 bg-muted/30">
-          <p className="text-xs text-muted-foreground mb-2">Preview:</p>
+        <div className="border rounded-lg p-4 bg-[var(--el-100)]/30">
+          <p className="text-xs text-[var(--el-500)] mb-2">Preview:</p>
           <div
-            className={`${heightClasses[height]} bg-muted rounded flex items-center justify-center`}
+            className={`${heightClasses[height]} bg-[var(--el-100)] rounded flex items-center justify-center`}
           >
             <div className="text-center">
-              <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">
+              <MapPin className="h-12 w-12 text-[var(--el-500)] mx-auto mb-2" />
+              <p className="text-sm text-[var(--el-500)]">
                 {block.data.embedUrl
                   ? "Embedded Map"
                   : `Map: ${block.data.center.lat.toFixed(4)}, ${block.data.center.lng.toFixed(4)}`}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 Zoom: {zoom} | Style: {style} | Height: {height}
               </p>
             </div>

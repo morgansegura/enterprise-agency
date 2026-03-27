@@ -304,7 +304,7 @@ export function BackgroundEditor({
             <Button
               variant="ghost"
               size="sm"
-              className="w-full text-xs text-muted-foreground"
+              className="w-full text-xs text-[var(--el-500)]"
               onClick={toggleVia}
             >
               <PlusCircle className="h-3 w-3 mr-1" />

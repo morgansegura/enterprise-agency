@@ -143,7 +143,7 @@ function BreakpointIndicator() {
     <div
       className={cn(
         "flex items-center gap-1 px-2 py-1 rounded text-xs font-medium",
-        breakpoint === "desktop" && "bg-muted text-muted-foreground",
+        breakpoint === "desktop" && "bg-[var(--el-100)] text-[var(--el-500)]",
         breakpoint === "tablet" &&
           "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
         breakpoint === "mobile" &&
@@ -246,7 +246,7 @@ function ActionsBar({
             size="icon-sm"
             onClick={onDelete}
             disabled={!onDelete}
-            className="h-7 w-7 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            className="h-7 w-7 text-[var(--el-500)] hover:text-[var(--status-error)] hover:bg-[var(--status-error)]/10"
           >
             <Trash2 className="h-3.5 w-3.5" />
           </Button>
@@ -392,8 +392,8 @@ export function SettingsPanel({
         <div className="settings-panel-content">
           {!selectedElement ? (
             <div className="settings-panel-empty">
-              <Layers className="h-10 w-10 text-muted-foreground/30" />
-              <p className="text-sm text-muted-foreground">
+              <Layers className="h-10 w-10 text-[var(--el-500)]/30" />
+              <p className="text-sm text-[var(--el-500)]">
                 Select an element to edit
               </p>
             </div>
@@ -522,7 +522,7 @@ export function SettingsPanel({
             </>
           ) : (
             <div className="settings-panel-empty">
-              <p className="text-sm text-muted-foreground">Element not found</p>
+              <p className="text-sm text-[var(--el-500)]">Element not found</p>
             </div>
           )}
         </div>
@@ -636,7 +636,7 @@ function SectionStyleSettings({
                   handleChange("verticalAlign", v);
                 }}
               />
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[var(--el-500)]">
                 {verticalAlign} / {align}
               </span>
             </div>
@@ -1017,7 +1017,7 @@ function ContainerStyleSettings({
                   handleChange("verticalAlign", v);
                 }}
               />
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-[var(--el-500)]">
                 {verticalAlign} / {align}
               </span>
             </div>
@@ -1189,6 +1189,20 @@ function BlockStyleSettings({
         return <MapBlockSettings block={block} onChange={onChange} />;
       case "embed-block":
         return <EmbedBlockSettings block={block} onChange={onChange} />;
+      case "rich-text-block":
+        return <TextBlockSettings block={block} onChange={onChange} />;
+      case "audio-block":
+        return <GenericBlockSettings block={block} onChange={onChange} />;
+      case "logo-block":
+        return <ImageBlockSettings block={block} onChange={onChange} />;
+      case "accordion-block":
+      case "tabs-block":
+      case "columns-block":
+      case "container-block":
+      case "grid-block":
+      case "flex-block":
+      case "stack-block":
+        return <GenericBlockSettings block={block} onChange={onChange} />;
       default:
         return <GenericBlockSettings block={block} onChange={onChange} />;
     }
@@ -1205,10 +1219,10 @@ function BlockStyleSettings({
         defaultOpen={false}
       >
         <PropertyRow label="Type">
-          <span className="text-sm text-muted-foreground">{blockType}</span>
+          <span className="text-sm text-[var(--el-500)]">{blockType}</span>
         </PropertyRow>
         <PropertyRow label="Key">
-          <span className="text-xs text-muted-foreground font-mono">
+          <span className="text-xs text-[var(--el-500)] font-mono">
             {block._key}
           </span>
         </PropertyRow>
@@ -1309,7 +1323,7 @@ function TextBlockSettings({
             onChange={(e) => handleDataChange("content", e.target.value)}
             placeholder="Enter text content..."
             rows={4}
-            className="settings-input w-full resize-y text-sm rounded-md border border-input bg-background px-3 py-2"
+            className="settings-input w-full resize-y text-sm rounded-md border border-[var(--el-150)] bg-[var(--el-0)] px-3 py-2"
           />
         </PropertyRow>
       </PropertySection>
@@ -1814,11 +1828,17 @@ function GenericBlockSettings({
   block: Block;
   onChange: (block: Block) => void;
 }) {
+  const blockName = block._type
+    .replace("-block", "")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+
   return (
-    <PropertySection title="Block Data" icon={<Box className="h-3.5 w-3.5" />}>
-      <pre className="text-xs bg-muted p-2 rounded overflow-auto max-h-40">
-        {JSON.stringify(block.data, null, 2)}
-      </pre>
-    </PropertySection>
+    <div className="flex flex-col items-center justify-center gap-2 px-4 py-8 text-center">
+      <p className="text-[14px] font-medium text-[var(--el-800)]">{blockName}</p>
+      <p className="text-[12px] text-[var(--el-400)]">
+        Select this block on the canvas to edit its content directly.
+      </p>
+    </div>
   );
 }

@@ -14,7 +14,7 @@
 }
 
 .product-form-card-title {
-  @apply text-sm font-semibold text-(--foreground);
+  @apply text-sm font-semibold text-(--el-800);
 }
 
 .product-form-card-description {

@@ -1,0 +1,240 @@
+@reference "tailwindcss";
+
+/* ============================================================================
+   Duration tokens
+   ============================================================================ */
+
+[data-slot="motion"][data-duration="instant"],
+[data-slot="motion-collapse"][data-duration="instant"] {
+  --motion-duration: 100ms;
+}
+
+[data-slot="motion"][data-duration="fast"],
+[data-slot="motion-collapse"][data-duration="fast"] {
+  --motion-duration: 150ms;
+}
+
+[data-slot="motion"][data-duration="normal"],
+[data-slot="motion-collapse"][data-duration="normal"] {
+  --motion-duration: 200ms;
+}
+
+[data-slot="motion"][data-duration="slow"],
+[data-slot="motion-collapse"][data-duration="slow"] {
+  --motion-duration: 300ms;
+}
+
+[data-slot="motion"][data-duration="slower"],
+[data-slot="motion-collapse"][data-duration="slower"] {
+  --motion-duration: 450ms;
+}
+
+/* ============================================================================
+   Easing tokens
+   ============================================================================ */
+
+[data-slot="motion"][data-easing="standard"] {
+  --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+}
+
+[data-slot="motion"][data-easing="entrance"] {
+  --motion-easing: cubic-bezier(0, 0, 0.35, 1);
+}
+
+[data-slot="motion"][data-easing="exit"] {
+  --motion-easing: cubic-bezier(0.4, 0, 1, 1);
+}
+
+[data-slot="motion"][data-easing="spring"] {
+  --motion-easing: cubic-bezier(0.2, 1.2, 0.4, 1);
+}
+
+/* ============================================================================
+   Base motion
+   ============================================================================ */
+
+[data-slot="motion"] {
+  @apply will-change-[opacity,transform];
+  animation-duration: var(--motion-duration);
+  animation-timing-function: var(--motion-easing);
+  animation-fill-mode: both;
+}
+
+/* ============================================================================
+   Fade presets
+   ============================================================================ */
+
+[data-slot="motion"][data-preset="fade-in"] {
+  animation-name: motionFadeIn;
+}
+
+[data-slot="motion"][data-preset="fade-out"] {
+  animation-name: motionFadeOut;
+}
+
+@keyframes motionFadeIn {
+  from { @apply opacity-0; }
+  to { @apply opacity-100; }
+}
+
+@keyframes motionFadeOut {
+  from { @apply opacity-100; }
+  to { @apply opacity-0; }
+}
+
+/* ============================================================================
+   Slide presets
+   ============================================================================ */
+
+[data-slot="motion"][data-preset="slide-up"] {
+  animation-name: motionSlideUp;
+}
+
+[data-slot="motion"][data-preset="slide-down"] {
+  animation-name: motionSlideDown;
+}
+
+[data-slot="motion"][data-preset="slide-left"] {
+  animation-name: motionSlideLeft;
+}
+
+[data-slot="motion"][data-preset="slide-right"] {
+  animation-name: motionSlideRight;
+}
+
+@keyframes motionSlideUp {
+  from {
+    @apply opacity-0;
+    transform: translateY(8px);
+  }
+  to {
+    @apply opacity-100;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motionSlideDown {
+  from {
+    @apply opacity-0;
+    transform: translateY(-8px);
+  }
+  to {
+    @apply opacity-100;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motionSlideLeft {
+  from {
+    @apply opacity-0;
+    transform: translateX(8px);
+  }
+  to {
+    @apply opacity-100;
+    transform: translateX(0);
+  }
+}
+
+@keyframes motionSlideRight {
+  from {
+    @apply opacity-0;
+    transform: translateX(-8px);
+  }
+  to {
+    @apply opacity-100;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================================================
+   Scale presets
+   ============================================================================ */
+
+[data-slot="motion"][data-preset="scale-up"] {
+  animation-name: motionScaleUp;
+}
+
+[data-slot="motion"][data-preset="scale-down"] {
+  animation-name: motionScaleDown;
+}
+
+[data-slot="motion"][data-preset="zoom-in"] {
+  animation-name: motionZoomIn;
+}
+
+[data-slot="motion"][data-preset="zoom-out"] {
+  animation-name: motionZoomOut;
+}
+
+@keyframes motionScaleUp {
+  from {
+    @apply opacity-0;
+    transform: scale(0.95);
+  }
+  to {
+    @apply opacity-100;
+    transform: scale(1);
+  }
+}
+
+@keyframes motionScaleDown {
+  from {
+    @apply opacity-100;
+    transform: scale(1);
+  }
+  to {
+    @apply opacity-0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes motionZoomIn {
+  from {
+    @apply opacity-0;
+    transform: scale(0.5);
+  }
+  to {
+    @apply opacity-100;
+    transform: scale(1);
+  }
+}
+
+@keyframes motionZoomOut {
+  from {
+    @apply opacity-100;
+    transform: scale(1);
+  }
+  to {
+    @apply opacity-0;
+    transform: scale(0.5);
+  }
+}
+
+/* ============================================================================
+   Collapse
+   ============================================================================ */
+
+[data-slot="motion-collapse"] {
+  @apply overflow-hidden;
+  transition-property: height;
+  transition-duration: var(--motion-duration);
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+[data-slot="motion-collapse"][data-state="closed"] {
+  @apply pointer-events-none;
+}
+
+/* ============================================================================
+   Reduced motion
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="motion"] {
+    animation-duration: 0ms !important;
+  }
+
+  [data-slot="motion-collapse"] {
+    transition-duration: 0ms !important;
+  }
+}

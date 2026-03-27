@@ -152,7 +152,7 @@ export function PageCard({
                 "w-full flex items-center gap-2 px-2 py-1.5 text-sm rounded-md transition-colors",
                 page.status === "published"
                   ? "bg-green-50 text-green-700"
-                  : "hover:bg-muted",
+                  : "hover:bg-[var(--el-100)]",
               )}
               onClick={() => handleStatusChange("published")}
             >
@@ -167,7 +167,7 @@ export function PageCard({
                 "w-full flex items-center gap-2 px-2 py-1.5 text-sm rounded-md transition-colors",
                 page.status === "draft"
                   ? "bg-amber-50 text-amber-700"
-                  : "hover:bg-muted",
+                  : "hover:bg-[var(--el-100)]",
               )}
               onClick={() => handleStatusChange("draft")}
             >
@@ -237,7 +237,7 @@ export function PageCard({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={() => actions.onDelete?.(page)}
-                  className="text-destructive focus:text-destructive [&>svg]:text-destructive"
+                  className="text-[var(--status-error)] focus:text-[var(--status-error)] [&>svg]:text-[var(--status-error)]"
                 >
                   <Trash2 className="h-4 w-4" />
                   Delete

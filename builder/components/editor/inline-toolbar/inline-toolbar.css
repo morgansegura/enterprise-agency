@@ -6,7 +6,7 @@
 
 .inline-toolbar {
   @apply flex items-center gap-[2px] px-1 py-[3px] rounded-lg z-10;
-  @apply bg-(--builder-card);
+  @apply bg-(--el-0);
   border: 1px solid var(--builder-border);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
@@ -80,7 +80,7 @@
 
 .inline-toolbar-label {
   @apply text-[0.625rem] font-medium uppercase tracking-[0.04em] px-1.5 whitespace-nowrap;
-  @apply text-(--builder-muted-foreground);
+  @apply text-(--el-500);
 }
 
 /* =============================================================================
@@ -89,12 +89,12 @@
 
 .inline-toolbar-drag-handle {
   @apply flex items-center justify-center p-1 cursor-grab rounded;
-  @apply text-(--builder-muted-foreground);
+  @apply text-(--el-500);
   @apply transition-all duration-100 ease-out;
 }
 
 .inline-toolbar-drag-handle:hover {
-  @apply text-(--builder-foreground) bg-(--builder-muted);
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 .inline-toolbar-drag-handle:active {
@@ -107,7 +107,7 @@
 
 .inline-toolbar-divider {
   @apply w-px h-3.5 mx-[2px];
-  @apply bg-(--builder-border);
+  @apply bg-(--border-default);
 }
 
 .inline-toolbar--left .inline-toolbar-divider,
@@ -121,12 +121,12 @@
 
 .inline-toolbar-button {
   @apply flex items-center justify-center w-6 h-6 p-0 rounded;
-  @apply text-(--builder-muted-foreground);
+  @apply text-(--el-500);
   @apply transition-all duration-100 ease-out;
 }
 
 .inline-toolbar-button:hover:not(:disabled) {
-  @apply text-(--builder-foreground) bg-(--builder-muted);
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 .inline-toolbar-button:active:not(:disabled) {
@@ -139,7 +139,7 @@
 
 /* Active state */
 .inline-toolbar-button.is-active {
-  @apply text-(--builder-primary);
+  @apply text-(--accent-primary);
   background: color-mix(in srgb, var(--builder-primary) 10%, transparent);
 }
 
@@ -148,7 +148,7 @@
  * ============================================================================= */
 
 .inline-toolbar-button--destructive {
-  @apply text-(--builder-muted-foreground);
+  @apply text-(--el-500);
 }
 
 .inline-toolbar-button--destructive:hover:not(:disabled) {

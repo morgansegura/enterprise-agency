@@ -199,13 +199,13 @@ export function LoadingSettingsPanel({
       {/* Skeleton Animation Settings */}
       <SettingsGridBlock title="Skeleton Animation">
         <div className="col-span-2 space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[var(--el-500)]">
             Configure how skeleton placeholders animate while content loads.
           </p>
 
           {/* Preview */}
           <div className="p-4 rounded-lg border bg-card">
-            <Label className="text-xs text-muted-foreground mb-3 block">
+            <Label className="text-xs text-[var(--el-500)] mb-3 block">
               Preview
             </Label>
             <div className="space-y-4">
@@ -234,7 +234,7 @@ export function LoadingSettingsPanel({
                     <SelectItem key={opt.value} value={opt.value}>
                       <span className="flex justify-between w-full">
                         <span>{opt.label}</span>
-                        <span className="text-muted-foreground ml-2 text-xs">
+                        <span className="text-[var(--el-500)] ml-2 text-xs">
                           {opt.description}
                         </span>
                       </span>
@@ -269,13 +269,13 @@ export function LoadingSettingsPanel({
       {/* Image Placeholder Settings */}
       <SettingsGridBlock title="Image Placeholder">
         <div className="col-span-2 space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[var(--el-500)]">
             Configure the default appearance for image placeholders.
           </p>
 
           {/* Preview */}
           <div className="p-4 rounded-lg border bg-card">
-            <Label className="text-xs text-muted-foreground mb-3 block">
+            <Label className="text-xs text-[var(--el-500)] mb-3 block">
               Preview
             </Label>
             <ImagePlaceholder
@@ -328,7 +328,7 @@ export function LoadingSettingsPanel({
                     <SelectItem key={opt.value} value={opt.value}>
                       <span className="flex justify-between w-full">
                         <span>{opt.label}</span>
-                        <span className="text-muted-foreground ml-2 text-xs">
+                        <span className="text-[var(--el-500)] ml-2 text-xs">
                           {opt.description}
                         </span>
                       </span>
@@ -374,20 +374,20 @@ export function LoadingSettingsPanel({
       {/* Page Loader Settings */}
       <SettingsGridBlock title="Page Loading">
         <div className="col-span-2 space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[var(--el-500)]">
             Configure the loading animation shown during page transitions.
           </p>
 
           {/* Preview */}
           <div className="p-4 rounded-lg border bg-card relative h-32 overflow-hidden">
-            <Label className="text-xs text-muted-foreground mb-3 block">
+            <Label className="text-xs text-[var(--el-500)] mb-3 block">
               Preview
             </Label>
-            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+            <div className="absolute inset-0 flex items-center justify-center bg-[var(--el-0)]/80">
               <div className="flex flex-col items-center gap-3">
                 <Loader variant={settings.pageLoader.variant} size="md" />
                 {settings.pageLoader.showLabel && (
-                  <span className="text-sm text-muted-foreground animate-pulse">
+                  <span className="text-sm text-[var(--el-500)] animate-pulse">
                     {settings.pageLoader.labelText}
                   </span>
                 )}
@@ -412,7 +412,7 @@ export function LoadingSettingsPanel({
                     <SelectItem key={opt.value} value={opt.value}>
                       <span className="flex justify-between w-full">
                         <span>{opt.label}</span>
-                        <span className="text-muted-foreground ml-2 text-xs">
+                        <span className="text-[var(--el-500)] ml-2 text-xs">
                           {opt.description}
                         </span>
                       </span>
@@ -455,27 +455,27 @@ export function LoadingSettingsPanel({
       {/* Inline Loader Settings */}
       <SettingsGridBlock title="Inline Loaders">
         <div className="col-span-2 space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[var(--el-500)]">
             Configure small loaders used in buttons and inline elements.
           </p>
 
           {/* Preview */}
           <div className="p-4 rounded-lg border bg-card">
-            <Label className="text-xs text-muted-foreground mb-3 block">
+            <Label className="text-xs text-[var(--el-500)] mb-3 block">
               Preview
             </Label>
             <div className="flex items-center gap-6">
               <div className="flex flex-col items-center gap-2">
                 <Loader variant={settings.inlineLoader.variant} size="sm" />
-                <span className="text-xs text-muted-foreground">Small</span>
+                <span className="text-xs text-[var(--el-500)]">Small</span>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <Loader variant={settings.inlineLoader.variant} size="md" />
-                <span className="text-xs text-muted-foreground">Medium</span>
+                <span className="text-xs text-[var(--el-500)]">Medium</span>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <Loader variant={settings.inlineLoader.variant} size="lg" />
-                <span className="text-xs text-muted-foreground">Large</span>
+                <span className="text-xs text-[var(--el-500)]">Large</span>
               </div>
             </div>
           </div>
@@ -518,7 +518,7 @@ export function LoadingSettingsPanel({
                     <SelectItem key={opt.value} value={opt.value}>
                       <span className="flex justify-between w-full">
                         <span>{opt.label}</span>
-                        <span className="text-muted-foreground ml-2 text-xs">
+                        <span className="text-[var(--el-500)] ml-2 text-xs">
                           {opt.description}
                         </span>
                       </span>
@@ -534,7 +534,7 @@ export function LoadingSettingsPanel({
       {/* Card Skeleton Preview */}
       <SettingsGridBlock title="Card Skeleton Preview">
         <div className="col-span-2 space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-[var(--el-500)]">
             Preview of how card skeletons will appear with current settings.
           </p>
 

@@ -399,7 +399,7 @@ export function SectionSettingsModal({
                 <Label htmlFor="section-custom-css">Custom CSS</Label>
                 <textarea
                   id="section-custom-css"
-                  className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-mono"
+                  className="flex min-h-[100px] w-full rounded-md border border-[var(--el-150)] bg-[var(--el-0)] px-3 py-2 text-sm ring-offset-[var(--el-0)] placeholder:text-[var(--el-500)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-mono"
                   placeholder="/* Custom CSS for this section */"
                   value={getSectionProp<string>("customCss", "")}
                   onChange={(e) => handleChange("customCss", e.target.value)}
@@ -426,7 +426,7 @@ export function SectionSettingsModal({
                   onChange={(e) => handleChange("sectionId", e.target.value)}
                   placeholder="my-section"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-[var(--el-500)] mt-1">
                   Used for anchor links (e.g., #my-section)
                 </p>
               </FormItem>
@@ -439,7 +439,7 @@ export function SectionSettingsModal({
                   onChange={(e) => handleChange("className", e.target.value)}
                   placeholder="custom-class another-class"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-[var(--el-500)] mt-1">
                   Additional CSS classes (space separated)
                 </p>
               </FormItem>

@@ -48,7 +48,7 @@ export default function TestimonialBlockRenderer({
             variant === "card" &&
               "bg-card border border-border rounded-lg shadow-sm",
             variant === "minimal" && "border-l-2 border-primary pl-4",
-            variant === "default" && "bg-muted/30 rounded-lg",
+            variant === "default" && "bg-[var(--el-100)]/30 rounded-lg",
           )}
         >
           {showRating && t.rating && (
@@ -66,7 +66,7 @@ export default function TestimonialBlockRenderer({
               ))}
             </div>
           )}
-          <blockquote className="text-sm text-foreground italic">
+          <blockquote className="text-sm text-[var(--el-800)] italic">
             &ldquo;{t.quote}&rdquo;
           </blockquote>
           <div className="mt-3 flex items-center gap-2">
@@ -81,7 +81,7 @@ export default function TestimonialBlockRenderer({
             <div>
               <p className="text-sm font-medium">{t.name}</p>
               {(t.role || t.company) && (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-[var(--el-500)]">
                   {[t.role, t.company].filter(Boolean).join(", ")}
                 </p>
               )}

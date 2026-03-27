@@ -45,7 +45,7 @@ export default function HeroBlockRenderer({ block }: BlockRendererProps) {
   return (
     <div
       className={cn(
-        "relative w-full bg-muted/30 rounded-lg overflow-hidden",
+        "relative w-full bg-[var(--el-100)]/30 rounded-lg overflow-hidden",
         sizeClasses[size],
       )}
     >
@@ -74,18 +74,18 @@ export default function HeroBlockRenderer({ block }: BlockRendererProps) {
           )}
         >
           {subheading && (
-            <p className="text-sm font-medium text-primary uppercase tracking-wider">
+            <p className="text-sm font-medium text-[var(--accent-primary)] uppercase tracking-wider">
               {subheading}
             </p>
           )}
           <h2 className="text-3xl font-bold tracking-tight">{heading}</h2>
           {description && (
-            <p className="text-muted-foreground max-w-lg">{description}</p>
+            <p className="text-[var(--el-500)] max-w-lg">{description}</p>
           )}
           {(primaryCta || secondaryCta) && (
             <div className="flex gap-3 mt-2">
               {primaryCta && (
-                <span className="inline-flex items-center px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium">
+                <span className="inline-flex items-center px-4 py-2 rounded-md bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)] text-sm font-medium">
                   {primaryCta.text}
                 </span>
               )}

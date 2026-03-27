@@ -234,6 +234,9 @@ export type {
   PreviewToken,
 } from "./use-pages";
 
+// Page Editor (shared section/block/container operations)
+export { usePageEditor, createDefaultSection } from "./use-page-editor";
+
 // Auto-Save
 export { useAutoSave } from "./use-auto-save";
 

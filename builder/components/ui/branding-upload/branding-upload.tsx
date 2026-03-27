@@ -105,11 +105,11 @@ export function BrandingUpload({
   const previewClasses = cn(
     "relative flex items-center justify-center rounded-lg border-2 border-dashed transition-colors",
     aspectRatio === "square" ? "h-24 w-24" : "h-20 w-40",
-    isDragging && "border-primary bg-primary/5",
+    isDragging && "border-primary bg-[var(--accent-primary)]/5",
     !isDragging &&
       !value &&
       "border-muted-foreground/25 hover:border-muted-foreground/50",
-    value && "border-transparent bg-muted",
+    value && "border-transparent bg-[var(--el-100)]",
     disabled && "opacity-50 cursor-not-allowed",
     className,
   );
@@ -125,7 +125,7 @@ export function BrandingUpload({
             size="sm"
             onClick={handleRemove}
             disabled={disabled || isUploading}
-            className="h-6 px-2 text-xs text-muted-foreground hover:text-destructive"
+            className="h-6 px-2 text-xs text-[var(--el-500)] hover:text-[var(--status-error)]"
           >
             <X className="h-3 w-3 mr-1" />
             Remove
@@ -158,7 +158,7 @@ export function BrandingUpload({
         />
 
         {isUploading ? (
-          <div className="flex flex-col items-center gap-1 text-muted-foreground">
+          <div className="flex flex-col items-center gap-1 text-[var(--el-500)]">
             <Loader2 className="h-6 w-6 animate-spin" />
             <span className="text-xs">Uploading...</span>
           </div>
@@ -175,7 +175,7 @@ export function BrandingUpload({
             }}
           />
         ) : (
-          <div className="flex flex-col items-center gap-1 text-muted-foreground">
+          <div className="flex flex-col items-center gap-1 text-[var(--el-500)]">
             {isDragging ? (
               <>
                 <Upload className="h-6 w-6" />
@@ -192,10 +192,10 @@ export function BrandingUpload({
       </div>
 
       {description && (
-        <p className="text-xs text-muted-foreground">{description}</p>
+        <p className="text-xs text-[var(--el-500)]">{description}</p>
       )}
 
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && <p className="text-xs text-[var(--status-error)]">{error}</p>}
     </div>
   );
 }

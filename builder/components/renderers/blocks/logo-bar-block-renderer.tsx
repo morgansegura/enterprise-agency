@@ -25,7 +25,7 @@ export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
 
   if (logos.length === 0) {
     return (
-      <div className="text-center py-6 text-sm text-muted-foreground">
+      <div className="text-center py-6 text-sm text-[var(--el-500)]">
         No logos added yet
       </div>
     );
@@ -34,7 +34,7 @@ export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
   return (
     <div className="w-full">
       {heading && (
-        <p className="text-center text-xs font-medium text-muted-foreground uppercase tracking-wider mb-4">
+        <p className="text-center text-xs font-medium text-[var(--el-500)] uppercase tracking-wider mb-4">
           {heading}
         </p>
       )}

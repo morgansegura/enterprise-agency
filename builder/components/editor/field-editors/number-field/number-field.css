@@ -13,11 +13,11 @@
 }
 
 .number-field__label {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium text-(--el-800);
 }
 
 .number-field__required {
-  @apply ml-0.5 text-(--destructive);
+  @apply ml-0.5 text-(--status-error);
 }
 
 .number-field__input-wrapper {
@@ -37,7 +37,7 @@
 }
 
 .number-field__unit {
-  @apply absolute right-3 text-sm text-(--muted-foreground);
+  @apply absolute right-3 text-sm text-(--el-500);
 }
 
 .number-field__slider-wrapper {
@@ -45,25 +45,25 @@
 }
 
 .number-field__slider {
-  @apply w-full h-2 bg-(--muted) rounded-full appearance-none cursor-pointer;
+  @apply w-full h-2 bg-(--el-100) rounded-full appearance-none cursor-pointer;
 }
 
 .number-field__slider::-webkit-slider-thumb {
-  @apply appearance-none w-4 h-4 bg-(--primary) rounded-full cursor-pointer;
+  @apply appearance-none w-4 h-4 bg-(--accent-primary) rounded-full cursor-pointer;
 }
 
 .number-field__slider::-moz-range-thumb {
-  @apply w-4 h-4 bg-(--primary) rounded-full cursor-pointer border-0;
+  @apply w-4 h-4 bg-(--accent-primary) rounded-full cursor-pointer border-0;
 }
 
 .number-field__slider-labels {
-  @apply flex justify-between text-xs text-(--muted-foreground) mt-1;
+  @apply flex justify-between text-xs text-(--el-500) mt-1;
 }
 
 .number-field__description {
-  @apply text-xs text-(--muted-foreground);
+  @apply text-xs text-(--el-500);
 }
 
 .number-field__error {
-  @apply text-xs text-(--destructive);
+  @apply text-xs text-(--status-error);
 }

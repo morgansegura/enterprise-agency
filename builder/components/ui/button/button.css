@@ -1,12 +1,12 @@
 @reference "tailwindcss";
 
 [data-slot="button"] {
-  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-medium transition-all enabled:cursor-pointer
+  @apply inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-[3px] text-[14px] font-medium transition-colors duration-100 enabled:cursor-pointer
   select-none disabled:cursor-default disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none;
 }
 
 [data-slot="button"]:focus-visible {
-  @apply border-(--ring) ring-(--ring)/50 ring-3;
+  @apply border-(--accent-primary) ring-(--accent-primary)/50 ring-2;
 }
 
 [data-slot="button"][aria-invalid="true"] {
@@ -18,12 +18,12 @@
 }
 
 [data-slot="button"] svg:not([class*="size-"]) {
-  @apply size-4;
+  @apply size-3.5;
 }
 
 /* Variants */
 [data-slot="button"][data-variant="default"] {
-  @apply bg-(--primary) text-(--primary-foreground) hover:bg-(--primary)/90;
+  @apply bg-(--accent-primary) text-(--primary-foreground) hover:bg-(--accent-primary)/90;
 }
 
 [data-slot="button"][data-variant="destructive"] {
@@ -35,7 +35,7 @@
 }
 
 [data-slot="button"][data-variant="outline"] {
-  @apply border bg-(--background) shadow-xs hover:bg-(--accent) hover:text-(--accent-foreground);
+  @apply border bg-(--el-0) shadow-xs hover:bg-(--accent-primary-subtle) hover:text-(--accent-foreground);
 }
 
 [data-slot="button"][data-variant="secondary"] {
@@ -43,48 +43,48 @@
 }
 
 [data-slot="button"][data-variant="ghost"] {
-  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
+  @apply hover:bg-(--accent-primary-subtle) hover:text-(--accent-foreground);
 }
 
 [data-slot="button"][data-variant="link"] {
-  @apply text-(--primary) underline-offset-4 hover:underline;
+  @apply text-(--accent-primary) underline-offset-4 hover:underline;
 }
 
-/* Sizes */
+/* Sizes — Jira compact */
 [data-slot="button"][data-size="default"] {
-  @apply h-9 px-4 py-2;
+  @apply h-8 px-3 py-1.5;
 }
 
 [data-slot="button"][data-size="default"]:has(> svg) {
-  @apply px-3;
-}
-
-[data-slot="button"][data-size="sm"] {
-  @apply h-8 rounded-2xl gap-1.5 px-3;
-}
-
-[data-slot="button"][data-size="sm"]:has(> svg) {
   @apply px-2.5;
 }
 
+[data-slot="button"][data-size="sm"] {
+  @apply h-6 rounded-[3px] gap-1 px-2 text-[12px];
+}
+
+[data-slot="button"][data-size="sm"]:has(> svg) {
+  @apply px-2;
+}
+
 [data-slot="button"][data-size="lg"] {
-  @apply h-10 rounded-2xl px-6;
+  @apply h-10 rounded-[3px] px-4;
 }
 
 [data-slot="button"][data-size="lg"]:has(> svg) {
-  @apply px-4;
+  @apply px-3;
 }
 
 [data-slot="button"][data-size="icon"] {
-  @apply size-9;
-}
-
-[data-slot="button"][data-size="icon-sm"] {
   @apply size-8;
 }
 
+[data-slot="button"][data-size="icon-sm"] {
+  @apply size-7;
+}
+
 [data-slot="button"][data-size="icon-lg"] {
-  @apply size-10;
+  @apply size-9;
 }
 
 /* Dark mode overrides */
@@ -101,9 +101,9 @@
 }
 
 .dark [data-slot="button"][data-variant="outline"] {
-  @apply bg-(--input)/30 border-(--input) hover:bg-(--input)/50;
+  @apply bg-(--el-150)/30 border-(--el-150) hover:bg-(--el-150)/50;
 }
 
 .dark [data-slot="button"][data-variant="ghost"] {
-  @apply hover:bg-(--accent)/50;
+  @apply hover:bg-(--accent-primary-subtle)/50;
 }

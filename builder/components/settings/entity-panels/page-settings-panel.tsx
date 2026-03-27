@@ -86,7 +86,7 @@ export function PageSettingsPanel({
                 placeholder="page-url-slug"
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 The URL path for this page
               </p>
             </SettingsField>
@@ -132,7 +132,7 @@ export function PageSettingsPanel({
               <SettingsField>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Home className="size-4 text-muted-foreground" />
+                    <Home className="size-4 text-[var(--el-500)]" />
                     <div>
                       <Label
                         htmlFor="page-is-home"
@@ -140,7 +140,7 @@ export function PageSettingsPanel({
                       >
                         Set as Home Page
                       </Label>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-[var(--el-500)]">
                         This page will be shown at the site root
                       </p>
                     </div>
@@ -175,7 +175,7 @@ export function PageSettingsPanel({
                 placeholder="SEO title (defaults to page title)"
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 {data.metaTitle?.length || 0}/60 characters
               </p>
             </SettingsField>
@@ -190,7 +190,7 @@ export function PageSettingsPanel({
                 rows={3}
                 disabled={isLoading}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-[var(--el-500)] mt-1">
                 {data.metaDescription?.length || 0}/160 characters
               </p>
             </SettingsField>
@@ -257,7 +257,7 @@ function LayoutSettings({
               ))}
             </SelectContent>
           </Select>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Choose a specific header or use the tenant default
           </p>
         </SettingsField>
@@ -280,7 +280,7 @@ function LayoutSettings({
               {/* Footer options will be added when Footer API is built */}
             </SelectContent>
           </Select>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-[var(--el-500)] mt-1">
             Choose a specific footer or use the tenant default
           </p>
         </SettingsField>
