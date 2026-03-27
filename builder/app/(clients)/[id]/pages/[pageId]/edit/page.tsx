@@ -478,7 +478,57 @@ export default function EditPagePage({
       >
         <ResponsiveProvider breakpoint={breakpoint} isBuilder={isBuilder}>
           <ResponsivePreview breakpoint={breakpoint} className="h-full">
-            <div className="page-editor-canvas-content design-preview">
+            <div
+              className="page-editor-canvas-content design-preview"
+              onMouseMove={(e) => {
+                const target = e.target as HTMLElement;
+                const blockEl = target.closest("[data-block-key]");
+                const key = blockEl?.getAttribute("data-block-key") ?? null;
+                if (key !== hoveredBlockKey) {
+                  setHoveredBlockKey(key);
+                }
+              }}
+              onMouseLeave={() => setHoveredBlockKey(null)}
+              onClick={(e) => {
+                // Find the closest block element
+                const target = e.target as HTMLElement;
+                const blockEl = target.closest("[data-block-key]");
+                if (!blockEl) {
+                  // Clicked empty space — deselect
+                  setSelectedBlockKey(null);
+                  return;
+                }
+                const key = blockEl.getAttribute("data-block-key");
+                if (!key || key === selectedBlockKey) return;
+
+                // Find which section/container/block this key belongs to
+                for (let si = 0; si < editor.sections.length; si++) {
+                  const section = editor.sections[si];
+                  if (section._key === key) {
+                    setSelectedBlockKey(key);
+                    selectSection(si, key);
+                    return;
+                  }
+                  const containers = section.containers ?? [];
+                  for (let ci = 0; ci < containers.length; ci++) {
+                    const container = containers[ci];
+                    if (container._key === key) {
+                      setSelectedBlockKey(key);
+                      selectContainer(si, ci, key);
+                      return;
+                    }
+                    const blocks = container.blocks ?? [];
+                    for (let bi = 0; bi < blocks.length; bi++) {
+                      if (blocks[bi]._key === key) {
+                        setSelectedBlockKey(key);
+                        selectBlock(si, ci, bi, key);
+                        return;
+                      }
+                    }
+                  }
+                }
+              }}
+            >
               <HeaderRenderer tenantId={id} headerId={localPage.headerId} />
               {editor.sections.every(
                 (s) =>

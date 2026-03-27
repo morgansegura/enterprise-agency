@@ -94,13 +94,23 @@
  * Selection highlight in preview
  * ============================================================================= */
 
+/* Webflow-style selection — solid blue outline */
+.page-editor-canvas-content [data-block-key] {
+  @apply transition-[outline] duration-75;
+}
+
 .page-editor-canvas-content [data-block-key].is-preview-selected {
-  @apply outline-2 outline-dashed outline-(--accent-primary) -outline-offset-2 rounded-[3px];
+  @apply outline-2 outline-solid outline-(--accent-primary) -outline-offset-1;
 }
 
 .page-editor-canvas-content [data-block-key].is-preview-hovered {
-  @apply outline-1 outline-dashed -outline-offset-1 rounded-[3px];
+  @apply outline-1 outline-solid -outline-offset-1;
   outline-color: color-mix(in srgb, var(--accent-primary) 50%, transparent);
+}
+
+/* Block hover cursor */
+.page-editor-canvas-content [data-block-key]:hover {
+  cursor: pointer;
 }
 
 /* =============================================================================
