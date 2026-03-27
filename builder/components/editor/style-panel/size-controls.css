@@ -1,0 +1,35 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * Size Controls — Webflow-style width/height/min/max inputs
+ * ============================================================================= */
+
+.size-controls {
+  @apply flex flex-col gap-2;
+}
+
+.size-controls-row {
+  @apply flex gap-2;
+}
+
+.size-controls-field {
+  @apply flex-1 flex flex-col gap-1;
+}
+
+.size-controls-input {
+  @apply w-full h-7 text-center text-[13px] font-medium;
+  @apply bg-(--el-100) border-none rounded-[3px] text-(--el-800);
+  @apply outline-none;
+}
+
+.size-controls-input:focus {
+  @apply bg-(--el-0) ring-1 ring-(--accent-primary);
+}
+
+.size-controls-input::placeholder {
+  @apply text-(--el-300);
+}
+
+.size-controls-label {
+  @apply text-[10px] font-medium text-(--el-400) text-center;
+}

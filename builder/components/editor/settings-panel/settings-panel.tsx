@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SpacingBox, LayoutControls } from "@/components/editor/style-panel";
+import { SpacingBox, LayoutControls, SizeControls } from "@/components/editor/style-panel";
 import {
   PanelRightClose,
   PanelRightOpen,
@@ -509,6 +509,18 @@ export function SettingsPanel({
                             values={{}}
                             onChange={() => {
                               // Block-level spacing — will be wired to block data
+                            }}
+                          />
+                        </PropertySection>
+                        <PropertySection
+                          title="Size"
+                          icon={<EyeOff className="h-3.5 w-3.5" />}
+                          defaultOpen={false}
+                        >
+                          <SizeControls
+                            values={{}}
+                            onChange={() => {
+                              // Block-level size — will be wired to block data
                             }}
                           />
                         </PropertySection>
