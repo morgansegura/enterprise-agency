@@ -72,7 +72,7 @@
  * ============================================================================= */
 
 .page-editor-left-panel {
-  @apply w-[220px] h-full shrink-0 overflow-hidden;
+  @apply w-[260px] h-full shrink-0 overflow-hidden;
   @apply bg-(--el-0) border-r border-(--border-default);
 }
 

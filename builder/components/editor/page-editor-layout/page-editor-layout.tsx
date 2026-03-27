@@ -14,14 +14,12 @@ import {
   ChevronDown,
   Check,
   History,
-  PanelRightOpen,
   ArrowLeft,
 } from "lucide-react";
 import { type Breakpoint } from "../breakpoint-selector";
 import { CanvasToolbar } from "../canvas-toolbar";
 import { useParams } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import { useUIStore } from "@/lib/stores/ui-store";
 import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
 import { ResponsiveProvider } from "@/lib/responsive/context";
 import "./page-editor-layout.css";
@@ -90,7 +88,6 @@ export function PageEditorLayout({
   rightPanel,
   children,
 }: PageEditorLayoutProps) {
-  const { rightPanelOpen, toggleRightPanel } = useUIStore();
   const { setHasCustomToolbar } = usePreviewModeOptional();
 
   const params = useParams();
@@ -218,15 +215,6 @@ export function PageEditorLayout({
             </Button>
           )}
 
-          {rightPanel && !rightPanelOpen && (
-            <button
-              className="page-editor-toolbar-btn"
-              onClick={toggleRightPanel}
-              title="Open settings panel"
-            >
-              <PanelRightOpen className="size-4" />
-            </button>
-          )}
         </div>
       </div>
 
