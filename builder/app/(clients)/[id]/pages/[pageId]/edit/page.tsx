@@ -114,7 +114,7 @@ export default function EditPagePage({
   }, [hoveredBlockKey, selectedBlockKey]);
 
   // UI Store for block selection in sidebar
-  const { selectBlock, selectSection, selectContainer } = useUIStore();
+  const { selectBlock, selectSection, selectContainer, selectedElement } = useUIStore();
 
   // Local page state for editing
   const [localPage, setLocalPage] = React.useState({
@@ -217,11 +217,22 @@ export default function EditPagePage({
         blockId: string;
         blockType: string;
       }>;
-      editor.handleAddBlockToContainer(0, 0, customEvent.detail.blockType);
+      // Add to currently selected section/container, or first one
+      const si = selectedElement?.sectionIndex ?? 0;
+      const ci = selectedElement?.containerIndex ?? 0;
+      // Ensure section exists
+      if (editor.sections.length === 0) {
+        editor.handleAddSectionAt(0);
+        setTimeout(() => {
+          editor.handleAddBlockToContainer(0, 0, customEvent.detail.blockType);
+        }, 0);
+        return;
+      }
+      editor.handleAddBlockToContainer(si, ci, customEvent.detail.blockType);
     };
     window.addEventListener("add-block", handleAddBlock);
     return () => window.removeEventListener("add-block", handleAddBlock);
-  }, [editor]);
+  }, [editor, selectedElement?.sectionIndex, selectedElement?.containerIndex]);
 
   // --- Early returns ---
 

@@ -79,6 +79,13 @@ export function EditorSidebar({
     "layers",
   );
 
+  // Switch to Layers tab after adding a block
+  React.useEffect(() => {
+    const handleBlockAdded = () => setActiveTab("layers");
+    window.addEventListener("add-block", handleBlockAdded);
+    return () => window.removeEventListener("add-block", handleBlockAdded);
+  }, []);
+
   return (
     <div className="editor-sidebar">
       <div className="editor-sidebar-tabs">
