@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SpacingBox } from "@/components/editor/style-panel";
+import { SpacingBox, LayoutControls } from "@/components/editor/style-panel";
 import {
   PanelRightClose,
   PanelRightOpen,
@@ -489,17 +489,30 @@ export function SettingsPanel({
                       />
                     )}
                     {selectedElement.type === "block" && (
-                      <PropertySection
-                        title="Spacing"
-                        icon={<Move className="h-3.5 w-3.5" />}
-                      >
-                        <SpacingBox
-                          values={{}}
-                          onChange={() => {
-                            // Block-level spacing — will be wired to block data
-                          }}
-                        />
-                      </PropertySection>
+                      <>
+                        <PropertySection
+                          title="Layout"
+                          icon={<Grid3X3 className="h-3.5 w-3.5" />}
+                        >
+                          <LayoutControls
+                            values={{}}
+                            onChange={() => {
+                              // Block-level layout — will be wired to block data
+                            }}
+                          />
+                        </PropertySection>
+                        <PropertySection
+                          title="Spacing"
+                          icon={<Move className="h-3.5 w-3.5" />}
+                        >
+                          <SpacingBox
+                            values={{}}
+                            onChange={() => {
+                              // Block-level spacing — will be wired to block data
+                            }}
+                          />
+                        </PropertySection>
+                      </>
                     )}
                   </>
                 )}

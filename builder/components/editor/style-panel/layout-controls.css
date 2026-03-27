@@ -1,0 +1,94 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * Layout Controls — Webflow-style display mode + flex/grid options
+ * ============================================================================= */
+
+.layout-controls {
+  @apply flex flex-col gap-3;
+}
+
+/* Display mode toggle */
+.layout-mode-toggle {
+  @apply flex gap-0.5 p-0.5 rounded-[3px] bg-(--el-100);
+}
+
+.layout-mode-btn {
+  @apply flex-1 h-7 flex items-center justify-center;
+  @apply text-[12px] font-medium text-(--el-500);
+  @apply bg-transparent border-none rounded-[3px] cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.layout-mode-btn:hover {
+  @apply text-(--el-800);
+}
+
+.layout-mode-btn[data-active] {
+  @apply bg-(--el-0) text-(--el-800) shadow-sm;
+}
+
+/* Flex direction */
+.layout-direction-toggle {
+  @apply flex gap-0.5 p-0.5 rounded-[3px] bg-(--el-100);
+}
+
+.layout-direction-btn {
+  @apply flex-1 h-7 flex items-center justify-center;
+  @apply text-(--el-400) bg-transparent border-none rounded-[3px] cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.layout-direction-btn:hover {
+  @apply text-(--el-800);
+}
+
+.layout-direction-btn[data-active] {
+  @apply bg-(--el-0) text-(--el-800) shadow-sm;
+}
+
+.layout-direction-btn svg {
+  @apply size-4;
+}
+
+/* Align/Justify icons */
+.layout-align-toggle {
+  @apply flex gap-0.5 p-0.5 rounded-[3px] bg-(--el-100);
+}
+
+.layout-align-btn {
+  @apply flex-1 h-7 flex items-center justify-center;
+  @apply text-(--el-400) bg-transparent border-none rounded-[3px] cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.layout-align-btn:hover {
+  @apply text-(--el-800);
+}
+
+.layout-align-btn[data-active] {
+  @apply bg-(--el-0) text-(--accent-primary) shadow-sm;
+}
+
+.layout-align-btn svg {
+  @apply size-3.5;
+}
+
+/* Gap input */
+.layout-gap-row {
+  @apply flex items-center justify-between;
+}
+
+.layout-gap-label {
+  @apply text-[12px] font-medium text-(--el-500);
+}
+
+.layout-gap-input {
+  @apply w-16 h-7 text-center text-[13px] font-medium;
+  @apply bg-(--el-100) border-none rounded-[3px] text-(--el-800);
+  @apply outline-none;
+}
+
+.layout-gap-input:focus {
+  @apply bg-(--el-0) ring-1 ring-(--accent-primary);
+}
