@@ -1,0 +1,79 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+ * Spacing Box Model — Webflow-style visual margin/padding editor
+ * ============================================================================= */
+
+.spacing-box {
+  @apply relative mx-auto;
+  width: 220px;
+  height: 160px;
+}
+
+/* Margin layer (outer) */
+.spacing-box-margin {
+  @apply absolute inset-0 rounded-[3px];
+  @apply bg-(--status-warning-subtle);
+}
+
+/* Padding layer (inner) */
+.spacing-box-padding {
+  @apply absolute rounded-[3px];
+  top: 28px;
+  right: 28px;
+  bottom: 28px;
+  left: 28px;
+  @apply bg-(--status-success-subtle);
+}
+
+/* Content (center box) */
+.spacing-box-content {
+  @apply absolute rounded-[3px] flex items-center justify-center;
+  top: 56px;
+  right: 56px;
+  bottom: 56px;
+  left: 56px;
+  @apply bg-(--el-100) text-[10px] text-(--el-400) font-medium;
+}
+
+/* Labels */
+.spacing-box-label {
+  @apply absolute text-[9px] font-bold uppercase tracking-wider text-(--el-400);
+}
+
+.spacing-box-label-margin {
+  top: 2px;
+  left: 4px;
+}
+
+.spacing-box-label-padding {
+  top: 30px;
+  left: 32px;
+}
+
+/* Input fields — positioned on each edge */
+.spacing-box-input {
+  @apply absolute text-center bg-transparent border-none outline-none;
+  @apply text-[11px] font-medium text-(--el-800);
+  @apply w-8;
+}
+
+.spacing-box-input::placeholder {
+  @apply text-(--el-300);
+}
+
+.spacing-box-input:focus {
+  @apply bg-(--el-0) rounded-sm shadow-sm;
+}
+
+/* Margin inputs */
+.spacing-box-input-mt { top: 4px; left: 50%; transform: translateX(-50%); }
+.spacing-box-input-mr { right: 2px; top: 50%; transform: translateY(-50%); }
+.spacing-box-input-mb { bottom: 4px; left: 50%; transform: translateX(-50%); }
+.spacing-box-input-ml { left: 2px; top: 50%; transform: translateY(-50%); }
+
+/* Padding inputs */
+.spacing-box-input-pt { top: 32px; left: 50%; transform: translateX(-50%); }
+.spacing-box-input-pr { right: 30px; top: 50%; transform: translateY(-50%); }
+.spacing-box-input-pb { bottom: 32px; left: 50%; transform: translateX(-50%); }
+.spacing-box-input-pl { left: 30px; top: 50%; transform: translateY(-50%); }

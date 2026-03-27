@@ -52,6 +52,25 @@
   @apply font-semibold;
 }
 
+/* Style / Settings tab bar */
+.settings-panel-tab-bar {
+  @apply flex border-b border-(--border-default) shrink-0;
+}
+
+.settings-panel-tab-btn {
+  @apply flex-1 h-8 text-[12px] font-semibold;
+  @apply text-(--el-400) bg-transparent border-none cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.settings-panel-tab-btn:hover {
+  @apply text-(--el-800);
+}
+
+.settings-panel-tab-btn[data-active] {
+  @apply text-(--accent-primary) border-b-2 border-(--accent-primary);
+}
+
 /* =============================================================================
  * Tabs
  * ============================================================================= */

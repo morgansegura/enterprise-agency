@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SpacingBox } from "@/components/editor/style-panel";
 import {
   PanelRightClose,
   PanelRightOpen,
@@ -240,6 +241,7 @@ export function SettingsPanel({
 }: SettingsPanelProps) {
   const { rightPanelOpen, rightPanelWidth, selectedElement, toggleRightPanel } =
     useUIStore();
+  const [panelTab, setPanelTab] = React.useState<"style" | "settings">("style");
 
   // Get the selected element data
   const getSelectedData = React.useCallback(() => {
@@ -327,31 +329,51 @@ export function SettingsPanel({
         className={cn("settings-panel", rightPanelOpen && "open")}
         style={{ width: rightPanelWidth }}
       >
-        {/* Panel Header with Style/Settings tabs */}
+        {/* Panel Header — element name + Style/Settings tabs */}
         <div className="settings-panel-header">
           <div className="settings-panel-selector">
             {icon}
             <span className="settings-panel-selector-name">{title}</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleRightPanel}
-              title="Close panel"
-              className="h-7 w-7"
-            >
-              <PanelRightClose className="h-3.5 w-3.5" />
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleRightPanel}
+            title="Close panel"
+            className="h-7 w-7"
+          >
+            <PanelRightClose className="h-3.5 w-3.5" />
+          </Button>
         </div>
+
+        {/* Style / Settings tab switcher */}
+        {selectedElement && selectedData && (
+          <div className="settings-panel-tab-bar">
+            <button
+              type="button"
+              className="settings-panel-tab-btn"
+              data-active={panelTab === "style" || undefined}
+              onClick={() => setPanelTab("style")}
+            >
+              Style
+            </button>
+            <button
+              type="button"
+              className="settings-panel-tab-btn"
+              data-active={panelTab === "settings" || undefined}
+              onClick={() => setPanelTab("settings")}
+            >
+              Settings
+            </button>
+          </div>
+        )}
 
         {/* Panel Content */}
         <div className="settings-panel-content">
           {!selectedElement ? (
             <div className="settings-panel-empty">
-              <Layers className="h-10 w-10 text-[var(--el-500)]/30" />
-              <p className="text-sm text-[var(--el-500)]">
+              <Layers className="h-10 w-10 text-(--el-500)/30" />
+              <p className="text-[14px] text-(--el-500)">
                 Select an element to edit
               </p>
             </div>
@@ -443,38 +465,72 @@ export function SettingsPanel({
               )}
 
               <div className="settings-panel-sections">
-                {selectedElement.type === "section" && (
-                  <SectionStyleSettings
-                    section={selectedData.data as Section}
-                    onChange={(updated) =>
-                      onSectionChange?.(selectedElement.sectionIndex, updated)
-                    }
-                  />
+                {/* STYLE TAB — visual CSS properties */}
+                {panelTab === "style" && (
+                  <>
+                    {selectedElement.type === "section" && (
+                      <SectionStyleSettings
+                        section={selectedData.data as Section}
+                        onChange={(updated) =>
+                          onSectionChange?.(selectedElement.sectionIndex, updated)
+                        }
+                      />
+                    )}
+                    {selectedElement.type === "container" && (
+                      <ContainerStyleSettings
+                        container={selectedData.data as Container}
+                        onChange={(updated) =>
+                          onContainerChange?.(
+                            selectedElement.sectionIndex,
+                            selectedElement.containerIndex!,
+                            updated,
+                          )
+                        }
+                      />
+                    )}
+                    {selectedElement.type === "block" && (
+                      <PropertySection
+                        title="Spacing"
+                        icon={<Move className="h-3.5 w-3.5" />}
+                      >
+                        <SpacingBox
+                          values={{}}
+                          onChange={() => {
+                            // Block-level spacing — will be wired to block data
+                          }}
+                        />
+                      </PropertySection>
+                    )}
+                  </>
                 )}
-                {selectedElement.type === "container" && (
-                  <ContainerStyleSettings
-                    container={selectedData.data as Container}
-                    onChange={(updated) =>
-                      onContainerChange?.(
-                        selectedElement.sectionIndex,
-                        selectedElement.containerIndex!,
-                        updated,
-                      )
-                    }
-                  />
-                )}
-                {selectedElement.type === "block" && (
-                  <BlockStyleSettings
-                    block={selectedData.data as Block}
-                    onChange={(updated) =>
-                      onBlockChange?.(
-                        selectedElement.sectionIndex,
-                        selectedElement.containerIndex!,
-                        selectedElement.blockIndex!,
-                        updated,
-                      )
-                    }
-                  />
+
+                {/* SETTINGS TAB — block content fields */}
+                {panelTab === "settings" && (
+                  <>
+                    {selectedElement.type === "section" && (
+                      <div className="p-4 text-center text-[14px] text-(--el-500)">
+                        Section styling is on the Style tab
+                      </div>
+                    )}
+                    {selectedElement.type === "container" && (
+                      <div className="p-4 text-center text-[14px] text-(--el-500)">
+                        Container styling is on the Style tab
+                      </div>
+                    )}
+                    {selectedElement.type === "block" && (
+                      <BlockStyleSettings
+                        block={selectedData.data as Block}
+                        onChange={(updated) =>
+                          onBlockChange?.(
+                            selectedElement.sectionIndex,
+                            selectedElement.containerIndex!,
+                            selectedElement.blockIndex!,
+                            updated,
+                          )
+                        }
+                      />
+                    )}
+                  </>
                 )}
               </div>
             </>
