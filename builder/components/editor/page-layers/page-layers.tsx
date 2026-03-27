@@ -302,9 +302,10 @@ export function PageLayers({
                       {!isContainerCollapsed &&
                         blocks.map((block, blockIndex) => {
                           const Icon = blockIcons[block._type] || Box;
+                          const nestedBlocks = (block.blocks as Block[] | undefined) ?? [];
                           return (
+                            <React.Fragment key={block._key}>
                             <div
-                              key={block._key}
                               className={cn(
                                 "layer-item layer-item-block",
                                 selectedKey === block._key && "is-selected",
@@ -395,6 +396,43 @@ export function PageLayers({
                                 </div>
                               )}
                             </div>
+                            {/* Nested blocks (for container-type blocks) */}
+                            {nestedBlocks.length > 0 &&
+                              nestedBlocks.map((childBlock) => {
+                                const ChildIcon =
+                                  blockIcons[childBlock._type] || Box;
+                                return (
+                                  <div
+                                    key={childBlock._key}
+                                    className={cn(
+                                      "layer-item",
+                                      selectedKey === childBlock._key &&
+                                        "is-selected",
+                                      hoveredKey === childBlock._key &&
+                                        "is-hovered",
+                                    )}
+                                    style={{ paddingLeft: "3.5rem" }}
+                                    onClick={() =>
+                                      onSelectBlock?.(
+                                        sectionIndex,
+                                        containerIndex,
+                                        blockIndex,
+                                        childBlock._key,
+                                      )
+                                    }
+                                    onMouseEnter={() =>
+                                      onHover?.(childBlock._key)
+                                    }
+                                    onMouseLeave={() => onHover?.(null)}
+                                  >
+                                    <ChildIcon className="layer-type-icon" />
+                                    <span className="layer-label">
+                                      {getBlockLabel(childBlock)}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </React.Fragment>
                           );
                         })}
                     </div>
