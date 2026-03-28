@@ -47,6 +47,7 @@ export class AssetsService {
     let width: number | undefined;
     let height: number | undefined;
     let thumbnailUrl: string | undefined;
+    let variants: Record<string, string> | undefined;
 
     if (fileType === "image") {
       const imageMetadata = await sharp(file.buffer).metadata();
@@ -72,6 +73,27 @@ export class AssetsService {
         "image/jpeg", // Thumbnails always as JPEG for consistency
       );
       thumbnailUrl = thumbnailResult.url;
+
+      // Generate WebP variant for better performance
+      try {
+        const webpKey = this.storage.generateFileKey(
+          tenantId,
+          file.originalname.replace(/\.\w+$/, ".webp"),
+          "variants",
+        );
+        const webpBuffer = await sharp(file.buffer)
+          .webp({ quality: 80 })
+          .toBuffer();
+        const webpResult = await this.storage.upload(
+          webpBuffer,
+          webpKey,
+          "image/webp",
+        );
+        // Store WebP URL in variants (will be saved to DB)
+        variants = { webp: webpResult.url };
+      } catch (webpError) {
+        this.logger.warn("Failed to generate WebP variant", webpError);
+      }
     }
 
     // Upload file to storage (local or R2)
@@ -95,6 +117,9 @@ export class AssetsService {
         height,
         url: uploadResult.url,
         thumbnailUrl,
+        variants: variants
+          ? (variants as unknown as import("@prisma").Prisma.InputJsonValue)
+          : undefined,
         altText: metadata?.altText,
         usageContext: metadata?.usageContext,
       },
