@@ -607,6 +607,393 @@ function EmbedBlockSettings({
   );
 }
 
+// =============================================================================
+// Composite Block Settings
+// =============================================================================
+
+function AudioBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Audio" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Source URL" stacked>
+        <Input
+          value={(data.src as string) || ""}
+          onChange={(e) => handleChange("src", e.target.value)}
+          placeholder="Audio file URL"
+          className="settings-input"
+        />
+      </PropertyRow>
+      <PropertyRow label="Title" stacked>
+        <Input
+          value={(data.title as string) || ""}
+          onChange={(e) => handleChange("title", e.target.value)}
+          placeholder="Track title"
+          className="settings-input"
+        />
+      </PropertyRow>
+      <PropertyRow label="Artist" stacked>
+        <Input
+          value={(data.artist as string) || ""}
+          onChange={(e) => handleChange("artist", e.target.value)}
+          placeholder="Artist name"
+          className="settings-input"
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function HeroBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <>
+      <PropertySection title="Content" icon={<Type className="h-3.5 w-3.5" />}>
+        <PropertyRow label="Heading" stacked>
+          <Input
+            value={(data.heading as string) || ""}
+            onChange={(e) => handleChange("heading", e.target.value)}
+            className="settings-input"
+          />
+        </PropertyRow>
+        <PropertyRow label="Subheading" stacked>
+          <Input
+            value={(data.subheading as string) || ""}
+            onChange={(e) => handleChange("subheading", e.target.value)}
+            className="settings-input"
+          />
+        </PropertyRow>
+        <PropertyRow label="Description" stacked>
+          <Input
+            value={(data.description as string) || ""}
+            onChange={(e) => handleChange("description", e.target.value)}
+            className="settings-input"
+          />
+        </PropertyRow>
+      </PropertySection>
+      <PropertySection title="Layout" icon={<Box className="h-3.5 w-3.5" />}>
+        <PropertyRow label="Layout" stacked>
+          <PropertyToggle
+            value={(data.layout as string) || "centered"}
+            options={[
+              { value: "centered", label: "Center" },
+              { value: "split-right", label: "Split R" },
+              { value: "split-left", label: "Split L" },
+            ]}
+            onChange={(v) => handleChange("layout", v)}
+            fullWidth
+          />
+        </PropertyRow>
+        <PropertyRow label="Align" stacked>
+          <PropertyToggle
+            value={(data.align as string) || "center"}
+            options={[
+              { value: "left", label: "Left" },
+              { value: "center", label: "Center" },
+              { value: "right", label: "Right" },
+            ]}
+            onChange={(v) => handleChange("align", v)}
+            fullWidth
+          />
+        </PropertyRow>
+        <PropertyRow label="Size">
+          <PropertySelect
+            value={(data.size as string) || "lg"}
+            options={[
+              { value: "sm", label: "Small" },
+              { value: "md", label: "Medium" },
+              { value: "lg", label: "Large" },
+            ]}
+            onChange={(v) => handleChange("size", v)}
+          />
+        </PropertyRow>
+      </PropertySection>
+    </>
+  );
+}
+
+function CtaBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="CTA" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Heading" stacked>
+        <Input
+          value={(data.heading as string) || ""}
+          onChange={(e) => handleChange("heading", e.target.value)}
+          className="settings-input"
+        />
+      </PropertyRow>
+      <PropertyRow label="Description" stacked>
+        <Input
+          value={(data.description as string) || ""}
+          onChange={(e) => handleChange("description", e.target.value)}
+          className="settings-input"
+        />
+      </PropertyRow>
+      <PropertyRow label="Variant" stacked>
+        <PropertyToggle
+          value={(data.variant as string) || "default"}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "highlighted", label: "Highlight" },
+            { value: "minimal", label: "Minimal" },
+          ]}
+          onChange={(v) => handleChange("variant", v)}
+          fullWidth
+        />
+      </PropertyRow>
+      <PropertyRow label="Align" stacked>
+        <PropertyToggle
+          value={(data.align as string) || "center"}
+          options={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+          ]}
+          onChange={(v) => handleChange("align", v)}
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function AccordionBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Accordion" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Variant" stacked>
+        <PropertyToggle
+          value={(data.variant as string) || "default"}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "bordered", label: "Border" },
+            { value: "separated", label: "Separate" },
+          ]}
+          onChange={(v) => handleChange("variant", v)}
+          fullWidth
+        />
+      </PropertyRow>
+      <PropertyRow label="Multiple Open">
+        <PropertyToggle
+          value={data.allowMultiple ? "yes" : "no"}
+          options={[
+            { value: "no", label: "No" },
+            { value: "yes", label: "Yes" },
+          ]}
+          onChange={(v) => handleChange("allowMultiple", v === "yes")}
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function TabsBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Tabs" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Variant" stacked>
+        <PropertyToggle
+          value={(data.variant as string) || "default"}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "pills", label: "Pills" },
+            { value: "underline", label: "Underline" },
+          ]}
+          onChange={(v) => handleChange("variant", v)}
+          fullWidth
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function TestimonialBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Testimonials" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Columns">
+        <PropertySelect
+          value={String((data.columns as number) || 2)}
+          options={[
+            { value: "1", label: "1" },
+            { value: "2", label: "2" },
+            { value: "3", label: "3" },
+          ]}
+          onChange={(v) => handleChange("columns", parseInt(v))}
+        />
+      </PropertyRow>
+      <PropertyRow label="Variant" stacked>
+        <PropertyToggle
+          value={(data.variant as string) || "default"}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "card", label: "Card" },
+            { value: "minimal", label: "Minimal" },
+          ]}
+          onChange={(v) => handleChange("variant", v)}
+          fullWidth
+        />
+      </PropertyRow>
+      <PropertyRow label="Show Rating">
+        <PropertyToggle
+          value={data.showRating ? "yes" : "no"}
+          options={[
+            { value: "no", label: "No" },
+            { value: "yes", label: "Yes" },
+          ]}
+          onChange={(v) => handleChange("showRating", v === "yes")}
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function PricingBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Pricing" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Heading" stacked>
+        <Input
+          value={(data.heading as string) || ""}
+          onChange={(e) => handleChange("heading", e.target.value)}
+          className="settings-input"
+        />
+      </PropertyRow>
+      <PropertyRow label="Variant" stacked>
+        <PropertyToggle
+          value={(data.variant as string) || "default"}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "bordered", label: "Border" },
+            { value: "elevated", label: "Elevated" },
+          ]}
+          onChange={(v) => handleChange("variant", v)}
+          fullWidth
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function TeamBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Team" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Columns">
+        <PropertySelect
+          value={String((data.columns as number) || 3)}
+          options={[
+            { value: "2", label: "2" },
+            { value: "3", label: "3" },
+            { value: "4", label: "4" },
+          ]}
+          onChange={(v) => handleChange("columns", parseInt(v))}
+        />
+      </PropertyRow>
+      <PropertyRow label="Variant" stacked>
+        <PropertyToggle
+          value={(data.variant as string) || "default"}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "card", label: "Card" },
+            { value: "minimal", label: "Minimal" },
+          ]}
+          onChange={(v) => handleChange("variant", v)}
+          fullWidth
+        />
+      </PropertyRow>
+      <PropertyRow label="Show Bio">
+        <PropertyToggle
+          value={data.showBio ? "yes" : "no"}
+          options={[
+            { value: "no", label: "No" },
+            { value: "yes", label: "Yes" },
+          ]}
+          onChange={(v) => handleChange("showBio", v === "yes")}
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
 function GenericBlockSettings({
   block,
   onChange: _onChange,
@@ -644,5 +1031,13 @@ export {
   StatsBlockSettings,
   MapBlockSettings,
   EmbedBlockSettings,
+  AudioBlockSettings,
+  HeroBlockSettings,
+  CtaBlockSettings,
+  TestimonialBlockSettings,
+  PricingBlockSettings,
+  TeamBlockSettings,
+  AccordionBlockSettings,
+  TabsBlockSettings,
   GenericBlockSettings,
 };

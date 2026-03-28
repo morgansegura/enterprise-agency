@@ -71,6 +71,14 @@ import {
   StatsBlockSettings,
   MapBlockSettings,
   EmbedBlockSettings,
+  AudioBlockSettings,
+  HeroBlockSettings,
+  CtaBlockSettings,
+  TestimonialBlockSettings,
+  PricingBlockSettings,
+  TeamBlockSettings,
+  AccordionBlockSettings,
+  TabsBlockSettings,
   GenericBlockSettings,
 } from "./block-settings";
 import "./settings-panel.css";
@@ -1258,11 +1266,24 @@ function BlockStyleSettings({
       case "rich-text-block":
         return <TextBlockSettings block={block} onChange={onChange} />;
       case "audio-block":
-        return <GenericBlockSettings block={block} onChange={onChange} />;
+        return <AudioBlockSettings block={block} onChange={onChange} />;
       case "logo-block":
         return <ImageBlockSettings block={block} onChange={onChange} />;
+      case "hero-block":
+        return <HeroBlockSettings block={block} onChange={onChange} />;
+      case "cta-block":
+        return <CtaBlockSettings block={block} onChange={onChange} />;
+      case "testimonial-block":
+        return <TestimonialBlockSettings block={block} onChange={onChange} />;
+      case "pricing-block":
+        return <PricingBlockSettings block={block} onChange={onChange} />;
+      case "team-block":
+        return <TeamBlockSettings block={block} onChange={onChange} />;
       case "accordion-block":
+        return <AccordionBlockSettings block={block} onChange={onChange} />;
       case "tabs-block":
+        return <TabsBlockSettings block={block} onChange={onChange} />;
+      case "logo-bar-block":
       case "columns-block":
       case "container-block":
       case "grid-block":
