@@ -249,6 +249,37 @@ function ImageBlockSettings({
             onChange={(v) => handleChange("objectFit", v)}
           />
         </PropertyRow>
+        <PropertyRow label="Ratio">
+          <PropertySelect
+            value={(data.aspectRatio as string) || "auto"}
+            options={[
+              { value: "auto", label: "Auto" },
+              { value: "1/1", label: "1:1" },
+              { value: "4/3", label: "4:3" },
+              { value: "16/9", label: "16:9" },
+              { value: "21/9", label: "21:9" },
+            ]}
+            onChange={(v) => handleChange("aspectRatio", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Rounded">
+          <PropertyToggle
+            value={data.rounded ? "yes" : "no"}
+            options={[
+              { value: "no", label: "No" },
+              { value: "yes", label: "Yes" },
+            ]}
+            onChange={(v) => handleChange("rounded", v === "yes")}
+          />
+        </PropertyRow>
+        <PropertyRow label="Link URL" stacked>
+          <Input
+            value={(data.href as string) || ""}
+            onChange={(e) => handleChange("href", e.target.value)}
+            placeholder="Optional link URL"
+            className="settings-input"
+          />
+        </PropertyRow>
       </PropertySection>
     </>
   );
