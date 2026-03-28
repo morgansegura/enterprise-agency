@@ -11,77 +11,98 @@ import type { DesignTokens } from "./types";
  */
 export const platformDefaults: DesignTokens = {
   colors: {
-    // Primary brand color - professional blue
+    // Primary brand color — Jira/Atlassian blue
     primary: {
-      50: "#eff6ff",
-      100: "#dbeafe",
-      200: "#bfdbfe",
-      300: "#93c5fd",
-      400: "#60a5fa",
-      500: "#3b82f6",
-      600: "#2563eb",
-      700: "#1d4ed8",
-      800: "#1e40af",
-      900: "#1e3a8a",
-      950: "#172554",
+      50: "#deebff",
+      100: "#b3d4ff",
+      200: "#4c9aff",
+      300: "#2684ff",
+      400: "#0065ff",
+      500: "#0052cc",
+      600: "#0747a6",
+      700: "#003884",
+      800: "#002a66",
+      900: "#091e42",
+      950: "#061730",
     },
 
-    // Secondary brand color - slate/gray
+    // Secondary — Jira warm slate
     secondary: {
-      50: "#f8fafc",
-      100: "#f1f5f9",
-      200: "#e2e8f0",
-      300: "#cbd5e1",
-      400: "#94a3b8",
-      500: "#64748b",
-      600: "#475569",
-      700: "#334155",
-      800: "#1e293b",
-      900: "#0f172a",
-      950: "#020617",
+      50: "#fafbfc",
+      100: "#f4f5f7",
+      200: "#dfe1e6",
+      300: "#c1c7d0",
+      400: "#97a0af",
+      500: "#6b778c",
+      600: "#505f79",
+      700: "#344563",
+      800: "#172b4d",
+      900: "#091e42",
+      950: "#061730",
     },
 
-    // Accent color - vibrant purple
+    // Accent — teal/cyan for secondary actions
     accent: {
-      50: "#faf5ff",
-      100: "#f3e8ff",
-      200: "#e9d5ff",
-      300: "#d8b4fe",
-      400: "#c084fc",
-      500: "#a855f7",
-      600: "#9333ea",
-      700: "#7e22ce",
-      800: "#6b21a8",
-      900: "#581c87",
-      950: "#3b0764",
+      50: "#e6fcff",
+      100: "#b3f5ff",
+      200: "#79e2f2",
+      300: "#00c7e6",
+      400: "#00b8d9",
+      500: "#00a3bf",
+      600: "#008da6",
+      700: "#006b8a",
+      800: "#00526e",
+      900: "#003d52",
+      950: "#002b3d",
     },
 
-    // Neutral color - zinc
+    // Neutral — Jira warm slate (same as secondary)
     neutral: {
-      50: "#fafafa",
-      100: "#f4f4f5",
-      200: "#e4e4e7",
-      300: "#d4d4d8",
-      400: "#a1a1aa",
-      500: "#71717a",
-      600: "#52525b",
-      700: "#3f3f46",
-      800: "#27272a",
-      900: "#18181b",
-      950: "#09090b",
+      50: "#fafbfc",
+      100: "#f4f5f7",
+      200: "#dfe1e6",
+      300: "#c1c7d0",
+      400: "#b3bac5",
+      500: "#97a0af",
+      600: "#6b778c",
+      700: "#505f79",
+      800: "#344563",
+      900: "#172b4d",
+      950: "#091e42",
     },
 
-    // Semantic colors
+    // UI semantic colors — shadcn/Tailwind compatible
+    ui: {
+      background: "#ffffff",
+      foreground: "#172b4d",
+      card: "#ffffff",
+      cardForeground: "#172b4d",
+      popover: "#ffffff",
+      popoverForeground: "#172b4d",
+      muted: "#f4f5f7",
+      mutedForeground: "#6b778c",
+      border: "#dfe1e6",
+      input: "#dfe1e6",
+      ring: "#0052cc",
+      primary: "#0052cc",
+      primaryForeground: "#ffffff",
+      secondary: "#f4f5f7",
+      secondaryForeground: "#172b4d",
+      accent: "#deebff",
+      accentForeground: "#172b4d",
+    },
+
+    // Semantic colors — Jira status colors
     semantic: {
-      success: "#22c55e", // green-500
+      success: "#00875a",
       successForeground: "#ffffff",
-      warning: "#f59e0b", // amber-500
-      warningForeground: "#ffffff",
-      error: "#ef4444", // red-500
+      warning: "#ff991f",
+      warningForeground: "#172b4d",
+      error: "#de350b",
       errorForeground: "#ffffff",
-      info: "#3b82f6", // blue-500
+      info: "#0065ff",
       infoForeground: "#ffffff",
-      destructive: "#ef4444", // alias for error
+      destructive: "#de350b",
       destructiveForeground: "#ffffff",
     },
   },
