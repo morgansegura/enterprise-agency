@@ -9,7 +9,7 @@ interface AudioBlockData {
   loop?: boolean;
 }
 
-export default function AudioBlockRenderer({ block }: BlockRendererProps) {
+export default function AudioBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as AudioBlockData;
   const {
     src,
@@ -21,8 +21,24 @@ export default function AudioBlockRenderer({ block }: BlockRendererProps) {
   } = data;
 
   if (!src) {
+    if (isEditing) {
+      return (
+        <div
+          className="flex flex-col items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-6 rounded-[3px] cursor-pointer hover:bg-(--accent-primary-subtle)/30"
+          onClick={() => {
+            const url = window.prompt("Audio URL:", "");
+            if (url && onChange) {
+              onChange({ ...block, data: { ...block.data, src: url } });
+            }
+          }}
+        >
+          <span className="text-[14px] font-medium text-(--el-800)">Click to add audio</span>
+          <span className="text-[12px]">Enter an audio file URL</span>
+        </div>
+      );
+    }
     return (
-      <div className="flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] p-4 rounded-md">
+      <div className="flex items-center justify-center bg-(--el-100) text-(--el-500) p-4 rounded-[3px]">
         No audio file set
       </div>
     );

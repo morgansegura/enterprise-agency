@@ -18,7 +18,7 @@ const spacingClasses = {
   relaxed: "space-y-4",
 };
 
-export default function ListBlockRenderer({ block, onChange: _onChange, isEditing: _isEditing }: BlockRendererProps) {
+export default function ListBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as ListBlockData;
   const {
     items = [],
@@ -34,7 +34,19 @@ export default function ListBlockRenderer({ block, onChange: _onChange, isEditin
       return (
         <li key={index} className="flex items-start gap-2">
           <span className="text-[var(--accent-primary)] mt-0.5">✓</span>
-          <span>{item.text}</span>
+          <span
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = e.currentTarget.textContent || "";
+              if (v !== item.text && onChange) {
+                const newItems = [...items];
+                newItems[index] = { ...item, text: v };
+                onChange({ ...block, data: { ...block.data, items: newItems } });
+              }
+            }}
+            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          >{item.text}</span>
         </li>
       );
     }
@@ -42,11 +54,38 @@ export default function ListBlockRenderer({ block, onChange: _onChange, isEditin
       return (
         <li key={index} className="flex items-start gap-2">
           <span className="text-[var(--accent-primary)] mt-0.5">→</span>
-          <span>{item.text}</span>
+          <span
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = e.currentTarget.textContent || "";
+              if (v !== item.text && onChange) {
+                const newItems = [...items];
+                newItems[index] = { ...item, text: v };
+                onChange({ ...block, data: { ...block.data, items: newItems } });
+              }
+            }}
+            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          >{item.text}</span>
         </li>
       );
     }
-    return <li key={index}>{item.text}</li>;
+    return (
+      <li
+        key={index}
+        contentEditable={!!isEditing}
+        suppressContentEditableWarning
+        onBlur={(e) => {
+          const v = e.currentTarget.textContent || "";
+          if (v !== item.text && onChange) {
+            const newItems = [...items];
+            newItems[index] = { ...item, text: v };
+            onChange({ ...block, data: { ...block.data, items: newItems } });
+          }
+        }}
+        style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+      >{item.text}</li>
+    );
   };
 
   return (

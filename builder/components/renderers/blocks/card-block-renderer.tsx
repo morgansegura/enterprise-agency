@@ -25,7 +25,7 @@ const paddingClasses = {
   lg: "p-6",
 };
 
-export default function CardBlockRenderer({ block }: BlockRendererProps) {
+export default function CardBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as CardBlockData;
   const {
     title,
@@ -49,13 +49,33 @@ export default function CardBlockRenderer({ block }: BlockRendererProps) {
         </div>
       )}
       <div className={cn(paddingClasses[padding])}>
-        {title && (
-          <h3 className="text-lg font-semibold text-card-foreground mb-1">
-            {title}
+        {(title || isEditing) && (
+          <h3
+            className="text-lg font-semibold text-[var(--el-800)] mb-1"
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = e.currentTarget.textContent || "";
+              if (v !== title && onChange) onChange({ ...block, data: { ...block.data, title: v } });
+            }}
+            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          >
+            {title || (isEditing ? "Card title" : "")}
           </h3>
         )}
-        {description && (
-          <p className="text-sm text-[var(--el-500)]">{description}</p>
+        {(description || isEditing) && (
+          <p
+            className="text-sm text-[var(--el-500)]"
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = e.currentTarget.textContent || "";
+              if (v !== description && onChange) onChange({ ...block, data: { ...block.data, description: v } });
+            }}
+            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          >
+            {description || (isEditing ? "Card description" : "")}
+          </p>
         )}
       </div>
     </>
