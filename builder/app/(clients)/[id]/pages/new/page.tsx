@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useCreatePage } from "@/lib/hooks/use-pages";
-import { LayoutHeading } from "@/components/layout/layout-heading";
+import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -18,7 +18,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ArrowLeft } from "lucide-react";
 
 const pageSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -47,14 +46,50 @@ export default function NewPagePage({
     },
   });
 
-  const onSubmit = (data: PageForm) => {
+  // Generate starter sections based on template
+  const getStarterSections = (template: string, title?: string) => {
+    const ts = Date.now();
+    if (template === "blank") return [];
+    // Default template: hero section + content section
+    return [
+      {
+        _type: "section" as const,
+        _key: `section-hero-${ts}`,
+        width: "full",
+        paddingY: "xl",
+        containers: [{
+          _type: "container" as const,
+          _key: `container-hero-${ts}`,
+          blocks: [
+            { _key: `heading-${ts}`, _type: "heading-block", data: { text: title || "Page Title", level: "h1", size: "4xl", align: "center", weight: "bold" } },
+            { _key: `text-${ts}`, _type: "text-block", data: { text: "Welcome to your new page. Click on any text to edit it directly.", size: "lg", align: "center", variant: "muted" } },
+          ],
+        }],
+      },
+      {
+        _type: "section" as const,
+        _key: `section-content-${ts + 1}`,
+        width: "container",
+        paddingY: "lg",
+        containers: [{
+          _type: "container" as const,
+          _key: `container-content-${ts + 1}`,
+          blocks: [
+            { _key: `richtext-${ts + 1}`, _type: "rich-text-block", data: { html: "<p>Start adding your content here. Use the <strong>Add</strong> panel on the left to insert new blocks.</p>", size: "md", align: "left" } },
+          ],
+        }],
+      },
+    ];
+  };
+
+  const onSubmit = (formData: PageForm) => {
     createPage.mutate(
       {
-        title: data.title,
-        slug: data.slug,
-        template: data.template,
+        title: formData.title,
+        slug: formData.slug,
+        template: formData.template,
         status: "draft",
-        sections: [],
+        sections: getStarterSections(formData.template || "default", formData.title) as unknown as import("@/lib/hooks/use-pages").Section[],
       },
       {
         onSuccess: (page) => {
@@ -74,20 +109,12 @@ export default function NewPagePage({
   };
 
   return (
-    <div>
-      <LayoutHeading
-        title="New Page"
-        description="Create a new page for your site"
-        back={
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router.push(`/${id}/pages`)}
-          >
-            <ArrowLeft />
-          </Button>
-        }
-      />
+    <PageLayout
+      title="New Page"
+      description="Create a new page for your site"
+      backHref={`/${id}/pages`}
+      maxWidth="md"
+    >
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -137,7 +164,13 @@ export default function NewPagePage({
                   <FormItem>
                     <FormLabel>Template</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="default" />
+                      <select
+                        {...field}
+                        className="w-full h-8 px-2.5 text-[14px] rounded-[3px] bg-[var(--el-0)] border border-[var(--border-default)] text-[var(--el-800)]"
+                      >
+                        <option value="default">Default (Hero + Content)</option>
+                        <option value="blank">Blank Page</option>
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -151,6 +184,6 @@ export default function NewPagePage({
           </Button>
         </form>
       </Form>
-    </div>
+    </PageLayout>
   );
 }

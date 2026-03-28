@@ -9,7 +9,12 @@ import "@/lib/renderer/implemented-renderers";
 interface PageRendererProps {
   page: Page;
   breakpoint?: "desktop" | "tablet" | "mobile";
-  onBlockChange?: (sectionIndex: number, containerIndex: number, blockIndex: number, updatedBlock: unknown) => void;
+  onBlockChange?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+    updatedBlock: unknown,
+  ) => void;
   isEditing?: boolean;
 }
 
@@ -40,7 +45,7 @@ export function PageRenderer({
   }
 
   return (
-    <div className="page-content">
+    <div className="page-content flex-1">
       {sections.map((section, sectionIndex) => (
         <SectionRenderer
           key={section._key}
