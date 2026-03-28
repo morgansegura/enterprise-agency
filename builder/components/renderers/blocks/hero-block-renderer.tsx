@@ -26,7 +26,7 @@ const alignClasses = {
   right: "text-right items-end",
 };
 
-export default function HeroBlockRenderer({ block }: BlockRendererProps) {
+export default function HeroBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as HeroBlockData;
   const {
     heading = "Headline",
@@ -73,25 +73,74 @@ export default function HeroBlockRenderer({ block }: BlockRendererProps) {
             alignClasses[align],
           )}
         >
-          {subheading && (
-            <p className="text-sm font-medium text-[var(--accent-primary)] uppercase tracking-wider">
-              {subheading}
+          {(subheading || isEditing) && (
+            <p
+              className="text-sm font-medium text-[var(--accent-primary)] uppercase tracking-wider"
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const v = e.currentTarget.textContent || "";
+                if (v !== subheading && onChange) onChange({ ...block, data: { ...block.data, subheading: v } });
+              }}
+              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            >
+              {subheading || (isEditing ? "Subheading" : "")}
             </p>
           )}
-          <h2 className="text-3xl font-bold tracking-tight">{heading}</h2>
-          {description && (
-            <p className="text-[var(--el-500)] max-w-lg">{description}</p>
+          <h2
+            className="text-3xl font-bold tracking-tight"
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = e.currentTarget.textContent || "";
+              if (v !== heading && onChange) onChange({ ...block, data: { ...block.data, heading: v } });
+            }}
+            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          >
+            {heading}
+          </h2>
+          {(description || isEditing) && (
+            <p
+              className="text-[var(--el-500)] max-w-lg"
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const v = e.currentTarget.textContent || "";
+                if (v !== description && onChange) onChange({ ...block, data: { ...block.data, description: v } });
+              }}
+              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            >
+              {description || (isEditing ? "Description text" : "")}
+            </p>
           )}
-          {(primaryCta || secondaryCta) && (
+          {(primaryCta || secondaryCta || isEditing) && (
             <div className="flex gap-3 mt-2">
-              {primaryCta && (
-                <span className="inline-flex items-center px-4 py-2 rounded-md bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)] text-sm font-medium">
-                  {primaryCta.text}
+              {(primaryCta || isEditing) && (
+                <span
+                  className="inline-flex items-center px-4 py-2 rounded-md bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)] text-sm font-medium"
+                  contentEditable={!!isEditing}
+                  suppressContentEditableWarning
+                  onBlur={(e) => {
+                    const v = e.currentTarget.textContent || "";
+                    if (onChange) onChange({ ...block, data: { ...block.data, primaryCta: { ...primaryCta, text: v, href: primaryCta?.href || "#" } } });
+                  }}
+                  style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+                >
+                  {primaryCta?.text || (isEditing ? "Primary CTA" : "")}
                 </span>
               )}
-              {secondaryCta && (
-                <span className="inline-flex items-center px-4 py-2 rounded-md border border-border text-sm font-medium">
-                  {secondaryCta.text}
+              {(secondaryCta || isEditing) && (
+                <span
+                  className="inline-flex items-center px-4 py-2 rounded-md border border-[var(--border-default)] text-sm font-medium"
+                  contentEditable={!!isEditing}
+                  suppressContentEditableWarning
+                  onBlur={(e) => {
+                    const v = e.currentTarget.textContent || "";
+                    if (onChange) onChange({ ...block, data: { ...block.data, secondaryCta: { ...secondaryCta, text: v, href: secondaryCta?.href || "#" } } });
+                  }}
+                  style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+                >
+                  {secondaryCta?.text || (isEditing ? "Secondary CTA" : "")}
                 </span>
               )}
             </div>
