@@ -29,7 +29,7 @@ const itemVariantClasses = {
   separated: "border border-border rounded-lg",
 };
 
-export default function AccordionBlockRenderer({ block }: BlockRendererProps) {
+export default function AccordionBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as AccordionBlockData;
   const { items = [], allowMultiple = false, variant = "default" } = data;
 
@@ -71,7 +71,20 @@ export default function AccordionBlockRenderer({ block }: BlockRendererProps) {
               onClick={() => toggleItem(index)}
               aria-expanded={isOpen}
             >
-              <span>{item.title}</span>
+              <span
+                contentEditable={!!isEditing}
+                suppressContentEditableWarning
+                onBlur={(e) => {
+                  const v = e.currentTarget.textContent || "";
+                  if (v !== item.title && onChange) {
+                    const updated = [...items];
+                    updated[index] = { ...item, title: v };
+                    onChange({ ...block, data: { ...block.data, items: updated } });
+                  }
+                }}
+                onClick={(e) => isEditing && e.stopPropagation()}
+                style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              >{item.title}</span>
               <ChevronDown
                 className={cn(
                   "h-4 w-4 shrink-0 transition-transform duration-200",
@@ -80,7 +93,20 @@ export default function AccordionBlockRenderer({ block }: BlockRendererProps) {
               />
             </button>
             {isOpen && (
-              <div className="px-4 pb-4 pt-0 text-sm text-[var(--el-500)]">
+              <div
+                className="px-4 pb-4 pt-0 text-sm text-[var(--el-500)]"
+                contentEditable={!!isEditing}
+                suppressContentEditableWarning
+                onBlur={(e) => {
+                  const v = e.currentTarget.textContent || "";
+                  if (v !== item.content && onChange) {
+                    const updated = [...items];
+                    updated[index] = { ...item, content: v };
+                    onChange({ ...block, data: { ...block.data, items: updated } });
+                  }
+                }}
+                style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              >
                 {item.content}
               </div>
             )}

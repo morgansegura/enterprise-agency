@@ -39,7 +39,7 @@ const tabVariantClasses = {
   },
 };
 
-export default function TabsBlockRenderer({ block }: BlockRendererProps) {
+export default function TabsBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as TabsBlockData;
   const { tabs = [], defaultTab = 0, variant = "default" } = data;
 
@@ -73,11 +73,38 @@ export default function TabsBlockRenderer({ block }: BlockRendererProps) {
             )}
             onClick={() => setActiveTab(index)}
           >
-            {tab.label}
+            <span
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const v = e.currentTarget.textContent || "";
+                if (v !== tab.label && onChange) {
+                  const updated = [...tabs];
+                  updated[index] = { ...tab, label: v };
+                  onChange({ ...block, data: { ...block.data, tabs: updated } });
+                }
+              }}
+              onClick={(e) => isEditing && e.stopPropagation()}
+              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            >{tab.label}</span>
           </button>
         ))}
       </div>
-      <div className="p-4" role="tabpanel">
+      <div
+        className="p-4"
+        role="tabpanel"
+        contentEditable={!!isEditing}
+        suppressContentEditableWarning
+        onBlur={(e) => {
+          const v = e.currentTarget.textContent || "";
+          if (v !== tabs[activeTab]?.content && onChange) {
+            const updated = [...tabs];
+            updated[activeTab] = { ...updated[activeTab], content: v };
+            onChange({ ...block, data: { ...block.data, tabs: updated } });
+          }
+        }}
+        style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+      >
         {tabs[activeTab]?.content}
       </div>
     </div>

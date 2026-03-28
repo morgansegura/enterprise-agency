@@ -18,7 +18,7 @@ interface PricingBlockData {
   variant?: "default" | "bordered" | "elevated";
 }
 
-export default function PricingBlockRenderer({ block }: BlockRendererProps) {
+export default function PricingBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as PricingBlockData;
   const { tiers = [], heading, description, variant = "default" } = data;
 
@@ -28,12 +28,32 @@ export default function PricingBlockRenderer({ block }: BlockRendererProps) {
     <div className="w-full">
       {(heading || description) && (
         <div className="text-center mb-8">
-          {heading && (
-            <h3 className="text-xl font-bold">{heading}</h3>
+          {(heading || isEditing) && (
+            <h3
+              className="text-xl font-bold"
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const v = e.currentTarget.textContent || "";
+                if (v !== heading && onChange) onChange({ ...block, data: { ...block.data, heading: v } });
+              }}
+              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            >
+              {heading || "Pricing"}
+            </h3>
           )}
-          {description && (
-            <p className="text-sm text-[var(--el-500)] mt-1">
-              {description}
+          {(description || isEditing) && (
+            <p
+              className="text-sm text-[var(--el-500)] mt-1"
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const v = e.currentTarget.textContent || "";
+                if (v !== description && onChange) onChange({ ...block, data: { ...block.data, description: v } });
+              }}
+              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            >
+              {description || "Choose the plan that works for you"}
             </p>
           )}
         </div>
@@ -57,9 +77,39 @@ export default function PricingBlockRenderer({ block }: BlockRendererProps) {
                 : "border border-border",
             )}
           >
-            <h4 className="text-base font-semibold">{tier.name}</h4>
+            <h4
+              className="text-base font-semibold"
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const v = e.currentTarget.textContent || "";
+                if (v !== tier.name && onChange) {
+                  const updated = [...tiers];
+                  updated[i] = { ...tier, name: v };
+                  onChange({ ...block, data: { ...block.data, tiers: updated } });
+                }
+              }}
+              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            >
+              {tier.name}
+            </h4>
             <div className="mt-2 flex items-baseline gap-1">
-              <span className="text-3xl font-bold">{tier.price}</span>
+              <span
+                className="text-3xl font-bold"
+                contentEditable={!!isEditing}
+                suppressContentEditableWarning
+                onBlur={(e) => {
+                  const v = e.currentTarget.textContent || "";
+                  if (v !== tier.price && onChange) {
+                    const updated = [...tiers];
+                    updated[i] = { ...tier, price: v };
+                    onChange({ ...block, data: { ...block.data, tiers: updated } });
+                  }
+                }}
+                style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              >
+                {tier.price}
+              </span>
               {tier.period && (
                 <span className="text-sm text-[var(--el-500)]">
                   {tier.period}

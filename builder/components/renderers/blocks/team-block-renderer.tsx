@@ -15,7 +15,7 @@ interface TeamBlockData {
   showBio?: boolean;
 }
 
-export default function TeamBlockRenderer({ block }: BlockRendererProps) {
+export default function TeamBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as TeamBlockData;
   const {
     members = [],
@@ -57,8 +57,38 @@ export default function TeamBlockRenderer({ block }: BlockRendererProps) {
               {member.name.charAt(0)}
             </div>
           )}
-          <h4 className="text-sm font-semibold">{member.name}</h4>
-          <p className="text-xs text-[var(--el-500)]">{member.role}</p>
+          <h4
+            className="text-sm font-semibold"
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = e.currentTarget.textContent || "";
+              if (v !== member.name && onChange) {
+                const updated = [...members];
+                updated[i] = { ...member, name: v };
+                onChange({ ...block, data: { ...block.data, members: updated } });
+              }
+            }}
+            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          >
+            {member.name}
+          </h4>
+          <p
+            className="text-xs text-[var(--el-500)]"
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = e.currentTarget.textContent || "";
+              if (v !== member.role && onChange) {
+                const updated = [...members];
+                updated[i] = { ...member, role: v };
+                onChange({ ...block, data: { ...block.data, members: updated } });
+              }
+            }}
+            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          >
+            {member.role}
+          </p>
           {showBio && member.bio && (
             <p className="text-xs text-[var(--el-500)] mt-2 line-clamp-3">
               {member.bio}

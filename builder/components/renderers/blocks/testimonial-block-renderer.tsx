@@ -1,3 +1,6 @@
+"use client";
+/* eslint-disable @next/next/no-img-element -- dynamic CMS images */
+
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +23,8 @@ interface TestimonialBlockData {
 
 export default function TestimonialBlockRenderer({
   block,
+  onChange,
+  isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as TestimonialBlockData;
   const {
@@ -29,7 +34,14 @@ export default function TestimonialBlockRenderer({
     showRating = false,
   } = data;
 
-  if (testimonials.length === 0) return null;
+  const updateItem = (index: number, field: string, value: string) => {
+    if (!onChange) return;
+    const updated = [...testimonials];
+    updated[index] = { ...updated[index], [field]: value };
+    onChange({ ...block, data: { ...block.data, testimonials: updated } });
+  };
+
+  if (testimonials.length === 0 && !isEditing) return null;
 
   return (
     <div
@@ -46,8 +58,8 @@ export default function TestimonialBlockRenderer({
           className={cn(
             "p-5",
             variant === "card" &&
-              "bg-card border border-border rounded-lg shadow-sm",
-            variant === "minimal" && "border-l-2 border-primary pl-4",
+              "bg-[var(--el-0)] border border-[var(--border-default)] rounded-lg shadow-sm",
+            variant === "minimal" && "border-l-2 border-[var(--accent-primary)] pl-4",
             variant === "default" && "bg-[var(--el-100)]/30 rounded-lg",
           )}
         >
@@ -58,7 +70,7 @@ export default function TestimonialBlockRenderer({
                   key={s}
                   className={cn(
                     "text-sm",
-                    s < t.rating! ? "text-amber-400" : "text-muted",
+                    s < t.rating! ? "text-amber-400" : "text-[var(--el-200)]",
                   )}
                 >
                   ★
@@ -66,12 +78,20 @@ export default function TestimonialBlockRenderer({
               ))}
             </div>
           )}
-          <blockquote className="text-sm text-[var(--el-800)] italic">
+          <blockquote
+            className="text-sm text-[var(--el-800)] italic"
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = (e.currentTarget.textContent || "").replace(/^"|"$/g, "");
+              if (v !== t.quote) updateItem(i, "quote", v);
+            }}
+            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          >
             &ldquo;{t.quote}&rdquo;
           </blockquote>
           <div className="mt-3 flex items-center gap-2">
             {t.avatar && (
-              /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={t.avatar}
                 alt={t.name}
@@ -79,12 +99,30 @@ export default function TestimonialBlockRenderer({
               />
             )}
             <div>
-              <p className="text-sm font-medium">{t.name}</p>
-              {(t.role || t.company) && (
-                <p className="text-xs text-[var(--el-500)]">
-                  {[t.role, t.company].filter(Boolean).join(", ")}
-                </p>
-              )}
+              <p
+                className="text-sm font-medium"
+                contentEditable={!!isEditing}
+                suppressContentEditableWarning
+                onBlur={(e) => {
+                  const v = e.currentTarget.textContent || "";
+                  if (v !== t.name) updateItem(i, "name", v);
+                }}
+                style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              >
+                {t.name}
+              </p>
+              <p
+                className="text-xs text-[var(--el-500)]"
+                contentEditable={!!isEditing}
+                suppressContentEditableWarning
+                onBlur={(e) => {
+                  const v = e.currentTarget.textContent || "";
+                  if (v !== t.role) updateItem(i, "role", v);
+                }}
+                style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              >
+                {[t.role, t.company].filter(Boolean).join(", ") || (isEditing ? "Role, Company" : "")}
+              </p>
             </div>
           </div>
         </div>
