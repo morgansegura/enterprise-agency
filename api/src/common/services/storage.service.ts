@@ -400,15 +400,27 @@ export class StorageService {
     if (!allowedTypes) {
       // Default allowed types for media library
       allowedTypes = [
+        // Images
         "image/jpeg",
         "image/png",
         "image/gif",
         "image/webp",
         "image/avif",
         "image/svg+xml",
+        // Documents
         "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        // Video
         "video/mp4",
         "video/webm",
+        // Audio
+        "audio/mpeg",
+        "audio/wav",
+        "audio/ogg",
+        "audio/aac",
+        "audio/webm",
+        "audio/mp4",
       ];
     }
     return allowedTypes.includes(mimeType);
