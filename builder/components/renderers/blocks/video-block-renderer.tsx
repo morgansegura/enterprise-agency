@@ -31,7 +31,7 @@ function getVimeoId(url: string): string | null {
   return match?.[1] || null;
 }
 
-export default function VideoBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
+export default function VideoBlockRenderer({ block, onChange: _onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as VideoBlockData;
   const {
     url,
@@ -50,14 +50,11 @@ export default function VideoBlockRenderer({ block, onChange, isEditing }: Block
         <div
           className="flex flex-col items-center justify-center gap-2 bg-[var(--el-100)] text-[var(--el-500)] p-8 rounded-md aspect-video cursor-pointer hover:bg-[var(--accent-primary-subtle)]/30"
           onClick={() => {
-            const newUrl = window.prompt("Video URL (YouTube, Vimeo, or direct):", "");
-            if (newUrl && onChange) {
-              onChange({ ...block, data: { ...block.data, url: newUrl } });
-            }
+            // Block click-to-select will open settings panel where URL can be set
           }}
         >
-          <span className="text-[14px] font-medium text-[var(--el-800)]">Click to add video</span>
-          <span className="text-[12px]">YouTube, Vimeo, or direct URL</span>
+          <span className="text-[14px] font-medium text-[var(--el-800)]">Click to select, then set URL in Settings</span>
+          <span className="text-[12px]">YouTube, Vimeo, or direct URL via Settings panel</span>
         </div>
       );
     }

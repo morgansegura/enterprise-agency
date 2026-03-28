@@ -19,7 +19,7 @@ const heightClasses = {
   xl: "h-96",
 };
 
-export default function MapBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
+export default function MapBlockRenderer({ block, onChange: _onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as MapBlockData;
   const { center, zoom: _zoom = 12, height = "md", marker = true } = data;
 
@@ -32,15 +32,11 @@ export default function MapBlockRenderer({ block, onChange, isEditing }: BlockRe
             heightClasses[height],
           )}
           onClick={() => {
-            const lat = window.prompt("Latitude:", "40.7128");
-            const lng = window.prompt("Longitude:", "-74.0060");
-            if (lat && lng && onChange) {
-              onChange({ ...block, data: { ...block.data, center: { lat: parseFloat(lat), lng: parseFloat(lng) } } });
-            }
+            // Block click-to-select opens settings panel for coordinates
           }}
         >
-          <span className="text-[14px] font-medium text-[var(--el-800)]">Click to set location</span>
-          <span className="text-[12px]">Enter latitude and longitude</span>
+          <span className="text-[14px] font-medium text-[var(--el-800)]">Click to select, then set location in Settings</span>
+          <span className="text-[12px]">Set coordinates via Settings panel</span>
         </div>
       );
     }

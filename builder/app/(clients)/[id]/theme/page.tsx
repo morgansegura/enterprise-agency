@@ -122,7 +122,7 @@ export default function ThemePage() {
 
   if (isLoading) {
     return (
-      <PageLayout title="Theme" description="Loading...">
+      <PageLayout title="Theme" description="Loading theme settings...">
         <div className="space-y-4 max-w-2xl">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-24 bg-(--el-100) rounded animate-pulse" />

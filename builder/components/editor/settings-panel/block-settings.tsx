@@ -671,6 +671,22 @@ function MapBlockSettings({
           className="settings-input"
         />
       </PropertyRow>
+      <PropertyRow label="Latitude" stacked>
+        <Input
+          value={String(((data.center as Record<string, unknown>)?.lat as number) || "")}
+          onChange={(e) => handleChange("center", { ...((data.center as Record<string, unknown>) || {}), lat: parseFloat(e.target.value) || 0 })}
+          placeholder="40.7128"
+          className="settings-input"
+        />
+      </PropertyRow>
+      <PropertyRow label="Longitude" stacked>
+        <Input
+          value={String(((data.center as Record<string, unknown>)?.lng as number) || "")}
+          onChange={(e) => handleChange("center", { ...((data.center as Record<string, unknown>) || {}), lng: parseFloat(e.target.value) || 0 })}
+          placeholder="-74.0060"
+          className="settings-input"
+        />
+      </PropertyRow>
       <PropertyRow label="Zoom">
         <PropertySelect
           value={String((data.zoom as number) || 14)}
@@ -681,6 +697,18 @@ function MapBlockSettings({
             { value: "16", label: "Street" },
           ]}
           onChange={(v) => handleChange("zoom", parseInt(v))}
+        />
+      </PropertyRow>
+      <PropertyRow label="Height">
+        <PropertySelect
+          value={(data.height as string) || "md"}
+          options={[
+            { value: "sm", label: "Small" },
+            { value: "md", label: "Medium" },
+            { value: "lg", label: "Large" },
+            { value: "xl", label: "X-Large" },
+          ]}
+          onChange={(v) => handleChange("height", v)}
         />
       </PropertyRow>
     </PropertySection>

@@ -13,7 +13,7 @@ const aspectRatioClasses = {
   "1/1": "aspect-square",
 };
 
-export default function EmbedBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
+export default function EmbedBlockRenderer({ block, onChange: _onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as EmbedBlockData;
   const { html, aspectRatio = "auto" } = data;
 
@@ -23,14 +23,11 @@ export default function EmbedBlockRenderer({ block, onChange, isEditing }: Block
         <div
           className="flex flex-col items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-8 rounded-[3px] cursor-pointer hover:bg-(--accent-primary-subtle)/30"
           onClick={() => {
-            const code = window.prompt("Paste embed HTML code:", "");
-            if (code && onChange) {
-              onChange({ ...block, data: { ...block.data, html: code } });
-            }
+            // Block click-to-select opens settings panel
           }}
         >
-          <span className="text-[14px] font-medium text-(--el-800)">Click to add embed</span>
-          <span className="text-[12px]">Paste HTML embed code</span>
+          <span className="text-[14px] font-medium text-(--el-800)">Click to select, then set code in Settings</span>
+          <span className="text-[12px]">Paste embed code via Settings panel</span>
         </div>
       );
     }

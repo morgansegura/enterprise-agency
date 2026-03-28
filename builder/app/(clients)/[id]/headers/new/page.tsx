@@ -99,7 +99,6 @@ export default function NewHeaderPage({
   });
 
   const onSubmit = (data: HeaderForm) => {
-    console.log("[NewHeader] Submitting:", data);
 
     createHeader.mutate(
       {
@@ -112,7 +111,6 @@ export default function NewHeaderPage({
       },
       {
         onSuccess: (header) => {
-          console.log("[NewHeader] Created successfully:", header);
           toast.success(
             "Header created",
             `"${data.name}" has been created successfully.`,
