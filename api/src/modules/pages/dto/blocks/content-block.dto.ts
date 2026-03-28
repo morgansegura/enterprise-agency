@@ -32,6 +32,20 @@ const BLOCK_TYPES = [
   "stats-block",
   "map-block",
   "logo-block",
+  // Composite blocks
+  "hero-block",
+  "cta-block",
+  "testimonial-block",
+  "pricing-block",
+  "team-block",
+  "logo-bar-block",
+  // Form blocks
+  "contact-form-block",
+  "newsletter-block",
+  // Content display blocks
+  "feature-grid-block",
+  "social-links-block",
+  "faq-block",
   // Container blocks
   "grid-block",
   "flex-block",

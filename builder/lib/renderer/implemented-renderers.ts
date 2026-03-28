@@ -188,6 +188,35 @@ const implementedRenderers: BlockRendererRegistration[] = [
       import("@/components/renderers/blocks/columns-block-renderer"),
     isContainer: true,
   },
+
+  // ==========================================================================
+  // New blocks — forms, content, navigation
+  // ==========================================================================
+  {
+    type: "contact-form-block",
+    component: () =>
+      import("@/components/renderers/blocks/contact-form-block-renderer"),
+  },
+  {
+    type: "newsletter-block",
+    component: () =>
+      import("@/components/renderers/blocks/newsletter-block-renderer"),
+  },
+  {
+    type: "feature-grid-block",
+    component: () =>
+      import("@/components/renderers/blocks/feature-grid-block-renderer"),
+  },
+  {
+    type: "social-links-block",
+    component: () =>
+      import("@/components/renderers/blocks/social-links-block-renderer"),
+  },
+  {
+    type: "faq-block",
+    component: () =>
+      import("@/components/renderers/blocks/faq-block-renderer"),
+  },
 ];
 
 /**

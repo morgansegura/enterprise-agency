@@ -189,6 +189,44 @@ const INTERACTIVE_BLOCKS: Block[] = [
   },
 ];
 
+const FORM_BLOCKS: Block[] = [
+  {
+    id: "contact-form",
+    name: "Contact Form",
+    icon: Type,
+    description: "Name, email, message form",
+    type: "contact-form-block",
+  },
+  {
+    id: "newsletter",
+    name: "Newsletter",
+    icon: Type,
+    description: "Email signup with CTA",
+    type: "newsletter-block",
+  },
+  {
+    id: "faq",
+    name: "FAQ",
+    icon: ChevronDown,
+    description: "Frequently asked questions",
+    type: "faq-block",
+  },
+  {
+    id: "feature-grid",
+    name: "Feature Grid",
+    icon: Columns2,
+    description: "Grid of feature cards",
+    type: "feature-grid-block",
+  },
+  {
+    id: "social-links",
+    name: "Social Links",
+    icon: Code,
+    description: "Social media icons",
+    type: "social-links-block",
+  },
+];
+
 const LAYOUT_BLOCKS: Block[] = [
   {
     id: "container",
@@ -263,7 +301,7 @@ export function BlocksLibrary() {
   return (
     <Accordion
       type="multiple"
-      defaultValue={["content", "interactive", "media", "layout"]}
+      defaultValue={["content", "interactive", "media", "forms", "layout"]}
       className="blocks-library w-full px-2"
     >
       <AccordionItem value="content">
@@ -281,6 +319,11 @@ export function BlocksLibrary() {
       <AccordionItem value="media">
         <AccordionTrigger>Media</AccordionTrigger>
         <AccordionContent>{renderBlockList(MEDIA_BLOCKS)}</AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="forms">
+        <AccordionTrigger>Forms & More</AccordionTrigger>
+        <AccordionContent>{renderBlockList(FORM_BLOCKS)}</AccordionContent>
       </AccordionItem>
 
       {/* Layout blocks - Builder tier only */}

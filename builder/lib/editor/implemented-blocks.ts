@@ -757,6 +757,132 @@ const implementedBlocks: BlockRegistration[] = [
     }),
     tier: "BUILDER",
   },
+
+  // ========================================================================
+  // New blocks — forms, content display, navigation
+  // ========================================================================
+  {
+    type: "contact-form-block",
+    displayName: "Contact Form",
+    category: "content",
+    icon: "Mail",
+    description: "Contact form with name, email, message",
+    component: () =>
+      import("@/components/blocks/contact-form-block-editor").then((mod) => ({
+        default: mod.ContactFormBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `contact-form-${Date.now()}`,
+      _type: "contact-form-block",
+      data: {
+        heading: "Contact Us",
+        description: "Send us a message and we'll get back to you.",
+        fields: [
+          { label: "Name", type: "text", required: true },
+          { label: "Email", type: "email", required: true },
+          { label: "Message", type: "textarea", required: true },
+        ],
+        submitText: "Send Message",
+      },
+    }),
+  },
+  {
+    type: "newsletter-block",
+    displayName: "Newsletter",
+    category: "content",
+    icon: "Mail",
+    description: "Email signup with CTA",
+    component: () =>
+      import("@/components/blocks/contact-form-block-editor").then((mod) => ({
+        default: mod.ContactFormBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `newsletter-${Date.now()}`,
+      _type: "newsletter-block",
+      data: {
+        heading: "Subscribe to our newsletter",
+        description: "Get the latest updates delivered to your inbox.",
+        placeholder: "Enter your email",
+        buttonText: "Subscribe",
+        variant: "inline",
+      },
+    }),
+  },
+  {
+    type: "feature-grid-block",
+    displayName: "Feature Grid",
+    category: "content",
+    icon: "LayoutGrid",
+    description: "Grid of feature cards with icons",
+    component: () =>
+      import("@/components/blocks/contact-form-block-editor").then((mod) => ({
+        default: mod.ContactFormBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `feature-grid-${Date.now()}`,
+      _type: "feature-grid-block",
+      data: {
+        heading: "Our Features",
+        description: "What makes us different",
+        features: [
+          { icon: "⚡", title: "Fast", description: "Lightning-fast performance" },
+          { icon: "🔒", title: "Secure", description: "Enterprise-grade security" },
+          { icon: "📱", title: "Responsive", description: "Works on any device" },
+        ],
+        columns: 3,
+        variant: "card",
+      },
+    }),
+  },
+  {
+    type: "social-links-block",
+    displayName: "Social Links",
+    category: "content",
+    icon: "Share2",
+    description: "Social media link icons",
+    component: () =>
+      import("@/components/blocks/contact-form-block-editor").then((mod) => ({
+        default: mod.ContactFormBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `social-links-${Date.now()}`,
+      _type: "social-links-block",
+      data: {
+        links: [
+          { platform: "twitter", url: "https://twitter.com" },
+          { platform: "linkedin", url: "https://linkedin.com" },
+          { platform: "instagram", url: "https://instagram.com" },
+        ],
+        size: "md",
+        variant: "default",
+        align: "center",
+      },
+    }),
+  },
+  {
+    type: "faq-block",
+    displayName: "FAQ",
+    category: "content",
+    icon: "HelpCircle",
+    description: "Frequently asked questions",
+    component: () =>
+      import("@/components/blocks/contact-form-block-editor").then((mod) => ({
+        default: mod.ContactFormBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `faq-${Date.now()}`,
+      _type: "faq-block",
+      data: {
+        heading: "Frequently Asked Questions",
+        description: "Find answers to common questions",
+        items: [
+          { question: "What is this?", answer: "This is an example FAQ item." },
+          { question: "How does it work?", answer: "Click on a question to reveal the answer." },
+          { question: "Can I customize it?", answer: "Yes, you can edit questions and answers directly on the canvas." },
+        ],
+      },
+    }),
+  },
 ];
 
 /**
