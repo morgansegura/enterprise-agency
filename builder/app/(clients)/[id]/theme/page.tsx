@@ -249,6 +249,24 @@ export default function ThemePage() {
           <h3 className="theme-section-title">Typography</h3>
           <div className="theme-font-grid">
             <div className="theme-field">
+              <label className="theme-label">Heading Font</label>
+              <select
+                className="theme-select"
+                value={(fonts.heading as string) || FONT_OPTIONS[0].value}
+                onChange={(e) => {
+                  setLocalTokens((prev) => ({
+                    ...prev,
+                    fonts: { ...prev.fonts, heading: e.target.value },
+                  }));
+                  setIsDirty(true);
+                }}
+              >
+                {FONT_OPTIONS.map((font) => (
+                  <option key={font.label} value={font.value}>{font.label}</option>
+                ))}
+              </select>
+            </div>
+            <div className="theme-field">
               <label className="theme-label">Body Font</label>
               <select
                 className="theme-select"
@@ -256,21 +274,105 @@ export default function ThemePage() {
                 onChange={(e) => handleFontChange(e.target.value)}
               >
                 {FONT_OPTIONS.map((font) => (
-                  <option key={font.label} value={font.value}>
-                    {font.label}
-                  </option>
+                  <option key={font.label} value={font.value}>{font.label}</option>
                 ))}
               </select>
             </div>
           </div>
-          <div className="theme-font-preview" style={{ fontFamily: bodyFont }}>
-            <p className="theme-font-preview-heading">
-              The quick brown fox jumps over the lazy dog
+          <div className="theme-font-preview">
+            <p className="theme-font-preview-heading" style={{ fontFamily: (fonts.heading as string) || bodyFont }}>
+              Heading Font Preview
             </p>
-            <p className="theme-font-preview-body">
-              Pack my box with five dozen liquor jugs. How vexingly quick daft
-              zebras jump.
+            <p className="theme-font-preview-body" style={{ fontFamily: bodyFont }}>
+              Body font preview. This is how your paragraphs and content will look.
             </p>
+          </div>
+        </section>
+
+        {/* Spacing & Layout */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Spacing & Layout</h3>
+          <div className="theme-color-grid">
+            <div className="theme-color-field">
+              <label className="theme-label">Section Padding</label>
+              <select
+                className="theme-select"
+                value={(radii.sectionPadding as string) || "lg"}
+                onChange={(e) => {
+                  setLocalTokens((prev) => ({
+                    ...prev,
+                    borderRadius: { ...prev.borderRadius, sectionPadding: e.target.value },
+                  }));
+                  setIsDirty(true);
+                }}
+              >
+                <option value="sm">Small (16px)</option>
+                <option value="md">Medium (32px)</option>
+                <option value="lg">Large (48px)</option>
+                <option value="xl">X-Large (64px)</option>
+              </select>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Content Gap</label>
+              <select
+                className="theme-select"
+                value={(radii.contentGap as string) || "md"}
+                onChange={(e) => {
+                  setLocalTokens((prev) => ({
+                    ...prev,
+                    borderRadius: { ...prev.borderRadius, contentGap: e.target.value },
+                  }));
+                  setIsDirty(true);
+                }}
+              >
+                <option value="sm">Tight (8px)</option>
+                <option value="md">Default (16px)</option>
+                <option value="lg">Relaxed (24px)</option>
+                <option value="xl">Spacious (32px)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        {/* Borders */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Borders</h3>
+          <div className="theme-color-grid">
+            <div className="theme-color-field">
+              <label className="theme-label">Border Color</label>
+              <div className="theme-color-input-row">
+                <input
+                  type="color"
+                  value={(colors.borderColor as string) || "#dfe1e6"}
+                  onChange={(e) => handleColorChange("borderColor", e.target.value)}
+                  className="theme-color-picker"
+                />
+                <Input
+                  value={(colors.borderColor as string) || "#dfe1e6"}
+                  onChange={(e) => handleColorChange("borderColor", e.target.value)}
+                  className="theme-color-hex"
+                />
+              </div>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Border Width</label>
+              <select
+                className="theme-select"
+                value={(radii.borderWidth as string) || "1px"}
+                onChange={(e) => {
+                  setLocalTokens((prev) => ({
+                    ...prev,
+                    borderRadius: { ...prev.borderRadius, borderWidth: e.target.value },
+                  }));
+                  setIsDirty(true);
+                }}
+              >
+                <option value="0">None</option>
+                <option value="1px">Thin (1px)</option>
+                <option value="2px">Medium (2px)</option>
+                <option value="3px">Thick (3px)</option>
+              </select>
+            </div>
           </div>
         </section>
 
