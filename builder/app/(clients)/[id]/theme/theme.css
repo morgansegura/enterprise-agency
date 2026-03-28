@@ -1,0 +1,138 @@
+@reference "tailwindcss";
+
+.theme-page {
+  @apply max-w-2xl space-y-8;
+}
+
+.theme-section {
+  @apply space-y-3;
+}
+
+.theme-section-title {
+  @apply text-[16px] font-semibold text-(--el-800);
+}
+
+.theme-section-desc {
+  @apply text-[14px] text-(--el-500);
+}
+
+/* Color presets */
+.theme-color-presets {
+  @apply flex flex-wrap gap-2;
+}
+
+.theme-color-preset {
+  @apply flex flex-col items-center gap-1.5 p-2 rounded-[3px] cursor-pointer;
+  @apply bg-transparent border border-transparent;
+  @apply transition-all duration-100;
+}
+
+.theme-color-preset:hover {
+  @apply border-(--border-default);
+}
+
+.theme-color-preset[data-active] {
+  @apply border-(--accent-primary) bg-(--accent-primary-subtle)/30;
+}
+
+.theme-color-preset-swatch {
+  @apply w-8 h-8 rounded-full;
+}
+
+.theme-color-preset-label {
+  @apply text-[11px] font-medium text-(--el-500);
+}
+
+/* Color inputs */
+.theme-color-grid {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.theme-color-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.theme-label {
+  @apply text-[12px] font-semibold text-(--el-800);
+}
+
+.theme-color-input-row {
+  @apply flex items-center gap-2;
+}
+
+.theme-color-picker {
+  @apply w-8 h-8 rounded-[3px] border border-(--border-default) cursor-pointer;
+  @apply p-0 bg-transparent;
+}
+
+.theme-color-hex {
+  @apply flex-1 h-8 text-[13px] font-mono;
+}
+
+/* Font */
+.theme-font-grid {
+  @apply grid grid-cols-1 gap-4;
+}
+
+.theme-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.theme-select {
+  @apply h-8 px-2.5 text-[14px] rounded-[3px];
+  @apply bg-(--el-0) border border-(--border-default) text-(--el-800);
+  @apply cursor-pointer outline-none;
+}
+
+.theme-select:focus {
+  @apply ring-1 ring-(--accent-primary);
+}
+
+.theme-font-preview {
+  @apply p-4 bg-(--el-50) rounded-[3px] border border-(--border-default) space-y-2;
+}
+
+.theme-font-preview-heading {
+  @apply text-[20px] font-bold text-(--el-800);
+}
+
+.theme-font-preview-body {
+  @apply text-[14px] text-(--el-500);
+}
+
+/* Radius */
+.theme-radius-options {
+  @apply flex gap-3;
+}
+
+.theme-radius-option {
+  @apply flex flex-col items-center gap-1.5 p-3 rounded-[3px] cursor-pointer;
+  @apply bg-transparent border border-(--border-default);
+  @apply text-[12px] font-medium text-(--el-500);
+  @apply transition-all duration-100;
+}
+
+.theme-radius-option:hover {
+  @apply border-(--el-300);
+}
+
+.theme-radius-option[data-active] {
+  @apply border-(--accent-primary) text-(--accent-primary) bg-(--accent-primary-subtle)/30;
+}
+
+.theme-radius-preview {
+  @apply w-10 h-10 bg-(--el-200) border border-(--el-300);
+}
+
+/* Preview */
+.theme-preview-card {
+  @apply p-6 border border-(--border-default) space-y-3;
+}
+
+.theme-preview-card h4 {
+  @apply text-[18px] font-bold;
+}
+
+.theme-preview-card p {
+  @apply text-[14px] opacity-70;
+}

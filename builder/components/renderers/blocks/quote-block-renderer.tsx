@@ -28,7 +28,7 @@ const variantClasses = {
   highlighted: "bg-[var(--el-100)] p-4 rounded-lg",
 };
 
-export default function QuoteBlockRenderer({ block, _onChange, _isEditing }: BlockRendererProps) {
+export default function QuoteBlockRenderer({ block, onChange: _onChange, isEditing: _isEditing }: BlockRendererProps) {
   const data = block.data as unknown as QuoteBlockData;
   const {
     text,

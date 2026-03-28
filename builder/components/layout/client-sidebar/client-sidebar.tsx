@@ -14,6 +14,7 @@ import {
   Receipt,
   Users,
   Settings,
+  Palette,
   PanelTop,
   PanelBottom,
   Menu,
@@ -162,6 +163,7 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
       label: "Configuration",
       defaultOpen: true,
       items: [
+        { title: "Theme", url: `/${tenantId}/theme`, icon: Palette },
         { title: "Headers", url: `/${tenantId}/headers`, icon: PanelTop },
         { title: "Footers", url: `/${tenantId}/footers`, icon: PanelBottom },
         { title: "Menus", url: `/${tenantId}/menus`, icon: Menu },

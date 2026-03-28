@@ -34,7 +34,7 @@ const sizeClasses = {
   icon: "h-10 w-10",
 };
 
-export default function ButtonBlockRenderer({ block, _onChange, _isEditing }: BlockRendererProps) {
+export default function ButtonBlockRenderer({ block, onChange: _onChange, isEditing: _isEditing }: BlockRendererProps) {
   const data = block.data as unknown as ButtonBlockData;
   const {
     text,
