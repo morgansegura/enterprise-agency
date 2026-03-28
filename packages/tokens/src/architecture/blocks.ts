@@ -627,7 +627,12 @@ export type ContentBlock =
       data: ProductDetailBlockData;
     }
   | { _type: "cart-block"; _key: string; data: CartBlockData }
-  | { _type: "checkout-block"; _key: string; data: CheckoutBlockData };
+  | { _type: "checkout-block"; _key: string; data: CheckoutBlockData }
+  | { _type: "contact-form-block"; _key: string; data: Record<string, unknown> }
+  | { _type: "newsletter-block"; _key: string; data: Record<string, unknown> }
+  | { _type: "feature-grid-block"; _key: string; data: Record<string, unknown> }
+  | { _type: "social-links-block"; _key: string; data: Record<string, unknown> }
+  | { _type: "faq-block"; _key: string; data: Record<string, unknown> };
 
 /**
  * Level 3 - Shallow Container Blocks

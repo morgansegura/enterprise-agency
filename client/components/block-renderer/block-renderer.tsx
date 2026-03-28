@@ -27,6 +27,11 @@ import { HeroBlock } from "@/components/block/hero-block";
 import { CtaBlock } from "@/components/block/cta-block";
 import { TeamBlock } from "@/components/block/team-block";
 import { LogoBarBlock } from "@/components/block/logo-bar-block";
+import { ContactFormBlock } from "@/components/block/contact-form-block";
+import { NewsletterBlock } from "@/components/block/newsletter-block";
+import { FeatureGridBlock } from "@/components/block/feature-grid-block";
+import { SocialLinksBlock } from "@/components/block/social-links-block";
+import { FaqBlock } from "@/components/block/faq-block";
 
 // E-Commerce blocks
 import { ProductGridBlock } from "@/components/block/product-grid-block";
@@ -202,6 +207,22 @@ function renderBlock(block: RootBlock): React.ReactNode {
 
     case "logo-bar-block":
       return <LogoBarBlock key={block._key} data={block.data} />;
+
+    // Form & content blocks
+    case "contact-form-block":
+      return <ContactFormBlock key={block._key} data={block.data} />;
+
+    case "newsletter-block":
+      return <NewsletterBlock key={block._key} data={block.data} />;
+
+    case "feature-grid-block":
+      return <FeatureGridBlock key={block._key} data={block.data} />;
+
+    case "social-links-block":
+      return <SocialLinksBlock key={block._key} data={block.data} />;
+
+    case "faq-block":
+      return <FaqBlock key={block._key} data={block.data} />;
 
     // E-Commerce blocks
     case "product-grid-block":
