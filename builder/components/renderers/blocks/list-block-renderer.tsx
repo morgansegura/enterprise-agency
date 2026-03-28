@@ -18,7 +18,7 @@ const spacingClasses = {
   relaxed: "space-y-4",
 };
 
-export default function ListBlockRenderer({ block }: BlockRendererProps) {
+export default function ListBlockRenderer({ block, _onChange, _isEditing }: BlockRendererProps) {
   const data = block.data as unknown as ListBlockData;
   const {
     items = [],

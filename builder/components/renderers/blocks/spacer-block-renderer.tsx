@@ -14,7 +14,7 @@ const heightClasses = {
   "2xl": "h-24",
 };
 
-export default function SpacerBlockRenderer({ block }: BlockRendererProps) {
+export default function SpacerBlockRenderer({ block, _onChange, _isEditing }: BlockRendererProps) {
   const data = block.data as unknown as SpacerBlockData;
   const { height = "md" } = data;
 

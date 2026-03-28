@@ -33,7 +33,7 @@ const alignClasses = {
   right: "justify-end",
 };
 
-export default function IconBlockRenderer({ block }: BlockRendererProps) {
+export default function IconBlockRenderer({ block, _onChange, _isEditing }: BlockRendererProps) {
   const data = block.data as unknown as IconBlockData;
   const {
     icon = "Star",

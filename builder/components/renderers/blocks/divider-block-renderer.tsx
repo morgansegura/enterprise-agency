@@ -35,7 +35,7 @@ const colorClasses = {
   secondary: "border-secondary",
 };
 
-export default function DividerBlockRenderer({ block }: BlockRendererProps) {
+export default function DividerBlockRenderer({ block, _onChange, _isEditing }: BlockRendererProps) {
   const data = block.data as unknown as DividerBlockData;
   const {
     style = "solid",
