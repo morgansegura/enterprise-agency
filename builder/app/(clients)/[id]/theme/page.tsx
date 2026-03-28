@@ -296,6 +296,38 @@ export default function ThemePage() {
           </div>
         </section>
 
+        {/* Dark Mode */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Dark Mode</h3>
+          <p className="theme-section-desc">
+            Enable dark mode for your site
+          </p>
+          <div className="theme-radius-options">
+            <button
+              type="button"
+              className="theme-radius-option"
+              data-active={!(colors.darkMode as boolean) || undefined}
+              onClick={() => {
+                handleColorChange("darkMode", false as unknown as string);
+              }}
+            >
+              <div className="theme-radius-preview" style={{ background: "#ffffff" }} />
+              <span>Light</span>
+            </button>
+            <button
+              type="button"
+              className="theme-radius-option"
+              data-active={(colors.darkMode as boolean) || undefined}
+              onClick={() => {
+                handleColorChange("darkMode", true as unknown as string);
+              }}
+            >
+              <div className="theme-radius-preview" style={{ background: "#1b2638" }} />
+              <span>Dark</span>
+            </button>
+          </div>
+        </section>
+
         {/* Preview */}
         <section className="theme-section">
           <h3 className="theme-section-title">Preview</h3>
