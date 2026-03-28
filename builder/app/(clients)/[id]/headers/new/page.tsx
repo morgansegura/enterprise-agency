@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useCreateHeader, type HeaderBehavior } from "@/lib/hooks/use-headers";
+import { logger } from "@/lib/logger";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,7 +119,7 @@ export default function NewHeaderPage({
           router.push(`/${id}/headers/${header.id}/edit`);
         },
         onError: (err) => {
-          console.error("[NewHeader] Creation failed:", err);
+          logger.error("Header creation failed", err as Error);
           const message =
             err instanceof Error ? err.message : "Failed to create header";
           toast.error("Failed to create header", message);
