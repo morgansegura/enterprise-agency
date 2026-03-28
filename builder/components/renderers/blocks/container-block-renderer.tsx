@@ -39,6 +39,8 @@ const backgroundClasses = {
 export default function ContainerBlockRenderer({
   block,
   breakpoint,
+  onChange,
+  isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as ContainerBlockData;
   const {
@@ -57,11 +59,17 @@ export default function ContainerBlockRenderer({
         backgroundClasses[background],
       )}
     >
-      {blocks.map((childBlock) => (
+      {blocks.map((childBlock, i) => (
         <BlockRenderer
           key={childBlock._key}
           block={childBlock}
           breakpoint={breakpoint}
+          isEditing={isEditing}
+          onChange={onChange ? (updated) => {
+            const newBlocks = [...blocks];
+            newBlocks[i] = updated;
+            onChange({ ...block, data: { ...block.data, blocks: newBlocks } });
+          } : undefined}
         />
       ))}
     </div>

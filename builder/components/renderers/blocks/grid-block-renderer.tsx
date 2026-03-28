@@ -37,6 +37,8 @@ const autoFlowClasses = {
 
 export default function GridBlockRenderer({
   block,
+  onChange: _onChange,
+  isEditing,
   breakpoint,
 }: BlockRendererProps) {
   const data = block.data as unknown as GridBlockData;
@@ -54,7 +56,7 @@ export default function GridBlockRenderer({
       {blocks.map((childBlock) => (
         <BlockRenderer
           key={childBlock._key}
-          block={childBlock}
+          block={childBlock} isEditing={isEditing}
           breakpoint={breakpoint}
         />
       ))}

@@ -1,3 +1,5 @@
+"use client";
+
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { cn } from "@/lib/utils";
 
@@ -17,14 +19,12 @@ interface ButtonBlockData {
 }
 
 const variantClasses = {
-  default: "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)] hover:bg-[var(--accent-primary)]/90",
-  secondary: "bg-[var(--el-100)] text-[var(--el-800)] hover:bg-[var(--el-100)]/80",
-  outline:
-    "border border-[var(--el-150)] bg-[var(--el-0)] hover:bg-accent hover:text-[var(--el-800)]",
-  ghost: "hover:bg-accent hover:text-[var(--el-800)]",
-  link: "text-[var(--accent-primary)] underline-offset-4 hover:underline",
-  destructive:
-    "bg-[var(--status-error)] text-[var(--el-0)] hover:bg-[var(--status-error)]/90",
+  default: "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]",
+  secondary: "bg-[var(--el-100)] text-[var(--el-800)]",
+  outline: "border border-[var(--el-150)] bg-[var(--el-0)] text-[var(--el-800)]",
+  ghost: "text-[var(--el-600)]",
+  link: "text-[var(--accent-primary)] underline-offset-4 underline",
+  destructive: "bg-[var(--status-error)] text-white",
 };
 
 const sizeClasses = {
@@ -34,7 +34,11 @@ const sizeClasses = {
   icon: "h-10 w-10",
 };
 
-export default function ButtonBlockRenderer({ block, onChange: _onChange, isEditing: _isEditing }: BlockRendererProps) {
+export default function ButtonBlockRenderer({
+  block,
+  onChange,
+  isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as ButtonBlockData;
   const {
     text,
@@ -46,11 +50,30 @@ export default function ButtonBlockRenderer({ block, onChange: _onChange, isEdit
   } = data;
 
   const className = cn(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium",
     variantClasses[variant],
     sizeClasses[size],
     fullWidth && "w-full",
   );
+
+  if (isEditing) {
+    return (
+      <span
+        className={className}
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {
+          const newText = e.currentTarget.textContent || "";
+          if (newText !== text && onChange) {
+            onChange({ ...block, data: { ...block.data, text: newText } });
+          }
+        }}
+        style={{ cursor: "text", outline: "none" }}
+      >
+        {text}
+      </span>
+    );
+  }
 
   return (
     <a

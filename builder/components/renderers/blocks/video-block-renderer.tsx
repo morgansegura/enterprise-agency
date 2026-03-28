@@ -31,7 +31,7 @@ function getVimeoId(url: string): string | null {
   return match?.[1] || null;
 }
 
-export default function VideoBlockRenderer({ block }: BlockRendererProps) {
+export default function VideoBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
   const data = block.data as unknown as VideoBlockData;
   const {
     url,
@@ -45,6 +45,22 @@ export default function VideoBlockRenderer({ block }: BlockRendererProps) {
   } = data;
 
   if (!url) {
+    if (isEditing) {
+      return (
+        <div
+          className="flex flex-col items-center justify-center gap-2 bg-[var(--el-100)] text-[var(--el-500)] p-8 rounded-md aspect-video cursor-pointer hover:bg-[var(--accent-primary-subtle)]/30"
+          onClick={() => {
+            const newUrl = window.prompt("Video URL (YouTube, Vimeo, or direct):", "");
+            if (newUrl && onChange) {
+              onChange({ ...block, data: { ...block.data, url: newUrl } });
+            }
+          }}
+        >
+          <span className="text-[14px] font-medium text-[var(--el-800)]">Click to add video</span>
+          <span className="text-[12px]">YouTube, Vimeo, or direct URL</span>
+        </div>
+      );
+    }
     return (
       <div className="flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] p-8 rounded-md aspect-video">
         No video URL set

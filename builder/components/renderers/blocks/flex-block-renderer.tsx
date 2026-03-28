@@ -47,6 +47,8 @@ const gapClasses = {
 
 export default function FlexBlockRenderer({
   block,
+  onChange: _onChange,
+  isEditing,
   breakpoint,
 }: BlockRendererProps) {
   const data = block.data as unknown as FlexBlockData;
@@ -73,7 +75,7 @@ export default function FlexBlockRenderer({
       {blocks.map((childBlock) => (
         <BlockRenderer
           key={childBlock._key}
-          block={childBlock}
+          block={childBlock} isEditing={isEditing}
           breakpoint={breakpoint}
         />
       ))}

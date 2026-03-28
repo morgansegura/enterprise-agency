@@ -27,6 +27,8 @@ const alignClasses = {
 
 export default function StackBlockRenderer({
   block,
+  onChange: _onChange,
+  isEditing,
   breakpoint,
 }: BlockRendererProps) {
   const data = block.data as unknown as StackBlockData;
@@ -37,7 +39,7 @@ export default function StackBlockRenderer({
       {blocks.map((childBlock) => (
         <BlockRenderer
           key={childBlock._key}
-          block={childBlock}
+          block={childBlock} isEditing={isEditing}
           breakpoint={breakpoint}
         />
       ))}
