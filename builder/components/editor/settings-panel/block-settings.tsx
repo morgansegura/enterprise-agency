@@ -194,6 +194,26 @@ function ButtonBlockSettings({
           className="settings-input"
         />
       </PropertyRow>
+      <PropertyRow label="Full Width">
+        <PropertyToggle
+          value={block.data?.fullWidth ? "yes" : "no"}
+          options={[
+            { value: "no", label: "No" },
+            { value: "yes", label: "Yes" },
+          ]}
+          onChange={(v) => handleDataChange("fullWidth", v === "yes")}
+        />
+      </PropertyRow>
+      <PropertyRow label="New Tab">
+        <PropertyToggle
+          value={block.data?.openInNewTab ? "yes" : "no"}
+          options={[
+            { value: "no", label: "No" },
+            { value: "yes", label: "Yes" },
+          ]}
+          onChange={(v) => handleDataChange("openInNewTab", v === "yes")}
+        />
+      </PropertyRow>
     </PropertySection>
   );
 }
@@ -755,6 +775,32 @@ function HeroBlockSettings({
               { value: "lg", label: "Large" },
             ]}
             onChange={(v) => handleChange("size", v)}
+          />
+        </PropertyRow>
+      </PropertySection>
+      <PropertySection title="Links" icon={<Box className="h-3.5 w-3.5" />} defaultOpen={false}>
+        <PropertyRow label="Primary CTA URL" stacked>
+          <Input
+            value={((data.primaryCta as Record<string, unknown>)?.href as string) || ""}
+            onChange={(e) => handleChange("primaryCta", { ...(data.primaryCta as Record<string, unknown>), href: e.target.value })}
+            placeholder="https://..."
+            className="settings-input"
+          />
+        </PropertyRow>
+        <PropertyRow label="Secondary CTA URL" stacked>
+          <Input
+            value={((data.secondaryCta as Record<string, unknown>)?.href as string) || ""}
+            onChange={(e) => handleChange("secondaryCta", { ...(data.secondaryCta as Record<string, unknown>), href: e.target.value })}
+            placeholder="https://..."
+            className="settings-input"
+          />
+        </PropertyRow>
+        <PropertyRow label="Image URL" stacked>
+          <Input
+            value={((data.image as Record<string, unknown>)?.src as string) || ""}
+            onChange={(e) => handleChange("image", { ...(data.image as Record<string, unknown>), src: e.target.value })}
+            placeholder="Background image URL"
+            className="settings-input"
           />
         </PropertyRow>
       </PropertySection>
