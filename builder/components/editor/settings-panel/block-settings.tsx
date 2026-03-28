@@ -459,17 +459,36 @@ function ListBlockSettings({
 
   return (
     <PropertySection title="List" icon={<Box className="h-3.5 w-3.5" />}>
-      <PropertyRow label="Style">
-        <PropertySelect
-          value={
-            (data.listType as string) || (data.variant as string) || "unordered"
-          }
+      <PropertyRow label="Type">
+        <PropertyToggle
+          value={data.ordered ? "ordered" : "unordered"}
           options={[
             { value: "unordered", label: "Bullet" },
-            { value: "ordered", label: "Numbered" },
-            { value: "none", label: "None" },
+            { value: "ordered", label: "Number" },
           ]}
-          onChange={(v) => handleChange("listType", v)}
+          onChange={(v) => handleChange("ordered", v === "ordered")}
+        />
+      </PropertyRow>
+      <PropertyRow label="Style">
+        <PropertySelect
+          value={(data.style as string) || "default"}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "check", label: "Checkmark" },
+            { value: "arrow", label: "Arrow" },
+          ]}
+          onChange={(v) => handleChange("style", v)}
+        />
+      </PropertyRow>
+      <PropertyRow label="Spacing">
+        <PropertySelect
+          value={(data.spacing as string) || "comfortable"}
+          options={[
+            { value: "tight", label: "Tight" },
+            { value: "comfortable", label: "Default" },
+            { value: "relaxed", label: "Relaxed" },
+          ]}
+          onChange={(v) => handleChange("spacing", v)}
         />
       </PropertyRow>
     </PropertySection>
@@ -504,6 +523,50 @@ function VideoBlockSettings({
           onChange={(e) => handleChange("title", e.target.value)}
           placeholder="Video title"
           className="settings-input"
+        />
+      </PropertyRow>
+      <PropertyRow label="Provider">
+        <PropertySelect
+          value={(data.provider as string) || "youtube"}
+          options={[
+            { value: "youtube", label: "YouTube" },
+            { value: "vimeo", label: "Vimeo" },
+            { value: "direct", label: "Direct" },
+          ]}
+          onChange={(v) => handleChange("provider", v)}
+        />
+      </PropertyRow>
+      <PropertyRow label="Aspect Ratio">
+        <PropertySelect
+          value={(data.aspectRatio as string) || "16/9"}
+          options={[
+            { value: "16/9", label: "16:9" },
+            { value: "4/3", label: "4:3" },
+            { value: "1/1", label: "1:1" },
+            { value: "21/9", label: "21:9" },
+          ]}
+          onChange={(v) => handleChange("aspectRatio", v)}
+        />
+      </PropertyRow>
+      <PropertyRow label="Autoplay">
+        <PropertyToggle
+          value={data.autoplay ? "yes" : "no"}
+          options={[{ value: "no", label: "No" }, { value: "yes", label: "Yes" }]}
+          onChange={(v) => handleChange("autoplay", v === "yes")}
+        />
+      </PropertyRow>
+      <PropertyRow label="Muted">
+        <PropertyToggle
+          value={data.muted ? "yes" : "no"}
+          options={[{ value: "no", label: "No" }, { value: "yes", label: "Yes" }]}
+          onChange={(v) => handleChange("muted", v === "yes")}
+        />
+      </PropertyRow>
+      <PropertyRow label="Loop">
+        <PropertyToggle
+          value={data.loop ? "yes" : "no"}
+          options={[{ value: "no", label: "No" }, { value: "yes", label: "Yes" }]}
+          onChange={(v) => handleChange("loop", v === "yes")}
         />
       </PropertyRow>
     </PropertySection>
@@ -1071,6 +1134,131 @@ function TeamBlockSettings({
   );
 }
 
+function ContactFormBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Contact Form" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Heading" stacked>
+        <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+      </PropertyRow>
+      <PropertyRow label="Description" stacked>
+        <Input value={(data.description as string) || ""} onChange={(e) => handleChange("description", e.target.value)} className="settings-input" />
+      </PropertyRow>
+      <PropertyRow label="Button Text" stacked>
+        <Input value={(data.submitText as string) || ""} onChange={(e) => handleChange("submitText", e.target.value)} className="settings-input" />
+      </PropertyRow>
+      <PropertyRow label="Recipient Email" stacked>
+        <Input value={(data.recipientEmail as string) || ""} onChange={(e) => handleChange("recipientEmail", e.target.value)} className="settings-input" placeholder="you@company.com" />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function NewsletterBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Newsletter" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Heading" stacked>
+        <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+      </PropertyRow>
+      <PropertyRow label="Button Text" stacked>
+        <Input value={(data.buttonText as string) || ""} onChange={(e) => handleChange("buttonText", e.target.value)} className="settings-input" />
+      </PropertyRow>
+      <PropertyRow label="Placeholder" stacked>
+        <Input value={(data.placeholder as string) || ""} onChange={(e) => handleChange("placeholder", e.target.value)} className="settings-input" />
+      </PropertyRow>
+      <PropertyRow label="Layout" stacked>
+        <PropertyToggle
+          value={(data.variant as string) || "inline"}
+          options={[{ value: "inline", label: "Inline" }, { value: "stacked", label: "Stacked" }]}
+          onChange={(v) => handleChange("variant", v)}
+          fullWidth
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function FeatureGridBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="Feature Grid" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Heading" stacked>
+        <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+      </PropertyRow>
+      <PropertyRow label="Columns">
+        <PropertySelect
+          value={String((data.columns as number) || 3)}
+          options={[{ value: "2", label: "2" }, { value: "3", label: "3" }, { value: "4", label: "4" }]}
+          onChange={(v) => handleChange("columns", parseInt(v))}
+        />
+      </PropertyRow>
+      <PropertyRow label="Variant" stacked>
+        <PropertyToggle
+          value={(data.variant as string) || "card"}
+          options={[{ value: "default", label: "Default" }, { value: "card", label: "Card" }, { value: "centered", label: "Center" }]}
+          onChange={(v) => handleChange("variant", v)}
+          fullWidth
+        />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
+function FaqBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data || {};
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <PropertySection title="FAQ" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertyRow label="Heading" stacked>
+        <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+      </PropertyRow>
+      <PropertyRow label="Description" stacked>
+        <Input value={(data.description as string) || ""} onChange={(e) => handleChange("description", e.target.value)} className="settings-input" />
+      </PropertyRow>
+    </PropertySection>
+  );
+}
+
 function GenericBlockSettings({
   block,
   onChange: _onChange,
@@ -1116,5 +1304,9 @@ export {
   TeamBlockSettings,
   AccordionBlockSettings,
   TabsBlockSettings,
+  ContactFormBlockSettings,
+  NewsletterBlockSettings,
+  FeatureGridBlockSettings,
+  FaqBlockSettings,
   GenericBlockSettings,
 };

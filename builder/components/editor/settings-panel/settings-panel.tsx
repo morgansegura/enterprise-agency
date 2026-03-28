@@ -79,6 +79,10 @@ import {
   TeamBlockSettings,
   AccordionBlockSettings,
   TabsBlockSettings,
+  ContactFormBlockSettings,
+  NewsletterBlockSettings,
+  FeatureGridBlockSettings,
+  FaqBlockSettings,
   GenericBlockSettings,
 } from "./block-settings";
 import "./settings-panel.css";
@@ -1283,6 +1287,15 @@ function BlockStyleSettings({
         return <AccordionBlockSettings block={block} onChange={onChange} />;
       case "tabs-block":
         return <TabsBlockSettings block={block} onChange={onChange} />;
+      case "contact-form-block":
+        return <ContactFormBlockSettings block={block} onChange={onChange} />;
+      case "newsletter-block":
+        return <NewsletterBlockSettings block={block} onChange={onChange} />;
+      case "feature-grid-block":
+        return <FeatureGridBlockSettings block={block} onChange={onChange} />;
+      case "faq-block":
+        return <FaqBlockSettings block={block} onChange={onChange} />;
+      case "social-links-block":
       case "logo-bar-block":
       case "columns-block":
       case "container-block":
