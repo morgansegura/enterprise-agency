@@ -174,23 +174,34 @@ export default function FigmaImportPage() {
           selectedPages.has(p.id),
         ) || [];
 
+      const skipped: string[] = [];
+
       for (const page of pages) {
         const sections = mapFigmaPageToSections(page);
-        if (sections.length === 0) continue;
+        if (sections.length === 0) {
+          skipped.push(`${page.name} (no content)`);
+          continue;
+        }
 
-        const slug = page.name
+        // Generate unique slug with timestamp suffix to avoid conflicts
+        const baseSlug = page.name
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/^-|-$/g, "");
+        const uniqueSuffix = Math.random().toString(36).slice(2, 6);
+        const slug = `${baseSlug || "page"}-${uniqueSuffix}`;
 
-        await createPage.mutateAsync({
-          title: page.name,
-          slug: slug || `page-${Date.now()}`,
-          status: "draft",
-          sections: sections as unknown as import("@/lib/hooks/use-pages").Section[],
-        });
-
-        imported++;
+        try {
+          await createPage.mutateAsync({
+            title: `${page.name} (Figma)`,
+            slug,
+            status: "draft",
+            sections: sections as unknown as import("@/lib/hooks/use-pages").Section[],
+          });
+          imported++;
+        } catch (err) {
+          skipped.push(`${page.name} (${err instanceof Error ? err.message : "failed"})`);
+        }
       }
 
       setStep("done");
@@ -198,6 +209,9 @@ export default function FigmaImportPage() {
       if (imported > 0) parts.push(`${imported} pages`);
       if (applyTheme) parts.push("theme tokens");
       toast.success(`Imported ${parts.join(" + ")} from Figma`);
+      if (skipped.length > 0) {
+        toast.info(`Skipped: ${skipped.join(", ")}`, { duration: 5000 });
+      }
     } catch (error) {
       toast.error(
         `Import failed: ${error instanceof Error ? error.message : "Unknown error"}`,
