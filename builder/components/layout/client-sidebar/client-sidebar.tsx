@@ -19,6 +19,7 @@ import {
   PanelBottom,
   Menu,
   UserCog,
+  Paintbrush,
 } from "lucide-react";
 
 import {
@@ -168,6 +169,7 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
         { title: "Footers", url: `/${tenantId}/footers`, icon: PanelBottom },
         { title: "Menus", url: `/${tenantId}/menus`, icon: Menu },
         { title: "Settings", url: `/${tenantId}/settings`, icon: Settings },
+        { title: "Figma", url: `/${tenantId}/integrations/figma`, icon: Paintbrush },
       ],
     },
     {

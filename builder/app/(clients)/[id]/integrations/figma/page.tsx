@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Download, Palette, Type, Image as ImageIcon } from "lucide-react";
+import { Loader2, Download, Palette, Type } from "lucide-react";
 import { useCreatePage } from "@/lib/hooks/use-pages";
 import {
   extractFileKey,
@@ -14,7 +14,6 @@ import {
   extractColors,
   extractTextStyles,
   mapFigmaPageToSections,
-  figmaColorToHex,
   type FigmaFile,
   type FigmaColor,
   type FigmaTextStyle,
@@ -272,7 +271,7 @@ export default function FigmaImportPage() {
         {/* Step 3: Importing */}
         {step === "importing" && (
           <div className="figma-step figma-step-center">
-            <Loader2 className="size-8 animate-spin text-[var(--accent-primary)]" />
+            <Loader2 className="size-8 animate-spin text-(--accent-primary)" />
             <p className="figma-step-title">Importing from Figma...</p>
             <p className="figma-step-desc">
               Creating pages and mapping blocks. This may take a moment.
