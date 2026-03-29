@@ -230,6 +230,14 @@ export function PageEditorLayout({
         </div>
       </div>
 
+      {/* Minimum width warning */}
+      <div className="page-editor-min-width-warning">
+        <div className="page-editor-min-width-warning-content">
+          <p>Your browser is too small</p>
+          <p>Resize your browser to at least 900px wide to use the editor.</p>
+        </div>
+      </div>
+
       {/* ================================================================
        * Editor Body — left rail | (subbar + canvas) | right panel
        * ================================================================ */}
