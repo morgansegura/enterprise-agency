@@ -44,7 +44,7 @@ export function useUpdateTenantTokens() {
     }: {
       tenantId: string;
       tokens: TenantTokens;
-    }) => apiClient.put<TenantTokens>(`/tenants/${tenantId}/tokens`, tokens),
+    }) => apiClient.put<TenantTokens>(`/tenants/${tenantId}/tokens`, { tokens }),
     onSuccess: (_, { tenantId }) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tenantTokens.detail(tenantId),
