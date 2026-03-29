@@ -303,41 +303,6 @@
  * Preview Mode
  * ============================================================================= */
 
-/* =============================================================================
- * Minimum width warning — editor needs at least 900px
- * ============================================================================= */
-
-.page-editor-min-width-warning {
-  @apply hidden fixed inset-0 z-100 items-center justify-center;
-  @apply bg-(--el-0);
-}
-
-.page-editor-min-width-warning-content {
-  @apply flex flex-col items-center gap-3 text-center max-w-xs;
-}
-
-.page-editor-min-width-warning-content p:first-child {
-  @apply text-[16px] font-semibold text-(--el-800);
-}
-
-.page-editor-min-width-warning-content p:last-child {
-  @apply text-[13px] text-(--el-500);
-}
-
-@media (max-width: 899px) {
-  .page-editor-min-width-warning {
-    @apply flex;
-  }
-
-  .page-editor-body {
-    @apply hidden;
-  }
-}
-
-/* =============================================================================
- * Preview Mode
- * ============================================================================= */
-
 .page-editor-layout[data-preview-mode="true"] {
   .page-editor-navbar,
   .page-editor-subbar {
