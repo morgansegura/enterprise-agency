@@ -81,6 +81,7 @@ export function SectionRenderer({
     <section
       className={cn(sectionBackground, sectionAlign)}
       data-block-key={section._key}
+      data-block-label={`Section ${sectionIndex + 1}`}
     >
       <div className={cn(sectionSpacing, sectionWidth)}>
         {containers.map((container, containerIndex) => (
@@ -88,6 +89,7 @@ export function SectionRenderer({
             key={container._key}
             className="space-y-4"
             data-block-key={container._key}
+            data-block-label={`Container ${containerIndex + 1}`}
           >
             {container.blocks?.map((block, blockIndex) => (
               <BlockRenderer

@@ -53,18 +53,23 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
 
   if (error) {
     return (
-      <div className="bg-[var(--status-error)]/10 text-[var(--status-error)] text-sm p-4 rounded-md">
+      <div className="bg-(--status-error)/10 text-(--status-error) text-sm p-4 rounded-md">
         {error}
       </div>
     );
   }
 
   if (!Component) {
-    return <div className="animate-pulse bg-[var(--el-100)] h-12 rounded-md" />;
+    return <div className="animate-pulse bg-(--el-100) h-12 rounded-md" />;
   }
 
+  const label = block._type
+    .replace("-block", "")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+
   return (
-    <div data-block-key={block._key}>
+    <div data-block-key={block._key} data-block-label={label}>
       <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />
     </div>
   );
