@@ -4,6 +4,11 @@ import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { FileText, Layers, Plus, X } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { usePages } from "@/lib/hooks/use-pages";
 import "./editor-sidebar.css";
 
@@ -112,16 +117,21 @@ export function EditorSidebar({
       {/* Icon Rail — always visible */}
       <div className="editor-sidebar-rail">
         {RAIL_ITEMS.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            className="editor-sidebar-rail-btn"
-            data-active={activeTab === item.id || undefined}
-            onClick={() => handleRailClick(item.id)}
-            title={item.label}
-          >
-            <item.icon className="size-[18px]" />
-          </button>
+          <Tooltip key={item.id}>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                className="editor-sidebar-rail-btn"
+                data-active={activeTab === item.id || undefined}
+                onClick={() => handleRailClick(item.id)}
+              >
+                <item.icon className="size-[18px]" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="text-xs">
+              {item.label}
+            </TooltipContent>
+          </Tooltip>
         ))}
       </div>
 
