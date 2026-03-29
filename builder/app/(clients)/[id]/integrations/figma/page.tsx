@@ -329,13 +329,48 @@ export default function FigmaImportPage() {
         {/* Step 1: Connect */}
         {step === "connect" && (
           <div className="figma-step">
-            <div className="figma-step-header">
-              <h3 className="figma-step-title">Connect your Figma file</h3>
-              <p className="figma-step-desc">
-                Paste your Figma file URL and API token to import the design.
-              </p>
-            </div>
+            {/* Connection status */}
+            {token ? (
+              <div className="figma-connected">
+                <div className="figma-connected-status">
+                  <Check className="size-4 text-(--status-success)" />
+                  <span className="figma-label">Figma connected</span>
+                  <span className="figma-hint">Token saved</span>
+                </div>
+                <button
+                  type="button"
+                  className="figma-connected-disconnect"
+                  onClick={() => handleTokenChange("")}
+                >
+                  Disconnect
+                </button>
+              </div>
+            ) : (
+              <div className="figma-step-header">
+                <h3 className="figma-step-title">Connect to Figma</h3>
+                <p className="figma-step-desc">
+                  One-time setup. Your token is saved for future imports.
+                </p>
+              </div>
+            )}
+
             <div className="figma-fields">
+              {/* Only show token field if not connected */}
+              {!token && (
+                <div className="figma-field">
+                  <label className="figma-label">Personal Access Token</label>
+                  <Input
+                    type="password"
+                    value={token}
+                    onChange={(e) => handleTokenChange(e.target.value)}
+                    placeholder="figd_..."
+                  />
+                  <p className="figma-hint">
+                    figma.com/settings → Security → Personal access tokens
+                  </p>
+                </div>
+              )}
+
               <div className="figma-field">
                 <label className="figma-label">Figma File URL</label>
                 <Input
@@ -344,25 +379,14 @@ export default function FigmaImportPage() {
                   placeholder="https://www.figma.com/design/..."
                 />
               </div>
-              <div className="figma-field">
-                <label className="figma-label">Personal Access Token</label>
-                <Input
-                  type="password"
-                  value={token}
-                  onChange={(e) => handleTokenChange(e.target.value)}
-                  placeholder="figd_..."
-                />
-                <p className="figma-hint">
-                  figma.com/settings → Security → Personal access tokens
-                </p>
-              </div>
             </div>
+
             <Button
               onClick={handleConnect}
               disabled={loading || !fileUrl || !token}
             >
               {loading && <Loader2 className="size-4 animate-spin" />}
-              {loading ? "Connecting..." : "Connect to Figma"}
+              {loading ? "Loading file..." : "Import from Figma"}
             </Button>
           </div>
         )}

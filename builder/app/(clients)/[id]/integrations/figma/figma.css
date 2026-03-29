@@ -40,6 +40,21 @@
   @apply text-[11px] text-(--el-400);
 }
 
+/* Connected state */
+.figma-connected {
+  @apply flex items-center justify-between px-3 py-2.5 rounded-[3px];
+  @apply bg-(--status-success-subtle)/30 border border-(--status-success)/20;
+}
+
+.figma-connected-status {
+  @apply flex items-center gap-2;
+}
+
+.figma-connected-disconnect {
+  @apply text-[12px] text-(--el-400) bg-transparent border-none cursor-pointer;
+  @apply hover:text-(--status-error) transition-colors duration-100;
+}
+
 /* Sections */
 .figma-section {
   @apply space-y-2;
