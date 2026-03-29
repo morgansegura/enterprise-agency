@@ -8,7 +8,6 @@ import {
   useUnpublishPage,
   useCreatePreviewToken,
   usePageVersions,
-  useRestorePageVersion,
   type Section,
   type PageSeo,
 } from "@/lib/hooks/use-pages";
@@ -55,8 +54,8 @@ export default function EditPagePage({
   const publishPage = usePublishPage(id);
   const unpublishPage = useUnpublishPage(id);
   const createPreviewToken = useCreatePreviewToken(id);
-  const { data: versions = [] } = usePageVersions(id, pageId);
-  const restoreVersion = useRestorePageVersion(id);
+  // Versions available for future history UI
+  usePageVersions(id, pageId);
 
   // Section/block operations (extracted hook)
   // Don't use createDefaultSection() as fallback — that creates empty content
@@ -112,6 +111,24 @@ export default function EditPagePage({
       el?.classList.add("is-preview-hovered");
     }
   }, [hoveredBlockKey, selectedBlockKey]);
+
+  // Right-click context menu
+  const [contextMenu, setContextMenu] = React.useState<{
+    x: number;
+    y: number;
+    elementType: "section" | "container" | "block";
+    sectionIndex: number;
+    containerIndex?: number;
+    blockIndex?: number;
+  } | null>(null);
+
+  // Close context menu on click anywhere
+  React.useEffect(() => {
+    if (!contextMenu) return;
+    const close = () => setContextMenu(null);
+    window.addEventListener("click", close);
+    return () => window.removeEventListener("click", close);
+  }, [contextMenu]);
 
   // UI Store for block selection in sidebar
   const { selectBlock, selectSection, selectContainer, selectedElement } = useUIStore();
@@ -239,22 +256,22 @@ export default function EditPagePage({
   if (isLoading) {
     return (
       <div className="flex h-full">
-        <div className="w-[220px] border-r border-[var(--border-default)] p-3 space-y-3">
-          <div className="h-4 w-16 bg-[var(--el-100)] rounded animate-pulse" />
-          <div className="h-8 w-full bg-[var(--el-100)] rounded animate-pulse" />
-          <div className="h-8 w-3/4 bg-[var(--el-100)] rounded animate-pulse ml-4" />
+        <div className="w-[220px] border-r border-(--border-default) p-3 space-y-3">
+          <div className="h-4 w-16 bg-(--el-100) rounded animate-pulse" />
+          <div className="h-8 w-full bg-(--el-100) rounded animate-pulse" />
+          <div className="h-8 w-3/4 bg-(--el-100) rounded animate-pulse ml-4" />
         </div>
         <div className="flex-1 p-8 space-y-6">
-          <div className="h-10 w-1/3 bg-[var(--el-100)] rounded animate-pulse" />
-          <div className="h-4 w-full bg-[var(--el-100)] rounded animate-pulse" />
-          <div className="h-4 w-5/6 bg-[var(--el-100)] rounded animate-pulse" />
-          <div className="h-4 w-2/3 bg-[var(--el-100)] rounded animate-pulse" />
-          <div className="h-48 w-full bg-[var(--el-100)] rounded animate-pulse" />
+          <div className="h-10 w-1/3 bg-(--el-100) rounded animate-pulse" />
+          <div className="h-4 w-full bg-(--el-100) rounded animate-pulse" />
+          <div className="h-4 w-5/6 bg-(--el-100) rounded animate-pulse" />
+          <div className="h-4 w-2/3 bg-(--el-100) rounded animate-pulse" />
+          <div className="h-48 w-full bg-(--el-100) rounded animate-pulse" />
         </div>
-        <div className="w-[280px] border-l border-[var(--border-default)] p-3 space-y-3">
-          <div className="h-4 w-20 bg-[var(--el-100)] rounded animate-pulse" />
-          <div className="h-8 w-full bg-[var(--el-100)] rounded animate-pulse" />
-          <div className="h-8 w-full bg-[var(--el-100)] rounded animate-pulse" />
+        <div className="w-[280px] border-l border-(--border-default) p-3 space-y-3">
+          <div className="h-4 w-20 bg-(--el-100) rounded animate-pulse" />
+          <div className="h-8 w-full bg-(--el-100) rounded animate-pulse" />
+          <div className="h-8 w-full bg-(--el-100) rounded animate-pulse" />
         </div>
       </div>
     );
@@ -262,7 +279,7 @@ export default function EditPagePage({
   if (error) {
     return (
       <div className="flex h-full items-center justify-center">
-        <span className="text-[14px] text-[var(--status-error)]">
+        <span className="text-[14px] text-(--status-error)">
           Error loading page: {error.message}
         </span>
       </div>
@@ -271,7 +288,7 @@ export default function EditPagePage({
   if (!page) {
     return (
       <div className="flex h-full items-center justify-center">
-        <span className="text-[14px] text-[var(--el-500)]">Page not found</span>
+        <span className="text-[14px] text-(--el-500)">Page not found</span>
       </div>
     );
   }
@@ -344,7 +361,7 @@ export default function EditPagePage({
 
   if (previewMode) {
     return (
-      <div className="min-h-screen bg-[var(--el-0)]">
+      <div className="min-h-screen bg-(--el-0)">
         <Button
           variant="secondary"
           size="sm"
@@ -384,15 +401,13 @@ export default function EditPagePage({
 
       <PageEditorLayout
         pageId={pageId}
+        pageTitle={localPage.title || "Untitled"}
         breakpoint={breakpoint}
         onBreakpointChange={setBreakpoint}
-        onSave={handleSave}
         onPublish={handlePublish}
         onUnpublish={handleUnpublish}
         onPreview={handlePreview}
         onGeneratePreviewLink={handleGeneratePreviewLink}
-        pageSlug={localPage.slug}
-        tenantSlug={tenant?.slug}
         leftPanel={
           <EditorSidebar
             layersPanel={
@@ -427,18 +442,6 @@ export default function EditPagePage({
             blocksPanel={<BlocksLibrary />}
           />
         }
-        versions={versions}
-        onRestoreVersion={(versionId) => {
-          restoreVersion.mutate(
-            { pageId, versionId },
-            {
-              onSuccess: () =>
-                toast.success("Page restored to previous version"),
-              onError: () => toast.error("Failed to restore version"),
-            },
-          );
-        }}
-        onViewAllHistory={undefined}
         isSaving={autoSave.isSaving || updatePage.isPending}
         isPublished={localPage.status === "published"}
         hasUnsavedChanges={autoSave.hasUnsavedChanges}
@@ -501,6 +504,36 @@ export default function EditPagePage({
                 }
               }}
               onMouseLeave={() => setHoveredBlockKey(null)}
+              onContextMenu={(e) => {
+                const target = e.target as HTMLElement;
+                const blockEl = target.closest("[data-block-key]");
+                if (!blockEl) return;
+                e.preventDefault();
+                const key = blockEl.getAttribute("data-block-key");
+                if (!key) return;
+                // Find element indices
+                for (let si = 0; si < editor.sections.length; si++) {
+                  const section = editor.sections[si];
+                  if (section._key === key) {
+                    setContextMenu({ x: e.clientX, y: e.clientY, elementType: "section", sectionIndex: si });
+                    return;
+                  }
+                  const containers = section.containers ?? [];
+                  for (let ci = 0; ci < containers.length; ci++) {
+                    if (containers[ci]._key === key) {
+                      setContextMenu({ x: e.clientX, y: e.clientY, elementType: "container", sectionIndex: si, containerIndex: ci });
+                      return;
+                    }
+                    const blocks = containers[ci].blocks ?? [];
+                    for (let bi = 0; bi < blocks.length; bi++) {
+                      if (blocks[bi]._key === key) {
+                        setContextMenu({ x: e.clientX, y: e.clientY, elementType: "block", sectionIndex: si, containerIndex: ci, blockIndex: bi });
+                        return;
+                      }
+                    }
+                  }
+                }
+              }}
               onClick={(e) => {
                 // Find the closest block element
                 const target = e.target as HTMLElement;
@@ -549,10 +582,10 @@ export default function EditPagePage({
               ) ? (
                 <div className="flex flex-col items-center justify-center min-h-[60vh] gap-5">
                   <div className="flex flex-col items-center gap-2 text-center max-w-sm">
-                    <p className="text-[18px] font-semibold text-[var(--el-800)]">
+                    <p className="text-[18px] font-semibold text-(--el-800)">
                       This page is empty
                     </p>
-                    <p className="text-[14px] text-[var(--el-500)] leading-relaxed">
+                    <p className="text-[14px] text-(--el-500) leading-relaxed">
                       Add content to start building. You can add headings,
                       text, images, and more from the blocks panel.
                     </p>
@@ -608,6 +641,107 @@ export default function EditPagePage({
           </ResponsivePreview>
         </ResponsiveProvider>
       </PageEditorLayout>
+
+      {/* Right-click context menu */}
+      {contextMenu && (
+        <div
+          className="canvas-context-menu"
+          style={{ top: contextMenu.y, left: contextMenu.x }}
+        >
+          {contextMenu.elementType === "block" && (
+            <>
+              <button
+                type="button"
+                className="canvas-context-menu-item"
+                onClick={() => {
+                  editor.handleBlockMoveUp(contextMenu.sectionIndex, contextMenu.containerIndex!, contextMenu.blockIndex!);
+                  setContextMenu(null);
+                }}
+              >
+                Move Up
+              </button>
+              <button
+                type="button"
+                className="canvas-context-menu-item"
+                onClick={() => {
+                  editor.handleBlockMoveDown(contextMenu.sectionIndex, contextMenu.containerIndex!, contextMenu.blockIndex!);
+                  setContextMenu(null);
+                }}
+              >
+                Move Down
+              </button>
+              <div className="canvas-context-menu-divider" />
+              <button
+                type="button"
+                className="canvas-context-menu-item"
+                onClick={() => {
+                  editor.handleBlockDuplicate(contextMenu.sectionIndex, contextMenu.containerIndex!, contextMenu.blockIndex!);
+                  setContextMenu(null);
+                }}
+              >
+                Duplicate
+              </button>
+              <button
+                type="button"
+                className="canvas-context-menu-item canvas-context-menu-item-danger"
+                onClick={() => {
+                  editor.handleBlockDelete(contextMenu.sectionIndex, contextMenu.containerIndex!, contextMenu.blockIndex!);
+                  setSelectedBlockKey(null);
+                  setContextMenu(null);
+                }}
+              >
+                Delete
+              </button>
+            </>
+          )}
+          {contextMenu.elementType === "section" && (
+            <>
+              <button
+                type="button"
+                className="canvas-context-menu-item"
+                onClick={() => {
+                  editor.handleSectionMoveUp(contextMenu.sectionIndex);
+                  setContextMenu(null);
+                }}
+              >
+                Move Up
+              </button>
+              <button
+                type="button"
+                className="canvas-context-menu-item"
+                onClick={() => {
+                  editor.handleSectionMoveDown(contextMenu.sectionIndex);
+                  setContextMenu(null);
+                }}
+              >
+                Move Down
+              </button>
+              <div className="canvas-context-menu-divider" />
+              <button
+                type="button"
+                className="canvas-context-menu-item"
+                onClick={() => {
+                  editor.handleSectionDuplicate(contextMenu.sectionIndex);
+                  setContextMenu(null);
+                }}
+              >
+                Duplicate
+              </button>
+              <button
+                type="button"
+                className="canvas-context-menu-item canvas-context-menu-item-danger"
+                onClick={() => {
+                  editor.handleSectionDelete(contextMenu.sectionIndex);
+                  setSelectedBlockKey(null);
+                  setContextMenu(null);
+                }}
+              >
+                Delete
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 }

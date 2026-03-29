@@ -83,6 +83,11 @@
   @apply text-(--el-500) text-[13px];
 }
 
+/* Editor mode — full-width without admin sidebar */
+.client-layout-editor {
+  @apply h-screen w-full;
+}
+
 /* Preview mode — full screen without chrome */
 .client-layout-preview {
   @apply min-h-screen w-full bg-(--el-0);

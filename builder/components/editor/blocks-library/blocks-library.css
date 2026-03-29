@@ -1,31 +1,81 @@
 @reference "tailwindcss";
 
-/* Block item info */
-.block-info {
-  @apply grid flex-1 text-left text-[13px] leading-tight;
+/* =============================================================================
+ * Blocks Library — Webflow-style visual grid
+ * ============================================================================= */
+
+.blocks-library {
+  @apply p-3 space-y-4;
 }
 
-.block-name {
-  @apply truncate font-medium text-(--el-800);
+/* Search */
+.blocks-library-search {
+  @apply flex items-center gap-2 px-2.5 h-8 rounded-[3px];
+  @apply bg-(--el-100) border border-(--border-default);
+  @apply text-[12px] text-(--el-500);
 }
 
-.block-description {
-  @apply truncate text-[11px] text-(--el-400);
+.blocks-library-search-input {
+  @apply flex-1 bg-transparent border-none outline-none;
+  @apply text-[12px] text-(--el-800) placeholder:text-(--el-400);
 }
 
-/* Override accordion styling for blocks library categories */
-.blocks-library [data-slot="accordion-item"] {
-  @apply border-b-0;
+/* Category */
+.blocks-library-category {
+  @apply space-y-2;
 }
 
-.blocks-library [data-slot="accordion-item"] + [data-slot="accordion-item"] {
-  @apply border-t border-(--border-default) mt-1 pt-1;
+.blocks-library-category-header {
+  @apply flex items-center justify-between cursor-pointer;
 }
 
-.blocks-library [data-slot="accordion-trigger"] {
-  @apply text-[11px] font-bold uppercase tracking-wider text-(--el-400) py-2;
+.blocks-library-category-title {
+  @apply text-[11px] font-bold uppercase tracking-wider text-(--el-400);
 }
 
-.blocks-library [data-slot="accordion-content-inner"] {
-  @apply pb-1 pt-0 space-y-0;
+.blocks-library-category-chevron {
+  @apply size-3.5 text-(--el-400) transition-transform duration-150;
+}
+
+.blocks-library-category-header[data-collapsed] .blocks-library-category-chevron {
+  @apply -rotate-90;
+}
+
+/* Grid of block cards */
+.blocks-library-grid {
+  @apply grid grid-cols-3 gap-1.5;
+}
+
+/* Block card */
+.blocks-library-card {
+  @apply flex flex-col items-center gap-1.5 p-2 rounded-[3px] cursor-pointer;
+  @apply bg-transparent border-none;
+  @apply transition-colors duration-100;
+}
+
+.blocks-library-card:hover {
+  @apply bg-(--accent-primary-subtle)/50;
+}
+
+.blocks-library-card-icon {
+  @apply flex items-center justify-center w-full aspect-square rounded-[3px];
+  @apply bg-(--el-100) text-(--el-500);
+  @apply transition-colors duration-100;
+}
+
+.blocks-library-card:hover .blocks-library-card-icon {
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary);
+}
+
+.blocks-library-card-label {
+  @apply text-[10px] text-(--el-500) text-center leading-tight truncate w-full;
+}
+
+.blocks-library-card:hover .blocks-library-card-label {
+  @apply text-(--el-800);
+}
+
+/* Locked tier indicator */
+.blocks-library-locked {
+  @apply opacity-50;
 }

@@ -9,188 +9,204 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Save,
-  Eye,
   ChevronDown,
+  ChevronRight,
   Check,
-  History,
-  ArrowLeft,
+  Undo2,
+  Redo2,
+  Monitor,
+  Tablet,
+  Smartphone,
+  Share2,
+  PenTool,
+  FileText,
+  Settings,
+  Home,
+  Play,
 } from "lucide-react";
 import { type Breakpoint } from "../breakpoint-selector";
-import { CanvasToolbar } from "../canvas-toolbar";
 import { useParams } from "next/navigation";
-import { formatDistanceToNow } from "date-fns";
 import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
+import { useUIStore } from "@/lib/stores/ui-store";
 import { ResponsiveProvider } from "@/lib/responsive/context";
+import { BRAND_NAME } from "@/lib/constants/brand";
 import "./page-editor-layout.css";
-
-interface PageVersion {
-  id: string;
-  version: number;
-  title: string;
-  createdAt: string;
-  changeNote: string | null;
-}
 
 interface PageEditorLayoutProps {
   pageId: string;
+  pageTitle?: string;
   breakpoint?: Breakpoint;
   onBreakpointChange?: (breakpoint: Breakpoint) => void;
-  onSave: () => void;
   onPublish: () => void;
   onUnpublish?: () => void;
   onPreview?: () => void;
   onGeneratePreviewLink?: () => void;
-  /** Slug for "View Live Site" link */
-  pageSlug?: string;
-  /** Tenant slug for building client URL */
-  tenantSlug?: string;
-  versions?: PageVersion[];
-  onRestoreVersion?: (versionId: string) => void;
-  onViewAllHistory?: () => void;
+  onUndo?: () => void;
+  onRedo?: () => void;
+  canUndo?: boolean;
+  canRedo?: boolean;
   previewMode?: boolean;
   isSaving?: boolean;
   isPublished?: boolean;
   hasUnsavedChanges?: boolean;
   lastSaved?: Date | null;
-  /** Left panel content (PageLayers tree) */
   leftPanel?: React.ReactNode;
-  /** Right panel content (SettingsPanel) */
   rightPanel?: React.ReactNode;
   children: React.ReactNode;
 }
 
+const BREAKPOINT_WIDTHS: Record<Breakpoint, string> = {
+  desktop: "1440px",
+  tablet: "768px",
+  mobile: "375px",
+};
+
 /**
- * Page Editor Layout
- * Clean canvas-focused layout for WYSIWYG editing
- *
- * Features:
- * - Top toolbar with save/publish actions
- * - Breakpoint selector for responsive design
- * - Full-width canvas for editing
- * - Blocks are added via ADD BLOCK popover in each section
+ * Page Editor Layout — Webflow-style two-bar toolbar + 3-panel editor
  */
 export function PageEditorLayout({
+  pageTitle,
   breakpoint = "desktop",
   onBreakpointChange,
-  onSave,
   onPublish,
   onUnpublish,
   onPreview,
-  versions = [],
-  onRestoreVersion,
+  onGeneratePreviewLink,
+  onUndo,
+  onRedo,
+  canUndo = false,
+  canRedo = false,
   previewMode = false,
   isSaving = false,
   isPublished = false,
-  hasUnsavedChanges = false,
-  lastSaved,
+  hasUnsavedChanges: _hasUnsavedChanges = false,
   leftPanel,
   rightPanel,
   children,
 }: PageEditorLayoutProps) {
   const { setHasCustomToolbar } = usePreviewModeOptional();
-
   const params = useParams();
+  const { selectedElement } = useUIStore();
 
-  // Tell parent layout we have our own toolbar
   React.useEffect(() => {
     setHasCustomToolbar(true);
     return () => setHasCustomToolbar(false);
   }, [setHasCustomToolbar]);
 
-  // Memoize save status to avoid Date.now() calls during render
-  const saveStatusElement = React.useMemo(() => {
-    if (isSaving) {
-      return <span className="page-editor-status saving">Saving...</span>;
-    }
-    if (hasUnsavedChanges) {
-      return (
-        <span className="page-editor-status unsaved">Unsaved changes</span>
-      );
-    }
-    if (lastSaved) {
-      // Show "All changes saved" if saved within last 10 seconds
-      // eslint-disable-next-line react-hooks/purity -- Date.now() for time-since-save display is intentional
-      const secondsAgo = (Date.now() - lastSaved.getTime()) / 1000;
-      if (secondsAgo < 10) {
-        return (
-          <span className="page-editor-status saved">All changes saved</span>
+  // Build breadcrumb from selection
+  const breadcrumb = React.useMemo(() => {
+    const parts: string[] = [];
+    if (pageTitle) parts.push(pageTitle);
+    if (selectedElement) {
+      if (
+        selectedElement.type === "section" ||
+        selectedElement.type === "container" ||
+        selectedElement.type === "block"
+      ) {
+        parts.push(`Section ${(selectedElement.sectionIndex ?? 0) + 1}`);
+      }
+      if (
+        selectedElement.type === "container" ||
+        selectedElement.type === "block"
+      ) {
+        parts.push(`Container ${(selectedElement.containerIndex ?? 0) + 1}`);
+      }
+      if (selectedElement.type === "block" && selectedElement.key) {
+        parts.push(
+          selectedElement.key.replace(/^figma-/, "").replace(/-\d+$/, ""),
         );
       }
-      return (
-        <span className="page-editor-status saved">
-          Saved {formatDistanceToNow(lastSaved, { addSuffix: true })}
-        </span>
-      );
     }
-    return null;
-  }, [isSaving, hasUnsavedChanges, lastSaved]);
+    return parts;
+  }, [pageTitle, selectedElement]);
+
+  // Save status indicator
+  const statusDot = isSaving ? "saving" : "idle";
 
   return (
     <div className="page-editor-layout" data-preview-mode={previewMode}>
-      {/* Editor Toolbar */}
-      <div className="page-editor-toolbar">
-        <div className="page-editor-toolbar-left">
-          <a href={`/${params?.id}/pages`} className="page-editor-toolbar-btn" title="Back to pages">
-            <ArrowLeft className="size-4" />
+      {/* ================================================================
+       * Bar 1 — Main nav bar
+       * Brand | Mode context | Save indicator | Preview + Share + Publish
+       * ================================================================ */}
+      <div className="page-editor-navbar">
+        <div className="page-editor-navbar-left">
+          <a
+            href={`/${params?.id}`}
+            className="page-editor-navbar-brand"
+            title="Back to dashboard"
+          >
+            {BRAND_NAME.charAt(0)}
           </a>
-          <div className="page-editor-toolbar-divider" />
-          {saveStatusElement}
 
-          {versions.length > 0 && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="page-editor-toolbar-btn">
-                  <History className="size-3.5" />
-                  <span>History</span>
-                  <ChevronDown className="size-3" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-56">
-                {versions.slice(0, 5).map((version, i) => (
-                  <React.Fragment key={version.id}>
-                    {i > 0 && (
-                      <div className="h-px bg-[var(--border-default)] mx-1" />
-                    )}
-                    <DropdownMenuItem
-                      onClick={() => onRestoreVersion?.(version.id)}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <span className="font-medium text-[14px]">
-                          Version {version.version}
-                        </span>
-                        <span className="text-[12px] text-[var(--el-400)]">
-                          {formatDistanceToNow(new Date(version.createdAt), {
-                            addSuffix: true,
-                          })}
-                        </span>
-                      </div>
-                    </DropdownMenuItem>
-                  </React.Fragment>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+          {/* Mode tabs */}
+          <nav className="page-editor-mode-tabs">
+            <span className="page-editor-mode-tab" data-active>
+              <PenTool className="size-3.5" />
+              Design
+            </span>
+            <a
+              href={`/${params?.id}/pages`}
+              className="page-editor-mode-tab"
+            >
+              <FileText className="size-3.5" />
+              CMS
+            </a>
+            <a
+              href={`/${params?.id}/theme`}
+              className="page-editor-mode-tab"
+            >
+              <Settings className="size-3.5" />
+              Settings
+            </a>
+          </nav>
+        </div>
+
+        <div className="page-editor-navbar-center">
+          {/* Page selector + save indicator */}
+          <a
+            href={`/${params?.id}/pages`}
+            className="page-editor-page-selector"
+            title="Switch page"
+          >
+            <Home className="size-3.5" />
+            <span>{pageTitle || "Untitled"}</span>
+            <ChevronDown className="size-3" />
+          </a>
+
+          {isSaving && (
+            <span className="page-editor-save-indicator" data-state={statusDot}>
+              Saving...
+            </span>
           )}
         </div>
 
-        <div className="page-editor-toolbar-center" />
-
-        <div className="page-editor-toolbar-right">
-          <button className="page-editor-toolbar-btn" onClick={onPreview}>
-            <Eye className="size-4" />
-            <span>Preview</span>
+        <div className="page-editor-navbar-right">
+          <button
+            className="page-editor-navbar-btn"
+            onClick={onPreview}
+            title="Preview"
+          >
+            <Play className="size-4" />
           </button>
 
-          <Button variant="outline" onClick={onSave} disabled={isSaving}>
-            <Save className="size-4" />
-            Save
-          </Button>
+          {onGeneratePreviewLink && (
+            <button
+              className="page-editor-navbar-btn"
+              onClick={onGeneratePreviewLink}
+              title="Share preview link"
+            >
+              <Share2 className="size-4" />
+            </button>
+          )}
+
+          <div className="page-editor-navbar-divider" />
 
           {isPublished ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="bg-[var(--status-success)] text-white hover:bg-[var(--status-success)]/90">
-                  <Check className="size-4" />
+                <Button size="sm" className="page-editor-publish-btn" data-published>
+                  <Check className="size-3.5" />
                   Published
                   <ChevronDown className="size-3" />
                 </Button>
@@ -200,46 +216,115 @@ export function PageEditorLayout({
                   Update Published Version
                 </DropdownMenuItem>
                 {onUnpublish && (
-                  <DropdownMenuItem
-                    onClick={onUnpublish}
-                    className="text-[var(--status-error)]"
-                  >
+                  <DropdownMenuItem className="text-(--status-error)">
                     Unpublish
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button onClick={onPublish}>
+            <Button size="sm" onClick={onPublish} className="page-editor-publish-btn">
               Publish
             </Button>
           )}
-
         </div>
       </div>
 
-      {/* Editor Body - Left Tree + Canvas + Right Panel */}
+      {/* ================================================================
+       * Editor Body — left rail | (subbar + canvas) | right panel
+       * ================================================================ */}
       <ResponsiveProvider breakpoint={breakpoint} isBuilder={true}>
         <div className="page-editor-body">
-          {/* Left Panel (Content Tree) */}
           {leftPanel && (
             <aside className="page-editor-left-panel">{leftPanel}</aside>
           )}
 
-          {/* Center Canvas (Live Preview) */}
-          <main className="page-editor-canvas">
-            <div className="page-editor-canvas-content design-preview">
-              {children}
-            </div>
-            {onBreakpointChange && (
-              <CanvasToolbar
-                breakpoint={breakpoint}
-                onBreakpointChange={onBreakpointChange}
-              />
-            )}
-          </main>
+          {/* Center column — subbar + canvas */}
+          <div className="page-editor-center">
+            {/* Subbar — breadcrumb + breakpoints (between sidebars) */}
+            <div className="page-editor-subbar">
+              <div className="page-editor-subbar-left">
+                <button
+                  className="page-editor-subbar-btn"
+                  onClick={onUndo}
+                  disabled={!canUndo}
+                  title="Undo (Ctrl+Z)"
+                >
+                  <Undo2 className="size-3.5" />
+                </button>
+                <button
+                  className="page-editor-subbar-btn"
+                  onClick={onRedo}
+                  disabled={!canRedo}
+                  title="Redo (Ctrl+Shift+Z)"
+                >
+                  <Redo2 className="size-3.5" />
+                </button>
 
-          {/* Right Panel (Settings) */}
+                <div className="page-editor-subbar-divider" />
+
+                <div className="page-editor-breadcrumb">
+                  {breadcrumb.map((part, i) => (
+                    <React.Fragment key={i}>
+                      {i > 0 && (
+                        <ChevronRight className="page-editor-breadcrumb-sep" />
+                      )}
+                      <span
+                        className="page-editor-breadcrumb-item"
+                        data-active={i === breadcrumb.length - 1 || undefined}
+                      >
+                        {part}
+                      </span>
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+
+              <div className="page-editor-subbar-right">
+                {onBreakpointChange && (
+                  <>
+                    <span className="page-editor-viewport-width">
+                      {BREAKPOINT_WIDTHS[breakpoint]}
+                    </span>
+                    <div className="page-editor-breakpoints">
+                      <button
+                        className="page-editor-breakpoint-btn"
+                        data-active={breakpoint === "desktop" || undefined}
+                        onClick={() => onBreakpointChange("desktop")}
+                        title="Desktop"
+                      >
+                        <Monitor className="size-4" />
+                      </button>
+                      <button
+                        className="page-editor-breakpoint-btn"
+                        data-active={breakpoint === "tablet" || undefined}
+                        onClick={() => onBreakpointChange("tablet")}
+                        title="Tablet"
+                      >
+                        <Tablet className="size-4" />
+                      </button>
+                      <button
+                        className="page-editor-breakpoint-btn"
+                        data-active={breakpoint === "mobile" || undefined}
+                        onClick={() => onBreakpointChange("mobile")}
+                        title="Mobile"
+                      >
+                        <Smartphone className="size-4" />
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Canvas */}
+            <main className="page-editor-canvas">
+              <div className="page-editor-canvas-content design-preview">
+                {children}
+              </div>
+            </main>
+          </div>
+
           {rightPanel}
         </div>
       </ResponsiveProvider>

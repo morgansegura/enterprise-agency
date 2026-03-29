@@ -1,100 +1,223 @@
 @reference "tailwindcss";
 
 /* =============================================================================
- * Page Editor Layout — Jira-style 3-panel editor
+ * Page Editor Layout — Webflow-style two-bar + 3-panel editor
  * ============================================================================= */
 
 .page-editor-layout {
   @apply h-full flex flex-col w-full;
-  @apply bg-(--el-50);
 }
 
 /* =============================================================================
- * Toolbar — Jira-style top bar matching admin header
+ * Navbar — top bar
  * ============================================================================= */
 
-.page-editor-toolbar {
-  @apply flex items-center justify-between px-4 h-11 z-10;
+.page-editor-navbar {
+  @apply flex items-center justify-between px-2 h-10 z-10 shrink-0;
   @apply bg-(--el-0) border-b border-(--border-default);
 }
 
-.page-editor-toolbar-left {
-  @apply flex items-center gap-3 flex-1 min-w-0;
+.page-editor-navbar-left {
+  @apply flex items-center gap-1.5 flex-1 min-w-0;
 }
 
-/* Toolbar text buttons — ghost-style with icon + label */
-.page-editor-toolbar-btn {
-  @apply flex items-center gap-1.5 px-2 h-7 rounded-[3px] cursor-pointer;
-  @apply text-[13px] font-medium text-(--el-500);
-  @apply bg-transparent border-none;
+.page-editor-navbar-brand {
+  @apply flex items-center justify-center size-7 rounded-[3px];
+  @apply text-[13px] font-bold text-(--el-0) bg-(--accent-primary) no-underline;
+  @apply transition-opacity duration-100 mx-0.5;
+}
+
+.page-editor-navbar-brand:hover {
+  @apply opacity-80;
+}
+
+/* Mode tabs */
+.page-editor-mode-tabs {
+  @apply flex items-center gap-0.5;
+}
+
+.page-editor-mode-tab {
+  @apply flex items-center gap-1.5 px-2.5 h-7 rounded-[3px];
+  @apply text-[13px] font-medium text-(--el-500) no-underline;
+  @apply transition-colors duration-100 cursor-pointer;
+}
+
+.page-editor-mode-tab:hover {
+  @apply text-(--el-800) bg-(--el-100);
+}
+
+.page-editor-mode-tab[data-active] {
+  @apply text-(--el-0) bg-(--accent-primary);
+}
+
+/* Page selector */
+.page-editor-page-selector {
+  @apply flex items-center gap-1.5 px-2 h-7 rounded-[3px];
+  @apply text-[13px] text-(--el-600) no-underline;
+  @apply transition-colors duration-100 cursor-pointer;
+}
+
+.page-editor-page-selector:hover {
+  @apply text-(--el-800) bg-(--el-100);
+}
+
+.page-editor-navbar-btn {
+  @apply flex items-center justify-center size-7 rounded-[3px] cursor-pointer;
+  @apply text-(--el-500) bg-transparent border-none;
   @apply transition-colors duration-100;
-
-  &:hover {
-    @apply bg-(--accent-primary-subtle) text-(--el-800);
-  }
 }
 
-.page-editor-toolbar-divider {
+.page-editor-navbar-btn:hover {
+  @apply text-(--el-800) bg-(--el-100);
+}
+
+.page-editor-navbar-btn:disabled {
+  @apply opacity-30 cursor-not-allowed;
+}
+
+.page-editor-navbar-divider {
   @apply w-px h-4 bg-(--border-default) mx-1;
 }
 
-.page-editor-toolbar-center {
-  @apply flex items-center justify-center gap-1;
+.page-editor-navbar-center {
+  @apply flex items-center justify-center;
 }
 
-.page-editor-toolbar-right {
-  @apply flex items-center gap-2 flex-1 justify-end;
+.page-editor-save-indicator {
+  @apply text-[11px] text-(--el-400) animate-pulse;
 }
 
-.page-editor-status {
-  @apply text-[12px] whitespace-nowrap min-w-30;
-  @apply text-(--el-400);
+.page-editor-navbar-right {
+  @apply flex items-center gap-1 flex-1 justify-end;
 }
 
-.page-editor-status.saving {
-  @apply animate-pulse text-(--accent-primary);
+.page-editor-publish-btn {
+  @apply text-[12px] h-7;
 }
 
-.page-editor-status.unsaved {
-  @apply text-(--status-warning) font-medium;
+.page-editor-publish-btn[data-published] {
+  @apply bg-(--status-success) hover:bg-(--status-success)/90;
 }
 
 /* =============================================================================
- * Editor Body — 3-panel layout
+ * Editor Body — icon rail | center (subbar + canvas) | right panel
  * ============================================================================= */
 
 .page-editor-body {
-  @apply flex-1 flex overflow-hidden min-h-0;
+  @apply flex-1 flex overflow-hidden min-h-0 relative;
 }
 
 /* =============================================================================
- * Left Panel — layers tree with proper panel chrome
+ * Left Panel — icon rail + expandable overlay panel
+ * The expandable panel overlays on top of the canvas, does NOT push content.
  * ============================================================================= */
 
 .page-editor-left-panel {
-  @apply w-[260px] h-full shrink-0 overflow-hidden;
-  @apply bg-(--el-0) border-r border-(--border-default);
+  @apply h-full shrink-0;
 }
 
 /* =============================================================================
- * Canvas — clean editing surface
+ * Center column — subbar + canvas (fills remaining space)
+ * ============================================================================= */
+
+.page-editor-center {
+  @apply flex-1 flex flex-col min-w-0 min-h-0;
+}
+
+/* =============================================================================
+ * Subbar — breadcrumb + breakpoints (between sidebars only)
+ * ============================================================================= */
+
+.page-editor-subbar {
+  @apply flex items-center justify-between px-2 h-8 shrink-0;
+  @apply bg-(--card);
+  /* @apply border-b; */
+}
+
+.page-editor-subbar-left {
+  @apply flex items-center gap-1 flex-1 min-w-0;
+}
+
+.page-editor-subbar-btn {
+  @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none;
+  @apply transition-colors duration-100;
+}
+
+.page-editor-subbar-btn:hover {
+  @apply text-(--el-800) bg-(--el-200);
+}
+
+.page-editor-subbar-btn:disabled {
+  @apply opacity-30 cursor-not-allowed;
+}
+
+.page-editor-subbar-divider {
+  @apply w-px h-3.5 bg-(--border-default) mx-1;
+}
+
+.page-editor-subbar-right {
+  @apply flex items-center gap-2;
+}
+
+/* Breadcrumb */
+.page-editor-breadcrumb {
+  @apply flex items-center gap-0.5 min-w-0;
+}
+
+.page-editor-breadcrumb-sep {
+  @apply size-3 text-(--el-300) shrink-0;
+}
+
+.page-editor-breadcrumb-item {
+  @apply text-[11px] text-(--el-400) truncate max-w-32 cursor-default;
+}
+
+.page-editor-breadcrumb-item[data-active] {
+  @apply text-(--el-700) font-medium;
+}
+
+/* Breakpoints */
+.page-editor-breakpoints {
+  @apply flex items-center gap-0.5;
+}
+
+.page-editor-breakpoint-btn {
+  @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none;
+  @apply transition-colors duration-100;
+}
+
+.page-editor-breakpoint-btn:hover {
+  @apply text-(--el-700) bg-(--el-200);
+}
+
+.page-editor-breakpoint-btn[data-active] {
+  @apply text-(--accent-primary) bg-(--accent-primary-subtle);
+}
+
+.page-editor-viewport-width {
+  @apply text-[11px] text-(--el-400) font-mono tabular-nums;
+}
+
+/* =============================================================================
+ * Canvas
  * ============================================================================= */
 
 .page-editor-canvas {
   @apply flex-1 flex flex-col relative overflow-y-auto min-h-0;
-  @apply bg-white;
+  @apply bg-(--el-100);
 }
 
 .page-editor-canvas-content {
-  @apply w-full h-full flex flex-col overflow-hidden;
+  @apply w-full min-h-full flex flex-col;
   @apply bg-white;
 }
 
 /* =============================================================================
- * Selection highlight in preview
+ * Selection highlight
  * ============================================================================= */
 
-/* Webflow-style selection — solid blue outline */
 .page-editor-canvas-content [data-block-key] {
   @apply transition-[outline] duration-75;
 }
@@ -108,23 +231,67 @@
   outline-color: color-mix(in srgb, var(--accent-primary) 50%, transparent);
 }
 
-/* Block hover cursor */
 .page-editor-canvas-content [data-block-key]:hover {
   cursor: pointer;
 }
 
+/* Suppress TipTap/ProseMirror focus ring inside canvas — selection outline is enough */
+.page-editor-canvas-content .tiptap:focus,
+.page-editor-canvas-content .tiptap:focus-visible,
+.page-editor-canvas-content .ProseMirror:focus,
+.page-editor-canvas-content .ProseMirror:focus-visible,
+.page-editor-canvas-content [data-block-key] :focus,
+.page-editor-canvas-content [data-block-key] :focus-visible {
+  @apply outline-none ring-0;
+}
+
 /* =============================================================================
- * Preview Mode — hide chrome
+ * Preview Mode
+ * ============================================================================= */
+
+/* =============================================================================
+ * Right-click context menu
+ * ============================================================================= */
+
+.canvas-context-menu {
+  @apply fixed z-50 min-w-[140px] py-1 rounded-[3px];
+  @apply bg-(--el-0) border border-(--border-default) shadow-lg;
+}
+
+.canvas-context-menu-item {
+  @apply flex items-center w-full px-3 h-7 text-left;
+  @apply text-[12px] text-(--el-700) bg-transparent border-none cursor-pointer;
+  @apply transition-colors duration-75;
+}
+
+.canvas-context-menu-item:hover {
+  @apply bg-(--accent-primary-subtle) text-(--el-900);
+}
+
+.canvas-context-menu-item-danger {
+  @apply text-(--status-error);
+}
+
+.canvas-context-menu-item-danger:hover {
+  @apply bg-(--status-error)/10 text-(--status-error);
+}
+
+.canvas-context-menu-divider {
+  @apply h-px bg-(--border-default) my-1 mx-2;
+}
+
+/* =============================================================================
+ * Preview Mode
  * ============================================================================= */
 
 .page-editor-layout[data-preview-mode="true"] {
-  .page-editor-toolbar {
-    @apply bg-transparent border-b-0;
+  .page-editor-navbar,
+  .page-editor-subbar {
+    @apply hidden;
   }
 
   .page-editor-canvas {
     @apply bg-(--el-0);
-    background-image: none;
   }
 
   .page-editor-canvas-content {

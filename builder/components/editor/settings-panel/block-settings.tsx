@@ -39,21 +39,7 @@ function HeadingBlockSettings({
     onChange({ ...block, data: { ...data, [field]: value } });
   };
 
-  return (
-    <>
-      <PropertySection title="Content" icon={<Type className="h-3.5 w-3.5" />}>
-        <PropertyRow label="Text" stacked>
-          <Input
-            value={(data.text as string) || ""}
-            onChange={(e) => handleChange("text", e.target.value)}
-            placeholder="Heading text"
-            className="settings-input"
-          />
-        </PropertyRow>
-      </PropertySection>
-      <HeadingSettings block={block} onChange={onChange} />
-    </>
-  );
+  return <HeadingSettings block={block} onChange={onChange} />;
 }
 
 function TextBlockSettings({
@@ -101,39 +87,26 @@ function TextBlockSettings({
   ];
 
   return (
-    <>
-      <PropertySection title="Content" icon={<Type className="h-3.5 w-3.5" />}>
-        <PropertyRow label="Text" stacked>
-          <textarea
-            value={(data.content as string) || ""}
-            onChange={(e) => handleDataChange("content", e.target.value)}
-            placeholder="Enter text content..."
-            rows={4}
-            className="settings-input w-full resize-y text-sm rounded-md border border-[var(--el-150)] bg-[var(--el-0)] px-3 py-2"
-          />
-        </PropertyRow>
-      </PropertySection>
-      <PropertySection
-        title="Typography"
-        icon={<Type className="h-3.5 w-3.5" />}
-      >
-        <PropertyRow label="Size">
-          <PropertySelect
-            value={size}
-            options={sizeOptions}
-            onChange={(v) => handleDataChange("size", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Align" stacked>
-          <PropertyToggle
-            value={align}
-            options={alignOptions}
-            onChange={(v) => handleDataChange("align", v)}
-            fullWidth
-          />
-        </PropertyRow>
-      </PropertySection>
-    </>
+    <PropertySection
+      title="Typography"
+      icon={<Type className="h-3.5 w-3.5" />}
+    >
+      <PropertyRow label="Size">
+        <PropertySelect
+          value={size}
+          options={sizeOptions}
+          onChange={(v) => handleDataChange("size", v)}
+        />
+      </PropertyRow>
+      <PropertyRow label="Align" stacked>
+        <PropertyToggle
+          value={align}
+          options={alignOptions}
+          onChange={(v) => handleDataChange("align", v)}
+          fullWidth
+        />
+      </PropertyRow>
+    </PropertySection>
   );
 }
 
@@ -1301,8 +1274,8 @@ function GenericBlockSettings({
 
   return (
     <div className="flex flex-col items-center justify-center gap-2 px-4 py-8 text-center">
-      <p className="text-[14px] font-medium text-[var(--el-800)]">{blockName}</p>
-      <p className="text-[12px] text-[var(--el-400)]">
+      <p className="text-[14px] font-medium text-(--el-800)">{blockName}</p>
+      <p className="text-[12px] text-(--el-400)">
         Select this block on the canvas to edit its content directly.
       </p>
     </div>

@@ -39,17 +39,31 @@
  * ============================================================================= */
 
 .settings-panel-header {
-  @apply flex items-center justify-between gap-2 px-3 h-9;
+  @apply flex items-center justify-between gap-2 px-3 h-10;
   @apply border-b border-(--border-default) bg-(--el-0);
 }
 
 .settings-panel-selector {
-  @apply flex items-center gap-2 py-1;
-  @apply text-xs font-medium text-(--el-800);
+  @apply flex items-center gap-2;
+  @apply text-[13px] font-medium text-(--el-800);
 }
 
 .settings-panel-selector-name {
   @apply font-semibold;
+}
+
+.settings-panel-header-actions {
+  @apply flex items-center gap-0.5;
+}
+
+.settings-panel-header-btn {
+  @apply flex items-center justify-center size-7 rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none;
+  @apply transition-colors duration-100;
+}
+
+.settings-panel-header-btn:hover {
+  @apply text-(--el-800) bg-(--el-100);
 }
 
 /* Style / Settings tab bar */
@@ -376,6 +390,32 @@
 
 .toggle-group-btn.active {
   @apply bg-(--el-0) text-(--el-800) shadow-sm;
+}
+
+/* =============================================================================
+ * Interactions Tab
+ * ============================================================================= */
+
+.settings-panel-interactions {
+  @apply p-0;
+}
+
+.settings-panel-interactions-section {
+  @apply border-b border-(--border-default);
+}
+
+.settings-panel-interactions-header {
+  @apply flex items-center justify-between px-3 py-2.5;
+  @apply text-[13px] font-semibold text-(--el-800);
+}
+
+.settings-panel-interactions-empty {
+  @apply px-3 pb-4;
+}
+
+.settings-panel-interactions-empty p {
+  @apply text-[12px] text-(--el-400) leading-relaxed;
+  @apply px-3 py-4 rounded-[3px] bg-(--el-50) text-center;
 }
 
 /* =============================================================================

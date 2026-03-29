@@ -1,34 +1,78 @@
 @reference "tailwindcss";
 
+/* =============================================================================
+ * Editor Sidebar — Webflow-style icon rail + overlay panel
+ * ============================================================================= */
+
 .editor-sidebar {
-  @apply flex flex-col h-full overflow-hidden;
+  @apply flex h-full;
 }
 
-.editor-sidebar-tabs {
-  @apply flex border-b border-(--border-default) shrink-0;
+/* =============================================================================
+ * Icon Rail — always-visible thin toolbar
+ * ============================================================================= */
+
+.editor-sidebar-rail {
+  @apply flex flex-col items-center w-12 h-full shrink-0 py-2 gap-0.5;
+  @apply bg-(--el-0) border-r border-(--border-default);
 }
 
-.editor-sidebar-tab {
-  @apply flex-1 flex items-center justify-center gap-1.5 h-9;
-  @apply text-[12px] font-medium text-(--el-400);
-  @apply bg-transparent border-none cursor-pointer;
+.editor-sidebar-rail-btn {
+  @apply flex items-center justify-center size-9 rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none;
   @apply transition-colors duration-100;
 }
 
-.editor-sidebar-tab:hover {
-  @apply text-(--el-800);
+.editor-sidebar-rail-btn:hover {
+  @apply bg-(--accent-primary-subtle)/50 text-(--el-700);
 }
 
-.editor-sidebar-tab[data-active] {
-  @apply text-(--accent-primary);
-  @apply border-b-2 border-(--accent-primary);
+.editor-sidebar-rail-btn[data-active] {
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary);
 }
 
-.editor-sidebar-content {
+/* =============================================================================
+ * Overlay Panel — fixed position, overlays the canvas
+ * ============================================================================= */
+
+.editor-sidebar-panel {
+  @apply fixed top-20 bottom-0 left-12 flex flex-col w-[240px] z-30;
+  @apply bg-(--el-0) border-r border-(--border-default) shadow-lg;
+  @apply transition-[transform,opacity] duration-200 ease-out;
+  @apply translate-x-0;
+}
+
+.editor-sidebar-panel[data-collapsed] {
+  @apply -translate-x-[252px] opacity-0 pointer-events-none;
+}
+
+.editor-sidebar-panel-header {
+  @apply flex items-center justify-between px-3 h-9 shrink-0;
+  @apply border-b border-(--border-default);
+}
+
+.editor-sidebar-panel-title {
+  @apply text-[12px] font-semibold uppercase tracking-wider text-(--el-400);
+}
+
+.editor-sidebar-panel-close {
+  @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none;
+  @apply transition-colors duration-100;
+}
+
+.editor-sidebar-panel-close:hover {
+  @apply bg-(--el-100) text-(--el-700);
+}
+
+.editor-sidebar-panel-content {
   @apply flex-1 overflow-y-auto;
 }
 
-/* Pages panel */
+/* =============================================================================
+ * Pages panel
+ * ============================================================================= */
+
 .editor-pages-list {
   @apply flex flex-col p-1.5 gap-0.5;
 }

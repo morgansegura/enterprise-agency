@@ -1,0 +1,110 @@
+@reference "tailwindcss";
+
+.figma-import {
+  @apply max-w-xl;
+}
+
+.figma-step {
+  @apply space-y-5;
+}
+
+.figma-step-center {
+  @apply flex flex-col items-center justify-center text-center py-12 gap-3;
+}
+
+.figma-step-header {
+  @apply space-y-1;
+}
+
+.figma-step-title {
+  @apply text-[16px] font-semibold text-(--el-800);
+}
+
+.figma-step-desc {
+  @apply text-[14px] text-(--el-500);
+}
+
+.figma-fields {
+  @apply space-y-3;
+}
+
+.figma-field {
+  @apply space-y-1.5;
+}
+
+.figma-label {
+  @apply text-[12px] font-semibold text-(--el-800);
+}
+
+.figma-hint {
+  @apply text-[11px] text-(--el-400);
+}
+
+/* Sections */
+.figma-section {
+  @apply space-y-2;
+}
+
+.figma-section-title {
+  @apply flex items-center gap-2 text-[14px] font-semibold text-(--el-800);
+}
+
+/* Pages list */
+.figma-pages {
+  @apply space-y-1;
+}
+
+.figma-page-item {
+  @apply flex items-center gap-2 px-3 py-2 rounded-[3px] cursor-pointer;
+  @apply text-[14px] text-(--el-800);
+  @apply hover:bg-(--accent-primary-subtle)/30;
+}
+
+.figma-page-item input {
+  @apply size-4 accent-(--accent-primary);
+}
+
+.figma-page-count {
+  @apply ml-auto text-[12px] text-(--el-400);
+}
+
+/* Colors */
+.figma-colors {
+  @apply flex flex-wrap gap-2;
+}
+
+.figma-color-swatch {
+  @apply flex items-center gap-1.5 px-2 py-1 rounded-[3px] bg-(--el-50);
+}
+
+.figma-color-dot {
+  @apply size-4 rounded-full border border-(--border-default);
+}
+
+.figma-color-hex {
+  @apply text-[11px] font-mono text-(--el-500);
+}
+
+/* Text styles */
+.figma-text-styles {
+  @apply space-y-1;
+}
+
+.figma-text-style {
+  @apply flex items-center justify-between px-3 py-2 rounded-[3px] bg-(--el-50);
+}
+
+.figma-text-meta {
+  @apply text-[11px] text-(--el-400);
+}
+
+/* Actions */
+.figma-actions {
+  @apply flex justify-between gap-2 pt-2;
+}
+
+/* Done */
+.figma-done-icon {
+  @apply flex items-center justify-center size-12 rounded-full;
+  @apply bg-(--status-success-subtle) text-(--status-success) text-2xl font-bold;
+}

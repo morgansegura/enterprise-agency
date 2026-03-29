@@ -6,28 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SpacingBox, LayoutControls, SizeControls, PositionControls } from "@/components/editor/style-panel";
 import {
-  PanelRightClose,
   PanelRightOpen,
-  LayoutTemplate,
   Box,
-  Type,
   Layers,
   Palette,
   Move,
   Grid3X3,
   Settings2,
   EyeOff,
-  ChevronUp,
-  ChevronDown,
-  Copy,
-  Trash2,
   Plus,
 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue, setResponsiveOverride } from "@/lib/responsive";
@@ -39,7 +27,6 @@ import type {
 } from "@/lib/types/section";
 import {
   SPACING_OPTIONS,
-  EXTENDED_SPACING_OPTIONS,
   CONTAINER_WIDTH_OPTIONS,
   SECTION_MIN_HEIGHT_OPTIONS,
   OVERFLOW_OPTIONS,
@@ -91,16 +78,6 @@ import "./settings-panel.css";
 // Types
 // =============================================================================
 
-interface ElementActions {
-  onMoveUp?: () => void;
-  onMoveDown?: () => void;
-  onDuplicate?: () => void;
-  onDelete?: () => void;
-  onAddContainer?: () => void;
-  canMoveUp?: boolean;
-  canMoveDown?: boolean;
-}
-
 interface SettingsPanelProps {
   sections: Section[];
   onSectionChange?: (sectionIndex: number, section: Section) => void;
@@ -145,107 +122,6 @@ interface SettingsPanelProps {
 }
 
 
-// =============================================================================
-// Actions Bar - Move, Clone, Delete buttons
-// =============================================================================
-
-function ActionsBar({
-  onMoveUp,
-  onMoveDown,
-  onDuplicate,
-  onDelete,
-  onAddContainer,
-  canMoveUp = true,
-  canMoveDown = true,
-}: ElementActions) {
-  return (
-    <div className="flex items-center gap-0.5 px-3 py-2 border-b border-(--border)">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={onMoveUp}
-            disabled={!canMoveUp || !onMoveUp}
-            className="h-7 w-7"
-          >
-            <ChevronUp className="h-3.5 w-3.5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom" className="text-xs">
-          Move up
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={onMoveDown}
-            disabled={!canMoveDown || !onMoveDown}
-            className="h-7 w-7"
-          >
-            <ChevronDown className="h-3.5 w-3.5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom" className="text-xs">
-          Move down
-        </TooltipContent>
-      </Tooltip>
-      <div className="w-px h-4 bg-border mx-0.5" />
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={onDuplicate}
-            disabled={!onDuplicate}
-            className="h-7 w-7"
-          >
-            <Copy className="h-3.5 w-3.5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom" className="text-xs">
-          Duplicate
-        </TooltipContent>
-      </Tooltip>
-      {onAddContainer && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={onAddContainer}
-              className="h-7 w-7"
-            >
-              <Plus className="h-3.5 w-3.5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom" className="text-xs">
-            Add container
-          </TooltipContent>
-        </Tooltip>
-      )}
-      <div className="flex-1" />
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            onClick={onDelete}
-            disabled={!onDelete}
-            className="h-7 w-7 text-[var(--el-500)] hover:text-[var(--status-error)] hover:bg-[var(--status-error)]/10"
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom" className="text-xs">
-          Delete
-        </TooltipContent>
-      </Tooltip>
-    </div>
-  );
-}
 
 // =============================================================================
 // Settings Panel Component
@@ -256,20 +132,22 @@ export function SettingsPanel({
   onSectionChange,
   onContainerChange,
   onBlockChange,
-  onSectionMoveUp,
-  onSectionMoveDown,
-  onSectionDuplicate,
-  onSectionDelete,
-  onAddContainer,
-  onContainerDelete,
-  onBlockMoveUp,
-  onBlockMoveDown,
-  onBlockDuplicate,
-  onBlockDelete,
+  onSectionMoveUp: _onSectionMoveUp,
+  onSectionMoveDown: _onSectionMoveDown,
+  onSectionDuplicate: _onSectionDuplicate,
+  onSectionDelete: _onSectionDelete,
+  onAddContainer: _onAddContainer,
+  onContainerDelete: _onContainerDelete,
+  onBlockMoveUp: _onBlockMoveUp,
+  onBlockMoveDown: _onBlockMoveDown,
+  onBlockDuplicate: _onBlockDuplicate,
+  onBlockDelete: _onBlockDelete,
 }: SettingsPanelProps) {
   const { rightPanelOpen, rightPanelWidth, selectedElement, toggleRightPanel } =
     useUIStore();
-  const [panelTab, setPanelTab] = React.useState<"style" | "settings">("style");
+  const [panelTab, setPanelTab] = React.useState<
+    "style" | "settings" | "interactions"
+  >("style");
 
   // Get the selected element data
   const getSelectedData = React.useCallback(() => {
@@ -309,32 +187,6 @@ export function SettingsPanel({
 
   const selectedData = getSelectedData();
 
-  // Get icon and title for selected element
-  const getElementInfo = () => {
-    if (!selectedElement || !selectedData) {
-      return { icon: <Layers className="h-4 w-4" />, title: "No Selection" };
-    }
-
-    switch (selectedElement.type) {
-      case "section":
-        return {
-          icon: <LayoutTemplate className="h-4 w-4" />,
-          title: "Section",
-        };
-      case "container":
-        return { icon: <Box className="h-4 w-4" />, title: "Container" };
-      case "block":
-        const blockType = (selectedData.data as Block)._type
-          .replace("-block", "")
-          .replace(/^\w/, (c) => c.toUpperCase());
-        return { icon: <Type className="h-4 w-4" />, title: blockType };
-      default:
-        return { icon: <Layers className="h-4 w-4" />, title: "Element" };
-    }
-  };
-
-  const { icon, title } = getElementInfo();
-
   return (
     <div
       className={cn("settings-panel-wrapper", !rightPanelOpen && "collapsed")}
@@ -357,24 +209,7 @@ export function SettingsPanel({
         className={cn("settings-panel", rightPanelOpen && "open")}
         style={{ width: rightPanelWidth }}
       >
-        {/* Panel Header — element name + Style/Settings tabs */}
-        <div className="settings-panel-header">
-          <div className="settings-panel-selector">
-            {icon}
-            <span className="settings-panel-selector-name">{title}</span>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleRightPanel}
-            title="Close panel"
-            className="h-7 w-7"
-          >
-            <PanelRightClose className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-
-        {/* Style / Settings tab switcher */}
+        {/* Style / Settings / Interactions tabs */}
         {selectedElement && selectedData && (
           <div className="settings-panel-tab-bar">
             <button
@@ -393,6 +228,14 @@ export function SettingsPanel({
             >
               Settings
             </button>
+            <button
+              type="button"
+              className="settings-panel-tab-btn"
+              data-active={panelTab === "interactions" || undefined}
+              onClick={() => setPanelTab("interactions")}
+            >
+              Interactions
+            </button>
           </div>
         )}
 
@@ -407,91 +250,6 @@ export function SettingsPanel({
             </div>
           ) : selectedData ? (
             <>
-              {/* Actions Bar - Move, Clone, Delete */}
-              {selectedElement.type === "section" && (
-                <ActionsBar
-                  onMoveUp={() =>
-                    onSectionMoveUp?.(selectedElement.sectionIndex)
-                  }
-                  onMoveDown={() =>
-                    onSectionMoveDown?.(selectedElement.sectionIndex)
-                  }
-                  onDuplicate={() =>
-                    onSectionDuplicate?.(selectedElement.sectionIndex)
-                  }
-                  onDelete={() =>
-                    onSectionDelete?.(selectedElement.sectionIndex)
-                  }
-                  canMoveUp={selectedElement.sectionIndex > 0}
-                  canMoveDown={
-                    selectedElement.sectionIndex < sections.length - 1
-                  }
-                  onAddContainer={
-                    onAddContainer
-                      ? () => onAddContainer(selectedElement.sectionIndex)
-                      : undefined
-                  }
-                />
-              )}
-              {selectedElement.type === "container" && (
-                <ActionsBar
-                  onDelete={() =>
-                    onContainerDelete?.(
-                      selectedElement.sectionIndex,
-                      selectedElement.containerIndex!,
-                    )
-                  }
-                />
-              )}
-              {selectedElement.type === "block" && (
-                <ActionsBar
-                  onMoveUp={() =>
-                    onBlockMoveUp?.(
-                      selectedElement.sectionIndex,
-                      selectedElement.containerIndex!,
-                      selectedElement.blockIndex!,
-                    )
-                  }
-                  onMoveDown={() =>
-                    onBlockMoveDown?.(
-                      selectedElement.sectionIndex,
-                      selectedElement.containerIndex!,
-                      selectedElement.blockIndex!,
-                    )
-                  }
-                  onDuplicate={() =>
-                    onBlockDuplicate?.(
-                      selectedElement.sectionIndex,
-                      selectedElement.containerIndex!,
-                      selectedElement.blockIndex!,
-                    )
-                  }
-                  onDelete={() =>
-                    onBlockDelete?.(
-                      selectedElement.sectionIndex,
-                      selectedElement.containerIndex!,
-                      selectedElement.blockIndex!,
-                    )
-                  }
-                  canMoveUp={
-                    selectedElement.blockIndex !== undefined &&
-                    selectedElement.blockIndex > 0
-                  }
-                  canMoveDown={
-                    selectedElement.blockIndex !== undefined &&
-                    selectedElement.containerIndex !== undefined &&
-                    sections[selectedElement.sectionIndex]?.containers?.[
-                      selectedElement.containerIndex
-                    ]?.blocks &&
-                    selectedElement.blockIndex <
-                      (sections[selectedElement.sectionIndex]?.containers?.[
-                        selectedElement.containerIndex
-                      ]?.blocks?.length ?? 0) -
-                        1
-                  }
-                />
-              )}
-
               <div className="settings-panel-sections">
                 {/* STYLE TAB — visual CSS properties */}
                 {panelTab === "style" && (
@@ -597,11 +355,38 @@ export function SettingsPanel({
                     )}
                   </>
                 )}
+
+                {panelTab === "interactions" && (
+                  <div className="settings-panel-interactions">
+                    <div className="settings-panel-interactions-section">
+                      <div className="settings-panel-interactions-header">
+                        <span>Element trigger</span>
+                        <button className="settings-panel-header-btn" title="Add trigger">
+                          <Plus className="size-3.5" />
+                        </button>
+                      </div>
+                      <div className="settings-panel-interactions-empty">
+                        <p>Select an element on the canvas, then add a trigger to animate it on hover, click, or scroll.</p>
+                      </div>
+                    </div>
+                    <div className="settings-panel-interactions-section">
+                      <div className="settings-panel-interactions-header">
+                        <span>Page trigger</span>
+                        <button className="settings-panel-header-btn" title="Add trigger">
+                          <Plus className="size-3.5" />
+                        </button>
+                      </div>
+                      <div className="settings-panel-interactions-empty">
+                        <p>Add a trigger for page-level events like load, scroll, or resize.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </>
           ) : (
             <div className="settings-panel-empty">
-              <p className="text-sm text-[var(--el-500)]">Element not found</p>
+              <p className="text-sm text-(--el-500)">Element not found</p>
             </div>
           )}
         </div>
@@ -714,7 +499,7 @@ function SectionStyleSettings({
                   handleChange("verticalAlign", v);
                 }}
               />
-              <span className="text-xs text-[var(--el-500)]">
+              <span className="text-xs text-(--el-500)">
                 {verticalAlign} / {align}
               </span>
             </div>
@@ -724,34 +509,15 @@ function SectionStyleSettings({
 
       {/* Spacing */}
       <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
-        <PropertyRow label="Pad Top">
-          <PropertySelect
-            value={paddingTop}
-            options={EXTENDED_SPACING_OPTIONS}
-            onChange={(v) => handleChange("paddingTop", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Pad Bottom">
-          <PropertySelect
-            value={paddingBottom}
-            options={EXTENDED_SPACING_OPTIONS}
-            onChange={(v) => handleChange("paddingBottom", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Margin Top">
-          <PropertySelect
-            value={marginTop}
-            options={SPACING_OPTIONS}
-            onChange={(v) => handleChange("marginTop", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Margin Bot">
-          <PropertySelect
-            value={marginBottom}
-            options={SPACING_OPTIONS}
-            onChange={(v) => handleChange("marginBottom", v)}
-          />
-        </PropertyRow>
+        <SpacingBox
+          values={{
+            paddingTop,
+            paddingBottom,
+            marginTop,
+            marginBottom,
+          }}
+          onChange={(field, value) => handleChange(field, value)}
+        />
         <PropertyRow label="Gap">
           <PropertySelect
             value={gapY}
@@ -1095,7 +861,7 @@ function ContainerStyleSettings({
                   handleChange("verticalAlign", v);
                 }}
               />
-              <span className="text-xs text-[var(--el-500)]">
+              <span className="text-xs text-(--el-500)">
                 {verticalAlign} / {align}
               </span>
             </div>
@@ -1105,20 +871,21 @@ function ContainerStyleSettings({
 
       {/* Spacing */}
       <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
-        <PropertyRow label="Padding X">
-          <PropertySelect
-            value={paddingX}
-            options={SPACING_OPTIONS}
-            onChange={(v) => handleChange("paddingX", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Padding Y">
-          <PropertySelect
-            value={paddingY}
-            options={SPACING_OPTIONS}
-            onChange={(v) => handleChange("paddingY", v)}
-          />
-        </PropertyRow>
+        <SpacingBox
+          values={{
+            paddingLeft: paddingX,
+            paddingRight: paddingX,
+            paddingTop: paddingY,
+            paddingBottom: paddingY,
+          }}
+          onChange={(field, value) => {
+            if (field === "paddingLeft" || field === "paddingRight") {
+              handleChange("paddingX", value);
+            } else if (field === "paddingTop" || field === "paddingBottom") {
+              handleChange("paddingY", value);
+            }
+          }}
+        />
       </PropertySection>
 
       {/* Background */}
@@ -1308,26 +1075,6 @@ function BlockStyleSettings({
     }
   };
 
-  return (
-    <>
-      {renderBlockSettings()}
-
-      {/* Block Info */}
-      <PropertySection
-        title="Block Info"
-        icon={<Settings2 className="h-3.5 w-3.5" />}
-        defaultOpen={false}
-      >
-        <PropertyRow label="Type">
-          <span className="text-sm text-[var(--el-500)]">{blockType}</span>
-        </PropertyRow>
-        <PropertyRow label="Key">
-          <span className="text-xs text-[var(--el-500)] font-mono">
-            {block._key}
-          </span>
-        </PropertyRow>
-      </PropertySection>
-    </>
-  );
+  return <>{renderBlockSettings()}</>;
 }
 
