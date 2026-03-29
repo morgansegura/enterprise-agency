@@ -34,6 +34,11 @@ import {
   SidebarSeparator,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useTenant } from "@/lib/hooks/use-tenants";
 
 import "./client-sidebar.css";
@@ -77,10 +82,17 @@ function ClientNavLink({
 
   return (
     <SidebarMenuItem>
-      <Link href={href} className="client-sidebar-link" data-active={isActive}>
-        <Icon />
-        <span>{title}</span>
-      </Link>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Link href={href} className="client-sidebar-link" data-active={isActive}>
+            <Icon />
+            <span>{title}</span>
+          </Link>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="text-xs">
+          {title}
+        </TooltipContent>
+      </Tooltip>
     </SidebarMenuItem>
   );
 }
