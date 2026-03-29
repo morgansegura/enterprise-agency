@@ -163,6 +163,13 @@ export default function FigmaImportPage() {
     new Set(),
   );
   const [applyTheme, setApplyTheme] = React.useState(true);
+  const [importResult, setImportResult] = React.useState<{
+    pages: number;
+    theme: boolean;
+    colors: number;
+    fonts: string[];
+    skipped: string[];
+  } | null>(null);
   const [expandedPages, setExpandedPages] = React.useState<Set<string>>(
     new Set(),
   );
@@ -260,14 +267,15 @@ export default function FigmaImportPage() {
         }
       }
 
+      setImportResult({
+        pages: imported,
+        theme: applyTheme,
+        colors: colors.length,
+        fonts: textStyles.slice(0, 2).map((s) => s.fontFamily),
+        skipped,
+      });
       setStep("done");
-      const parts = [];
-      if (imported > 0) parts.push(`${imported} pages`);
-      if (applyTheme) parts.push("theme tokens");
-      toast.success(`Imported ${parts.join(" + ")} from Figma`);
-      if (skipped.length > 0) {
-        toast.info(`Skipped: ${skipped.join(", ")}`, { duration: 5000 });
-      }
+      toast.success("Import complete");
     } catch (error) {
       toast.error(
         `Import failed: ${error instanceof Error ? error.message : "Unknown error"}`,
@@ -584,19 +592,44 @@ export default function FigmaImportPage() {
         )}
 
         {/* Step 4: Done */}
-        {step === "done" && (
-          <div className="figma-step figma-step-center">
-            <div className="figma-done-icon">
-              <Check className="size-6" />
+        {step === "done" && importResult && (
+          <div className="figma-step">
+            <div className="figma-step-center">
+              <div className="figma-done-icon">
+                <Check className="size-6" />
+              </div>
+              <p className="figma-step-title">Import Complete</p>
             </div>
-            <p className="figma-step-title">Import Complete</p>
-            <p className="figma-step-desc">
-              {applyTheme
-                ? "Theme applied and pages created from your Figma design."
-                : "Pages created from selected frames."}
-            </p>
+
+            {/* Summary */}
+            <div className="figma-result-summary">
+              {importResult.pages > 0 && (
+                <div className="figma-result-row">
+                  <FileText className="size-4 text-(--status-success)" />
+                  <span>{importResult.pages} pages created</span>
+                </div>
+              )}
+              {importResult.theme && importResult.colors > 0 && (
+                <div className="figma-result-row">
+                  <Palette className="size-4 text-(--status-success)" />
+                  <span>{importResult.colors} colors extracted and applied</span>
+                </div>
+              )}
+              {importResult.theme && importResult.fonts.length > 0 && (
+                <div className="figma-result-row">
+                  <Type className="size-4 text-(--status-success)" />
+                  <span>Fonts: {importResult.fonts.join(", ")}</span>
+                </div>
+              )}
+              {importResult.skipped.length > 0 && (
+                <div className="figma-result-row figma-result-row-warn">
+                  <span>Skipped: {importResult.skipped.join(", ")}</span>
+                </div>
+              )}
+            </div>
+
             <div className="figma-actions">
-              {applyTheme && (
+              {importResult.theme && (
                 <Button
                   variant="outline"
                   onClick={() => router.push(`/${tenantId}/theme`)}

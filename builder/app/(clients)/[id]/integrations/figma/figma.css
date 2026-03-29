@@ -181,3 +181,16 @@
   @apply flex items-center justify-center size-12 rounded-full;
   @apply bg-(--status-success-subtle) text-(--status-success);
 }
+
+/* Result summary */
+.figma-result-summary {
+  @apply space-y-2 px-4 py-3 rounded-[3px] bg-(--el-50);
+}
+
+.figma-result-row {
+  @apply flex items-center gap-2 text-[13px] text-(--el-700);
+}
+
+.figma-result-row-warn {
+  @apply text-(--status-warning) text-[12px];
+}
