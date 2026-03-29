@@ -54,11 +54,7 @@
   @apply bg-(--status-success-subtle) text-(--status-success);
 }
 
-/* Pages list */
-.figma-pages {
-  @apply space-y-1;
-}
-
+/* Page item (used for theme toggle too) */
 .figma-page-item {
   @apply flex items-center gap-2 px-3 py-2 rounded-[3px] cursor-pointer;
   @apply text-[14px] text-(--el-800);
@@ -71,6 +67,63 @@
 
 .figma-page-count {
   @apply ml-auto text-[12px] text-(--el-400);
+}
+
+/* =============================================================================
+ * Frame Tree — Pages → Frames picker
+ * ============================================================================= */
+
+.figma-frame-tree {
+  @apply space-y-0.5;
+}
+
+.figma-frame-page {
+  @apply rounded-[3px] overflow-hidden;
+}
+
+.figma-frame-page-header {
+  @apply flex items-center gap-2 px-2 py-2 rounded-[3px];
+  @apply text-[13px] font-medium text-(--el-800);
+  @apply hover:bg-(--el-50);
+}
+
+.figma-frame-page-header input {
+  @apply size-4 accent-(--accent-primary);
+}
+
+.figma-frame-page-toggle {
+  @apply flex items-center justify-center size-5 rounded-[3px];
+  @apply bg-transparent border-none cursor-pointer text-(--el-400);
+}
+
+.figma-frame-chevron {
+  @apply size-3.5 transition-transform duration-150;
+}
+
+.figma-frame-chevron[data-expanded] {
+  @apply rotate-90;
+}
+
+.figma-frame-page-name {
+  @apply flex-1 truncate;
+}
+
+.figma-frame-list {
+  @apply pl-7 space-y-0.5 pb-1;
+}
+
+.figma-frame-item {
+  @apply flex items-center gap-2 px-2 py-1.5 rounded-[3px] cursor-pointer;
+  @apply text-[13px] text-(--el-600);
+  @apply hover:bg-(--accent-primary-subtle)/30;
+}
+
+.figma-frame-item input {
+  @apply size-4 accent-(--accent-primary);
+}
+
+.figma-frame-name {
+  @apply flex-1 truncate;
 }
 
 /* Colors */
@@ -111,5 +164,5 @@
 /* Done */
 .figma-done-icon {
   @apply flex items-center justify-center size-12 rounded-full;
-  @apply bg-(--status-success-subtle) text-(--status-success) text-2xl font-bold;
+  @apply bg-(--status-success-subtle) text-(--status-success);
 }

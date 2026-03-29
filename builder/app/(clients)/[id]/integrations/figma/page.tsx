@@ -6,7 +6,16 @@ import { toast } from "sonner";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Download, Palette, Type, Check } from "lucide-react";
+import {
+  Loader2,
+  Download,
+  Palette,
+  Type,
+  Check,
+  ChevronRight,
+  FileText,
+  Frame,
+} from "lucide-react";
 import { useCreatePage } from "@/lib/hooks/use-pages";
 import { useUpdateTenantTokens } from "@/lib/hooks/use-tenant-tokens";
 import {
@@ -16,6 +25,7 @@ import {
   extractTextStyles,
   mapFigmaPageToSections,
   type FigmaFile,
+  type FigmaNode,
   type FigmaColor,
   type FigmaTextStyle,
 } from "@/lib/figma/figma-client";
@@ -24,16 +34,18 @@ import "./figma.css";
 
 type ImportStep = "connect" | "preview" | "importing" | "done";
 
+/** Flat list of importable frames with their parent page context */
+interface ImportableFrame {
+  id: string;
+  name: string;
+  pageName: string;
+  pageId: string;
+  node: FigmaNode;
+  childCount: number;
+}
+
 /**
  * Build TenantTokens from extracted Figma design data.
- *
- * Strategy:
- * - First non-white/non-black color → primary
- * - Second non-white/non-black color → accent
- * - Background: lightest color or white
- * - Foreground: darkest color or near-black
- * - Heading font: most prominent (largest) text style
- * - Body font: most common text style
  */
 function buildThemeTokens(
   colors: FigmaColor[],
@@ -41,9 +53,7 @@ function buildThemeTokens(
 ) {
   const tokens: Record<string, unknown> = {};
 
-  // --- Colors ---
   if (colors.length > 0) {
-    // Filter out near-white and near-black
     const isNeutral = (hex: string) => {
       const r = parseInt(hex.slice(1, 3), 16);
       const g = parseInt(hex.slice(3, 5), 16);
@@ -74,17 +84,16 @@ function buildThemeTokens(
     };
   }
 
-  // --- Fonts ---
   if (textStyles.length > 0) {
-    // Largest font → heading, most common → body
     const sorted = [...textStyles].sort((a, b) => b.fontSize - a.fontSize);
     const headingFont = sorted[0]?.fontFamily || "Inter";
-
-    // Body font: pick the style used at "body" sizes (14-18px) or the most common
     const bodyCandidate = textStyles.find(
       (s) => s.fontSize >= 14 && s.fontSize <= 18,
     );
-    const bodyFont = bodyCandidate?.fontFamily || sorted[sorted.length - 1]?.fontFamily || "Inter";
+    const bodyFont =
+      bodyCandidate?.fontFamily ||
+      sorted[sorted.length - 1]?.fontFamily ||
+      "Inter";
 
     tokens.fonts = {
       heading: { family: `'${headingFont}', sans-serif` },
@@ -93,6 +102,34 @@ function buildThemeTokens(
   }
 
   return tokens;
+}
+
+/**
+ * Extract importable frames from Figma file.
+ * Each top-level frame in each page becomes an importable item.
+ */
+function getImportableFrames(file: FigmaFile): ImportableFrame[] {
+  const frames: ImportableFrame[] = [];
+
+  for (const page of file.document.children || []) {
+    const topFrames =
+      page.children?.filter(
+        (c) => c.type === "FRAME" || c.type === "COMPONENT",
+      ) || [];
+
+    for (const frame of topFrames) {
+      frames.push({
+        id: frame.id,
+        name: frame.name,
+        pageName: page.name,
+        pageId: page.id,
+        node: frame,
+        childCount: frame.children?.length || 0,
+      });
+    }
+  }
+
+  return frames;
 }
 
 export default function FigmaImportPage() {
@@ -106,13 +143,17 @@ export default function FigmaImportPage() {
   const [fileUrl, setFileUrl] = React.useState("");
   const [token, setToken] = React.useState("");
   const [figmaFile, setFigmaFile] = React.useState<FigmaFile | null>(null);
+  const [frames, setFrames] = React.useState<ImportableFrame[]>([]);
   const [colors, setColors] = React.useState<FigmaColor[]>([]);
   const [textStyles, setTextStyles] = React.useState<FigmaTextStyle[]>([]);
   const [loading, setLoading] = React.useState(false);
-  const [selectedPages, setSelectedPages] = React.useState<Set<string>>(
+  const [selectedFrames, setSelectedFrames] = React.useState<Set<string>>(
     new Set(),
   );
   const [applyTheme, setApplyTheme] = React.useState(true);
+  const [expandedPages, setExpandedPages] = React.useState<Set<string>>(
+    new Set(),
+  );
 
   const handleConnect = async () => {
     const fileKey = extractFileKey(fileUrl);
@@ -130,19 +171,26 @@ export default function FigmaImportPage() {
       const file = await fetchFigmaFile(fileKey, token);
       setFigmaFile(file);
 
-      const extractedColors = extractColors(file.document);
-      setColors(extractedColors.slice(0, 20));
+      // Extract frames
+      const importableFrames = getImportableFrames(file);
+      setFrames(importableFrames);
 
-      const extractedStyles = extractTextStyles(file.document);
-      setTextStyles(extractedStyles.slice(0, 10));
-
-      // Auto-select all pages
+      // Auto-expand all pages, auto-select all frames
       const pageIds = new Set<string>();
+      const frameIds = new Set<string>();
       file.document.children?.forEach((page) => pageIds.add(page.id));
-      setSelectedPages(pageIds);
+      importableFrames.forEach((f) => frameIds.add(f.id));
+      setExpandedPages(pageIds);
+      setSelectedFrames(frameIds);
+
+      // Extract design tokens
+      setColors(extractColors(file.document).slice(0, 20));
+      setTextStyles(extractTextStyles(file.document).slice(0, 10));
 
       setStep("preview");
-      toast.success(`Connected to "${file.name}"`);
+      toast.success(
+        `Connected to "${file.name}" — ${importableFrames.length} frames found`,
+      );
     } catch (error) {
       toast.error(
         `Failed to connect: ${error instanceof Error ? error.message : "Unknown error"}`,
@@ -157,50 +205,46 @@ export default function FigmaImportPage() {
 
     setStep("importing");
     let imported = 0;
+    const skipped: string[] = [];
 
     try {
-      // 1. Apply theme tokens if enabled
+      // 1. Apply theme tokens
       if (applyTheme && (colors.length > 0 || textStyles.length > 0)) {
-        const themeTokens = buildThemeTokens(colors, textStyles);
         await updateTokens.mutateAsync({
           tenantId,
-          tokens: themeTokens,
+          tokens: buildThemeTokens(colors, textStyles),
         });
       }
 
-      // 2. Import selected pages
-      const pages =
-        figmaFile.document.children?.filter((p) =>
-          selectedPages.has(p.id),
-        ) || [];
+      // 2. Import each selected frame as its own page
+      const selected = frames.filter((f) => selectedFrames.has(f.id));
 
-      const skipped: string[] = [];
-
-      for (const page of pages) {
-        const sections = mapFigmaPageToSections(page);
+      for (const frame of selected) {
+        const sections = mapFigmaPageToSections(frame.node);
         if (sections.length === 0) {
-          skipped.push(`${page.name} (no content)`);
+          skipped.push(`${frame.name} (no content)`);
           continue;
         }
 
-        // Generate unique slug with timestamp suffix to avoid conflicts
-        const baseSlug = page.name
+        const baseSlug = frame.name
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/^-|-$/g, "");
         const uniqueSuffix = Math.random().toString(36).slice(2, 6);
-        const slug = `${baseSlug || "page"}-${uniqueSuffix}`;
 
         try {
           await createPage.mutateAsync({
-            title: `${page.name} (Figma)`,
-            slug,
+            title: frame.name,
+            slug: `${baseSlug || "page"}-${uniqueSuffix}`,
             status: "draft",
-            sections: sections as unknown as import("@/lib/hooks/use-pages").Section[],
+            sections:
+              sections as unknown as import("@/lib/hooks/use-pages").Section[],
           });
           imported++;
         } catch (err) {
-          skipped.push(`${page.name} (${err instanceof Error ? err.message : "failed"})`);
+          skipped.push(
+            `${frame.name} (${err instanceof Error ? err.message : "failed"})`,
+          );
         }
       }
 
@@ -218,6 +262,48 @@ export default function FigmaImportPage() {
       );
       setStep("preview");
     }
+  };
+
+  // Group frames by page
+  const framesByPage = React.useMemo(() => {
+    const map = new Map<string, { pageName: string; frames: ImportableFrame[] }>();
+    for (const frame of frames) {
+      if (!map.has(frame.pageId)) {
+        map.set(frame.pageId, { pageName: frame.pageName, frames: [] });
+      }
+      map.get(frame.pageId)!.frames.push(frame);
+    }
+    return map;
+  }, [frames]);
+
+  const togglePage = (pageId: string) => {
+    setExpandedPages((prev) => {
+      const next = new Set(prev);
+      if (next.has(pageId)) next.delete(pageId);
+      else next.add(pageId);
+      return next;
+    });
+  };
+
+  const toggleAllFramesInPage = (pageId: string, checked: boolean) => {
+    const pageFrames = framesByPage.get(pageId)?.frames || [];
+    setSelectedFrames((prev) => {
+      const next = new Set(prev);
+      for (const f of pageFrames) {
+        if (checked) next.add(f.id);
+        else next.delete(f.id);
+      }
+      return next;
+    });
+  };
+
+  const toggleFrame = (frameId: string) => {
+    setSelectedFrames((prev) => {
+      const next = new Set(prev);
+      if (next.has(frameId)) next.delete(frameId);
+      else next.add(frameId);
+      return next;
+    });
   };
 
   return (
@@ -255,28 +341,31 @@ export default function FigmaImportPage() {
                   placeholder="figd_..."
                 />
                 <p className="figma-hint">
-                  Get your token from Figma → Settings → Personal access tokens
+                  figma.com/settings → Security → Personal access tokens
                 </p>
               </div>
             </div>
-            <Button onClick={handleConnect} disabled={loading || !fileUrl || !token}>
+            <Button
+              onClick={handleConnect}
+              disabled={loading || !fileUrl || !token}
+            >
               {loading && <Loader2 className="size-4 animate-spin" />}
               {loading ? "Connecting..." : "Connect to Figma"}
             </Button>
           </div>
         )}
 
-        {/* Step 2: Preview */}
+        {/* Step 2: Preview — frame picker */}
         {step === "preview" && figmaFile && (
           <div className="figma-step">
             <div className="figma-step-header">
               <h3 className="figma-step-title">{figmaFile.name}</h3>
               <p className="figma-step-desc">
-                Review what will be imported. Toggle options below.
+                Pick the frames you want to import. Each frame becomes a page.
               </p>
             </div>
 
-            {/* Apply as Theme toggle */}
+            {/* Apply as Theme */}
             <div className="figma-section">
               <label className="figma-page-item">
                 <input
@@ -287,54 +376,108 @@ export default function FigmaImportPage() {
                 <div>
                   <span className="figma-label">Apply as site theme</span>
                   <p className="figma-hint">
-                    Sets primary/accent colors and heading/body fonts from this
-                    design. Replaces current theme.
+                    Extracts colors and fonts → replaces current theme
                   </p>
                 </div>
               </label>
             </div>
 
-            {/* Pages */}
+            {/* Frame tree — grouped by page */}
             <div className="figma-section">
               <h4 className="figma-section-title">
                 <Download className="size-4" />
-                Pages ({figmaFile.document.children?.length || 0})
+                Frames ({frames.length})
               </h4>
-              <div className="figma-pages">
-                {figmaFile.document.children?.map((page) => (
-                  <label key={page.id} className="figma-page-item">
-                    <input
-                      type="checkbox"
-                      checked={selectedPages.has(page.id)}
-                      onChange={(e) => {
-                        const next = new Set(selectedPages);
-                        if (e.target.checked) next.add(page.id);
-                        else next.delete(page.id);
-                        setSelectedPages(next);
-                      }}
-                    />
-                    <span>{page.name}</span>
-                    <span className="figma-page-count">
-                      {page.children?.length || 0} frames
-                    </span>
-                  </label>
-                ))}
+              <div className="figma-frame-tree">
+                {Array.from(framesByPage.entries()).map(
+                  ([pageId, { pageName, frames: pageFrames }]) => {
+                    const isExpanded = expandedPages.has(pageId);
+                    const allSelected = pageFrames.every((f) =>
+                      selectedFrames.has(f.id),
+                    );
+                    const someSelected = pageFrames.some((f) =>
+                      selectedFrames.has(f.id),
+                    );
+
+                    return (
+                      <div key={pageId} className="figma-frame-page">
+                        <div className="figma-frame-page-header">
+                          <button
+                            type="button"
+                            className="figma-frame-page-toggle"
+                            onClick={() => togglePage(pageId)}
+                          >
+                            <ChevronRight
+                              className="figma-frame-chevron"
+                              data-expanded={isExpanded || undefined}
+                            />
+                          </button>
+                          <input
+                            type="checkbox"
+                            checked={allSelected}
+                            ref={(el) => {
+                              if (el)
+                                el.indeterminate =
+                                  someSelected && !allSelected;
+                            }}
+                            onChange={(e) =>
+                              toggleAllFramesInPage(pageId, e.target.checked)
+                            }
+                          />
+                          <FileText className="size-3.5 text-(--el-400)" />
+                          <span className="figma-frame-page-name">
+                            {pageName}
+                          </span>
+                          <span className="figma-page-count">
+                            {pageFrames.length} frames
+                          </span>
+                        </div>
+
+                        {isExpanded && (
+                          <div className="figma-frame-list">
+                            {pageFrames.map((frame) => (
+                              <label
+                                key={frame.id}
+                                className="figma-frame-item"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={selectedFrames.has(frame.id)}
+                                  onChange={() => toggleFrame(frame.id)}
+                                />
+                                <Frame className="size-3.5 text-(--el-400)" />
+                                <span className="figma-frame-name">
+                                  {frame.name}
+                                </span>
+                                <span className="figma-page-count">
+                                  {frame.childCount} layers
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  },
+                )}
               </div>
             </div>
 
             {/* Colors */}
-            {colors.length > 0 && (
+            {colors.length > 0 && applyTheme && (
               <div className="figma-section">
                 <h4 className="figma-section-title">
                   <Palette className="size-4" />
                   Colors ({colors.length})
-                  {applyTheme && (
-                    <span className="figma-badge">Will apply</span>
-                  )}
+                  <span className="figma-badge">Will apply</span>
                 </h4>
                 <div className="figma-colors">
                   {colors.map((color, i) => (
-                    <div key={i} className="figma-color-swatch" title={color.hex}>
+                    <div
+                      key={i}
+                      className="figma-color-swatch"
+                      title={color.hex}
+                    >
                       <div
                         className="figma-color-dot"
                         style={{ backgroundColor: color.hex }}
@@ -347,14 +490,12 @@ export default function FigmaImportPage() {
             )}
 
             {/* Text Styles */}
-            {textStyles.length > 0 && (
+            {textStyles.length > 0 && applyTheme && (
               <div className="figma-section">
                 <h4 className="figma-section-title">
                   <Type className="size-4" />
                   Typography ({textStyles.length})
-                  {applyTheme && (
-                    <span className="figma-badge">Will apply</span>
-                  )}
+                  <span className="figma-badge">Will apply</span>
                 </h4>
                 <div className="figma-text-styles">
                   {textStyles.map((style, i) => (
@@ -383,10 +524,11 @@ export default function FigmaImportPage() {
               </Button>
               <Button
                 onClick={handleImport}
-                disabled={selectedPages.size === 0 && !applyTheme}
+                disabled={selectedFrames.size === 0 && !applyTheme}
               >
                 <Download className="size-4" />
-                Import{applyTheme ? " Theme +" : ""} {selectedPages.size} Pages
+                Import {selectedFrames.size} Frames
+                {applyTheme ? " + Theme" : ""}
               </Button>
             </div>
           </div>
@@ -414,8 +556,8 @@ export default function FigmaImportPage() {
             <p className="figma-step-title">Import Complete</p>
             <p className="figma-step-desc">
               {applyTheme
-                ? "Theme tokens applied and pages created. Your site now uses the Figma design's colors and fonts."
-                : "Pages created. Edit them in the page editor."}
+                ? "Theme applied and pages created from your Figma design."
+                : "Pages created from selected frames."}
             </p>
             <div className="figma-actions">
               {applyTheme && (

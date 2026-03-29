@@ -323,10 +323,15 @@ export function mapFigmaPageToSections(
   }> = [];
 
   // Each top-level frame in the page becomes a section
-  const topFrames =
+  let topFrames =
     page.children?.filter(
       (c) => c.type === "FRAME" || c.type === "COMPONENT",
     ) || [];
+
+  // If no child frames found, treat the node itself as the content
+  if (topFrames.length === 0 && page.children?.length) {
+    topFrames = [page];
+  }
 
   for (const frame of topFrames) {
     const ts = Date.now() + Math.random() * 10000;
