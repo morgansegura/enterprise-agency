@@ -6,8 +6,9 @@ import { toast } from "sonner";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Download, Palette, Type } from "lucide-react";
+import { Loader2, Download, Palette, Type, Check } from "lucide-react";
 import { useCreatePage } from "@/lib/hooks/use-pages";
+import { useUpdateTenantTokens } from "@/lib/hooks/use-tenant-tokens";
 import {
   extractFileKey,
   fetchFigmaFile,
@@ -23,11 +24,83 @@ import "./figma.css";
 
 type ImportStep = "connect" | "preview" | "importing" | "done";
 
+/**
+ * Build TenantTokens from extracted Figma design data.
+ *
+ * Strategy:
+ * - First non-white/non-black color → primary
+ * - Second non-white/non-black color → accent
+ * - Background: lightest color or white
+ * - Foreground: darkest color or near-black
+ * - Heading font: most prominent (largest) text style
+ * - Body font: most common text style
+ */
+function buildThemeTokens(
+  colors: FigmaColor[],
+  textStyles: FigmaTextStyle[],
+) {
+  const tokens: Record<string, unknown> = {};
+
+  // --- Colors ---
+  if (colors.length > 0) {
+    // Filter out near-white and near-black
+    const isNeutral = (hex: string) => {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      const luminance = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+      return luminance > 0.92 || luminance < 0.08;
+    };
+
+    const chromatic = colors.filter((c) => !isNeutral(c.hex));
+    const light = colors.filter((c) => {
+      const r = parseInt(c.hex.slice(1, 3), 16);
+      const g = parseInt(c.hex.slice(3, 5), 16);
+      const b = parseInt(c.hex.slice(5, 7), 16);
+      return (r * 0.299 + g * 0.587 + b * 0.114) / 255 > 0.85;
+    });
+    const dark = colors.filter((c) => {
+      const r = parseInt(c.hex.slice(1, 3), 16);
+      const g = parseInt(c.hex.slice(3, 5), 16);
+      const b = parseInt(c.hex.slice(5, 7), 16);
+      return (r * 0.299 + g * 0.587 + b * 0.114) / 255 < 0.2;
+    });
+
+    tokens.colors = {
+      primaryHex: chromatic[0]?.hex || "#0052cc",
+      accentHex: chromatic[1]?.hex || chromatic[0]?.hex || "#0065ff",
+      background: light[0]?.hex || "#ffffff",
+      foreground: dark[0]?.hex || "#172b4d",
+    };
+  }
+
+  // --- Fonts ---
+  if (textStyles.length > 0) {
+    // Largest font → heading, most common → body
+    const sorted = [...textStyles].sort((a, b) => b.fontSize - a.fontSize);
+    const headingFont = sorted[0]?.fontFamily || "Inter";
+
+    // Body font: pick the style used at "body" sizes (14-18px) or the most common
+    const bodyCandidate = textStyles.find(
+      (s) => s.fontSize >= 14 && s.fontSize <= 18,
+    );
+    const bodyFont = bodyCandidate?.fontFamily || sorted[sorted.length - 1]?.fontFamily || "Inter";
+
+    tokens.fonts = {
+      heading: { family: `'${headingFont}', sans-serif` },
+      body: { family: `'${bodyFont}', sans-serif` },
+    };
+  }
+
+  return tokens;
+}
+
 export default function FigmaImportPage() {
   const params = useParams();
   const router = useRouter();
   const tenantId = params?.id as string;
   const createPage = useCreatePage(tenantId);
+  const updateTokens = useUpdateTenantTokens();
 
   const [step, setStep] = React.useState<ImportStep>("connect");
   const [fileUrl, setFileUrl] = React.useState("");
@@ -39,6 +112,7 @@ export default function FigmaImportPage() {
   const [selectedPages, setSelectedPages] = React.useState<Set<string>>(
     new Set(),
   );
+  const [applyTheme, setApplyTheme] = React.useState(true);
 
   const handleConnect = async () => {
     const fileKey = extractFileKey(fileUrl);
@@ -56,12 +130,11 @@ export default function FigmaImportPage() {
       const file = await fetchFigmaFile(fileKey, token);
       setFigmaFile(file);
 
-      // Extract design tokens
       const extractedColors = extractColors(file.document);
-      setColors(extractedColors.slice(0, 20)); // Top 20 colors
+      setColors(extractedColors.slice(0, 20));
 
       const extractedStyles = extractTextStyles(file.document);
-      setTextStyles(extractedStyles.slice(0, 10)); // Top 10 text styles
+      setTextStyles(extractedStyles.slice(0, 10));
 
       // Auto-select all pages
       const pageIds = new Set<string>();
@@ -86,6 +159,16 @@ export default function FigmaImportPage() {
     let imported = 0;
 
     try {
+      // 1. Apply theme tokens if enabled
+      if (applyTheme && (colors.length > 0 || textStyles.length > 0)) {
+        const themeTokens = buildThemeTokens(colors, textStyles);
+        await updateTokens.mutateAsync({
+          tenantId,
+          tokens: themeTokens,
+        });
+      }
+
+      // 2. Import selected pages
       const pages =
         figmaFile.document.children?.filter((p) =>
           selectedPages.has(p.id),
@@ -111,7 +194,10 @@ export default function FigmaImportPage() {
       }
 
       setStep("done");
-      toast.success(`Imported ${imported} pages from Figma`);
+      const parts = [];
+      if (imported > 0) parts.push(`${imported} pages`);
+      if (applyTheme) parts.push("theme tokens");
+      toast.success(`Imported ${parts.join(" + ")} from Figma`);
     } catch (error) {
       toast.error(
         `Import failed: ${error instanceof Error ? error.message : "Unknown error"}`,
@@ -172,8 +258,26 @@ export default function FigmaImportPage() {
             <div className="figma-step-header">
               <h3 className="figma-step-title">{figmaFile.name}</h3>
               <p className="figma-step-desc">
-                Select pages to import and review extracted design tokens.
+                Review what will be imported. Toggle options below.
               </p>
+            </div>
+
+            {/* Apply as Theme toggle */}
+            <div className="figma-section">
+              <label className="figma-page-item">
+                <input
+                  type="checkbox"
+                  checked={applyTheme}
+                  onChange={(e) => setApplyTheme(e.target.checked)}
+                />
+                <div>
+                  <span className="figma-label">Apply as site theme</span>
+                  <p className="figma-hint">
+                    Sets primary/accent colors and heading/body fonts from this
+                    design. Replaces current theme.
+                  </p>
+                </div>
+              </label>
             </div>
 
             {/* Pages */}
@@ -210,6 +314,9 @@ export default function FigmaImportPage() {
                 <h4 className="figma-section-title">
                   <Palette className="size-4" />
                   Colors ({colors.length})
+                  {applyTheme && (
+                    <span className="figma-badge">Will apply</span>
+                  )}
                 </h4>
                 <div className="figma-colors">
                   {colors.map((color, i) => (
@@ -231,6 +338,9 @@ export default function FigmaImportPage() {
                 <h4 className="figma-section-title">
                   <Type className="size-4" />
                   Typography ({textStyles.length})
+                  {applyTheme && (
+                    <span className="figma-badge">Will apply</span>
+                  )}
                 </h4>
                 <div className="figma-text-styles">
                   {textStyles.map((style, i) => (
@@ -259,10 +369,10 @@ export default function FigmaImportPage() {
               </Button>
               <Button
                 onClick={handleImport}
-                disabled={selectedPages.size === 0}
+                disabled={selectedPages.size === 0 && !applyTheme}
               >
                 <Download className="size-4" />
-                Import {selectedPages.size} Pages
+                Import{applyTheme ? " Theme +" : ""} {selectedPages.size} Pages
               </Button>
             </div>
           </div>
@@ -274,7 +384,9 @@ export default function FigmaImportPage() {
             <Loader2 className="size-8 animate-spin text-(--accent-primary)" />
             <p className="figma-step-title">Importing from Figma...</p>
             <p className="figma-step-desc">
-              Creating pages and mapping blocks. This may take a moment.
+              {applyTheme
+                ? "Applying theme tokens and creating pages."
+                : "Creating pages and mapping blocks."}
             </p>
           </div>
         )}
@@ -282,14 +394,28 @@ export default function FigmaImportPage() {
         {/* Step 4: Done */}
         {step === "done" && (
           <div className="figma-step figma-step-center">
-            <div className="figma-done-icon">✓</div>
+            <div className="figma-done-icon">
+              <Check className="size-6" />
+            </div>
             <p className="figma-step-title">Import Complete</p>
             <p className="figma-step-desc">
-              Your pages have been created. Edit them in the page editor.
+              {applyTheme
+                ? "Theme tokens applied and pages created. Your site now uses the Figma design's colors and fonts."
+                : "Pages created. Edit them in the page editor."}
             </p>
-            <Button onClick={() => router.push(`/${tenantId}/pages`)}>
-              Go to Pages
-            </Button>
+            <div className="figma-actions">
+              {applyTheme && (
+                <Button
+                  variant="outline"
+                  onClick={() => router.push(`/${tenantId}/theme`)}
+                >
+                  Review Theme
+                </Button>
+              )}
+              <Button onClick={() => router.push(`/${tenantId}/pages`)}>
+                Go to Pages
+              </Button>
+            </div>
           </div>
         )}
       </div>

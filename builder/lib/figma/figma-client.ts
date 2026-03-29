@@ -333,19 +333,69 @@ export function mapFigmaPageToSections(
     const blocks = mapFigmaToBlocks(frame);
 
     if (blocks.length > 0) {
+      // Map Figma padding to our spacing scale
+      const avgPadY = ((frame.paddingTop || 0) + (frame.paddingBottom || 0)) / 2;
+      const paddingY = avgPadY >= 64 ? "2xl"
+        : avgPadY >= 48 ? "xl"
+        : avgPadY >= 32 ? "lg"
+        : avgPadY >= 16 ? "md"
+        : avgPadY >= 8 ? "sm"
+        : "none";
+
+      // Map Figma alignment
+      const align = frame.primaryAxisAlignItems === "CENTER"
+        ? "center"
+        : frame.primaryAxisAlignItems === "MAX"
+          ? "right"
+          : "left";
+
+      // Map Figma width — wide frames get "full", narrower get "container"
+      const frameWidth = frame.absoluteBoundingBox?.width || 0;
+      const width = frameWidth >= 1200 ? "full" : "container";
+
+      // Extract background color if solid fill
+      const bgFill = frame.fills?.find((f) => f.type === "SOLID" && f.color);
+      const background = bgFill?.color
+        ? { type: "color" as const, color: figmaColorToHex(bgFill.color) }
+        : undefined;
+
+      // Map container layout from auto-layout
+      const containerLayout: Record<string, unknown> = {};
+      if (frame.layoutMode === "HORIZONTAL" || frame.layoutMode === "VERTICAL") {
+        containerLayout.layout = {
+          type: "flex",
+          direction: frame.layoutMode === "HORIZONTAL" ? "row" : "column",
+          gap: frame.itemSpacing
+            ? frame.itemSpacing >= 32 ? "lg"
+              : frame.itemSpacing >= 16 ? "md"
+              : frame.itemSpacing >= 8 ? "sm"
+              : "xs"
+            : "md",
+          justify: frame.primaryAxisAlignItems === "CENTER" ? "center"
+            : frame.primaryAxisAlignItems === "SPACE_BETWEEN" ? "between"
+            : "start",
+          align: frame.counterAxisAlignItems === "CENTER" ? "center"
+            : frame.counterAxisAlignItems === "MAX" ? "end"
+            : "stretch",
+        };
+      }
+
       sections.push({
         _type: "section",
         _key: `figma-section-${ts}`,
-        width: "container",
-        paddingY: "lg",
+        width,
+        paddingY,
+        align,
+        ...(background ? { background } : {}),
         containers: [
           {
             _type: "container",
             _key: `figma-container-${ts}`,
+            ...containerLayout,
             blocks,
           },
         ],
-      });
+      } as typeof sections[number]);
     }
   }
 

@@ -49,6 +49,11 @@
   @apply flex items-center gap-2 text-[14px] font-semibold text-(--el-800);
 }
 
+.figma-badge {
+  @apply ml-auto text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-[3px];
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
 /* Pages list */
 .figma-pages {
   @apply space-y-1;
