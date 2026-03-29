@@ -141,7 +141,19 @@ export default function FigmaImportPage() {
 
   const [step, setStep] = React.useState<ImportStep>("connect");
   const [fileUrl, setFileUrl] = React.useState("");
-  const [token, setToken] = React.useState("");
+  const [token, setToken] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("figma_token") || "";
+    }
+    return "";
+  });
+
+  // Persist token to localStorage
+  const handleTokenChange = (value: string) => {
+    setToken(value);
+    if (value) localStorage.setItem("figma_token", value);
+    else localStorage.removeItem("figma_token");
+  };
   const [figmaFile, setFigmaFile] = React.useState<FigmaFile | null>(null);
   const [frames, setFrames] = React.useState<ImportableFrame[]>([]);
   const [colors, setColors] = React.useState<FigmaColor[]>([]);
@@ -337,7 +349,7 @@ export default function FigmaImportPage() {
                 <Input
                   type="password"
                   value={token}
-                  onChange={(e) => setToken(e.target.value)}
+                  onChange={(e) => handleTokenChange(e.target.value)}
                   placeholder="figd_..."
                 />
                 <p className="figma-hint">
