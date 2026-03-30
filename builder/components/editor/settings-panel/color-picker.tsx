@@ -94,13 +94,11 @@ export function ColorPicker({ value, onChange, label }: ColorPickerProps) {
           </button>
         </PopoverTrigger>
         <PopoverContent align="start" className="color-picker-popover" sideOffset={4}>
-          {/* Hex input */}
+          {/* Color preview + hex input */}
           <div className="color-picker-hex-row">
-            <input
-              type="color"
-              value={parsed.hex}
-              onChange={(e) => onChange(buildColor(e.target.value, parsed.alpha))}
-              className="color-picker-native"
+            <div
+              className="color-picker-preview"
+              style={{ backgroundColor: value || "transparent" }}
             />
             <Input
               value={value || ""}

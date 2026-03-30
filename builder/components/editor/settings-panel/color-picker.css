@@ -40,8 +40,8 @@
   @apply flex items-center gap-2;
 }
 
-.color-picker-native {
-  @apply w-8 h-8 rounded-[3px] border border-(--border-default) cursor-pointer shrink-0;
+.color-picker-preview {
+  @apply w-8 h-8 rounded-[3px] border border-(--border-default) shrink-0;
 }
 
 /* Alpha */
