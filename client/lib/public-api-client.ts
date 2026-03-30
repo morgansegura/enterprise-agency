@@ -92,6 +92,30 @@ export interface Page {
   updatedAt?: string;
 }
 
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt?: string;
+  featuredImage?: string;
+  author?: string;
+  publishDate?: string;
+  categories?: string[];
+  tags?: string[];
+  content?: {
+    sections?: Section[];
+  };
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    metaKeywords?: string[];
+    ogImage?: string;
+  };
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface Section {
   _type: string;
   _key: string;
@@ -252,6 +276,39 @@ export class PublicApiClient {
     }
 
     return res.json();
+  }
+
+  /**
+   * Get a published blog post by slug
+   */
+  async getPost(slug: string): Promise<BlogPost> {
+    const res = await fetch(
+      this.buildUrl(`/posts/slug/${slug}`),
+      this.getFetchOptions(60),
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch post: ${res.status} ${res.statusText}`);
+    }
+
+    return res.json();
+  }
+
+  /**
+   * List all published blog posts
+   */
+  async listPosts(): Promise<BlogPost[]> {
+    const res = await fetch(
+      `${this.baseUrl}/posts?status=published`,
+      this.getFetchOptions(60),
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch posts: ${res.status} ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    return Array.isArray(data) ? data : data.data || [];
   }
 }
 

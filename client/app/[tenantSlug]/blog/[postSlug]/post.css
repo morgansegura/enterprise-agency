@@ -1,0 +1,50 @@
+@reference "tailwindcss";
+
+[data-slot="post-page"] {
+  @apply max-w-3xl mx-auto px-4 py-16;
+}
+
+[data-slot="post-header"] {
+  @apply text-center mb-8;
+}
+
+[data-slot="post-categories"] {
+  @apply flex flex-wrap justify-center gap-2 mb-4;
+}
+
+[data-slot="post-category"] {
+  @apply text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full;
+  @apply bg-blue-50 text-blue-600;
+}
+
+[data-slot="post-title"] {
+  @apply text-4xl md:text-5xl font-bold tracking-tight leading-tight;
+}
+
+[data-slot="post-excerpt"] {
+  @apply text-lg mt-4 opacity-60 leading-relaxed;
+}
+
+[data-slot="post-meta"] {
+  @apply flex items-center justify-center gap-4 mt-6 text-sm opacity-50;
+}
+
+[data-slot="post-featured-image"] {
+  @apply w-full rounded-lg mb-10 aspect-video object-cover;
+}
+
+[data-slot="post-content"] {
+  @apply prose prose-lg max-w-none;
+}
+
+[data-slot="post-footer"] {
+  @apply mt-12 pt-6 border-t;
+}
+
+[data-slot="post-tags"] {
+  @apply flex flex-wrap gap-2;
+}
+
+[data-slot="post-tag"] {
+  @apply text-xs px-3 py-1 rounded-full bg-gray-100;
+}
