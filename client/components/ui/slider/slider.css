@@ -26,7 +26,7 @@
 }
 
 [data-slot="slider-range"] {
-  @apply bg-primary absolute;
+  @apply bg-(--primary) absolute;
   @apply data-[orientation=horizontal]:h-full;
   @apply data-[orientation=vertical]:w-full;
 }

@@ -32,7 +32,7 @@
 /* --- Variant: card --- */
 
 [data-slot="team-block"][data-variant="card"] [data-slot="team-block-member"] {
-  @apply rounded-lg border border-border bg-card p-6 shadow-sm;
+  @apply rounded-lg border border-(--border) bg-(--card) p-6 shadow-sm;
 }
 
 /* --- Variant: minimal --- */

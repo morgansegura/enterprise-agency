@@ -63,7 +63,7 @@
 
 [data-slot="logo-bar-block"][data-variant="bordered"] [data-slot="logo-bar-block-img"],
 [data-slot="logo-bar-block"][data-variant="bordered"] [data-slot="logo-bar-block-link"] {
-  @apply border border-border px-6 py-4;
+  @apply border border-(--border) px-6 py-4;
 }
 
 /* --- Link --- */
