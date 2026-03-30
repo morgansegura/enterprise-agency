@@ -38,7 +38,8 @@
 
 /* --- Layout: Centered --- */
 
-[data-slot="hero-block"][data-layout="centered"] [data-slot="hero-block-content"] {
+[data-slot="hero-block"][data-layout="centered"]
+  [data-slot="hero-block-content"] {
   @apply flex flex-col mx-auto max-w-3xl px-6;
 }
 
@@ -48,11 +49,13 @@
   @apply flex flex-col md:flex-row;
 }
 
-[data-slot="hero-block"][data-layout="split-right"] [data-slot="hero-block-content"] {
+[data-slot="hero-block"][data-layout="split-right"]
+  [data-slot="hero-block-content"] {
   @apply flex flex-col justify-center px-6 md:w-1/2;
 }
 
-[data-slot="hero-block"][data-layout="split-right"] [data-slot="hero-block-bg"] {
+[data-slot="hero-block"][data-layout="split-right"]
+  [data-slot="hero-block-bg"] {
   @apply relative md:w-1/2;
 }
 
@@ -60,7 +63,8 @@
   @apply flex flex-col md:flex-row-reverse;
 }
 
-[data-slot="hero-block"][data-layout="split-left"] [data-slot="hero-block-content"] {
+[data-slot="hero-block"][data-layout="split-left"]
+  [data-slot="hero-block-content"] {
   @apply flex flex-col justify-center px-6 md:w-1/2;
 }
 
@@ -102,7 +106,7 @@
 /* --- Subheading --- */
 
 [data-slot="hero-block-subheading"] {
-  @apply text-sm font-semibold uppercase tracking-widest text-primary;
+  @apply text-sm font-semibold uppercase tracking-widest text-(--primary);
 }
 
 /* --- Heading --- */
@@ -114,7 +118,7 @@
 /* --- Description --- */
 
 [data-slot="hero-block-description"] {
-  @apply text-lg text-muted-foreground max-w-2xl;
+  @apply text-lg text-(--muted-foreground) max-w-2xl;
 }
 
 /* --- Actions --- */
@@ -124,17 +128,17 @@
 }
 
 [data-slot="hero-block-primary-cta"] {
-  @apply inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors;
+  @apply inline-flex items-center justify-center rounded-md bg-(--primary) px-6 py-3 text-sm font-medium text-(--primary-foreground) transition-colors;
 }
 
 [data-slot="hero-block-primary-cta"]:hover {
-  @apply bg-primary/90;
+  @apply bg-(--primary)/90;
 }
 
 [data-slot="hero-block-secondary-cta"] {
-  @apply inline-flex items-center justify-center rounded-md border border-border px-6 py-3 text-sm font-medium transition-colors;
+  @apply inline-flex items-center justify-center rounded-md border border-(--border) px-6 py-3 text-sm font-medium transition-colors;
 }
 
 [data-slot="hero-block-secondary-cta"]:hover {
-  @apply bg-accent text-accent-foreground;
+  @apply bg-(--accent) text-(--accent-foreground);
 }

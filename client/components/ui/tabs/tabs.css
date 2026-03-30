@@ -7,7 +7,7 @@
 
 [data-slot="tabs-list"] {
   @apply inline-flex w-fit items-center justify-center;
-  @apply bg-muted text-muted-foreground;
+  @apply bg-(--muted) text-(--muted-foreground);
   height: var(--tabs-list-height);
   padding: var(--tabs-list-padding);
   border-radius: var(--tabs-list-border-radius);
@@ -16,11 +16,11 @@
 [data-slot="tabs-trigger"] {
   @apply inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center;
   @apply border border-transparent;
-  @apply text-foreground;
+  @apply text-(--foreground);
   @apply transition-[color,box-shadow] whitespace-nowrap;
-  @apply focus-visible:border-ring focus-visible:ring-ring/50;
+  @apply focus-visible:border-(--ring) focus-visible:ring-(--ring)/50;
   @apply disabled:pointer-events-none disabled:opacity-50;
-  @apply data-[state=active]:bg-background;
+  @apply data-[state=active]:bg-(--background);
 
   /* Design token values */
   gap: var(--tabs-trigger-gap);
@@ -52,8 +52,8 @@
 }
 
 .dark [data-slot="tabs-trigger"] {
-  @apply text-muted-foreground;
-  @apply data-[state=active]:text-foreground data-[state=active]:border-input data-[state=active]:bg-input/30;
+  @apply text-(--muted-foreground);
+  @apply data-[state=active]:text-(--foreground) data-[state=active]:border-(--input) data-[state=active]:bg-(--input)/30;
 }
 
 [data-slot="tabs-content"] {

@@ -78,6 +78,27 @@
 
   /* Destructive */
   --destructive: var(--status-destructive-light);
+
+  /* Section alternating */
+  --section-background: var(--neutral-50);
+  --section-foreground: var(--neutral-950);
+
+  /* Sidebar (if used) */
+  --sidebar: var(--neutral-50);
+  --sidebar-foreground: var(--neutral-900);
+  --sidebar-primary: var(--brand-primary-500);
+  --sidebar-primary-foreground: var(--brand-primary-50);
+  --sidebar-accent: var(--neutral-100);
+  --sidebar-accent-foreground: var(--neutral-900);
+  --sidebar-border: var(--neutral-200);
+  --sidebar-ring: var(--brand-primary-500);
+
+  /* Charts */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.714);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
 }
 
 /* ===== LAYER 3: DARK MODE SEMANTIC MAPPINGS ===== */
@@ -115,6 +136,27 @@
 
   /* Destructive */
   --destructive: var(--status-destructive-dark);
+
+  /* Section */
+  --section-background: var(--neutral-900);
+  --section-foreground: var(--brand-primary-50);
+
+  /* Sidebar */
+  --sidebar: var(--neutral-900);
+  --sidebar-foreground: var(--brand-primary-50);
+  --sidebar-primary: var(--brand-primary-200);
+  --sidebar-primary-foreground: var(--neutral-900);
+  --sidebar-accent: var(--neutral-800);
+  --sidebar-accent-foreground: var(--brand-primary-50);
+  --sidebar-border: var(--neutral-800);
+  --sidebar-ring: var(--brand-primary-200);
+
+  /* Charts */
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
 }
 
 /* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */

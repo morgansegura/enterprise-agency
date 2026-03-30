@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 [data-slot="breadcrumb-list"] {
-  @apply text-muted-foreground flex flex-wrap items-center break-words;
+  @apply text-(--muted-foreground) flex flex-wrap items-center break-words;
   gap: var(--breadcrumb-gap);
   font-size: var(--breadcrumb-font-size);
 
@@ -16,11 +16,11 @@
 }
 
 [data-slot="breadcrumb-link"] {
-  @apply hover:text-foreground transition-colors;
+  @apply hover:text-(--foreground) transition-colors;
 }
 
 [data-slot="breadcrumb-page"] {
-  @apply text-foreground font-normal;
+  @apply text-(--foreground) font-normal;
 }
 
 [data-slot="breadcrumb-separator"] {

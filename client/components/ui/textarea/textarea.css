@@ -1,12 +1,12 @@
 @reference "tailwindcss";
 
 [data-slot="textarea"] {
-  @apply flex w-full border border-input bg-transparent;
+  @apply flex w-full border border-(--input) bg-transparent;
   @apply field-sizing-content outline-none;
   @apply transition-[color,box-shadow];
-  @apply placeholder:text-muted-foreground;
-  @apply focus-visible:border-ring focus-visible:ring-ring/50;
-  @apply aria-invalid:ring-destructive/20 aria-invalid:border-destructive;
+  @apply placeholder:text-(--muted-foreground);
+  @apply focus-visible:border-(--ring) focus-visible:ring-(--ring)/50;
+  @apply aria-invalid:ring-(--destructive)/20 aria-invalid:border-(--destructive);
   @apply disabled:cursor-not-allowed disabled:opacity-50;
 
   /* Design token values */
@@ -26,9 +26,9 @@
 }
 
 .dark [data-slot="textarea"] {
-  @apply bg-input/30;
+  @apply bg-(--input)/30;
 }
 
 .dark [data-slot="textarea"][aria-invalid] {
-  @apply ring-destructive/40;
+  @apply ring-(--destructive)/40;
 }
