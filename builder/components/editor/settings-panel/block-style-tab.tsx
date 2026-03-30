@@ -225,6 +225,141 @@ function FilterBuilder({
   );
 }
 
+/** Gradient Builder — visual linear/radial gradient editor */
+function GradientBuilder({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const isGradient = value?.includes("gradient");
+
+  // Parse existing gradient or use defaults
+  const parseGradient = () => {
+    if (!isGradient) return { type: "linear", angle: "180", color1: "#000000", color2: "#ffffff" };
+    const linearMatch = value.match(
+      /linear-gradient\((\d+)deg,\s*(#[0-9a-fA-F]{3,8})\s*(?:\d+%)?,\s*(#[0-9a-fA-F]{3,8})/,
+    );
+    if (linearMatch) {
+      return { type: "linear", angle: linearMatch[1], color1: linearMatch[2], color2: linearMatch[3] };
+    }
+    const radialMatch = value.match(
+      /radial-gradient\([^,]*,\s*(#[0-9a-fA-F]{3,8})\s*(?:\d+%)?,\s*(#[0-9a-fA-F]{3,8})/,
+    );
+    if (radialMatch) {
+      return { type: "radial", angle: "0", color1: radialMatch[1], color2: radialMatch[2] };
+    }
+    return { type: "linear", angle: "180", color1: "#000000", color2: "#ffffff" };
+  };
+
+  const [enabled, setEnabled] = React.useState(isGradient);
+  const g = parseGradient();
+
+  const buildGradient = (type: string, angle: string, c1: string, c2: string) => {
+    if (type === "radial") return `radial-gradient(circle, ${c1}, ${c2})`;
+    return `linear-gradient(${angle}deg, ${c1}, ${c2})`;
+  };
+
+  if (!enabled) {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          setEnabled(true);
+          onChange(buildGradient(g.type, g.angle, g.color1, g.color2));
+        }}
+        className="text-[11px] text-(--accent-primary) bg-transparent border-none cursor-pointer hover:underline"
+      >
+        + Add gradient
+      </button>
+    );
+  }
+
+  return (
+    <>
+      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">
+        Gradient
+      </span>
+      {/* Preview */}
+      <div
+        className="w-full h-8 rounded-[3px] border border-(--border-default)"
+        style={{ background: value }}
+      />
+      <PropertyRow label="Type">
+        <PropertyToggle
+          value={g.type}
+          options={[
+            { value: "linear", label: "Linear" },
+            { value: "radial", label: "Radial" },
+          ]}
+          onChange={(v) => onChange(buildGradient(v, g.angle, g.color1, g.color2))}
+        />
+      </PropertyRow>
+      {g.type === "linear" && (
+        <PropertyRow label="Angle">
+          <div className="flex items-center gap-2 flex-1">
+            <input
+              type="range"
+              min="0"
+              max="360"
+              step="5"
+              value={g.angle}
+              onChange={(e) => onChange(buildGradient(g.type, e.target.value, g.color1, g.color2))}
+              className="flex-1 h-1.5 accent-(--accent-primary)"
+            />
+            <Input
+              value={`${g.angle}°`}
+              onChange={(e) => onChange(buildGradient(g.type, e.target.value.replace("°", ""), g.color1, g.color2))}
+              className="w-14 h-7 text-xs text-center"
+            />
+          </div>
+        </PropertyRow>
+      )}
+      <PropertyRow label="From">
+        <div className="flex items-center gap-1.5">
+          <input
+            type="color"
+            value={g.color1}
+            onChange={(e) => onChange(buildGradient(g.type, g.angle, e.target.value, g.color2))}
+            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer"
+          />
+          <Input
+            value={g.color1}
+            onChange={(e) => onChange(buildGradient(g.type, g.angle, e.target.value, g.color2))}
+            className="flex-1 h-7 text-xs"
+          />
+        </div>
+      </PropertyRow>
+      <PropertyRow label="To">
+        <div className="flex items-center gap-1.5">
+          <input
+            type="color"
+            value={g.color2}
+            onChange={(e) => onChange(buildGradient(g.type, g.angle, g.color1, e.target.value))}
+            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer"
+          />
+          <Input
+            value={g.color2}
+            onChange={(e) => onChange(buildGradient(g.type, g.angle, g.color1, e.target.value))}
+            className="flex-1 h-7 text-xs"
+          />
+        </div>
+      </PropertyRow>
+      <button
+        type="button"
+        onClick={() => {
+          setEnabled(false);
+          onChange("");
+        }}
+        className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
+      >
+        Remove gradient
+      </button>
+    </>
+  );
+}
+
 interface ElementStyleTabProps {
   /** The element's current styles object */
   styles?: ElementStyles;
@@ -663,6 +798,10 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           value={s("backgroundImage").replace(/^url\(['"]?|['"]?\)$/g, "")}
           onChange={(url) => updateStyle("backgroundImage", url ? `url('${url}')` : "")}
           label="Image"
+        />
+        <GradientBuilder
+          value={s("backgroundImage")}
+          onChange={(v) => updateStyle("backgroundImage", v)}
         />
         <PropertyRow label="Size">
           <PropertySelect
