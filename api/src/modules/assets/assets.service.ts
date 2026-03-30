@@ -30,6 +30,10 @@ export class AssetsService {
     uploadedBy: string,
     metadata?: { altText?: string; usageContext?: string },
   ) {
+    if (!file) {
+      throw new BadRequestException("No file provided");
+    }
+
     // Validate file type
     if (!this.storage.isValidFileType(file.mimetype)) {
       throw new BadRequestException("Invalid file type");

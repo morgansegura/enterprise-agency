@@ -5,7 +5,7 @@
  * ============================================================================= */
 
 .media-library-dialog {
-  @apply max-w-3xl w-full max-h-[80vh] flex flex-col gap-0 p-0;
+  @apply max-w-3xl w-full max-h-[80vh] min-h-[500px] flex flex-col gap-0 p-0;
 }
 
 .media-library-title {
@@ -178,6 +178,32 @@
 
 .media-library-dropzone span {
   @apply text-[12px];
+}
+
+/* URL Import tab */
+.media-library-url-tab {
+  @apply flex flex-col gap-4 px-5 py-5;
+}
+
+.media-library-url-desc {
+  @apply text-[13px] text-(--el-500);
+}
+
+.media-library-url-preview {
+  @apply w-full max-h-48 object-contain rounded-[3px] border border-(--border-default);
+}
+
+/* Stock Photos tab */
+.media-library-stock-tab {
+  @apply flex flex-col gap-3 flex-1 min-h-0;
+}
+
+.media-library-stock-search {
+  @apply flex items-center gap-2 px-5 pt-3;
+}
+
+.media-library-stock-credit {
+  @apply text-[10px] text-(--el-400) text-center px-5 pb-2;
 }
 
 /* Footer */
