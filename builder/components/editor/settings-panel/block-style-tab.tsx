@@ -800,12 +800,11 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
         <PropertyRow label="Height">
           <Input value={s("lineHeight")} onChange={(e) => updateStyle("lineHeight", e.target.value)} placeholder="1.5" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
-        <PropertyRow label="Color">
-          <div className="flex items-center gap-1.5">
-            <input type="color" value={s("color") || "#000000"} onChange={(e) => updateStyle("color", e.target.value)} className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer" />
-            <Input value={s("color")} onChange={(e) => updateStyle("color", e.target.value)} placeholder="inherit" className="flex-1 h-7 text-xs" />
-          </div>
-        </PropertyRow>
+        <ColorWithOpacity
+          label="Color"
+          value={s("color")}
+          onChange={(v) => updateStyle("color", v)}
+        />
         <PropertyRow label="Align" stacked>
           <PropertyToggle
             value={s("textAlign")}
@@ -974,12 +973,11 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("borderStyle", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Color">
-          <div className="flex items-center gap-1.5">
-            <input type="color" value={s("borderColor") || "#000000"} onChange={(e) => updateStyle("borderColor", e.target.value)} className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer" />
-            <Input value={s("borderColor")} onChange={(e) => updateStyle("borderColor", e.target.value)} placeholder="inherit" className="flex-1 h-7 text-xs" />
-          </div>
-        </PropertyRow>
+        <ColorWithOpacity
+          label="Color"
+          value={s("borderColor")}
+          onChange={(v) => updateStyle("borderColor", v)}
+        />
         <PropertyRow label="Radius">
           <Input value={s("borderRadius")} onChange={(e) => updateStyle("borderRadius", e.target.value)} placeholder="0px" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
