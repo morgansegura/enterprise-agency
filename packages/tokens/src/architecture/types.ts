@@ -191,11 +191,75 @@ export type ContainerLayout = {
 // Block Type
 // =============================================================================
 
+/**
+ * Element styles — raw CSS values for Webflow-level control.
+ * Stored as CSS values, rendered as CSS custom properties (--b-*).
+ */
+export interface ElementStyles {
+  // Layout
+  display?: string;
+  flexDirection?: string;
+  justifyContent?: string;
+  alignItems?: string;
+  gap?: string;
+  // Spacing
+  marginTop?: string;
+  marginRight?: string;
+  marginBottom?: string;
+  marginLeft?: string;
+  paddingTop?: string;
+  paddingRight?: string;
+  paddingBottom?: string;
+  paddingLeft?: string;
+  // Size
+  width?: string;
+  height?: string;
+  minWidth?: string;
+  maxWidth?: string;
+  minHeight?: string;
+  maxHeight?: string;
+  // Position
+  position?: string;
+  top?: string;
+  right?: string;
+  bottom?: string;
+  left?: string;
+  zIndex?: string;
+  overflow?: string;
+  // Typography
+  fontFamily?: string;
+  fontSize?: string;
+  fontWeight?: string;
+  lineHeight?: string;
+  letterSpacing?: string;
+  textAlign?: string;
+  textTransform?: string;
+  textDecoration?: string;
+  color?: string;
+  // Backgrounds
+  backgroundColor?: string;
+  backgroundImage?: string;
+  backgroundSize?: string;
+  backgroundPosition?: string;
+  // Borders
+  borderWidth?: string;
+  borderStyle?: string;
+  borderColor?: string;
+  borderRadius?: string;
+  // Effects
+  opacity?: string;
+  boxShadow?: string;
+  // Allow any additional CSS property
+  [key: string]: string | undefined;
+}
+
 /** Base block structure */
 export interface Block {
   _type: string;
   _key: string;
   data: Record<string, unknown>;
+  /** Raw CSS styles — rendered as CSS custom properties */
+  styles?: ElementStyles;
   [key: string]: unknown;
 }
 
@@ -258,6 +322,8 @@ export interface Container<TBlock = Block> {
       Omit<Container<TBlock>, "_type" | "_key" | "blocks" | "_responsive">
     >;
   };
+  /** Raw CSS styles — rendered as CSS custom properties */
+  styles?: ElementStyles;
   /** Content blocks */
   blocks: TBlock[];
 }
@@ -347,6 +413,8 @@ export interface Section<TBlock = Block> {
       Omit<Section<TBlock>, "_type" | "_key" | "containers" | "_responsive">
     >;
   };
+  /** Raw CSS styles — rendered as CSS custom properties */
+  styles?: ElementStyles;
   /** Child containers */
   containers: Container<TBlock>[];
 }

@@ -39,6 +39,7 @@ export {
   type FlexDirection,
   type ContainerLayout,
   // Core Architecture Types
+  type ElementStyles,
   type Block,
   type Container,
   type SectionElement,
@@ -56,4 +57,8 @@ export {
   getBackgroundDataValue,
   isLegacyGradientConfig,
   isTailwindGradientConfig,
+  // Element styles
+  stylesToCSSVars,
+  hasStyles,
+  mergeStyles,
 } from "@enterprise/tokens";

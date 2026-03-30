@@ -6,6 +6,7 @@ import {
   blockRendererRegistry,
   type BlockRendererProps,
 } from "@/lib/renderer/block-renderer-registry";
+import { stylesToCSSVars, hasStyles } from "@/lib/types/section";
 
 interface Props {
   block: Block;
@@ -68,8 +69,19 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
     .replace(/-/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const cssVars = stylesToCSSVars(styles);
+  const styled = hasStyles(styles);
+
   return (
-    <div data-block-key={block._key} data-block-label={label}>
+    <div
+      data-block-key={block._key}
+      data-block-label={label}
+      data-styled={styled || undefined}
+      style={styled ? (cssVars as React.CSSProperties) : undefined}
+    >
       <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />
     </div>
   );

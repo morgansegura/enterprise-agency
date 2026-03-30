@@ -1,6 +1,8 @@
+import * as React from "react";
 import type { Section } from "@/lib/hooks/use-pages";
 import { cn } from "@/lib/utils";
 import { BlockRenderer } from "./block-renderer";
+import { stylesToCSSVars, hasStyles } from "@/lib/types/section";
 
 interface SectionRendererProps {
   section: Section;
@@ -82,14 +84,21 @@ export function SectionRenderer({
       className={cn(sectionBackground, sectionAlign)}
       data-block-key={section._key}
       data-block-label={`Section ${sectionIndex + 1}`}
+      data-styled={hasStyles(section.styles) || undefined}
+      style={hasStyles(section.styles) ? (stylesToCSSVars(section.styles) as React.CSSProperties) : undefined}
     >
       <div className={cn(sectionSpacing, sectionWidth)}>
-        {containers.map((container, containerIndex) => (
+        {containers.map((container, containerIndex) => {
+          const containerStyled = hasStyles(container.styles);
+          const containerVars = containerStyled ? stylesToCSSVars(container.styles) : undefined;
+          return (
           <div
             key={container._key}
             className="space-y-4"
             data-block-key={container._key}
             data-block-label={`Container ${containerIndex + 1}`}
+            data-styled={containerStyled || undefined}
+            style={containerVars ? (containerVars as React.CSSProperties) : undefined}
           >
             {container.blocks?.map((block, blockIndex) => (
               <BlockRenderer
@@ -111,7 +120,8 @@ export function SectionRenderer({
               />
             ))}
           </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

@@ -36,6 +36,7 @@ export {
   type FlexDirection,
   type ContainerLayout,
   // Core Architecture
+  type ElementStyles,
   type Block,
   type Container,
   type SectionElement,
@@ -115,3 +116,6 @@ export {
   isContainerBlock,
   isContentBlock,
 } from "./blocks";
+
+// Element styles utilities
+export { stylesToCSSVars, hasStyles, mergeStyles } from "./element-styles";

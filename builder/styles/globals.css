@@ -7,6 +7,9 @@
 /* Shared WYSIWYG tokens - Single source of truth for builder/client parity */
 @import "@enterprise/tokens/css";
 
+/* Element styles — CSS custom properties for Webflow-level control */
+@import "../../packages/tokens/src/css/element-styles.css";
+
 /* =============================================================================
  * COMPREHENSIVE TAILWIND SAFELIST
  *

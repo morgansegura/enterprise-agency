@@ -1,0 +1,62 @@
+/*
+ * Element Styles — CSS Custom Properties Consumer
+ *
+ * Only elements with [data-styled] have custom property overrides.
+ * The data-styled attribute is added by the renderer when styles exist.
+ * This prevents unstyled elements from being affected.
+ */
+
+[data-styled] {
+  display: var(--b-display, revert);
+  flex-direction: var(--b-flex-direction, revert);
+  justify-content: var(--b-justify-content, revert);
+  align-items: var(--b-align-items, revert);
+  gap: var(--b-gap, revert);
+
+  margin-top: var(--b-margin-top, revert);
+  margin-right: var(--b-margin-right, revert);
+  margin-bottom: var(--b-margin-bottom, revert);
+  margin-left: var(--b-margin-left, revert);
+  padding-top: var(--b-padding-top, revert);
+  padding-right: var(--b-padding-right, revert);
+  padding-bottom: var(--b-padding-bottom, revert);
+  padding-left: var(--b-padding-left, revert);
+
+  width: var(--b-width, revert);
+  height: var(--b-height, revert);
+  min-width: var(--b-min-width, revert);
+  max-width: var(--b-max-width, revert);
+  min-height: var(--b-min-height, revert);
+  max-height: var(--b-max-height, revert);
+
+  position: var(--b-position, revert);
+  top: var(--b-top, revert);
+  right: var(--b-right, revert);
+  bottom: var(--b-bottom, revert);
+  left: var(--b-left, revert);
+  z-index: var(--b-z-index, revert);
+  overflow: var(--b-overflow, revert);
+
+  font-family: var(--b-font-family, revert);
+  font-size: var(--b-font-size, revert);
+  font-weight: var(--b-font-weight, revert);
+  line-height: var(--b-line-height, revert);
+  letter-spacing: var(--b-letter-spacing, revert);
+  text-align: var(--b-text-align, revert);
+  text-transform: var(--b-text-transform, revert);
+  text-decoration: var(--b-text-decoration, revert);
+  color: var(--b-color, revert);
+
+  background-color: var(--b-background-color, revert);
+  background-image: var(--b-background-image, revert);
+  background-size: var(--b-background-size, revert);
+  background-position: var(--b-background-position, revert);
+
+  border-width: var(--b-border-width, revert);
+  border-style: var(--b-border-style, revert);
+  border-color: var(--b-border-color, revert);
+  border-radius: var(--b-border-radius, revert);
+
+  opacity: var(--b-opacity, revert);
+  box-shadow: var(--b-box-shadow, revert);
+}
