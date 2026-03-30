@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+.slider-input {
+  @apply flex items-center gap-2 flex-1;
+}
+
+.slider-input-range {
+  @apply flex-1 h-1.5 accent-(--accent-primary);
+}
+
+.slider-input-text {
+  @apply w-16 h-7 text-xs text-center shrink-0;
+}

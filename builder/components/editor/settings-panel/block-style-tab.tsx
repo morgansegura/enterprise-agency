@@ -4,6 +4,8 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { ImagePickerField } from "./image-picker-field";
 import { ColorPicker } from "./color-picker";
+import { SliderInput } from "./slider-input";
+import "./slider-input.css";
 import {
   Grid3X3,
   Move,
@@ -604,7 +606,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
               />
             </PropertyRow>
             <PropertyRow label="Gap">
-              <Input value={s("gap")} onChange={(e) => updateStyle("gap", e.target.value)} placeholder="0px" className="w-20 h-7 text-xs text-center" />
+              <SliderInput value={s("gap")} onChange={(v) => updateStyle("gap", v)} max={80} placeholder="0px" />
             </PropertyRow>
           </>
         )}
@@ -815,10 +817,10 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           />
         </PropertyRow>
         <PropertyRow label="Size">
-          <Input value={s("fontSize")} onChange={(e) => updateStyle("fontSize", e.target.value)} placeholder="16px" className="w-20 h-7 text-xs text-center" />
+          <SliderInput value={s("fontSize")} onChange={(v) => updateStyle("fontSize", v)} min={8} max={120} placeholder="16px" />
         </PropertyRow>
         <PropertyRow label="Height">
-          <Input value={s("lineHeight")} onChange={(e) => updateStyle("lineHeight", e.target.value)} placeholder="1.5" className="w-20 h-7 text-xs text-center" />
+          <SliderInput value={s("lineHeight")} onChange={(v) => updateStyle("lineHeight", v)} min={0.5} max={3} step={0.1} unit="" placeholder="1.5" />
         </PropertyRow>
         <ColorPicker
           label="Color"
@@ -1005,7 +1007,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           onChange={(v) => updateStyle("borderColor", v)}
         />
         <PropertyRow label="Radius">
-          <Input value={s("borderRadius")} onChange={(e) => updateStyle("borderRadius", e.target.value)} placeholder="0px" className="w-20 h-7 text-xs text-center" />
+          <SliderInput value={s("borderRadius")} onChange={(v) => updateStyle("borderRadius", v)} max={50} placeholder="0px" />
         </PropertyRow>
         {/* Per-corner radius */}
         {([
