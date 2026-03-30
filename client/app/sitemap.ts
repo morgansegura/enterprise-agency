@@ -55,5 +55,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.warn("[Sitemap] Could not fetch dynamic pages from API");
   }
 
-  return [...staticPages, ...dynamicPages];
+  // Fetch blog posts
+  let blogPages: MetadataRoute.Sitemap = [];
+
+  try {
+    const posts = await api.listPosts();
+    blogPages = posts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }));
+
+    // Add blog index page
+    if (posts.length > 0) {
+      blogPages.unshift({
+        url: `${baseUrl}/blog`,
+        lastModified: new Date(),
+        changeFrequency: "daily" as const,
+        priority: 0.8,
+      });
+    }
+  } catch {
+    // API unavailable during build
+  }
+
+  return [...staticPages, ...dynamicPages, ...blogPages];
 }
