@@ -1,3 +1,187 @@
 @reference "tailwindcss";
 
-/* Media Library Picker styles are handled inline in the component */
+/* =============================================================================
+ * Media Library Picker — Professional upload + browse dialog
+ * ============================================================================= */
+
+.media-library-dialog {
+  @apply max-w-3xl w-full max-h-[80vh] flex flex-col gap-0 p-0;
+}
+
+.media-library-title {
+  @apply flex items-center gap-2 px-5 pt-5 pb-3 text-[16px] font-semibold;
+}
+
+.media-library-tabs {
+  @apply flex flex-col flex-1 min-h-0;
+}
+
+.media-library-tabs-list {
+  @apply mx-5 mb-0;
+}
+
+.media-library-content {
+  @apply flex-1 flex flex-col min-h-0 overflow-hidden;
+}
+
+/* Toolbar — search + view toggle */
+.media-library-toolbar {
+  @apply flex items-center gap-2 px-5 py-3;
+}
+
+.media-library-search {
+  @apply flex items-center gap-2 flex-1;
+}
+
+.media-library-search-input {
+  @apply h-8 text-[13px] border-none bg-transparent shadow-none;
+}
+
+.media-library-view-toggle {
+  @apply flex items-center gap-0.5;
+}
+
+/* Loading */
+.media-library-loading {
+  @apply flex flex-col items-center justify-center gap-3 py-16;
+  @apply text-[14px] text-(--el-400);
+}
+
+/* Empty state */
+.media-library-empty {
+  @apply flex flex-col items-center justify-center gap-2 py-16;
+  @apply text-(--el-400);
+}
+
+.media-library-empty p {
+  @apply text-[14px] font-medium text-(--el-600);
+}
+
+.media-library-empty span {
+  @apply text-[12px];
+}
+
+/* Assets container */
+.media-library-assets {
+  @apply flex-1 overflow-y-auto px-5 pb-3;
+}
+
+/* Grid view */
+.media-library-assets-grid {
+  @apply grid grid-cols-4 gap-2;
+}
+
+/* List view */
+.media-library-assets-list {
+  @apply flex flex-col gap-1;
+}
+
+/* Grid item */
+.media-library-asset-grid-item {
+  @apply relative rounded-[3px] overflow-hidden cursor-pointer;
+  @apply border-2 border-transparent bg-(--el-50);
+  @apply transition-all duration-100;
+  aspect-ratio: 1;
+}
+
+.media-library-asset-grid-item:hover {
+  @apply border-(--accent-primary)/30;
+}
+
+.media-library-asset-selected {
+  @apply border-(--accent-primary) ring-2 ring-(--accent-primary)/20;
+}
+
+.media-library-asset-current {
+  @apply border-(--status-success)/50;
+}
+
+.media-library-asset-grid-image {
+  @apply w-full h-full object-cover;
+}
+
+.media-library-asset-grid-placeholder {
+  @apply flex items-center justify-center w-full h-full;
+  @apply text-(--el-300);
+}
+
+.media-library-asset-check {
+  @apply absolute top-1.5 right-1.5 flex items-center justify-center;
+  @apply size-5 rounded-full bg-(--accent-primary) text-white;
+}
+
+.media-library-asset-current-indicator {
+  @apply absolute bottom-1 left-1 px-1.5 py-0.5 rounded-[3px];
+  @apply text-[9px] font-bold uppercase bg-(--status-success) text-white;
+}
+
+/* List item */
+.media-library-asset-list-item {
+  @apply flex items-center gap-3 px-3 py-2 rounded-[3px] cursor-pointer w-full;
+  @apply border border-transparent bg-transparent;
+  @apply transition-colors duration-100 text-left;
+}
+
+.media-library-asset-list-item:hover {
+  @apply bg-(--el-50);
+}
+
+.media-library-asset-list-item.media-library-asset-selected {
+  @apply bg-(--accent-primary-subtle) border-(--accent-primary);
+}
+
+.media-library-asset-list-thumb {
+  @apply w-10 h-10 rounded-[3px] overflow-hidden bg-(--el-100) shrink-0;
+  @apply flex items-center justify-center;
+}
+
+.media-library-asset-list-thumb img {
+  @apply w-full h-full object-cover;
+}
+
+.media-library-asset-list-info {
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+.media-library-asset-list-name {
+  @apply text-[13px] font-medium text-(--el-800) truncate;
+}
+
+.media-library-asset-list-meta {
+  @apply text-[11px] text-(--el-400);
+}
+
+.media-library-asset-current-badge {
+  @apply text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-[3px];
+  @apply bg-(--status-success-subtle) text-(--status-success);
+}
+
+/* Upload dropzone */
+.media-library-dropzone {
+  @apply flex flex-col items-center justify-center gap-3 mx-5 my-5 py-16;
+  @apply rounded-[3px] border-2 border-dashed border-(--border-default);
+  @apply text-(--el-400) cursor-pointer;
+  @apply transition-colors duration-150;
+}
+
+.media-library-dropzone:hover {
+  @apply border-(--accent-primary)/50 bg-(--accent-primary-subtle)/10;
+}
+
+.media-library-dropzone-active {
+  @apply border-(--accent-primary) bg-(--accent-primary-subtle)/20;
+}
+
+.media-library-dropzone p {
+  @apply text-[14px] font-medium text-(--el-600);
+}
+
+.media-library-dropzone span {
+  @apply text-[12px];
+}
+
+/* Footer */
+.media-library-footer {
+  @apply flex items-center justify-end gap-2 px-5 py-3;
+  @apply border-t border-(--border-default);
+}
