@@ -5,6 +5,7 @@ import * as React from "react";
 import {
   useAssets,
   useUploadAsset,
+  useUpdateAsset,
   useDeleteAsset,
   type Asset,
 } from "@/lib/hooks/use-assets";
@@ -36,7 +37,6 @@ import {
   Loader2,
   Check,
   Copy,
-  ExternalLink,
   Trash2,
 } from "lucide-react";
 
@@ -71,6 +71,7 @@ export default function MediaLibraryPage({
   // Queries
   const { data: assets, isLoading, error } = useAssets(id);
   const uploadAsset = useUploadAsset(id);
+  const updateAsset = useUpdateAsset(id);
   const deleteAsset = useDeleteAsset(id);
 
   // File input ref
@@ -284,6 +285,9 @@ export default function MediaLibraryPage({
               <SelectItem value="document">Documents</SelectItem>
             </SelectContent>
           </Select>
+          <span className="media-toolbar-count">
+            {filteredAssets.length} {filteredAssets.length !== (assets?.length || 0) ? `of ${assets?.length || 0}` : ""} items
+          </span>
         </div>
       </div>
 
@@ -389,60 +393,69 @@ export default function MediaLibraryPage({
                 )}
               </div>
 
-              {/* Metadata */}
-              <div className="media-detail-meta">
-                <div>
-                  <p className="media-detail-meta-label">File Type</p>
-                  <p className="media-detail-meta-value">
-                    {selectedAsset.fileType}
-                  </p>
+              {/* Metadata — read-only info */}
+              <div className="media-detail-info">
+                <div className="media-detail-info-row">
+                  <span className="media-detail-info-label">Uploaded:</span>
+                  <span>{selectedAsset.createdAt ? new Date(selectedAsset.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Unknown"}</span>
                 </div>
-                <div>
-                  <p className="media-detail-meta-label">File Size</p>
-                  <p className="media-detail-meta-value">
-                    {formatFileSize(selectedAsset.sizeBytes)}
-                  </p>
+                <div className="media-detail-info-row">
+                  <span className="media-detail-info-label">File name:</span>
+                  <span>{selectedAsset.fileName}</span>
+                </div>
+                <div className="media-detail-info-row">
+                  <span className="media-detail-info-label">Type:</span>
+                  <span>{selectedAsset.mimeType || selectedAsset.fileType}</span>
+                </div>
+                <div className="media-detail-info-row">
+                  <span className="media-detail-info-label">Size:</span>
+                  <span>{formatFileSize(selectedAsset.sizeBytes)}</span>
                 </div>
                 {selectedAsset.width && selectedAsset.height && (
-                  <div>
-                    <p className="media-detail-meta-label">Dimensions</p>
-                    <p className="media-detail-meta-value">
-                      {selectedAsset.width} x {selectedAsset.height}
-                    </p>
-                  </div>
-                )}
-                {selectedAsset.altText && (
-                  <div>
-                    <p className="media-detail-meta-label">Alt Text</p>
-                    <p className="media-detail-meta-value">
-                      {selectedAsset.altText}
-                    </p>
+                  <div className="media-detail-info-row">
+                    <span className="media-detail-info-label">Dimensions:</span>
+                    <span>{selectedAsset.width} x {selectedAsset.height} pixels</span>
                   </div>
                 )}
               </div>
 
-              {/* URL */}
-              <div className="media-detail-url">
-                <p className="media-detail-url-label">URL</p>
+              {/* Editable fields */}
+              <div className="media-detail-fields">
+                <div className="media-detail-field">
+                  <label className="media-detail-field-label">Alternative Text</label>
+                  <Input
+                    value={selectedAsset.altText || ""}
+                    onChange={(e) => {
+                      setSelectedAsset({ ...selectedAsset, altText: e.target.value });
+                    }}
+                    onBlur={() => {
+                      updateAsset.mutate({ id: selectedAsset.id, data: { altText: selectedAsset.altText || "" } });
+                    }}
+                    placeholder="Describe this image for accessibility"
+                    className="h-8 text-[13px]"
+                  />
+                  <span className="media-detail-field-hint">
+                    Leave empty if purely decorative
+                  </span>
+                </div>
+              </div>
+
+              {/* File URL */}
+              <div className="media-detail-field">
+                <label className="media-detail-field-label">File URL</label>
                 <div className="media-detail-url-row">
                   <Input
                     value={selectedAsset.url}
                     readOnly
-                    className="media-detail-url-input"
+                    className="media-detail-url-input h-8 text-[13px]"
                   />
                   <Button
                     variant="outline"
-                    size="icon"
+                    size="sm"
                     onClick={() => handleCopyUrl(selectedAsset.url)}
                   >
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => window.open(selectedAsset.url, "_blank")}
-                  >
-                    <ExternalLink className="h-4 w-4" />
+                    <Copy className="h-3.5 w-3.5" />
+                    Copy
                   </Button>
                 </div>
               </div>
@@ -450,17 +463,12 @@ export default function MediaLibraryPage({
               {/* Actions */}
               <div className="media-detail-actions">
                 <Button
-                  variant="outline"
-                  onClick={() => setSelectedAsset(null)}
-                >
-                  Close
-                </Button>
-                <Button
                   variant="destructive"
+                  size="sm"
                   onClick={() => handleDelete(selectedAsset)}
                 >
-                  <Trash2 className="h-4 w-4" />
-                  Delete
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Delete permanently
                 </Button>
               </div>
             </>

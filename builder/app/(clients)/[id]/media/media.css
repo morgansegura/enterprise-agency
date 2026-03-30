@@ -250,3 +250,47 @@
 .media-skeleton-thumb {
   @apply rounded-(--radius-md) aspect-square;
 }
+
+/* Item count */
+.media-toolbar-count {
+  @apply text-[12px] text-(--el-400) whitespace-nowrap;
+}
+
+/* Detail panel — info rows */
+.media-detail-info {
+  @apply space-y-1.5 py-3 border-b border-(--border-default);
+}
+
+.media-detail-info-row {
+  @apply flex items-baseline gap-2 text-[12px];
+}
+
+.media-detail-info-label {
+  @apply font-semibold text-(--el-600) whitespace-nowrap;
+}
+
+.media-detail-info-row span:last-child {
+  @apply text-(--el-500) break-all;
+}
+
+/* Detail panel — editable fields */
+.media-detail-fields {
+  @apply space-y-3 py-3;
+}
+
+.media-detail-field {
+  @apply space-y-1;
+}
+
+.media-detail-field-label {
+  @apply text-[12px] font-semibold text-(--el-700);
+}
+
+.media-detail-field-hint {
+  @apply text-[11px] text-(--el-400);
+}
+
+/* Detail panel — actions */
+.media-detail-actions {
+  @apply pt-3 border-t border-(--border-default);
+}
