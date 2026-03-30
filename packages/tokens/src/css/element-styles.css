@@ -3,16 +3,36 @@
  *
  * Only elements with [data-styled] have custom property overrides.
  * The data-styled attribute is added by the renderer when styles exist.
- * This prevents unstyled elements from being affected.
+ * Uses `revert` fallback so unset properties inherit normally.
  */
 
 [data-styled] {
+  /* Layout */
   display: var(--b-display, revert);
   flex-direction: var(--b-flex-direction, revert);
+  flex-wrap: var(--b-flex-wrap, revert);
   justify-content: var(--b-justify-content, revert);
   align-items: var(--b-align-items, revert);
+  align-content: var(--b-align-content, revert);
+  align-self: var(--b-align-self, revert);
+  justify-self: var(--b-justify-self, revert);
   gap: var(--b-gap, revert);
+  row-gap: var(--b-row-gap, revert);
+  column-gap: var(--b-column-gap, revert);
 
+  /* Flex child */
+  flex-grow: var(--b-flex-grow, revert);
+  flex-shrink: var(--b-flex-shrink, revert);
+  flex-basis: var(--b-flex-basis, revert);
+  order: var(--b-order, revert);
+
+  /* Grid */
+  grid-template-columns: var(--b-grid-template-columns, revert);
+  grid-template-rows: var(--b-grid-template-rows, revert);
+  grid-column: var(--b-grid-column, revert);
+  grid-row: var(--b-grid-row, revert);
+
+  /* Spacing */
   margin-top: var(--b-margin-top, revert);
   margin-right: var(--b-margin-right, revert);
   margin-bottom: var(--b-margin-bottom, revert);
@@ -22,13 +42,18 @@
   padding-bottom: var(--b-padding-bottom, revert);
   padding-left: var(--b-padding-left, revert);
 
+  /* Size */
   width: var(--b-width, revert);
   height: var(--b-height, revert);
   min-width: var(--b-min-width, revert);
   max-width: var(--b-max-width, revert);
   min-height: var(--b-min-height, revert);
   max-height: var(--b-max-height, revert);
+  aspect-ratio: var(--b-aspect-ratio, revert);
+  object-fit: var(--b-object-fit, revert);
+  object-position: var(--b-object-position, revert);
 
+  /* Position */
   position: var(--b-position, revert);
   top: var(--b-top, revert);
   right: var(--b-right, revert);
@@ -36,27 +61,77 @@
   left: var(--b-left, revert);
   z-index: var(--b-z-index, revert);
   overflow: var(--b-overflow, revert);
+  overflow-x: var(--b-overflow-x, revert);
+  overflow-y: var(--b-overflow-y, revert);
+  float: var(--b-float, revert);
+  clear: var(--b-clear, revert);
 
+  /* Typography */
   font-family: var(--b-font-family, revert);
   font-size: var(--b-font-size, revert);
   font-weight: var(--b-font-weight, revert);
+  font-style: var(--b-font-style, revert);
   line-height: var(--b-line-height, revert);
   letter-spacing: var(--b-letter-spacing, revert);
+  word-spacing: var(--b-word-spacing, revert);
   text-align: var(--b-text-align, revert);
   text-transform: var(--b-text-transform, revert);
   text-decoration: var(--b-text-decoration, revert);
+  text-indent: var(--b-text-indent, revert);
+  text-shadow: var(--b-text-shadow, revert);
+  white-space: var(--b-white-space, revert);
+  word-break: var(--b-word-break, revert);
   color: var(--b-color, revert);
+  columns: var(--b-columns, revert);
 
+  /* Backgrounds */
   background-color: var(--b-background-color, revert);
   background-image: var(--b-background-image, revert);
   background-size: var(--b-background-size, revert);
   background-position: var(--b-background-position, revert);
+  background-repeat: var(--b-background-repeat, revert);
+  background-attachment: var(--b-background-attachment, revert);
 
+  /* Borders */
   border-width: var(--b-border-width, revert);
+  border-top-width: var(--b-border-top-width, revert);
+  border-right-width: var(--b-border-right-width, revert);
+  border-bottom-width: var(--b-border-bottom-width, revert);
+  border-left-width: var(--b-border-left-width, revert);
   border-style: var(--b-border-style, revert);
   border-color: var(--b-border-color, revert);
+  border-top-color: var(--b-border-top-color, revert);
+  border-right-color: var(--b-border-right-color, revert);
+  border-bottom-color: var(--b-border-bottom-color, revert);
+  border-left-color: var(--b-border-left-color, revert);
   border-radius: var(--b-border-radius, revert);
+  border-top-left-radius: var(--b-border-top-left-radius, revert);
+  border-top-right-radius: var(--b-border-top-right-radius, revert);
+  border-bottom-right-radius: var(--b-border-bottom-right-radius, revert);
+  border-bottom-left-radius: var(--b-border-bottom-left-radius, revert);
 
+  /* Effects */
   opacity: var(--b-opacity, revert);
   box-shadow: var(--b-box-shadow, revert);
+
+  /* Transforms */
+  transform: var(--b-transform, revert);
+  transform-origin: var(--b-transform-origin, revert);
+
+  /* Transitions */
+  transition: var(--b-transition, revert);
+  transition-property: var(--b-transition-property, revert);
+  transition-duration: var(--b-transition-duration, revert);
+  transition-timing-function: var(--b-transition-timing-function, revert);
+  transition-delay: var(--b-transition-delay, revert);
+
+  /* Filters */
+  filter: var(--b-filter, revert);
+  backdrop-filter: var(--b-backdrop-filter, revert);
+
+  /* Blend & cursor */
+  mix-blend-mode: var(--b-mix-blend-mode, revert);
+  cursor: var(--b-cursor, revert);
+  pointer-events: var(--b-pointer-events, revert);
+  user-select: var(--b-user-select, revert);
 }

@@ -199,9 +199,25 @@ export interface ElementStyles {
   // Layout
   display?: string;
   flexDirection?: string;
+  flexWrap?: string;
   justifyContent?: string;
   alignItems?: string;
+  alignContent?: string;
+  alignSelf?: string;
+  justifySelf?: string;
   gap?: string;
+  rowGap?: string;
+  columnGap?: string;
+  // Flex child
+  flexGrow?: string;
+  flexShrink?: string;
+  flexBasis?: string;
+  order?: string;
+  // Grid
+  gridTemplateColumns?: string;
+  gridTemplateRows?: string;
+  gridColumn?: string;
+  gridRow?: string;
   // Spacing
   marginTop?: string;
   marginRight?: string;
@@ -218,6 +234,9 @@ export interface ElementStyles {
   maxWidth?: string;
   minHeight?: string;
   maxHeight?: string;
+  aspectRatio?: string;
+  objectFit?: string;
+  objectPosition?: string;
   // Position
   position?: string;
   top?: string;
@@ -226,29 +245,72 @@ export interface ElementStyles {
   left?: string;
   zIndex?: string;
   overflow?: string;
+  overflowX?: string;
+  overflowY?: string;
+  float?: string;
+  clear?: string;
   // Typography
   fontFamily?: string;
   fontSize?: string;
   fontWeight?: string;
+  fontStyle?: string;
   lineHeight?: string;
   letterSpacing?: string;
+  wordSpacing?: string;
   textAlign?: string;
   textTransform?: string;
   textDecoration?: string;
+  textIndent?: string;
+  textShadow?: string;
+  whiteSpace?: string;
+  wordBreak?: string;
   color?: string;
+  columns?: string;
+  columnGapText?: string;
   // Backgrounds
   backgroundColor?: string;
   backgroundImage?: string;
   backgroundSize?: string;
   backgroundPosition?: string;
+  backgroundRepeat?: string;
+  backgroundAttachment?: string;
   // Borders
   borderWidth?: string;
+  borderTopWidth?: string;
+  borderRightWidth?: string;
+  borderBottomWidth?: string;
+  borderLeftWidth?: string;
   borderStyle?: string;
   borderColor?: string;
+  borderTopColor?: string;
+  borderRightColor?: string;
+  borderBottomColor?: string;
+  borderLeftColor?: string;
   borderRadius?: string;
+  borderTopLeftRadius?: string;
+  borderTopRightRadius?: string;
+  borderBottomRightRadius?: string;
+  borderBottomLeftRadius?: string;
   // Effects
   opacity?: string;
   boxShadow?: string;
+  // Transforms
+  transform?: string;
+  transformOrigin?: string;
+  // Transitions
+  transition?: string;
+  transitionProperty?: string;
+  transitionDuration?: string;
+  transitionTimingFunction?: string;
+  transitionDelay?: string;
+  // Filters
+  filter?: string;
+  backdropFilter?: string;
+  // Blend & cursor
+  mixBlendMode?: string;
+  cursor?: string;
+  pointerEvents?: string;
+  userSelect?: string;
   // Allow any additional CSS property
   [key: string]: string | undefined;
 }
