@@ -895,15 +895,21 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           value={s("backgroundColor")}
           onChange={(v) => updateStyle("backgroundColor", v)}
         />
-        <ImagePickerField
-          value={s("backgroundImage").replace(/^url\(['"]?|['"]?\)$/g, "")}
-          onChange={(url) => updateStyle("backgroundImage", url ? `url('${url}')` : "")}
-          label="Image"
-        />
-        <GradientBuilder
-          value={s("backgroundImage")}
-          onChange={(v) => updateStyle("backgroundImage", v)}
-        />
+        {/* Image — only show when not a gradient */}
+        {!s("backgroundImage")?.includes("gradient") && (
+          <ImagePickerField
+            value={s("backgroundImage").replace(/^url\(['"]?|['"]?\)$/g, "")}
+            onChange={(url) => updateStyle("backgroundImage", url ? `url('${url}')` : "")}
+            label="Image"
+          />
+        )}
+        {/* Gradient — only show when not a url() image */}
+        {!s("backgroundImage")?.includes("url(") && (
+          <GradientBuilder
+            value={s("backgroundImage")}
+            onChange={(v) => updateStyle("backgroundImage", v)}
+          />
+        )}
         <PropertyRow label="Size">
           <PropertySelect
             value={s("backgroundSize")}
