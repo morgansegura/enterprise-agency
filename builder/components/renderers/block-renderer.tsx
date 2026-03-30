@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import type { Block } from "@/lib/hooks/use-pages";
 import {
   blockRendererRegistry,
@@ -106,17 +107,30 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
   );
 
   if (hasLink) {
+    const isExternal = link.href.startsWith("http") || link.target === "_blank";
+    const linkProps = {
+      title: link.title || undefined,
+      "aria-label": link.ariaLabel || undefined,
+      style: { textDecoration: "none", color: "inherit" } as React.CSSProperties,
+    };
+
+    if (isExternal) {
+      return (
+        <a
+          href={link.href}
+          target={link.target || "_blank"}
+          rel={link.rel && link.rel !== "inherit" ? link.rel : "noopener noreferrer"}
+          {...linkProps}
+        >
+          {content}
+        </a>
+      );
+    }
+
     return (
-      <a
-        href={link.href}
-        target={link.target || "_self"}
-        rel={link.rel && link.rel !== "inherit" ? link.rel : (link.target === "_blank" ? "noopener noreferrer" : undefined)}
-        title={link.title || undefined}
-        aria-label={link.ariaLabel || undefined}
-        style={{ textDecoration: "none", color: "inherit" }}
-      >
+      <Link href={link.href} {...linkProps}>
         {content}
-      </a>
+      </Link>
     );
   }
 

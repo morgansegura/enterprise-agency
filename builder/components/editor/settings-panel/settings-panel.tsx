@@ -3,46 +3,17 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { SpacingBox } from "@/components/editor/style-panel";
 import {
   PanelRightOpen,
-  Box,
   Layers,
-  Palette,
-  Move,
-  Grid3X3,
-  Settings2,
-  EyeOff,
   Plus,
 } from "lucide-react";
 import { useUIStore } from "@/lib/stores/ui-store";
-import { useCurrentBreakpoint } from "@/lib/responsive/context";
-import { getResponsiveValue, setResponsiveOverride } from "@/lib/responsive";
 import type {
   Section,
   Container,
   Block,
-  SectionBackground,
 } from "@/lib/types/section";
-import {
-  SPACING_OPTIONS,
-  CONTAINER_WIDTH_OPTIONS,
-  SECTION_MIN_HEIGHT_OPTIONS,
-  OVERFLOW_OPTIONS,
-  BORDER_WIDTH_OPTIONS,
-  BORDER_RADIUS_OPTIONS,
-  SHADOW_OPTIONS,
-} from "@/lib/constants";
-import { BackgroundEditor } from "@/components/editors";
-import { VisibilityToggles } from "@/components/ui/visibility-toggles";
-import { PositionPicker } from "@/components/ui/position-picker";
-import {
-  PropertySection,
-  PropertyRow,
-  PropertyToggle,
-  PropertySelect,
-} from "./components";
 import {
   HeadingBlockSettings,
   TextBlockSettings,
