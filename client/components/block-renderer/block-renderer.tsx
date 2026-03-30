@@ -1,5 +1,6 @@
 import type { RootBlock } from "@/lib/blocks";
 import { isContainerBlock } from "@/lib/blocks";
+import { allStylesToCSSVars, hasStyles } from "@enterprise/tokens";
 
 // Content blocks
 import { HeadingBlock } from "@/components/block/heading-block";
@@ -65,6 +66,31 @@ let firstImageClaimed = false;
 /** Reset priority tracker — call once at page render start */
 export function resetImagePriority() {
   firstImageClaimed = false;
+}
+
+/**
+ * Wrap block output with CSS custom properties when styles exist
+ */
+function withStyles(block: RootBlock, content: React.ReactNode): React.ReactNode {
+  const blockAny = block as Record<string, unknown>;
+  const styles = blockAny.styles as Record<string, string> | undefined;
+  const stylesBefore = blockAny.stylesBefore as Record<string, string> | undefined;
+  const stylesAfter = blockAny.stylesAfter as Record<string, string> | undefined;
+  const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter);
+
+  if (!styled) return content;
+
+  const cssVars = allStylesToCSSVars(styles, stylesBefore, stylesAfter);
+  return (
+    <div
+      data-styled
+      data-has-before={hasStyles(stylesBefore) || undefined}
+      data-has-after={hasStyles(stylesAfter) || undefined}
+      style={cssVars as React.CSSProperties}
+    >
+      {content}
+    </div>
+  );
 }
 
 /**
@@ -272,5 +298,5 @@ export function BlockRenderer({ blocks }: BlockRendererProps) {
     return null;
   }
 
-  return <>{blocks.map(renderBlock)}</>;
+  return <>{blocks.map((block) => withStyles(block, renderBlock(block)))}</>;
 }

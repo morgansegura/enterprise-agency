@@ -6,6 +6,9 @@
 /* Shared WYSIWYG tokens - Single source of truth for builder/client parity */
 @import "@enterprise/tokens/css";
 
+/* Element styles — CSS custom properties for per-element styling */
+@import "../../packages/tokens/src/css/element-styles.css";
+
 /* Import animations */
 @import "./tokens/animations.css";
 
