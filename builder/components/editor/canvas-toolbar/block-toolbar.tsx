@@ -54,8 +54,11 @@ export function BlockToolbar({
       if (!canvas) return;
       const canvasRect = canvas.getBoundingClientRect();
 
+      const topAbove = rect.top - canvasRect.top - 36;
+      const showBelow = topAbove < 0;
+
       setPosition({
-        top: rect.top - canvasRect.top - 32,
+        top: showBelow ? rect.bottom - canvasRect.top + 4 : topAbove,
         left: rect.left - canvasRect.left,
         width: rect.width,
       });
