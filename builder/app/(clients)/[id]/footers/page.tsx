@@ -4,6 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
   useFooters,
+  useCreateFooter,
   useDeleteFooter,
   useDuplicateFooter,
   useSaveFooterToLibrary,
@@ -18,6 +19,51 @@ import { PanelBottom, BookmarkPlus } from "lucide-react";
 import { toast } from "sonner";
 
 import "./footers.css";
+
+const FOOTER_TEMPLATES = [
+  {
+    name: "Simple",
+    description: "Logo, links, copyright",
+    layout: "SIMPLE" as const,
+    preview: "logo — links — © 2026",
+    style: { backgroundColor: "#1a1a2e", textColor: "#ffffff", padding: "lg" },
+  },
+  {
+    name: "4 Columns",
+    description: "Full column layout with categories",
+    layout: "COLUMNS" as const,
+    preview: "col1 | col2 | col3 | col4",
+    style: { backgroundColor: "#111827", textColor: "#d1d5db", padding: "xl" },
+  },
+  {
+    name: "Centered",
+    description: "Centered logo and links",
+    layout: "CENTERED" as const,
+    preview: "——— centered ———",
+    style: { backgroundColor: "#ffffff", textColor: "#374151", padding: "lg" },
+  },
+  {
+    name: "Minimal",
+    description: "Compact single-line footer",
+    layout: "MINIMAL" as const,
+    preview: "© company — privacy — terms",
+    style: { backgroundColor: "#f9fafb", textColor: "#6b7280", padding: "sm" },
+  },
+  {
+    name: "Dark Modern",
+    description: "Dark gradient with columns",
+    layout: "COLUMNS" as const,
+    preview: "col1 | col2 | col3",
+    style: { backgroundColor: "#0f172a", textColor: "#94a3b8", padding: "xl" },
+  },
+  {
+    name: "Stacked",
+    description: "Vertically stacked sections",
+    layout: "STACKED" as const,
+    preview: "logo → links → social → ©",
+    style: { backgroundColor: "#1e293b", textColor: "#e2e8f0", padding: "lg" },
+  },
+];
 
 const layoutLabels: Record<string, string> = {
   SIMPLE: "Simple",
@@ -39,9 +85,25 @@ export default function FootersPage({
   const router = useRouter();
 
   const { data: footers, isLoading, error } = useFooters(id);
+  const createFooter = useCreateFooter(id);
   const deleteFooter = useDeleteFooter(id);
   const duplicateFooter = useDuplicateFooter(id);
   const saveToLibrary = useSaveFooterToLibrary(id);
+
+  const handleCreateFromTemplate = async (template: typeof FOOTER_TEMPLATES[number]) => {
+    try {
+      const result = await createFooter.mutateAsync({
+        name: template.name,
+        slug: template.name.toLowerCase().replace(/\s+/g, "-"),
+        layout: template.layout,
+        style: template.style,
+      });
+      toast.success(`"${template.name}" footer created`);
+      router.push(`/${id}/footers/${result.id}/edit`);
+    } catch {
+      toast.error("Failed to create footer");
+    }
+  };
 
   const footerItems = React.useMemo(
     () => footers?.map((f) => ({ ...f, title: f.name })) || undefined,
@@ -162,6 +224,35 @@ export default function FootersPage({
 
   return (
     <div className="footers-page">
+      {/* Template Picker */}
+      <div className="footers-templates">
+        <h3 className="footers-templates-title">Start from a template</h3>
+        <div className="footers-templates-grid">
+          {FOOTER_TEMPLATES.map((template) => (
+            <button
+              key={template.name}
+              type="button"
+              className="footers-template-card"
+              onClick={() => handleCreateFromTemplate(template)}
+            >
+              <div
+                className="footers-template-preview"
+                style={{
+                  backgroundColor: template.style.backgroundColor,
+                  color: template.style.textColor,
+                }}
+              >
+                <span className="footers-template-preview-text">
+                  {template.preview}
+                </span>
+              </div>
+              <span className="footers-template-name">{template.name}</span>
+              <span className="footers-template-desc">{template.description}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <ContentList<FooterItem>
         title="Footers"
         singularName="Footer"

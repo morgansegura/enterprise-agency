@@ -8,6 +8,46 @@
   @apply flex-1 flex flex-col gap-3 p-4 bg-(--el-0) rounded-[3px] border border-(--border)/50 shadow-xs;
 }
 
+/* Template picker */
+.footers-templates {
+  @apply space-y-3 pb-4 border-b border-(--border-default);
+}
+
+.footers-templates-title {
+  @apply text-[13px] font-semibold text-(--el-800);
+}
+
+.footers-templates-grid {
+  @apply grid grid-cols-3 gap-3;
+}
+
+.footers-template-card {
+  @apply flex flex-col gap-1.5 p-0 rounded-[3px] overflow-hidden cursor-pointer;
+  @apply border border-(--border-default) bg-(--el-0);
+  @apply transition-all duration-150;
+}
+
+.footers-template-card:hover {
+  @apply border-(--accent-primary) shadow-md;
+}
+
+.footers-template-preview {
+  @apply flex items-center justify-center h-12 px-3;
+  @apply text-[10px] font-mono tracking-wider;
+}
+
+.footers-template-preview-text {
+  @apply opacity-60;
+}
+
+.footers-template-name {
+  @apply text-[12px] font-semibold text-(--el-800) px-2;
+}
+
+.footers-template-desc {
+  @apply text-[11px] text-(--el-400) px-2 pb-2;
+}
+
 /* Layout column */
 .footers-col-layout {
   @apply w-32 hidden md:block;

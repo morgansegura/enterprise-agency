@@ -8,6 +8,46 @@
   @apply flex-1 flex flex-col gap-3 p-4 bg-(--el-0) rounded-[3px] border border-(--border)/50 shadow-xs;
 }
 
+/* Template picker */
+.headers-templates {
+  @apply space-y-3 pb-4 border-b border-(--border-default);
+}
+
+.headers-templates-title {
+  @apply text-[13px] font-semibold text-(--el-800);
+}
+
+.headers-templates-grid {
+  @apply grid grid-cols-3 gap-3;
+}
+
+.headers-template-card {
+  @apply flex flex-col gap-1.5 p-0 rounded-[3px] overflow-hidden cursor-pointer;
+  @apply border border-(--border-default) bg-(--el-0);
+  @apply transition-all duration-150;
+}
+
+.headers-template-card:hover {
+  @apply border-(--accent-primary) shadow-md;
+}
+
+.headers-template-preview {
+  @apply flex items-center justify-center h-12 px-3;
+  @apply text-[10px] font-mono tracking-wider;
+}
+
+.headers-template-preview-text {
+  @apply opacity-60;
+}
+
+.headers-template-name {
+  @apply text-[12px] font-semibold text-(--el-800) px-2;
+}
+
+.headers-template-desc {
+  @apply text-[11px] text-(--el-400) px-2 pb-2;
+}
+
 /* Behavior column */
 .headers-col-behavior {
   @apply w-32 hidden md:block;
