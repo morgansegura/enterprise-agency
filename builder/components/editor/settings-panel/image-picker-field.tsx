@@ -86,7 +86,6 @@ export function ImagePickerField({
           setOpen(false);
         }}
         fileType={fileType}
-        currentValue={value}
       />
     </div>
   );

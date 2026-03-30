@@ -23,6 +23,207 @@ import {
 import type { Block } from "@/lib/types/section";
 import type { ElementStyles } from "@enterprise/tokens";
 
+// =============================================================================
+// Visual Builders — replace raw text inputs with intuitive controls
+// =============================================================================
+
+/** Box Shadow Builder — X, Y, Blur, Spread, Color */
+function ShadowBuilder({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  // Parse "Xpx Ypx Bpx Spx #color"
+  const parts = (value || "").match(
+    /(-?\d+)px\s+(-?\d+)px\s+(\d+)px\s+(-?\d+)px\s+(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\))/,
+  );
+  const x = parts?.[1] || "0";
+  const y = parts?.[2] || "4";
+  const blur = parts?.[3] || "6";
+  const spread = parts?.[4] || "0";
+  const color = parts?.[5] || "rgba(0,0,0,0.1)";
+
+  const build = (nx: string, ny: string, nb: string, ns: string, nc: string) =>
+    `${nx}px ${ny}px ${nb}px ${ns}px ${nc}`;
+
+  return (
+    <>
+      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold px-0">
+        {label}
+      </span>
+      <PropertyRow label="X">
+        <Input value={x} onChange={(e) => onChange(build(e.target.value, y, blur, spread, color))} className="w-16 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Y">
+        <Input value={y} onChange={(e) => onChange(build(x, e.target.value, blur, spread, color))} className="w-16 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Blur">
+        <Input value={blur} onChange={(e) => onChange(build(x, y, e.target.value, spread, color))} className="w-16 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Spread">
+        <Input value={spread} onChange={(e) => onChange(build(x, y, blur, e.target.value, color))} className="w-16 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Color">
+        <div className="flex items-center gap-1.5">
+          <input type="color" value={color.startsWith("#") ? color : "#000000"} onChange={(e) => onChange(build(x, y, blur, spread, e.target.value))} className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer" />
+          <Input value={color} onChange={(e) => onChange(build(x, y, blur, spread, e.target.value))} className="flex-1 h-7 text-xs" />
+        </div>
+      </PropertyRow>
+      {value && (
+        <button
+          type="button"
+          onClick={() => onChange("")}
+          className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
+        >
+          Remove shadow
+        </button>
+      )}
+    </>
+  );
+}
+
+/** Transform Builder — individual controls for translate, rotate, scale, skew */
+function TransformBuilder({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  // Parse individual transforms
+  const getVal = (fn: string, def: string) => {
+    const match = (value || "").match(new RegExp(`${fn}\\(([^)]+)\\)`));
+    return match?.[1] || def;
+  };
+
+  const tx = getVal("translateX", "0px");
+  const ty = getVal("translateY", "0px");
+  const rotate = getVal("rotate", "0deg");
+  const sx = getVal("scaleX", "1");
+  const sy = getVal("scaleY", "1");
+  const skx = getVal("skewX", "0deg");
+  const sky = getVal("skewY", "0deg");
+
+  const build = (ntx: string, nty: string, nr: string, nsx: string, nsy: string, nskx: string, nsky: string) => {
+    const parts: string[] = [];
+    if (ntx !== "0px") parts.push(`translateX(${ntx})`);
+    if (nty !== "0px") parts.push(`translateY(${nty})`);
+    if (nr !== "0deg") parts.push(`rotate(${nr})`);
+    if (nsx !== "1" || nsy !== "1") parts.push(`scaleX(${nsx}) scaleY(${nsy})`);
+    if (nskx !== "0deg") parts.push(`skewX(${nskx})`);
+    if (nsky !== "0deg") parts.push(`skewY(${nsky})`);
+    return parts.join(" ") || "";
+  };
+
+  return (
+    <>
+      <PropertyRow label="Move X">
+        <Input value={tx} onChange={(e) => onChange(build(e.target.value, ty, rotate, sx, sy, skx, sky))} placeholder="0px" className="w-20 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Move Y">
+        <Input value={ty} onChange={(e) => onChange(build(tx, e.target.value, rotate, sx, sy, skx, sky))} placeholder="0px" className="w-20 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Rotate">
+        <Input value={rotate} onChange={(e) => onChange(build(tx, ty, e.target.value, sx, sy, skx, sky))} placeholder="0deg" className="w-20 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Scale X">
+        <Input value={sx} onChange={(e) => onChange(build(tx, ty, rotate, e.target.value, sy, skx, sky))} placeholder="1" className="w-20 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Scale Y">
+        <Input value={sy} onChange={(e) => onChange(build(tx, ty, rotate, sx, e.target.value, skx, sky))} placeholder="1" className="w-20 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Skew X">
+        <Input value={skx} onChange={(e) => onChange(build(tx, ty, rotate, sx, sy, e.target.value, sky))} placeholder="0deg" className="w-20 h-7 text-xs text-center" />
+      </PropertyRow>
+      <PropertyRow label="Skew Y">
+        <Input value={sky} onChange={(e) => onChange(build(tx, ty, rotate, sx, sy, skx, e.target.value))} placeholder="0deg" className="w-20 h-7 text-xs text-center" />
+      </PropertyRow>
+    </>
+  );
+}
+
+/** Filter Builder — sliders for blur, brightness, contrast, saturate, etc. */
+function FilterBuilder({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const getVal = (fn: string, def: string) => {
+    const match = (value || "").match(new RegExp(`${fn}\\(([^)]+)\\)`));
+    return match?.[1] || def;
+  };
+
+  const blur = getVal("blur", "0px");
+  const brightness = getVal("brightness", "1");
+  const contrast = getVal("contrast", "1");
+  const saturate = getVal("saturate", "1");
+  const grayscale = getVal("grayscale", "0");
+  const hueRotate = getVal("hue-rotate", "0deg");
+
+  const build = (nb: string, nbr: string, nc: string, ns: string, ng: string, nh: string) => {
+    const parts: string[] = [];
+    if (nb !== "0px") parts.push(`blur(${nb})`);
+    if (nbr !== "1") parts.push(`brightness(${nbr})`);
+    if (nc !== "1") parts.push(`contrast(${nc})`);
+    if (ns !== "1") parts.push(`saturate(${ns})`);
+    if (ng !== "0") parts.push(`grayscale(${ng})`);
+    if (nh !== "0deg") parts.push(`hue-rotate(${nh})`);
+    return parts.join(" ") || "";
+  };
+
+  return (
+    <>
+      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">
+        {label}
+      </span>
+      <PropertyRow label="Blur">
+        <div className="flex items-center gap-2 flex-1">
+          <input type="range" min="0" max="20" step="1" value={parseFloat(blur)} onChange={(e) => onChange(build(`${e.target.value}px`, brightness, contrast, saturate, grayscale, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
+          <Input value={blur} onChange={(e) => onChange(build(e.target.value, brightness, contrast, saturate, grayscale, hueRotate))} className="w-14 h-7 text-xs text-center" />
+        </div>
+      </PropertyRow>
+      <PropertyRow label="Bright">
+        <div className="flex items-center gap-2 flex-1">
+          <input type="range" min="0" max="2" step="0.05" value={parseFloat(brightness)} onChange={(e) => onChange(build(blur, e.target.value, contrast, saturate, grayscale, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
+          <Input value={brightness} onChange={(e) => onChange(build(blur, e.target.value, contrast, saturate, grayscale, hueRotate))} className="w-14 h-7 text-xs text-center" />
+        </div>
+      </PropertyRow>
+      <PropertyRow label="Contrast">
+        <div className="flex items-center gap-2 flex-1">
+          <input type="range" min="0" max="2" step="0.05" value={parseFloat(contrast)} onChange={(e) => onChange(build(blur, brightness, e.target.value, saturate, grayscale, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
+          <Input value={contrast} onChange={(e) => onChange(build(blur, brightness, e.target.value, saturate, grayscale, hueRotate))} className="w-14 h-7 text-xs text-center" />
+        </div>
+      </PropertyRow>
+      <PropertyRow label="Saturate">
+        <div className="flex items-center gap-2 flex-1">
+          <input type="range" min="0" max="3" step="0.05" value={parseFloat(saturate)} onChange={(e) => onChange(build(blur, brightness, contrast, e.target.value, grayscale, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
+          <Input value={saturate} onChange={(e) => onChange(build(blur, brightness, contrast, e.target.value, grayscale, hueRotate))} className="w-14 h-7 text-xs text-center" />
+        </div>
+      </PropertyRow>
+      <PropertyRow label="Grayscale">
+        <div className="flex items-center gap-2 flex-1">
+          <input type="range" min="0" max="1" step="0.05" value={parseFloat(grayscale)} onChange={(e) => onChange(build(blur, brightness, contrast, saturate, e.target.value, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
+          <Input value={grayscale} onChange={(e) => onChange(build(blur, brightness, contrast, saturate, e.target.value, hueRotate))} className="w-14 h-7 text-xs text-center" />
+        </div>
+      </PropertyRow>
+      <PropertyRow label="Hue">
+        <div className="flex items-center gap-2 flex-1">
+          <input type="range" min="0" max="360" step="5" value={parseFloat(hueRotate)} onChange={(e) => onChange(build(blur, brightness, contrast, saturate, grayscale, `${e.target.value}deg`))} className="flex-1 h-1.5 accent-(--accent-primary)" />
+          <Input value={hueRotate} onChange={(e) => onChange(build(blur, brightness, contrast, saturate, grayscale, e.target.value))} className="w-14 h-7 text-xs text-center" />
+        </div>
+      </PropertyRow>
+    </>
+  );
+}
+
 interface ElementStyleTabProps {
   /** The element's current styles object */
   styles?: ElementStyles;
@@ -424,9 +625,11 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
         <PropertyRow label="Indent">
           <Input value={s("textIndent")} onChange={(e) => updateStyle("textIndent", e.target.value)} placeholder="0px" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
-        <PropertyRow label="Shadow" stacked>
-          <Input value={s("textShadow")} onChange={(e) => updateStyle("textShadow", e.target.value)} placeholder="none" className="h-7 text-xs" />
-        </PropertyRow>
+        <ShadowBuilder
+          label="Text Shadow"
+          value={s("textShadow")}
+          onChange={(v) => updateStyle("textShadow", v)}
+        />
         <PropertyRow label="Columns">
           <Input value={s("columns")} onChange={(e) => updateStyle("columns", e.target.value)} placeholder="auto" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
@@ -565,14 +768,27 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * ================================================================ */}
       <PropertySection title="Effects" icon={<Sparkles className="h-3.5 w-3.5" />} defaultOpen={false}>
         <PropertyRow label="Opacity">
-          <Input value={s("opacity")} onChange={(e) => updateStyle("opacity", e.target.value)} placeholder="1" className="w-20 h-7 text-xs text-center" />
+          <div className="flex items-center gap-2 flex-1">
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={s("opacity") || "1"}
+              onChange={(e) => updateStyle("opacity", e.target.value)}
+              className="flex-1 h-1.5 accent-(--accent-primary)"
+            />
+            <Input value={s("opacity") || "1"} onChange={(e) => updateStyle("opacity", e.target.value)} className="w-14 h-7 text-xs text-center" />
+          </div>
         </PropertyRow>
-        <PropertyRow label="Shadow" stacked>
-          <Input value={s("boxShadow")} onChange={(e) => updateStyle("boxShadow", e.target.value)} placeholder="0 4px 6px rgba(0,0,0,0.1)" className="h-7 text-xs" />
-        </PropertyRow>
+        <ShadowBuilder
+          label="Shadow"
+          value={s("boxShadow")}
+          onChange={(v) => updateStyle("boxShadow", v)}
+        />
         <PropertyRow label="Blend">
           <PropertySelect
-            value={s("mixBlendMode")}
+            value={s("mixBlendMode") || "inherit"}
             options={[
               { value: "inherit", label: "Normal" },
               { value: "multiply", label: "Multiply" },
@@ -593,11 +809,26 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * TRANSFORMS
        * ================================================================ */}
       <PropertySection title="Transforms" icon={<Zap className="h-3.5 w-3.5" />} defaultOpen={false}>
-        <PropertyRow label="Transform" stacked>
-          <Input value={s("transform")} onChange={(e) => updateStyle("transform", e.target.value)} placeholder="rotate(0deg) scale(1)" className="h-7 text-xs" />
-        </PropertyRow>
+        <TransformBuilder
+          value={s("transform")}
+          onChange={(v) => updateStyle("transform", v)}
+        />
         <PropertyRow label="Origin">
-          <Input value={s("transformOrigin")} onChange={(e) => updateStyle("transformOrigin", e.target.value)} placeholder="center" className="w-28 h-7 text-xs text-center" />
+          <PropertySelect
+            value={s("transformOrigin") || "inherit"}
+            options={[
+              { value: "inherit", label: "Center" },
+              { value: "top left", label: "Top Left" },
+              { value: "top center", label: "Top" },
+              { value: "top right", label: "Top Right" },
+              { value: "center left", label: "Left" },
+              { value: "center right", label: "Right" },
+              { value: "bottom left", label: "Bottom Left" },
+              { value: "bottom center", label: "Bottom" },
+              { value: "bottom right", label: "Bottom Right" },
+            ]}
+            onChange={(v) => updateStyle("transformOrigin", v)}
+          />
         </PropertyRow>
       </PropertySection>
 
@@ -607,7 +838,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
       <PropertySection title="Transitions" icon={<Zap className="h-3.5 w-3.5" />} defaultOpen={false}>
         <PropertyRow label="Property">
           <PropertySelect
-            value={s("transitionProperty")}
+            value={s("transitionProperty") || "inherit"}
             options={[
               { value: "inherit", label: "None" },
               { value: "all", label: "All" },
@@ -621,20 +852,32 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           />
         </PropertyRow>
         <PropertyRow label="Duration">
-          <Input value={s("transitionDuration")} onChange={(e) => updateStyle("transitionDuration", e.target.value)} placeholder="0ms" className="w-20 h-7 text-xs text-center" />
+          <div className="flex items-center gap-2 flex-1">
+            <input
+              type="range"
+              min="0"
+              max="2000"
+              step="50"
+              value={parseInt(s("transitionDuration") || "0")}
+              onChange={(e) => updateStyle("transitionDuration", `${e.target.value}ms`)}
+              className="flex-1 h-1.5 accent-(--accent-primary)"
+            />
+            <Input value={s("transitionDuration") || "0ms"} onChange={(e) => updateStyle("transitionDuration", e.target.value)} className="w-16 h-7 text-xs text-center" />
+          </div>
         </PropertyRow>
         <PropertyRow label="Delay">
           <Input value={s("transitionDelay")} onChange={(e) => updateStyle("transitionDelay", e.target.value)} placeholder="0ms" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
         <PropertyRow label="Easing">
           <PropertySelect
-            value={s("transitionTimingFunction")}
+            value={s("transitionTimingFunction") || "inherit"}
             options={[
               { value: "inherit", label: "Ease" },
               { value: "linear", label: "Linear" },
               { value: "ease-in", label: "Ease In" },
               { value: "ease-out", label: "Ease Out" },
               { value: "ease-in-out", label: "Ease In-Out" },
+              { value: "cubic-bezier(0.4,0,0.2,1)", label: "Smooth" },
             ]}
             onChange={(v) => updateStyle("transitionTimingFunction", v)}
           />
@@ -645,12 +888,16 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * FILTERS
        * ================================================================ */}
       <PropertySection title="Filters" icon={<Sparkles className="h-3.5 w-3.5" />} defaultOpen={false}>
-        <PropertyRow label="Filter" stacked>
-          <Input value={s("filter")} onChange={(e) => updateStyle("filter", e.target.value)} placeholder="blur(0px) brightness(1)" className="h-7 text-xs" />
-        </PropertyRow>
-        <PropertyRow label="Backdrop" stacked>
-          <Input value={s("backdropFilter")} onChange={(e) => updateStyle("backdropFilter", e.target.value)} placeholder="blur(0px)" className="h-7 text-xs" />
-        </PropertyRow>
+        <FilterBuilder
+          label="Filter"
+          value={s("filter")}
+          onChange={(v) => updateStyle("filter", v)}
+        />
+        <FilterBuilder
+          label="Backdrop"
+          value={s("backdropFilter")}
+          onChange={(v) => updateStyle("backdropFilter", v)}
+        />
       </PropertySection>
 
       {/* ================================================================
