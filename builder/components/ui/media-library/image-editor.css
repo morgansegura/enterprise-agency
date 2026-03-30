@@ -1,0 +1,71 @@
+@reference "tailwindcss";
+
+.image-editor-dialog {
+  @apply max-w-4xl w-full max-h-[90vh] flex flex-col gap-0 p-0;
+}
+
+/* Toolbar */
+.image-editor-toolbar {
+  @apply flex items-center gap-1 px-4 py-2 border-b border-(--border-default);
+}
+
+.image-editor-tools {
+  @apply flex items-center gap-0.5;
+}
+
+.image-editor-tool {
+  @apply flex items-center gap-1.5 px-2.5 h-7 rounded-[3px];
+  @apply text-[12px] font-medium text-(--el-500) bg-transparent border-none cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.image-editor-tool:hover {
+  @apply text-(--el-800) bg-(--el-100);
+}
+
+.image-editor-tool[data-active] {
+  @apply text-(--accent-primary) bg-(--accent-primary-subtle);
+}
+
+.image-editor-tool:disabled {
+  @apply opacity-30 cursor-not-allowed;
+}
+
+.image-editor-toolbar-divider {
+  @apply w-px h-5 bg-(--border-default) mx-1;
+}
+
+.image-editor-toolbar-spacer {
+  @apply flex-1;
+}
+
+/* Mode controls */
+.image-editor-scale-controls,
+.image-editor-rotate-controls {
+  @apply flex items-center gap-3 px-4 py-2 bg-(--el-50) border-b border-(--border-default);
+}
+
+.image-editor-scale-field {
+  @apply flex items-center gap-1.5 text-[12px] text-(--el-600);
+}
+
+.image-editor-hint {
+  @apply px-4 py-2 text-[12px] text-(--el-400) bg-(--el-50) border-b border-(--border-default);
+}
+
+/* Canvas */
+.image-editor-canvas-wrapper {
+  @apply flex-1 flex items-center justify-center p-4 overflow-auto min-h-0;
+  @apply bg-[repeating-conic-gradient(#e5e7eb_0%_25%,transparent_0%_50%)] bg-[length:16px_16px];
+}
+
+.image-editor-canvas {
+  @apply max-w-full max-h-full shadow-lg;
+  cursor: crosshair;
+}
+
+/* Info bar */
+.image-editor-info {
+  @apply flex items-center gap-3 px-4 py-2 text-[11px] text-(--el-400);
+  @apply border-t border-(--border-default);
+}

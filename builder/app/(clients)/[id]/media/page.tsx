@@ -38,8 +38,10 @@ import {
   Check,
   Copy,
   Trash2,
+  Crop,
 } from "lucide-react";
 
+import { ImageEditor } from "@/components/ui/media-library/image-editor";
 import "./media.css";
 
 // =============================================================================
@@ -67,6 +69,7 @@ export default function MediaLibraryPage({
   const [selectedAsset, setSelectedAsset] = React.useState<Asset | null>(null);
   const [selectedIds, setSelectedIds] = React.useState<Set<string>>(new Set());
   const [isDragging, setIsDragging] = React.useState(false);
+  const [editingImage, setEditingImage] = React.useState<Asset | null>(null);
 
   // Queries
   const { data: assets, isLoading, error } = useAssets(id);
@@ -462,6 +465,16 @@ export default function MediaLibraryPage({
 
               {/* Actions */}
               <div className="media-detail-actions">
+                {selectedAsset.mimeType?.startsWith("image/") && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditingImage(selectedAsset)}
+                  >
+                    <Crop className="h-3.5 w-3.5" />
+                    Edit Image
+                  </Button>
+                )}
                 <Button
                   variant="destructive"
                   size="sm"
@@ -475,6 +488,24 @@ export default function MediaLibraryPage({
           )}
         </SheetContent>
       </Sheet>
+
+      {/* Image Editor */}
+      <ImageEditor
+        open={!!editingImage}
+        onOpenChange={(open) => !open && setEditingImage(null)}
+        imageUrl={editingImage?.url || ""}
+        fileName={editingImage?.fileName || "edited.jpg"}
+        onSave={async (blob, filename) => {
+          try {
+            const file = new File([blob], filename, { type: "image/jpeg" });
+            await uploadAsset.mutateAsync({ file });
+            toast.success("Edited image saved");
+            setEditingImage(null);
+          } catch {
+            toast.error("Failed to save edited image");
+          }
+        }}
+      />
     </div>
   );
 }
