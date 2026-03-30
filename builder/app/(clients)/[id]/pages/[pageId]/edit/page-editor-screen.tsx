@@ -26,6 +26,7 @@ import { HeaderRenderer } from "@/components/headers";
 import { FooterRenderer } from "@/components/editor/footer-renderer";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
+import { BlockToolbar } from "@/components/editor/canvas-toolbar/block-toolbar";
 import { logger } from "@/lib/logger";
 import { toast } from "sonner";
 import { Eye } from "lucide-react";
@@ -557,6 +558,7 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
           <ResponsivePreview breakpoint={breakpoint} className="h-full">
             <div
               className="page-editor-canvas-content design-preview"
+              style={{ position: "relative" }}
               onMouseMove={(e) => {
                 const target = e.target as HTMLElement;
                 const blockEl = target.closest("[data-block-key]");
@@ -654,6 +656,42 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                 }
               }}
             >
+              {/* Floating toolbar above selected block */}
+              {selectedBlockKey && selectedElement?.type === "block" && (
+                <BlockToolbar
+                  blockKey={selectedBlockKey}
+                  onMoveUp={() => editor.handleBlockMoveUp(
+                    selectedElement.sectionIndex,
+                    selectedElement.containerIndex!,
+                    selectedElement.blockIndex!,
+                  )}
+                  onMoveDown={() => editor.handleBlockMoveDown(
+                    selectedElement.sectionIndex,
+                    selectedElement.containerIndex!,
+                    selectedElement.blockIndex!,
+                  )}
+                  onDuplicate={() => editor.handleBlockDuplicate(
+                    selectedElement.sectionIndex,
+                    selectedElement.containerIndex!,
+                    selectedElement.blockIndex!,
+                  )}
+                  onDelete={() => {
+                    editor.handleBlockDelete(
+                      selectedElement.sectionIndex,
+                      selectedElement.containerIndex!,
+                      selectedElement.blockIndex!,
+                    );
+                    setSelectedBlockKey(null);
+                  }}
+                  canMoveUp={selectedElement.blockIndex! > 0}
+                  canMoveDown={
+                    selectedElement.blockIndex! <
+                    (editor.sections[selectedElement.sectionIndex]?.containers?.[
+                      selectedElement.containerIndex!
+                    ]?.blocks?.length ?? 0) - 1
+                  }
+                />
+              )}
               <HeaderRenderer tenantId={id} headerId={localPage.headerId} />
               {editor.sections.every(
                 (s) =>
