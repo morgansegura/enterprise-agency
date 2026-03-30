@@ -150,3 +150,19 @@
 .layer-add-btn:hover {
   @apply text-(--el-800) bg-(--el-100) border-(--el-300);
 }
+
+.layer-add-container {
+  @apply pl-6 pr-2 py-1;
+}
+
+.layer-add-container-btn {
+  @apply flex items-center gap-1.5 w-full;
+  @apply px-2 py-1.5 text-[11px] font-medium;
+  @apply border border-dashed border-(--border-default) rounded-[3px];
+  @apply text-(--accent-primary) bg-transparent;
+  @apply cursor-pointer transition-all duration-100;
+}
+
+.layer-add-container-btn:hover {
+  @apply bg-(--accent-primary-subtle)/30 border-(--accent-primary);
+}

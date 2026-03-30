@@ -110,6 +110,7 @@ interface PageLayersProps {
     containerIndex: number,
     blockType: string,
   ) => void;
+  onAddContainer?: (sectionIndex: number) => void;
   onDeleteBlock?: (
     sectionIndex: number,
     containerIndex: number,
@@ -143,6 +144,7 @@ export function PageLayers({
   onAddSection,
   onDeleteSection,
   onAddBlock,
+  onAddContainer,
   onDeleteBlock,
   onDuplicateBlock,
   onMoveBlockUp,
@@ -219,6 +221,18 @@ export function PageLayers({
                     0,
                   )}
                 </span>
+                {onAddContainer && (
+                  <button
+                    className="layer-action layer-action-add"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAddContainer(sectionIndex);
+                    }}
+                    title="Add container"
+                  >
+                    <Plus className="size-3" />
+                  </button>
+                )}
                 {selectedKey === sectionKey && onDeleteSection && (
                   <button
                     className="layer-action"

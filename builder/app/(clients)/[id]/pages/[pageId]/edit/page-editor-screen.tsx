@@ -492,6 +492,7 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                   editor.handleAddSectionAt(editor.sections.length)
                 }
                 onDeleteSection={editor.handleSectionDelete}
+                onAddContainer={editor.handleAddContainerToSection}
                 onAddBlock={editor.handleAddBlockToContainer}
                 onDeleteBlock={editor.handleBlockDelete}
                 onDuplicateBlock={editor.handleBlockDuplicate}

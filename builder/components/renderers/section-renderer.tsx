@@ -91,10 +91,26 @@ export function SectionRenderer({
         {containers.map((container, containerIndex) => {
           const containerStyled = hasStyles(container.styles);
           const containerVars = containerStyled ? stylesToCSSVars(container.styles) : undefined;
+
+          // Build layout classes from container.layout
+          const layout = container.layout as Record<string, unknown> | undefined;
+          const layoutType = (layout?.type as string) || "stack";
+          const layoutDirection = (layout?.direction as string) || "column";
+          const layoutGap = (layout?.gap as string) || "md";
+
+          const gapClasses: Record<string, string> = {
+            xs: "gap-1", sm: "gap-2", md: "gap-4", lg: "gap-6", xl: "gap-8",
+          };
+          const layoutClasses = layoutType === "flex"
+            ? `flex ${layoutDirection === "row" ? "flex-row" : "flex-col"} ${gapClasses[layoutGap] || "gap-4"}`
+            : layoutType === "grid"
+              ? `grid ${layout?.columns ? `grid-cols-${layout.columns}` : "grid-cols-2"} ${gapClasses[layoutGap] || "gap-4"}`
+              : `flex flex-col ${gapClasses[layoutGap] || "gap-4"}`;
+
           return (
           <div
             key={container._key}
-            className="space-y-4"
+            className={layoutClasses}
             data-block-key={container._key}
             data-block-label={`Container ${containerIndex + 1}`}
             data-styled={containerStyled || undefined}
