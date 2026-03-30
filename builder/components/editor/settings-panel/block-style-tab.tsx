@@ -225,7 +225,78 @@ function FilterBuilder({
   );
 }
 
-/** Gradient Builder — visual linear/radial gradient editor */
+/** Color with Opacity — hex color + alpha slider */
+function ColorWithOpacity({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  // Parse rgba or hex
+  const parseColor = () => {
+    if (!value) return { hex: "#ffffff", alpha: 1 };
+    const rgbaMatch = value.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+    if (rgbaMatch) {
+      const r = parseInt(rgbaMatch[1]).toString(16).padStart(2, "0");
+      const g = parseInt(rgbaMatch[2]).toString(16).padStart(2, "0");
+      const b = parseInt(rgbaMatch[3]).toString(16).padStart(2, "0");
+      return { hex: `#${r}${g}${b}`, alpha: parseFloat(rgbaMatch[4] ?? "1") };
+    }
+    return { hex: value, alpha: 1 };
+  };
+
+  const { hex, alpha } = parseColor();
+
+  const buildRgba = (h: string, a: number) => {
+    const r = parseInt(h.slice(1, 3), 16);
+    const g = parseInt(h.slice(3, 5), 16);
+    const b = parseInt(h.slice(5, 7), 16);
+    if (a === 1) return h;
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  };
+
+  return (
+    <>
+      <PropertyRow label={label}>
+        <div className="flex items-center gap-1.5">
+          <input
+            type="color"
+            value={hex}
+            onChange={(e) => onChange(buildRgba(e.target.value, alpha))}
+            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer"
+          />
+          <Input
+            value={value || ""}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="transparent"
+            className="flex-1 h-7 text-xs"
+          />
+        </div>
+      </PropertyRow>
+      <PropertyRow label="Opacity">
+        <div className="flex items-center gap-2 flex-1">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={alpha}
+            onChange={(e) => onChange(buildRgba(hex, parseFloat(e.target.value)))}
+            className="flex-1 h-1.5 accent-(--accent-primary)"
+          />
+          <span className="text-[11px] text-(--el-500) w-8 text-right">
+            {Math.round(alpha * 100)}%
+          </span>
+        </div>
+      </PropertyRow>
+    </>
+  );
+}
+
+/** Gradient Builder — comprehensive gradient editor with multiple stops */
 function GradientBuilder({
   value,
   onChange,
@@ -235,30 +306,64 @@ function GradientBuilder({
 }) {
   const isGradient = value?.includes("gradient");
 
-  // Parse existing gradient or use defaults
-  const parseGradient = () => {
-    if (!isGradient) return { type: "linear", angle: "180", color1: "#000000", color2: "#ffffff" };
-    const linearMatch = value.match(
-      /linear-gradient\((\d+)deg,\s*(#[0-9a-fA-F]{3,8})\s*(?:\d+%)?,\s*(#[0-9a-fA-F]{3,8})/,
-    );
-    if (linearMatch) {
-      return { type: "linear", angle: linearMatch[1], color1: linearMatch[2], color2: linearMatch[3] };
+  interface GradientStop {
+    color: string;
+    position: number; // 0-100
+  }
+
+  const parseStops = (): GradientStop[] => {
+    if (!isGradient) return [{ color: "#000000", position: 0 }, { color: "#ffffff", position: 100 }];
+    const stopRegex = /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\))\s*(\d+)?%?/g;
+    const stops: GradientStop[] = [];
+    let match;
+    while ((match = stopRegex.exec(value)) !== null) {
+      stops.push({ color: match[1], position: match[2] ? parseInt(match[2]) : stops.length === 0 ? 0 : 100 });
     }
-    const radialMatch = value.match(
-      /radial-gradient\([^,]*,\s*(#[0-9a-fA-F]{3,8})\s*(?:\d+%)?,\s*(#[0-9a-fA-F]{3,8})/,
-    );
-    if (radialMatch) {
-      return { type: "radial", angle: "0", color1: radialMatch[1], color2: radialMatch[2] };
-    }
-    return { type: "linear", angle: "180", color1: "#000000", color2: "#ffffff" };
+    return stops.length >= 2 ? stops : [{ color: "#000000", position: 0 }, { color: "#ffffff", position: 100 }];
+  };
+
+  const parseType = () => value?.includes("radial") ? "radial" : "linear";
+  const parseAngle = () => {
+    const m = value?.match(/(\d+)deg/);
+    return m ? m[1] : "180";
   };
 
   const [enabled, setEnabled] = React.useState(isGradient);
-  const g = parseGradient();
+  const [type, setType] = React.useState(parseType);
+  const [angle, setAngle] = React.useState(parseAngle);
+  const [stops, setStops] = React.useState<GradientStop[]>(parseStops);
 
-  const buildGradient = (type: string, angle: string, c1: string, c2: string) => {
-    if (type === "radial") return `radial-gradient(circle, ${c1}, ${c2})`;
-    return `linear-gradient(${angle}deg, ${c1}, ${c2})`;
+  const buildGradient = (t: string, a: string, s: GradientStop[]) => {
+    const stopsStr = s.map((st) => `${st.color} ${st.position}%`).join(", ");
+    if (t === "radial") return `radial-gradient(circle, ${stopsStr})`;
+    return `linear-gradient(${a}deg, ${stopsStr})`;
+  };
+
+  const emit = (t: string, a: string, s: GradientStop[]) => {
+    onChange(buildGradient(t, a, s));
+  };
+
+  const updateStop = (index: number, field: "color" | "position", val: string | number) => {
+    const updated = [...stops];
+    if (field === "color") updated[index] = { ...updated[index], color: val as string };
+    else updated[index] = { ...updated[index], position: val as number };
+    setStops(updated);
+    emit(type, angle, updated);
+  };
+
+  const addStop = () => {
+    const mid = Math.round((stops[stops.length - 2]?.position ?? 0 + (stops[stops.length - 1]?.position ?? 100)) / 2);
+    const updated = [...stops];
+    updated.splice(stops.length - 1, 0, { color: "#888888", position: mid });
+    setStops(updated);
+    emit(type, angle, updated);
+  };
+
+  const removeStop = (index: number) => {
+    if (stops.length <= 2) return;
+    const updated = stops.filter((_, i) => i !== index);
+    setStops(updated);
+    emit(type, angle, updated);
   };
 
   if (!enabled) {
@@ -267,7 +372,7 @@ function GradientBuilder({
         type="button"
         onClick={() => {
           setEnabled(true);
-          onChange(buildGradient(g.type, g.angle, g.color1, g.color2));
+          emit(type, angle, stops);
         }}
         className="text-[11px] text-(--accent-primary) bg-transparent border-none cursor-pointer hover:underline"
       >
@@ -281,81 +386,79 @@ function GradientBuilder({
       <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">
         Gradient
       </span>
-      {/* Preview */}
+      {/* Live preview */}
       <div
-        className="w-full h-8 rounded-[3px] border border-(--border-default)"
-        style={{ background: value }}
+        className="w-full h-10 rounded-[3px] border border-(--border-default)"
+        style={{ background: buildGradient(type, angle, stops) }}
       />
       <PropertyRow label="Type">
         <PropertyToggle
-          value={g.type}
+          value={type}
           options={[
             { value: "linear", label: "Linear" },
             { value: "radial", label: "Radial" },
           ]}
-          onChange={(v) => onChange(buildGradient(v, g.angle, g.color1, g.color2))}
+          onChange={(v) => { setType(v); emit(v, angle, stops); }}
         />
       </PropertyRow>
-      {g.type === "linear" && (
+      {type === "linear" && (
         <PropertyRow label="Angle">
           <div className="flex items-center gap-2 flex-1">
             <input
-              type="range"
-              min="0"
-              max="360"
-              step="5"
-              value={g.angle}
-              onChange={(e) => onChange(buildGradient(g.type, e.target.value, g.color1, g.color2))}
+              type="range" min="0" max="360" step="5" value={angle}
+              onChange={(e) => { setAngle(e.target.value); emit(type, e.target.value, stops); }}
               className="flex-1 h-1.5 accent-(--accent-primary)"
             />
-            <Input
-              value={`${g.angle}°`}
-              onChange={(e) => onChange(buildGradient(g.type, e.target.value.replace("°", ""), g.color1, g.color2))}
-              className="w-14 h-7 text-xs text-center"
-            />
+            <span className="text-[11px] text-(--el-500) w-10 text-right">{angle}°</span>
           </div>
         </PropertyRow>
       )}
-      <PropertyRow label="From">
-        <div className="flex items-center gap-1.5">
+      {/* Color stops */}
+      {stops.map((stop, i) => (
+        <div key={i} className="flex items-center gap-1.5">
           <input
-            type="color"
-            value={g.color1}
-            onChange={(e) => onChange(buildGradient(g.type, g.angle, e.target.value, g.color2))}
-            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer"
+            type="color" value={stop.color.startsWith("#") ? stop.color : "#000000"}
+            onChange={(e) => updateStop(i, "color", e.target.value)}
+            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer shrink-0"
           />
           <Input
-            value={g.color1}
-            onChange={(e) => onChange(buildGradient(g.type, g.angle, e.target.value, g.color2))}
+            value={stop.color}
+            onChange={(e) => updateStop(i, "color", e.target.value)}
             className="flex-1 h-7 text-xs"
-          />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="To">
-        <div className="flex items-center gap-1.5">
-          <input
-            type="color"
-            value={g.color2}
-            onChange={(e) => onChange(buildGradient(g.type, g.angle, g.color1, e.target.value))}
-            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer"
           />
           <Input
-            value={g.color2}
-            onChange={(e) => onChange(buildGradient(g.type, g.angle, g.color1, e.target.value))}
-            className="flex-1 h-7 text-xs"
+            value={`${stop.position}`}
+            onChange={(e) => updateStop(i, "position", parseInt(e.target.value) || 0)}
+            className="w-12 h-7 text-xs text-center"
           />
+          <span className="text-[10px] text-(--el-400)">%</span>
+          {stops.length > 2 && (
+            <button
+              type="button"
+              onClick={() => removeStop(i)}
+              className="text-[11px] text-(--el-400) hover:text-(--status-error) bg-transparent border-none cursor-pointer"
+            >
+              ×
+            </button>
+          )}
         </div>
-      </PropertyRow>
-      <button
-        type="button"
-        onClick={() => {
-          setEnabled(false);
-          onChange("");
-        }}
-        className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
-      >
-        Remove gradient
-      </button>
+      ))}
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={addStop}
+          className="text-[11px] text-(--accent-primary) bg-transparent border-none cursor-pointer hover:underline"
+        >
+          + Add stop
+        </button>
+        <button
+          type="button"
+          onClick={() => { setEnabled(false); onChange(""); }}
+          className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
+        >
+          Remove
+        </button>
+      </div>
     </>
   );
 }
@@ -788,12 +891,11 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * BACKGROUNDS
        * ================================================================ */}
       <PropertySection title="Backgrounds" icon={<Palette className="h-3.5 w-3.5" />} defaultOpen={false}>
-        <PropertyRow label="Color">
-          <div className="flex items-center gap-1.5">
-            <input type="color" value={s("backgroundColor") || "#ffffff"} onChange={(e) => updateStyle("backgroundColor", e.target.value)} className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer" />
-            <Input value={s("backgroundColor")} onChange={(e) => updateStyle("backgroundColor", e.target.value)} placeholder="transparent" className="flex-1 h-7 text-xs" />
-          </div>
-        </PropertyRow>
+        <ColorWithOpacity
+          label="Color"
+          value={s("backgroundColor")}
+          onChange={(v) => updateStyle("backgroundColor", v)}
+        />
         <ImagePickerField
           value={s("backgroundImage").replace(/^url\(['"]?|['"]?\)$/g, "")}
           onChange={(url) => updateStyle("backgroundImage", url ? `url('${url}')` : "")}
