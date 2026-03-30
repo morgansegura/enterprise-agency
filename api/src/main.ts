@@ -53,7 +53,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // Serve static files from uploads directory
-  app.useStaticAssets(join(__dirname, "..", "uploads"), {
+  // Use process.cwd() instead of __dirname for dev/prod compatibility
+  app.useStaticAssets(join(process.cwd(), "uploads"), {
     prefix: "/uploads/",
   });
 
