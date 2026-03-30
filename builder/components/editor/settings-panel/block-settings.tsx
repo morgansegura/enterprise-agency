@@ -1130,6 +1130,29 @@ function TeamBlockSettings({
   );
 }
 
+interface FormField {
+  id: string;
+  type: "text" | "email" | "phone" | "textarea" | "select" | "checkbox" | "radio" | "file" | "number" | "date" | "url";
+  label: string;
+  placeholder?: string;
+  required?: boolean;
+  options?: string[]; // For select/radio
+}
+
+const FIELD_TYPES = [
+  { value: "text", label: "Text" },
+  { value: "email", label: "Email" },
+  { value: "phone", label: "Phone" },
+  { value: "textarea", label: "Text Area" },
+  { value: "select", label: "Dropdown" },
+  { value: "checkbox", label: "Checkbox" },
+  { value: "radio", label: "Radio" },
+  { value: "file", label: "File Upload" },
+  { value: "number", label: "Number" },
+  { value: "date", label: "Date" },
+  { value: "url", label: "URL" },
+];
+
 function ContactFormBlockSettings({
   block,
   onChange,
@@ -1138,25 +1161,111 @@ function ContactFormBlockSettings({
   onChange: (block: Block) => void;
 }) {
   const data = block.data || {};
+  const fields = ((data.fields as FormField[]) || [
+    { id: "name", type: "text", label: "Name", placeholder: "Your name", required: true },
+    { id: "email", type: "email", label: "Email", placeholder: "you@example.com", required: true },
+    { id: "message", type: "textarea", label: "Message", placeholder: "How can we help?", required: false },
+  ]) as FormField[];
+
   const handleChange = (field: string, value: unknown) => {
     onChange({ ...block, data: { ...data, [field]: value } });
   };
 
+  const updateField = (index: number, updates: Partial<FormField>) => {
+    const updated = [...fields];
+    updated[index] = { ...updated[index], ...updates };
+    handleChange("fields", updated);
+  };
+
+  const addField = () => {
+    const id = `field-${Date.now()}`;
+    handleChange("fields", [...fields, { id, type: "text", label: "New Field", placeholder: "", required: false }]);
+  };
+
+  const removeField = (index: number) => {
+    handleChange("fields", fields.filter((_, i) => i !== index));
+  };
+
+  const moveField = (index: number, direction: -1 | 1) => {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= fields.length) return;
+    const updated = [...fields];
+    [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
+    handleChange("fields", updated);
+  };
+
   return (
-    <PropertySection title="Contact Form" icon={<Type className="h-3.5 w-3.5" />}>
-      <PropertyRow label="Heading" stacked>
-        <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
-      </PropertyRow>
-      <PropertyRow label="Description" stacked>
-        <Input value={(data.description as string) || ""} onChange={(e) => handleChange("description", e.target.value)} className="settings-input" />
-      </PropertyRow>
-      <PropertyRow label="Button Text" stacked>
-        <Input value={(data.submitText as string) || ""} onChange={(e) => handleChange("submitText", e.target.value)} className="settings-input" />
-      </PropertyRow>
-      <PropertyRow label="Recipient Email" stacked>
-        <Input value={(data.recipientEmail as string) || ""} onChange={(e) => handleChange("recipientEmail", e.target.value)} className="settings-input" placeholder="you@company.com" />
-      </PropertyRow>
-    </PropertySection>
+    <>
+      <PropertySection title="Form Settings" icon={<Type className="h-3.5 w-3.5" />}>
+        <PropertyRow label="Heading" stacked>
+          <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+        </PropertyRow>
+        <PropertyRow label="Description" stacked>
+          <Input value={(data.description as string) || ""} onChange={(e) => handleChange("description", e.target.value)} className="settings-input" />
+        </PropertyRow>
+        <PropertyRow label="Button Text" stacked>
+          <Input value={(data.submitText as string) || "Submit"} onChange={(e) => handleChange("submitText", e.target.value)} className="settings-input" />
+        </PropertyRow>
+        <PropertyRow label="Email To" stacked>
+          <Input value={(data.recipientEmail as string) || ""} onChange={(e) => handleChange("recipientEmail", e.target.value)} className="settings-input" placeholder="you@company.com" />
+        </PropertyRow>
+        <PropertyRow label="Success Msg" stacked>
+          <Input value={(data.successMessage as string) || ""} onChange={(e) => handleChange("successMessage", e.target.value)} className="settings-input" placeholder="Thanks! We'll be in touch." />
+        </PropertyRow>
+      </PropertySection>
+
+      <PropertySection title="Form Fields" icon={<Box className="h-3.5 w-3.5" />}>
+        {fields.map((field, i) => (
+          <div key={field.id} className="border border-(--border-default) rounded-[3px] p-2 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-(--el-600)">{field.label}</span>
+              <div className="flex items-center gap-0.5">
+                <button type="button" onClick={() => moveField(i, -1)} disabled={i === 0} className="text-[11px] text-(--el-400) hover:text-(--el-800) disabled:opacity-30 bg-transparent border-none cursor-pointer">↑</button>
+                <button type="button" onClick={() => moveField(i, 1)} disabled={i === fields.length - 1} className="text-[11px] text-(--el-400) hover:text-(--el-800) disabled:opacity-30 bg-transparent border-none cursor-pointer">↓</button>
+                <button type="button" onClick={() => removeField(i)} className="text-[11px] text-(--status-error) hover:text-(--status-error) bg-transparent border-none cursor-pointer">×</button>
+              </div>
+            </div>
+            <PropertyRow label="Label">
+              <Input value={field.label} onChange={(e) => updateField(i, { label: e.target.value })} className="h-7 text-xs" />
+            </PropertyRow>
+            <PropertyRow label="Type">
+              <PropertySelect
+                value={field.type}
+                options={FIELD_TYPES}
+                onChange={(v) => updateField(i, { type: v as FormField["type"] })}
+              />
+            </PropertyRow>
+            <PropertyRow label="Placeholder">
+              <Input value={field.placeholder || ""} onChange={(e) => updateField(i, { placeholder: e.target.value })} className="h-7 text-xs" />
+            </PropertyRow>
+            <PropertyRow label="Required">
+              <PropertyToggle
+                value={field.required ? "yes" : "no"}
+                options={[{ value: "no", label: "No" }, { value: "yes", label: "Yes" }]}
+                onChange={(v) => updateField(i, { required: v === "yes" })}
+              />
+            </PropertyRow>
+            {(field.type === "select" || field.type === "radio") && (
+              <PropertyRow label="Options" stacked>
+                <Input
+                  value={(field.options || []).join(", ")}
+                  onChange={(e) => updateField(i, { options: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
+                  className="h-7 text-xs"
+                  placeholder="Option 1, Option 2, Option 3"
+                />
+              </PropertyRow>
+            )}
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addField}
+          className="w-full py-2 rounded-[3px] text-[12px] font-medium text-(--accent-primary) border border-dashed border-(--border-default) bg-transparent cursor-pointer hover:bg-(--accent-primary-subtle)/30 hover:border-(--accent-primary) transition-colors"
+        >
+          + Add Field
+        </button>
+      </PropertySection>
+    </>
   );
 }
 
