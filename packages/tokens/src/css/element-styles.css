@@ -1,137 +1,213 @@
 /*
  * Element Styles — CSS Custom Properties Consumer
  *
- * Only elements with [data-styled] have custom property overrides.
- * The data-styled attribute is added by the renderer when styles exist.
- * Uses `revert` fallback so unset properties inherit normally.
+ * Each [data-styled] element resets ALL --b-* vars to initial,
+ * preventing inheritance from parent elements. The inline style
+ * attribute then sets only the properties that are explicitly defined.
  */
 
 [data-styled] {
-  /* Layout */
-  display: var(--b-display, revert);
-  flex-direction: var(--b-flex-direction, revert);
-  flex-wrap: var(--b-flex-wrap, revert);
-  justify-content: var(--b-justify-content, revert);
-  align-items: var(--b-align-items, revert);
-  align-content: var(--b-align-content, revert);
-  align-self: var(--b-align-self, revert);
-  justify-self: var(--b-justify-self, revert);
-  gap: var(--b-gap, revert);
-  row-gap: var(--b-row-gap, revert);
-  column-gap: var(--b-column-gap, revert);
+  /* Reset all variables to prevent parent inheritance */
+  --b-display: initial;
+  --b-flex-direction: initial;
+  --b-flex-wrap: initial;
+  --b-justify-content: initial;
+  --b-align-items: initial;
+  --b-align-content: initial;
+  --b-align-self: initial;
+  --b-justify-self: initial;
+  --b-gap: initial;
+  --b-row-gap: initial;
+  --b-column-gap: initial;
+  --b-flex-grow: initial;
+  --b-flex-shrink: initial;
+  --b-flex-basis: initial;
+  --b-order: initial;
+  --b-grid-template-columns: initial;
+  --b-grid-template-rows: initial;
+  --b-grid-column: initial;
+  --b-grid-row: initial;
+  --b-margin-top: initial;
+  --b-margin-right: initial;
+  --b-margin-bottom: initial;
+  --b-margin-left: initial;
+  --b-padding-top: initial;
+  --b-padding-right: initial;
+  --b-padding-bottom: initial;
+  --b-padding-left: initial;
+  --b-width: initial;
+  --b-height: initial;
+  --b-min-width: initial;
+  --b-max-width: initial;
+  --b-min-height: initial;
+  --b-max-height: initial;
+  --b-aspect-ratio: initial;
+  --b-object-fit: initial;
+  --b-object-position: initial;
+  --b-position: initial;
+  --b-top: initial;
+  --b-right: initial;
+  --b-bottom: initial;
+  --b-left: initial;
+  --b-z-index: initial;
+  --b-overflow: initial;
+  --b-overflow-x: initial;
+  --b-overflow-y: initial;
+  --b-float: initial;
+  --b-clear: initial;
+  --b-font-family: initial;
+  --b-font-size: initial;
+  --b-font-weight: initial;
+  --b-font-style: initial;
+  --b-line-height: initial;
+  --b-letter-spacing: initial;
+  --b-word-spacing: initial;
+  --b-text-align: initial;
+  --b-text-transform: initial;
+  --b-text-decoration: initial;
+  --b-text-indent: initial;
+  --b-text-shadow: initial;
+  --b-white-space: initial;
+  --b-word-break: initial;
+  --b-color: initial;
+  --b-columns: initial;
+  --b-background-color: initial;
+  --b-background-image: initial;
+  --b-background-size: initial;
+  --b-background-position: initial;
+  --b-background-repeat: initial;
+  --b-background-attachment: initial;
+  --b-border-width: initial;
+  --b-border-top-width: initial;
+  --b-border-right-width: initial;
+  --b-border-bottom-width: initial;
+  --b-border-left-width: initial;
+  --b-border-style: initial;
+  --b-border-color: initial;
+  --b-border-top-color: initial;
+  --b-border-right-color: initial;
+  --b-border-bottom-color: initial;
+  --b-border-left-color: initial;
+  --b-border-radius: initial;
+  --b-border-top-left-radius: initial;
+  --b-border-top-right-radius: initial;
+  --b-border-bottom-right-radius: initial;
+  --b-border-bottom-left-radius: initial;
+  --b-opacity: initial;
+  --b-box-shadow: initial;
+  --b-transform: initial;
+  --b-transform-origin: initial;
+  --b-transition: initial;
+  --b-transition-property: initial;
+  --b-transition-duration: initial;
+  --b-transition-timing-function: initial;
+  --b-transition-delay: initial;
+  --b-filter: initial;
+  --b-backdrop-filter: initial;
+  --b-mix-blend-mode: initial;
+  --b-cursor: initial;
+  --b-pointer-events: initial;
+  --b-user-select: initial;
 
-  /* Flex child */
-  flex-grow: var(--b-flex-grow, revert);
-  flex-shrink: var(--b-flex-shrink, revert);
-  flex-basis: var(--b-flex-basis, revert);
-  order: var(--b-order, revert);
-
-  /* Grid */
-  grid-template-columns: var(--b-grid-template-columns, revert);
-  grid-template-rows: var(--b-grid-template-rows, revert);
-  grid-column: var(--b-grid-column, revert);
-  grid-row: var(--b-grid-row, revert);
-
-  /* Spacing */
-  margin-top: var(--b-margin-top, revert);
-  margin-right: var(--b-margin-right, revert);
-  margin-bottom: var(--b-margin-bottom, revert);
-  margin-left: var(--b-margin-left, revert);
-  padding-top: var(--b-padding-top, revert);
-  padding-right: var(--b-padding-right, revert);
-  padding-bottom: var(--b-padding-bottom, revert);
-  padding-left: var(--b-padding-left, revert);
-
-  /* Size */
-  width: var(--b-width, revert);
-  height: var(--b-height, revert);
-  min-width: var(--b-min-width, revert);
-  max-width: var(--b-max-width, revert);
-  min-height: var(--b-min-height, revert);
-  max-height: var(--b-max-height, revert);
-  aspect-ratio: var(--b-aspect-ratio, revert);
-  object-fit: var(--b-object-fit, revert);
-  object-position: var(--b-object-position, revert);
-
-  /* Position */
-  position: var(--b-position, revert);
-  top: var(--b-top, revert);
-  right: var(--b-right, revert);
-  bottom: var(--b-bottom, revert);
-  left: var(--b-left, revert);
-  z-index: var(--b-z-index, revert);
-  overflow: var(--b-overflow, revert);
-  overflow-x: var(--b-overflow-x, revert);
-  overflow-y: var(--b-overflow-y, revert);
-  float: var(--b-float, revert);
-  clear: var(--b-clear, revert);
-
-  /* Typography */
-  font-family: var(--b-font-family, revert);
-  font-size: var(--b-font-size, revert);
-  font-weight: var(--b-font-weight, revert);
-  font-style: var(--b-font-style, revert);
-  line-height: var(--b-line-height, revert);
-  letter-spacing: var(--b-letter-spacing, revert);
-  word-spacing: var(--b-word-spacing, revert);
-  text-align: var(--b-text-align, revert);
-  text-transform: var(--b-text-transform, revert);
-  text-decoration: var(--b-text-decoration, revert);
-  text-indent: var(--b-text-indent, revert);
-  text-shadow: var(--b-text-shadow, revert);
-  white-space: var(--b-white-space, revert);
-  word-break: var(--b-word-break, revert);
-  color: var(--b-color, revert);
-  columns: var(--b-columns, revert);
-
-  /* Backgrounds */
-  background-color: var(--b-background-color, revert);
-  background-image: var(--b-background-image, revert);
-  background-size: var(--b-background-size, revert);
-  background-position: var(--b-background-position, revert);
-  background-repeat: var(--b-background-repeat, revert);
-  background-attachment: var(--b-background-attachment, revert);
-
-  /* Borders */
-  border-width: var(--b-border-width, revert);
-  border-top-width: var(--b-border-top-width, revert);
-  border-right-width: var(--b-border-right-width, revert);
-  border-bottom-width: var(--b-border-bottom-width, revert);
-  border-left-width: var(--b-border-left-width, revert);
-  border-style: var(--b-border-style, revert);
-  border-color: var(--b-border-color, revert);
-  border-top-color: var(--b-border-top-color, revert);
-  border-right-color: var(--b-border-right-color, revert);
-  border-bottom-color: var(--b-border-bottom-color, revert);
-  border-left-color: var(--b-border-left-color, revert);
-  border-radius: var(--b-border-radius, revert);
-  border-top-left-radius: var(--b-border-top-left-radius, revert);
-  border-top-right-radius: var(--b-border-top-right-radius, revert);
-  border-bottom-right-radius: var(--b-border-bottom-right-radius, revert);
-  border-bottom-left-radius: var(--b-border-bottom-left-radius, revert);
-
-  /* Effects */
-  opacity: var(--b-opacity, revert);
-  box-shadow: var(--b-box-shadow, revert);
-
-  /* Transforms */
-  transform: var(--b-transform, revert);
-  transform-origin: var(--b-transform-origin, revert);
-
-  /* Transitions */
-  transition: var(--b-transition, revert);
-  transition-property: var(--b-transition-property, revert);
-  transition-duration: var(--b-transition-duration, revert);
-  transition-timing-function: var(--b-transition-timing-function, revert);
-  transition-delay: var(--b-transition-delay, revert);
-
-  /* Filters */
-  filter: var(--b-filter, revert);
-  backdrop-filter: var(--b-backdrop-filter, revert);
-
-  /* Blend & cursor */
-  mix-blend-mode: var(--b-mix-blend-mode, revert);
-  cursor: var(--b-cursor, revert);
-  pointer-events: var(--b-pointer-events, revert);
-  user-select: var(--b-user-select, revert);
+  /* Apply — only non-initial values (set via inline style) take effect */
+  display: var(--b-display);
+  flex-direction: var(--b-flex-direction);
+  flex-wrap: var(--b-flex-wrap);
+  justify-content: var(--b-justify-content);
+  align-items: var(--b-align-items);
+  align-content: var(--b-align-content);
+  align-self: var(--b-align-self);
+  justify-self: var(--b-justify-self);
+  gap: var(--b-gap);
+  row-gap: var(--b-row-gap);
+  column-gap: var(--b-column-gap);
+  flex-grow: var(--b-flex-grow);
+  flex-shrink: var(--b-flex-shrink);
+  flex-basis: var(--b-flex-basis);
+  order: var(--b-order);
+  grid-template-columns: var(--b-grid-template-columns);
+  grid-template-rows: var(--b-grid-template-rows);
+  grid-column: var(--b-grid-column);
+  grid-row: var(--b-grid-row);
+  margin-top: var(--b-margin-top);
+  margin-right: var(--b-margin-right);
+  margin-bottom: var(--b-margin-bottom);
+  margin-left: var(--b-margin-left);
+  padding-top: var(--b-padding-top);
+  padding-right: var(--b-padding-right);
+  padding-bottom: var(--b-padding-bottom);
+  padding-left: var(--b-padding-left);
+  width: var(--b-width);
+  height: var(--b-height);
+  min-width: var(--b-min-width);
+  max-width: var(--b-max-width);
+  min-height: var(--b-min-height);
+  max-height: var(--b-max-height);
+  aspect-ratio: var(--b-aspect-ratio);
+  object-fit: var(--b-object-fit);
+  object-position: var(--b-object-position);
+  position: var(--b-position);
+  top: var(--b-top);
+  right: var(--b-right);
+  bottom: var(--b-bottom);
+  left: var(--b-left);
+  z-index: var(--b-z-index);
+  overflow: var(--b-overflow);
+  overflow-x: var(--b-overflow-x);
+  overflow-y: var(--b-overflow-y);
+  float: var(--b-float);
+  clear: var(--b-clear);
+  font-family: var(--b-font-family);
+  font-size: var(--b-font-size);
+  font-weight: var(--b-font-weight);
+  font-style: var(--b-font-style);
+  line-height: var(--b-line-height);
+  letter-spacing: var(--b-letter-spacing);
+  word-spacing: var(--b-word-spacing);
+  text-align: var(--b-text-align);
+  text-transform: var(--b-text-transform);
+  text-decoration: var(--b-text-decoration);
+  text-indent: var(--b-text-indent);
+  text-shadow: var(--b-text-shadow);
+  white-space: var(--b-white-space);
+  word-break: var(--b-word-break);
+  color: var(--b-color);
+  columns: var(--b-columns);
+  background-color: var(--b-background-color);
+  background-image: var(--b-background-image);
+  background-size: var(--b-background-size);
+  background-position: var(--b-background-position);
+  background-repeat: var(--b-background-repeat);
+  background-attachment: var(--b-background-attachment);
+  border-width: var(--b-border-width);
+  border-top-width: var(--b-border-top-width);
+  border-right-width: var(--b-border-right-width);
+  border-bottom-width: var(--b-border-bottom-width);
+  border-left-width: var(--b-border-left-width);
+  border-style: var(--b-border-style);
+  border-color: var(--b-border-color);
+  border-top-color: var(--b-border-top-color);
+  border-right-color: var(--b-border-right-color);
+  border-bottom-color: var(--b-border-bottom-color);
+  border-left-color: var(--b-border-left-color);
+  border-radius: var(--b-border-radius);
+  border-top-left-radius: var(--b-border-top-left-radius);
+  border-top-right-radius: var(--b-border-top-right-radius);
+  border-bottom-right-radius: var(--b-border-bottom-right-radius);
+  border-bottom-left-radius: var(--b-border-bottom-left-radius);
+  opacity: var(--b-opacity);
+  box-shadow: var(--b-box-shadow);
+  transform: var(--b-transform);
+  transform-origin: var(--b-transform-origin);
+  transition: var(--b-transition);
+  transition-property: var(--b-transition-property);
+  transition-duration: var(--b-transition-duration);
+  transition-timing-function: var(--b-transition-timing-function);
+  transition-delay: var(--b-transition-delay);
+  filter: var(--b-filter);
+  backdrop-filter: var(--b-backdrop-filter);
+  mix-blend-mode: var(--b-mix-blend-mode);
+  cursor: var(--b-cursor);
+  pointer-events: var(--b-pointer-events);
+  user-select: var(--b-user-select);
 }
