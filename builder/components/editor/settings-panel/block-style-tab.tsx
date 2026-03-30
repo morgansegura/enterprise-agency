@@ -424,14 +424,14 @@ function GradientBuilder({
           <Input
             value={stop.color}
             onChange={(e) => updateStop(i, "color", e.target.value)}
-            className="flex-1 h-7 text-xs"
+            className="w-20 h-7 text-xs shrink-0"
           />
           <Input
             value={`${stop.position}`}
             onChange={(e) => updateStop(i, "position", parseInt(e.target.value) || 0)}
-            className="w-12 h-7 text-xs text-center"
+            className="w-10 h-7 text-xs text-center shrink-0"
           />
-          <span className="text-[10px] text-(--el-400)">%</span>
+          <span className="text-[10px] text-(--el-400) shrink-0">%</span>
           {stops.length > 2 && (
             <button
               type="button"
