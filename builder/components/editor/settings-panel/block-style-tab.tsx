@@ -476,14 +476,66 @@ interface BlockStyleTabProps {
 }
 
 /**
- * BlockStyleTab — wrapper that reads/writes block.styles
+ * BlockStyleTab — wrapper with Normal/::before/::after toggle
  */
 export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
+  const [mode, setMode] = React.useState<"normal" | "before" | "after">("normal");
+
+  const getStyles = () => {
+    if (mode === "before") return (block.stylesBefore as ElementStyles) || {};
+    if (mode === "after") return (block.stylesAfter as ElementStyles) || {};
+    return (block.styles as ElementStyles) || {};
+  };
+
+  const handleChange = (updated: ElementStyles) => {
+    if (mode === "before") onChange({ ...block, stylesBefore: updated });
+    else if (mode === "after") onChange({ ...block, stylesAfter: updated });
+    else onChange({ ...block, styles: updated });
+  };
+
   return (
-    <ElementStyleTab
-      styles={(block.styles as ElementStyles) || {}}
-      onStyleChange={(updated) => onChange({ ...block, styles: updated })}
-    />
+    <>
+      {/* Mode toggle */}
+      <div className="flex items-center gap-0.5 px-3 py-2 border-b border-(--border-default)">
+        <button
+          type="button"
+          className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === "normal" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+          onClick={() => setMode("normal")}
+        >
+          Normal
+        </button>
+        <button
+          type="button"
+          className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === "before" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+          onClick={() => setMode("before")}
+        >
+          ::before
+        </button>
+        <button
+          type="button"
+          className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === "after" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+          onClick={() => setMode("after")}
+        >
+          ::after
+        </button>
+      </div>
+      {mode !== "normal" && (
+        <div className="px-3 py-2 border-b border-(--border-default)">
+          <PropertyRow label="Content">
+            <Input
+              value={(getStyles() as Record<string, string>).content || ""}
+              onChange={(e) => handleChange({ ...getStyles(), content: e.target.value })}
+              placeholder='""'
+              className="w-full h-7 text-xs"
+            />
+          </PropertyRow>
+        </div>
+      )}
+      <ElementStyleTab
+        styles={getStyles()}
+        onStyleChange={handleChange}
+      />
+    </>
   );
 }
 

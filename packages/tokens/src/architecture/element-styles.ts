@@ -144,6 +144,7 @@ const STYLE_TO_CSS: Record<string, string> = {
  */
 export function stylesToCSSVars(
   styles?: ElementStyles,
+  prefix: string = "--b-",
 ): Record<string, string> {
   if (!styles) return {};
 
@@ -152,13 +153,34 @@ export function stylesToCSSVars(
   for (const [key, value] of Object.entries(styles)) {
     if (value === undefined || value === "") continue;
 
+    if (key === "content") {
+      vars[`${prefix}content`] = value;
+      continue;
+    }
+
     const cssProperty = STYLE_TO_CSS[key];
     if (cssProperty) {
-      vars[`--b-${cssProperty}`] = value;
+      vars[`${prefix}${cssProperty}`] = value;
     }
   }
 
   return vars;
+}
+
+/**
+ * Convert element styles including ::before and ::after pseudo-elements.
+ * Merges all into a single CSS vars object.
+ */
+export function allStylesToCSSVars(
+  styles?: ElementStyles,
+  stylesBefore?: ElementStyles & { content?: string },
+  stylesAfter?: ElementStyles & { content?: string },
+): Record<string, string> {
+  return {
+    ...stylesToCSSVars(styles, "--b-"),
+    ...stylesToCSSVars(stylesBefore, "--b-before-"),
+    ...stylesToCSSVars(stylesAfter, "--b-after-"),
+  };
 }
 
 /**

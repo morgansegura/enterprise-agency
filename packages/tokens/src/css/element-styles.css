@@ -211,3 +211,49 @@
   pointer-events: var(--b-pointer-events);
   user-select: var(--b-user-select);
 }
+
+/*
+ * Pseudo-elements — ::before and ::after
+ * Only rendered when content is set (via --b-before-content / --b-after-content)
+ */
+[data-styled][data-has-before]::before {
+  content: var(--b-before-content, "");
+  display: var(--b-before-display, block);
+  position: var(--b-before-position, absolute);
+  top: var(--b-before-top);
+  right: var(--b-before-right);
+  bottom: var(--b-before-bottom);
+  left: var(--b-before-left);
+  width: var(--b-before-width);
+  height: var(--b-before-height);
+  background-color: var(--b-before-background-color);
+  background-image: var(--b-before-background-image);
+  border-radius: var(--b-before-border-radius);
+  opacity: var(--b-before-opacity);
+  z-index: var(--b-before-z-index);
+  transform: var(--b-before-transform);
+  filter: var(--b-before-filter);
+  color: var(--b-before-color);
+  font-size: var(--b-before-font-size);
+}
+
+[data-styled][data-has-after]::after {
+  content: var(--b-after-content, "");
+  display: var(--b-after-display, block);
+  position: var(--b-after-position, absolute);
+  top: var(--b-after-top);
+  right: var(--b-after-right);
+  bottom: var(--b-after-bottom);
+  left: var(--b-after-left);
+  width: var(--b-after-width);
+  height: var(--b-after-height);
+  background-color: var(--b-after-background-color);
+  background-image: var(--b-after-background-image);
+  border-radius: var(--b-after-border-radius);
+  opacity: var(--b-after-opacity);
+  z-index: var(--b-after-z-index);
+  transform: var(--b-after-transform);
+  filter: var(--b-after-filter);
+  color: var(--b-after-color);
+  font-size: var(--b-after-font-size);
+}

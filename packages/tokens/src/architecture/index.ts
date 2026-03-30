@@ -118,4 +118,4 @@ export {
 } from "./blocks";
 
 // Element styles utilities
-export { stylesToCSSVars, hasStyles, mergeStyles } from "./element-styles";
+export { stylesToCSSVars, allStylesToCSSVars, hasStyles, mergeStyles } from "./element-styles";

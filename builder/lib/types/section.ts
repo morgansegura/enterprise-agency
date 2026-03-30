@@ -59,6 +59,7 @@ export {
   isTailwindGradientConfig,
   // Element styles
   stylesToCSSVars,
+  allStylesToCSSVars,
   hasStyles,
   mergeStyles,
 } from "@enterprise/tokens";

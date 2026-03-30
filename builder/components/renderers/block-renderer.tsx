@@ -6,7 +6,7 @@ import {
   blockRendererRegistry,
   type BlockRendererProps,
 } from "@/lib/renderer/block-renderer-registry";
-import { stylesToCSSVars, hasStyles } from "@/lib/types/section";
+import { allStylesToCSSVars, hasStyles } from "@/lib/types/section";
 
 interface Props {
   block: Block;
@@ -69,17 +69,20 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
     .replace(/-/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
 
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const cssVars = stylesToCSSVars(styles);
-  const styled = hasStyles(styles);
+  const blockAny = block as Record<string, unknown>;
+  const styles = blockAny.styles as Record<string, string> | undefined;
+  const stylesBefore = blockAny.stylesBefore as Record<string, string> | undefined;
+  const stylesAfter = blockAny.stylesAfter as Record<string, string> | undefined;
+  const cssVars = allStylesToCSSVars(styles, stylesBefore, stylesAfter);
+  const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter);
 
   return (
     <div
       data-block-key={block._key}
       data-block-label={label}
       data-styled={styled || undefined}
+      data-has-before={hasStyles(stylesBefore) || undefined}
+      data-has-after={hasStyles(stylesAfter) || undefined}
       style={styled ? (cssVars as React.CSSProperties) : undefined}
     >
       <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />

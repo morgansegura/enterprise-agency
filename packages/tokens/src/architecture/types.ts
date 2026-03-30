@@ -322,6 +322,10 @@ export interface Block {
   data: Record<string, unknown>;
   /** Raw CSS styles — rendered as CSS custom properties */
   styles?: ElementStyles;
+  /** ::before pseudo-element styles */
+  stylesBefore?: ElementStyles & { content?: string };
+  /** ::after pseudo-element styles */
+  stylesAfter?: ElementStyles & { content?: string };
   [key: string]: unknown;
 }
 
