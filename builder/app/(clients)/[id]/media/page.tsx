@@ -375,7 +375,35 @@ export default function MediaLibraryPage({
           {selectedAsset && (
             <>
               <SheetHeader>
-                <SheetTitle>{selectedAsset.fileName}</SheetTitle>
+                <div className="media-detail-nav">
+                  <SheetTitle>{selectedAsset.fileName}</SheetTitle>
+                  <div className="media-detail-nav-btns">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      onClick={() => {
+                        const idx = filteredAssets.findIndex((a) => a.id === selectedAsset.id);
+                        if (idx > 0) setSelectedAsset(filteredAssets[idx - 1]);
+                      }}
+                      disabled={filteredAssets.findIndex((a) => a.id === selectedAsset.id) <= 0}
+                    >
+                      ←
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      onClick={() => {
+                        const idx = filteredAssets.findIndex((a) => a.id === selectedAsset.id);
+                        if (idx < filteredAssets.length - 1) setSelectedAsset(filteredAssets[idx + 1]);
+                      }}
+                      disabled={filteredAssets.findIndex((a) => a.id === selectedAsset.id) >= filteredAssets.length - 1}
+                    >
+                      →
+                    </Button>
+                  </div>
+                </div>
               </SheetHeader>
 
               <div className="media-detail-preview">
@@ -428,12 +456,8 @@ export default function MediaLibraryPage({
                   <label className="media-detail-field-label">Alternative Text</label>
                   <Input
                     value={selectedAsset.altText || ""}
-                    onChange={(e) => {
-                      setSelectedAsset({ ...selectedAsset, altText: e.target.value });
-                    }}
-                    onBlur={() => {
-                      updateAsset.mutate({ id: selectedAsset.id, data: { altText: selectedAsset.altText || "" } });
-                    }}
+                    onChange={(e) => setSelectedAsset({ ...selectedAsset, altText: e.target.value })}
+                    onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { altText: selectedAsset.altText || "" } })}
                     placeholder="Describe this image for accessibility"
                     className="h-8 text-[13px]"
                   />
@@ -441,6 +465,37 @@ export default function MediaLibraryPage({
                     Leave empty if purely decorative
                   </span>
                 </div>
+              </div>
+
+              {/* Replace media */}
+              <div className="media-detail-field">
+                <label className="media-detail-field-label">Replace media</label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*,video/*,audio/*";
+                    input.onchange = async (e) => {
+                      const file = (e.target as HTMLInputElement).files?.[0];
+                      if (!file) return;
+                      try {
+                        await uploadAsset.mutateAsync({ file });
+                        handleDelete(selectedAsset);
+                        toast.success("Media replaced");
+                      } catch {
+                        toast.error("Failed to replace media");
+                      }
+                    };
+                    input.click();
+                  }}
+                >
+                  Upload a new file
+                </Button>
+                <span className="media-detail-field-hint">
+                  Upload a replacement file
+                </span>
               </div>
 
               {/* File URL */}

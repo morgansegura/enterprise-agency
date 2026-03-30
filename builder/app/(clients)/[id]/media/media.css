@@ -290,7 +290,16 @@
   @apply text-[11px] text-(--el-400);
 }
 
+/* Detail panel — navigation */
+.media-detail-nav {
+  @apply flex items-center justify-between;
+}
+
+.media-detail-nav-btns {
+  @apply flex items-center gap-0.5;
+}
+
 /* Detail panel — actions */
 .media-detail-actions {
-  @apply pt-3 border-t border-(--border-default);
+  @apply flex items-center gap-2 pt-3 border-t border-(--border-default);
 }
