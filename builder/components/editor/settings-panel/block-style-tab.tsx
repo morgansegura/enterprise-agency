@@ -23,24 +23,41 @@ import {
 import type { Block } from "@/lib/types/section";
 import type { ElementStyles } from "@enterprise/tokens";
 
+interface ElementStyleTabProps {
+  /** The element's current styles object */
+  styles?: ElementStyles;
+  /** Called with updated styles */
+  onStyleChange: (styles: ElementStyles) => void;
+}
+
 interface BlockStyleTabProps {
   block: Block;
   onChange: (block: Block) => void;
 }
 
 /**
- * BlockStyleTab — Full Webflow-level CSS property editor.
- * Every CSS property available for direct control.
+ * BlockStyleTab — wrapper that reads/writes block.styles
  */
 export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
-  const styles: ElementStyles = (block.styles as ElementStyles) || {};
+  return (
+    <ElementStyleTab
+      styles={(block.styles as ElementStyles) || {}}
+      onStyleChange={(updated) => onChange({ ...block, styles: updated })}
+    />
+  );
+}
+
+/**
+ * ElementStyleTab — Full Webflow-level CSS property editor.
+ * Works for blocks, containers, and sections.
+ * Every CSS property available for direct control.
+ */
+export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementStyleTabProps) {
+  const styles: ElementStyles = inputStyles || {};
 
   const updateStyle = (property: string, value: string) => {
-    const updated = {
-      ...block,
-      styles: { ...styles, [property]: value || undefined },
-    };
-    onChange(updated);
+    const cleared = value === "inherit" || value === "" ? undefined : value;
+    onStyleChange({ ...styles, [property]: cleared });
   };
 
   const s = (property: keyof ElementStyles) =>
@@ -157,7 +174,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("alignSelf")}
             options={[
-              { value: "", label: "Auto" },
+              { value: "inherit", label: "Auto" },
               { value: "flex-start", label: "Start" },
               { value: "center", label: "Center" },
               { value: "flex-end", label: "End" },
@@ -234,7 +251,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("objectFit")}
             options={[
-              { value: "", label: "None" },
+              { value: "inherit", label: "None" },
               { value: "cover", label: "Cover" },
               { value: "contain", label: "Contain" },
               { value: "fill", label: "Fill" },
@@ -279,7 +296,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("overflow")}
             options={[
-              { value: "", label: "Visible" },
+              { value: "inherit", label: "Visible" },
               { value: "hidden", label: "Hidden" },
               { value: "scroll", label: "Scroll" },
               { value: "auto", label: "Auto" },
@@ -291,7 +308,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertyToggle
             value={s("float")}
             options={[
-              { value: "", label: "None" },
+              { value: "inherit", label: "None" },
               { value: "left", label: "Left" },
               { value: "right", label: "Right" },
             ]}
@@ -308,7 +325,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("fontFamily")}
             options={[
-              { value: "", label: "Inherit" },
+              { value: "inherit", label: "Inherit" },
               { value: "'Inter', sans-serif", label: "Inter" },
               { value: "'Poppins', sans-serif", label: "Poppins" },
               { value: "'DM Sans', sans-serif", label: "DM Sans" },
@@ -327,7 +344,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("fontWeight")}
             options={[
-              { value: "", label: "Inherit" },
+              { value: "inherit", label: "Inherit" },
               { value: "100", label: "100 - Thin" },
               { value: "200", label: "200 - Extra Light" },
               { value: "300", label: "300 - Light" },
@@ -359,7 +376,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertyToggle
             value={s("textAlign")}
             options={[
-              { value: "", label: "—" },
+              { value: "inherit", label: "—" },
               { value: "left", label: "Left" },
               { value: "center", label: "Center" },
               { value: "right", label: "Right" },
@@ -373,7 +390,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertyToggle
             value={s("fontStyle")}
             options={[
-              { value: "", label: "Normal" },
+              { value: "inherit", label: "Normal" },
               { value: "italic", label: "Italic" },
             ]}
             onChange={(v) => updateStyle("fontStyle", v)}
@@ -383,7 +400,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertyToggle
             value={s("textDecoration")}
             options={[
-              { value: "", label: "None" },
+              { value: "inherit", label: "None" },
               { value: "underline", label: "U" },
               { value: "line-through", label: "S" },
               { value: "overline", label: "O" },
@@ -396,7 +413,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("textTransform")}
             options={[
-              { value: "", label: "None" },
+              { value: "inherit", label: "None" },
               { value: "uppercase", label: "UPPERCASE" },
               { value: "lowercase", label: "lowercase" },
               { value: "capitalize", label: "Capitalize" },
@@ -425,7 +442,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("whiteSpace")}
             options={[
-              { value: "", label: "Normal" },
+              { value: "inherit", label: "Normal" },
               { value: "nowrap", label: "No Wrap" },
               { value: "pre", label: "Pre" },
               { value: "pre-wrap", label: "Pre Wrap" },
@@ -454,7 +471,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
             <PropertySelect
               value={s("backgroundSize")}
               options={[
-                { value: "", label: "Auto" },
+                { value: "inherit", label: "Auto" },
                 { value: "cover", label: "Cover" },
                 { value: "contain", label: "Contain" },
                 { value: "100% 100%", label: "Fill" },
@@ -466,7 +483,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
             <PropertySelect
               value={s("backgroundPosition")}
               options={[
-                { value: "", label: "Center" },
+                { value: "inherit", label: "Center" },
                 { value: "top", label: "Top" },
                 { value: "bottom", label: "Bottom" },
                 { value: "left", label: "Left" },
@@ -480,7 +497,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("backgroundRepeat")}
             options={[
-              { value: "", label: "Repeat" },
+              { value: "inherit", label: "Repeat" },
               { value: "no-repeat", label: "No Repeat" },
               { value: "repeat-x", label: "Repeat X" },
               { value: "repeat-y", label: "Repeat Y" },
@@ -492,7 +509,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertyToggle
             value={s("backgroundAttachment")}
             options={[
-              { value: "", label: "Scroll" },
+              { value: "inherit", label: "Scroll" },
               { value: "fixed", label: "Fixed" },
             ]}
             onChange={(v) => updateStyle("backgroundAttachment", v)}
@@ -511,7 +528,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("borderStyle")}
             options={[
-              { value: "", label: "None" },
+              { value: "inherit", label: "None" },
               { value: "solid", label: "Solid" },
               { value: "dashed", label: "Dashed" },
               { value: "dotted", label: "Dotted" },
@@ -572,7 +589,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("mixBlendMode")}
             options={[
-              { value: "", label: "Normal" },
+              { value: "inherit", label: "Normal" },
               { value: "multiply", label: "Multiply" },
               { value: "screen", label: "Screen" },
               { value: "overlay", label: "Overlay" },
@@ -607,7 +624,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("transitionProperty")}
             options={[
-              { value: "", label: "None" },
+              { value: "inherit", label: "None" },
               { value: "all", label: "All" },
               { value: "opacity", label: "Opacity" },
               { value: "transform", label: "Transform" },
@@ -630,7 +647,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("transitionTimingFunction")}
             options={[
-              { value: "", label: "Ease" },
+              { value: "inherit", label: "Ease" },
               { value: "linear", label: "Linear" },
               { value: "ease-in", label: "Ease In" },
               { value: "ease-out", label: "Ease Out" },
@@ -661,7 +678,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertySelect
             value={s("cursor")}
             options={[
-              { value: "", label: "Auto" },
+              { value: "inherit", label: "Auto" },
               { value: "default", label: "Default" },
               { value: "pointer", label: "Pointer" },
               { value: "text", label: "Text" },
@@ -678,7 +695,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertyToggle
             value={s("pointerEvents")}
             options={[
-              { value: "", label: "Auto" },
+              { value: "inherit", label: "Auto" },
               { value: "none", label: "None" },
             ]}
             onChange={(v) => updateStyle("pointerEvents", v)}
@@ -688,7 +705,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           <PropertyToggle
             value={s("userSelect")}
             options={[
-              { value: "", label: "Auto" },
+              { value: "inherit", label: "Auto" },
               { value: "none", label: "None" },
               { value: "all", label: "All" },
             ]}
