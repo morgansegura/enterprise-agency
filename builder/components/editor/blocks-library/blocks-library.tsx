@@ -111,6 +111,229 @@ const CATEGORIES: Category[] = [
   },
 ];
 
+// =============================================================================
+// Section Templates — pre-built sections users can add to pages
+// =============================================================================
+
+interface SectionTemplate {
+  name: string;
+  description: string;
+  preview: string;
+  section: {
+    width: string;
+    paddingY: string;
+    background?: Record<string, unknown>;
+    styles?: Record<string, string>;
+    containers: Array<{
+      layout?: Record<string, unknown>;
+      blocks: Array<{
+        _type: string;
+        data: Record<string, unknown>;
+        styles?: Record<string, string>;
+      }>;
+    }>;
+  };
+}
+
+const SECTION_TEMPLATES: SectionTemplate[] = [
+  {
+    name: "Hero",
+    description: "Large heading with CTA button",
+    preview: "H1 + Subtext + Button",
+    section: {
+      width: "full",
+      paddingY: "2xl",
+      styles: { paddingTop: "80px", paddingBottom: "80px", textAlign: "center" },
+      containers: [{
+        layout: { type: "flex", direction: "column", align: "center", gap: "md" },
+        blocks: [
+          { _type: "heading-block", data: { text: "Build Something Amazing", level: "h1", size: "4xl", weight: "bold", align: "center" }, styles: { fontSize: "56px", fontWeight: "800", lineHeight: "1.1" } },
+          { _type: "text-block", data: { content: "Create stunning websites with our visual builder. No code required.", size: "lg", align: "center" }, styles: { fontSize: "20px", maxWidth: "600px", opacity: "0.7" } },
+          { _type: "button-block", data: { text: "Get Started", variant: "default", size: "lg" } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Hero + Image",
+    description: "Split hero with text and image",
+    preview: "Text Left | Image Right",
+    section: {
+      width: "container",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px" },
+      containers: [{
+        layout: { type: "flex", direction: "row", align: "center", gap: "lg" },
+        blocks: [
+          { _type: "heading-block", data: { text: "Your Headline Here", level: "h1", size: "3xl", weight: "bold" }, styles: { fontSize: "42px", fontWeight: "700" } },
+          { _type: "text-block", data: { content: "Describe your value proposition. What makes you different?", size: "lg" }, styles: { fontSize: "18px", opacity: "0.7" } },
+          { _type: "button-block", data: { text: "Learn More", variant: "default" } },
+          { _type: "image-block", data: { src: "", alt: "Hero image" } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Features Grid",
+    description: "3-column feature cards",
+    preview: "Feature | Feature | Feature",
+    section: {
+      width: "container",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px" },
+      containers: [{
+        layout: { type: "flex", direction: "column", align: "center", gap: "lg" },
+        blocks: [
+          { _type: "heading-block", data: { text: "Our Features", level: "h2", size: "2xl", weight: "bold", align: "center" }, styles: { fontSize: "36px", fontWeight: "700" } },
+          { _type: "feature-grid-block", data: { columns: 3, features: [
+            { title: "Feature One", description: "Describe the benefit of this feature.", icon: "star" },
+            { title: "Feature Two", description: "Describe the benefit of this feature.", icon: "zap" },
+            { title: "Feature Three", description: "Describe the benefit of this feature.", icon: "shield" },
+          ] } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "CTA Banner",
+    description: "Call-to-action with background",
+    preview: "Heading + Button on Color",
+    section: {
+      width: "full",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px", backgroundColor: "#0052cc", color: "#ffffff", textAlign: "center" },
+      containers: [{
+        layout: { type: "flex", direction: "column", align: "center", gap: "md" },
+        blocks: [
+          { _type: "heading-block", data: { text: "Ready to Get Started?", level: "h2", size: "2xl", weight: "bold", align: "center" }, styles: { fontSize: "36px", color: "#ffffff" } },
+          { _type: "text-block", data: { content: "Join thousands of happy customers today.", align: "center" }, styles: { fontSize: "18px", color: "rgba(255,255,255,0.8)" } },
+          { _type: "button-block", data: { text: "Start Now", variant: "secondary", size: "lg" } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Testimonials",
+    description: "Customer quotes section",
+    preview: "Quote | Quote | Quote",
+    section: {
+      width: "container",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px" },
+      containers: [{
+        blocks: [
+          { _type: "heading-block", data: { text: "What Our Clients Say", level: "h2", size: "2xl", weight: "bold", align: "center" }, styles: { fontSize: "36px", textAlign: "center" } },
+          { _type: "testimonial-block", data: { items: [
+            { quote: "This product changed our business completely.", author: "Jane Smith", role: "CEO, Company" },
+            { quote: "Incredible value. Would recommend to anyone.", author: "John Doe", role: "Founder, Startup" },
+            { quote: "The best investment we've made this year.", author: "Sarah Johnson", role: "Director, Agency" },
+          ] } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Pricing",
+    description: "Pricing plans comparison",
+    preview: "Plan | Plan | Plan",
+    section: {
+      width: "container",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px" },
+      containers: [{
+        blocks: [
+          { _type: "heading-block", data: { text: "Simple Pricing", level: "h2", size: "2xl", weight: "bold", align: "center" }, styles: { fontSize: "36px", textAlign: "center" } },
+          { _type: "pricing-block", data: { tiers: [
+            { name: "Starter", price: "$29", period: "/mo", features: ["5 Projects", "Basic Support", "1 Team Member"], cta: "Get Started" },
+            { name: "Pro", price: "$79", period: "/mo", features: ["Unlimited Projects", "Priority Support", "10 Team Members", "Analytics"], cta: "Go Pro", highlighted: true },
+            { name: "Enterprise", price: "$199", period: "/mo", features: ["Everything in Pro", "Dedicated Support", "Unlimited Team", "Custom Integration"], cta: "Contact Us" },
+          ] } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "FAQ",
+    description: "Frequently asked questions",
+    preview: "Q&A Accordion",
+    section: {
+      width: "container",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px", maxWidth: "768px", marginLeft: "auto", marginRight: "auto" },
+      containers: [{
+        blocks: [
+          { _type: "heading-block", data: { text: "Frequently Asked Questions", level: "h2", size: "2xl", weight: "bold", align: "center" }, styles: { fontSize: "36px", textAlign: "center", marginBottom: "32px" } },
+          { _type: "faq-block", data: { items: [
+            { question: "How does this work?", answer: "It's simple. Sign up, create your project, and start building." },
+            { question: "Can I cancel anytime?", answer: "Yes, you can cancel your subscription at any time with no penalty." },
+            { question: "Do you offer support?", answer: "We offer 24/7 support via chat and email for all plans." },
+            { question: "Is there a free trial?", answer: "Yes! Every plan comes with a 14-day free trial." },
+          ] } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Contact",
+    description: "Contact form with info",
+    preview: "Form + Contact Details",
+    section: {
+      width: "container",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px" },
+      containers: [{
+        blocks: [
+          { _type: "heading-block", data: { text: "Get In Touch", level: "h2", size: "2xl", weight: "bold", align: "center" }, styles: { fontSize: "36px", textAlign: "center" } },
+          { _type: "contact-form-block", data: { heading: "", submitText: "Send Message", fields: [
+            { id: "name", type: "text", label: "Name", placeholder: "Your name", required: true },
+            { id: "email", type: "email", label: "Email", placeholder: "you@example.com", required: true },
+            { id: "subject", type: "text", label: "Subject", placeholder: "What's this about?" },
+            { id: "message", type: "textarea", label: "Message", placeholder: "Tell us more...", required: true },
+          ] } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Newsletter",
+    description: "Email signup section",
+    preview: "Heading + Email Input",
+    section: {
+      width: "full",
+      paddingY: "lg",
+      styles: { paddingTop: "48px", paddingBottom: "48px", backgroundColor: "#f8fafc", textAlign: "center" },
+      containers: [{
+        layout: { type: "flex", direction: "column", align: "center", gap: "md" },
+        blocks: [
+          { _type: "heading-block", data: { text: "Stay Updated", level: "h3", size: "xl", weight: "bold", align: "center" }, styles: { fontSize: "28px" } },
+          { _type: "text-block", data: { content: "Get the latest updates delivered to your inbox.", align: "center" }, styles: { opacity: "0.7" } },
+          { _type: "newsletter-block", data: { buttonText: "Subscribe", placeholder: "Enter your email" } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Team",
+    description: "Team members grid",
+    preview: "Person | Person | Person",
+    section: {
+      width: "container",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px" },
+      containers: [{
+        blocks: [
+          { _type: "heading-block", data: { text: "Meet Our Team", level: "h2", size: "2xl", weight: "bold", align: "center" }, styles: { fontSize: "36px", textAlign: "center" } },
+          { _type: "team-block", data: { members: [
+            { name: "Alex Johnson", role: "CEO", image: "", bio: "Leading the vision." },
+            { name: "Sam Williams", role: "CTO", image: "", bio: "Building the future." },
+            { name: "Jordan Lee", role: "Design Lead", image: "", bio: "Crafting experiences." },
+          ] } },
+        ],
+      }],
+    },
+  },
+];
+
 export function BlocksLibrary() {
   const params = useParams();
   const tenantId = params?.id as string;
@@ -210,22 +433,74 @@ export function BlocksLibrary() {
     return content;
   };
 
+  const [tab, setTab] = React.useState<"elements" | "sections">("elements");
+
+  const handleSectionClick = (template: SectionTemplate) => {
+    window.dispatchEvent(
+      new CustomEvent("add-section-template", {
+        detail: template,
+      }),
+    );
+  };
+
   return (
     <div className="blocks-library">
+      {/* Tabs */}
+      <div className="blocks-library-tabs">
+        <button
+          type="button"
+          className="blocks-library-tab"
+          data-active={tab === "elements" || undefined}
+          onClick={() => setTab("elements")}
+        >
+          Elements
+        </button>
+        <button
+          type="button"
+          className="blocks-library-tab"
+          data-active={tab === "sections" || undefined}
+          onClick={() => setTab("sections")}
+        >
+          Sections
+        </button>
+      </div>
+
       {/* Search */}
       <div className="blocks-library-search">
         <Search className="size-3.5 shrink-0" />
         <input
           type="text"
           className="blocks-library-search-input"
-          placeholder="Search elements"
+          placeholder={tab === "elements" ? "Search elements" : "Search sections"}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      {/* Categories */}
-      {filteredCategories.map(renderCategory)}
+      {/* Elements tab */}
+      {tab === "elements" && filteredCategories.map(renderCategory)}
+
+      {/* Sections tab */}
+      {tab === "sections" && (
+        <div className="blocks-library-sections">
+          {SECTION_TEMPLATES.filter(
+            (s) => !search || s.name.toLowerCase().includes(search.toLowerCase()),
+          ).map((template) => (
+            <button
+              key={template.name}
+              type="button"
+              className="blocks-library-section-card"
+              onClick={() => handleSectionClick(template)}
+              title={template.description}
+            >
+              <div className="blocks-library-section-preview">
+                {template.preview}
+              </div>
+              <span className="blocks-library-section-name">{template.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

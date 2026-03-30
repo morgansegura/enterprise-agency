@@ -80,12 +80,12 @@ export default function EditPagePage({
   } = usePreviewMode();
 
   // Selection & hover state
-  const [selectedBlockKey, setSelectedBlockKey] = React.useState<
-    string | null
-  >(null);
-  const [hoveredBlockKey, setHoveredBlockKey] = React.useState<
-    string | null
-  >(null);
+  const [selectedBlockKey, setSelectedBlockKey] = React.useState<string | null>(
+    null,
+  );
+  const [hoveredBlockKey, setHoveredBlockKey] = React.useState<string | null>(
+    null,
+  );
 
   // Sync selection highlight to preview DOM
   React.useEffect(() => {
@@ -131,7 +131,8 @@ export default function EditPagePage({
   }, [contextMenu]);
 
   // UI Store for block selection in sidebar
-  const { selectBlock, selectSection, selectContainer, selectedElement } = useUIStore();
+  const { selectBlock, selectSection, selectContainer, selectedElement } =
+    useUIStore();
 
   // Local page state for editing
   const [localPage, setLocalPage] = React.useState({
@@ -150,7 +151,11 @@ export default function EditPagePage({
     pageId,
     debounceMs: 3000,
     onSaveSuccess: () => {
-      toast("Saved", { duration: 1500, id: "auto-save", position: "bottom-right" });
+      toast("Saved", {
+        duration: 1500,
+        id: "auto-save",
+        position: "bottom-right",
+      });
     },
     onSaveError: (error) => {
       toast.error(`Failed to save: ${error.message}`);
@@ -251,6 +256,57 @@ export default function EditPagePage({
     return () => window.removeEventListener("add-block", handleAddBlock);
   }, [editor, selectedElement?.sectionIndex, selectedElement?.containerIndex]);
 
+  // Listen for section template additions from BlocksLibrary
+  React.useEffect(() => {
+    const handleAddSectionTemplate = (event: Event) => {
+      const customEvent = event as CustomEvent<{
+        name: string;
+        section: {
+          width: string;
+          paddingY: string;
+          styles?: Record<string, string>;
+          containers: Array<{
+            layout?: Record<string, unknown>;
+            blocks: Array<{
+              _type: string;
+              data: Record<string, unknown>;
+              styles?: Record<string, string>;
+            }>;
+          }>;
+        };
+      }>;
+      const template = customEvent.detail;
+      const ts = Date.now();
+
+      // Build the section with unique keys
+      const newSection = {
+        _type: "section" as const,
+        _key: `template-section-${ts}`,
+        width: template.section.width,
+        paddingY: template.section.paddingY,
+        styles: template.section.styles,
+        containers: template.section.containers.map((container, ci) => ({
+          _type: "container" as const,
+          _key: `template-container-${ts}-${ci}`,
+          layout: container.layout || { type: "stack", direction: "column", gap: "md" },
+          blocks: container.blocks.map((block, bi) => ({
+            _type: block._type,
+            _key: `template-block-${ts}-${ci}-${bi}`,
+            data: block.data,
+            styles: block.styles,
+          })),
+        })),
+      };
+
+      editor.setSections((prev: typeof editor.sections) => [
+        ...prev,
+        newSection as (typeof editor.sections)[number],
+      ]);
+    };
+    window.addEventListener("add-section-template", handleAddSectionTemplate);
+    return () => window.removeEventListener("add-section-template", handleAddSectionTemplate);
+  }, [editor]);
+
   // --- Early returns ---
 
   if (isLoading) {
@@ -268,7 +324,7 @@ export default function EditPagePage({
           <div className="h-4 w-2/3 bg-(--el-100) rounded animate-pulse" />
           <div className="h-48 w-full bg-(--el-100) rounded animate-pulse" />
         </div>
-        <div className="w-[280px] border-l border-(--border-default) p-3 space-y-3">
+        <div className="w-[320px] border-l border-(--border-default) p-3 space-y-3">
           <div className="h-4 w-20 bg-(--el-100) rounded animate-pulse" />
           <div className="h-8 w-full bg-(--el-100) rounded animate-pulse" />
           <div className="h-8 w-full bg-(--el-100) rounded animate-pulse" />
@@ -423,7 +479,12 @@ export default function EditPagePage({
                   setSelectedBlockKey(key);
                   selectContainer(sectionIndex, containerIndex, key);
                 }}
-                onSelectBlock={(sectionIndex, containerIndex, blockIndex, key) => {
+                onSelectBlock={(
+                  sectionIndex,
+                  containerIndex,
+                  blockIndex,
+                  key,
+                ) => {
                   setSelectedBlockKey(key);
                   selectBlock(sectionIndex, containerIndex, blockIndex, key);
                 }}
@@ -515,19 +576,37 @@ export default function EditPagePage({
                 for (let si = 0; si < editor.sections.length; si++) {
                   const section = editor.sections[si];
                   if (section._key === key) {
-                    setContextMenu({ x: e.clientX, y: e.clientY, elementType: "section", sectionIndex: si });
+                    setContextMenu({
+                      x: e.clientX,
+                      y: e.clientY,
+                      elementType: "section",
+                      sectionIndex: si,
+                    });
                     return;
                   }
                   const containers = section.containers ?? [];
                   for (let ci = 0; ci < containers.length; ci++) {
                     if (containers[ci]._key === key) {
-                      setContextMenu({ x: e.clientX, y: e.clientY, elementType: "container", sectionIndex: si, containerIndex: ci });
+                      setContextMenu({
+                        x: e.clientX,
+                        y: e.clientY,
+                        elementType: "container",
+                        sectionIndex: si,
+                        containerIndex: ci,
+                      });
                       return;
                     }
                     const blocks = containers[ci].blocks ?? [];
                     for (let bi = 0; bi < blocks.length; bi++) {
                       if (blocks[bi]._key === key) {
-                        setContextMenu({ x: e.clientX, y: e.clientY, elementType: "block", sectionIndex: si, containerIndex: ci, blockIndex: bi });
+                        setContextMenu({
+                          x: e.clientX,
+                          y: e.clientY,
+                          elementType: "block",
+                          sectionIndex: si,
+                          containerIndex: ci,
+                          blockIndex: bi,
+                        });
                         return;
                       }
                     }
@@ -586,8 +665,8 @@ export default function EditPagePage({
                       This page is empty
                     </p>
                     <p className="text-[14px] text-(--el-500) leading-relaxed">
-                      Add content to start building. You can add headings,
-                      text, images, and more from the blocks panel.
+                      Add content to start building. You can add headings, text,
+                      images, and more from the blocks panel.
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -630,8 +709,18 @@ export default function EditPagePage({
                     sections: editor.sections,
                   }}
                   isEditing
-                  onBlockChange={(sectionIndex, containerIndex, blockIndex, updatedBlock) => {
-                    editor.handleBlockChange(sectionIndex, containerIndex, blockIndex, updatedBlock as Section["containers"][0]["blocks"][0]);
+                  onBlockChange={(
+                    sectionIndex,
+                    containerIndex,
+                    blockIndex,
+                    updatedBlock,
+                  ) => {
+                    editor.handleBlockChange(
+                      sectionIndex,
+                      containerIndex,
+                      blockIndex,
+                      updatedBlock as Section["containers"][0]["blocks"][0],
+                    );
                   }}
                   breakpoint={breakpoint}
                 />
@@ -654,7 +743,11 @@ export default function EditPagePage({
                 type="button"
                 className="canvas-context-menu-item"
                 onClick={() => {
-                  editor.handleBlockMoveUp(contextMenu.sectionIndex, contextMenu.containerIndex!, contextMenu.blockIndex!);
+                  editor.handleBlockMoveUp(
+                    contextMenu.sectionIndex,
+                    contextMenu.containerIndex!,
+                    contextMenu.blockIndex!,
+                  );
                   setContextMenu(null);
                 }}
               >
@@ -664,7 +757,11 @@ export default function EditPagePage({
                 type="button"
                 className="canvas-context-menu-item"
                 onClick={() => {
-                  editor.handleBlockMoveDown(contextMenu.sectionIndex, contextMenu.containerIndex!, contextMenu.blockIndex!);
+                  editor.handleBlockMoveDown(
+                    contextMenu.sectionIndex,
+                    contextMenu.containerIndex!,
+                    contextMenu.blockIndex!,
+                  );
                   setContextMenu(null);
                 }}
               >
@@ -675,7 +772,11 @@ export default function EditPagePage({
                 type="button"
                 className="canvas-context-menu-item"
                 onClick={() => {
-                  editor.handleBlockDuplicate(contextMenu.sectionIndex, contextMenu.containerIndex!, contextMenu.blockIndex!);
+                  editor.handleBlockDuplicate(
+                    contextMenu.sectionIndex,
+                    contextMenu.containerIndex!,
+                    contextMenu.blockIndex!,
+                  );
                   setContextMenu(null);
                 }}
               >
@@ -685,7 +786,11 @@ export default function EditPagePage({
                 type="button"
                 className="canvas-context-menu-item canvas-context-menu-item-danger"
                 onClick={() => {
-                  editor.handleBlockDelete(contextMenu.sectionIndex, contextMenu.containerIndex!, contextMenu.blockIndex!);
+                  editor.handleBlockDelete(
+                    contextMenu.sectionIndex,
+                    contextMenu.containerIndex!,
+                    contextMenu.blockIndex!,
+                  );
                   setSelectedBlockKey(null);
                   setContextMenu(null);
                 }}

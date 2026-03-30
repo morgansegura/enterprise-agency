@@ -5,7 +5,26 @@
  * ============================================================================= */
 
 .blocks-library {
-  @apply p-3 space-y-4;
+  @apply p-3 space-y-3;
+}
+
+/* Tabs */
+.blocks-library-tabs {
+  @apply flex border-b border-(--border-default) -mx-3 px-3;
+}
+
+.blocks-library-tab {
+  @apply flex-1 h-8 text-[12px] font-semibold;
+  @apply text-(--el-400) bg-transparent border-none cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.blocks-library-tab:hover {
+  @apply text-(--el-800);
+}
+
+.blocks-library-tab[data-active] {
+  @apply text-(--accent-primary) border-b-2 border-(--accent-primary);
 }
 
 /* Search */
@@ -73,6 +92,33 @@
 
 .blocks-library-card:hover .blocks-library-card-label {
   @apply text-(--el-800);
+}
+
+/* =============================================================================
+ * Sections tab
+ * ============================================================================= */
+
+.blocks-library-sections {
+  @apply space-y-2;
+}
+
+.blocks-library-section-card {
+  @apply flex flex-col w-full rounded-[3px] overflow-hidden cursor-pointer;
+  @apply border border-(--border-default) bg-(--el-0) text-left;
+  @apply transition-all duration-150;
+}
+
+.blocks-library-section-card:hover {
+  @apply border-(--accent-primary) shadow-sm;
+}
+
+.blocks-library-section-preview {
+  @apply px-3 py-3 text-[10px] font-mono text-(--el-400) bg-(--el-50);
+  @apply tracking-wider text-center;
+}
+
+.blocks-library-section-name {
+  @apply text-[12px] font-semibold text-(--el-800) px-3 pt-2;
 }
 
 /* Locked tier indicator */
