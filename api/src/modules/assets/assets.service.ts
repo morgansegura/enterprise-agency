@@ -57,49 +57,50 @@ export class AssetsService {
     let variants: Record<string, string> | undefined;
 
     if (fileType === "image") {
-      const imageMetadata = await sharp(file.buffer).metadata();
-      width = imageMetadata.width;
-      height = imageMetadata.height;
-
-      // Generate thumbnail for images
-      const thumbnailKey = this.storage.generateFileKey(
-        tenantId,
-        file.originalname,
-        "thumbnails",
-      );
-      const thumbnailBuffer = await sharp(file.buffer)
-        .resize(300, 300, {
-          fit: "inside",
-          withoutEnlargement: true,
-        })
-        .toBuffer();
-
-      const thumbnailResult = await this.storage.upload(
-        thumbnailBuffer,
-        thumbnailKey,
-        "image/jpeg", // Thumbnails always as JPEG for consistency
-      );
-      thumbnailUrl = thumbnailResult.url;
-
-      // Generate WebP variant for better performance
       try {
-        const webpKey = this.storage.generateFileKey(
+        const imageMetadata = await sharp(file.buffer).metadata();
+        width = imageMetadata.width;
+        height = imageMetadata.height;
+
+        // Generate thumbnail
+        const thumbnailKey = this.storage.generateFileKey(
           tenantId,
-          file.originalname.replace(/\.\w+$/, ".webp"),
-          "variants",
+          file.originalname,
+          "thumbnails",
         );
-        const webpBuffer = await sharp(file.buffer)
-          .webp({ quality: 80 })
+        const thumbnailBuffer = await sharp(file.buffer)
+          .resize(300, 300, { fit: "inside", withoutEnlargement: true })
+          .jpeg({ quality: 80 })
           .toBuffer();
-        const webpResult = await this.storage.upload(
-          webpBuffer,
-          webpKey,
-          "image/webp",
+
+        const thumbnailResult = await this.storage.upload(
+          thumbnailBuffer,
+          thumbnailKey,
+          "image/jpeg",
         );
-        // Store WebP URL in variants (will be saved to DB)
-        variants = { webp: webpResult.url };
-      } catch (webpError) {
-        this.logger.warn("Failed to generate WebP variant", webpError);
+        thumbnailUrl = thumbnailResult.url;
+
+        // Generate WebP variant
+        try {
+          const webpKey = this.storage.generateFileKey(
+            tenantId,
+            file.originalname.replace(/\.\w+$/, ".webp"),
+            "variants",
+          );
+          const webpBuffer = await sharp(file.buffer)
+            .webp({ quality: 80 })
+            .toBuffer();
+          const webpResult = await this.storage.upload(
+            webpBuffer,
+            webpKey,
+            "image/webp",
+          );
+          variants = { webp: webpResult.url };
+        } catch (webpError) {
+          this.logger.warn("Failed to generate WebP variant", webpError);
+        }
+      } catch (imageError) {
+        this.logger.warn("Failed to process image, uploading raw", imageError);
       }
     }
 
