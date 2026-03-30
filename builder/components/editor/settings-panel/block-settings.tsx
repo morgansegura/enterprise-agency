@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Type, Box } from "lucide-react";
+import { ImagePickerField } from "./image-picker-field";
 import {
   PropertySection,
   PropertyRow,
@@ -206,14 +207,13 @@ function ImageBlockSettings({
   return (
     <>
       <PropertySection title="Image" icon={<Box className="h-3.5 w-3.5" />}>
-        <PropertyRow label="URL" stacked>
-          <Input
-            value={(data.url as string) || ""}
-            onChange={(e) => handleChange("url", e.target.value)}
-            placeholder="https://..."
-            className="settings-input"
-          />
-        </PropertyRow>
+        <ImagePickerField
+          value={(data.url as string) || (data.src as string) || ""}
+          onChange={(url) => {
+            handleChange("url", url);
+            handleChange("src", url);
+          }}
+        />
         <PropertyRow label="Alt Text" stacked>
           <Input
             value={(data.alt as string) || ""}
@@ -740,14 +740,12 @@ function AudioBlockSettings({
 
   return (
     <PropertySection title="Audio" icon={<Type className="h-3.5 w-3.5" />}>
-      <PropertyRow label="Source URL" stacked>
-        <Input
-          value={(data.src as string) || ""}
-          onChange={(e) => handleChange("src", e.target.value)}
-          placeholder="Audio file URL"
-          className="settings-input"
-        />
-      </PropertyRow>
+      <ImagePickerField
+        value={(data.src as string) || ""}
+        onChange={(url) => handleChange("src", url)}
+        label="Audio File"
+        fileType="audio"
+      />
       <PropertyRow label="Title" stacked>
         <Input
           value={(data.title as string) || ""}
@@ -859,14 +857,11 @@ function HeroBlockSettings({
             className="settings-input"
           />
         </PropertyRow>
-        <PropertyRow label="Image URL" stacked>
-          <Input
-            value={((data.image as Record<string, unknown>)?.src as string) || ""}
-            onChange={(e) => handleChange("image", { ...(data.image as Record<string, unknown>), src: e.target.value })}
-            placeholder="Background image URL"
-            className="settings-input"
-          />
-        </PropertyRow>
+        <ImagePickerField
+          value={((data.image as Record<string, unknown>)?.src as string) || ""}
+          onChange={(url) => handleChange("image", { ...(data.image as Record<string, unknown>), src: url })}
+          label="Background Image"
+        />
       </PropertySection>
     </>
   );
