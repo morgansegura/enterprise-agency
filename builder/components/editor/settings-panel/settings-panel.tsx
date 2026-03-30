@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SpacingBox, LayoutControls, SizeControls, PositionControls } from "@/components/editor/style-panel";
+import { SpacingBox } from "@/components/editor/style-panel";
 import {
   PanelRightOpen,
   Box,
@@ -72,6 +72,7 @@ import {
   FaqBlockSettings,
   GenericBlockSettings,
 } from "./block-settings";
+import { BlockStyleTab } from "./block-style-tab";
 import "./settings-panel.css";
 
 // =============================================================================
@@ -275,54 +276,17 @@ export function SettingsPanel({
                       />
                     )}
                     {selectedElement.type === "block" && (
-                      <>
-                        <PropertySection
-                          title="Layout"
-                          icon={<Grid3X3 className="h-3.5 w-3.5" />}
-                        >
-                          <LayoutControls
-                            values={{}}
-                            onChange={() => {
-                              // Block-level layout — will be wired to block data
-                            }}
-                          />
-                        </PropertySection>
-                        <PropertySection
-                          title="Spacing"
-                          icon={<Move className="h-3.5 w-3.5" />}
-                        >
-                          <SpacingBox
-                            values={{}}
-                            onChange={() => {
-                              // Block-level spacing — will be wired to block data
-                            }}
-                          />
-                        </PropertySection>
-                        <PropertySection
-                          title="Size"
-                          icon={<EyeOff className="h-3.5 w-3.5" />}
-                          defaultOpen={false}
-                        >
-                          <SizeControls
-                            values={{}}
-                            onChange={() => {
-                              // Block-level size — will be wired to block data
-                            }}
-                          />
-                        </PropertySection>
-                        <PropertySection
-                          title="Position"
-                          icon={<Move className="h-3.5 w-3.5" />}
-                          defaultOpen={false}
-                        >
-                          <PositionControls
-                            values={{}}
-                            onChange={() => {
-                              // Block-level position — will be wired to block data
-                            }}
-                          />
-                        </PropertySection>
-                      </>
+                      <BlockStyleTab
+                        block={selectedData.data as Block}
+                        onChange={(updated) =>
+                          onBlockChange?.(
+                            selectedElement.sectionIndex,
+                            selectedElement.containerIndex!,
+                            selectedElement.blockIndex!,
+                            updated,
+                          )
+                        }
+                      />
                     )}
                   </>
                 )}
