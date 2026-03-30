@@ -74,6 +74,7 @@ const CATEGORIES: Category[] = [
     label: "Basic",
     blocks: [
       { id: "button", name: "Button", icon: MousePointer, type: "button-block" },
+      { id: "link", name: "Link Block", icon: MousePointer, type: "link-block" },
       { id: "card", name: "Card", icon: Box, type: "card-block" },
       { id: "icon", name: "Icon", icon: ImageIcon, type: "icon-block" },
       { id: "divider", name: "Divider", icon: Minus, type: "divider-block" },

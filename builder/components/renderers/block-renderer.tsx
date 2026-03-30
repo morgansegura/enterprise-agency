@@ -88,7 +88,11 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
   const cssVars = allStylesToCSSVars(styles, stylesBefore, stylesAfter);
   const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter);
 
-  return (
+  // Check if block has a link wrapper
+  const link = (block.data as Record<string, unknown>)?._link as Record<string, string> | undefined;
+  const hasLink = link?.href && !isEditing;
+
+  const content = (
     <div
       data-block-key={block._key}
       data-block-label={label}
@@ -100,6 +104,23 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
       <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />
     </div>
   );
+
+  if (hasLink) {
+    return (
+      <a
+        href={link.href}
+        target={link.target || "_self"}
+        rel={link.rel && link.rel !== "inherit" ? link.rel : (link.target === "_blank" ? "noopener noreferrer" : undefined)}
+        title={link.title || undefined}
+        aria-label={link.ariaLabel || undefined}
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return content;
 }
 
 /**

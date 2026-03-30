@@ -52,6 +52,7 @@ const BLOCK_TYPES = [
   "stack-block",
   "container-block",
   "columns-block",
+  "link-block",
 ] as const;
 
 /**

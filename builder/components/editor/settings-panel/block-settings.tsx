@@ -1414,4 +1414,113 @@ export {
   FeatureGridBlockSettings,
   FaqBlockSettings,
   GenericBlockSettings,
+  BlockLinkSettings,
 };
+
+// =============================================================================
+// Block Link Settings — available on every block
+// Makes any element clickable by wrapping in <a>
+// =============================================================================
+
+function BlockLinkSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data as Record<string, unknown>;
+  const link = (data._link as Record<string, unknown>) || {};
+  const hasLink = !!(link.href as string);
+
+  const updateLink = (field: string, value: unknown) => {
+    onChange({
+      ...block,
+      data: {
+        ...data,
+        _link: { ...link, [field]: value },
+      },
+    });
+  };
+
+  const removeLink = () => {
+    const newData = { ...data };
+    delete newData._link;
+    onChange({ ...block, data: newData });
+  };
+
+  return (
+    <PropertySection
+      title="Link"
+      icon={<Type className="h-3.5 w-3.5" />}
+      defaultOpen={hasLink}
+    >
+      {!hasLink ? (
+        <button
+          type="button"
+          onClick={() => updateLink("href", "#")}
+          className="w-full py-2 rounded-[3px] text-[12px] font-medium text-(--accent-primary) border border-dashed border-(--border-default) bg-transparent cursor-pointer hover:bg-(--accent-primary-subtle)/30 hover:border-(--accent-primary) transition-colors"
+        >
+          + Add link to this element
+        </button>
+      ) : (
+        <>
+          <PropertyRow label="URL" stacked>
+            <Input
+              value={(link.href as string) || ""}
+              onChange={(e) => updateLink("href", e.target.value)}
+              placeholder="https://..."
+              className="settings-input"
+            />
+          </PropertyRow>
+          <PropertyRow label="Target">
+            <PropertyToggle
+              value={(link.target as string) || "_self"}
+              options={[
+                { value: "_self", label: "Same Tab" },
+                { value: "_blank", label: "New Tab" },
+              ]}
+              onChange={(v) => updateLink("target", v)}
+            />
+          </PropertyRow>
+          <PropertyRow label="Rel">
+            <PropertySelect
+              value={(link.rel as string) || "inherit"}
+              options={[
+                { value: "inherit", label: "Default" },
+                { value: "nofollow", label: "nofollow" },
+                { value: "noopener noreferrer", label: "noopener" },
+                { value: "sponsored", label: "sponsored" },
+                { value: "ugc", label: "ugc" },
+              ]}
+              onChange={(v) => updateLink("rel", v)}
+            />
+          </PropertyRow>
+          <PropertyRow label="Title" stacked>
+            <Input
+              value={(link.title as string) || ""}
+              onChange={(e) => updateLink("title", e.target.value)}
+              placeholder="Link title (tooltip)"
+              className="settings-input"
+            />
+          </PropertyRow>
+          <PropertyRow label="Aria Label" stacked>
+            <Input
+              value={(link.ariaLabel as string) || ""}
+              onChange={(e) => updateLink("ariaLabel", e.target.value)}
+              placeholder="Accessible label"
+              className="settings-input"
+            />
+          </PropertyRow>
+          <button
+            type="button"
+            onClick={removeLink}
+            className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
+          >
+            Remove link
+          </button>
+        </>
+      )}
+    </PropertySection>
+  );
+}

@@ -71,6 +71,7 @@ import {
   FeatureGridBlockSettings,
   FaqBlockSettings,
   GenericBlockSettings,
+  BlockLinkSettings,
 } from "./block-settings";
 import { BlockStyleTab, ElementStyleTab } from "./block-style-tab";
 import "./settings-panel.css";
@@ -310,17 +311,31 @@ export function SettingsPanel({
                       </div>
                     )}
                     {selectedElement.type === "block" && (
-                      <BlockStyleSettings
-                        block={selectedData.data as Block}
-                        onChange={(updated) =>
-                          onBlockChange?.(
-                            selectedElement.sectionIndex,
-                            selectedElement.containerIndex!,
-                            selectedElement.blockIndex!,
-                            updated,
-                          )
-                        }
-                      />
+                      <>
+                        <BlockStyleSettings
+                          block={selectedData.data as Block}
+                          onChange={(updated) =>
+                            onBlockChange?.(
+                              selectedElement.sectionIndex,
+                              selectedElement.containerIndex!,
+                              selectedElement.blockIndex!,
+                              updated,
+                            )
+                          }
+                        />
+                        {/* Link settings — available on every block */}
+                        <BlockLinkSettings
+                          block={selectedData.data as Block}
+                          onChange={(updated) =>
+                            onBlockChange?.(
+                              selectedElement.sectionIndex,
+                              selectedElement.containerIndex!,
+                              selectedElement.blockIndex!,
+                              updated,
+                            )
+                          }
+                        />
+                      </>
                     )}
                   </>
                 )}
