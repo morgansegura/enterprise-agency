@@ -9,6 +9,7 @@ export interface Asset {
   uploadedBy?: string;
   fileKey: string;
   fileName: string;
+  originalName?: string;
   fileType: string;
   mimeType?: string;
   sizeBytes?: number;
@@ -16,7 +17,10 @@ export interface Asset {
   height?: number;
   url: string;
   thumbnailUrl?: string;
+  title?: string;
   altText?: string;
+  caption?: string;
+  tags?: string[];
   usageContext?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -113,7 +117,7 @@ export function useUpdateAsset(tenantId: string) {
       data,
     }: {
       id: string;
-      data: { fileName?: string; altText?: string; usageContext?: string };
+      data: { fileName?: string; altText?: string; title?: string; caption?: string; tags?: string[]; usageContext?: string };
     }) => apiClient.patch<Asset>(`/assets/${id}`, data),
     onSuccess: (updatedAsset) => {
       queryClient.invalidateQueries({

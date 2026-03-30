@@ -19,11 +19,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -366,183 +364,137 @@ export default function MediaLibraryPage({
         </div>
       )}
 
-      {/* Detail Drawer */}
-      <Sheet
-        open={!!selectedAsset}
-        onOpenChange={(open) => !open && setSelectedAsset(null)}
-      >
-        <SheetContent>
+      {/* Attachment Details — WordPress-style full-screen overlay */}
+      <Dialog open={!!selectedAsset} onOpenChange={(open) => !open && setSelectedAsset(null)}>
+        <DialogContent className="media-attachment-dialog">
           {selectedAsset && (
             <>
-              <SheetHeader>
-                <div className="media-detail-nav">
-                  <SheetTitle>{selectedAsset.fileName}</SheetTitle>
-                  <div className="media-detail-nav-btns">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => {
-                        const idx = filteredAssets.findIndex((a) => a.id === selectedAsset.id);
-                        if (idx > 0) setSelectedAsset(filteredAssets[idx - 1]);
-                      }}
-                      disabled={filteredAssets.findIndex((a) => a.id === selectedAsset.id) <= 0}
-                    >
-                      ←
+              {/* Header */}
+              <div className="media-attachment-header">
+                <h2 className="media-attachment-title">Attachment details</h2>
+                <div className="media-attachment-nav">
+                  <Button variant="ghost" size="icon" className="h-8 w-8"
+                    onClick={() => { const i = filteredAssets.findIndex((a) => a.id === selectedAsset.id); if (i > 0) setSelectedAsset(filteredAssets[i - 1]); }}
+                    disabled={filteredAssets.findIndex((a) => a.id === selectedAsset.id) <= 0}
+                  >←</Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8"
+                    onClick={() => { const i = filteredAssets.findIndex((a) => a.id === selectedAsset.id); if (i < filteredAssets.length - 1) setSelectedAsset(filteredAssets[i + 1]); }}
+                    disabled={filteredAssets.findIndex((a) => a.id === selectedAsset.id) >= filteredAssets.length - 1}
+                  >→</Button>
+                </div>
+              </div>
+
+              {/* Split layout: image left, fields right */}
+              <div className="media-attachment-body">
+                {/* Left: Image preview */}
+                <div className="media-attachment-preview">
+                  {selectedAsset.mimeType?.startsWith("image/") ? (
+                    <img src={selectedAsset.url} alt={selectedAsset.altText || selectedAsset.fileName} />
+                  ) : (
+                    <div className="media-attachment-file-icon">
+                      {React.createElement(getFileIcon(selectedAsset.fileType), { className: "h-16 w-16" })}
+                      <span>{selectedAsset.fileType}</span>
+                    </div>
+                  )}
+                  {selectedAsset.mimeType?.startsWith("image/") && (
+                    <Button variant="outline" size="sm" className="media-attachment-edit-btn" onClick={() => setEditingImage(selectedAsset)}>
+                      Edit Image
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => {
-                        const idx = filteredAssets.findIndex((a) => a.id === selectedAsset.id);
-                        if (idx < filteredAssets.length - 1) setSelectedAsset(filteredAssets[idx + 1]);
-                      }}
-                      disabled={filteredAssets.findIndex((a) => a.id === selectedAsset.id) >= filteredAssets.length - 1}
-                    >
-                      →
+                  )}
+                </div>
+
+                {/* Right: Metadata + editable fields */}
+                <div className="media-attachment-sidebar">
+                  {/* Read-only metadata */}
+                  <div className="media-attachment-meta">
+                    <p><strong>Uploaded on:</strong> {selectedAsset.createdAt ? new Date(selectedAsset.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Unknown"}</p>
+                    <p><strong>File name:</strong> {selectedAsset.fileName}</p>
+                    <p><strong>File type:</strong> {selectedAsset.mimeType || selectedAsset.fileType}</p>
+                    <p><strong>File size:</strong> {formatFileSize(selectedAsset.sizeBytes)}</p>
+                    {selectedAsset.width && selectedAsset.height && (
+                      <p><strong>Dimensions:</strong> {selectedAsset.width} × {selectedAsset.height} pixels</p>
+                    )}
+                  </div>
+
+                  {/* Editable fields */}
+                  <div className="media-attachment-fields">
+                    <div className="media-attachment-field">
+                      <label>Alternative Text</label>
+                      <textarea
+                        value={selectedAsset.altText || ""}
+                        onChange={(e) => setSelectedAsset({ ...selectedAsset, altText: e.target.value })}
+                        onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { altText: selectedAsset.altText } })}
+                        placeholder="Describe this image for accessibility"
+                        rows={2}
+                      />
+                      <span className="media-attachment-hint">
+                        Describe the purpose of the image. Leave empty if purely decorative.
+                      </span>
+                    </div>
+                    <div className="media-attachment-field">
+                      <label>Title</label>
+                      <Input
+                        value={selectedAsset.title || ""}
+                        onChange={(e) => setSelectedAsset({ ...selectedAsset, title: e.target.value })}
+                        onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { title: selectedAsset.title } })}
+                        className="h-8 text-[13px]"
+                      />
+                    </div>
+                    <div className="media-attachment-field">
+                      <label>Caption</label>
+                      <textarea
+                        value={selectedAsset.caption || ""}
+                        onChange={(e) => setSelectedAsset({ ...selectedAsset, caption: e.target.value })}
+                        onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { caption: selectedAsset.caption } })}
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+
+                  {/* File URL */}
+                  <div className="media-attachment-field">
+                    <label>File URL</label>
+                    <div className="media-attachment-url">
+                      <Input value={selectedAsset.url} readOnly className="h-8 text-[13px]" />
+                      <Button variant="outline" size="sm" onClick={() => handleCopyUrl(selectedAsset.url)}>
+                        Copy URL to clipboard
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Replace media */}
+                  <div className="media-attachment-field">
+                    <label>Replace media</label>
+                    <Button variant="outline" size="sm" onClick={() => {
+                      const input = document.createElement("input");
+                      input.type = "file";
+                      input.accept = "image/*,video/*,audio/*";
+                      input.onchange = async (e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0];
+                        if (!file) return;
+                        try { await uploadAsset.mutateAsync({ file }); handleDelete(selectedAsset); toast.success("Media replaced"); }
+                        catch { toast.error("Failed to replace media"); }
+                      };
+                      input.click();
+                    }}>
+                      Upload a new file
                     </Button>
                   </div>
-                </div>
-              </SheetHeader>
 
-              <div className="media-detail-preview">
-                {selectedAsset.mimeType?.startsWith("image/") ? (
-                  <img
-                    src={selectedAsset.url}
-                    alt={selectedAsset.altText || selectedAsset.fileName}
-                  />
-                ) : (
-                  <div className="media-thumb-overlay">
-                    {React.createElement(getFileIcon(selectedAsset.fileType), {
-                      className: "media-thumb-overlay-icon",
-                    })}
-                    <span className="media-thumb-overlay-label">
-                      {selectedAsset.fileType}
-                    </span>
+                  {/* Bottom links */}
+                  <div className="media-attachment-links">
+                    <a href={selectedAsset.url} target="_blank" rel="noopener noreferrer">Download file</a>
+                    <span>|</span>
+                    <button type="button" onClick={() => handleDelete(selectedAsset)} className="media-attachment-delete">
+                      Delete permanently
+                    </button>
                   </div>
-                )}
-              </div>
-
-              {/* Metadata — read-only info */}
-              <div className="media-detail-info">
-                <div className="media-detail-info-row">
-                  <span className="media-detail-info-label">Uploaded:</span>
-                  <span>{selectedAsset.createdAt ? new Date(selectedAsset.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Unknown"}</span>
                 </div>
-                <div className="media-detail-info-row">
-                  <span className="media-detail-info-label">File name:</span>
-                  <span>{selectedAsset.fileName}</span>
-                </div>
-                <div className="media-detail-info-row">
-                  <span className="media-detail-info-label">Type:</span>
-                  <span>{selectedAsset.mimeType || selectedAsset.fileType}</span>
-                </div>
-                <div className="media-detail-info-row">
-                  <span className="media-detail-info-label">Size:</span>
-                  <span>{formatFileSize(selectedAsset.sizeBytes)}</span>
-                </div>
-                {selectedAsset.width && selectedAsset.height && (
-                  <div className="media-detail-info-row">
-                    <span className="media-detail-info-label">Dimensions:</span>
-                    <span>{selectedAsset.width} x {selectedAsset.height} pixels</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Editable fields */}
-              <div className="media-detail-fields">
-                <div className="media-detail-field">
-                  <label className="media-detail-field-label">Alternative Text</label>
-                  <Input
-                    value={selectedAsset.altText || ""}
-                    onChange={(e) => setSelectedAsset({ ...selectedAsset, altText: e.target.value })}
-                    onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { altText: selectedAsset.altText || "" } })}
-                    placeholder="Describe this image for accessibility"
-                    className="h-8 text-[13px]"
-                  />
-                  <span className="media-detail-field-hint">
-                    Leave empty if purely decorative
-                  </span>
-                </div>
-              </div>
-
-              {/* Replace media */}
-              <div className="media-detail-field">
-                <label className="media-detail-field-label">Replace media</label>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    const input = document.createElement("input");
-                    input.type = "file";
-                    input.accept = "image/*,video/*,audio/*";
-                    input.onchange = async (e) => {
-                      const file = (e.target as HTMLInputElement).files?.[0];
-                      if (!file) return;
-                      try {
-                        await uploadAsset.mutateAsync({ file });
-                        handleDelete(selectedAsset);
-                        toast.success("Media replaced");
-                      } catch {
-                        toast.error("Failed to replace media");
-                      }
-                    };
-                    input.click();
-                  }}
-                >
-                  Upload a new file
-                </Button>
-                <span className="media-detail-field-hint">
-                  Upload a replacement file
-                </span>
-              </div>
-
-              {/* File URL */}
-              <div className="media-detail-field">
-                <label className="media-detail-field-label">File URL</label>
-                <div className="media-detail-url-row">
-                  <Input
-                    value={selectedAsset.url}
-                    readOnly
-                    className="media-detail-url-input h-8 text-[13px]"
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleCopyUrl(selectedAsset.url)}
-                  >
-                    <Copy className="h-3.5 w-3.5" />
-                    Copy
-                  </Button>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="media-detail-actions">
-                {selectedAsset.mimeType?.startsWith("image/") && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setEditingImage(selectedAsset)}
-                  >
-                    <Crop className="h-3.5 w-3.5" />
-                    Edit Image
-                  </Button>
-                )}
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDelete(selectedAsset)}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                  Delete permanently
-                </Button>
               </div>
             </>
           )}
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
 
       {/* Image Editor */}
       <ImageEditor

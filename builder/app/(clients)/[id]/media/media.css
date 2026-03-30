@@ -290,16 +290,105 @@
   @apply text-[11px] text-(--el-400);
 }
 
-/* Detail panel — navigation */
-.media-detail-nav {
-  @apply flex items-center justify-between;
+/* =============================================================================
+ * Attachment Details — WordPress-style full-screen overlay
+ * ============================================================================= */
+
+.media-attachment-dialog {
+  max-width: 95vw !important;
+  width: 95vw !important;
+  max-height: 90vh !important;
+  min-height: 80vh !important;
+  @apply flex flex-col gap-0 p-0;
 }
 
-.media-detail-nav-btns {
-  @apply flex items-center gap-0.5;
+.media-attachment-header {
+  @apply flex items-center justify-between px-5 py-3 border-b border-(--border-default);
 }
 
-/* Detail panel — actions */
-.media-detail-actions {
+.media-attachment-title {
+  @apply text-[16px] font-semibold text-(--el-800);
+}
+
+.media-attachment-nav {
+  @apply flex items-center gap-1;
+}
+
+/* Split layout */
+.media-attachment-body {
+  @apply flex flex-1 min-h-0 overflow-hidden;
+}
+
+/* Left: Image preview */
+.media-attachment-preview {
+  @apply flex-1 flex flex-col items-center justify-center gap-3 p-6 bg-(--el-50) overflow-auto;
+}
+
+.media-attachment-preview img {
+  @apply max-w-full max-h-[60vh] object-contain rounded;
+}
+
+.media-attachment-file-icon {
+  @apply flex flex-col items-center gap-2 text-(--el-400);
+}
+
+.media-attachment-edit-btn {
+  @apply mt-2;
+}
+
+/* Right: Sidebar with fields */
+.media-attachment-sidebar {
+  @apply w-[380px] shrink-0 flex flex-col gap-4 p-5 overflow-y-auto;
+  @apply border-l border-(--border-default);
+}
+
+.media-attachment-meta {
+  @apply space-y-1 text-[12px] text-(--el-600);
+}
+
+.media-attachment-meta strong {
+  @apply text-(--el-800);
+}
+
+.media-attachment-fields {
+  @apply space-y-3;
+}
+
+.media-attachment-field {
+  @apply space-y-1;
+}
+
+.media-attachment-field label {
+  @apply block text-[12px] font-semibold text-(--el-700);
+}
+
+.media-attachment-field textarea {
+  @apply w-full px-3 py-2 text-[13px] rounded-[3px];
+  @apply border border-(--border-default) bg-(--el-0);
+  @apply resize-y;
+}
+
+.media-attachment-field textarea:focus {
+  @apply outline-none ring-2 ring-(--accent-primary)/30 border-(--accent-primary);
+}
+
+.media-attachment-hint {
+  @apply text-[11px] text-(--el-400) leading-relaxed;
+}
+
+.media-attachment-url {
+  @apply flex flex-col gap-1.5;
+}
+
+.media-attachment-links {
   @apply flex items-center gap-2 pt-3 border-t border-(--border-default);
+  @apply text-[12px];
+}
+
+.media-attachment-links a {
+  @apply text-(--accent-primary) no-underline hover:underline;
+}
+
+.media-attachment-delete {
+  @apply text-(--status-error) bg-transparent border-none cursor-pointer hover:underline text-[12px];
 }
