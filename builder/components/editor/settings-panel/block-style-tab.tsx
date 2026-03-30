@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Input } from "@/components/ui/input";
+import { ImagePickerField } from "./image-picker-field";
 import {
   Grid3X3,
   Move,
@@ -658,9 +659,11 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             <Input value={s("backgroundColor")} onChange={(e) => updateStyle("backgroundColor", e.target.value)} placeholder="transparent" className="flex-1 h-7 text-xs" />
           </div>
         </PropertyRow>
-        <PropertyRow label="Image" stacked>
-          <Input value={s("backgroundImage")} onChange={(e) => updateStyle("backgroundImage", e.target.value)} placeholder="url(...) or linear-gradient(...)" className="h-7 text-xs" />
-        </PropertyRow>
+        <ImagePickerField
+          value={s("backgroundImage").replace(/^url\(['"]?|['"]?\)$/g, "")}
+          onChange={(url) => updateStyle("backgroundImage", url ? `url('${url}')` : "")}
+          label="Image"
+        />
         <PropertyRow label="Size">
           <PropertySelect
             value={s("backgroundSize")}
