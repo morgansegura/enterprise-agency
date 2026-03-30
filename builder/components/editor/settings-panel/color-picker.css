@@ -1,0 +1,95 @@
+@reference "tailwindcss";
+
+.color-picker-field {
+  @apply flex flex-col gap-1;
+}
+
+.color-picker-label {
+  @apply text-xs font-medium text-(--el-500);
+}
+
+.color-picker-trigger {
+  @apply flex items-center gap-2 w-full h-8 px-2 rounded-[3px];
+  @apply bg-(--el-50) border border-(--border-default) cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.color-picker-trigger:hover {
+  @apply border-(--accent-primary)/50;
+}
+
+.color-picker-swatch {
+  @apply w-5 h-5 rounded-[3px] border border-(--border-default) shrink-0;
+  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+}
+
+.color-picker-value {
+  @apply text-xs font-mono text-(--el-600) truncate;
+}
+
+.color-picker-popover {
+  @apply w-[260px] p-3 space-y-3;
+}
+
+.color-picker-hex-row {
+  @apply flex items-center gap-2;
+}
+
+.color-picker-native {
+  @apply w-8 h-8 rounded-[3px] border border-(--border-default) cursor-pointer shrink-0;
+}
+
+/* Alpha */
+.color-picker-alpha {
+  @apply flex items-center gap-2;
+}
+
+.color-picker-alpha-label {
+  @apply text-[10px] text-(--el-400) w-10 shrink-0;
+}
+
+.color-picker-alpha-slider {
+  @apply flex-1 h-1.5 accent-(--accent-primary);
+}
+
+.color-picker-alpha-value {
+  @apply text-[11px] text-(--el-500) w-8 text-right shrink-0;
+}
+
+/* Sections */
+.color-picker-section {
+  @apply space-y-1.5;
+}
+
+.color-picker-section-label {
+  @apply text-[10px] uppercase tracking-wider text-(--el-400) font-semibold;
+}
+
+.color-picker-swatches {
+  @apply flex flex-wrap gap-1;
+}
+
+.color-picker-swatch-btn {
+  @apply w-5 h-5 rounded-[3px] border border-(--border-default) cursor-pointer;
+  @apply transition-transform duration-100;
+}
+
+.color-picker-swatch-btn:hover {
+  @apply scale-125 border-(--accent-primary);
+}
+
+/* Transparent button */
+.color-picker-transparent {
+  @apply w-full h-7 rounded-[3px];
+  @apply text-[11px] text-(--el-500) bg-(--el-50) border border-(--border-default);
+  @apply cursor-pointer transition-colors duration-100;
+}
+
+.color-picker-transparent:hover {
+  @apply bg-(--el-100) text-(--el-800);
+}

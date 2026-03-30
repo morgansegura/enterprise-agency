@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { ImagePickerField } from "./image-picker-field";
+import { ColorPicker } from "./color-picker";
 import {
   Grid3X3,
   Move,
@@ -225,76 +226,6 @@ function FilterBuilder({
   );
 }
 
-/** Color with Opacity — hex color + alpha slider */
-function ColorWithOpacity({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  // Parse rgba or hex
-  const parseColor = () => {
-    if (!value) return { hex: "#ffffff", alpha: 1 };
-    const rgbaMatch = value.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
-    if (rgbaMatch) {
-      const r = parseInt(rgbaMatch[1]).toString(16).padStart(2, "0");
-      const g = parseInt(rgbaMatch[2]).toString(16).padStart(2, "0");
-      const b = parseInt(rgbaMatch[3]).toString(16).padStart(2, "0");
-      return { hex: `#${r}${g}${b}`, alpha: parseFloat(rgbaMatch[4] ?? "1") };
-    }
-    return { hex: value, alpha: 1 };
-  };
-
-  const { hex, alpha } = parseColor();
-
-  const buildRgba = (h: string, a: number) => {
-    const r = parseInt(h.slice(1, 3), 16);
-    const g = parseInt(h.slice(3, 5), 16);
-    const b = parseInt(h.slice(5, 7), 16);
-    if (a === 1) return h;
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-  };
-
-  return (
-    <>
-      <PropertyRow label={label}>
-        <div className="flex items-center gap-1.5">
-          <input
-            type="color"
-            value={hex}
-            onChange={(e) => onChange(buildRgba(e.target.value, alpha))}
-            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer"
-          />
-          <Input
-            value={value || ""}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder="transparent"
-            className="flex-1 h-7 text-xs"
-          />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Opacity">
-        <div className="flex items-center gap-2 flex-1">
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            value={alpha}
-            onChange={(e) => onChange(buildRgba(hex, parseFloat(e.target.value)))}
-            className="flex-1 h-1.5 accent-(--accent-primary)"
-          />
-          <span className="text-[11px] text-(--el-500) w-8 text-right">
-            {Math.round(alpha * 100)}%
-          </span>
-        </div>
-      </PropertyRow>
-    </>
-  );
-}
 
 /** Gradient Builder — comprehensive gradient editor with multiple stops */
 function GradientBuilder({
@@ -852,7 +783,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
         <PropertyRow label="Height">
           <Input value={s("lineHeight")} onChange={(e) => updateStyle("lineHeight", e.target.value)} placeholder="1.5" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
-        <ColorWithOpacity
+        <ColorPicker
           label="Color"
           value={s("color")}
           onChange={(v) => updateStyle("color", v)}
@@ -942,7 +873,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * BACKGROUNDS
        * ================================================================ */}
       <PropertySection title="Backgrounds" icon={<Palette className="h-3.5 w-3.5" />} defaultOpen={false}>
-        <ColorWithOpacity
+        <ColorPicker
           label="Color"
           value={s("backgroundColor")}
           onChange={(v) => updateStyle("backgroundColor", v)}
@@ -1031,7 +962,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("borderStyle", v)}
           />
         </PropertyRow>
-        <ColorWithOpacity
+        <ColorPicker
           label="Color"
           value={s("borderColor")}
           onChange={(v) => updateStyle("borderColor", v)}

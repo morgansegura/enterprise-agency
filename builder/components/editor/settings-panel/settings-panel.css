@@ -5,7 +5,7 @@
  * ============================================================================= */
 
 .settings-panel {
-  @apply relative flex flex-col w-[280px] h-full overflow-hidden;
+  @apply relative flex flex-col w-[320px] h-full overflow-hidden;
   @apply bg-(--el-0) border-l border-(--border-default);
   @apply translate-x-0 transition-all duration-250 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
@@ -15,7 +15,7 @@
 }
 
 .settings-panel-wrapper {
-  @apply relative w-[280px] h-full shrink-0 flex overflow-hidden;
+  @apply relative w-[320px] h-full shrink-0 flex overflow-hidden;
   @apply transition-[width] duration-250 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
 
@@ -24,7 +24,7 @@
 }
 
 .settings-panel-wrapper .settings-panel {
-  @apply relative w-[280px];
+  @apply relative w-[320px];
 }
 
 .settings-panel-toggle {
@@ -424,11 +424,11 @@
 
 @media (max-width: 640px) {
   .settings-panel-wrapper {
-    @apply fixed right-0 top-0 bottom-0 w-[280px] z-50;
+    @apply fixed right-0 top-0 bottom-0 w-[320px] z-50;
   }
 
   .settings-panel-wrapper.collapsed {
-    @apply w-[280px] pointer-events-none;
+    @apply w-[320px] pointer-events-none;
   }
 
   .settings-panel-wrapper.collapsed .settings-panel-toggle {
