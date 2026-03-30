@@ -69,6 +69,11 @@ export class ContentBlockDto {
   @IsObject()
   data: Record<string, unknown>;
 
+  /** Raw CSS styles — rendered as CSS custom properties */
+  @IsOptional()
+  @IsObject()
+  styles?: Record<string, string>;
+
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })

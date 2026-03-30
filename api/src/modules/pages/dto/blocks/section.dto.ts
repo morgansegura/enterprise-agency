@@ -180,6 +180,11 @@ class ContainerDto {
   @IsObject()
   _responsive?: Record<string, unknown>;
 
+  /** Raw CSS styles — rendered as CSS custom properties */
+  @IsOptional()
+  @IsObject()
+  styles?: Record<string, string>;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ContentBlockDto)
@@ -356,6 +361,11 @@ export class SectionDto {
   @IsOptional()
   @IsObject()
   _responsive?: Record<string, unknown>;
+
+  /** Raw CSS styles — rendered as CSS custom properties */
+  @IsOptional()
+  @IsObject()
+  styles?: Record<string, string>;
 
   // Legacy: Container settings (single inner wrapper)
   // @deprecated Use containers array instead
