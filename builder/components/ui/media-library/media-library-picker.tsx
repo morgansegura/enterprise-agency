@@ -371,12 +371,16 @@ function AssetItem({
           src={asset.thumbnailUrl || asset.url}
           alt={asset.altText || asset.fileName}
           className="media-library-asset-grid-image"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = "none";
+            (e.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden");
+          }}
         />
-      ) : (
-        <div className="media-library-asset-grid-placeholder">
-          <ImageIcon className="h-8 w-8" />
-        </div>
-      )}
+      ) : null}
+      <div className={cn("media-library-asset-grid-placeholder", isImage && "hidden")}>
+        <ImageIcon className="h-6 w-6" />
+        <span className="media-library-asset-grid-name">{asset.fileName.slice(0, 20)}</span>
+      </div>
       {isSelected && (
         <div className="media-library-asset-check">
           <Check className="h-4 w-4" />

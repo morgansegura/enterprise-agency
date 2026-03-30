@@ -5,7 +5,11 @@
  * ============================================================================= */
 
 .media-library-dialog {
-  @apply max-w-3xl w-full max-h-[80vh] min-h-[500px] flex flex-col gap-0 p-0;
+  max-width: 95vw !important;
+  width: 95vw !important;
+  max-height: 90vh !important;
+  min-height: 80vh !important;
+  @apply flex flex-col gap-0 p-0;
 }
 
 .media-library-title {
@@ -68,7 +72,13 @@
 
 /* Grid view */
 .media-library-assets-grid {
-  @apply grid grid-cols-4 gap-2;
+  @apply grid grid-cols-6 gap-2;
+}
+
+@media (min-width: 1200px) {
+  .media-library-assets-grid {
+    @apply grid-cols-8;
+  }
 }
 
 /* List view */
@@ -82,6 +92,7 @@
   @apply border-2 border-transparent bg-(--el-50);
   @apply transition-all duration-100;
   aspect-ratio: 1;
+  max-height: 120px;
 }
 
 .media-library-asset-grid-item:hover {
@@ -101,8 +112,12 @@
 }
 
 .media-library-asset-grid-placeholder {
-  @apply flex items-center justify-center w-full h-full;
+  @apply flex flex-col items-center justify-center gap-1 w-full h-full p-2;
   @apply text-(--el-300);
+}
+
+.media-library-asset-grid-name {
+  @apply text-[9px] text-(--el-400) text-center truncate w-full;
 }
 
 .media-library-asset-check {
