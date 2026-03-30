@@ -74,6 +74,21 @@ export class ContentBlockDto {
   @IsObject()
   styles?: Record<string, string>;
 
+  /** ::before pseudo-element styles */
+  @IsOptional()
+  @IsObject()
+  stylesBefore?: Record<string, string>;
+
+  /** ::after pseudo-element styles */
+  @IsOptional()
+  @IsObject()
+  stylesAfter?: Record<string, string>;
+
+  /** Responsive overrides per breakpoint */
+  @IsOptional()
+  @IsObject()
+  _responsive?: Record<string, unknown>;
+
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
