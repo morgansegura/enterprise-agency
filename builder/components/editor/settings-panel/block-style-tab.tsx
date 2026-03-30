@@ -169,7 +169,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           </>
         )}
 
-        {/* Flex child (always available) */}
+        {/* Flex child */}
         <PropertyRow label="Align Self">
           <PropertySelect
             value={s("alignSelf")}
@@ -183,17 +183,15 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("alignSelf", v)}
           />
         </PropertyRow>
-        <div className="grid grid-cols-3 gap-1.5">
-          <PropertyRow label="Grow">
-            <Input value={s("flexGrow")} onChange={(e) => updateStyle("flexGrow", e.target.value)} placeholder="0" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-          <PropertyRow label="Shrink">
-            <Input value={s("flexShrink")} onChange={(e) => updateStyle("flexShrink", e.target.value)} placeholder="1" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-          <PropertyRow label="Basis">
-            <Input value={s("flexBasis")} onChange={(e) => updateStyle("flexBasis", e.target.value)} placeholder="auto" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-        </div>
+        <PropertyRow label="Grow">
+          <Input value={s("flexGrow")} onChange={(e) => updateStyle("flexGrow", e.target.value)} placeholder="0" className="w-16 h-7 text-xs text-center" />
+        </PropertyRow>
+        <PropertyRow label="Shrink">
+          <Input value={s("flexShrink")} onChange={(e) => updateStyle("flexShrink", e.target.value)} placeholder="1" className="w-16 h-7 text-xs text-center" />
+        </PropertyRow>
+        <PropertyRow label="Basis">
+          <Input value={s("flexBasis")} onChange={(e) => updateStyle("flexBasis", e.target.value)} placeholder="auto" className="w-16 h-7 text-xs text-center" />
+        </PropertyRow>
       </PropertySection>
 
       {/* ================================================================
@@ -230,20 +228,18 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * SIZE
        * ================================================================ */}
       <PropertySection title="Size" icon={<Maximize2 className="h-3.5 w-3.5" />} defaultOpen={false}>
-        <div className="grid grid-cols-2 gap-2">
-          {([
-            ["width", "Width", "auto"],
-            ["height", "Height", "auto"],
-            ["minWidth", "Min W", "—"],
-            ["maxWidth", "Max W", "—"],
-            ["minHeight", "Min H", "—"],
-            ["maxHeight", "Max H", "—"],
-          ] as const).map(([prop, label, placeholder]) => (
-            <PropertyRow key={prop} label={label}>
-              <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder={placeholder} className="w-full h-7 text-xs text-center" />
-            </PropertyRow>
-          ))}
-        </div>
+        {([
+          ["width", "Width", "auto"],
+          ["height", "Height", "auto"],
+          ["minWidth", "Min W", "—"],
+          ["maxWidth", "Max W", "—"],
+          ["minHeight", "Min H", "—"],
+          ["maxHeight", "Max H", "—"],
+        ] as const).map(([prop, label, placeholder]) => (
+          <PropertyRow key={prop} label={label}>
+            <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder={placeholder} className="w-20 h-7 text-xs text-center" />
+          </PropertyRow>
+        ))}
         <PropertyRow label="Aspect">
           <Input value={s("aspectRatio")} onChange={(e) => updateStyle("aspectRatio", e.target.value)} placeholder="auto" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
@@ -281,13 +277,13 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           />
         </PropertyRow>
         {positionVal !== "static" && (
-          <div className="grid grid-cols-2 gap-2">
+          <>
             {(["top", "right", "bottom", "left"] as const).map((prop) => (
               <PropertyRow key={prop} label={prop.charAt(0).toUpperCase() + prop.slice(1)}>
-                <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="auto" className="w-full h-7 text-xs text-center" />
+                <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="auto" className="w-20 h-7 text-xs text-center" />
               </PropertyRow>
             ))}
-          </div>
+          </>
         )}
         <PropertyRow label="Z-Index">
           <Input value={s("zIndex")} onChange={(e) => updateStyle("zIndex", e.target.value)} placeholder="auto" className="w-20 h-7 text-xs text-center" />
@@ -358,14 +354,12 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("fontWeight", v)}
           />
         </PropertyRow>
-        <div className="grid grid-cols-2 gap-2">
-          <PropertyRow label="Size">
-            <Input value={s("fontSize")} onChange={(e) => updateStyle("fontSize", e.target.value)} placeholder="16px" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-          <PropertyRow label="Height">
-            <Input value={s("lineHeight")} onChange={(e) => updateStyle("lineHeight", e.target.value)} placeholder="1.5" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-        </div>
+        <PropertyRow label="Size">
+          <Input value={s("fontSize")} onChange={(e) => updateStyle("fontSize", e.target.value)} placeholder="16px" className="w-20 h-7 text-xs text-center" />
+        </PropertyRow>
+        <PropertyRow label="Height">
+          <Input value={s("lineHeight")} onChange={(e) => updateStyle("lineHeight", e.target.value)} placeholder="1.5" className="w-20 h-7 text-xs text-center" />
+        </PropertyRow>
         <PropertyRow label="Color">
           <div className="flex items-center gap-1.5">
             <input type="color" value={s("color") || "#000000"} onChange={(e) => updateStyle("color", e.target.value)} className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer" />
@@ -421,14 +415,12 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("textTransform", v)}
           />
         </PropertyRow>
-        <div className="grid grid-cols-2 gap-2">
-          <PropertyRow label="Spacing">
-            <Input value={s("letterSpacing")} onChange={(e) => updateStyle("letterSpacing", e.target.value)} placeholder="normal" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-          <PropertyRow label="Word">
-            <Input value={s("wordSpacing")} onChange={(e) => updateStyle("wordSpacing", e.target.value)} placeholder="normal" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-        </div>
+        <PropertyRow label="Spacing">
+          <Input value={s("letterSpacing")} onChange={(e) => updateStyle("letterSpacing", e.target.value)} placeholder="normal" className="w-20 h-7 text-xs text-center" />
+        </PropertyRow>
+        <PropertyRow label="Word">
+          <Input value={s("wordSpacing")} onChange={(e) => updateStyle("wordSpacing", e.target.value)} placeholder="normal" className="w-20 h-7 text-xs text-center" />
+        </PropertyRow>
         <PropertyRow label="Indent">
           <Input value={s("textIndent")} onChange={(e) => updateStyle("textIndent", e.target.value)} placeholder="0px" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
@@ -466,33 +458,31 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
         <PropertyRow label="Image" stacked>
           <Input value={s("backgroundImage")} onChange={(e) => updateStyle("backgroundImage", e.target.value)} placeholder="url(...) or linear-gradient(...)" className="h-7 text-xs" />
         </PropertyRow>
-        <div className="grid grid-cols-2 gap-2">
-          <PropertyRow label="Size">
-            <PropertySelect
-              value={s("backgroundSize")}
-              options={[
-                { value: "inherit", label: "Auto" },
-                { value: "cover", label: "Cover" },
-                { value: "contain", label: "Contain" },
-                { value: "100% 100%", label: "Fill" },
-              ]}
-              onChange={(v) => updateStyle("backgroundSize", v)}
-            />
-          </PropertyRow>
-          <PropertyRow label="Position">
-            <PropertySelect
-              value={s("backgroundPosition")}
-              options={[
-                { value: "inherit", label: "Center" },
-                { value: "top", label: "Top" },
-                { value: "bottom", label: "Bottom" },
-                { value: "left", label: "Left" },
-                { value: "right", label: "Right" },
-              ]}
-              onChange={(v) => updateStyle("backgroundPosition", v)}
-            />
-          </PropertyRow>
-        </div>
+        <PropertyRow label="Size">
+          <PropertySelect
+            value={s("backgroundSize")}
+            options={[
+              { value: "inherit", label: "Auto" },
+              { value: "cover", label: "Cover" },
+              { value: "contain", label: "Contain" },
+              { value: "100% 100%", label: "Fill" },
+            ]}
+            onChange={(v) => updateStyle("backgroundSize", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Position">
+          <PropertySelect
+            value={s("backgroundPosition")}
+            options={[
+              { value: "inherit", label: "Center" },
+              { value: "top", label: "Top" },
+              { value: "bottom", label: "Bottom" },
+              { value: "left", label: "Left" },
+              { value: "right", label: "Right" },
+            ]}
+            onChange={(v) => updateStyle("backgroundPosition", v)}
+          />
+        </PropertyRow>
         <PropertyRow label="Repeat">
           <PropertySelect
             value={s("backgroundRepeat")}
@@ -526,14 +516,13 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
         </PropertyRow>
         <PropertyRow label="Style">
           <PropertySelect
-            value={s("borderStyle")}
+            value={s("borderStyle") || "inherit"}
             options={[
               { value: "inherit", label: "None" },
               { value: "solid", label: "Solid" },
               { value: "dashed", label: "Dashed" },
               { value: "dotted", label: "Dotted" },
               { value: "double", label: "Double" },
-              { value: "groove", label: "Groove" },
             ]}
             onChange={(v) => updateStyle("borderStyle", v)}
           />
@@ -548,31 +537,27 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           <Input value={s("borderRadius")} onChange={(e) => updateStyle("borderRadius", e.target.value)} placeholder="0px" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
         {/* Per-corner radius */}
-        <div className="grid grid-cols-2 gap-1.5">
-          {([
-            ["borderTopLeftRadius", "TL"],
-            ["borderTopRightRadius", "TR"],
-            ["borderBottomLeftRadius", "BL"],
-            ["borderBottomRightRadius", "BR"],
-          ] as const).map(([prop, label]) => (
-            <PropertyRow key={prop} label={label}>
-              <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="—" className="w-full h-7 text-xs text-center" />
-            </PropertyRow>
-          ))}
-        </div>
+        {([
+          ["borderTopLeftRadius", "Radius TL"],
+          ["borderTopRightRadius", "Radius TR"],
+          ["borderBottomLeftRadius", "Radius BL"],
+          ["borderBottomRightRadius", "Radius BR"],
+        ] as const).map(([prop, label]) => (
+          <PropertyRow key={prop} label={label}>
+            <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="—" className="w-20 h-7 text-xs text-center" />
+          </PropertyRow>
+        ))}
         {/* Per-side borders */}
-        <div className="grid grid-cols-2 gap-1.5 mt-2">
-          {([
-            ["borderTopWidth", "Top W"],
-            ["borderRightWidth", "Right W"],
-            ["borderBottomWidth", "Bot W"],
-            ["borderLeftWidth", "Left W"],
-          ] as const).map(([prop, label]) => (
-            <PropertyRow key={prop} label={label}>
-              <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="—" className="w-full h-7 text-xs text-center" />
-            </PropertyRow>
-          ))}
-        </div>
+        {([
+          ["borderTopWidth", "Top W"],
+          ["borderRightWidth", "Right W"],
+          ["borderBottomWidth", "Bottom W"],
+          ["borderLeftWidth", "Left W"],
+        ] as const).map(([prop, label]) => (
+          <PropertyRow key={prop} label={label}>
+            <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="—" className="w-20 h-7 text-xs text-center" />
+          </PropertyRow>
+        ))}
       </PropertySection>
 
       {/* ================================================================
@@ -635,14 +620,12 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("transitionProperty", v)}
           />
         </PropertyRow>
-        <div className="grid grid-cols-2 gap-2">
-          <PropertyRow label="Duration">
-            <Input value={s("transitionDuration")} onChange={(e) => updateStyle("transitionDuration", e.target.value)} placeholder="0ms" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-          <PropertyRow label="Delay">
-            <Input value={s("transitionDelay")} onChange={(e) => updateStyle("transitionDelay", e.target.value)} placeholder="0ms" className="w-full h-7 text-xs text-center" />
-          </PropertyRow>
-        </div>
+        <PropertyRow label="Duration">
+          <Input value={s("transitionDuration")} onChange={(e) => updateStyle("transitionDuration", e.target.value)} placeholder="0ms" className="w-20 h-7 text-xs text-center" />
+        </PropertyRow>
+        <PropertyRow label="Delay">
+          <Input value={s("transitionDelay")} onChange={(e) => updateStyle("transitionDelay", e.target.value)} placeholder="0ms" className="w-20 h-7 text-xs text-center" />
+        </PropertyRow>
         <PropertyRow label="Easing">
           <PropertySelect
             value={s("transitionTimingFunction")}

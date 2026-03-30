@@ -1,0 +1,49 @@
+@reference "tailwindcss";
+
+.image-picker-field {
+  @apply flex flex-col gap-1;
+}
+
+.image-picker-label {
+  @apply text-xs font-medium text-(--el-500);
+}
+
+.image-picker-preview {
+  @apply relative rounded-[3px] overflow-hidden border border-(--border-default);
+}
+
+.image-picker-thumb {
+  @apply w-full h-20 object-cover;
+}
+
+.image-picker-file {
+  @apply flex items-center gap-2 px-3 py-2 text-[12px] text-(--el-600);
+}
+
+.image-picker-filename {
+  @apply truncate flex-1;
+}
+
+.image-picker-actions {
+  @apply absolute top-1 right-1 flex items-center gap-0.5;
+}
+
+.image-picker-remove {
+  @apply flex items-center justify-center size-6 rounded-[3px];
+  @apply bg-(--el-900)/60 text-white border-none cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.image-picker-remove:hover {
+  @apply bg-(--status-error);
+}
+
+.image-picker-empty {
+  @apply flex items-center justify-center gap-2 w-full h-16 rounded-[3px];
+  @apply text-[12px] text-(--el-400) bg-(--el-50) border border-dashed border-(--border-default);
+  @apply cursor-pointer transition-colors duration-100;
+}
+
+.image-picker-empty:hover {
+  @apply bg-(--accent-primary-subtle)/30 border-(--accent-primary) text-(--accent-primary);
+}
