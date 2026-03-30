@@ -17,8 +17,6 @@ import {
   Search,
   Loader2,
   Check,
-  Grid3X3,
-  List,
 } from "lucide-react";
 import { useAssets, useUploadAsset, type Asset } from "@/lib/hooks/use-assets";
 import { cn } from "@/lib/utils";
@@ -57,7 +55,6 @@ export function MediaLibraryPicker({
   title = "Select Media",
 }: MediaLibraryPickerProps) {
   const [search, setSearch] = React.useState("");
-  const [viewMode, setViewMode] = React.useState<"grid" | "list">("grid");
   const [selectedAsset, setSelectedAsset] = React.useState<Asset | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -144,70 +141,103 @@ export function MediaLibraryPicker({
             <TabsTrigger value="stock">Stock</TabsTrigger>
           </TabsList>
 
-          {/* Library Tab */}
+          {/* Library Tab — WordPress-style with inline detail panel */}
           <TabsContent value="library" className="media-library-content">
-            {/* Search & View Toggle */}
-            <div className="media-library-toolbar">
-              <div className="media-library-search">
-                <Search className="h-4 w-4" />
-                <Input
-                  placeholder="Search media..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="media-library-search-input"
-                />
-              </div>
-              <div className="media-library-view-toggle">
-                <Button
-                  variant={viewMode === "grid" ? "secondary" : "ghost"}
-                  size="icon"
-                  onClick={() => setViewMode("grid")}
-                >
-                  <Grid3X3 className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant={viewMode === "list" ? "secondary" : "ghost"}
-                  size="icon"
-                  onClick={() => setViewMode("list")}
-                >
-                  <List className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
+            <div className="media-library-split">
+              {/* Left: Grid */}
+              <div className="media-library-grid-side">
+                {/* Toolbar */}
+                <div className="media-library-toolbar">
+                  <div className="media-library-search">
+                    <Search className="h-4 w-4" />
+                    <Input
+                      placeholder="Search media..."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      className="media-library-search-input"
+                    />
+                  </div>
+                  <span className="media-library-count">
+                    {filteredAssets.length} items
+                  </span>
+                </div>
 
-            {/* Assets Grid/List */}
-            {isLoading ? (
-              <div className="media-library-loading">
-                <Loader2 className="h-8 w-8 animate-spin" />
-                <span>Loading media...</span>
-              </div>
-            ) : filteredAssets.length === 0 ? (
-              <div className="media-library-empty">
-                <ImageIcon className="h-12 w-12" />
-                <p>No media found</p>
-                <span>Upload some files to get started</span>
-              </div>
-            ) : (
-              <div
-                className={cn(
-                  "media-library-assets",
-                  viewMode === "grid"
-                    ? "media-library-assets-grid"
-                    : "media-library-assets-list",
+                {/* Grid */}
+                {isLoading ? (
+                  <div className="media-library-loading">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                    <span>Loading media...</span>
+                  </div>
+                ) : filteredAssets.length === 0 ? (
+                  <div className="media-library-empty">
+                    <ImageIcon className="h-12 w-12" />
+                    <p>No media found</p>
+                    <span>Upload some files to get started</span>
+                  </div>
+                ) : (
+                  <div className="media-library-assets media-library-assets-grid">
+                    {filteredAssets.map((asset) => (
+                      <AssetItem
+                        key={asset.id}
+                        asset={asset}
+                        isSelected={selectedAsset?.id === asset.id}
+                        isCurrent={currentUrl === asset.url}
+                        viewMode="grid"
+                        onClick={() => setSelectedAsset(asset)}
+                      />
+                    ))}
+                  </div>
                 )}
-              >
-                {filteredAssets.map((asset) => (
-                  <AssetItem
-                    key={asset.id}
-                    asset={asset}
-                    isSelected={selectedAsset?.id === asset.id}
-                    isCurrent={currentUrl === asset.url}
-                    viewMode={viewMode}
-                    onClick={() => setSelectedAsset(asset)}
-                  />
-                ))}
               </div>
-            )}
+
+              {/* Right: Detail panel (shows when asset selected) */}
+              {selectedAsset && (
+                <div className="media-library-detail-side">
+                  <h3 className="media-library-detail-heading">Attachment details</h3>
+
+                  {/* Preview */}
+                  <div className="media-library-detail-preview">
+                    {selectedAsset.mimeType?.startsWith("image/") ? (
+                      <img src={selectedAsset.url} alt={selectedAsset.altText || selectedAsset.fileName} />
+                    ) : (
+                      <ImageIcon className="h-10 w-10" />
+                    )}
+                  </div>
+
+                  {/* Metadata */}
+                  <div className="media-library-detail-meta">
+                    <p>{selectedAsset.fileName}</p>
+                    <p>{selectedAsset.mimeType} · {formatBytes(selectedAsset.sizeBytes)}</p>
+                    {selectedAsset.width && selectedAsset.height && (
+                      <p>{selectedAsset.width} × {selectedAsset.height}</p>
+                    )}
+                  </div>
+
+                  {/* Editable fields */}
+                  <div className="media-library-detail-fields">
+                    <label>Alt Text</label>
+                    <Input
+                      value={selectedAsset.altText || ""}
+                      onChange={(e) => setSelectedAsset({ ...selectedAsset, altText: e.target.value })}
+                      placeholder="Describe this image"
+                      className="h-7 text-xs"
+                    />
+                    <label>Title</label>
+                    <Input
+                      value={selectedAsset.title || ""}
+                      onChange={(e) => setSelectedAsset({ ...selectedAsset, title: e.target.value })}
+                      className="h-7 text-xs"
+                    />
+                    <label>Caption</label>
+                    <Input
+                      value={selectedAsset.caption || ""}
+                      onChange={(e) => setSelectedAsset({ ...selectedAsset, caption: e.target.value })}
+                      className="h-7 text-xs"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </TabsContent>
 
           {/* Upload Tab */}
