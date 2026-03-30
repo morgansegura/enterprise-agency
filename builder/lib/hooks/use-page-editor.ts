@@ -57,12 +57,15 @@ function updateContainerBlocks(
 }
 
 function createDefaultBlock(blockType: string): Block {
-  const defaultBlock = blockRegistry.createDefault(blockType);
+  // Normalize: ensure block type ends with "-block"
+  const normalizedType = blockType.endsWith("-block") ? blockType : `${blockType}-block`;
+
+  const defaultBlock = blockRegistry.createDefault(normalizedType);
   if (!defaultBlock) {
     logger.warn(
-      `Block type "${blockType}" not found in registry, using fallback`,
+      `Block type "${normalizedType}" not found in registry, using fallback`,
     );
-    return { _key: `block-${Date.now()}`, _type: blockType, data: {} };
+    return { _key: `block-${Date.now()}`, _type: normalizedType, data: {} };
   }
   return defaultBlock;
 }

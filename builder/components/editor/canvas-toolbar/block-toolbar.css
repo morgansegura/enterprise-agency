@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+.block-toolbar {
+  @apply absolute z-30 flex items-center gap-0.5 px-1 py-0.5 rounded-[3px];
+  @apply bg-(--el-900) shadow-lg;
+}
+
+.block-toolbar-btn {
+  @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none;
+  @apply transition-colors duration-75;
+}
+
+.block-toolbar-btn:hover {
+  @apply text-(--el-0) bg-(--el-700);
+}
+
+.block-toolbar-btn:disabled {
+  @apply opacity-30 cursor-not-allowed;
+}
+
+.block-toolbar-grip {
+  @apply cursor-grab;
+}
+
+.block-toolbar-delete:hover {
+  @apply text-white bg-(--status-error);
+}
+
+.block-toolbar-divider {
+  @apply w-px h-4 bg-(--el-700) mx-0.5;
+}

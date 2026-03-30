@@ -30,8 +30,11 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
   React.useEffect(() => {
     let mounted = true;
 
+    // Normalize: ensure block type ends with "-block"
+    const blockType = block._type.endsWith("-block") ? block._type : `${block._type}-block`;
+
     blockRendererRegistry
-      .loadRenderer(block._type)
+      .loadRenderer(blockType)
       .then((comp) => {
         if (mounted) {
           if (comp) {
@@ -51,7 +54,7 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
     return () => {
       mounted = false;
     };
-  }, [block._type]);
+  }, [block._type]); // blockType is derived from block._type
 
   if (error) {
     return (
