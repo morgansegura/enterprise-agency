@@ -6,7 +6,7 @@ import {
   blockRendererRegistry,
   type BlockRendererProps,
 } from "@/lib/renderer/block-renderer-registry";
-import { allStylesToCSSVars, hasStyles } from "@/lib/types/section";
+import { allStylesToCSSVars, hasStyles, mergeStyles } from "@/lib/types/section";
 
 interface Props {
   block: Block;
@@ -70,9 +70,21 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
     .replace(/\b\w/g, (c) => c.toUpperCase());
 
   const blockAny = block as Record<string, unknown>;
-  const styles = blockAny.styles as Record<string, string> | undefined;
-  const stylesBefore = blockAny.stylesBefore as Record<string, string> | undefined;
-  const stylesAfter = blockAny.stylesAfter as Record<string, string> | undefined;
+  const responsive = blockAny._responsive as Record<string, Record<string, unknown>> | undefined;
+
+  // Merge responsive overrides: desktop styles + breakpoint overrides
+  const baseStyles = blockAny.styles as Record<string, string> | undefined;
+  const bpOverrides = breakpoint !== "desktop" && responsive?.[breakpoint]?.styles as Record<string, string> | undefined;
+  const styles = bpOverrides ? mergeStyles(baseStyles, bpOverrides) : baseStyles;
+
+  const baseBefore = blockAny.stylesBefore as Record<string, string> | undefined;
+  const bpBefore = breakpoint !== "desktop" && responsive?.[breakpoint]?.stylesBefore as Record<string, string> | undefined;
+  const stylesBefore = bpBefore ? mergeStyles(baseBefore, bpBefore) : baseBefore;
+
+  const baseAfter = blockAny.stylesAfter as Record<string, string> | undefined;
+  const bpAfter = breakpoint !== "desktop" && responsive?.[breakpoint]?.stylesAfter as Record<string, string> | undefined;
+  const stylesAfter = bpAfter ? mergeStyles(baseAfter, bpAfter) : baseAfter;
+
   const cssVars = allStylesToCSSVars(styles, stylesBefore, stylesAfter);
   const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter);
 

@@ -24,6 +24,7 @@ import {
 } from "./components";
 import type { Block } from "@/lib/types/section";
 import type { ElementStyles } from "@enterprise/tokens";
+import { useCurrentBreakpoint } from "@/lib/responsive/context";
 
 // =============================================================================
 // Visual Builders — replace raw text inputs with intuitive controls
@@ -407,25 +408,61 @@ interface BlockStyleTabProps {
 }
 
 /**
- * BlockStyleTab — wrapper with Normal/::before/::after toggle
+ * BlockStyleTab — wrapper with Normal/::before/::after toggle + responsive breakpoint
  */
 export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
   const [mode, setMode] = React.useState<"normal" | "before" | "after">("normal");
+  const breakpoint = useCurrentBreakpoint();
+  const isResponsive = breakpoint !== "desktop";
 
-  const getStyles = () => {
-    if (mode === "before") return (block.stylesBefore as ElementStyles) || {};
-    if (mode === "after") return (block.stylesAfter as ElementStyles) || {};
-    return (block.styles as ElementStyles) || {};
+  // Get the style key based on mode
+  const styleKey = mode === "before" ? "stylesBefore" : mode === "after" ? "stylesAfter" : "styles";
+
+  const getStyles = (): ElementStyles => {
+    const blockAny = block as Record<string, unknown>;
+    const responsive = blockAny._responsive as Record<string, Record<string, unknown>> | undefined;
+
+    // Base styles (desktop)
+    const base = (blockAny[styleKey] as ElementStyles) || {};
+
+    if (!isResponsive) return base;
+
+    // Merge with breakpoint overrides
+    const bpOverrides = (responsive?.[breakpoint]?.[styleKey] as ElementStyles) || {};
+    return { ...base, ...bpOverrides };
   };
 
   const handleChange = (updated: ElementStyles) => {
-    if (mode === "before") onChange({ ...block, stylesBefore: updated });
-    else if (mode === "after") onChange({ ...block, stylesAfter: updated });
-    else onChange({ ...block, styles: updated });
+    if (!isResponsive) {
+      // Desktop — write directly to block
+      onChange({ ...block, [styleKey]: updated });
+    } else {
+      // Tablet/Mobile — write to _responsive.[breakpoint]
+      const blockAny = block as Record<string, unknown>;
+      const responsive = (blockAny._responsive as Record<string, Record<string, unknown>>) || {};
+      const bpData = responsive[breakpoint] || {};
+      onChange({
+        ...block,
+        _responsive: {
+          ...responsive,
+          [breakpoint]: {
+            ...bpData,
+            [styleKey]: updated,
+          },
+        },
+      });
+    }
   };
 
   return (
     <>
+      {/* Breakpoint indicator */}
+      {isResponsive && (
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-(--status-info-subtle) text-(--status-info) text-[11px] font-medium">
+          <span>Editing: {breakpoint}</span>
+          <span className="text-[10px] opacity-60">Changes only apply to this breakpoint</span>
+        </div>
+      )}
       {/* Mode toggle */}
       <div className="flex items-center gap-0.5 px-3 py-2 border-b border-(--border-default)">
         <button
