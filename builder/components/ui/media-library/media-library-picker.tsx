@@ -18,7 +18,8 @@ import {
   Loader2,
   Check,
 } from "lucide-react";
-import { useAssets, useUploadAsset, type Asset } from "@/lib/hooks/use-assets";
+import { useAssets, useUploadAsset, useUpdateAsset, useDeleteAsset, type Asset } from "@/lib/hooks/use-assets";
+import { Trash2, Download, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -56,6 +57,9 @@ export function MediaLibraryPicker({
 }: MediaLibraryPickerProps) {
   const [search, setSearch] = React.useState("");
   const [selectedAsset, setSelectedAsset] = React.useState<Asset | null>(null);
+  const [confirmDelete, setConfirmDelete] = React.useState(false);
+  const updateAsset = useUpdateAsset(tenantId);
+  const deleteAsset = useDeleteAsset(tenantId);
   const [isDragging, setIsDragging] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -204,36 +208,98 @@ export function MediaLibraryPicker({
                     )}
                   </div>
 
-                  {/* Metadata */}
+                  {/* Read-only metadata */}
                   <div className="media-library-detail-meta">
-                    <p>{selectedAsset.fileName}</p>
                     <p>{selectedAsset.mimeType} · {formatBytes(selectedAsset.sizeBytes)}</p>
                     {selectedAsset.width && selectedAsset.height && (
-                      <p>{selectedAsset.width} × {selectedAsset.height}</p>
+                      <p>{selectedAsset.width} × {selectedAsset.height} pixels</p>
+                    )}
+                    {selectedAsset.createdAt && (
+                      <p>{new Date(selectedAsset.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
                     )}
                   </div>
 
                   {/* Editable fields */}
                   <div className="media-library-detail-fields">
-                    <label>Alt Text</label>
+                    <label>File Name</label>
+                    <Input
+                      value={selectedAsset.fileName || ""}
+                      onChange={(e) => setSelectedAsset({ ...selectedAsset, fileName: e.target.value })}
+                      onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { fileName: selectedAsset.fileName } })}
+                      className="h-7 text-xs"
+                    />
+                    <label>Alternative Text</label>
                     <Input
                       value={selectedAsset.altText || ""}
                       onChange={(e) => setSelectedAsset({ ...selectedAsset, altText: e.target.value })}
-                      placeholder="Describe this image"
+                      onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { altText: selectedAsset.altText } })}
+                      placeholder="Describe this image for SEO & accessibility"
                       className="h-7 text-xs"
                     />
                     <label>Title</label>
                     <Input
                       value={selectedAsset.title || ""}
                       onChange={(e) => setSelectedAsset({ ...selectedAsset, title: e.target.value })}
+                      onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { title: selectedAsset.title } })}
                       className="h-7 text-xs"
                     />
                     <label>Caption</label>
                     <Input
                       value={selectedAsset.caption || ""}
                       onChange={(e) => setSelectedAsset({ ...selectedAsset, caption: e.target.value })}
+                      onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { caption: selectedAsset.caption } })}
                       className="h-7 text-xs"
                     />
+                  </div>
+
+                  {/* URL */}
+                  <div className="media-library-detail-fields">
+                    <label>File URL</label>
+                    <div className="media-library-detail-url-row">
+                      <Input value={selectedAsset.url} readOnly className="h-7 text-xs flex-1" />
+                      <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0" onClick={() => { navigator.clipboard.writeText(selectedAsset.url); toast.success("URL copied"); }}>
+                        <Copy className="size-3" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="media-library-detail-actions">
+                    <a href={selectedAsset.url} target="_blank" rel="noopener noreferrer" className="media-library-detail-link">
+                      <Download className="size-3" /> Download
+                    </a>
+                    <span className="media-library-detail-divider">|</span>
+                    {confirmDelete ? (
+                      <span className="media-library-detail-confirm">
+                        <span>Are you sure?</span>
+                        <button
+                          type="button"
+                          className="media-library-detail-confirm-yes"
+                          onClick={() => {
+                            deleteAsset.mutate(selectedAsset.id, {
+                              onSuccess: () => {
+                                toast.success("Deleted");
+                                setSelectedAsset(null);
+                                setConfirmDelete(false);
+                              },
+                            });
+                          }}
+                        >
+                          Yes, delete
+                        </button>
+                        <button
+                          type="button"
+                          className="media-library-detail-confirm-no"
+                          onClick={() => setConfirmDelete(false)}
+                        >
+                          Cancel
+                        </button>
+                      </span>
+                    ) : (
+                      <button type="button" className="media-library-detail-delete" onClick={() => setConfirmDelete(true)}>
+                        <Trash2 className="size-3" /> Delete permanently
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
