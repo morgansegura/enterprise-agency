@@ -76,7 +76,7 @@ type UIStore = UIState & UIActions;
 const initialState: UIState = {
   sidebarOpen: true,
   rightPanelOpen: true,
-  rightPanelWidth: 280,
+  rightPanelWidth: 320,
   selectedElement: null,
   pageSettingsOpen: false,
   globalSettingsOpen: false,
