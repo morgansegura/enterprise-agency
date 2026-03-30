@@ -62,6 +62,22 @@
   /* Subtle/muted elements */
   --muted: var(--brand-primary-100);
   --muted-foreground: var(--brand-secondary-500);
+
+  /* Borders & inputs */
+  --border: var(--neutral-200);
+  --input: var(--neutral-200);
+  --ring: var(--brand-primary-500);
+
+  /* Card */
+  --card: var(--neutral-0);
+  --card-foreground: var(--neutral-950);
+
+  /* Popover */
+  --popover: var(--neutral-0);
+  --popover-foreground: var(--neutral-950);
+
+  /* Destructive */
+  --destructive: var(--status-destructive-light);
 }
 
 /* ===== LAYER 3: DARK MODE SEMANTIC MAPPINGS ===== */
@@ -83,6 +99,22 @@
   /* Subtle/muted elements */
   --muted: var(--neutral-800);
   --muted-foreground: var(--brand-secondary-700);
+
+  /* Borders & inputs */
+  --border: var(--neutral-800);
+  --input: var(--neutral-800);
+  --ring: var(--brand-primary-200);
+
+  /* Card */
+  --card: var(--neutral-900);
+  --card-foreground: var(--brand-primary-50);
+
+  /* Popover */
+  --popover: var(--neutral-900);
+  --popover-foreground: var(--brand-primary-50);
+
+  /* Destructive */
+  --destructive: var(--status-destructive-dark);
 }
 
 /* ===== PER-CLIENT CUSTOMIZATION EXAMPLES ===== */
