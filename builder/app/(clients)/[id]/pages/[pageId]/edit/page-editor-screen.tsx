@@ -498,6 +498,7 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                 onDuplicateBlock={editor.handleBlockDuplicate}
                 onMoveBlockUp={editor.handleBlockMoveUp}
                 onMoveBlockDown={editor.handleBlockMoveDown}
+                onBlockReorder={editor.handleBlockReorder}
               />
             }
             blocksPanel={<BlocksLibrary />}

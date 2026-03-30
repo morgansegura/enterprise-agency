@@ -319,6 +319,34 @@ export function usePageEditor(initialSections: Section[]) {
     [],
   );
 
+  // Reorder blocks within a container
+  const handleBlockReorder = React.useCallback(
+    (sectionIndex: number, containerIndex: number, fromIndex: number, toIndex: number) => {
+      setSections((prev) => {
+        const updated = [...prev];
+        const blocks = [...getContainerBlocks(updated[sectionIndex], containerIndex)];
+        const [moved] = blocks.splice(fromIndex, 1);
+        blocks.splice(toIndex, 0, moved);
+        updated[sectionIndex] = updateContainerBlocks(updated[sectionIndex], containerIndex, blocks);
+        return updated;
+      });
+    },
+    [],
+  );
+
+  // Reorder sections
+  const handleSectionReorder = React.useCallback(
+    (fromIndex: number, toIndex: number) => {
+      setSections((prev) => {
+        const updated = [...prev];
+        const [moved] = updated.splice(fromIndex, 1);
+        updated.splice(toIndex, 0, moved);
+        return updated;
+      });
+    },
+    [],
+  );
+
   return {
     sections,
     setSections,
@@ -328,6 +356,7 @@ export function usePageEditor(initialSections: Section[]) {
     handleBlockDuplicate,
     handleBlockMoveUp,
     handleBlockMoveDown,
+    handleBlockReorder,
     handleAddBlockToContainer,
     // Section operations
     handleSectionChange,
@@ -336,6 +365,7 @@ export function usePageEditor(initialSections: Section[]) {
     handleSectionDuplicate,
     handleSectionMoveUp,
     handleSectionMoveDown,
+    handleSectionReorder,
     handleAddContainerToSection,
   };
 }

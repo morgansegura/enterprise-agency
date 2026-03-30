@@ -1,6 +1,19 @@
 "use client";
 
 import * as React from "react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { AddBlockPopover } from "@/components/editor/add-block-popover/add-block-popover";
 import {
   ChevronRight,
@@ -85,6 +98,24 @@ function getBlockLabel(block: Block): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+function SortableBlockItem({ id, children }: { id: string; children: React.ReactNode }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  return (
+    <div
+      ref={setNodeRef}
+      style={{
+        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+      }}
+      {...attributes}
+      {...listeners}
+    >
+      {children}
+    </div>
+  );
+}
+
 interface PageLayersProps {
   sections: Section[];
   selectedKey?: string | null;
@@ -111,6 +142,12 @@ interface PageLayersProps {
     blockType: string,
   ) => void;
   onAddContainer?: (sectionIndex: number) => void;
+  onBlockReorder?: (
+    sectionIndex: number,
+    containerIndex: number,
+    fromIndex: number,
+    toIndex: number,
+  ) => void;
   onDeleteBlock?: (
     sectionIndex: number,
     containerIndex: number,
@@ -145,12 +182,16 @@ export function PageLayers({
   onDeleteSection,
   onAddBlock,
   onAddContainer,
+  onBlockReorder,
   onDeleteBlock,
   onDuplicateBlock,
   onMoveBlockUp,
   onMoveBlockDown,
 }: PageLayersProps) {
   const [collapsed, setCollapsed] = React.useState<Set<string>>(new Set());
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+  );
 
   const toggleCollapse = (key: string) => {
     setCollapsed((prev) => {
@@ -312,13 +353,31 @@ export function PageLayers({
                         )}
                       </div>
 
-                      {/* Block rows */}
-                      {!isContainerCollapsed &&
-                        blocks.map((block, blockIndex) => {
+                      {/* Block rows — sortable via drag and drop */}
+                      {!isContainerCollapsed && (
+                        <DndContext
+                          sensors={sensors}
+                          collisionDetection={closestCenter}
+                          onDragEnd={(event: DragEndEvent) => {
+                            const { active, over } = event;
+                            if (!over || active.id === over.id) return;
+                            const fromIdx = blocks.findIndex((b) => b._key === active.id);
+                            const toIdx = blocks.findIndex((b) => b._key === over.id);
+                            if (fromIdx !== -1 && toIdx !== -1) {
+                              onBlockReorder?.(sectionIndex, containerIndex, fromIdx, toIdx);
+                            }
+                          }}
+                        >
+                          <SortableContext
+                            items={blocks.map((b) => b._key)}
+                            strategy={verticalListSortingStrategy}
+                          >
+                        {blocks.map((block, blockIndex) => {
                           const Icon = blockIcons[block._type] || Box;
                           const nestedBlocks = (block.blocks as Block[] | undefined) ?? [];
                           return (
                             <React.Fragment key={block._key}>
+                            <SortableBlockItem id={block._key}>
                             <div
                               className={cn(
                                 "layer-item layer-item-block",
@@ -446,9 +505,13 @@ export function PageLayers({
                                   </div>
                                 );
                               })}
+                            </SortableBlockItem>
                             </React.Fragment>
                           );
                         })}
+                          </SortableContext>
+                        </DndContext>
+                      )}
                     </div>
                   );
                 })}
