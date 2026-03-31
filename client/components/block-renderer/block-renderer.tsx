@@ -76,20 +76,48 @@ function withStyles(block: RootBlock, content: React.ReactNode): React.ReactNode
   const styles = blockAny.styles as Record<string, string> | undefined;
   const stylesBefore = blockAny.stylesBefore as Record<string, string> | undefined;
   const stylesAfter = blockAny.stylesAfter as Record<string, string> | undefined;
+  const responsive = blockAny._responsive as Record<string, Record<string, unknown>> | undefined;
   const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter);
+  const hasResponsive = responsive && (responsive.tablet || responsive.mobile);
 
-  if (!styled) return content;
+  if (!styled && !hasResponsive) return content;
 
   const cssVars = allStylesToCSSVars(styles, stylesBefore, stylesAfter);
+  const blockId = `b-${(block as { _key: string })._key}`;
+
+  // Build responsive CSS media queries
+  let responsiveCSS = "";
+  if (hasResponsive) {
+    const tabletStyles = responsive?.tablet?.styles as Record<string, string> | undefined;
+    const mobileStyles = responsive?.mobile?.styles as Record<string, string> | undefined;
+
+    if (hasStyles(tabletStyles)) {
+      const tabletVars = allStylesToCSSVars(tabletStyles);
+      const tabletProps = Object.entries(tabletVars).map(([k, v]) => `${k}: ${v}`).join("; ");
+      responsiveCSS += `@media (max-width: 1024px) { [data-block-id="${blockId}"] { ${tabletProps} } }\n`;
+    }
+    if (hasStyles(mobileStyles)) {
+      const mobileVars = allStylesToCSSVars(mobileStyles);
+      const mobileProps = Object.entries(mobileVars).map(([k, v]) => `${k}: ${v}`).join("; ");
+      responsiveCSS += `@media (max-width: 640px) { [data-block-id="${blockId}"] { ${mobileProps} } }\n`;
+    }
+  }
+
   return (
-    <div
-      data-styled
-      data-has-before={hasStyles(stylesBefore) || undefined}
-      data-has-after={hasStyles(stylesAfter) || undefined}
-      style={cssVars as React.CSSProperties}
-    >
-      {content}
-    </div>
+    <>
+      {responsiveCSS && (
+        <style dangerouslySetInnerHTML={{ __html: responsiveCSS }} />
+      )}
+      <div
+        data-styled
+        data-block-id={hasResponsive ? blockId : undefined}
+        data-has-before={hasStyles(stylesBefore) || undefined}
+        data-has-after={hasStyles(stylesAfter) || undefined}
+        style={cssVars as React.CSSProperties}
+      >
+        {content}
+      </div>
+    </>
   );
 }
 
