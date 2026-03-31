@@ -26,6 +26,7 @@ import {
 } from "./components";
 import type { Block } from "@/lib/types/section";
 import type { ElementStyles } from "@enterprise/tokens";
+import { googleFonts } from "@/lib/fonts/google-fonts";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 
 // =============================================================================
@@ -784,16 +785,10 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             value={s("fontFamily")}
             options={[
               { value: "inherit", label: "Inherit" },
-              { value: "'Inter', sans-serif", label: "Inter" },
-              { value: "'Poppins', sans-serif", label: "Poppins" },
-              { value: "'DM Sans', sans-serif", label: "DM Sans" },
-              { value: "'Plus Jakarta Sans', sans-serif", label: "Jakarta" },
-              { value: "'Outfit', sans-serif", label: "Outfit" },
-              { value: "'Space Grotesk', sans-serif", label: "Space Grotesk" },
-              { value: "'Playfair Display', serif", label: "Playfair" },
-              { value: "'Lora', serif", label: "Lora" },
-              { value: "'Merriweather', serif", label: "Merriweather" },
-              { value: "'Montserrat', sans-serif", label: "Montserrat" },
+              ...googleFonts.map((f) => ({
+                value: `'${f.family}', ${f.category}`,
+                label: f.family,
+              })),
             ]}
             onChange={(v) => updateStyle("fontFamily", v)}
           />
