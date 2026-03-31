@@ -50,16 +50,13 @@ export function BlockToolbar({
 
     const updatePosition = () => {
       const rect = el.getBoundingClientRect();
-      const canvas = el.closest(".page-editor-canvas");
-      if (!canvas) return;
-      const canvasRect = canvas.getBoundingClientRect();
 
-      const topAbove = rect.top - canvasRect.top - 36;
-      const showBelow = topAbove < 0;
+      const topAbove = rect.top - 36;
+      const showBelow = topAbove < 60; // Don't go above navbar
 
       setPosition({
-        top: showBelow ? rect.bottom - canvasRect.top + 4 : topAbove,
-        left: rect.left - canvasRect.left,
+        top: showBelow ? rect.bottom + 4 : topAbove,
+        left: rect.left,
         width: rect.width,
       });
     };

@@ -1,8 +1,9 @@
 @reference "tailwindcss";
 
 .block-toolbar {
-  @apply absolute z-30 flex items-center gap-0.5 px-1 py-0.5 rounded-[3px];
+  @apply fixed z-50 flex items-center gap-0.5 px-1 py-0.5 rounded-[3px];
   @apply bg-(--el-900) shadow-lg;
+  pointer-events: auto;
 }
 
 .block-toolbar-btn {
