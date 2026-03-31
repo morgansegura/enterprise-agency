@@ -430,6 +430,80 @@ export default function ThemePage() {
           </div>
         </section>
 
+        {/* Global Defaults */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Global Defaults</h3>
+          <p className="theme-section-desc">
+            Default styles inherited by all blocks
+          </p>
+          <div className="theme-color-grid">
+            <div className="theme-color-field">
+              <label className="theme-label">Body Font Size</label>
+              <select
+                className="theme-select"
+                value={(colors.bodyFontSize as string) || "16px"}
+                onChange={(e) => {
+                  handleColorChange("bodyFontSize", e.target.value);
+                }}
+              >
+                <option value="14px">14px</option>
+                <option value="15px">15px</option>
+                <option value="16px">16px (default)</option>
+                <option value="17px">17px</option>
+                <option value="18px">18px</option>
+              </select>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Container Max Width</label>
+              <select
+                className="theme-select"
+                value={(colors.containerMaxWidth as string) || "1200px"}
+                onChange={(e) => {
+                  handleColorChange("containerMaxWidth", e.target.value);
+                }}
+              >
+                <option value="960px">Narrow (960px)</option>
+                <option value="1080px">Medium (1080px)</option>
+                <option value="1200px">Default (1200px)</option>
+                <option value="1400px">Wide (1400px)</option>
+                <option value="100%">Full Width</option>
+              </select>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Container Padding</label>
+              <select
+                className="theme-select"
+                value={(colors.containerPadding as string) || "24px"}
+                onChange={(e) => {
+                  handleColorChange("containerPadding", e.target.value);
+                }}
+              >
+                <option value="16px">Tight (16px)</option>
+                <option value="24px">Default (24px)</option>
+                <option value="32px">Relaxed (32px)</option>
+                <option value="48px">Spacious (48px)</option>
+              </select>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Link Color</label>
+              <div className="theme-color-input-row">
+                <input
+                  type="color"
+                  value={(colors.linkColor as string) || primaryColor}
+                  onChange={(e) => handleColorChange("linkColor", e.target.value)}
+                  className="theme-color-picker"
+                />
+                <Input
+                  value={(colors.linkColor as string) || ""}
+                  onChange={(e) => handleColorChange("linkColor", e.target.value)}
+                  placeholder="Same as primary"
+                  className="theme-color-hex"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Preview */}
         <section className="theme-section">
           <h3 className="theme-section-title">Preview</h3>
