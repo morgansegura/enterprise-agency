@@ -674,7 +674,38 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             </div>
           </div>
           <div>
-            <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">Padding</span>
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">Padding</span>
+              {/* Quick presets */}
+              <div className="flex gap-0.5">
+                {([
+                  ["0", "0"],
+                  ["8px", "xs"],
+                  ["16px", "sm"],
+                  ["24px", "md"],
+                  ["32px", "lg"],
+                  ["48px", "xl"],
+                ] as const).map(([val, label]) => (
+                  <button
+                    key={label}
+                    type="button"
+                    className={`px-1.5 py-0.5 text-[9px] rounded-[3px] border-none cursor-pointer transition-colors ${
+                      s("paddingTop") === val && s("paddingRight") === val
+                        ? "bg-(--accent-primary) text-white"
+                        : "bg-(--el-100) text-(--el-500) hover:bg-(--el-200)"
+                    }`}
+                    onClick={() => {
+                      updateStyle("paddingTop", val);
+                      updateStyle("paddingRight", val);
+                      updateStyle("paddingBottom", val);
+                      updateStyle("paddingLeft", val);
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="grid grid-cols-4 gap-1.5 mt-1">
               {(["paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] as const).map((prop) => (
                 <div key={prop} className="flex flex-col items-center gap-0.5">
