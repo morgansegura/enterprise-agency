@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.text-bubble-menu {
+  @apply fixed z-50 flex items-center gap-0.5 px-1 py-0.5 rounded-[3px];
+  @apply bg-(--el-900) shadow-lg;
+  pointer-events: auto;
+}
+
+.text-bubble-btn {
+  @apply flex items-center justify-center size-7 rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none;
+  @apply transition-colors duration-75;
+}
+
+.text-bubble-btn:hover {
+  @apply text-(--el-0) bg-(--el-700);
+}
+
+.text-bubble-btn[data-active] {
+  @apply text-(--el-0) bg-(--accent-primary);
+}
+
+.text-bubble-divider {
+  @apply w-px h-4 bg-(--el-700) mx-0.5;
+}

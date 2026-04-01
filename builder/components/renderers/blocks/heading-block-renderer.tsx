@@ -3,8 +3,10 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import TipTapLink from "@tiptap/extension-link";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
+import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
 
 interface HeadingBlockData {
   text: string;
@@ -109,13 +111,16 @@ export default function HeadingBlockRenderer({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        // Only allow inline formatting for headings — no blocks
         blockquote: false,
         bulletList: false,
         orderedList: false,
         codeBlock: false,
         horizontalRule: false,
         heading: false,
+      }),
+      TipTapLink.configure({
+        openOnClick: false,
+        HTMLAttributes: { class: "text-inherit underline" },
       }),
       Placeholder.configure({
         placeholder: "Type a heading...",
@@ -164,6 +169,7 @@ export default function HeadingBlockRenderer({
       {...filteredDataAttributes}
       style={{ cursor: "text" }}
     >
+      {editor && <TextBubbleMenu editor={editor} />}
       <EditorContent
         editor={editor}
         style={{ outline: "none" }}
