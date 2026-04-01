@@ -217,8 +217,83 @@ export function mapFigmaToBlocks(
     data: Record<string, unknown>;
   }> = [];
 
+  // Extract ElementStyles from a Figma node
+  function extractStyles(n: FigmaNode): Record<string, string> {
+    const styles: Record<string, string> = {};
+
+    // Typography
+    if (n.style?.fontFamily) styles.fontFamily = `'${n.style.fontFamily}', sans-serif`;
+    if (n.style?.fontSize) styles.fontSize = `${n.style.fontSize}px`;
+    if (n.style?.fontWeight) styles.fontWeight = `${n.style.fontWeight}`;
+    if (n.style?.lineHeightPx) styles.lineHeight = `${n.style.lineHeightPx}px`;
+    if (n.style?.letterSpacing) styles.letterSpacing = `${n.style.letterSpacing}px`;
+    if (n.style?.textAlignHorizontal) styles.textAlign = n.style.textAlignHorizontal.toLowerCase();
+
+    // Colors from fills
+    if (n.fills) {
+      const solidFill = n.fills.find((f) => f.type === "SOLID" && f.color);
+      if (solidFill?.color) {
+        const hex = figmaColorToHex(solidFill.color);
+        // For text nodes, this is the text color
+        if (n.type === "TEXT") {
+          styles.color = hex;
+        } else {
+          styles.backgroundColor = hex;
+        }
+      }
+    }
+
+    // Spacing from auto-layout
+    if (n.paddingTop) styles.paddingTop = `${n.paddingTop}px`;
+    if (n.paddingRight) styles.paddingRight = `${n.paddingRight}px`;
+    if (n.paddingBottom) styles.paddingBottom = `${n.paddingBottom}px`;
+    if (n.paddingLeft) styles.paddingLeft = `${n.paddingLeft}px`;
+    if (n.itemSpacing) styles.gap = `${n.itemSpacing}px`;
+
+    // Border radius
+    if (n.cornerRadius) styles.borderRadius = `${n.cornerRadius}px`;
+
+    // Strokes as borders
+    if (n.strokes && n.strokes.length > 0 && n.strokeWeight) {
+      const stroke = n.strokes[0];
+      if (stroke.type === "SOLID" && stroke.color) {
+        styles.borderWidth = `${n.strokeWeight}px`;
+        styles.borderStyle = "solid";
+        styles.borderColor = figmaColorToHex(stroke.color);
+      }
+    }
+
+    // Layout
+    if (n.layoutMode === "HORIZONTAL") {
+      styles.display = "flex";
+      styles.flexDirection = "row";
+    } else if (n.layoutMode === "VERTICAL") {
+      styles.display = "flex";
+      styles.flexDirection = "column";
+    }
+
+    if (n.primaryAxisAlignItems) {
+      const map: Record<string, string> = { MIN: "flex-start", CENTER: "center", MAX: "flex-end", SPACE_BETWEEN: "space-between" };
+      if (map[n.primaryAxisAlignItems]) styles.justifyContent = map[n.primaryAxisAlignItems];
+    }
+    if (n.counterAxisAlignItems) {
+      const map: Record<string, string> = { MIN: "flex-start", CENTER: "center", MAX: "flex-end" };
+      if (map[n.counterAxisAlignItems]) styles.alignItems = map[n.counterAxisAlignItems];
+    }
+
+    // Size
+    if (n.absoluteBoundingBox) {
+      if (n.absoluteBoundingBox.width) styles.width = `${n.absoluteBoundingBox.width}px`;
+      if (n.absoluteBoundingBox.height) styles.height = `${n.absoluteBoundingBox.height}px`;
+    }
+
+    // Filter out empty values
+    return Object.fromEntries(Object.entries(styles).filter(([, v]) => v !== undefined && v !== ""));
+  }
+
   function processNode(n: FigmaNode) {
     const ts = Date.now() + Math.random() * 1000;
+    const nodeStyles = extractStyles(n);
 
     // Text nodes → heading or text block
     if (n.type === "TEXT" && n.characters) {
@@ -257,6 +332,7 @@ export function mapFigmaToBlocks(
                   n.style?.textAlignHorizontal?.toLowerCase() || "left",
               }),
         },
+        ...(Object.keys(nodeStyles).length > 0 ? { styles: nodeStyles } : {}),
       });
       return;
     }
@@ -274,6 +350,7 @@ export function mapFigmaToBlocks(
           alt: n.name,
           _figmaNodeId: n.id, // Track for image export
         },
+        ...(Object.keys(nodeStyles).length > 0 ? { styles: nodeStyles } : {}),
       });
       return;
     }
