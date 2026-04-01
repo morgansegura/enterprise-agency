@@ -23,3 +23,17 @@
 .text-bubble-divider {
   @apply w-px h-4 bg-(--el-700) mx-0.5;
 }
+
+.text-bubble-color-wrapper {
+  @apply relative flex items-center justify-center size-7 cursor-pointer;
+}
+
+.text-bubble-color-input {
+  @apply absolute inset-0 opacity-0 cursor-pointer;
+  width: 28px;
+  height: 28px;
+}
+
+.text-bubble-color-icon {
+  @apply text-(--el-400) pointer-events-none;
+}

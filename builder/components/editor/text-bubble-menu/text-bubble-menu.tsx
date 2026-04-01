@@ -6,6 +6,7 @@ import {
   Bold,
   Italic,
   Strikethrough,
+  Palette,
 } from "lucide-react";
 import "./text-bubble-menu.css";
 
@@ -83,6 +84,33 @@ export function TextBubbleMenu({ editor }: TextBubbleMenuProps) {
         title="Strikethrough"
       >
         <Strikethrough className="size-3.5" />
+      </button>
+      <div className="text-bubble-divider" />
+      {/* Color picker — select text, pick a color */}
+      <div className="text-bubble-color-wrapper">
+        <input
+          type="color"
+          className="text-bubble-color-input"
+          value={editor.getAttributes("colorMark")?.color || "#000000"}
+          onInput={(e) => {
+            e.preventDefault();
+            const color = (e.target as HTMLInputElement).value;
+            editor.chain().focus().setMark("colorMark", { color }).run();
+          }}
+          title="Text color"
+        />
+        <Palette className="size-3.5 text-bubble-color-icon" />
+      </div>
+      <button
+        type="button"
+        className="text-bubble-btn"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          editor.chain().focus().unsetMark("colorMark").run();
+        }}
+        title="Remove color"
+      >
+        ×
       </button>
     </div>
   );

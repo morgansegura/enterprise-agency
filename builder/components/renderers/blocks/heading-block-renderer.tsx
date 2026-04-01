@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import TipTapLink from "@tiptap/extension-link";
+import { ColorMark } from "@/lib/editor/tiptap-color-mark";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
 import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
@@ -122,6 +123,7 @@ export default function HeadingBlockRenderer({
         openOnClick: false,
         HTMLAttributes: { class: "text-inherit underline" },
       }),
+      ColorMark,
       Placeholder.configure({
         placeholder: "Type a heading...",
       }),
@@ -153,8 +155,18 @@ export default function HeadingBlockRenderer({
     }
   }, [editor, isEditing]);
 
-  // Read-only — plain text output
+  // Read-only — render HTML if available (for colored text, bold, etc.)
+  const html = (block.data as Record<string, unknown>).html as string | undefined;
   if (!isEditing || !editor) {
+    if (html) {
+      return (
+        <Tag
+          className="heading"
+          {...filteredDataAttributes}
+          dangerouslySetInnerHTML={{ __html: html.replace(/<\/?p>/g, "") }}
+        />
+      );
+    }
     return (
       <Tag className="heading" {...filteredDataAttributes}>
         {text}
