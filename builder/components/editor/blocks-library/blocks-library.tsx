@@ -333,6 +333,123 @@ const SECTION_TEMPLATES: SectionTemplate[] = [
       }],
     },
   },
+  // --- Professional themed sections ---
+  {
+    name: "Full-Width Image",
+    description: "Edge-to-edge image banner",
+    preview: "━━━ Image ━━━",
+    section: {
+      width: "full",
+      paddingY: "none",
+      styles: { padding: "0" },
+      containers: [{
+        blocks: [
+          { _type: "image-block", data: { src: "", alt: "Banner image", objectFit: "cover" }, styles: { width: "100%", height: "400px", objectFit: "cover" } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Stats Row",
+    description: "Key metrics in a row",
+    preview: "100+ | 50K | 99%",
+    section: {
+      width: "container",
+      paddingY: "lg",
+      styles: { paddingTop: "48px", paddingBottom: "48px" },
+      containers: [{
+        layout: { type: "flex", direction: "row", justify: "around", align: "center", gap: "lg" },
+        blocks: [
+          { _type: "stats-block", data: { items: [
+            { value: "100+", label: "Projects Completed" },
+            { value: "50K", label: "Happy Customers" },
+            { value: "99%", label: "Client Satisfaction" },
+            { value: "24/7", label: "Support Available" },
+          ] } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Two Column Text",
+    description: "Heading left, text right",
+    preview: "H2 Left | Text Right",
+    section: {
+      width: "container",
+      paddingY: "xl",
+      styles: { paddingTop: "60px", paddingBottom: "60px" },
+      containers: [{
+        layout: { type: "flex", direction: "row", align: "start", gap: "xl" },
+        blocks: [
+          { _type: "heading-block", data: { text: "Why Choose Us", level: "h2", size: "2xl", weight: "bold" }, styles: { fontSize: "36px", fontWeight: "700", width: "40%" } },
+          { _type: "text-block", data: { content: "We bring years of expertise and a commitment to excellence. Our approach combines innovative solutions with proven strategies to deliver results that exceed expectations. Every project is handled with meticulous attention to detail." }, styles: { fontSize: "16px", lineHeight: "1.7", width: "60%", opacity: "0.7" } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Logo Bar",
+    description: "Trusted by logos row",
+    preview: "Logo | Logo | Logo | Logo",
+    section: {
+      width: "container",
+      paddingY: "md",
+      styles: { paddingTop: "32px", paddingBottom: "32px", textAlign: "center" },
+      containers: [{
+        blocks: [
+          { _type: "text-block", data: { content: "Trusted by leading companies", align: "center" }, styles: { fontSize: "13px", textTransform: "uppercase", letterSpacing: "2px", opacity: "0.5", marginBottom: "24px" } },
+          { _type: "logo-block", data: { logos: [] } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Dark CTA",
+    description: "Dark background call-to-action",
+    preview: "Dark BG + H2 + Button",
+    section: {
+      width: "full",
+      paddingY: "2xl",
+      styles: { paddingTop: "80px", paddingBottom: "80px", backgroundColor: "#111827", color: "#ffffff", textAlign: "center" },
+      containers: [{
+        layout: { type: "flex", direction: "column", align: "center", gap: "md" },
+        blocks: [
+          { _type: "heading-block", data: { text: "Ready to Transform Your Business?", level: "h2", size: "2xl", weight: "bold", align: "center" }, styles: { fontSize: "40px", fontWeight: "700", color: "#ffffff", maxWidth: "600px" } },
+          { _type: "text-block", data: { content: "Join thousands of businesses that trust us to deliver results.", align: "center" }, styles: { fontSize: "18px", color: "rgba(255,255,255,0.6)", maxWidth: "500px" } },
+          { _type: "button-block", data: { text: "Get Started Today", variant: "default", size: "lg" } },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Divider",
+    description: "Simple horizontal divider",
+    preview: "━━━━━━━━━━━━",
+    section: {
+      width: "container",
+      paddingY: "sm",
+      styles: { paddingTop: "16px", paddingBottom: "16px" },
+      containers: [{
+        blocks: [
+          { _type: "divider-block", data: {} },
+        ],
+      }],
+    },
+  },
+  {
+    name: "Spacer",
+    description: "Vertical whitespace",
+    preview: "↕ Space",
+    section: {
+      width: "full",
+      paddingY: "none",
+      containers: [{
+        blocks: [
+          { _type: "spacer-block", data: { height: "lg" }, styles: { height: "80px" } },
+        ],
+      }],
+    },
+  },
 ];
 
 export function BlocksLibrary() {
