@@ -62,5 +62,8 @@ temp/
 *.sqlite
 *.sqlite3
 
+# Uploads
+api/uploads/
+
 # Misc
 .vercel
