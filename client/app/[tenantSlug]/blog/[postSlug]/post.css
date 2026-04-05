@@ -34,7 +34,7 @@
 }
 
 [data-slot="post-content"] {
-  @apply prose prose-lg max-w-none;
+  @apply max-w-none text-base leading-relaxed;
 }
 
 [data-slot="post-footer"] {
