@@ -126,6 +126,36 @@
   @apply flex flex-col items-center justify-center gap-4 px-6 py-12 text-center;
 }
 
+/* Page settings (shown when no element selected) */
+.settings-panel-page-settings {
+  @apply p-0;
+}
+
+.settings-panel-page-title {
+  @apply px-3 py-2.5 text-[12px] font-semibold text-(--el-800) border-b border-(--border-default);
+}
+
+.settings-panel-page-controls {
+  @apply p-3 space-y-3;
+}
+
+.settings-panel-page-field {
+  @apply space-y-1;
+}
+
+.settings-panel-page-label {
+  @apply block text-[11px] font-semibold text-(--el-600);
+}
+
+.settings-panel-page-select {
+  @apply w-full h-7 px-2 text-[11px] rounded-[3px];
+  @apply bg-(--el-100) text-(--el-800) border-none;
+}
+
+.settings-panel-page-link {
+  @apply text-[10px] text-(--accent-primary) no-underline hover:underline;
+}
+
 /* =============================================================================
  * Property Section (Collapsible)
  * ============================================================================= */

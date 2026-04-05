@@ -92,6 +92,14 @@ interface SettingsPanelProps {
     containerIndex: number,
     blockIndex: number,
   ) => void;
+  // Page-level settings (shown when no element selected)
+  pageSettings?: {
+    headerId: string | null;
+    footerId: string | null;
+    onHeaderChange: (id: string | null) => void;
+    onFooterChange: (id: string | null) => void;
+    tenantId: string;
+  };
 }
 
 
@@ -115,6 +123,7 @@ export function SettingsPanel({
   onBlockMoveDown: _onBlockMoveDown,
   onBlockDuplicate: _onBlockDuplicate,
   onBlockDelete: _onBlockDelete,
+  pageSettings,
 }: SettingsPanelProps) {
   const { rightPanelOpen, rightPanelWidth, selectedElement, toggleRightPanel } =
     useUIStore();
@@ -215,11 +224,19 @@ export function SettingsPanel({
         {/* Panel Content */}
         <div className="settings-panel-content">
           {!selectedElement ? (
-            <div className="settings-panel-empty">
-              <Layers className="h-10 w-10 text-(--el-500)/30" />
-              <p className="text-[14px] text-(--el-500)">
-                Select an element to edit
-              </p>
+            <div className="settings-panel-page-settings">
+              <h3 className="settings-panel-page-title">Page Settings</h3>
+              {pageSettings && (
+                <PageSettingsPanel {...pageSettings} />
+              )}
+              {!pageSettings && (
+                <div className="settings-panel-empty">
+                  <Layers className="h-10 w-10 text-(--el-500)/30" />
+                  <p className="text-[14px] text-(--el-500)">
+                    Select an element to edit
+                  </p>
+                </div>
+              )}
             </div>
           ) : selectedData ? (
             <>
@@ -434,5 +451,72 @@ function BlockStyleSettings({
   };
 
   return <>{renderBlockSettings()}</>;
+}
+
+// =============================================================================
+// Page Settings Panel — shown when no element selected
+// =============================================================================
+
+function PageSettingsPanel({
+  headerId,
+  footerId,
+  onHeaderChange,
+  onFooterChange,
+  tenantId,
+}: {
+  headerId: string | null;
+  footerId: string | null;
+  onHeaderChange: (id: string | null) => void;
+  onFooterChange: (id: string | null) => void;
+  tenantId: string;
+}) {
+  // Import hooks inline to avoid circular deps
+  const { useHeaders } = require("@/lib/hooks/use-headers");
+  const { useFooters } = require("@/lib/hooks/use-footers");
+  const headers = useHeaders(tenantId)?.data || [];
+  const footers = useFooters(tenantId)?.data || [];
+
+  return (
+    <div className="settings-panel-page-controls">
+      <div className="settings-panel-page-field">
+        <label className="settings-panel-page-label">Header</label>
+        <select
+          className="settings-panel-page-select"
+          value={headerId || "default"}
+          onChange={(e) => onHeaderChange(e.target.value === "default" ? null : e.target.value === "none" ? "none" : e.target.value)}
+        >
+          <option value="default">Default Header</option>
+          <option value="none">No Header</option>
+          {(headers as Array<{ id: string; name: string }>).map((h) => (
+            <option key={h.id} value={h.id}>{h.name}</option>
+          ))}
+        </select>
+        {headerId && headerId !== "none" && (
+          <a href={`/${tenantId}/headers`} className="settings-panel-page-link">
+            Edit headers →
+          </a>
+        )}
+      </div>
+      <div className="settings-panel-page-field">
+        <label className="settings-panel-page-label">Footer</label>
+        <select
+          className="settings-panel-page-select"
+          value={footerId || "default"}
+          onChange={(e) => onFooterChange(e.target.value === "default" ? null : e.target.value === "none" ? "none" : e.target.value)}
+        >
+          <option value="default">Default Footer</option>
+          <option value="none">No Footer</option>
+          {(footers as Array<{ id: string; name: string }>).map((f) => (
+            <option key={f.id} value={f.id}>{f.name}</option>
+          ))}
+        </select>
+        {footerId && footerId !== "none" && (
+          <a href={`/${tenantId}/footers`} className="settings-panel-page-link">
+            Edit footers →
+          </a>
+        )}
+      </div>
+    </div>
+  );
 }
 
