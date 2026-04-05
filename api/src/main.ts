@@ -7,6 +7,64 @@ import helmet from "helmet";
 
 import { AppModule } from "./app.module";
 import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
+import { PrismaService } from "./common/services/prisma.service";
+
+/**
+ * Dynamic CORS origin validator.
+ * - Always allows ADMIN_URL (the builder — only one)
+ * - Always allows localhost in development
+ * - Validates all other origins against tenant_domains in the database
+ * - Caches allowed domains for 60s to avoid per-request DB hits
+ */
+function createCorsOriginValidator(prisma: PrismaService) {
+  let cachedDomains: Set<string> = new Set();
+  let cacheExpiry = 0;
+  const CACHE_TTL = 60_000; // 60 seconds
+
+  const staticOrigins = new Set(
+    [
+      process.env.ADMIN_URL,
+      ...(process.env.NODE_ENV !== "production"
+        ? ["http://localhost:4001", "http://localhost:4002"]
+        : []),
+    ].filter((v): v is string => Boolean(v)),
+  );
+
+  async function refreshCache() {
+    const now = Date.now();
+    if (now < cacheExpiry) return;
+
+    try {
+      const domains = await prisma.tenantDomain.findMany({
+        select: { domain: true },
+      });
+
+      cachedDomains = new Set(
+        domains.flatMap((d) => [`https://${d.domain}`, `http://${d.domain}`]),
+      );
+      cacheExpiry = now + CACHE_TTL;
+    } catch {
+      // If DB is unreachable, keep stale cache
+    }
+  }
+
+  return async (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void,
+  ) => {
+    // Allow requests with no origin (server-to-server, curl, etc.)
+    if (!origin) return callback(null, true);
+
+    // Static origins (builder, localhost)
+    if (staticOrigins.has(origin)) return callback(null, true);
+
+    // Check tenant domains
+    await refreshCache();
+    if (cachedDomains.has(origin)) return callback(null, true);
+
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  };
+}
 
 async function bootstrap() {
   // SECURITY: Validate production environment
@@ -59,14 +117,10 @@ async function bootstrap() {
     prefix: "/uploads/",
   });
 
-  // Enable CORS for frontend apps
+  // Dynamic CORS — validates origins against tenant_domains table
+  const prisma = app.get(PrismaService);
   app.enableCors({
-    origin: [
-      "http://localhost:4002", // app (dev)
-      "http://localhost:4001", // admin (dev)
-      process.env.APP_URL,
-      process.env.ADMIN_URL,
-    ].filter(Boolean) as string[],
+    origin: createCorsOriginValidator(prisma),
     credentials: true,
   });
 

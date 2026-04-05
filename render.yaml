@@ -29,8 +29,6 @@ services:
         generateValue: true
       - key: ADMIN_URL
         sync: false
-      - key: APP_URL
-        sync: false
       - key: STORAGE_PROVIDER
         value: local
       - key: UPLOAD_PATH
