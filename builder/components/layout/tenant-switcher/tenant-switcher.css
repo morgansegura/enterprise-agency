@@ -60,7 +60,7 @@
 
 /* Dropdown Content */
 .tenant-switcher-content {
-  @apply w-[280px] max-h-[400px] overflow-y-auto;
+  @apply w-[320px] max-h-[400px] overflow-y-auto;
 }
 
 /* Group labels */

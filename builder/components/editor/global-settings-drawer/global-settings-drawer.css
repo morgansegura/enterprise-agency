@@ -13,7 +13,7 @@
 
 /* Sidebar */
 .global-settings-sidebar {
-  @apply w-[280px] shrink-0 h-full;
+  @apply w-[320px] shrink-0 h-full;
   @apply border-r border-(--border-default);
   @apply bg-(--el-100)/30;
   @apply flex flex-col;

@@ -232,17 +232,16 @@
 }
 
 .page-editor-canvas-content [data-block-key]:hover {
-  cursor: pointer;
+  @apply cursor-pointer;
 }
 
 /* Selection label — shows element type on selected/hovered blocks */
 .page-editor-canvas-content [data-block-key].is-preview-selected::before,
 .page-editor-canvas-content [data-block-key].is-preview-hovered::before {
   content: attr(data-block-label);
-  @apply absolute -top-5 left-0 z-10 px-1.5 py-0.5;
+  @apply absolute -top-3.75 -left-0.5 z-10 px-1.5 py-0.5;
   @apply text-[10px] font-medium text-white leading-none whitespace-nowrap;
-  @apply bg-(--accent-primary) rounded-t-[3px];
-  pointer-events: none;
+  @apply bg-(--accent-primary) rounded-t-[3px] pointer-events-none;
 }
 
 .page-editor-canvas-content [data-block-key].is-preview-hovered::before {

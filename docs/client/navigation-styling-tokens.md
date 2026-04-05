@@ -88,7 +88,7 @@ This document lists all customizable navigation styling tokens for headers and f
 
 ### Mobile Drawer
 
-- `--mobile-nav-width` - Drawer width (default: 280px)
+- `--mobile-nav-width` - Drawer width (default: 320px)
 - `--mobile-nav-bg` - Drawer background (default: var(--background))
 
 ### Mobile Nav Items

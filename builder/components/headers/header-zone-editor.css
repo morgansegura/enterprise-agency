@@ -72,7 +72,7 @@
 
 /* Block Config Popover */
 .zone-block-popover {
-  @apply w-[280px];
+  @apply w-[320px];
 }
 
 .zone-block-popover-header {
