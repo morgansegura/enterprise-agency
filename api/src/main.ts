@@ -58,6 +58,14 @@ function createCorsOriginValidator(prisma: PrismaService) {
     // Static origins (builder, localhost)
     if (staticOrigins.has(origin)) return callback(null, true);
 
+    // Allow all Vercel preview deployments for this team
+    if (
+      process.env.VERCEL_PROJECT_PATTERN &&
+      origin.endsWith(process.env.VERCEL_PROJECT_PATTERN)
+    ) {
+      return callback(null, true);
+    }
+
     // Check tenant domains
     await refreshCache();
     if (cachedDomains.has(origin)) return callback(null, true);
