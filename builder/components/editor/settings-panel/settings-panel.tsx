@@ -9,6 +9,8 @@ import {
   Plus,
 } from "lucide-react";
 import { useUIStore } from "@/lib/stores/ui-store";
+import { useHeaders } from "@/lib/hooks/use-headers";
+import { useFooters } from "@/lib/hooks/use-footers";
 import type {
   Section,
   Container,
@@ -470,9 +472,6 @@ function PageSettingsPanel({
   onFooterChange: (id: string | null) => void;
   tenantId: string;
 }) {
-  // Import hooks inline to avoid circular deps
-  const { useHeaders } = require("@/lib/hooks/use-headers");
-  const { useFooters } = require("@/lib/hooks/use-footers");
   const headers = useHeaders(tenantId)?.data || [];
   const footers = useFooters(tenantId)?.data || [];
 

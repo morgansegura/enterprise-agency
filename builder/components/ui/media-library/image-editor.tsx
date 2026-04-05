@@ -21,7 +21,6 @@ import {
   Undo2,
   Redo2,
   Save,
-  X,
 } from "lucide-react";
 import "./image-editor.css";
 

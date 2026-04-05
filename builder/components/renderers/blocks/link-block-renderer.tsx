@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Input } from "@/components/ui/input";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
 /**
@@ -13,7 +12,7 @@ import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry"
 export function LinkBlockRenderer({
   block,
   isEditing,
-  onChange,
+  onChange: _onChange,
 }: BlockRendererProps) {
   const data = block.data as Record<string, unknown>;
   const href = (data.href as string) || "#";

@@ -17,12 +17,7 @@ const heightMap: Record<MapBlockData["height"], string> = {
  * Content block (leaf node) - cannot have children
  */
 export function MapBlock({ data }: MapBlockProps) {
-  const {
-    center,
-    zoom = 12,
-    height = "md",
-    embedUrl,
-  } = data;
+  const { center, height = "md", embedUrl } = data;
 
   const resolvedHeight = heightMap[height];
 

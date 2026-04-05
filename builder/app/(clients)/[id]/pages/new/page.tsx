@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useCreatePage } from "@/lib/hooks/use-pages";
+import { useCreatePage, type Section } from "@/lib/hooks/use-pages";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,7 +47,7 @@ export default function NewPagePage({
   });
 
   // Generate starter sections based on template
-  const getStarterSections = (template: string, title?: string) => {
+  const getStarterSections = React.useCallback((template: string, title?: string) => {
     const ts = Date.now();
     if (template === "blank") return [];
     // Default template: hero section + content section
@@ -80,7 +80,7 @@ export default function NewPagePage({
         }],
       },
     ];
-  };
+  }, []);
 
   const onSubmit = (formData: PageForm) => {
     createPage.mutate(
@@ -89,7 +89,7 @@ export default function NewPagePage({
         slug: formData.slug,
         template: formData.template,
         status: "draft",
-        sections: getStarterSections(formData.template || "default", formData.title) as unknown as import("@/lib/hooks/use-pages").Section[],
+        sections: getStarterSections(formData.template || "default", formData.title) as unknown as Section[],
       },
       {
         onSuccess: (page) => {

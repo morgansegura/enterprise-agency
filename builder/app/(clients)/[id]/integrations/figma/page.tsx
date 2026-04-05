@@ -16,7 +16,7 @@ import {
   FileText,
   Frame,
 } from "lucide-react";
-import { useCreatePage } from "@/lib/hooks/use-pages";
+import { useCreatePage, type Section } from "@/lib/hooks/use-pages";
 import { useUpdateTenantTokens } from "@/lib/hooks/use-tenant-tokens";
 import {
   extractFileKey,
@@ -257,7 +257,7 @@ export default function FigmaImportPage() {
             slug: `${baseSlug || "page"}-${uniqueSuffix}`,
             status: "draft",
             sections:
-              sections as unknown as import("@/lib/hooks/use-pages").Section[],
+              sections as unknown as Section[],
           });
           imported++;
         } catch (err) {

@@ -35,11 +35,6 @@ function HeadingBlockSettings({
   block: Block;
   onChange: (block: Block) => void;
 }) {
-  const data = block.data as Record<string, unknown>;
-  const handleChange = (field: string, value: unknown) => {
-    onChange({ ...block, data: { ...data, [field]: value } });
-  };
-
   return <HeadingSettings block={block} onChange={onChange} />;
 }
 

@@ -1,4 +1,5 @@
 import type { TestimonialItem, TestimonialBlockData } from "@/lib/blocks";
+import Image from "next/image";
 import "./testimonial-block.css";
 
 type TestimonialBlockProps = {
@@ -54,10 +55,12 @@ export function TestimonialBlock({ data }: TestimonialBlockProps) {
             </blockquote>
             <div data-slot="testimonial-block-author">
               {testimonial.avatar ? (
-                <img
+                <Image
                   data-slot="testimonial-block-avatar"
                   src={testimonial.avatar}
                   alt={testimonial.name}
+                  width={48}
+                  height={48}
                   loading="lazy"
                 />
               ) : null}

@@ -48,7 +48,7 @@ interface PageEditorScreenProps {
 
 export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps) {
   const { data: page, isLoading, error } = usePage(id, pageId);
-  const { data: tenant } = useTenant(id);
+  const { data: _tenant } = useTenant(id);
   const isBuilder = useIsBuilder(id);
   const updatePage = useUpdatePage(id);
   const publishPage = usePublishPage(id);

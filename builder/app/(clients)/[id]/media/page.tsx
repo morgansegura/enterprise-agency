@@ -34,9 +34,6 @@ import {
   FileText,
   Loader2,
   Check,
-  Copy,
-  Trash2,
-  Crop,
 } from "lucide-react";
 
 import { ImageEditor } from "@/components/ui/media-library/image-editor";

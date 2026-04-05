@@ -9,6 +9,8 @@ import {
   useDuplicateHeader,
   useSaveHeaderToLibrary,
   type Header,
+  type HeaderZones,
+  type HeaderStyle,
 } from "@/lib/hooks/use-headers";
 import {
   ContentList,
@@ -122,8 +124,8 @@ export default function HeadersPage({
         name: template.name,
         slug: template.name.toLowerCase().replace(/\s+/g, "-"),
         behavior: template.behavior,
-        zones: template.zones as unknown as import("@/lib/hooks/use-headers").HeaderZones,
-        style: template.style as unknown as import("@/lib/hooks/use-headers").HeaderStyle,
+        zones: template.zones as unknown as HeaderZones,
+        style: template.style as unknown as HeaderStyle,
       });
       toast.success(`"${template.name}" header created`);
       router.push(`/${id}/headers/${result.id}/edit`);

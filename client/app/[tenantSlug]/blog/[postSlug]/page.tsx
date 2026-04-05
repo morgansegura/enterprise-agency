@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PostPage({ params }: Props) {
-  const { postSlug, tenantSlug } = await params;
+  const { postSlug } = await params;
   const api = await createPublicApiClient();
 
   let post: BlogPost;
