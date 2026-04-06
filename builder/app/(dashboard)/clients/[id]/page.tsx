@@ -155,7 +155,15 @@ export default function EditClientPage({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => router.push(`/${id}/pages`)}
+              onClick={() => {
+                if (tenant) {
+                  const { useTenantsStore } = require("@/lib/stores/tenants-store");
+                  const { apiClient } = require("@/lib/api-client");
+                  useTenantsStore.getState().setActiveTenant(tenant);
+                  apiClient.setTenantId(tenant.id);
+                }
+                router.push("/pages");
+              }}
             >
               <ExternalLink className="h-4 w-4" />
               Open Workspace

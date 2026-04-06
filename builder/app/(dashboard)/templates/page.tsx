@@ -62,7 +62,9 @@ export default function TemplatesPage() {
       });
       toast.success("Site created from template");
       setCloneDialogOpen(false);
-      router.push(`/${newTenant.id}/pages`);
+      const { useTenantsStore } = await import("@/lib/stores/tenants-store");
+      useTenantsStore.getState().setActiveTenant(newTenant as never);
+      router.push("/pages");
     } catch {
       toast.error("Failed to create site from template");
     }
