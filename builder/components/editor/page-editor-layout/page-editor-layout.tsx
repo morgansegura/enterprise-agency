@@ -216,7 +216,7 @@ export function PageEditorLayout({
                   Update Published Version
                 </DropdownMenuItem>
                 {onUnpublish && (
-                  <DropdownMenuItem className="text-(--status-error)">
+                  <DropdownMenuItem className="text-(--status-error)" onClick={onUnpublish}>
                     Unpublish
                   </DropdownMenuItem>
                 )}

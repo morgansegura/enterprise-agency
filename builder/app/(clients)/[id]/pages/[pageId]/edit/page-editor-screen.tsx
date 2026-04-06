@@ -355,25 +355,20 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
 
   const handlePublish = async () => {
     const isCurrentlyPublished = page?.status === "published";
-    if (isCurrentlyPublished) {
-      if (
-        confirm("Unpublish this page? It will no longer be visible publicly.")
-      ) {
-        unpublishPage.mutate(pageId, {
-          onSuccess: () => toast.success("Page unpublished"),
-          onError: () => toast.error("Failed to unpublish page"),
-        });
-      }
-    } else {
+    if (!isCurrentlyPublished) {
       if (!confirm("Publish this page? It will be visible to the public."))
         return;
-      try {
-        await updatePage.mutateAsync({ id: pageId, data: buildSavePayload() });
-        await publishPage.mutateAsync(pageId);
-        toast.success("Page published successfully!");
-      } catch {
-        toast.error("Failed to publish page");
-      }
+    }
+    try {
+      await updatePage.mutateAsync({ id: pageId, data: buildSavePayload() });
+      await publishPage.mutateAsync(pageId);
+      toast.success(
+        isCurrentlyPublished
+          ? "Published version updated!"
+          : "Page published successfully!",
+      );
+    } catch {
+      toast.error("Failed to publish page");
     }
   };
 
