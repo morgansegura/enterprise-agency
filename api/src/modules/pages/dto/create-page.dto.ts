@@ -81,8 +81,8 @@ export class CreatePageDto {
 
   @IsOptional()
   @IsString()
-  @IsIn(["draft", "published", "scheduled", "archived"])
-  status?: "draft" | "published" | "scheduled" | "archived";
+  @IsIn(["draft", "published", "staging", "scheduled", "archived"])
+  status?: "draft" | "published" | "staging" | "scheduled" | "archived";
 
   @IsOptional()
   @IsString()

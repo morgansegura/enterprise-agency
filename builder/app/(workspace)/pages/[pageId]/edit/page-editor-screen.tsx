@@ -5,6 +5,7 @@ import {
   usePage,
   useUpdatePage,
   usePublishPage,
+  usePublishToStaging,
   useUnpublishPage,
   useCreatePreviewToken,
   usePageVersions,
@@ -52,6 +53,7 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
   const isBuilder = useIsBuilder(id);
   const updatePage = useUpdatePage(id);
   const publishPage = usePublishPage(id);
+  const publishToStaging = usePublishToStaging(id);
   const unpublishPage = useUnpublishPage(id);
   const createPreviewToken = useCreatePreviewToken(id);
   // Versions available for future history UI
@@ -354,21 +356,22 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
   const handleSave = () => autoSave.saveNow(buildSavePayload());
 
   const handlePublish = async () => {
-    const isCurrentlyPublished = page?.status === "published";
-    if (!isCurrentlyPublished) {
-      if (!confirm("Publish this page? It will be visible to the public."))
-        return;
-    }
     try {
       await updatePage.mutateAsync({ id: pageId, data: buildSavePayload() });
       await publishPage.mutateAsync(pageId);
-      toast.success(
-        isCurrentlyPublished
-          ? "Published version updated!"
-          : "Page published successfully!",
-      );
+      toast.success("Published to production");
     } catch {
-      toast.error("Failed to publish page");
+      toast.error("Failed to publish");
+    }
+  };
+
+  const handlePublishStaging = async () => {
+    try {
+      await updatePage.mutateAsync({ id: pageId, data: buildSavePayload() });
+      await publishToStaging.mutateAsync(pageId);
+      toast.success("Published to staging");
+    } catch {
+      toast.error("Failed to publish to staging");
     }
   };
 
@@ -456,7 +459,9 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
         breakpoint={breakpoint}
         onBreakpointChange={setBreakpoint}
         onPublish={handlePublish}
+        onPublishStaging={handlePublishStaging}
         onUnpublish={handleUnpublish}
+        pageStatus={page?.status || "draft"}
         onPreview={handlePreview}
         onGeneratePreviewLink={handleGeneratePreviewLink}
         leftPanel={

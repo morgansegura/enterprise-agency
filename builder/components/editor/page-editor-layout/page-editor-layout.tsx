@@ -37,7 +37,9 @@ interface PageEditorLayoutProps {
   breakpoint?: Breakpoint;
   onBreakpointChange?: (breakpoint: Breakpoint) => void;
   onPublish: () => void;
+  onPublishStaging?: () => void;
   onUnpublish?: () => void;
+  pageStatus?: string;
   onPreview?: () => void;
   onGeneratePreviewLink?: () => void;
   onUndo?: () => void;
@@ -68,7 +70,9 @@ export function PageEditorLayout({
   breakpoint = "desktop",
   onBreakpointChange,
   onPublish,
+  onPublishStaging,
   onUnpublish,
+  pageStatus = "draft",
   onPreview,
   onGeneratePreviewLink,
   onUndo,
@@ -200,31 +204,46 @@ export function PageEditorLayout({
 
           <div className="page-editor-navbar-divider" />
 
-          {isPublished ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm" className="page-editor-publish-btn" data-published>
-                  <Check className="size-3.5" />
-                  Published
-                  <ChevronDown className="size-3" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={onPublish}>
-                  Update Published Version
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="sm"
+                className="page-editor-publish-btn"
+                data-published={isPublished || undefined}
+                data-staged={pageStatus === "staging" || undefined}
+              >
+                {isPublished && <Check className="size-3.5" />}
+                {pageStatus === "staging"
+                  ? "Staged"
+                  : isPublished
+                    ? "Published"
+                    : "Publish"}
+                <ChevronDown className="size-3" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {onPublishStaging && (
+                <DropdownMenuItem onClick={onPublishStaging}>
+                  {pageStatus === "staging"
+                    ? "Update Staging"
+                    : "Publish to Staging"}
                 </DropdownMenuItem>
-                {onUnpublish && (
-                  <DropdownMenuItem className="text-(--status-error)" onClick={onUnpublish}>
-                    Unpublish
-                  </DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button size="sm" onClick={onPublish} className="page-editor-publish-btn">
-              Publish
-            </Button>
-          )}
+              )}
+              <DropdownMenuItem onClick={onPublish}>
+                {isPublished
+                  ? "Update Production"
+                  : "Publish to Production"}
+              </DropdownMenuItem>
+              {(isPublished || pageStatus === "staging") && onUnpublish && (
+                <DropdownMenuItem
+                  className="text-(--status-error)"
+                  onClick={onUnpublish}
+                >
+                  Unpublish
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 

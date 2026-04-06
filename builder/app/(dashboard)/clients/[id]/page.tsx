@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import { useTenantsStore } from "@/lib/stores/tenants-store";
+import { apiClient } from "@/lib/api-client";
 import { ClientForm } from "../components/client-form";
 import type { ClientFormValues } from "../components/client-form";
 
@@ -157,9 +159,7 @@ export default function EditClientPage({
               size="sm"
               onClick={() => {
                 if (tenant) {
-                  const { useTenantsStore } = require("@/lib/stores/tenants-store");
-                  const { apiClient } = require("@/lib/api-client");
-                  useTenantsStore.getState().setActiveTenant(tenant);
+                  useTenantsStore.getState().setActiveTenant(tenant as never);
                   apiClient.setTenantId(tenant.id);
                 }
                 router.push("/pages");

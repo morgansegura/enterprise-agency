@@ -160,8 +160,20 @@ export class PagesController {
   }
 
   /**
+   * Publish to staging — visible via preview, not on live site
+   */
+  @Post(":id/publish-staging")
+  @Permissions(Permission.PAGES_PUBLISH)
+  publishToStaging(
+    @TenantId() tenantId: string,
+    @Param("id") id: string,
+    @CurrentUser() user: { id: string },
+  ) {
+    return this.pagesService.publishToStaging(tenantId, id, user.id);
+  }
+
+  /**
    * Unpublish a page
-   * Available to both tiers - unpublishing doesn't change structure
    */
   @Post(":id/unpublish")
   @Permissions(Permission.PAGES_PUBLISH)
