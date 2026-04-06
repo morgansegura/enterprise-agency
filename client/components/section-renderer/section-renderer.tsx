@@ -17,6 +17,10 @@ import {
   isTailwindGradientConfig,
 } from "@/lib/types/section";
 import type { RootBlock } from "@/lib/blocks";
+import {
+  stylesToCSSVars,
+  allStylesToCSSVars,
+} from "@enterprise/tokens";
 
 // Re-export types for external use
 export type { SectionBackground };
@@ -215,11 +219,23 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
           section.background,
         );
 
-        // Build section inline style
-        const combinedStyle: React.CSSProperties = { ...sectionStyle };
+        // Build section inline style — merge background + element styles
+        const sectionData = section as SectionType & {
+          styles?: Record<string, string>;
+          stylesBefore?: Record<string, string>;
+          stylesAfter?: Record<string, string>;
+        };
+        const elementStyleVars = sectionData.styles
+          ? allStylesToCSSVars(sectionData.styles, sectionData.stylesBefore, sectionData.stylesAfter)
+          : {};
+        const combinedStyle: React.CSSProperties = {
+          ...sectionStyle,
+          ...elementStyleVars,
+        } as React.CSSProperties;
         if (section.borderColor) {
           combinedStyle.borderColor = section.borderColor;
         }
+        const hasElementStyles = !!sectionData.styles;
 
         return (
           <Section
@@ -227,6 +243,9 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             as={section.as}
             // Background
             background={dataBackground}
+            data-styled={hasElementStyles || undefined}
+            data-has-before={sectionData.stylesBefore ? "" : undefined}
+            data-has-after={sectionData.stylesAfter ? "" : undefined}
             style={
               Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined
             }
