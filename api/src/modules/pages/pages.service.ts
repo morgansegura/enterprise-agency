@@ -438,6 +438,44 @@ export class PagesService {
     return page;
   }
 
+  async publishToStaging(tenantId: string, id: string, userId?: string) {
+    const page = await this.update(tenantId, id, {
+      status: "staging",
+    });
+
+    if (userId) {
+      this.pageVersionService
+        .createVersion({
+          pageId: id,
+          userId,
+          changeNote: "Published to staging",
+        })
+        .catch((err) => {
+          this.logger.error(
+            `Failed to create staging version for page ${id}:`,
+            err,
+          );
+        });
+    }
+
+    this.logger.log(`Page published to staging: ${page.slug}`);
+    this.audit.log({
+      tenantId,
+      action: AuditAction.PUBLISHED,
+      resourceType: "page",
+      resourceId: page.id,
+    });
+    return page;
+  }
+
+  async promoteToProduction(tenantId: string, id: string, userId?: string) {
+    const page = await this.findOne(tenantId, id);
+    if (page.status !== "staging") {
+      throw new Error("Page must be in staging before promoting to production");
+    }
+    return this.publish(tenantId, id, userId);
+  }
+
   async unpublish(tenantId: string, id: string) {
     const page = await this.update(tenantId, id, {
       status: "draft",

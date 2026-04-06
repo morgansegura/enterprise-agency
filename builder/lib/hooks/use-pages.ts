@@ -207,6 +207,27 @@ export function usePublishPage(tenantId: string) {
   });
 }
 
+export function usePublishToStaging(tenantId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiClient.post(`/pages/${id}/publish-staging`, {}),
+    onSuccess: (_, pageId) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.pages.byTenant(tenantId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.pages.detail(tenantId, pageId),
+      });
+      logger.log("Page published to staging");
+    },
+    onError: (error) => {
+      logger.error("Failed to publish to staging", error as Error);
+    },
+  });
+}
+
 export function useUnpublishPage(tenantId: string) {
   const queryClient = useQueryClient();
 

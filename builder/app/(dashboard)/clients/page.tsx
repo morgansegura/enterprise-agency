@@ -12,6 +12,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { BriefcaseBusiness } from "lucide-react";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
+import { useTenantsStore } from "@/lib/stores/tenants-store";
 
 import { ClientsTable } from "./components/clients-table";
 import type { TenantItem } from "./components/clients-table";
@@ -53,7 +54,6 @@ export default function ClientsPage() {
   }, [error]);
 
   const handleOpenWorkspace = (tenant: TenantItem) => {
-    const { useTenantsStore } = require("@/lib/stores/tenants-store");
     useTenantsStore.getState().setActiveTenant({
       id: tenant.id,
       slug: tenant.slug,
