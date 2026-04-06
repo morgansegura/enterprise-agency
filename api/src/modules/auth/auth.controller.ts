@@ -30,11 +30,9 @@ import { Public, CurrentUser } from "./decorators";
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite:
-    process.env.NODE_ENV === "production"
-      ? ("none" as const)
-      : ("lax" as const),
+  sameSite: "lax" as const,
   path: "/",
+  ...(process.env.COOKIE_DOMAIN && { domain: process.env.COOKIE_DOMAIN }),
 };
 
 const ACCESS_TOKEN_MAX_AGE = 15 * 60 * 1000;
