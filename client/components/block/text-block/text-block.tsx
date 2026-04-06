@@ -2,6 +2,7 @@ import type { TextBlockData } from "@/lib/blocks";
 import { Text } from "@/components/ui/text";
 import { getResponsiveValues, hasResponsiveOverrides } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 type TextBlockProps = {
   data: TextBlockData;
@@ -39,6 +40,99 @@ function getOpacityPreset(opacity: number | undefined): string | undefined {
   if (opacity <= 75) return "75";
   if (opacity <= 90) return "90";
   return "100";
+}
+
+/**
+ * Check if a URL is external (starts with http:// or https://)
+ */
+function isExternalUrl(url: string): boolean {
+  return /^https?:\/\//.test(url);
+}
+
+/**
+ * Markdown link pattern: [text](url)
+ */
+const MARKDOWN_LINK_RE = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+/**
+ * Parse text that may contain markdown-style links into React nodes.
+ * Internal links use Next.js Link, external links use <a>.
+ * Newlines are converted to <br /> elements.
+ */
+function parseMarkdownLinks(text: string): React.ReactNode {
+  if (!MARKDOWN_LINK_RE.test(text)) {
+    return text;
+  }
+
+  // Reset regex lastIndex since we used .test() above
+  MARKDOWN_LINK_RE.lastIndex = 0;
+
+  const nodes: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let keyIndex = 0;
+
+  while ((match = MARKDOWN_LINK_RE.exec(text)) !== null) {
+    // Add text before the link
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index));
+    }
+
+    const linkText = match[1];
+    const url = match[2];
+
+    if (isExternalUrl(url)) {
+      nodes.push(
+        <a
+          key={`link-${keyIndex++}`}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {linkText}
+        </a>,
+      );
+    } else {
+      nodes.push(
+        <Link key={`link-${keyIndex++}`} href={url}>
+          {linkText}
+        </Link>,
+      );
+    }
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  // Add remaining text after the last link
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex));
+  }
+
+  return nodes;
+}
+
+/**
+ * Render text content, parsing markdown links and converting newlines to <br />.
+ */
+function renderTextContent(text: string): React.ReactNode {
+  // Split by newlines first, then parse links in each segment
+  const lines = text.split("\n");
+
+  if (lines.length === 1) {
+    return parseMarkdownLinks(text);
+  }
+
+  const result: React.ReactNode[] = [];
+  lines.forEach((line, i) => {
+    if (i > 0) {
+      result.push(<br key={`br-${i}`} />);
+    }
+    result.push(
+      <span key={`line-${i}`}>{parseMarkdownLinks(line)}</span>,
+    );
+  });
+
+  return result;
 }
 
 /**
@@ -195,7 +289,7 @@ export function TextBlock({ data }: TextBlockProps) {
       dropCap={dropCap}
       className={responsiveClasses}
     >
-      {plainContent}
+      {renderTextContent(plainContent)}
     </Text>
   );
 }

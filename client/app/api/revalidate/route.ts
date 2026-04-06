@@ -13,10 +13,24 @@ import { logger } from "@/lib/logger";
  * Body: { path?: string, tag?: string }
  */
 export async function POST(request: NextRequest) {
-  const secret = request.headers.get("x-revalidate-secret");
+  const secret = request.headers.get("x-revalidate-secret")?.trim();
+  const expectedSecret = process.env.REVALIDATE_SECRET?.trim();
 
   // Validate secret
-  if (secret !== process.env.REVALIDATE_SECRET) {
+  if (!expectedSecret) {
+    logger.error("REVALIDATE_SECRET env var is not set", undefined, {
+      context: "Revalidation",
+    });
+    return NextResponse.json(
+      { error: "Revalidation not configured" },
+      { status: 500 },
+    );
+  }
+
+  if (secret !== expectedSecret) {
+    logger.warn("Invalid revalidation secret received", {
+      context: "Revalidation",
+    });
     return NextResponse.json(
       { error: "Invalid revalidation secret" },
       { status: 401 },

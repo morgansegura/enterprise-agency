@@ -17,10 +17,7 @@ import {
   isTailwindGradientConfig,
 } from "@/lib/types/section";
 import type { RootBlock } from "@/lib/blocks";
-import {
-  stylesToCSSVars,
-  allStylesToCSSVars,
-} from "@enterprise/tokens";
+import { allStylesToCSSVars } from "@enterprise/tokens";
 
 // Re-export types for external use
 export type { SectionBackground };
