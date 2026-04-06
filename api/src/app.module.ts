@@ -25,6 +25,7 @@ import { MenusModule } from "./modules/menus/menus.module";
 import { HeadersModule } from "./modules/headers/headers.module";
 import { FootersModule } from "./modules/footers/footers.module";
 import { RedirectsModule } from "./modules/redirects/redirects.module";
+import { PrismaService } from "./common/services/prisma.service";
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { RedirectsModule } from "./modules/redirects/redirects.module";
     WebhooksModule,
   ],
   providers: [
+    PrismaService,
     // Global rate limiting guard
     {
       provide: APP_GUARD,
