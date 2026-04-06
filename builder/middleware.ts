@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
   // Allow public paths
   if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
     // If user has a session cookie and visits auth pages, redirect to dashboard
-    const hasSession = request.cookies.has("access_token");
+    const hasSession = request.cookies.has("session");
     if (hasSession) {
       return NextResponse.redirect(new URL("/", request.url));
     }
@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Protected routes: check for session cookie
-  const hasSession = request.cookies.has("access_token");
+  const hasSession = request.cookies.has("session");
   if (!hasSession) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);

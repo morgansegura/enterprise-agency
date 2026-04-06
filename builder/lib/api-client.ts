@@ -16,7 +16,10 @@ export class ApiClient {
 
   constructor() {
     this.baseUrl = `${API_URL}/api/v1`;
-    this.authBaseUrl = `${API_URL}/api/v1/auth`;
+    // Auth routes proxy through the builder's own domain
+    // so cookies are set on the same origin the middleware can read
+    this.authBaseUrl =
+      typeof window !== "undefined" ? "/api/auth" : `${API_URL}/api/v1/auth`;
   }
 
   private tenantId: string | null = null;
