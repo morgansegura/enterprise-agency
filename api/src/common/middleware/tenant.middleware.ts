@@ -4,9 +4,15 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
+import { PrismaService } from "@/common/services/prisma.service";
 
 @Injectable()
 export class TenantMiddleware implements NestMiddleware {
+  private slugCache = new Map<string, { id: string; expiry: number }>();
+  private readonly CACHE_TTL = 60_000; // 60 seconds
+
+  constructor(private readonly prisma: PrismaService) {}
+
   private isValidUUID(str: string): boolean {
     const uuidRegex =
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -19,7 +25,25 @@ export class TenantMiddleware implements NestMiddleware {
     return slugRegex.test(str);
   }
 
-  use(req: Request, res: Response, next: NextFunction) {
+  private async resolveSlugToId(slug: string): Promise<string | null> {
+    const now = Date.now();
+    const cached = this.slugCache.get(slug);
+    if (cached && now < cached.expiry) return cached.id;
+
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+
+    if (tenant) {
+      this.slugCache.set(slug, { id: tenant.id, expiry: now + this.CACHE_TTL });
+      return tenant.id;
+    }
+
+    return null;
+  }
+
+  async use(req: Request, _res: Response, next: NextFunction) {
     // Extract tenant from subdomain (e.g., demo.example.com)
     const host = req.get("host") || "";
     // Remove port from host (e.g., localhost:4000 -> localhost)
@@ -32,40 +56,52 @@ export class TenantMiddleware implements NestMiddleware {
     const tenantFromQuery =
       typeof rawTenantQuery === "string" ? rawTenantQuery : undefined;
 
-    // Determine tenant ID
-    let tenantId: string | null = null;
+    // Determine tenant identifier
+    let tenantIdentifier: string | null = null;
 
     if (tenantFromHeader) {
       // Priority 1: x-tenant-id header (for builder/admin panel)
-      tenantId = tenantFromHeader;
+      tenantIdentifier = tenantFromHeader;
     } else if (tenantFromQuery) {
       // Priority 2: Query parameter
-      tenantId = tenantFromQuery;
-    } else if (subdomain && subdomain !== "www" && subdomain !== "localhost") {
+      tenantIdentifier = tenantFromQuery;
+    } else if (
+      subdomain &&
+      subdomain !== "www" &&
+      subdomain !== "localhost" &&
+      subdomain !== "api"
+    ) {
       // Priority 3: Subdomain
-      tenantId = subdomain;
+      tenantIdentifier = subdomain;
     }
 
     // SECURITY: Validate tenant ID format to prevent injection attacks
-    if (tenantId) {
-      const isUUID = this.isValidUUID(tenantId);
-      const isSlug = this.isValidSlug(tenantId);
+    if (tenantIdentifier) {
+      const isUUID = this.isValidUUID(tenantIdentifier);
+      const isSlug = this.isValidSlug(tenantIdentifier);
 
       if (!isUUID && !isSlug) {
         throw new BadRequestException(
           "Invalid tenant identifier format. Must be a valid UUID or slug.",
         );
       }
-    }
 
-    // For development: allow requests without tenant for health checks
-    // In production, all routes except health should require a tenant
-    if (!tenantId && process.env.NODE_ENV === "production") {
+      // Resolve slug to UUID if needed
+      let tenantId = tenantIdentifier;
+      if (isSlug && !isUUID) {
+        const resolvedId = await this.resolveSlugToId(tenantIdentifier);
+        if (!resolvedId) {
+          throw new BadRequestException(
+            `Tenant not found: ${tenantIdentifier}`,
+          );
+        }
+        tenantId = resolvedId;
+      }
+
+      (req as Request & { tenantId?: string }).tenantId = tenantId;
+    } else if (process.env.NODE_ENV === "production") {
       throw new BadRequestException("Tenant identifier required");
     }
-
-    // Attach tenant to request object for use in controllers/services
-    (req as Request & { tenantId?: string }).tenantId = tenantId || undefined;
 
     next();
   }
