@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 import { FileText, Layers, Plus, X } from "lucide-react";
 import {
   Tooltip,
@@ -39,9 +40,9 @@ const PANEL_TITLES: Record<string, string> = {
 function PagesPanel() {
   const params = useParams();
   const router = useRouter();
-  const tenantId = params?.id as string;
+  const { tenantId } = useResolvedTenant();
   const pageId = params?.pageId as string;
-  const { data: pages, isLoading } = usePages(tenantId);
+  const { data: pages, isLoading } = usePages(tenantId || "");
 
   if (isLoading) {
     return (
@@ -71,7 +72,7 @@ function PagesPanel() {
             type="button"
             className="editor-pages-item"
             data-active={isActive || undefined}
-            onClick={() => router.push(`/${tenantId}/pages/${page.id}/edit`)}
+            onClick={() => router.push(`/pages/${page.id}/edit`)}
           >
             <FileText className="size-3.5 shrink-0" />
             <span className="editor-pages-item-title">{page.title}</span>
@@ -84,7 +85,7 @@ function PagesPanel() {
           </button>
         );
       })}
-      <Link href={`/${tenantId}/pages/new`} className="editor-pages-add">
+      <Link href="/pages/new" className="editor-pages-add">
         <Plus className="size-3.5" />
         <span>New page</span>
       </Link>

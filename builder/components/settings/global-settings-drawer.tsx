@@ -57,7 +57,8 @@ import { useTenant, useUpdateTenant } from "@/lib/hooks/use-tenants";
 import { SvgUpload } from "@/components/ui/svg-upload";
 import { TenantLogo } from "@/components/ui/tenant-logo";
 import { Input } from "@/components/ui/input";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 import { toast } from "sonner";
 import {
   spacingSelectOptions,
@@ -515,8 +516,7 @@ export function GlobalSettingsDrawer({
   onOpenChange,
 }: GlobalSettingsDrawerProps) {
   const [activeTab, setActiveTab] = React.useState<SettingsTab>("site");
-  const params = useParams();
-  const tenantId = params?.id as string | undefined;
+  const { tenantId } = useResolvedTenant();
 
   const { data: tokens, isLoading } = useTenantTokens(tenantId || "");
   const updateTokens = useUpdateTenantTokens();
@@ -2474,7 +2474,7 @@ function PagesSettingsPanel({ tenantId }: PagesSettingsPanelProps) {
   // Action handlers
   const pageActions: PageCardActions = {
     onEdit: (page) => {
-      router.push(`/${tenantId}/pages/${page.id}/edit`);
+      router.push(`/pages/${page.id}/edit`);
     },
     onDuplicate: async (page) => {
       setUpdatingIds((prev) => [...prev, page.id]);
@@ -2537,7 +2537,7 @@ function PagesSettingsPanel({ tenantId }: PagesSettingsPanelProps) {
       }
     },
     onPreview: (page) => {
-      window.open(`/${tenantId}/preview/${page.slug}`, "_blank");
+      window.open(`/preview/${page.slug}`, "_blank");
     },
   };
 

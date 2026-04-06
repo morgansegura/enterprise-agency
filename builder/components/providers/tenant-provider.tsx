@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useParams } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 import { useTenantTokens } from "@/lib/hooks/use-tenant-tokens";
 import {
   applyTokensToDOM,
@@ -10,11 +10,10 @@ import {
 } from "@/lib/tokens/apply-tokens";
 
 export function TenantProvider({ children }: { children: React.ReactNode }) {
-  const params = useParams();
-  const tenantId = params?.id as string;
+  const { tenantId } = useResolvedTenant();
 
   // Fetch tenant tokens
-  const { data: tokens } = useTenantTokens(tenantId);
+  const { data: tokens } = useTenantTokens(tenantId || "");
 
   // Set tenant ID for API client
   useEffect(() => {

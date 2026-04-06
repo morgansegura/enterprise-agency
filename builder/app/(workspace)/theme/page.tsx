@@ -1,0 +1,540 @@
+"use client";
+
+import * as React from "react";
+import { toast } from "sonner";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
+import { useTenantTokens, useUpdateTenantTokens } from "@/lib/hooks";
+import { PageLayout } from "@/components/layout/page-layout";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Save } from "lucide-react";
+import type { TenantTokens } from "@/lib/hooks/use-tenant-tokens";
+
+import "./theme.css";
+
+// Color preset options
+const COLOR_PRESETS = [
+  { name: "Blue", primary: "#0052cc", accent: "#0065ff" },
+  { name: "Indigo", primary: "#4f46e5", accent: "#6366f1" },
+  { name: "Purple", primary: "#7c3aed", accent: "#8b5cf6" },
+  { name: "Pink", primary: "#db2777", accent: "#ec4899" },
+  { name: "Red", primary: "#dc2626", accent: "#ef4444" },
+  { name: "Orange", primary: "#ea580c", accent: "#f97316" },
+  { name: "Green", primary: "#16a34a", accent: "#22c55e" },
+  { name: "Teal", primary: "#0d9488", accent: "#14b8a6" },
+  { name: "Slate", primary: "#475569", accent: "#64748b" },
+];
+
+const RADIUS_OPTIONS = [
+  { label: "None", value: "0" },
+  { label: "Small", value: "0.25rem" },
+  { label: "Medium", value: "0.5rem" },
+  { label: "Large", value: "0.75rem" },
+  { label: "Full", value: "9999px" },
+];
+
+const FONT_OPTIONS = [
+  { label: "System", value: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
+  { label: "Inter", value: "'Inter', sans-serif" },
+  { label: "Poppins", value: "'Poppins', sans-serif" },
+  { label: "DM Sans", value: "'DM Sans', sans-serif" },
+  { label: "Plus Jakarta", value: "'Plus Jakarta Sans', sans-serif" },
+  { label: "Outfit", value: "'Outfit', sans-serif" },
+  { label: "Space Grotesk", value: "'Space Grotesk', sans-serif" },
+  { label: "Playfair", value: "'Playfair Display', serif" },
+  { label: "Lora", value: "'Lora', serif" },
+  { label: "Merriweather", value: "'Merriweather', serif" },
+];
+
+export default function ThemePage() {
+  const { tenantId: resolvedTenantId } = useResolvedTenant();
+  const tenantId = resolvedTenantId!;
+  const { data: tokens, isLoading } = useTenantTokens(tenantId);
+  const updateTokens = useUpdateTenantTokens();
+
+  const [localTokens, setLocalTokens] = React.useState<TenantTokens>({});
+  const [isDirty, setIsDirty] = React.useState(false);
+
+  // Sync from server
+  React.useEffect(() => {
+    if (tokens) {
+      setLocalTokens(tokens);
+    }
+  }, [tokens]);
+
+  const handleColorChange = (field: string, value: string) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      colors: {
+        ...prev.colors,
+        [field]: value,
+      },
+    }));
+    setIsDirty(true);
+  };
+
+  const handleFontChange = (value: string) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      fonts: {
+        ...prev.fonts,
+        body: { family: value },
+      },
+    }));
+    setIsDirty(true);
+  };
+
+  const handleRadiusChange = (value: string) => {
+    setLocalTokens((prev) => ({
+      ...prev,
+      borderRadius: {
+        ...prev.borderRadius,
+        md: value,
+      },
+    }));
+    setIsDirty(true);
+  };
+
+  const handleSave = async () => {
+    try {
+      await updateTokens.mutateAsync({
+        tenantId,
+        tokens: localTokens,
+      });
+      setIsDirty(false);
+      toast.success("Theme saved");
+    } catch {
+      toast.error("Failed to save theme");
+    }
+  };
+
+  // Get current values with fallbacks
+  const colors = (localTokens.colors ?? {}) as unknown as Record<string, unknown>;
+  const fonts = (localTokens.fonts ?? {}) as unknown as Record<string, unknown>;
+  const radii = (localTokens.borderRadius ?? {}) as unknown as Record<string, unknown>;
+
+  const primaryColor = (colors.primaryHex as string) || "#0052cc";
+  const accentColor = (colors.accentHex as string) || "#0065ff";
+  const bgColor = (colors.background as string) || "#ffffff";
+  const fgColor = (colors.foreground as string) || "#172b4d";
+  const bodyFont = (fonts.body as string) || FONT_OPTIONS[0].value;
+  const radius = (radii.md as string) || "0.5rem";
+
+  if (isLoading) {
+    return (
+      <PageLayout title="Theme" description="Loading theme settings...">
+        <div className="space-y-4 max-w-2xl">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-24 bg-(--el-100) rounded animate-pulse" />
+          ))}
+        </div>
+      </PageLayout>
+    );
+  }
+
+  return (
+    <PageLayout
+      title="Theme"
+      description="Configure your site's colors, typography, and style"
+      actions={
+        <Button onClick={handleSave} disabled={!isDirty || updateTokens.isPending}>
+          <Save className="size-4" />
+          {updateTokens.isPending ? "Saving..." : "Save Theme"}
+        </Button>
+      }
+    >
+      <div className="theme-page">
+        {/* Color Presets */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Color Preset</h3>
+          <p className="theme-section-desc">
+            Quick-start with a color palette
+          </p>
+          <div className="theme-color-presets">
+            {COLOR_PRESETS.map((preset) => (
+              <button
+                key={preset.name}
+                type="button"
+                className="theme-color-preset"
+                data-active={primaryColor === preset.primary || undefined}
+                onClick={() => {
+                  handleColorChange("primaryHex", preset.primary);
+                  handleColorChange("accentHex", preset.accent);
+                }}
+                title={preset.name}
+              >
+                <div
+                  className="theme-color-preset-swatch"
+                  style={{ backgroundColor: preset.primary }}
+                />
+                <span className="theme-color-preset-label">{preset.name}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Custom Colors */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Colors</h3>
+          <div className="theme-color-grid">
+            <div className="theme-color-field">
+              <label className="theme-label">Primary</label>
+              <div className="theme-color-input-row">
+                <input
+                  type="color"
+                  value={primaryColor}
+                  onChange={(e) => handleColorChange("primaryHex", e.target.value)}
+                  className="theme-color-picker"
+                />
+                <Input
+                  value={primaryColor}
+                  onChange={(e) => handleColorChange("primaryHex", e.target.value)}
+                  className="theme-color-hex"
+                />
+              </div>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Accent</label>
+              <div className="theme-color-input-row">
+                <input
+                  type="color"
+                  value={accentColor}
+                  onChange={(e) => handleColorChange("accentHex", e.target.value)}
+                  className="theme-color-picker"
+                />
+                <Input
+                  value={accentColor}
+                  onChange={(e) => handleColorChange("accentHex", e.target.value)}
+                  className="theme-color-hex"
+                />
+              </div>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Background</label>
+              <div className="theme-color-input-row">
+                <input
+                  type="color"
+                  value={bgColor}
+                  onChange={(e) => handleColorChange("background", e.target.value)}
+                  className="theme-color-picker"
+                />
+                <Input
+                  value={bgColor}
+                  onChange={(e) => handleColorChange("background", e.target.value)}
+                  className="theme-color-hex"
+                />
+              </div>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Text</label>
+              <div className="theme-color-input-row">
+                <input
+                  type="color"
+                  value={fgColor}
+                  onChange={(e) => handleColorChange("foreground", e.target.value)}
+                  className="theme-color-picker"
+                />
+                <Input
+                  value={fgColor}
+                  onChange={(e) => handleColorChange("foreground", e.target.value)}
+                  className="theme-color-hex"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Typography */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Typography</h3>
+          <div className="theme-font-grid">
+            <div className="theme-field">
+              <label className="theme-label">Heading Font</label>
+              <select
+                className="theme-select"
+                value={(fonts.heading as string) || FONT_OPTIONS[0].value}
+                onChange={(e) => {
+                  setLocalTokens((prev) => ({
+                    ...prev,
+                    fonts: { ...prev.fonts, heading: e.target.value },
+                  }));
+                  setIsDirty(true);
+                }}
+              >
+                {FONT_OPTIONS.map((font) => (
+                  <option key={font.label} value={font.value}>{font.label}</option>
+                ))}
+              </select>
+            </div>
+            <div className="theme-field">
+              <label className="theme-label">Body Font</label>
+              <select
+                className="theme-select"
+                value={bodyFont}
+                onChange={(e) => handleFontChange(e.target.value)}
+              >
+                {FONT_OPTIONS.map((font) => (
+                  <option key={font.label} value={font.value}>{font.label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="theme-font-preview">
+            <p className="theme-font-preview-heading" style={{ fontFamily: (fonts.heading as string) || bodyFont }}>
+              Heading Font Preview
+            </p>
+            <p className="theme-font-preview-body" style={{ fontFamily: bodyFont }}>
+              Body font preview. This is how your paragraphs and content will look.
+            </p>
+          </div>
+        </section>
+
+        {/* Spacing & Layout */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Spacing & Layout</h3>
+          <div className="theme-color-grid">
+            <div className="theme-color-field">
+              <label className="theme-label">Section Padding</label>
+              <select
+                className="theme-select"
+                value={(radii.sectionPadding as string) || "lg"}
+                onChange={(e) => {
+                  setLocalTokens((prev) => ({
+                    ...prev,
+                    borderRadius: { ...prev.borderRadius, sectionPadding: e.target.value },
+                  }));
+                  setIsDirty(true);
+                }}
+              >
+                <option value="sm">Small (16px)</option>
+                <option value="md">Medium (32px)</option>
+                <option value="lg">Large (48px)</option>
+                <option value="xl">X-Large (64px)</option>
+              </select>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Content Gap</label>
+              <select
+                className="theme-select"
+                value={(radii.contentGap as string) || "md"}
+                onChange={(e) => {
+                  setLocalTokens((prev) => ({
+                    ...prev,
+                    borderRadius: { ...prev.borderRadius, contentGap: e.target.value },
+                  }));
+                  setIsDirty(true);
+                }}
+              >
+                <option value="sm">Tight (8px)</option>
+                <option value="md">Default (16px)</option>
+                <option value="lg">Relaxed (24px)</option>
+                <option value="xl">Spacious (32px)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        {/* Borders */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Borders</h3>
+          <div className="theme-color-grid">
+            <div className="theme-color-field">
+              <label className="theme-label">Border Color</label>
+              <div className="theme-color-input-row">
+                <input
+                  type="color"
+                  value={(colors.borderColor as string) || "#dfe1e6"}
+                  onChange={(e) => handleColorChange("borderColor", e.target.value)}
+                  className="theme-color-picker"
+                />
+                <Input
+                  value={(colors.borderColor as string) || "#dfe1e6"}
+                  onChange={(e) => handleColorChange("borderColor", e.target.value)}
+                  className="theme-color-hex"
+                />
+              </div>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Border Width</label>
+              <select
+                className="theme-select"
+                value={(radii.borderWidth as string) || "1px"}
+                onChange={(e) => {
+                  setLocalTokens((prev) => ({
+                    ...prev,
+                    borderRadius: { ...prev.borderRadius, borderWidth: e.target.value },
+                  }));
+                  setIsDirty(true);
+                }}
+              >
+                <option value="0">None</option>
+                <option value="1px">Thin (1px)</option>
+                <option value="2px">Medium (2px)</option>
+                <option value="3px">Thick (3px)</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        {/* Border Radius */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Border Radius</h3>
+          <div className="theme-radius-options">
+            {RADIUS_OPTIONS.map((option) => (
+              <button
+                key={option.label}
+                type="button"
+                className="theme-radius-option"
+                data-active={radius === option.value || undefined}
+                onClick={() => handleRadiusChange(option.value)}
+              >
+                <div
+                  className="theme-radius-preview"
+                  style={{ borderRadius: option.value }}
+                />
+                <span>{option.label}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Dark Mode */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Dark Mode</h3>
+          <p className="theme-section-desc">
+            Enable dark mode for your site
+          </p>
+          <div className="theme-radius-options">
+            <button
+              type="button"
+              className="theme-radius-option"
+              data-active={!(colors.darkMode as boolean) || undefined}
+              onClick={() => {
+                handleColorChange("darkMode", false as unknown as string);
+              }}
+            >
+              <div className="theme-radius-preview" style={{ background: "#ffffff" }} />
+              <span>Light</span>
+            </button>
+            <button
+              type="button"
+              className="theme-radius-option"
+              data-active={(colors.darkMode as boolean) || undefined}
+              onClick={() => {
+                handleColorChange("darkMode", true as unknown as string);
+              }}
+            >
+              <div className="theme-radius-preview" style={{ background: "#1b2638" }} />
+              <span>Dark</span>
+            </button>
+          </div>
+        </section>
+
+        {/* Global Defaults */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Global Defaults</h3>
+          <p className="theme-section-desc">
+            Default styles inherited by all blocks
+          </p>
+          <div className="theme-color-grid">
+            <div className="theme-color-field">
+              <label className="theme-label">Body Font Size</label>
+              <select
+                className="theme-select"
+                value={(colors.bodyFontSize as string) || "16px"}
+                onChange={(e) => {
+                  handleColorChange("bodyFontSize", e.target.value);
+                }}
+              >
+                <option value="14px">14px</option>
+                <option value="15px">15px</option>
+                <option value="16px">16px (default)</option>
+                <option value="17px">17px</option>
+                <option value="18px">18px</option>
+              </select>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Container Max Width</label>
+              <select
+                className="theme-select"
+                value={(colors.containerMaxWidth as string) || "1200px"}
+                onChange={(e) => {
+                  handleColorChange("containerMaxWidth", e.target.value);
+                }}
+              >
+                <option value="960px">Narrow (960px)</option>
+                <option value="1080px">Medium (1080px)</option>
+                <option value="1200px">Default (1200px)</option>
+                <option value="1400px">Wide (1400px)</option>
+                <option value="100%">Full Width</option>
+              </select>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Container Padding</label>
+              <select
+                className="theme-select"
+                value={(colors.containerPadding as string) || "24px"}
+                onChange={(e) => {
+                  handleColorChange("containerPadding", e.target.value);
+                }}
+              >
+                <option value="16px">Tight (16px)</option>
+                <option value="24px">Default (24px)</option>
+                <option value="32px">Relaxed (32px)</option>
+                <option value="48px">Spacious (48px)</option>
+              </select>
+            </div>
+            <div className="theme-color-field">
+              <label className="theme-label">Link Color</label>
+              <div className="theme-color-input-row">
+                <input
+                  type="color"
+                  value={(colors.linkColor as string) || primaryColor}
+                  onChange={(e) => handleColorChange("linkColor", e.target.value)}
+                  className="theme-color-picker"
+                />
+                <Input
+                  value={(colors.linkColor as string) || ""}
+                  onChange={(e) => handleColorChange("linkColor", e.target.value)}
+                  placeholder="Same as primary"
+                  className="theme-color-hex"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Preview */}
+        <section className="theme-section">
+          <h3 className="theme-section-title">Preview</h3>
+          <div
+            className="theme-preview-card"
+            style={{
+              backgroundColor: bgColor,
+              color: fgColor,
+              borderRadius: radius,
+              fontFamily: bodyFont,
+            }}
+          >
+            <h4 style={{ color: primaryColor }}>Your Website</h4>
+            <p>This is how your site content will look with these theme settings.</p>
+            <button
+              style={{
+                backgroundColor: primaryColor,
+                color: "#fff",
+                borderRadius: radius,
+                padding: "8px 16px",
+                border: "none",
+                fontFamily: bodyFont,
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Call to Action
+            </button>
+          </div>
+        </section>
+      </div>
+    </PageLayout>
+  );
+}

@@ -52,8 +52,8 @@ export function TenantSwitcher({ className }: TenantSwitcherProps) {
   const handleTenantSwitch = React.useCallback(
     (tenant: AccessibleTenant) => {
       switchTenant(tenant.id);
-      // Navigate to the tenant's workspace
-      router.push(`/${tenant.id}/dashboard`);
+      // Navigate to the workspace (tenant resolved from store)
+      router.push("/pages");
     },
     [switchTenant, router],
   );
