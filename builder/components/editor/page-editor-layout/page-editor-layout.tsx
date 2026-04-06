@@ -25,7 +25,6 @@ import {
   Play,
 } from "lucide-react";
 import { type Breakpoint } from "../breakpoint-selector";
-import { useParams } from "next/navigation";
 import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { ResponsiveProvider } from "@/lib/responsive/context";
@@ -85,7 +84,6 @@ export function PageEditorLayout({
   children,
 }: PageEditorLayoutProps) {
   const { setHasCustomToolbar } = usePreviewModeOptional();
-  const params = useParams();
   const { selectedElement } = useUIStore();
 
   React.useEffect(() => {
@@ -132,7 +130,7 @@ export function PageEditorLayout({
       <div className="page-editor-navbar">
         <div className="page-editor-navbar-left">
           <a
-            href={`/${params?.id}`}
+            href="/pages"
             className="page-editor-navbar-brand"
             title="Back to dashboard"
           >
@@ -146,14 +144,14 @@ export function PageEditorLayout({
               Design
             </span>
             <a
-              href={`/${params?.id}/pages`}
+              href="/pages"
               className="page-editor-mode-tab"
             >
               <FileText className="size-3.5" />
               CMS
             </a>
             <a
-              href={`/${params?.id}/theme`}
+              href="/theme"
               className="page-editor-mode-tab"
             >
               <Settings className="size-3.5" />
@@ -165,7 +163,7 @@ export function PageEditorLayout({
         <div className="page-editor-navbar-center">
           {/* Page selector + save indicator */}
           <a
-            href={`/${params?.id}/pages`}
+            href="/pages"
             className="page-editor-page-selector"
             title="Switch page"
           >

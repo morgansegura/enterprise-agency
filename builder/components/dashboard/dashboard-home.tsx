@@ -3,10 +3,11 @@
 import { useAuthStore } from "@/lib/stores/auth-store";
 import {
   useTenantsHealth,
+  useActiveTenant,
   type TenantHealthData,
 } from "@/lib/hooks/use-tenants";
 import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AlertCircle } from "lucide-react";
 import "./dashboard-home.css";
 
@@ -154,6 +155,8 @@ function TableSkeleton() {
 
 export function DashboardHome() {
   const { user } = useAuthStore();
+  const router = useRouter();
+  const { switchTenant } = useActiveTenant();
   const { data: healthData, isLoading, error } = useTenantsHealth();
 
   const firstName = user?.firstName || "there";
@@ -259,10 +262,14 @@ export function DashboardHome() {
 
               <div className="dashboard-table-body">
                 {healthData.tenants.map((tenant) => (
-                  <Link
+                  <button
                     key={tenant.id}
-                    href={`/${tenant.id}/pages`}
+                    type="button"
                     className="dashboard-table-row"
+                    onClick={() => {
+                      switchTenant(tenant.id);
+                      router.push("/pages");
+                    }}
                   >
                     <div className="dashboard-table-td dashboard-table-td-client">
                       <span className="dashboard-table-client-name">
@@ -310,7 +317,7 @@ export function DashboardHome() {
                         className={`dashboard-health-dot dashboard-health-dot-${tenant.healthStatus}`}
                       />
                     </div>
-                  </Link>
+                  </button>
                 ))}
               </div>
             </div>

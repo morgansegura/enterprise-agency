@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 import type {
   RouteContext,
   SettingsSection,
@@ -98,7 +99,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // Page routes
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/pages\/([^/]+)\/edit$/,
+    pattern: /^\/pages\/([^/]+)\/edit$/,
     section: "website",
     entityType: "page",
     extractContext: (match) => ({
@@ -109,7 +110,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/pages\/new$/,
+    pattern: /^\/pages\/new$/,
     section: "website",
     entityType: "page",
     extractContext: () => ({
@@ -119,7 +120,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/pages$/,
+    pattern: /^\/pages$/,
     section: "website",
     entityType: "page",
     extractContext: () => ({
@@ -133,7 +134,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // Blog/Post routes
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/posts\/([^/]+)\/edit$/,
+    pattern: /^\/posts\/([^/]+)\/edit$/,
     section: "blog",
     entityType: "post",
     extractContext: (match) => ({
@@ -144,7 +145,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/posts\/new$/,
+    pattern: /^\/posts\/new$/,
     section: "blog",
     entityType: "post",
     extractContext: () => ({
@@ -154,7 +155,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/posts$/,
+    pattern: /^\/posts$/,
     section: "blog",
     entityType: "post",
     extractContext: () => ({
@@ -168,7 +169,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // Tags routes
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/tags$/,
+    pattern: /^\/tags$/,
     section: "blog",
     entityType: "tag",
     extractContext: () => ({
@@ -182,7 +183,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // Media routes
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/media$/,
+    pattern: /^\/media$/,
     section: "media",
     entityType: "asset",
     extractContext: () => ({
@@ -196,7 +197,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // Shop - Product routes
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/shop\/products\/([^/]+)\/edit$/,
+    pattern: /^\/shop\/products\/([^/]+)\/edit$/,
     section: "shop",
     entityType: "product",
     extractContext: (match) => ({
@@ -207,7 +208,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/shop\/products\/new$/,
+    pattern: /^\/shop\/products\/new$/,
     section: "shop",
     entityType: "product",
     extractContext: () => ({
@@ -217,7 +218,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/shop\/products$/,
+    pattern: /^\/shop\/products$/,
     section: "shop",
     entityType: "product",
     extractContext: () => ({
@@ -231,7 +232,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // Shop - Order routes
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/shop\/orders\/([^/]+)$/,
+    pattern: /^\/shop\/orders\/([^/]+)$/,
     section: "shop",
     entityType: "order",
     extractContext: (match) => ({
@@ -242,7 +243,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/shop\/orders$/,
+    pattern: /^\/shop\/orders$/,
     section: "shop",
     entityType: "order",
     extractContext: () => ({
@@ -256,7 +257,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // Shop - Customer routes
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/shop\/customers\/([^/]+)$/,
+    pattern: /^\/shop\/customers\/([^/]+)$/,
     section: "shop",
     entityType: "customer",
     extractContext: (match) => ({
@@ -267,7 +268,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/shop\/customers\/new$/,
+    pattern: /^\/shop\/customers\/new$/,
     section: "shop",
     entityType: "customer",
     extractContext: () => ({
@@ -277,7 +278,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
     }),
   },
   {
-    pattern: /^\/[^/]+\/shop\/customers$/,
+    pattern: /^\/shop\/customers$/,
     section: "shop",
     entityType: "customer",
     extractContext: () => ({
@@ -291,12 +292,12 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // Shop - Dashboard & Settings
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/shop\/settings$/,
+    pattern: /^\/shop\/settings$/,
     section: "shop",
     extractContext: () => ({ mode: "settings", section: "shop" }),
   },
   {
-    pattern: /^\/[^/]+\/shop$/,
+    pattern: /^\/shop$/,
     section: "shop",
     extractContext: () => ({ mode: "dashboard", section: "shop" }),
   },
@@ -305,7 +306,7 @@ const ROUTE_PATTERNS: RoutePattern[] = [
   // General Settings
   // ==========================================================================
   {
-    pattern: /^\/[^/]+\/settings$/,
+    pattern: /^\/settings$/,
     section: "website",
     extractContext: () => ({ mode: "settings", section: "website" }),
   },
@@ -363,12 +364,11 @@ function determineSectionFromPath(pathname: string): SettingsSection {
  * Memoized for performance.
  */
 export function useRouteContext(): RouteContext {
-  const params = useParams();
   const pathname = usePathname();
-  const tenantId = (params?.id as string) || "";
+  const { tenantId } = useResolvedTenant();
 
   return useMemo(
-    () => parseRouteContext(pathname || "", tenantId),
+    () => parseRouteContext(pathname || "", tenantId || ""),
     [pathname, tenantId],
   );
 }

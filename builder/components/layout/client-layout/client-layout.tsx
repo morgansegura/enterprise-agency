@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { logout, type User } from "@/lib/auth";
 import { useAuthStore } from "@/lib/stores/auth-store";
@@ -11,6 +11,7 @@ import {
   usePreviewModeOptional,
 } from "@/lib/context/preview-mode-context";
 import { useTenant } from "@/lib/hooks";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { ClientSidebar } from "@/components/layout/client-sidebar";
@@ -99,13 +100,12 @@ export function ClientLayout({
   const router = useRouter();
   const { user, isLoading: loading } = useAuthStore();
 
-  const params = useParams();
-  const tenantId = params?.id as string;
-  const { data: tenant } = useTenant(tenantId);
+  const { tenantId } = useResolvedTenant();
+  const { data: tenant } = useTenant(tenantId || "");
 
   const brandName =
     tenantId && tenant?.businessName ? tenant.businessName : "Web & Funnel";
-  const brandHref = tenantId ? `/${tenantId}` : "/clients";
+  const brandHref = tenantId ? "/pages" : "/clients";
 
   const handleLogout = () => {
     logout();

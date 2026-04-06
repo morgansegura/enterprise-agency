@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
     // If user has a session cookie and visits auth pages, redirect to dashboard
     const hasSession = request.cookies.has("access_token");
     if (hasSession) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/pages", request.url));
     }
     return NextResponse.next();
   }
@@ -22,6 +22,11 @@ export function middleware(request: NextRequest) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
+  }
+
+  // Redirect root to pages
+  if (pathname === "/") {
+    return NextResponse.redirect(new URL("/pages", request.url));
   }
 
   return NextResponse.next();

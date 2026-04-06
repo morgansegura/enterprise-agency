@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   ChevronRight,
   FileText,
@@ -40,6 +40,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTenant } from "@/lib/hooks/use-tenants";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 
 import "./client-sidebar.css";
 
@@ -136,9 +137,8 @@ function SidebarSection({ label, items, defaultOpen = true }: NavSection) {
 /* ── Component ─────────────────────────────────────────────────────────── */
 
 export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
-  const params = useParams();
-  const tenantId = params?.id as string;
-  const { data: tenant } = useTenant(tenantId);
+  const { tenantId } = useResolvedTenant();
+  const { data: tenant } = useTenant(tenantId || "");
 
   const tenantName = tenant?.businessName || "Project";
   const tenantInitial = tenantName.charAt(0).toUpperCase();
@@ -149,46 +149,38 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
       label: "Content",
       defaultOpen: true,
       items: [
-        { title: "Pages", url: `/${tenantId}/pages`, icon: FileText },
-        { title: "Blog", url: `/${tenantId}/posts`, icon: Newspaper },
-        { title: "Tags", url: `/${tenantId}/tags`, icon: Tags },
-        { title: "Media", url: `/${tenantId}/media`, icon: Image },
+        { title: "Pages", url: "/pages", icon: FileText },
+        { title: "Blog", url: "/posts", icon: Newspaper },
+        { title: "Tags", url: "/tags", icon: Tags },
+        { title: "Media", url: "/media", icon: Image },
       ],
     },
     {
       label: "Commerce",
       defaultOpen: true,
       items: [
-        {
-          title: "Products",
-          url: `/${tenantId}/shop/products`,
-          icon: Package,
-        },
-        { title: "Orders", url: `/${tenantId}/shop/orders`, icon: Receipt },
-        {
-          title: "Customers",
-          url: `/${tenantId}/shop/customers`,
-          icon: Users,
-        },
+        { title: "Products", url: "/shop/products", icon: Package },
+        { title: "Orders", url: "/shop/orders", icon: Receipt },
+        { title: "Customers", url: "/shop/customers", icon: Users },
       ],
     },
     {
       label: "Configuration",
       defaultOpen: true,
       items: [
-        { title: "Theme", url: `/${tenantId}/theme`, icon: Palette },
-        { title: "Headers", url: `/${tenantId}/headers`, icon: PanelTop },
-        { title: "Footers", url: `/${tenantId}/footers`, icon: PanelBottom },
-        { title: "Menus", url: `/${tenantId}/menus`, icon: Menu },
-        { title: "Settings", url: `/${tenantId}/settings`, icon: Settings },
-        { title: "Figma", url: `/${tenantId}/integrations/figma`, icon: Paintbrush },
+        { title: "Theme", url: "/theme", icon: Palette },
+        { title: "Headers", url: "/headers", icon: PanelTop },
+        { title: "Footers", url: "/footers", icon: PanelBottom },
+        { title: "Menus", url: "/menus", icon: Menu },
+        { title: "Settings", url: "/settings", icon: Settings },
+        { title: "Figma", url: "/integrations/figma", icon: Paintbrush },
       ],
     },
     {
       label: "Management",
       defaultOpen: false,
       items: [
-        { title: "Team", url: `/${tenantId}/team`, icon: UserCog },
+        { title: "Team", url: "/team", icon: UserCog },
       ],
     },
   ];

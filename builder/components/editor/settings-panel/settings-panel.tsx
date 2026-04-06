@@ -491,7 +491,7 @@ function PageSettingsPanel({
           ))}
         </select>
         {headerId && headerId !== "none" && (
-          <a href={`/${tenantId}/headers`} className="settings-panel-page-link">
+          <a href="/headers" className="settings-panel-page-link">
             Edit headers →
           </a>
         )}
@@ -510,7 +510,7 @@ function PageSettingsPanel({
           ))}
         </select>
         {footerId && footerId !== "none" && (
-          <a href={`/${tenantId}/footers`} className="settings-panel-page-link">
+          <a href="/footers" className="settings-panel-page-link">
             Edit footers →
           </a>
         )}
