@@ -74,6 +74,31 @@ export async function login(email: string, password: string): Promise<User> {
     // Update Zustand store
     useAuthStore.getState().login(response.user, null);
 
+    // Resolve tenant after login
+    try {
+      const tenants = await apiClient.get<
+        { id: string; slug: string; businessName: string; [key: string]: unknown }[]
+      >("/tenants");
+      const tenantList = Array.isArray(tenants)
+        ? tenants
+        : (tenants as { data: typeof tenants }).data || [];
+      if (tenantList.length > 0) {
+        const { useTenantsStore } = await import("@/lib/stores/tenants-store");
+        const tenant = tenantList[0];
+        apiClient.setTenantId(tenant.id);
+        useTenantsStore.getState().setActiveTenant({
+          id: tenant.id,
+          slug: tenant.slug,
+          businessName: tenant.businessName,
+          status: "active",
+          enabledFeatures: {},
+          tenantType: "AGENCY",
+        } as never);
+      }
+    } catch {
+      // Non-blocking — tenant will resolve via hook
+    }
+
     logger.log("Login successful", { userId: response.user.id });
     return response.user;
   } catch (error) {

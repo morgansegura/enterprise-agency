@@ -8,16 +8,13 @@ interface ResolvedTenant {
   isResolving: boolean;
 }
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 const FALLBACK_SLUG =
   process.env.NEXT_PUBLIC_TENANT_SLUG || "web-and-funnel";
 
 /**
- * Resolves the current tenant from domain or store.
- *
- * Resolution order:
- * 1. tenantsStore.activeTenantId (persisted in localStorage)
- * 2. Domain lookup via public API
- * 3. NEXT_PUBLIC_TENANT_SLUG env var fallback
+ * Resolves the current tenant from store, domain, or env fallback.
  */
 export function useResolvedTenant(): ResolvedTenant {
   const { activeTenantId, activeTenant, setActiveTenant } = useTenantsStore();
@@ -25,6 +22,7 @@ export function useResolvedTenant(): ResolvedTenant {
 
   useEffect(() => {
     if (activeTenantId && activeTenant) {
+      apiClient.setTenantId(activeTenantId);
       setIsResolving(false);
       return;
     }
@@ -33,69 +31,77 @@ export function useResolvedTenant(): ResolvedTenant {
       setIsResolving(true);
 
       try {
-        // Try domain-based resolution
         const hostname =
           typeof window !== "undefined" ? window.location.hostname : "";
+        const isLocal =
+          !hostname || hostname === "localhost" || hostname === "127.0.0.1";
 
-        if (hostname && hostname !== "localhost") {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/v1/public/resolve?domain=${hostname}`,
+        let slug = FALLBACK_SLUG;
+
+        // Production: try domain-based resolution first
+        if (!isLocal) {
+          const domainRes = await fetch(
+            `${API_URL}/api/v1/public/resolve?domain=${hostname}`,
           );
-
-          if (res.ok) {
-            const data = await res.json();
-            if (data.tenantId && data.slug) {
-              // Fetch full tenant data
-              apiClient.setTenantId(data.tenantId);
-              try {
-                const tenant = await apiClient.get<{
-                  id: string;
-                  slug: string;
-                  businessName: string;
-                  [key: string]: unknown;
-                }>(`/tenants/${data.tenantId}`);
-                setActiveTenant(tenant as never);
-              } catch {
-                // Set minimal tenant data from resolve response
-                setActiveTenant({
-                  id: data.tenantId,
-                  slug: data.slug,
-                  businessName: data.businessName || data.slug,
-                  status: "active",
-                  enabledFeatures: {},
-                  tenantType: "AGENCY",
-                } as never);
-              }
-              setIsResolving(false);
+          if (domainRes.ok) {
+            const data = await domainRes.json();
+            if (data.slug) slug = data.slug;
+            if (data.tenantId) {
+              finalize(data.tenantId, slug, data.businessName || slug);
               return;
             }
           }
         }
 
-        // Fallback: resolve by slug
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/v1/public/${FALLBACK_SLUG}/config`,
+        // Resolve slug to tenant data via config endpoint
+        const configRes = await fetch(
+          `${API_URL}/api/v1/public/${slug}/config`,
         );
 
-        if (res.ok) {
-          const config = await res.json();
-          if (config.id) {
-            apiClient.setTenantId(config.id);
-            setActiveTenant({
-              id: config.id,
-              slug: config.slug || FALLBACK_SLUG,
-              businessName: config.businessName || FALLBACK_SLUG,
-              status: "active",
-              enabledFeatures: {},
-              tenantType: "AGENCY",
-            } as never);
+        if (configRes.ok) {
+          const config = await configRes.json();
+          // Use slug as tenant identifier — middleware resolves to UUID
+          apiClient.setTenantId(slug);
+
+          // Try to get actual tenant ID from authenticated endpoint
+          try {
+            const tenants = await apiClient.get<
+              { id: string; slug: string; businessName: string }[]
+            >("/tenants");
+            const list = Array.isArray(tenants)
+              ? tenants
+              : ((tenants as { data: typeof tenants }).data || []);
+            const match = list.find((t) => t.slug === slug) || list[0];
+            if (match) {
+              finalize(match.id, match.slug, match.businessName);
+              return;
+            }
+          } catch {
+            // Not authenticated yet or endpoint unavailable
           }
+
+          // Fall back to slug as ID — middleware handles resolution
+          finalize(slug, config.slug || slug, config.businessName || slug);
         }
       } catch {
-        // Silent fail — will show empty state
+        // Last resort
+        apiClient.setTenantId(FALLBACK_SLUG);
+        finalize(FALLBACK_SLUG, FALLBACK_SLUG, FALLBACK_SLUG);
       } finally {
         setIsResolving(false);
       }
+    }
+
+    function finalize(id: string, slug: string, businessName: string) {
+      apiClient.setTenantId(id);
+      setActiveTenant({
+        id,
+        slug,
+        businessName,
+        status: "active",
+        enabledFeatures: {},
+        tenantType: "AGENCY",
+      } as never);
     }
 
     resolve();
