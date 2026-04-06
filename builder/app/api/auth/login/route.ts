@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 /**
  * Proxy login through the builder's own domain so cookies
  * are set on the same origin the middleware can read.
@@ -24,20 +26,33 @@ export async function POST(request: Request) {
 
   const res = NextResponse.json(data);
 
-  // Forward Set-Cookie headers from the API response
+  // Parse API cookies and re-set them on the builder's domain
   const setCookies = apiRes.headers.getSetCookie?.() ?? [];
-  for (const cookie of setCookies) {
-    res.headers.append("Set-Cookie", cookie);
+  for (const raw of setCookies) {
+    const [nameValue] = raw.split(";");
+    const [name, ...valueParts] = nameValue.split("=");
+    const value = valueParts.join("=");
+
+    const maxAge = name.trim() === "refresh_token"
+      ? 7 * 24 * 60 * 60
+      : 15 * 60;
+
+    res.cookies.set(name.trim(), value, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: "lax",
+      path: "/",
+      maxAge,
+    });
   }
 
-  // Also set a lightweight session marker on the builder domain
-  // so middleware can detect authenticated state
+  // Session marker for middleware
   res.cookies.set("session", "1", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction,
     sameSite: "lax",
     path: "/",
-    maxAge: 15 * 60, // 15 min — matches access token
+    maxAge: 7 * 24 * 60 * 60,
   });
 
   return res;
