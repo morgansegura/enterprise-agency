@@ -3,11 +3,13 @@
 import * as React from "react";
 import { TenantProvider } from "@/components/providers/tenant-provider";
 import { TenantFavicon } from "@/components/providers/tenant-favicon";
+import { ClientLayout } from "@/components/layout/client-layout";
+import { PreviewModeProvider } from "@/lib/context/preview-mode-context";
 import { EntitySettingsDrawer } from "@/components/settings/entity-settings-drawer";
 import { GlobalSettingsDrawer } from "@/components/settings/global-settings-drawer";
 import { useUIStore } from "@/lib/stores/ui-store";
 
-export default function ClientIdLayout({
+export default function WorkspaceLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -21,22 +23,21 @@ export default function ClientIdLayout({
 
   return (
     <TenantProvider>
-      {/* Dynamic favicon based on tenant branding */}
-      <TenantFavicon />
+      <PreviewModeProvider>
+        <TenantFavicon />
+        <ClientLayout>
+          {children}
+        </ClientLayout>
 
-      {children}
-
-      {/* Entity Settings Drawer - Context-aware based on current route */}
-      <EntitySettingsDrawer
-        open={pageSettingsOpen}
-        onOpenChange={setPageSettingsOpen}
-      />
-
-      {/* Global Settings Drawer - Section-wide settings */}
-      <GlobalSettingsDrawer
-        open={globalSettingsOpen}
-        onOpenChange={setGlobalSettingsOpen}
-      />
+        <EntitySettingsDrawer
+          open={pageSettingsOpen}
+          onOpenChange={setPageSettingsOpen}
+        />
+        <GlobalSettingsDrawer
+          open={globalSettingsOpen}
+          onOpenChange={setGlobalSettingsOpen}
+        />
+      </PreviewModeProvider>
     </TenantProvider>
   );
 }
