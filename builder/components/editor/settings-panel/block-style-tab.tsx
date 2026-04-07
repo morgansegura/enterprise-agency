@@ -510,6 +510,117 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
   );
 }
 
+// =============================================================================
+// ElementStyleEditor — Generic wrapper for any element type
+// =============================================================================
+
+export interface ElementStyleEditorProps {
+  /** Current main element styles */
+  styles?: ElementStyles;
+  /** ::before pseudo-element styles */
+  stylesBefore?: ElementStyles & { content?: string };
+  /** ::after pseudo-element styles */
+  stylesAfter?: ElementStyles & { content?: string };
+  /** Called when main styles change */
+  onStylesChange: (styles: ElementStyles) => void;
+  /** Called when ::before styles change */
+  onStylesBeforeChange?: (
+    styles: ElementStyles & { content?: string },
+  ) => void;
+  /** Called when ::after styles change */
+  onStylesAfterChange?: (
+    styles: ElementStyles & { content?: string },
+  ) => void;
+  /** Show the Normal / ::before / ::after toggle (default true) */
+  showPseudoElements?: boolean;
+}
+
+/**
+ * ElementStyleEditor — Reusable style editor for sections, containers, and blocks.
+ * Includes pseudo-element mode toggle (::before/::after), responsive breakpoint
+ * indicator, and the full ElementStyleTab with all 11 CSS property sections.
+ */
+export function ElementStyleEditor({
+  styles,
+  stylesBefore,
+  stylesAfter,
+  onStylesChange,
+  onStylesBeforeChange,
+  onStylesAfterChange,
+  showPseudoElements = true,
+}: ElementStyleEditorProps) {
+  const [mode, setMode] = React.useState<"normal" | "before" | "after">(
+    "normal",
+  );
+  const breakpoint = useCurrentBreakpoint();
+  const isResponsive = breakpoint !== "desktop";
+
+  const hasPseudo = showPseudoElements && onStylesBeforeChange && onStylesAfterChange;
+
+  const currentStyles =
+    mode === "before"
+      ? stylesBefore || {}
+      : mode === "after"
+        ? stylesAfter || {}
+        : styles || {};
+
+  const handleChange = (updated: ElementStyles) => {
+    if (mode === "before" && onStylesBeforeChange) {
+      onStylesBeforeChange(updated as ElementStyles & { content?: string });
+    } else if (mode === "after" && onStylesAfterChange) {
+      onStylesAfterChange(updated as ElementStyles & { content?: string });
+    } else {
+      onStylesChange(updated);
+    }
+  };
+
+  return (
+    <>
+      {/* Breakpoint indicator */}
+      {isResponsive && (
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-(--status-info-subtle) text-(--status-info) text-[11px] font-medium">
+          <span>Editing: {breakpoint}</span>
+          <span className="text-[10px] opacity-60">
+            Changes only apply to this breakpoint
+          </span>
+        </div>
+      )}
+      {/* Mode toggle */}
+      {hasPseudo && (
+        <div className="flex items-center gap-0.5 px-3 py-2 border-b border-(--border-default)">
+          {(["normal", "before", "after"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === m ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+              onClick={() => setMode(m)}
+            >
+              {m === "normal" ? "Normal" : `::${m}`}
+            </button>
+          ))}
+        </div>
+      )}
+      {mode !== "normal" && (
+        <div className="px-3 py-2 border-b border-(--border-default)">
+          <PropertyRow label="Content">
+            <Input
+              value={
+                (currentStyles as Record<string, string>).content || ""
+              }
+              onChange={(e) =>
+                handleChange({ ...currentStyles, content: e.target.value })
+              }
+              placeholder='""'
+              className="w-full h-7 text-xs"
+            />
+          </PropertyRow>
+        </div>
+      )}
+      <ElementStyleTab styles={currentStyles} onStyleChange={handleChange} />
+    </>
+  );
+}
+
 /**
  * ElementStyleTab — Full Webflow-level CSS property editor.
  * Works for blocks, containers, and sections.

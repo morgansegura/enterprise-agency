@@ -392,6 +392,24 @@ function collectContainerRules(
   const rule = buildRule(container._key, container.styles);
   if (rule) collector.desktop.push(rule);
 
+  // Pseudo-elements
+  const containerWithPseudo = container as Container & {
+    stylesBefore?: ElementStyles & { content?: string };
+    stylesAfter?: ElementStyles & { content?: string };
+  };
+  const before = buildPseudoRule(
+    container._key,
+    "before",
+    containerWithPseudo.stylesBefore,
+  );
+  if (before) collector.desktop.push(before);
+  const after = buildPseudoRule(
+    container._key,
+    "after",
+    containerWithPseudo.stylesAfter,
+  );
+  if (after) collector.desktop.push(after);
+
   // Responsive
   const responsive = buildResponsiveRules(
     container as unknown as ResponsiveElement,

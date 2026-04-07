@@ -46,7 +46,7 @@ import {
   GenericBlockSettings,
   BlockLinkSettings,
 } from "./block-settings";
-import { BlockStyleTab, ElementStyleTab } from "./block-style-tab";
+import { BlockStyleTab, ElementStyleEditor } from "./block-style-tab";
 import "./settings-panel.css";
 
 // =============================================================================
@@ -247,26 +247,60 @@ export function SettingsPanel({
                 {panelTab === "style" && (
                   <>
                     {selectedElement.type === "section" && (
-                      <ElementStyleTab
+                      <ElementStyleEditor
                         styles={(selectedData.data as Section).styles}
-                        onStyleChange={(updatedStyles) => {
+                        stylesBefore={(selectedData.data as Section & { stylesBefore?: Record<string, string> }).stylesBefore}
+                        stylesAfter={(selectedData.data as Section & { stylesAfter?: Record<string, string> }).stylesAfter}
+                        onStylesChange={(updatedStyles) => {
                           const section = selectedData.data as Section;
                           onSectionChange?.(selectedElement.sectionIndex, {
                             ...section,
                             styles: updatedStyles,
                           });
                         }}
+                        onStylesBeforeChange={(updatedStyles) => {
+                          const section = selectedData.data as Section;
+                          onSectionChange?.(selectedElement.sectionIndex, {
+                            ...section,
+                            stylesBefore: updatedStyles,
+                          } as Section);
+                        }}
+                        onStylesAfterChange={(updatedStyles) => {
+                          const section = selectedData.data as Section;
+                          onSectionChange?.(selectedElement.sectionIndex, {
+                            ...section,
+                            stylesAfter: updatedStyles,
+                          } as Section);
+                        }}
                       />
                     )}
                     {selectedElement.type === "container" && (
-                      <ElementStyleTab
+                      <ElementStyleEditor
                         styles={(selectedData.data as Container).styles}
-                        onStyleChange={(updatedStyles) => {
+                        stylesBefore={(selectedData.data as Container & { stylesBefore?: Record<string, string> }).stylesBefore}
+                        stylesAfter={(selectedData.data as Container & { stylesAfter?: Record<string, string> }).stylesAfter}
+                        onStylesChange={(updatedStyles) => {
                           const container = selectedData.data as Container;
                           onContainerChange?.(
                             selectedElement.sectionIndex,
                             selectedElement.containerIndex!,
                             { ...container, styles: updatedStyles },
+                          );
+                        }}
+                        onStylesBeforeChange={(updatedStyles) => {
+                          const container = selectedData.data as Container;
+                          onContainerChange?.(
+                            selectedElement.sectionIndex,
+                            selectedElement.containerIndex!,
+                            { ...container, stylesBefore: updatedStyles } as Container,
+                          );
+                        }}
+                        onStylesAfterChange={(updatedStyles) => {
+                          const container = selectedData.data as Container;
+                          onContainerChange?.(
+                            selectedElement.sectionIndex,
+                            selectedElement.containerIndex!,
+                            { ...container, stylesAfter: updatedStyles } as Container,
                           );
                         }}
                       />
