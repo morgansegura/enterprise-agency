@@ -1,0 +1,52 @@
+@reference "tailwindcss";
+
+.border-radius-editor {
+  @apply flex flex-col gap-2;
+}
+
+/* 4-corner layout */
+.border-radius-editor-grid {
+  @apply relative;
+}
+
+.border-radius-editor-corners {
+  @apply grid grid-cols-2 gap-x-10 gap-y-1;
+}
+
+.border-radius-editor-corner {
+  @apply flex flex-col items-center gap-0.5;
+}
+
+.border-radius-editor-corner-label {
+  @apply text-[8px] text-(--el-400) font-medium select-none;
+}
+
+/* Live preview */
+.border-radius-editor-preview-wrap {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  @apply pointer-events-none;
+}
+
+.border-radius-editor-preview {
+  @apply w-14 h-10 border-2 border-(--accent-primary)/40;
+  @apply transition-all duration-150;
+}
+
+/* Link toggle */
+.border-radius-editor-link {
+  @apply flex items-center justify-center;
+}
+
+.border-radius-editor-link-btn {
+  @apply flex items-center gap-1 px-2 py-0.5 text-[9px] font-medium rounded-[3px];
+  @apply bg-(--el-50) text-(--el-400) border border-(--border-default);
+  @apply cursor-pointer transition-colors duration-100;
+}
+
+.border-radius-editor-link-btn:hover {
+  @apply bg-(--el-100) text-(--el-600);
+}
+
+.border-radius-editor-link-btn.is-linked {
+  @apply bg-(--accent-primary)/10 text-(--accent-primary) border-(--accent-primary)/30;
+}

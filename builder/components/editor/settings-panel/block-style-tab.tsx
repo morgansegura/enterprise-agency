@@ -5,6 +5,9 @@ import { Input } from "@/components/ui/input";
 import { ImagePickerField } from "./image-picker-field";
 import { ColorPicker } from "./color-picker";
 import { SliderInput } from "./slider-input";
+import { UnitValueInput } from "./unit-value-input";
+import { SpacingEditor } from "./spacing-editor";
+import { BorderRadiusEditor } from "./border-radius-editor";
 import "./slider-input.css";
 import {
   Grid3X3,
@@ -369,10 +372,10 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             </PropertyRow>
             <div className="grid grid-cols-2 gap-2">
               <PropertyRow label="Row Gap">
-                <Input value={s("rowGap")} onChange={(e) => updateStyle("rowGap", e.target.value)} placeholder="0px" className="w-full h-7 text-xs text-center" />
+                <UnitValueInput value={s("rowGap")} onChange={(v) => updateStyle("rowGap", v)} placeholder="0" />
               </PropertyRow>
               <PropertyRow label="Col Gap">
-                <Input value={s("columnGap")} onChange={(e) => updateStyle("columnGap", e.target.value)} placeholder="0px" className="w-full h-7 text-xs text-center" />
+                <UnitValueInput value={s("columnGap")} onChange={(v) => updateStyle("columnGap", v)} placeholder="0" />
               </PropertyRow>
             </div>
           </>
@@ -393,13 +396,13 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           />
         </PropertyRow>
         <PropertyRow label="Grow">
-          <Input value={s("flexGrow")} onChange={(e) => updateStyle("flexGrow", e.target.value)} placeholder="0" className="w-16 h-7 text-xs text-center" />
+          <UnitValueInput value={s("flexGrow")} onChange={(v) => updateStyle("flexGrow", v)} units={[]} placeholder="0" />
         </PropertyRow>
         <PropertyRow label="Shrink">
-          <Input value={s("flexShrink")} onChange={(e) => updateStyle("flexShrink", e.target.value)} placeholder="1" className="w-16 h-7 text-xs text-center" />
+          <UnitValueInput value={s("flexShrink")} onChange={(v) => updateStyle("flexShrink", v)} units={[]} placeholder="1" />
         </PropertyRow>
         <PropertyRow label="Basis">
-          <Input value={s("flexBasis")} onChange={(e) => updateStyle("flexBasis", e.target.value)} placeholder="auto" className="w-16 h-7 text-xs text-center" />
+          <UnitValueInput value={s("flexBasis")} onChange={(v) => updateStyle("flexBasis", v)} keywords={["auto"]} placeholder="auto" />
         </PropertyRow>
       </PropertySection>
 
@@ -407,61 +410,17 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * SPACING
        * ================================================================ */}
       <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
-        <div className="space-y-3">
-          <div>
-            <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">Margin</span>
-            <div className="grid grid-cols-4 gap-1.5 mt-1">
-              {(["marginTop", "marginRight", "marginBottom", "marginLeft"] as const).map((prop) => (
-                <div key={prop} className="flex flex-col items-center gap-0.5">
-                  <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="0" className="h-7 text-xs text-center" />
-                  <span className="text-[9px] text-(--el-400)">{prop.replace("margin", "")[0]}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">Padding</span>
-              {/* Quick presets */}
-              <div className="flex gap-0.5">
-                {([
-                  ["0", "0"],
-                  ["8px", "xs"],
-                  ["16px", "sm"],
-                  ["24px", "md"],
-                  ["32px", "lg"],
-                  ["48px", "xl"],
-                ] as const).map(([val, label]) => (
-                  <button
-                    key={label}
-                    type="button"
-                    className={`px-1.5 py-0.5 text-[9px] rounded-[3px] border-none cursor-pointer transition-colors ${
-                      s("paddingTop") === val && s("paddingRight") === val
-                        ? "bg-(--accent-primary) text-white"
-                        : "bg-(--el-100) text-(--el-500) hover:bg-(--el-200)"
-                    }`}
-                    onClick={() => {
-                      updateStyle("paddingTop", val);
-                      updateStyle("paddingRight", val);
-                      updateStyle("paddingBottom", val);
-                      updateStyle("paddingLeft", val);
-                    }}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="grid grid-cols-4 gap-1.5 mt-1">
-              {(["paddingTop", "paddingRight", "paddingBottom", "paddingLeft"] as const).map((prop) => (
-                <div key={prop} className="flex flex-col items-center gap-0.5">
-                  <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="0" className="h-7 text-xs text-center" />
-                  <span className="text-[9px] text-(--el-400)">{prop.replace("padding", "")[0]}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <SpacingEditor
+          marginTop={s("marginTop")}
+          marginRight={s("marginRight")}
+          marginBottom={s("marginBottom")}
+          marginLeft={s("marginLeft")}
+          paddingTop={s("paddingTop")}
+          paddingRight={s("paddingRight")}
+          paddingBottom={s("paddingBottom")}
+          paddingLeft={s("paddingLeft")}
+          onChange={updateStyle}
+        />
       </PropertySection>
 
       {/* ================================================================
@@ -469,19 +428,19 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * ================================================================ */}
       <PropertySection title="Size" icon={<Maximize2 className="h-3.5 w-3.5" />} defaultOpen={false}>
         {([
-          ["width", "Width", "auto"],
-          ["height", "Height", "auto"],
-          ["minWidth", "Min W", "—"],
-          ["maxWidth", "Max W", "—"],
-          ["minHeight", "Min H", "—"],
-          ["maxHeight", "Max H", "—"],
-        ] as const).map(([prop, label, placeholder]) => (
+          ["width", "Width"],
+          ["height", "Height"],
+          ["minWidth", "Min W"],
+          ["maxWidth", "Max W"],
+          ["minHeight", "Min H"],
+          ["maxHeight", "Max H"],
+        ] as const).map(([prop, label]) => (
           <PropertyRow key={prop} label={label}>
-            <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder={placeholder} className="w-20 h-7 text-xs text-center" />
+            <UnitValueInput value={s(prop)} onChange={(v) => updateStyle(prop, v)} keywords={["auto"]} placeholder="auto" />
           </PropertyRow>
         ))}
         <PropertyRow label="Aspect">
-          <Input value={s("aspectRatio")} onChange={(e) => updateStyle("aspectRatio", e.target.value)} placeholder="auto" className="w-20 h-7 text-xs text-center" />
+          <UnitValueInput value={s("aspectRatio")} onChange={(v) => updateStyle("aspectRatio", v)} units={[]} keywords={["auto"]} placeholder="auto" />
         </PropertyRow>
         <PropertyRow label="Object Fit">
           <PropertySelect
@@ -520,13 +479,13 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           <>
             {(["top", "right", "bottom", "left"] as const).map((prop) => (
               <PropertyRow key={prop} label={prop.charAt(0).toUpperCase() + prop.slice(1)}>
-                <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="auto" className="w-20 h-7 text-xs text-center" />
+                <UnitValueInput value={s(prop)} onChange={(v) => updateStyle(prop, v)} keywords={["auto"]} placeholder="auto" />
               </PropertyRow>
             ))}
           </>
         )}
         <PropertyRow label="Z-Index">
-          <Input value={s("zIndex")} onChange={(e) => updateStyle("zIndex", e.target.value)} placeholder="auto" className="w-20 h-7 text-xs text-center" />
+          <UnitValueInput value={s("zIndex")} onChange={(v) => updateStyle("zIndex", v)} units={[]} keywords={["auto"]} placeholder="auto" />
         </PropertyRow>
         <PropertyRow label="Overflow">
           <PropertySelect
@@ -649,13 +608,13 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           />
         </PropertyRow>
         <PropertyRow label="Spacing">
-          <Input value={s("letterSpacing")} onChange={(e) => updateStyle("letterSpacing", e.target.value)} placeholder="normal" className="w-20 h-7 text-xs text-center" />
+          <UnitValueInput value={s("letterSpacing")} onChange={(v) => updateStyle("letterSpacing", v)} units={["em", "px", "rem"]} keywords={["normal"]} placeholder="normal" />
         </PropertyRow>
         <PropertyRow label="Word">
-          <Input value={s("wordSpacing")} onChange={(e) => updateStyle("wordSpacing", e.target.value)} placeholder="normal" className="w-20 h-7 text-xs text-center" />
+          <UnitValueInput value={s("wordSpacing")} onChange={(v) => updateStyle("wordSpacing", v)} units={["em", "px", "rem"]} keywords={["normal"]} placeholder="normal" />
         </PropertyRow>
         <PropertyRow label="Indent">
-          <Input value={s("textIndent")} onChange={(e) => updateStyle("textIndent", e.target.value)} placeholder="0px" className="w-20 h-7 text-xs text-center" />
+          <UnitValueInput value={s("textIndent")} onChange={(v) => updateStyle("textIndent", v)} placeholder="0" />
         </PropertyRow>
         <ShadowBuilder
           label="Text Shadow"
@@ -758,7 +717,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * ================================================================ */}
       <PropertySection title="Borders" icon={<Square className="h-3.5 w-3.5" />} defaultOpen={false}>
         <PropertyRow label="Width">
-          <Input value={s("borderWidth")} onChange={(e) => updateStyle("borderWidth", e.target.value)} placeholder="0px" className="w-20 h-7 text-xs text-center" />
+          <UnitValueInput value={s("borderWidth")} onChange={(v) => updateStyle("borderWidth", v)} placeholder="0" />
         </PropertyRow>
         <PropertyRow label="Style">
           <PropertySelect
@@ -778,21 +737,16 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           value={s("borderColor")}
           onChange={(v) => updateStyle("borderColor", v)}
         />
-        <PropertyRow label="Radius">
-          <SliderInput value={s("borderRadius")} onChange={(v) => updateStyle("borderRadius", v)} max={50} placeholder="0px" />
-        </PropertyRow>
-        {/* Per-corner radius */}
-        {([
-          ["borderTopLeftRadius", "Radius TL"],
-          ["borderTopRightRadius", "Radius TR"],
-          ["borderBottomLeftRadius", "Radius BL"],
-          ["borderBottomRightRadius", "Radius BR"],
-        ] as const).map(([prop, label]) => (
-          <PropertyRow key={prop} label={label}>
-            <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="—" className="w-20 h-7 text-xs text-center" />
-          </PropertyRow>
-        ))}
-        {/* Per-side borders */}
+        {/* Visual 4-corner radius editor */}
+        <BorderRadiusEditor
+          borderRadius={s("borderRadius")}
+          borderTopLeftRadius={s("borderTopLeftRadius")}
+          borderTopRightRadius={s("borderTopRightRadius")}
+          borderBottomRightRadius={s("borderBottomRightRadius")}
+          borderBottomLeftRadius={s("borderBottomLeftRadius")}
+          onChange={updateStyle}
+        />
+        {/* Per-side border widths */}
         {([
           ["borderTopWidth", "Top W"],
           ["borderRightWidth", "Right W"],
@@ -800,7 +754,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           ["borderLeftWidth", "Left W"],
         ] as const).map(([prop, label]) => (
           <PropertyRow key={prop} label={label}>
-            <Input value={s(prop)} onChange={(e) => updateStyle(prop, e.target.value)} placeholder="—" className="w-20 h-7 text-xs text-center" />
+            <UnitValueInput value={s(prop)} onChange={(v) => updateStyle(prop, v)} placeholder="0" />
           </PropertyRow>
         ))}
       </PropertySection>
@@ -908,7 +862,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           </div>
         </PropertyRow>
         <PropertyRow label="Delay">
-          <Input value={s("transitionDelay")} onChange={(e) => updateStyle("transitionDelay", e.target.value)} placeholder="0ms" className="w-20 h-7 text-xs text-center" />
+          <UnitValueInput value={s("transitionDelay")} onChange={(v) => updateStyle("transitionDelay", v)} units={["ms", "s"]} placeholder="0" />
         </PropertyRow>
         <PropertyRow label="Easing">
           <PropertySelect

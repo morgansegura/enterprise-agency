@@ -1,9 +1,9 @@
 @reference "tailwindcss";
 
+/* Base text — structural only, visual properties come from data-attributes */
 .text {
   @apply relative;
   font-family: var(--font-body);
-  line-height: var(--line-height-relaxed);
 }
 
 /* Sizes - using typography tokens (responsive) */

@@ -1,0 +1,67 @@
+@reference "tailwindcss";
+
+/* Container */
+.unit-value-input {
+  @apply flex items-center h-7 rounded-[3px] overflow-hidden;
+  @apply bg-(--el-50) border border-(--border-default);
+  @apply transition-colors duration-100;
+}
+
+.unit-value-input:focus-within {
+  @apply border-(--accent-primary)/50;
+}
+
+/* Number input */
+.unit-value-input-number {
+  @apply flex-1 min-w-0 h-full px-1.5 text-xs text-center font-mono;
+  @apply bg-transparent border-none outline-none;
+  @apply text-(--el-800) placeholder:text-(--el-300);
+}
+
+.unit-value-input-number::-webkit-inner-spin-button,
+.unit-value-input-number::-webkit-outer-spin-button {
+  @apply hidden;
+}
+
+/* Unit selector */
+.unit-value-input-unit {
+  @apply h-full px-1.5 text-[10px] font-semibold;
+  @apply bg-(--el-100) text-(--el-500) border-l border-(--border-default);
+  @apply cursor-pointer outline-none appearance-none;
+  @apply transition-colors duration-100;
+}
+
+.unit-value-input-unit:hover {
+  @apply bg-(--el-200) text-(--el-700);
+}
+
+.unit-value-input-unit:focus {
+  @apply bg-(--accent-primary)/10 text-(--accent-primary);
+}
+
+/* Keyword mode — full width, no unit selector */
+.unit-value-input--keyword {
+  @apply justify-center;
+}
+
+.unit-value-input--keyword .unit-value-input-number {
+  @apply hidden;
+}
+
+.unit-value-input-keyword-label {
+  @apply text-xs font-medium text-(--el-500) cursor-pointer;
+  @apply px-2 select-none;
+}
+
+/* Compact variant for use inside SpacingEditor/BorderRadiusEditor */
+.unit-value-input--compact {
+  @apply h-6 text-[10px];
+}
+
+.unit-value-input--compact .unit-value-input-number {
+  @apply text-[10px] px-1;
+}
+
+.unit-value-input--compact .unit-value-input-unit {
+  @apply text-[9px] px-1;
+}

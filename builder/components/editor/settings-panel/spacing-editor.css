@@ -1,0 +1,137 @@
+@reference "tailwindcss";
+
+/* Container */
+.spacing-editor {
+  @apply flex flex-col gap-2;
+}
+
+/* Box model diagram */
+.spacing-editor-box {
+  @apply relative;
+}
+
+/* Margin layer (outer) */
+.spacing-editor-margin {
+  @apply relative border border-dashed border-(--el-300) rounded-[3px];
+  @apply bg-(--el-50)/50;
+}
+
+.spacing-editor-margin-label {
+  @apply absolute top-0.5 left-1.5 text-[7px] uppercase tracking-wider text-(--el-300) font-semibold select-none;
+}
+
+/* Padding layer (inner) */
+.spacing-editor-padding {
+  @apply relative border border-(--el-200) rounded-[3px] mx-6 my-5;
+  @apply bg-(--el-100)/30;
+}
+
+.spacing-editor-padding-label {
+  @apply absolute top-0.5 left-1.5 text-[7px] uppercase tracking-wider text-(--el-300) font-semibold select-none;
+}
+
+/* Content area (center) */
+.spacing-editor-content {
+  @apply h-6 mx-6 my-5 rounded-[2px] bg-(--el-200)/40;
+  @apply flex items-center justify-center;
+}
+
+.spacing-editor-content-label {
+  @apply text-[8px] text-(--el-300) font-medium select-none;
+}
+
+/* Side inputs — positioned on each side */
+.spacing-editor-side {
+  @apply absolute flex items-center justify-center;
+}
+
+/* Margin sides */
+.spacing-editor-side--margin-top {
+  @apply top-0.5 left-1/2 -translate-x-1/2;
+}
+
+.spacing-editor-side--margin-right {
+  @apply right-0.5 top-1/2 -translate-y-1/2;
+}
+
+.spacing-editor-side--margin-bottom {
+  @apply bottom-0.5 left-1/2 -translate-x-1/2;
+}
+
+.spacing-editor-side--margin-left {
+  @apply left-0.5 top-1/2 -translate-y-1/2;
+}
+
+/* Padding sides */
+.spacing-editor-side--padding-top {
+  @apply top-0.5 left-1/2 -translate-x-1/2;
+}
+
+.spacing-editor-side--padding-right {
+  @apply right-0.5 top-1/2 -translate-y-1/2;
+}
+
+.spacing-editor-side--padding-bottom {
+  @apply bottom-0.5 left-1/2 -translate-x-1/2;
+}
+
+.spacing-editor-side--padding-left {
+  @apply left-0.5 top-1/2 -translate-y-1/2;
+}
+
+/* Inline value input */
+.spacing-editor-input {
+  @apply w-8 h-4 text-[9px] text-center font-mono bg-transparent border-none outline-none;
+  @apply text-(--el-500) cursor-text;
+}
+
+.spacing-editor-input:focus {
+  @apply text-(--el-800) bg-(--el-0) rounded-[2px];
+  box-shadow: 0 0 0 1px var(--accent-primary);
+}
+
+.spacing-editor-input::placeholder {
+  @apply text-(--el-300);
+}
+
+/* Link buttons */
+.spacing-editor-link-row {
+  @apply flex items-center justify-center gap-2;
+}
+
+.spacing-editor-link-btn {
+  @apply flex items-center gap-1 px-2 py-0.5 text-[9px] font-medium rounded-[3px];
+  @apply bg-(--el-50) text-(--el-400) border border-(--border-default);
+  @apply cursor-pointer transition-colors duration-100;
+}
+
+.spacing-editor-link-btn:hover {
+  @apply bg-(--el-100) text-(--el-600);
+}
+
+.spacing-editor-link-btn.is-linked {
+  @apply bg-(--accent-primary)/10 text-(--accent-primary) border-(--accent-primary)/30;
+}
+
+/* Preset buttons */
+.spacing-editor-presets {
+  @apply flex items-center gap-0.5;
+}
+
+.spacing-editor-preset-label {
+  @apply text-[9px] text-(--el-400) font-medium w-10 shrink-0;
+}
+
+.spacing-editor-preset-btn {
+  @apply px-1.5 py-0.5 text-[9px] rounded-[3px] border-none cursor-pointer;
+  @apply transition-colors duration-100;
+  @apply bg-(--el-100) text-(--el-500);
+}
+
+.spacing-editor-preset-btn:hover {
+  @apply bg-(--el-200) text-(--el-700);
+}
+
+.spacing-editor-preset-btn.is-active {
+  @apply bg-(--accent-primary) text-white;
+}

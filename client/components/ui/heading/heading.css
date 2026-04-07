@@ -1,10 +1,9 @@
 @reference "tailwindcss";
 
+/* Base heading — structural only, visual properties come from data-attributes */
 .heading {
   @apply relative;
   font-family: var(--font-heading);
-  line-height: var(--line-height-tight);
-  max-width: clamp(20ch, 50vw + 10ch, 75ch);
 }
 
 /* Sizes - using typography tokens (responsive) */

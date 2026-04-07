@@ -6,12 +6,10 @@
  * Import this in both builder and client for WYSIWYG parity.
  */
 
-/* Base heading styles */
+/* Base heading styles — structural only, no visual defaults */
 .heading {
   position: relative;
   font-family: var(--font-heading, inherit);
-  line-height: var(--line-height-tight, 1.25);
-  color: inherit;
   min-height: 1em;
   width: 100%;
 }
