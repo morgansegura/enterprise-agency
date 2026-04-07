@@ -90,6 +90,7 @@ export default function HeadingBlockRenderer({
   const Tag = level;
 
   const dataAttributes: Record<string, string | undefined> = {
+    "data-slot": "heading-block",
     "data-size": size,
     "data-weight": weight,
     "data-align": align,

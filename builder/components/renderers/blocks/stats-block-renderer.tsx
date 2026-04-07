@@ -1,10 +1,11 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface StatItem {
   label: string;
   value: string;
   description?: string;
+  icon?: string;
+  trend?: { direction: "up" | "down"; value: string };
 }
 
 interface StatsBlockData {
@@ -13,41 +14,50 @@ interface StatsBlockData {
   variant?: "default" | "bordered" | "cards";
 }
 
-const layoutClasses = {
-  horizontal: "flex flex-wrap justify-center gap-8",
-  vertical: "flex flex-col gap-6",
-  grid: "grid grid-cols-2 md:grid-cols-4 gap-6",
-};
-
-const variantClasses = {
-  default: "",
-  bordered: "border border-border rounded-lg p-6",
-  cards: "",
-};
-
-const itemVariantClasses = {
-  default: "text-center",
-  bordered: "text-center",
-  cards: "bg-card border border-border rounded-lg p-4 text-center shadow-sm",
-};
-
 export default function StatsBlockRenderer({ block }: BlockRendererProps) {
   const data = block.data as unknown as StatsBlockData;
-  const { stats = [], layout = "horizontal", variant = "default" } = data;
+  const {
+    stats = [],
+    layout = "horizontal",
+    variant = "default",
+  } = data;
 
   return (
-    <div className={cn(layoutClasses[layout], variantClasses[variant])}>
+    <div
+      data-slot="stats-block"
+      data-layout={layout}
+      data-variant={variant}
+    >
       {stats.map((stat, index) => (
-        <div key={index} className={itemVariantClasses[variant]}>
-          <div className="text-3xl font-bold text-[var(--el-800)]">{stat.value}</div>
-          <div className="text-sm font-medium text-[var(--el-800)] mt-1">
-            {stat.label}
+        <div key={index} data-slot="stats-block-item">
+          <div data-slot="stats-block-header">
+            {stat.icon ? (
+              <span data-slot="stats-block-icon" aria-hidden="true">
+                {stat.icon}
+              </span>
+            ) : null}
+            <div data-slot="stats-block-value">{stat.value}</div>
           </div>
-          {stat.description && (
-            <div className="text-xs text-[var(--el-500)] mt-0.5">
-              {stat.description}
-            </div>
-          )}
+          <div data-slot="stats-block-meta">
+            <div data-slot="stats-block-label">{stat.label}</div>
+            {stat.description ? (
+              <div data-slot="stats-block-description">
+                {stat.description}
+              </div>
+            ) : null}
+            {stat.trend ? (
+              <div
+                data-slot="stats-block-trend"
+                data-direction={stat.trend.direction}
+                aria-label={`Trend ${stat.trend.direction} ${stat.trend.value}`}
+              >
+                <span aria-hidden="true">
+                  {stat.trend.direction === "up" ? "\u2191" : "\u2193"}
+                </span>
+                {stat.trend.value}
+              </div>
+            ) : null}
+          </div>
         </div>
       ))}
     </div>

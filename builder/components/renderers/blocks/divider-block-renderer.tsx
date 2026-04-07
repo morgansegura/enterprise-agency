@@ -1,57 +1,32 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface DividerBlockData {
   style?: "solid" | "dashed" | "dotted";
-  thickness?: "thin" | "medium" | "thick";
-  spacing?: "xs" | "sm" | "md" | "lg" | "xl";
-  color?: "default" | "muted" | "primary" | "secondary";
+  weight?: "thin" | "normal" | "thick";
+  spacing?: "sm" | "md" | "lg";
+  variant?: "default" | "muted" | "primary" | "secondary";
 }
 
-const styleClasses = {
-  solid: "border-solid",
-  dashed: "border-dashed",
-  dotted: "border-dotted",
-};
-
-const thicknessClasses = {
-  thin: "border-t",
-  medium: "border-t-2",
-  thick: "border-t-4",
-};
-
-const spacingClasses = {
-  xs: "my-2",
-  sm: "my-4",
-  md: "my-6",
-  lg: "my-8",
-  xl: "my-12",
-};
-
-const colorClasses = {
-  default: "border-border",
-  muted: "border-muted",
-  primary: "border-primary",
-  secondary: "border-secondary",
-};
-
-export default function DividerBlockRenderer({ block, onChange: _onChange, isEditing: _isEditing }: BlockRendererProps) {
+export default function DividerBlockRenderer({
+  block,
+  onChange: _onChange,
+  isEditing: _isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as DividerBlockData;
   const {
     style = "solid",
-    thickness = "thin",
+    weight = "normal",
     spacing = "md",
-    color = "default",
+    variant = "default",
   } = data;
 
   return (
     <hr
-      className={cn(
-        styleClasses[style],
-        thicknessClasses[thickness],
-        spacingClasses[spacing],
-        colorClasses[color],
-      )}
+      data-slot="divider-block"
+      data-style={style}
+      data-weight={weight}
+      data-spacing={spacing}
+      data-variant={variant}
     />
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface CtaBlockData {
   heading: string;
@@ -28,90 +27,91 @@ export default function CtaBlockRenderer({
   } = data;
 
   const update = (field: string, value: unknown) => {
-    if (onChange) onChange({ ...block, data: { ...block.data, [field]: value } });
+    if (onChange)
+      onChange({ ...block, data: { ...block.data, [field]: value } });
   };
 
   return (
-    <div
-      className={cn(
-        "w-full rounded-lg px-8 py-10",
-        variant === "highlighted"
-          ? "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]"
-          : variant === "minimal"
-            ? "border border-[var(--border-default)]"
-            : "bg-[var(--el-100)]/50",
-        align === "center" ? "text-center" : "text-left",
-      )}
+    <section
+      data-slot="cta-block"
+      data-variant={variant}
+      data-align={align}
     >
-      <h3
-        className="text-xl font-bold"
-        contentEditable={!!isEditing}
-        suppressContentEditableWarning
-        onBlur={(e) => {
-          const v = e.currentTarget.textContent || "";
-          if (v !== heading) update("heading", v);
-        }}
-        style={isEditing ? { cursor: "text", outline: "none" } : undefined}
-      >
-        {heading}
-      </h3>
-      {(description || isEditing) && (
-        <p
-          className={cn(
-            "mt-2 text-sm",
-            variant === "highlighted"
-              ? "opacity-80"
-              : "text-[var(--el-500)]",
-          )}
+      <div data-slot="cta-block-content">
+        <h2
+          data-slot="cta-block-heading"
           contentEditable={!!isEditing}
           suppressContentEditableWarning
           onBlur={(e) => {
             const v = e.currentTarget.textContent || "";
-            if (v !== description) update("description", v);
+            if (v !== heading) update("heading", v);
           }}
-          style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+          style={
+            isEditing ? { cursor: "text", outline: "none" } : undefined
+          }
         >
-          {description || (isEditing ? "Description" : "")}
-        </p>
-      )}
-      <div
-        className={cn(
-          "flex gap-3 mt-4",
-          align === "center" ? "justify-center" : "",
-        )}
-      >
-        <span
-          className={cn(
-            "inline-flex items-center px-4 py-2 rounded-md text-sm font-medium",
-            variant === "highlighted"
-              ? "bg-[var(--el-0)] text-[var(--el-800)]"
-              : "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]",
-          )}
-          contentEditable={!!isEditing}
-          suppressContentEditableWarning
-          onBlur={(e) => {
-            const v = e.currentTarget.textContent || "";
-            update("primaryCta", { ...primaryCta, text: v, href: primaryCta?.href || "#" });
-          }}
-          style={isEditing ? { cursor: "text", outline: "none" } : undefined}
-        >
-          {primaryCta?.text || "Get Started"}
-        </span>
-        {(secondaryCta || isEditing) && (
-          <span
-            className="inline-flex items-center px-4 py-2 rounded-md border border-[var(--border-default)] text-sm font-medium"
+          {heading}
+        </h2>
+
+        {description || isEditing ? (
+          <p
+            data-slot="cta-block-description"
             contentEditable={!!isEditing}
             suppressContentEditableWarning
             onBlur={(e) => {
               const v = e.currentTarget.textContent || "";
-              update("secondaryCta", { ...secondaryCta, text: v, href: secondaryCta?.href || "#" });
+              if (v !== description) update("description", v);
             }}
-            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            style={
+              isEditing ? { cursor: "text", outline: "none" } : undefined
+            }
+          >
+            {description || (isEditing ? "Description" : "")}
+          </p>
+        ) : null}
+      </div>
+
+      <div data-slot="cta-block-actions">
+        <span
+          data-slot="cta-block-primary-cta"
+          contentEditable={!!isEditing}
+          suppressContentEditableWarning
+          onBlur={(e) => {
+            const v = e.currentTarget.textContent || "";
+            update("primaryCta", {
+              ...primaryCta,
+              text: v,
+              href: primaryCta?.href || "#",
+            });
+          }}
+          style={
+            isEditing ? { cursor: "text", outline: "none" } : undefined
+          }
+        >
+          {primaryCta?.text || "Get Started"}
+        </span>
+
+        {secondaryCta || isEditing ? (
+          <span
+            data-slot="cta-block-secondary-cta"
+            contentEditable={!!isEditing}
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const v = e.currentTarget.textContent || "";
+              update("secondaryCta", {
+                ...secondaryCta,
+                text: v,
+                href: secondaryCta?.href || "#",
+              });
+            }}
+            style={
+              isEditing ? { cursor: "text", outline: "none" } : undefined
+            }
           >
             {secondaryCta?.text || (isEditing ? "Learn More" : "")}
           </span>
-        )}
+        ) : null}
       </div>
-    </div>
+    </section>
   );
 }

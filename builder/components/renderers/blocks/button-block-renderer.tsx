@@ -1,7 +1,6 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface ButtonBlockData {
   text: string;
@@ -18,22 +17,6 @@ interface ButtonBlockData {
   openInNewTab?: boolean;
 }
 
-const variantClasses = {
-  default: "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]",
-  secondary: "bg-[var(--el-100)] text-[var(--el-800)]",
-  outline: "border border-[var(--el-150)] bg-[var(--el-0)] text-[var(--el-800)]",
-  ghost: "text-[var(--el-600)]",
-  link: "text-[var(--accent-primary)] underline-offset-4 underline",
-  destructive: "bg-[var(--status-error)] text-white",
-};
-
-const sizeClasses = {
-  default: "h-10 px-4 py-2",
-  sm: "h-9 rounded-md px-3",
-  lg: "h-11 rounded-md px-8",
-  icon: "h-10 w-10",
-};
-
 export default function ButtonBlockRenderer({
   block,
   onChange,
@@ -49,17 +32,13 @@ export default function ButtonBlockRenderer({
     openInNewTab = false,
   } = data;
 
-  const className = cn(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium",
-    variantClasses[variant],
-    sizeClasses[size],
-    fullWidth && "w-full",
-  );
-
   if (isEditing) {
     return (
       <span
-        className={className}
+        data-slot="button-block"
+        data-variant={variant}
+        data-size={size}
+        {...(fullWidth ? { "data-full-width": "" } : {})}
         contentEditable
         suppressContentEditableWarning
         onBlur={(e) => {
@@ -78,9 +57,13 @@ export default function ButtonBlockRenderer({
   return (
     <a
       href={href}
-      className={className}
-      target={openInNewTab ? "_blank" : undefined}
-      rel={openInNewTab ? "noopener noreferrer" : undefined}
+      data-slot="button-block"
+      data-variant={variant}
+      data-size={size}
+      {...(fullWidth ? { "data-full-width": "" } : {})}
+      {...(openInNewTab
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
     >
       {text}
     </a>

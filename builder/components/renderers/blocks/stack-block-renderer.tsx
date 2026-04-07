@@ -1,46 +1,52 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
-import { cn } from "@/lib/utils";
 import { BlockRenderer } from "../block-renderer";
 
 interface StackBlockData {
-  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
+  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
   align?: "start" | "center" | "end" | "stretch";
   blocks?: Block[];
 }
 
-const gapClasses = {
-  none: "gap-0",
-  xs: "gap-1",
-  sm: "gap-2",
-  md: "gap-4",
-  lg: "gap-6",
-  xl: "gap-8",
-};
-
-const alignClasses = {
-  start: "items-start",
-  center: "items-center",
-  end: "items-end",
-  stretch: "items-stretch",
-};
-
 export default function StackBlockRenderer({
   block,
-  onChange: _onChange,
+  onChange,
   isEditing,
   breakpoint,
 }: BlockRendererProps) {
   const data = block.data as unknown as StackBlockData;
   const { gap = "md", align = "stretch", blocks = [] } = data;
 
+  const dataAttributes: Record<string, string | undefined> = {
+    "data-slot": "stack-block",
+    "data-gap": gap,
+    "data-align": align,
+  };
+
+  const filtered = Object.fromEntries(
+    Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
+  );
+
   return (
-    <div className={cn("flex flex-col", gapClasses[gap], alignClasses[align])}>
-      {blocks.map((childBlock) => (
+    <div {...filtered}>
+      {blocks.map((childBlock, i) => (
         <BlockRenderer
           key={childBlock._key}
-          block={childBlock} isEditing={isEditing}
+          block={childBlock}
+          isEditing={isEditing}
           breakpoint={breakpoint}
+          onChange={
+            onChange
+              ? (updated) => {
+                  const newBlocks = [...blocks];
+                  newBlocks[i] = updated;
+                  onChange({
+                    ...block,
+                    data: { ...block.data, blocks: newBlocks },
+                  });
+                }
+              : undefined
+          }
         />
       ))}
     </div>

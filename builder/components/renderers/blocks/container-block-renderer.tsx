@@ -1,40 +1,12 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
-import { cn } from "@/lib/utils";
 import { BlockRenderer } from "../block-renderer";
 
 interface ContainerBlockData {
-  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
-  padding?: "none" | "sm" | "md" | "lg" | "xl";
-  background?: "none" | "white" | "gray" | "dark" | "primary" | "secondary";
+  width?: "narrow" | "wide" | "full";
+  spacing?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
   blocks?: Block[];
 }
-
-const maxWidthClasses = {
-  sm: "max-w-screen-sm",
-  md: "max-w-screen-md",
-  lg: "max-w-screen-lg",
-  xl: "max-w-screen-xl",
-  "2xl": "max-w-screen-2xl",
-  full: "max-w-full",
-};
-
-const paddingClasses = {
-  none: "p-0",
-  sm: "p-4",
-  md: "p-6",
-  lg: "p-8",
-  xl: "p-12",
-};
-
-const backgroundClasses = {
-  none: "",
-  white: "bg-white",
-  gray: "bg-gray-100 dark:bg-gray-900",
-  dark: "bg-gray-900 text-white",
-  primary: "bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)]",
-  secondary: "bg-[var(--el-100)] text-[var(--el-800)]",
-};
 
 export default function ContainerBlockRenderer({
   block,
@@ -43,33 +15,38 @@ export default function ContainerBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as ContainerBlockData;
-  const {
-    maxWidth = "full",
-    padding = "md",
-    background = "none",
-    blocks = [],
-  } = data;
+  const { width = "wide", spacing = "none", blocks = [] } = data;
+
+  const dataAttributes: Record<string, string | undefined> = {
+    "data-slot": "container-block",
+    "data-width": width,
+    "data-spacing": spacing,
+  };
+
+  const filtered = Object.fromEntries(
+    Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
+  );
 
   return (
-    <div
-      className={cn(
-        "mx-auto w-full",
-        maxWidthClasses[maxWidth],
-        paddingClasses[padding],
-        backgroundClasses[background],
-      )}
-    >
+    <div {...filtered}>
       {blocks.map((childBlock, i) => (
         <BlockRenderer
           key={childBlock._key}
           block={childBlock}
           breakpoint={breakpoint}
           isEditing={isEditing}
-          onChange={onChange ? (updated) => {
-            const newBlocks = [...blocks];
-            newBlocks[i] = updated;
-            onChange({ ...block, data: { ...block.data, blocks: newBlocks } });
-          } : undefined}
+          onChange={
+            onChange
+              ? (updated) => {
+                  const newBlocks = [...blocks];
+                  newBlocks[i] = updated;
+                  onChange({
+                    ...block,
+                    data: { ...block.data, blocks: newBlocks },
+                  });
+                }
+              : undefined
+          }
         />
       ))}
     </div>

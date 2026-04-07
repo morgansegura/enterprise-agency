@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface MapBlockData {
   center: {
@@ -10,59 +9,91 @@ interface MapBlockData {
   height?: "sm" | "md" | "lg" | "xl";
   style?: "default" | "satellite" | "terrain";
   marker?: boolean;
+  embedUrl?: string;
 }
 
-const heightClasses = {
-  sm: "h-48",
-  md: "h-64",
-  lg: "h-80",
-  xl: "h-96",
+const heightMap: Record<string, string> = {
+  sm: "250px",
+  md: "400px",
+  lg: "550px",
+  xl: "700px",
 };
 
-export default function MapBlockRenderer({ block, onChange: _onChange, isEditing }: BlockRendererProps) {
+export default function MapBlockRenderer({
+  block,
+  onChange: _onChange,
+  isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as MapBlockData;
-  const { center, zoom: _zoom = 12, height = "md", marker = true } = data;
+  const {
+    center,
+    zoom: _zoom = 12,
+    height = "md",
+    marker = true,
+    embedUrl,
+  } = data;
+
+  const resolvedHeight = heightMap[height];
+
+  if (embedUrl) {
+    return (
+      <div data-slot="map-block" data-height={height}>
+        <iframe
+          data-slot="map-block-iframe"
+          src={embedUrl}
+          style={{ height: resolvedHeight }}
+          title="Embedded map"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+        />
+      </div>
+    );
+  }
 
   if (!center?.lat || !center?.lng) {
     if (isEditing) {
       return (
-        <div
-          className={cn(
-            "flex flex-col items-center justify-center gap-2 bg-[var(--el-100)] text-[var(--el-500)] rounded-lg cursor-pointer hover:bg-[var(--accent-primary-subtle)]/30",
-            heightClasses[height],
-          )}
-          onClick={() => {
-            // Block click-to-select opens settings panel for coordinates
-          }}
-        >
-          <span className="text-[14px] font-medium text-[var(--el-800)]">Click to select, then set location in Settings</span>
-          <span className="text-[12px]">Set coordinates via Settings panel</span>
+        <div data-slot="map-block" data-height={height}>
+          <div
+            data-slot="map-block-placeholder"
+            onClick={() => {
+              // Block click-to-select opens settings panel for coordinates
+            }}
+          >
+            <span data-slot="map-block-placeholder-title">
+              Click to select, then set location in Settings
+            </span>
+            <span data-slot="map-block-placeholder-hint">
+              Set coordinates via Settings panel
+            </span>
+          </div>
         </div>
       );
     }
     return (
-      <div
-        className={cn(
-          "flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] rounded-lg",
-          heightClasses[height],
-        )}
-      >
-        No location set
+      <div data-slot="map-block-error">
+        <p>Map location data is missing or invalid.</p>
       </div>
     );
   }
 
   // Using OpenStreetMap embed (free, no API key required)
-  const markerParam = marker ? `&marker=${center.lat},${center.lng}` : "";
-  const embedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${center.lng - 0.02},${center.lat - 0.02},${center.lng + 0.02},${center.lat + 0.02}&layer=mapnik${markerParam}`;
+  const markerParam = marker
+    ? `&marker=${center.lat},${center.lng}`
+    : "";
+  const osmUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${center.lng - 0.02},${center.lat - 0.02},${center.lng + 0.02},${center.lat + 0.02}&layer=mapnik${markerParam}`;
 
   return (
-    <iframe
-      className={cn("w-full rounded-lg border-0", heightClasses[height])}
-      src={embedUrl}
-      title="Map"
-      loading="lazy"
-      referrerPolicy="no-referrer-when-downgrade"
-    />
+    <div data-slot="map-block" data-height={height}>
+      <iframe
+        data-slot="map-block-iframe"
+        src={osmUrl}
+        style={{ height: resolvedHeight }}
+        title={`Map: ${center.lat.toFixed(4)}, ${center.lng.toFixed(4)}`}
+        loading="lazy"
+        allowFullScreen
+      />
+    </div>
   );
 }

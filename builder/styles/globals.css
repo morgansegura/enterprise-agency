@@ -10,6 +10,39 @@
 /* Element styles — CSS custom properties for Webflow-level control */
 @import "../../packages/tokens/src/css/element-styles.css";
 
+/* Block CSS — imported from client for WYSIWYG parity */
+@import "../../client/components/block/text-block/text-block.css";
+@import "../../client/components/block/button-block/button-block.css";
+@import "../../client/components/block/image-block/image-block.css";
+@import "../../client/components/block/card-block/card-block.css";
+@import "../../client/components/block/video-block/video-block.css";
+@import "../../client/components/block/audio-block/audio-block.css";
+@import "../../client/components/block/list-block/list-block.css";
+@import "../../client/components/block/quote-block/quote-block.css";
+@import "../../client/components/block/divider-block/divider-block.css";
+@import "../../client/components/block/spacer-block/spacer-block.css";
+@import "../../client/components/block/icon-block/icon-block.css";
+@import "../../client/components/block/embed-block/embed-block.css";
+@import "../../client/components/block/stats-block/stats-block.css";
+@import "../../client/components/block/map-block/map-block.css";
+@import "../../client/components/block/logo-block/logo-block.css";
+@import "../../client/components/block/accordion-block/accordion-block.css";
+@import "../../client/components/block/tabs-block/tabs-block.css";
+@import "../../client/components/block/hero-block/hero-block.css";
+@import "../../client/components/block/cta-block/cta-block.css";
+@import "../../client/components/block/testimonial-block/testimonial-block.css";
+@import "../../client/components/block/pricing-block/pricing-block.css";
+@import "../../client/components/block/team-block/team-block.css";
+@import "../../client/components/block/logo-bar-block/logo-bar-block.css";
+@import "../../client/components/block/container-block/container-block.css";
+@import "../../client/components/block/grid-block/grid-block.css";
+@import "../../client/components/block/flex-block/flex-block.css";
+@import "../../client/components/block/stack-block/stack-block.css";
+@import "../../client/components/block/columns-block/columns-block.css";
+@import "../../client/components/block/heading-block/heading-block.css";
+@import "../../client/components/ui/text/text.css";
+@import "../../client/components/ui/heading/heading.css";
+
 /* =============================================================================
  * COMPREHENSIVE TAILWIND SAFELIST
  *

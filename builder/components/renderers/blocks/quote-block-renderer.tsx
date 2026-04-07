@@ -1,34 +1,16 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface QuoteBlockData {
   text: string;
   author?: string;
+  title?: string;
   source?: string;
   size?: "sm" | "md" | "lg";
   align?: "left" | "center" | "right";
   variant?: "default" | "bordered" | "highlighted";
 }
-
-const sizeClasses = {
-  sm: "text-base",
-  md: "text-lg",
-  lg: "text-xl",
-};
-
-const alignClasses = {
-  left: "text-left",
-  center: "text-center",
-  right: "text-right",
-};
-
-const variantClasses = {
-  default: "border-l-4 border-[var(--accent-primary)] pl-4",
-  bordered: "border border-[var(--border-default)] rounded-lg p-4",
-  highlighted: "bg-[var(--el-100)] p-4 rounded-lg",
-};
 
 export default function QuoteBlockRenderer({
   block,
@@ -39,6 +21,7 @@ export default function QuoteBlockRenderer({
   const {
     text,
     author,
+    title,
     source,
     size = "md",
     align = "left",
@@ -53,15 +36,13 @@ export default function QuoteBlockRenderer({
 
   return (
     <blockquote
-      className={cn(
-        "italic",
-        sizeClasses[size],
-        alignClasses[align],
-        variantClasses[variant],
-      )}
+      data-slot="quote-block"
+      data-variant={variant}
+      data-size={size}
+      data-align={align}
     >
       <p
-        className="mb-2"
+        data-slot="quote-block-text"
         contentEditable={!!isEditing}
         suppressContentEditableWarning
         onBlur={(e) => {
@@ -72,36 +53,42 @@ export default function QuoteBlockRenderer({
       >
         {text}
       </p>
-      {(author || source || isEditing) && (
-        <footer className="text-sm text-[var(--el-500)] not-italic">
-          <span
-            className="font-medium"
-            contentEditable={!!isEditing}
-            suppressContentEditableWarning
-            onBlur={(e) => {
-              const newAuthor = e.currentTarget.textContent || "";
-              if (newAuthor !== author) updateField("author", newAuthor);
-            }}
-            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
-          >
-            {author || (isEditing ? "Author name" : "")}
-          </span>
-          {(author || isEditing) && source && <span> — </span>}
-          {(source || isEditing) && (
+      {author || title || source || isEditing ? (
+        <footer data-slot="quote-block-footer">
+          {(author || isEditing) ? (
             <cite
+              data-slot="quote-block-author"
               contentEditable={!!isEditing}
               suppressContentEditableWarning
               onBlur={(e) => {
-                const newSource = e.currentTarget.textContent || "";
-                if (newSource !== source) updateField("source", newSource);
+                const newAuthor = e.currentTarget.textContent || "";
+                if (newAuthor !== author) updateField("author", newAuthor);
               }}
-              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              style={
+                isEditing ? { cursor: "text", outline: "none" } : undefined
+              }
             >
-              {source || (isEditing ? "Source" : "")}
+              {author || (isEditing ? "Author name" : "")}
             </cite>
-          )}
+          ) : null}
+          {(title || isEditing) ? (
+            <span
+              data-slot="quote-block-title"
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const newTitle = e.currentTarget.textContent || "";
+                if (newTitle !== title) updateField("title", newTitle);
+              }}
+              style={
+                isEditing ? { cursor: "text", outline: "none" } : undefined
+              }
+            >
+              {title || (isEditing ? "Title" : "")}
+            </span>
+          ) : null}
         </footer>
-      )}
+      ) : null}
     </blockquote>
   );
 }

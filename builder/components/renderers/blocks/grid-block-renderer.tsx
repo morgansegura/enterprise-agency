@@ -1,63 +1,77 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
-import { cn } from "@/lib/utils";
 import { BlockRenderer } from "../block-renderer";
 
 interface GridBlockData {
-  columns?: "1" | "2" | "3" | "4" | "5" | "6" | "auto";
-  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl";
-  autoFlow?: "row" | "column" | "dense";
+  columns?: number | { desktop?: number; tablet?: number; mobile?: number };
+  gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+  align?: string;
+  justify?: string;
   blocks?: Block[];
 }
 
-const columnsClasses = {
-  "1": "grid-cols-1",
-  "2": "grid-cols-1 sm:grid-cols-2",
-  "3": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-  "4": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
-  "5": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
-  "6": "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
-  auto: "grid-cols-[repeat(auto-fit,minmax(250px,1fr))]",
-};
-
-const gapClasses = {
-  none: "gap-0",
-  xs: "gap-1",
-  sm: "gap-2",
-  md: "gap-4",
-  lg: "gap-6",
-  xl: "gap-8",
-};
-
-const autoFlowClasses = {
-  row: "grid-flow-row",
-  column: "grid-flow-col",
-  dense: "grid-flow-dense",
-};
-
 export default function GridBlockRenderer({
   block,
-  onChange: _onChange,
+  onChange,
   isEditing,
   breakpoint,
 }: BlockRendererProps) {
   const data = block.data as unknown as GridBlockData;
-  const { columns = "2", gap = "md", autoFlow = "row", blocks = [] } = data;
+  const { columns, gap = "md", align, justify, blocks = [] } = data;
+
+  const getBaseColValue = (): string => {
+    if (typeof columns === "number") return String(columns);
+    if (typeof columns === "object" && columns !== null) {
+      return String(columns.desktop || columns.tablet || columns.mobile || 2);
+    }
+    return "2";
+  };
+
+  const colValue = getBaseColValue();
+
+  const columnClasses: Record<string, string> = {
+    "1": "grid-cols-1",
+    "2": "grid-cols-2",
+    "3": "grid-cols-3",
+    "4": "grid-cols-4",
+    "5": "grid-cols-5",
+    "6": "grid-cols-6",
+  };
+
+  const dataAttributes: Record<string, string | undefined> = {
+    "data-slot": "grid-block",
+    "data-gap": gap,
+    "data-align": align,
+    "data-justify": justify,
+  };
+
+  const filtered = Object.fromEntries(
+    Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
+  );
 
   return (
     <div
-      className={cn(
-        "grid",
-        columnsClasses[columns],
-        gapClasses[gap],
-        autoFlowClasses[autoFlow],
-      )}
+      {...filtered}
+      className={columnClasses[colValue] || "grid-cols-2"}
     >
-      {blocks.map((childBlock) => (
+      {blocks.map((childBlock, i) => (
         <BlockRenderer
           key={childBlock._key}
-          block={childBlock} isEditing={isEditing}
+          block={childBlock}
+          isEditing={isEditing}
           breakpoint={breakpoint}
+          onChange={
+            onChange
+              ? (updated) => {
+                  const newBlocks = [...blocks];
+                  newBlocks[i] = updated;
+                  onChange({
+                    ...block,
+                    data: { ...block.data, blocks: newBlocks },
+                  });
+                }
+              : undefined
+          }
         />
       ))}
     </div>

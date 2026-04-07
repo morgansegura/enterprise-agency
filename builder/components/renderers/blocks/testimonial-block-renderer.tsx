@@ -2,7 +2,6 @@
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images */
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface TestimonialItem {
   quote: string;
@@ -29,6 +28,7 @@ export default function TestimonialBlockRenderer({
   const data = block.data as unknown as TestimonialBlockData;
   const {
     testimonials = [],
+    layout = "grid",
     columns = 2,
     variant = "default",
     showRating = false,
@@ -38,91 +38,105 @@ export default function TestimonialBlockRenderer({
     if (!onChange) return;
     const updated = [...testimonials];
     updated[index] = { ...updated[index], [field]: value };
-    onChange({ ...block, data: { ...block.data, testimonials: updated } });
+    onChange({
+      ...block,
+      data: { ...block.data, testimonials: updated },
+    });
   };
 
   if (testimonials.length === 0 && !isEditing) return null;
 
   return (
     <div
-      className={cn(
-        "grid gap-6",
-        columns === 1 && "grid-cols-1",
-        columns === 2 && "grid-cols-1 md:grid-cols-2",
-        columns === 3 && "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-      )}
+      data-slot="testimonial-block"
+      data-layout={layout}
+      data-columns={columns}
+      data-variant={variant}
     >
       {testimonials.map((t, i) => (
-        <div
-          key={i}
-          className={cn(
-            "p-5",
-            variant === "card" &&
-              "bg-[var(--el-0)] border border-[var(--border-default)] rounded-lg shadow-sm",
-            variant === "minimal" && "border-l-2 border-[var(--accent-primary)] pl-4",
-            variant === "default" && "bg-[var(--el-100)]/30 rounded-lg",
-          )}
-        >
-          {showRating && t.rating && (
-            <div className="flex gap-0.5 mb-2">
-              {Array.from({ length: 5 }).map((_, s) => (
+        <div key={i} data-slot="testimonial-block-card">
+          {showRating && t.rating ? (
+            <div
+              data-slot="testimonial-block-rating"
+              aria-label={`${t.rating} out of 5 stars`}
+            >
+              {Array.from({ length: 5 }, (_, s) => (
                 <span
                   key={s}
-                  className={cn(
-                    "text-sm",
-                    s < t.rating! ? "text-amber-400" : "text-[var(--el-200)]",
-                  )}
+                  data-slot="testimonial-block-star"
+                  data-filled={s < t.rating! ? "true" : "false"}
+                  aria-hidden="true"
                 >
                   ★
                 </span>
               ))}
             </div>
-          )}
+          ) : null}
+
           <blockquote
-            className="text-sm text-[var(--el-800)] italic"
+            data-slot="testimonial-block-quote"
             contentEditable={!!isEditing}
             suppressContentEditableWarning
             onBlur={(e) => {
-              const v = (e.currentTarget.textContent || "").replace(/^"|"$/g, "");
+              const v = (e.currentTarget.textContent || "").replace(
+                /^"|"$/g,
+                "",
+              );
               if (v !== t.quote) updateItem(i, "quote", v);
             }}
-            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            style={
+              isEditing ? { cursor: "text", outline: "none" } : undefined
+            }
           >
-            &ldquo;{t.quote}&rdquo;
+            {t.quote}
           </blockquote>
-          <div className="mt-3 flex items-center gap-2">
-            {t.avatar && (
+
+          <div data-slot="testimonial-block-author">
+            {t.avatar ? (
               <img
+                data-slot="testimonial-block-avatar"
                 src={t.avatar}
                 alt={t.name}
-                className="w-8 h-8 rounded-full object-cover"
               />
-            )}
-            <div>
-              <p
-                className="text-sm font-medium"
+            ) : null}
+
+            <div data-slot="testimonial-block-info">
+              <div
+                data-slot="testimonial-block-name"
                 contentEditable={!!isEditing}
                 suppressContentEditableWarning
                 onBlur={(e) => {
                   const v = e.currentTarget.textContent || "";
                   if (v !== t.name) updateItem(i, "name", v);
                 }}
-                style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+                style={
+                  isEditing
+                    ? { cursor: "text", outline: "none" }
+                    : undefined
+                }
               >
                 {t.name}
-              </p>
-              <p
-                className="text-xs text-[var(--el-500)]"
-                contentEditable={!!isEditing}
-                suppressContentEditableWarning
-                onBlur={(e) => {
-                  const v = e.currentTarget.textContent || "";
-                  if (v !== t.role) updateItem(i, "role", v);
-                }}
-                style={isEditing ? { cursor: "text", outline: "none" } : undefined}
-              >
-                {[t.role, t.company].filter(Boolean).join(", ") || (isEditing ? "Role, Company" : "")}
-              </p>
+              </div>
+
+              {t.role || t.company || isEditing ? (
+                <div
+                  data-slot="testimonial-block-role"
+                  contentEditable={!!isEditing}
+                  suppressContentEditableWarning
+                  onBlur={(e) => {
+                    const v = e.currentTarget.textContent || "";
+                    if (v !== t.role) updateItem(i, "role", v);
+                  }}
+                  style={
+                    isEditing
+                      ? { cursor: "text", outline: "none" }
+                      : undefined
+                  }
+                >
+                  {[t.role, t.company].filter(Boolean).join(", ") ||
+                    (isEditing ? "Role, Company" : "")}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

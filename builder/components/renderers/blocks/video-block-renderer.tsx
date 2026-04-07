@@ -1,23 +1,16 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface VideoBlockData {
   url: string;
-  provider?: "youtube" | "vimeo" | "direct";
-  aspectRatio?: "16/9" | "4/3" | "1/1" | "21/9";
+  provider?: "youtube" | "vimeo" | "native" | "direct";
+  aspectRatio?: "16:9" | "4:3" | "1:1" | "21:9";
   controls?: boolean;
   autoplay?: boolean;
   muted?: boolean;
   loop?: boolean;
   title?: string;
+  caption?: string;
 }
-
-const aspectRatioClasses = {
-  "16/9": "aspect-video",
-  "4/3": "aspect-[4/3]",
-  "1/1": "aspect-square",
-  "21/9": "aspect-[21/9]",
-};
 
 function getYouTubeId(url: string): string | null {
   const match = url.match(
@@ -31,16 +24,38 @@ function getVimeoId(url: string): string | null {
   return match?.[1] || null;
 }
 
-export default function VideoBlockRenderer({ block, onChange: _onChange, isEditing }: BlockRendererProps) {
+function buildYouTubeUrl(videoId: string, data: VideoBlockData): string {
+  const params = new URLSearchParams();
+  if (!data.controls) params.set("controls", "0");
+  if (data.autoplay) params.set("autoplay", "1");
+  if (data.muted) params.set("mute", "1");
+  if (data.loop) params.set("loop", "1");
+  return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+}
+
+function buildVimeoUrl(videoId: string, data: VideoBlockData): string {
+  const params = new URLSearchParams();
+  if (data.autoplay) params.set("autoplay", "1");
+  if (data.muted) params.set("muted", "1");
+  if (data.loop) params.set("loop", "1");
+  return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
+}
+
+export default function VideoBlockRenderer({
+  block,
+  onChange: _onChange,
+  isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as VideoBlockData;
   const {
     url,
-    provider = "youtube",
-    aspectRatio = "16/9",
+    provider = "native",
+    aspectRatio = "16:9",
     controls = true,
     autoplay = false,
     muted = false,
     loop = false,
+    caption,
     title = "Video",
   } = data;
 
@@ -48,105 +63,92 @@ export default function VideoBlockRenderer({ block, onChange: _onChange, isEditi
     if (isEditing) {
       return (
         <div
-          className="flex flex-col items-center justify-center gap-2 bg-[var(--el-100)] text-[var(--el-500)] p-8 rounded-md aspect-video cursor-pointer hover:bg-[var(--accent-primary-subtle)]/30"
+          className="flex flex-col items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-8 rounded-[3px] aspect-video cursor-pointer hover:bg-(--accent-primary-subtle)/30"
           onClick={() => {
-            // Block click-to-select will open settings panel where URL can be set
+            // Block click-to-select will open settings panel
           }}
         >
-          <span className="text-[14px] font-medium text-[var(--el-800)]">Click to select, then set URL in Settings</span>
-          <span className="text-[12px]">YouTube, Vimeo, or direct URL via Settings panel</span>
+          <span className="text-[14px] font-medium text-(--el-800)">
+            Click to select, then set URL in Settings
+          </span>
+          <span className="text-[12px]">
+            YouTube, Vimeo, or direct URL via Settings panel
+          </span>
         </div>
       );
     }
     return (
-      <div className="flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)] p-8 rounded-md aspect-video">
+      <div className="flex items-center justify-center bg-(--el-100) text-(--el-500) p-8 rounded-[3px] aspect-video">
         No video URL set
       </div>
     );
   }
 
-  const containerClass = cn(
-    "w-full overflow-hidden rounded-lg",
-    aspectRatioClasses[aspectRatio],
-  );
+  // Resolve embed URL for YouTube/Vimeo
+  let embedUrl = url;
+  let isEmbed = false;
 
-  // YouTube embed
   if (provider === "youtube") {
     const videoId = getYouTubeId(url);
     if (!videoId) {
       return (
-        <div
-          className={cn(
-            containerClass,
-            "flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)]",
-          )}
-        >
-          Invalid YouTube URL
-        </div>
+        <figure data-slot="video-block">
+          <div
+            data-slot="video-block-wrapper"
+            data-aspect-ratio={aspectRatio}
+            className="flex items-center justify-center bg-(--el-100) text-(--el-500)"
+          >
+            Invalid YouTube URL
+          </div>
+        </figure>
       );
     }
-
-    const params = new URLSearchParams();
-    if (!controls) params.set("controls", "0");
-    if (autoplay) params.set("autoplay", "1");
-    if (muted) params.set("mute", "1");
-    if (loop) params.set("loop", "1");
-
-    return (
-      <iframe
-        className={containerClass}
-        src={`https://www.youtube.com/embed/${videoId}?${params.toString()}`}
-        title={title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
-    );
-  }
-
-  // Vimeo embed
-  if (provider === "vimeo") {
+    embedUrl = buildYouTubeUrl(videoId, data);
+    isEmbed = true;
+  } else if (provider === "vimeo") {
     const videoId = getVimeoId(url);
     if (!videoId) {
       return (
-        <div
-          className={cn(
-            containerClass,
-            "flex items-center justify-center bg-[var(--el-100)] text-[var(--el-500)]",
-          )}
-        >
-          Invalid Vimeo URL
-        </div>
+        <figure data-slot="video-block">
+          <div
+            data-slot="video-block-wrapper"
+            data-aspect-ratio={aspectRatio}
+            className="flex items-center justify-center bg-(--el-100) text-(--el-500)"
+          >
+            Invalid Vimeo URL
+          </div>
+        </figure>
       );
     }
-
-    const params = new URLSearchParams();
-    if (autoplay) params.set("autoplay", "1");
-    if (muted) params.set("muted", "1");
-    if (loop) params.set("loop", "1");
-
-    return (
-      <iframe
-        className={containerClass}
-        src={`https://player.vimeo.com/video/${videoId}?${params.toString()}`}
-        title={title}
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowFullScreen
-      />
-    );
+    embedUrl = buildVimeoUrl(videoId, data);
+    isEmbed = true;
   }
 
-  // Direct video
   return (
-    <video
-      className={containerClass}
-      src={url}
-      controls={controls}
-      autoPlay={autoplay}
-      muted={muted}
-      loop={loop}
-      playsInline
-    >
-      Your browser does not support the video tag.
-    </video>
+    <figure data-slot="video-block">
+      <div data-slot="video-block-wrapper" data-aspect-ratio={aspectRatio}>
+        {isEmbed ? (
+          <iframe
+            data-slot="video-block-iframe"
+            src={embedUrl}
+            title={caption || title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <video
+            data-slot="video-block-video"
+            src={url}
+            controls={controls}
+            autoPlay={autoplay}
+            muted={muted}
+            loop={loop}
+          />
+        )}
+      </div>
+      {caption ? (
+        <figcaption data-slot="video-block-caption">{caption}</figcaption>
+      ) : null}
+    </figure>
   );
 }

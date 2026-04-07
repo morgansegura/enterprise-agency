@@ -1,46 +1,30 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 import * as LucideIcons from "lucide-react";
 
 interface IconBlockData {
   icon: string;
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-  color?: "default" | "muted" | "primary" | "secondary";
-  align?: "left" | "center" | "right";
+  size?: "sm" | "md" | "lg" | "xl";
+  color?: string;
+  text?: string;
   label?: string;
+  position?: "top" | "left" | "right" | "bottom";
 }
 
-const sizeClasses = {
-  xs: "w-4 h-4",
-  sm: "w-5 h-5",
-  md: "w-6 h-6",
-  lg: "w-8 h-8",
-  xl: "w-12 h-12",
-};
-
-const colorClasses = {
-  default: "text-[var(--el-800)]",
-  muted: "text-[var(--el-500)]",
-  primary: "text-[var(--accent-primary)]",
-  secondary: "text-secondary",
-};
-
-const alignClasses = {
-  left: "justify-start",
-  center: "justify-center",
-  right: "justify-end",
-};
-
-export default function IconBlockRenderer({ block, onChange: _onChange, isEditing: _isEditing }: BlockRendererProps) {
+export default function IconBlockRenderer({
+  block,
+  onChange: _onChange,
+  isEditing: _isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as IconBlockData;
   const {
     icon = "Star",
     size = "md",
-    color = "default",
-    align = "center",
+    color,
+    text,
     label,
+    position = "top",
   } = data;
 
   // Dynamically get the icon component
@@ -50,16 +34,29 @@ export default function IconBlockRenderer({ block, onChange: _onChange, isEditin
 
   if (!IconComponent) {
     return (
-      <div className="text-[var(--el-500)] text-sm">
-        Icon &quot;{icon}&quot; not found
+      <div data-slot="icon-block" data-size={size}>
+        <span data-slot="icon-block-icon" aria-hidden="true">
+          {icon}
+        </span>
       </div>
     );
   }
 
+  const displayText = text || label;
+
   return (
-    <div className={cn("flex items-center gap-2", alignClasses[align])}>
-      <IconComponent className={cn(sizeClasses[size], colorClasses[color])} />
-      {label && <span className={colorClasses[color]}>{label}</span>}
+    <div
+      data-slot="icon-block"
+      data-size={size}
+      data-position={position}
+      style={color ? { color } : undefined}
+    >
+      <span data-slot="icon-block-icon" aria-hidden="true">
+        <IconComponent />
+      </span>
+      {displayText ? (
+        <span data-slot="icon-block-text">{displayText}</span>
+      ) : null}
     </div>
   );
 }

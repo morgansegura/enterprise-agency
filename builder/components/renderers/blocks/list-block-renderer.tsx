@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface ListItem {
   text: string;
@@ -9,94 +8,57 @@ interface ListBlockData {
   items: ListItem[];
   ordered?: boolean;
   style?: "default" | "check" | "arrow";
-  spacing?: "tight" | "comfortable" | "relaxed";
+  spacing?: "tight" | "normal" | "comfortable" | "relaxed";
 }
 
-const spacingClasses = {
-  tight: "space-y-1",
-  comfortable: "space-y-2",
-  relaxed: "space-y-4",
-};
-
-export default function ListBlockRenderer({ block, onChange, isEditing }: BlockRendererProps) {
+export default function ListBlockRenderer({
+  block,
+  onChange,
+  isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as ListBlockData;
   const {
     items = [],
     ordered = false,
     style = "default",
-    spacing = "comfortable",
+    spacing = "normal",
   } = data;
 
   const Tag = ordered ? "ol" : "ul";
 
-  const listItemContent = (item: ListItem, index: number) => {
-    if (style === "check") {
-      return (
-        <li key={index} className="flex items-start gap-2">
-          <span className="text-[var(--accent-primary)] mt-0.5">✓</span>
-          <span
-            contentEditable={!!isEditing}
-            suppressContentEditableWarning
-            onBlur={(e) => {
-              const v = e.currentTarget.textContent || "";
-              if (v !== item.text && onChange) {
-                const newItems = [...items];
-                newItems[index] = { ...item, text: v };
-                onChange({ ...block, data: { ...block.data, items: newItems } });
-              }
-            }}
-            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
-          >{item.text}</span>
-        </li>
-      );
+  const handleItemBlur = (
+    e: React.FocusEvent<HTMLElement>,
+    item: ListItem,
+    index: number,
+  ) => {
+    const v = e.currentTarget.textContent || "";
+    if (v !== item.text && onChange) {
+      const newItems = [...items];
+      newItems[index] = { ...item, text: v };
+      onChange({ ...block, data: { ...block.data, items: newItems } });
     }
-    if (style === "arrow") {
-      return (
-        <li key={index} className="flex items-start gap-2">
-          <span className="text-[var(--accent-primary)] mt-0.5">→</span>
-          <span
-            contentEditable={!!isEditing}
-            suppressContentEditableWarning
-            onBlur={(e) => {
-              const v = e.currentTarget.textContent || "";
-              if (v !== item.text && onChange) {
-                const newItems = [...items];
-                newItems[index] = { ...item, text: v };
-                onChange({ ...block, data: { ...block.data, items: newItems } });
-              }
-            }}
-            style={isEditing ? { cursor: "text", outline: "none" } : undefined}
-          >{item.text}</span>
-        </li>
-      );
-    }
-    return (
-      <li
-        key={index}
-        contentEditable={!!isEditing}
-        suppressContentEditableWarning
-        onBlur={(e) => {
-          const v = e.currentTarget.textContent || "";
-          if (v !== item.text && onChange) {
-            const newItems = [...items];
-            newItems[index] = { ...item, text: v };
-            onChange({ ...block, data: { ...block.data, items: newItems } });
-          }
-        }}
-        style={isEditing ? { cursor: "text", outline: "none" } : undefined}
-      >{item.text}</li>
-    );
   };
 
   return (
     <Tag
-      className={cn(
-        spacingClasses[spacing],
-        style === "default" && ordered && "list-decimal list-inside",
-        style === "default" && !ordered && "list-disc list-inside",
-      )}
+      data-slot="list-block"
+      data-style={style}
+      data-spacing={spacing}
     >
-      {items.map((item, index) => listItemContent(item, index))}
+      {items.map((item, index) => (
+        <li
+          key={index}
+          data-slot="list-block-item"
+          contentEditable={!!isEditing}
+          suppressContentEditableWarning
+          onBlur={(e) => handleItemBlur(e, item, index)}
+          style={
+            isEditing ? { cursor: "text", outline: "none" } : undefined
+          }
+        >
+          {item.text}
+        </li>
+      ))}
     </Tag>
   );
 }

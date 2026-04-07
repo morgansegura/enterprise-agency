@@ -28,15 +28,20 @@ export default function ContactFormBlockRenderer({
   } = data;
 
   return (
-    <div className="max-w-lg mx-auto">
+    <div data-slot="contact-form-block" className="max-w-lg mx-auto">
       {heading && (
         <h3
+          data-slot="contact-form-block-heading"
           className="text-xl font-bold mb-1"
           contentEditable={!!isEditing}
           suppressContentEditableWarning
           onBlur={(e) => {
             const v = e.currentTarget.textContent || "";
-            if (v !== heading && onChange) onChange({ ...block, data: { ...block.data, heading: v } });
+            if (v !== heading && onChange)
+              onChange({
+                ...block,
+                data: { ...block.data, heading: v },
+              });
           }}
           style={isEditing ? { cursor: "text", outline: "none" } : undefined}
         >
@@ -45,35 +50,42 @@ export default function ContactFormBlockRenderer({
       )}
       {description && (
         <p
-          className="text-[14px] text-[var(--el-500)] mb-4"
+          data-slot="contact-form-block-description"
+          className="text-[14px] text-(--el-500) mb-4"
           contentEditable={!!isEditing}
           suppressContentEditableWarning
           onBlur={(e) => {
             const v = e.currentTarget.textContent || "";
-            if (v !== description && onChange) onChange({ ...block, data: { ...block.data, description: v } });
+            if (v !== description && onChange)
+              onChange({
+                ...block,
+                data: { ...block.data, description: v },
+              });
           }}
           style={isEditing ? { cursor: "text", outline: "none" } : undefined}
         >
           {description}
         </p>
       )}
-      <div className="space-y-3">
+      <div data-slot="contact-form-block-fields" className="space-y-3">
         {fields.map((field, i) => (
-          <div key={i}>
-            <label className="text-[12px] font-semibold text-[var(--el-800)] mb-1 block">
+          <div key={i} data-slot="contact-form-block-field">
+            <label className="text-[12px] font-semibold text-(--el-800) mb-1 block">
               {field.label}
-              {field.required && <span className="text-[var(--status-error)] ml-0.5">*</span>}
+              {field.required && (
+                <span className="text-(--status-error) ml-0.5">*</span>
+              )}
             </label>
             {field.type === "textarea" ? (
               <textarea
-                className="w-full h-24 px-3 py-2 text-[14px] border border-[var(--border-default)] rounded-[3px] bg-[var(--el-0)]"
+                className="w-full h-24 px-3 py-2 text-[14px] border border-(--border-default) rounded-[3px] bg-(--el-0)"
                 placeholder={`Your ${field.label.toLowerCase()}`}
                 disabled={isEditing}
               />
             ) : (
               <input
                 type={field.type}
-                className="w-full h-8 px-3 text-[14px] border border-[var(--border-default)] rounded-[3px] bg-[var(--el-0)]"
+                className="w-full h-8 px-3 text-[14px] border border-(--border-default) rounded-[3px] bg-(--el-0)"
                 placeholder={`Your ${field.label.toLowerCase()}`}
                 disabled={isEditing}
               />
@@ -81,8 +93,9 @@ export default function ContactFormBlockRenderer({
           </div>
         ))}
         <button
+          data-slot="contact-form-block-submit"
           type="button"
-          className="w-full h-10 bg-[var(--accent-primary)] text-[var(--accent-primary-foreground)] rounded-[3px] text-[14px] font-medium"
+          className="w-full h-10 bg-(--accent-primary) text-(--accent-primary-foreground) rounded-[3px] text-[14px] font-medium"
           disabled={isEditing}
         >
           {submitText}

@@ -1,51 +1,76 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface EmbedBlockData {
-  html: string;
-  aspectRatio?: "auto" | "16/9" | "4/3" | "1/1";
+  html?: string;
+  url?: string;
+  title?: string;
+  aspectRatio?: "auto" | "16:9" | "4:3" | "1:1";
+  height?: number;
 }
 
-const aspectRatioClasses = {
-  auto: "",
-  "16/9": "aspect-video",
-  "4/3": "aspect-[4/3]",
-  "1/1": "aspect-square",
-};
-
-export default function EmbedBlockRenderer({ block, onChange: _onChange, isEditing }: BlockRendererProps) {
+export default function EmbedBlockRenderer({
+  block,
+  onChange: _onChange,
+  isEditing,
+}: BlockRendererProps) {
   const data = block.data as unknown as EmbedBlockData;
-  const { html, aspectRatio = "auto" } = data;
+  const { html, url, title, aspectRatio = "16:9", height } = data;
 
-  if (!html) {
+  if (!html && !url) {
     if (isEditing) {
       return (
-        <div
-          className="flex flex-col items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-8 rounded-[3px] cursor-pointer hover:bg-(--accent-primary-subtle)/30"
-          onClick={() => {
-            // Block click-to-select opens settings panel
-          }}
-        >
-          <span className="text-[14px] font-medium text-(--el-800)">Click to select, then set code in Settings</span>
-          <span className="text-[12px]">Paste embed code via Settings panel</span>
+        <div data-slot="embed-block">
+          <div
+            data-slot="embed-block-placeholder"
+            onClick={() => {
+              // Block click-to-select opens settings panel
+            }}
+          >
+            <span data-slot="embed-block-placeholder-title">
+              Click to select, then set code in Settings
+            </span>
+            <span data-slot="embed-block-placeholder-hint">
+              Paste embed code via Settings panel
+            </span>
+          </div>
         </div>
       );
     }
     return (
-      <div className="flex items-center justify-center bg-(--el-100) text-(--el-500) p-8 rounded-[3px]">
-        No embed code set
+      <div data-slot="embed-block">
+        <div data-slot="embed-block-placeholder">No embed code set</div>
       </div>
     );
   }
 
+  // If we have a URL, render as iframe (matching client)
+  if (url) {
+    return (
+      <div data-slot="embed-block">
+        <div
+          data-slot="embed-block-wrapper"
+          data-aspect-ratio={aspectRatio}
+          style={height ? { height: `${height}px` } : undefined}
+        >
+          <iframe
+            data-slot="embed-block-iframe"
+            src={url}
+            title={title || "Embedded content"}
+            allowFullScreen
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // If we have raw HTML, render it
   return (
-    <div
-      className={cn(
-        "w-full overflow-hidden rounded-lg",
-        aspectRatioClasses[aspectRatio],
-        "[&>iframe]:w-full [&>iframe]:h-full",
-      )}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <div data-slot="embed-block">
+      <div
+        data-slot="embed-block-wrapper"
+        data-aspect-ratio={aspectRatio}
+        dangerouslySetInnerHTML={{ __html: html! }}
+      />
+    </div>
   );
 }

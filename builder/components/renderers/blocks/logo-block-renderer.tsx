@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 
 interface LogoBlockData {
   src: string;
@@ -10,19 +9,6 @@ interface LogoBlockData {
   align: "left" | "center" | "right";
   openInNewTab?: boolean;
 }
-
-const sizeClasses = {
-  sm: "h-8",
-  md: "h-12",
-  lg: "h-16",
-  xl: "h-24",
-};
-
-const alignClasses = {
-  left: "justify-start",
-  center: "justify-center",
-  right: "justify-end",
-};
 
 export default function LogoBlockRenderer({ block }: BlockRendererProps) {
   const data = block.data as unknown as LogoBlockData;
@@ -37,26 +23,29 @@ export default function LogoBlockRenderer({ block }: BlockRendererProps) {
 
   if (!src) {
     return (
-      <div className={cn("flex", alignClasses[align])}>
-        <div className="bg-[var(--el-100)] text-[var(--el-500)] text-sm px-4 py-2 rounded">
-          No logo set
-        </div>
+      <div data-slot="logo-block" data-align={align}>
+        <span data-slot="logo-block-empty">No logo set</span>
       </div>
     );
   }
 
   const logoImage = (
-    <img src={src} alt={alt} className={cn("w-auto", sizeClasses[size])} />
+    <img
+      src={src}
+      alt={alt}
+      data-size={size}
+      data-slot="logo-image"
+    />
   );
 
   return (
-    <div className={cn("flex", alignClasses[align])}>
+    <div data-slot="logo-block" data-align={align}>
       {href ? (
         <a
           href={href}
           target={openInNewTab ? "_blank" : undefined}
           rel={openInNewTab ? "noopener noreferrer" : undefined}
-          className="inline-block"
+          data-slot="logo-link"
         >
           {logoImage}
         </a>

@@ -42,15 +42,20 @@ export default function FaqBlockRenderer({
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div data-slot="faq-block" className="max-w-2xl mx-auto">
       {(heading || isEditing) && (
         <h3
+          data-slot="faq-block-heading"
           className="text-xl font-bold text-center mb-2"
           contentEditable={!!isEditing}
           suppressContentEditableWarning
           onBlur={(e) => {
             const v = e.currentTarget.textContent || "";
-            if (v !== heading && onChange) onChange({ ...block, data: { ...block.data, heading: v } });
+            if (v !== heading && onChange)
+              onChange({
+                ...block,
+                data: { ...block.data, heading: v },
+              });
           }}
           style={isEditing ? { cursor: "text", outline: "none" } : undefined}
         >
@@ -59,26 +64,35 @@ export default function FaqBlockRenderer({
       )}
       {(description || isEditing) && (
         <p
-          className="text-[14px] text-[var(--el-500)] text-center mb-6"
+          data-slot="faq-block-description"
+          className="text-[14px] text-(--el-500) text-center mb-6"
           contentEditable={!!isEditing}
           suppressContentEditableWarning
           onBlur={(e) => {
             const v = e.currentTarget.textContent || "";
-            if (v !== description && onChange) onChange({ ...block, data: { ...block.data, description: v } });
+            if (v !== description && onChange)
+              onChange({
+                ...block,
+                data: { ...block.data, description: v },
+              });
           }}
           style={isEditing ? { cursor: "text", outline: "none" } : undefined}
         >
           {description || "Find answers to common questions"}
         </p>
       )}
-      <div className="border border-[var(--border-default)] rounded-lg divide-y divide-[var(--border-default)]">
+      <div
+        data-slot="faq-block-list"
+        className="border border-(--border-default) rounded-lg divide-y divide-(--border-default)"
+      >
         {items.map((item, i) => {
           const isOpen = openItems.has(i);
           return (
-            <div key={i}>
+            <div key={i} data-slot="faq-block-item">
               <button
+                data-slot="faq-block-trigger"
                 type="button"
-                className="flex w-full items-center justify-between px-4 py-3 text-left font-medium hover:bg-[var(--el-100)]/50"
+                className="flex w-full items-center justify-between px-4 py-3 text-left font-medium hover:bg-(--el-100)/50"
                 onClick={() => toggleItem(i)}
               >
                 <span
@@ -89,22 +103,36 @@ export default function FaqBlockRenderer({
                     if (v !== item.question) updateItem(i, "question", v);
                   }}
                   onClick={(e) => isEditing && e.stopPropagation()}
-                  style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+                  style={
+                    isEditing
+                      ? { cursor: "text", outline: "none" }
+                      : undefined
+                  }
                 >
                   {item.question}
                 </span>
-                <ChevronDown className={cn("size-4 shrink-0 transition-transform duration-200", isOpen && "rotate-180")} />
+                <ChevronDown
+                  className={cn(
+                    "size-4 shrink-0 transition-transform duration-200",
+                    isOpen && "rotate-180",
+                  )}
+                />
               </button>
               {isOpen && (
                 <div
-                  className="px-4 pb-4 text-[14px] text-[var(--el-500)]"
+                  data-slot="faq-block-answer"
+                  className="px-4 pb-4 text-[14px] text-(--el-500)"
                   contentEditable={!!isEditing}
                   suppressContentEditableWarning
                   onBlur={(e) => {
                     const v = e.currentTarget.textContent || "";
                     if (v !== item.answer) updateItem(i, "answer", v);
                   }}
-                  style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+                  style={
+                    isEditing
+                      ? { cursor: "text", outline: "none" }
+                      : undefined
+                  }
                 >
                   {item.answer}
                 </div>

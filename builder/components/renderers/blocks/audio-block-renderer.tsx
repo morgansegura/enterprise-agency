@@ -7,7 +7,8 @@ import { Music } from "lucide-react";
 import { MediaLibraryPicker } from "@/components/ui/media-library/media-library-picker";
 
 interface AudioBlockData {
-  src: string;
+  src?: string;
+  url?: string;
   title?: string;
   artist?: string;
   controls?: boolean;
@@ -27,6 +28,7 @@ export default function AudioBlockRenderer({
   const data = block.data as unknown as AudioBlockData;
   const {
     src,
+    url,
     title,
     artist,
     controls = true,
@@ -34,7 +36,9 @@ export default function AudioBlockRenderer({
     loop = false,
   } = data;
 
-  if (!src) {
+  const audioUrl = src || url;
+
+  if (!audioUrl) {
     if (isEditing) {
       return (
         <>
@@ -78,26 +82,24 @@ export default function AudioBlockRenderer({
   }
 
   return (
-    <div className="bg-[var(--el-0)] border border-[var(--border-default)] rounded-lg p-4">
-      {(title || artist) && (
-        <div className="mb-3">
-          {title && (
-            <h4 className="font-medium text-[var(--el-800)]">{title}</h4>
-          )}
-          {artist && (
-            <p className="text-sm text-[var(--el-500)]">{artist}</p>
-          )}
+    <figure data-slot="audio-block">
+      {title || artist ? (
+        <div data-slot="audio-block-meta">
+          {title ? (
+            <div data-slot="audio-block-title">{title}</div>
+          ) : null}
+          {artist ? (
+            <div data-slot="audio-block-artist">{artist}</div>
+          ) : null}
         </div>
-      )}
+      ) : null}
       <audio
-        className="w-full"
-        src={src}
+        data-slot="audio-block-player"
+        src={audioUrl}
         controls={controls}
         autoPlay={autoplay}
         loop={loop}
-      >
-        Your browser does not support the audio element.
-      </audio>
-    </div>
+      />
+    </figure>
   );
 }

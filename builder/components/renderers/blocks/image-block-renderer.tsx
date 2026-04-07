@@ -4,7 +4,6 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { cn } from "@/lib/utils";
 import { ImageIcon, Upload } from "lucide-react";
 import { MediaLibraryPicker } from "@/components/ui/media-library/media-library-picker";
 
@@ -12,26 +11,9 @@ interface ImageBlockData {
   src: string;
   alt?: string;
   caption?: string;
-  aspectRatio?: "auto" | "1/1" | "4/3" | "16/9" | "21/9";
   objectFit?: "cover" | "contain" | "fill" | "none";
-  rounded?: boolean;
   href?: string;
 }
-
-const aspectRatioClasses = {
-  auto: "",
-  "1/1": "aspect-square",
-  "4/3": "aspect-[4/3]",
-  "16/9": "aspect-video",
-  "21/9": "aspect-[21/9]",
-};
-
-const objectFitClasses = {
-  cover: "object-cover",
-  contain: "object-contain",
-  fill: "object-fill",
-  none: "object-none",
-};
 
 export default function ImageBlockRenderer({
   block,
@@ -47,13 +29,11 @@ export default function ImageBlockRenderer({
     src,
     alt = "",
     caption,
-    aspectRatio = "auto",
     objectFit = "cover",
-    rounded = false,
     href,
   } = data;
 
-  // Edit mode: show media library picker
+  // Edit mode: show media library picker when no src
   if (!src && isEditing) {
     return (
       <>
@@ -107,12 +87,7 @@ export default function ImageBlockRenderer({
     <img
       src={src}
       alt={alt}
-      className={cn(
-        "w-full",
-        aspectRatioClasses[aspectRatio],
-        objectFitClasses[objectFit],
-        rounded && "rounded-lg",
-      )}
+      data-slot="image-block-image"
     />
   );
 
@@ -120,9 +95,11 @@ export default function ImageBlockRenderer({
   if (isEditing && onChange) {
     return (
       <>
-        <figure className="relative group">
+        <figure data-slot="image-block">
           <div
-            className="cursor-pointer"
+            data-slot="image-block-wrapper"
+            data-object-fit={objectFit}
+            className="relative group cursor-pointer"
             onClick={() => setPickerOpen(true)}
           >
             {imageElement}
@@ -132,11 +109,11 @@ export default function ImageBlockRenderer({
               </span>
             </div>
           </div>
-          {caption && (
-            <figcaption className="mt-2 text-center text-[14px] text-(--el-500)">
+          {caption ? (
+            <figcaption data-slot="image-block-caption">
               {caption}
             </figcaption>
-          )}
+          ) : null}
         </figure>
         <MediaLibraryPicker
           tenantId={tenantId}
@@ -170,14 +147,20 @@ export default function ImageBlockRenderer({
 
   if (caption) {
     return (
-      <figure>
-        {content}
-        <figcaption className="mt-2 text-center text-[14px] text-(--el-500)">
-          {caption}
-        </figcaption>
+      <figure data-slot="image-block">
+        <div data-slot="image-block-wrapper" data-object-fit={objectFit}>
+          {content}
+        </div>
+        <figcaption data-slot="image-block-caption">{caption}</figcaption>
       </figure>
     );
   }
 
-  return content;
+  return (
+    <figure data-slot="image-block">
+      <div data-slot="image-block-wrapper" data-object-fit={objectFit}>
+        {content}
+      </div>
+    </figure>
+  );
 }

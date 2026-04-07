@@ -39,33 +39,47 @@ export default function FeatureGridBlockRenderer({
   };
 
   return (
-    <div className="w-full">
+    <div data-slot="feature-grid-block" data-variant={variant}>
       {(heading || description || isEditing) && (
-        <div className="text-center mb-8">
+        <div data-slot="feature-grid-block-header" className="text-center mb-8">
           {(heading || isEditing) && (
             <h3
+              data-slot="feature-grid-block-heading"
               className="text-xl font-bold"
               contentEditable={!!isEditing}
               suppressContentEditableWarning
               onBlur={(e) => {
                 const v = e.currentTarget.textContent || "";
-                if (v !== heading && onChange) onChange({ ...block, data: { ...block.data, heading: v } });
+                if (v !== heading && onChange)
+                  onChange({
+                    ...block,
+                    data: { ...block.data, heading: v },
+                  });
               }}
-              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              style={
+                isEditing ? { cursor: "text", outline: "none" } : undefined
+              }
             >
               {heading || "Features"}
             </h3>
           )}
           {(description || isEditing) && (
             <p
-              className="text-[14px] text-[var(--el-500)] mt-1"
+              data-slot="feature-grid-block-description"
+              className="text-[14px] text-(--el-500) mt-1"
               contentEditable={!!isEditing}
               suppressContentEditableWarning
               onBlur={(e) => {
                 const v = e.currentTarget.textContent || "";
-                if (v !== description && onChange) onChange({ ...block, data: { ...block.data, description: v } });
+                if (v !== description && onChange)
+                  onChange({
+                    ...block,
+                    data: { ...block.data, description: v },
+                  });
               }}
-              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              style={
+                isEditing ? { cursor: "text", outline: "none" } : undefined
+              }
             >
               {description || "What we offer"}
             </p>
@@ -73,6 +87,8 @@ export default function FeatureGridBlockRenderer({
         </div>
       )}
       <div
+        data-slot="feature-grid-block-grid"
+        data-columns={String(columns)}
         className={cn(
           "grid gap-6",
           columns === 2 && "grid-cols-1 md:grid-cols-2",
@@ -83,17 +99,26 @@ export default function FeatureGridBlockRenderer({
         {features.map((feature, i) => (
           <div
             key={i}
+            data-slot="feature-grid-block-item"
+            data-variant={variant}
             className={cn(
               "p-5",
-              variant === "card" && "bg-[var(--el-0)] border border-[var(--border-default)] rounded-lg shadow-sm",
+              variant === "card" &&
+                "bg-(--el-0) border border-(--border-default) rounded-lg shadow-sm",
               variant === "centered" && "text-center",
-              variant === "default" && "bg-[var(--el-100)]/20 rounded-lg",
+              variant === "default" && "bg-(--el-100)/20 rounded-lg",
             )}
           >
             {feature.icon && (
-              <div className="text-2xl mb-2">{feature.icon}</div>
+              <div
+                data-slot="feature-grid-block-icon"
+                className="text-2xl mb-2"
+              >
+                {feature.icon}
+              </div>
             )}
             <h4
+              data-slot="feature-grid-block-title"
               className="text-[14px] font-semibold mb-1"
               contentEditable={!!isEditing}
               suppressContentEditableWarning
@@ -101,19 +126,25 @@ export default function FeatureGridBlockRenderer({
                 const v = e.currentTarget.textContent || "";
                 if (v !== feature.title) updateFeature(i, "title", v);
               }}
-              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              style={
+                isEditing ? { cursor: "text", outline: "none" } : undefined
+              }
             >
               {feature.title}
             </h4>
             <p
-              className="text-[13px] text-[var(--el-500)]"
+              data-slot="feature-grid-block-text"
+              className="text-[13px] text-(--el-500)"
               contentEditable={!!isEditing}
               suppressContentEditableWarning
               onBlur={(e) => {
                 const v = e.currentTarget.textContent || "";
-                if (v !== feature.description) updateFeature(i, "description", v);
+                if (v !== feature.description)
+                  updateFeature(i, "description", v);
               }}
-              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+              style={
+                isEditing ? { cursor: "text", outline: "none" } : undefined
+              }
             >
               {feature.description}
             </p>
