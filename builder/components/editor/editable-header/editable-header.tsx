@@ -17,6 +17,7 @@ import { HeaderSettingsPopover } from "./header-settings-popover";
 import { HeaderLibraryPicker } from "./header-library-picker";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useUIStore } from "@/lib/stores/ui-store";
 
 import "./editable-header.css";
 
@@ -148,6 +149,7 @@ export function EditableHeader({
 }: EditableHeaderProps) {
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [libraryOpen, setLibraryOpen] = React.useState(false);
+  const { setSelectedElement } = useUIStore();
 
   // Fetch header data
   const { data: specificHeader } = useHeader(
@@ -248,8 +250,17 @@ export function EditableHeader({
         libraryOpen && "is-popover-open",
       )}
     >
-      {/* Header Visual - with border on hover */}
-      <div className="editable-header-visual">
+      {/* Header Visual - click to select in settings panel */}
+      <div
+        className="editable-header-visual"
+        onClick={() =>
+          setSelectedElement({
+            type: "header",
+            key: header.id,
+            sectionIndex: -1,
+          })
+        }
+      >
         {/* Header Content */}
         <HeaderContent header={header} tenantId={tenantId} />
 

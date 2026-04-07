@@ -90,11 +90,11 @@ export class AppModule implements NestModule {
     consumer
       .apply(TenantMiddleware)
       .exclude(
-        "api/v1/health(.*)",
-        "api/v1/webhooks(.*)",
-        "api/v1/public(.*)",
-        "api/v1/preview/validate(.*)",
-        "api/v1/payments/webhooks(.*)",
+        "health(.*)",
+        "webhooks(.*)",
+        "public(.*)",
+        "preview/validate(.*)",
+        "payments/webhooks(.*)",
       )
       .forRoutes("*");
   }
