@@ -7,7 +7,8 @@ import {
   blockRendererRegistry,
   type BlockRendererProps,
 } from "@/lib/renderer/block-renderer-registry";
-import { allStylesToCSSVars, hasStyles, mergeStyles } from "@/lib/types/section";
+import { hasStyles } from "@/lib/types/section";
+import { getElementClass } from "@enterprise/tokens";
 
 interface Props {
   block: Block;
@@ -74,22 +75,9 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
     .replace(/\b\w/g, (c) => c.toUpperCase());
 
   const blockAny = block as Record<string, unknown>;
-  const responsive = blockAny._responsive as Record<string, Record<string, unknown>> | undefined;
-
-  // Merge responsive overrides: desktop styles + breakpoint overrides
-  const baseStyles = blockAny.styles as Record<string, string> | undefined;
-  const bpOverrides = breakpoint !== "desktop" && responsive?.[breakpoint]?.styles as Record<string, string> | undefined;
-  const styles = bpOverrides ? mergeStyles(baseStyles, bpOverrides) : baseStyles;
-
-  const baseBefore = blockAny.stylesBefore as Record<string, string> | undefined;
-  const bpBefore = breakpoint !== "desktop" && responsive?.[breakpoint]?.stylesBefore as Record<string, string> | undefined;
-  const stylesBefore = bpBefore ? mergeStyles(baseBefore, bpBefore) : baseBefore;
-
-  const baseAfter = blockAny.stylesAfter as Record<string, string> | undefined;
-  const bpAfter = breakpoint !== "desktop" && responsive?.[breakpoint]?.stylesAfter as Record<string, string> | undefined;
-  const stylesAfter = bpAfter ? mergeStyles(baseAfter, bpAfter) : baseAfter;
-
-  const cssVars = allStylesToCSSVars(styles, stylesBefore, stylesAfter);
+  const styles = blockAny.styles as Record<string, string> | undefined;
+  const stylesBefore = blockAny.stylesBefore as Record<string, string> | undefined;
+  const stylesAfter = blockAny.stylesAfter as Record<string, string> | undefined;
   const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter);
 
   // Check if block has a link wrapper
@@ -98,12 +86,9 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
 
   const content = (
     <div
+      className={styled ? getElementClass(block._key) : undefined}
       data-block-key={block._key}
       data-block-label={label}
-      data-styled={styled || undefined}
-      data-has-before={hasStyles(stylesBefore) || undefined}
-      data-has-after={hasStyles(stylesAfter) || undefined}
-      style={styled ? (cssVars as React.CSSProperties) : undefined}
     >
       <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />
     </div>
