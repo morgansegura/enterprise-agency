@@ -91,6 +91,10 @@ export class AppModule implements NestModule {
       .apply(TenantMiddleware)
       .exclude(
         "health(.*)",
+        "auth/me",
+        "auth/refresh",
+        "auth/login",
+        "auth/register",
         "webhooks(.*)",
         "public(.*)",
         "preview/validate(.*)",

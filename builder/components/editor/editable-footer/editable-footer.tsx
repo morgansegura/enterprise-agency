@@ -17,6 +17,7 @@ import { FooterSettingsPopover } from "./footer-settings-popover";
 import { FooterLibraryPicker } from "./footer-library-picker";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useUIStore } from "@/lib/stores/ui-store";
 
 import "./editable-footer.css";
 
@@ -133,6 +134,7 @@ export function EditableFooter({
 }: EditableFooterProps) {
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [libraryOpen, setLibraryOpen] = React.useState(false);
+  const { setSelectedElement } = useUIStore();
 
   // Fetch footer data
   const { data: specificFooter } = useFooter(
@@ -234,7 +236,16 @@ export function EditableFooter({
       )}
     >
       {/* Footer Visual - with border on hover */}
-      <div className="editable-footer-visual">
+      <div
+        className="editable-footer-visual"
+        onClick={() =>
+          setSelectedElement({
+            type: "footer",
+            key: footer.id,
+            sectionIndex: -1,
+          })
+        }
+      >
         {/* Footer Content */}
         <FooterContent footer={footer} />
 

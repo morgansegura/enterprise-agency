@@ -148,6 +148,14 @@ export function SettingsPanel({
   const getSelectedData = React.useCallback(() => {
     if (!selectedElement) return null;
 
+    // Header/footer are not in sections array — use external data
+    if (selectedElement.type === "header" && headerData) {
+      return { type: "header" as const, data: headerData };
+    }
+    if (selectedElement.type === "footer" && footerData) {
+      return { type: "footer" as const, data: footerData };
+    }
+
     const section = sections[selectedElement.sectionIndex];
     if (!section) return null;
 
@@ -178,7 +186,7 @@ export function SettingsPanel({
     }
 
     return null;
-  }, [sections, selectedElement]);
+  }, [sections, selectedElement, headerData, footerData]);
 
   const selectedData = getSelectedData();
 
@@ -352,6 +360,28 @@ export function SettingsPanel({
                             updated,
                           )
                         }
+                      />
+                    )}
+                    {(selectedElement.type === "header" ||
+                      selectedElement.type === "footer") && (
+                      <ElementStyleEditor
+                        styles={
+                          (selectedData.data as Record<string, unknown>)
+                            ?.style as Record<string, string> | undefined
+                        }
+                        onStylesChange={(updatedStyles) => {
+                          if (selectedElement.type === "header") {
+                            onHeaderDataChange?.({
+                              ...(selectedData.data as Record<string, unknown>),
+                              style: updatedStyles,
+                            });
+                          } else {
+                            onFooterDataChange?.({
+                              ...(selectedData.data as Record<string, unknown>),
+                              style: updatedStyles,
+                            });
+                          }
+                        }}
                       />
                     )}
                   </>
