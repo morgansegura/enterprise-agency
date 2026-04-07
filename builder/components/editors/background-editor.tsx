@@ -8,12 +8,10 @@ import {
   LayoutGrid,
   Image as ImageIcon,
   Ban,
-  X,
-  PlusCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ColorPicker } from "@/components/ui/color-picker";
-import { TailwindColorPicker } from "@/components/ui/color-picker";
+import { GradientBuilder } from "@/components/editors/gradient-builder";
 import type { SectionBackground } from "@/lib/types/section";
 import {
   BACKGROUND_SIZE_OPTIONS,
@@ -25,21 +23,6 @@ import {
 } from "@/components/editor/settings-panel/components";
 
 import "./background-editor.css";
-
-// =============================================================================
-// Tailwind Gradient Direction Options
-// =============================================================================
-
-const GRADIENT_DIRECTION_OPTIONS = [
-  { value: "to-t", label: "To Top" },
-  { value: "to-tr", label: "To Top Right" },
-  { value: "to-r", label: "To Right" },
-  { value: "to-br", label: "To Bottom Right" },
-  { value: "to-b", label: "To Bottom" },
-  { value: "to-bl", label: "To Bottom Left" },
-  { value: "to-l", label: "To Left" },
-  { value: "to-tl", label: "To Top Left" },
-];
 
 // =============================================================================
 // Types
@@ -56,6 +39,8 @@ export interface BackgroundValue {
   type: "none" | "color" | "gradient" | "image";
   color?: string;
   gradient?: TailwindGradient;
+  /** CSS gradient string (e.g. "linear-gradient(180deg, #000 0%, #fff 100%)") */
+  gradientCSS?: string;
   image?: {
     src: string;
     size?: "cover" | "contain" | "auto";
@@ -82,6 +67,8 @@ const DEFAULT_GRADIENT: TailwindGradient = {
   from: "blue-500",
   to: "purple-500",
 };
+const DEFAULT_GRADIENT_CSS =
+  "linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)";
 const DEFAULT_IMAGE: BackgroundValue["image"] = {
   src: "",
   size: "cover",
@@ -132,7 +119,6 @@ export function BackgroundEditor({
   onSelectImage,
 }: BackgroundEditorProps) {
   const background = normalizeBackground(value);
-  const [showVia, setShowVia] = React.useState(!!background.gradient?.via);
 
   const handleTypeChange = (type: BackgroundValue["type"]) => {
     switch (type) {
@@ -148,7 +134,8 @@ export function BackgroundEditor({
       case "gradient":
         onChange({
           type: "gradient",
-          gradient: background.gradient || DEFAULT_GRADIENT,
+          gradientCSS:
+            background.gradientCSS || DEFAULT_GRADIENT_CSS,
         });
         break;
       case "image":
@@ -164,12 +151,8 @@ export function BackgroundEditor({
     onChange({ ...background, color });
   };
 
-  const handleGradientChange = (updates: Partial<TailwindGradient>) => {
-    onChange({
-      ...background,
-      type: "gradient",
-      gradient: { ...(background.gradient || DEFAULT_GRADIENT), ...updates },
-    });
+  const handleGradientCSSChange = (css: string) => {
+    onChange({ ...background, type: "gradient", gradientCSS: css });
   };
 
   const handleImageChange = (
@@ -180,18 +163,6 @@ export function BackgroundEditor({
       type: "image",
       image: { ...(background.image || DEFAULT_IMAGE), ...updates },
     });
-  };
-
-  const toggleVia = () => {
-    if (showVia) {
-      const newGradient = { ...(background.gradient || DEFAULT_GRADIENT) };
-      delete newGradient.via;
-      onChange({ ...background, gradient: newGradient });
-      setShowVia(false);
-    } else {
-      handleGradientChange({ via: "purple-500" });
-      setShowVia(true);
-    }
   };
 
   return (
@@ -254,77 +225,12 @@ export function BackgroundEditor({
         </PropertyRow>
       )}
 
-      {/* Tailwind Gradient Editor */}
+      {/* CSS Gradient Editor */}
       {background.type === "gradient" && (
-        <>
-          <PropertyRow label="Direction">
-            <PropertySelect
-              value={background.gradient?.direction || "to-r"}
-              options={GRADIENT_DIRECTION_OPTIONS}
-              onChange={(v) => handleGradientChange({ direction: v })}
-            />
-          </PropertyRow>
-
-          <PropertyRow label="From">
-            <TailwindColorPicker
-              value={background.gradient?.from || "blue-500"}
-              onChange={(v) => handleGradientChange({ from: v })}
-            />
-          </PropertyRow>
-
-          {showVia && (
-            <PropertyRow label="Via">
-              <div className="flex items-center gap-1 w-full">
-                <TailwindColorPicker
-                  value={background.gradient?.via || "purple-500"}
-                  onChange={(v) => handleGradientChange({ via: v })}
-                  className="flex-1"
-                />
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={toggleVia}
-                  title="Remove"
-                  className="h-6 w-6 shrink-0"
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              </div>
-            </PropertyRow>
-          )}
-
-          <PropertyRow label="To">
-            <TailwindColorPicker
-              value={background.gradient?.to || "pink-500"}
-              onChange={(v) => handleGradientChange({ to: v })}
-            />
-          </PropertyRow>
-
-          {!showVia && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full text-xs text-[var(--el-500)]"
-              onClick={toggleVia}
-            >
-              <PlusCircle className="h-3 w-3 mr-1" />
-              Add Via
-            </Button>
-          )}
-
-          {/* Preview */}
-          <div className="background-editor-gradient-preview">
-            <div
-              className={cn(
-                "background-editor-gradient-swatch",
-                `bg-gradient-${background.gradient?.direction || "to-r"}`,
-                `from-${background.gradient?.from || "blue-500"}`,
-                background.gradient?.via && `via-${background.gradient.via}`,
-                `to-${background.gradient?.to || "pink-500"}`,
-              )}
-            />
-          </div>
-        </>
+        <GradientBuilder
+          value={background.gradientCSS || DEFAULT_GRADIENT_CSS}
+          onChange={handleGradientCSSChange}
+        />
       )}
 
       {/* Image Editor */}
