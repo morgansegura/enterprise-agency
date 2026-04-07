@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { getResponsiveValue } from "@/lib/responsive";
+import { getElementClass } from "@enterprise/tokens";
 
 // Re-export for use by page editor
 export type { Container };
@@ -296,11 +297,11 @@ export function SortableSection({
       <div
         className={cn(
           "section-visual section",
+          getElementClass(section._key),
           isSectionSelected && "is-selected",
         )}
         onClick={handleSectionClick}
-        // Section-level data attributes (matches client/components/layout/section/section.tsx)
-        // All values are responsive-aware via getSectionValue()
+        // Section-level data attributes (structural layout)
         data-padding-top={effectivePaddingTop}
         data-padding-bottom={effectivePaddingBottom}
         data-gap-y={gapY || undefined}

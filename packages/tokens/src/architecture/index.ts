@@ -119,3 +119,11 @@ export {
 
 // Element styles utilities
 export { stylesToCSSVars, allStylesToCSSVars, hasStyles, mergeStyles } from "./element-styles";
+
+// CSS generator
+export {
+  generatePageCSS,
+  generateElementCSS,
+  getElementClass,
+  CLASS_PREFIX,
+} from "./generate-css";

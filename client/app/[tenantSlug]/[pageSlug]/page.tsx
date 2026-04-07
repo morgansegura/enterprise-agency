@@ -5,6 +5,7 @@ import { BreadcrumbSchema } from "@/components/seo";
 import { HeaderRenderer } from "@/components/header-renderer";
 import { FooterRenderer } from "@/components/footer-renderer";
 import type { TypedSection } from "@/components/section-renderer/section-renderer";
+import { generatePageCSS } from "@enterprise/tokens";
 import {
   createPublicApiClientForTenant,
   type SiteConfig,
@@ -172,6 +173,9 @@ export default async function TenantPage({ params }: PageProps) {
     ? getHeaderMenu(headerConfig, resolverConfig)
     : null;
 
+  // Generate scoped CSS from section/container/block styles
+  const pageCSS = generatePageCSS(sections as never[]);
+
   return (
     <>
       <BreadcrumbSchema
@@ -180,6 +184,12 @@ export default async function TenantPage({ params }: PageProps) {
           { name: pageTitle, url: `${siteUrl}/${tenantSlug}/${pageSlug}` },
         ]}
       />
+      {pageCSS && (
+        <style
+          id="page-styles"
+          dangerouslySetInnerHTML={{ __html: pageCSS }}
+        />
+      )}
       <Page
         header={
           headerConfig ? (

@@ -1,8 +1,9 @@
-import * as React from "react";
+// Section renderer for builder preview canvas
 import type { Section } from "@/lib/hooks/use-pages";
 import { cn } from "@/lib/utils";
 import { BlockRenderer } from "./block-renderer";
-import { stylesToCSSVars, hasStyles } from "@/lib/types/section";
+import { hasStyles } from "@/lib/types/section";
+import { getElementClass } from "@enterprise/tokens";
 
 interface SectionRendererProps {
   section: Section;
@@ -81,16 +82,17 @@ export function SectionRenderer({
 
   return (
     <section
-      className={cn(sectionBackground, sectionAlign)}
+      className={cn(
+        getElementClass(section._key),
+        sectionBackground,
+        sectionAlign,
+      )}
       data-block-key={section._key}
       data-block-label={`Section ${sectionIndex + 1}`}
-      data-styled={hasStyles(section.styles) || undefined}
-      style={hasStyles(section.styles) ? (stylesToCSSVars(section.styles) as React.CSSProperties) : undefined}
     >
       <div className={cn(sectionSpacing, sectionWidth)}>
         {containers.map((container, containerIndex) => {
-          const containerStyled = hasStyles(container.styles);
-          const containerVars = containerStyled ? stylesToCSSVars(container.styles) : undefined;
+          const _containerStyled = hasStyles(container.styles);
 
           // Build layout classes from container.layout
           const layout = container.layout as Record<string, unknown> | undefined;
@@ -110,11 +112,9 @@ export function SectionRenderer({
           return (
           <div
             key={container._key}
-            className={layoutClasses}
+            className={cn(getElementClass(container._key), layoutClasses)}
             data-block-key={container._key}
             data-block-label={`Container ${containerIndex + 1}`}
-            data-styled={containerStyled || undefined}
-            style={containerVars ? (containerVars as React.CSSProperties) : undefined}
           >
             {container.blocks?.map((block, blockIndex) => (
               <BlockRenderer

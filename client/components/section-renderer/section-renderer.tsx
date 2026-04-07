@@ -8,16 +8,10 @@ import type { BackgroundVariant } from "@/lib/types";
 import type {
   Section as SectionType,
   Container as ContainerType,
-  SectionBackground,
-  GradientConfig,
-  TailwindGradientConfig,
 } from "@/lib/types/section";
-import {
-  isLegacyGradientConfig,
-  isTailwindGradientConfig,
-} from "@/lib/types/section";
+import type { SectionBackground } from "@/lib/types/section";
 import type { RootBlock } from "@/lib/blocks";
-import { allStylesToCSSVars } from "@enterprise/tokens";
+import { getElementClass } from "@enterprise/tokens";
 
 // Re-export types for external use
 export type { SectionBackground };
@@ -43,136 +37,34 @@ const backgroundPresets = [
 ];
 
 /**
- * Generate CSS gradient string from gradient config
- */
-function generateGradientCss(
-  gradient: GradientConfig | TailwindGradientConfig,
-): string {
-  if (isLegacyGradientConfig(gradient)) {
-    const stops = gradient.stops
-      .map((s) => `${s.color} ${s.position}%`)
-      .join(", ");
-    return gradient.type === "linear"
-      ? `linear-gradient(${gradient.angle || 180}deg, ${stops})`
-      : `radial-gradient(circle, ${stops})`;
-  }
-
-  if (isTailwindGradientConfig(gradient)) {
-    // Convert Tailwind direction to CSS angle
-    const directionMap: Record<string, string> = {
-      "to-t": "0deg",
-      "to-tr": "45deg",
-      "to-r": "90deg",
-      "to-br": "135deg",
-      "to-b": "180deg",
-      "to-bl": "225deg",
-      "to-l": "270deg",
-      "to-tl": "315deg",
-    };
-    const angle = directionMap[gradient.direction] || "180deg";
-    const stops = gradient.via
-      ? `var(--color-${gradient.from}), var(--color-${gradient.via}), var(--color-${gradient.to})`
-      : `var(--color-${gradient.from}), var(--color-${gradient.to})`;
-    return `linear-gradient(${angle}, ${stops})`;
-  }
-
-  return "";
-}
-
-/**
- * Normalize background to data attribute and inline style
+ * Resolve background to a data-background attribute value.
+ * Visual styling (colors, gradients, images) is handled by the
+ * generated page stylesheet — this only determines the preset
+ * attribute for structural concerns like text color.
  */
 function normalizeBackground(
   background?: BackgroundVariant | string | SectionBackground,
-): {
-  dataBackground: BackgroundVariant;
-  style?: React.CSSProperties;
-} {
+): { dataBackground: BackgroundVariant } {
   if (!background) {
     return { dataBackground: "none" };
   }
 
-  // Legacy string format
+  // String preset: "primary", "dark", etc.
   if (typeof background === "string") {
     if (backgroundPresets.includes(background)) {
       return { dataBackground: background as BackgroundVariant };
     }
-    // Custom color string
-    return { dataBackground: "none", style: { backgroundColor: background } };
+    return { dataBackground: "none" };
   }
 
-  // New object format
-  switch (background.type) {
-    case "none":
-      return { dataBackground: "none" };
-    case "color": {
-      const color = background.color;
-      if (!color) return { dataBackground: "none" };
-      if (backgroundPresets.includes(color)) {
-        return { dataBackground: color as BackgroundVariant };
-      }
-      return {
-        dataBackground: "none",
-        style: { backgroundColor: color },
-      };
-    }
-    case "gradient": {
-      const gradientCss = background.gradient
-        ? generateGradientCss(background.gradient)
-        : "";
-      return {
-        dataBackground: "none",
-        style: gradientCss ? { background: gradientCss } : undefined,
-      };
-    }
-    case "image": {
-      const { image } = background;
-      if (!image) return { dataBackground: "none" };
-      const style: React.CSSProperties = {
-        backgroundImage: `url(${image.src})`,
-        backgroundSize: image.size || "cover",
-        backgroundPosition: image.position || "center",
-        backgroundRepeat: image.repeat || "no-repeat",
-      };
-      return { dataBackground: "none", style };
-    }
-    default:
-      return { dataBackground: "none" };
-  }
-}
-
-/**
- * Get container background style
- */
-function getContainerBackgroundStyle(
-  background?: string | SectionBackground,
-): React.CSSProperties | undefined {
-  if (!background) return undefined;
-
-  if (typeof background === "string") {
-    if (background === "none" || background === "transparent") return undefined;
-    return { backgroundColor: background };
-  }
-
+  // Object format — only "color" presets get a data attribute
   if (background.type === "color" && background.color) {
-    return { backgroundColor: background.color };
+    if (backgroundPresets.includes(background.color)) {
+      return { dataBackground: background.color as BackgroundVariant };
+    }
   }
 
-  if (background.type === "gradient" && background.gradient) {
-    const gradientCss = generateGradientCss(background.gradient);
-    return gradientCss ? { background: gradientCss } : undefined;
-  }
-
-  if (background.type === "image" && background.image) {
-    return {
-      backgroundImage: `url(${background.image.src})`,
-      backgroundSize: background.image.size || "cover",
-      backgroundPosition: background.image.position || "center",
-      backgroundRepeat: background.image.repeat || "no-repeat",
-    };
-  }
-
-  return undefined;
+  return { dataBackground: "none" };
 }
 
 // =============================================================================
@@ -212,46 +104,24 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
   return (
     <div className={className}>
       {sections.map((section) => {
-        // Build section inline style — merge background + element styles
-        const sectionData = section as SectionType & {
-          styles?: Record<string, string>;
-          stylesBefore?: Record<string, string>;
-          stylesAfter?: Record<string, string>;
-        };
-        const elementStyleVars = sectionData.styles
-          ? allStylesToCSSVars(sectionData.styles, sectionData.stylesBefore, sectionData.stylesAfter)
-          : {};
+        // Generated CSS class — visual styles come from <style id="page-styles">
+        const sectionClass = getElementClass(section._key);
 
-        // Element styles with backgroundColor must override data-background presets.
-        // The background shorthand in data-attribute CSS rules has higher specificity
-        // than the background-color longhand in [data-styled], so we skip the preset
-        // when the user has explicitly set a background color via element styles.
-        const hasElementBg = !!sectionData.styles?.backgroundColor;
-        const { dataBackground, style: sectionStyle } = hasElementBg
-          ? { dataBackground: "none" as BackgroundVariant, style: undefined }
+        // Data-background is only used when there are NO element styles
+        // overriding the background. The generated CSS handles both cases,
+        // but we keep data-background for structural presets that set text color.
+        const hasElementBg = !!(section as SectionType & { styles?: Record<string, string> }).styles?.backgroundColor;
+        const { dataBackground } = hasElementBg
+          ? { dataBackground: "none" as BackgroundVariant }
           : normalizeBackground(section.background);
-
-        const combinedStyle: React.CSSProperties = {
-          ...sectionStyle,
-          ...elementStyleVars,
-        } as React.CSSProperties;
-        if (section.borderColor) {
-          combinedStyle.borderColor = section.borderColor;
-        }
-        const hasElementStyles = !!sectionData.styles;
 
         return (
           <Section
             key={section._key}
             as={section.as}
-            // Background
+            className={sectionClass}
+            // Background preset (structural: sets text color)
             background={dataBackground}
-            data-styled={hasElementStyles || undefined}
-            data-has-before={sectionData.stylesBefore ? "" : undefined}
-            data-has-after={sectionData.stylesAfter ? "" : undefined}
-            style={
-              Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined
-            }
             // Padding
             paddingY={section.paddingY}
             paddingTop={section.paddingTop}
@@ -264,7 +134,7 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             gapY={section.gapY}
             // Width
             width={section.width}
-            // Borders
+            // Borders (structural presets)
             borderTop={section.borderTop}
             borderBottom={section.borderBottom}
             borderLeft={section.borderLeft}
@@ -287,6 +157,7 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             {section.containers?.map((container) => (
               <Container
                 key={container._key}
+                className={getElementClass(container._key)}
                 // Layout
                 layout={container.layout}
                 // Size
@@ -308,8 +179,6 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
                 // Alignment
                 align={container.align}
                 verticalAlign={container.verticalAlign}
-                // Background
-                style={getContainerBackgroundStyle(container.background)}
               >
                 <BlockRenderer blocks={container.blocks as RootBlock[]} />
               </Container>
