@@ -13,13 +13,7 @@
 .section[data-spacing="xl"] { @apply py-32; }
 .section[data-spacing="2xl"] { @apply py-40; }
 
-/* Background */
-.section[data-background="none"] { @apply bg-transparent; }
-.section[data-background="white"] { @apply bg-white; }
-.section[data-background="gray"] { @apply bg-gray-50; }
-.section[data-background="dark"] { @apply bg-gray-900 text-white; }
-.section[data-background="primary"] { @apply bg-blue-600 text-white; }
-.section[data-background="secondary"] { @apply bg-blue-50; }
+/* Background — removed, now handled by packages/tokens/src/css/section.css */
 
 /* Width (max-width constraint) */
 .section[data-width="narrow"] { @apply max-w-4xl mx-auto px-4; }

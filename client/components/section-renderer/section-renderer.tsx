@@ -212,10 +212,6 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
   return (
     <div className={className}>
       {sections.map((section) => {
-        const { dataBackground, style: sectionStyle } = normalizeBackground(
-          section.background,
-        );
-
         // Build section inline style — merge background + element styles
         const sectionData = section as SectionType & {
           styles?: Record<string, string>;
@@ -225,6 +221,16 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
         const elementStyleVars = sectionData.styles
           ? allStylesToCSSVars(sectionData.styles, sectionData.stylesBefore, sectionData.stylesAfter)
           : {};
+
+        // Element styles with backgroundColor must override data-background presets.
+        // The background shorthand in data-attribute CSS rules has higher specificity
+        // than the background-color longhand in [data-styled], so we skip the preset
+        // when the user has explicitly set a background color via element styles.
+        const hasElementBg = !!sectionData.styles?.backgroundColor;
+        const { dataBackground, style: sectionStyle } = hasElementBg
+          ? { dataBackground: "none" as BackgroundVariant, style: undefined }
+          : normalizeBackground(section.background);
+
         const combinedStyle: React.CSSProperties = {
           ...sectionStyle,
           ...elementStyleVars,

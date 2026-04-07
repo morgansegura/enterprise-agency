@@ -205,7 +205,8 @@ export function Section({
   const effectivePaddingBottom = paddingBottom || paddingY || spacing || "md";
 
   // Get background styles
-  const { dataBackground, style: bgStyle } = getBackgroundStyles(background);
+  const { dataBackground: resolvedBg, style: bgStyle } =
+    getBackgroundStyles(background);
 
   // Build inline style
   const sectionStyle: React.CSSProperties = {
@@ -215,6 +216,15 @@ export function Section({
   if (borderColor) {
     sectionStyle.borderColor = borderColor;
   }
+
+  // If inline style sets any background property, skip the data-background preset
+  // so the shorthand in data-attribute CSS rules doesn't clobber the inline value.
+  const hasInlineBg =
+    sectionStyle.backgroundColor ||
+    sectionStyle.backgroundImage ||
+    sectionStyle.background ||
+    (style && ("--b-background-color" in style || "--b-background-image" in style));
+  const dataBackground = hasInlineBg ? "none" : resolvedBg;
 
   return (
     <Component
