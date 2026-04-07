@@ -6,7 +6,7 @@ import { devtools } from "zustand/middleware";
  * Used to determine what settings to show in the right panel
  */
 export interface SelectedElement {
-  type: "section" | "container" | "block";
+  type: "section" | "container" | "block" | "header" | "footer";
   key: string;
   sectionIndex: number;
   containerIndex?: number;

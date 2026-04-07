@@ -147,6 +147,15 @@ async function bootstrap() {
     }),
   );
 
+  // Root health check — responds before middleware/prefix so Render health checks pass
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.get(
+    "/",
+    (_req: unknown, res: { json: (body: unknown) => void }) => {
+      res.json({ status: "ok", timestamp: new Date().toISOString() });
+    },
+  );
+
   // API prefix - all routes start with /api
   app.setGlobalPrefix("api/v1");
 

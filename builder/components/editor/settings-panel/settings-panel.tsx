@@ -104,6 +104,11 @@ interface SettingsPanelProps {
     onFooterChange: (id: string | null) => void;
     tenantId: string;
   };
+  // Header/footer data for settings panel when selected
+  headerData?: Record<string, unknown> | null;
+  onHeaderDataChange?: (data: Record<string, unknown>) => void;
+  footerData?: Record<string, unknown> | null;
+  onFooterDataChange?: (data: Record<string, unknown>) => void;
 }
 
 
@@ -128,6 +133,10 @@ export function SettingsPanel({
   onBlockDuplicate: _onBlockDuplicate,
   onBlockDelete: _onBlockDelete,
   pageSettings,
+  headerData,
+  onHeaderDataChange,
+  footerData,
+  onFooterDataChange,
 }: SettingsPanelProps) {
   const { rightPanelOpen, rightPanelWidth, selectedElement, toggleRightPanel } =
     useUIStore();
