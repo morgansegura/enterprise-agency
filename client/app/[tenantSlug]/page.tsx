@@ -4,6 +4,7 @@ import { SectionRenderer } from "@/components/section-renderer";
 import { HeaderRenderer } from "@/components/header-renderer";
 import { FooterRenderer } from "@/components/footer-renderer";
 import type { TypedSection } from "@/components/section-renderer/section-renderer";
+import { generatePageCSS } from "@enterprise/tokens";
 import {
   createPublicApiClientForTenant,
   type SiteConfig,
@@ -143,23 +144,34 @@ export default async function TenantHomePage({ params }: PageProps) {
     ? getHeaderMenu(headerConfig, resolverConfig)
     : null;
 
+  // Generate scoped CSS from section/container/block styles
+  const pageCSS = generatePageCSS(sections as never[]);
+
   return (
-    <Page
-      header={
-        headerConfig ? (
-          <HeaderRenderer
-            config={headerConfig}
-            menu={headerMenu}
-            logos={logos}
-          />
-        ) : undefined
-      }
-      footer={
-        footerConfig ? <FooterRenderer config={footerConfig} /> : undefined
-      }
-      headerPosition={headerConfig?.behavior.position}
-    >
-      <SectionRenderer sections={sections} />
-    </Page>
+    <>
+      {pageCSS && (
+        <style
+          id="page-styles"
+          dangerouslySetInnerHTML={{ __html: pageCSS }}
+        />
+      )}
+      <Page
+        header={
+          headerConfig ? (
+            <HeaderRenderer
+              config={headerConfig}
+              menu={headerMenu}
+              logos={logos}
+            />
+          ) : undefined
+        }
+        footer={
+          footerConfig ? <FooterRenderer config={footerConfig} /> : undefined
+        }
+        headerPosition={headerConfig?.behavior.position}
+      >
+        <SectionRenderer sections={sections} />
+      </Page>
+    </>
   );
 }

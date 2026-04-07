@@ -188,23 +188,23 @@
  * SECTION BACKGROUNDS
  * ========================================== */
 
-.section[data-background="none"] { background: var(--section-bg-none); }
-.section[data-background="white"] { background: var(--section-bg-white); }
-.section[data-background="gray"] { background: var(--section-bg-gray); }
+.section[data-background="none"] { background-color: var(--section-bg-none); }
+.section[data-background="white"] { background-color: var(--section-bg-white); }
+.section[data-background="gray"] { background-color: var(--section-bg-gray); }
 .section[data-background="dark"] {
-  background: var(--section-bg-dark);
+  background-color: var(--section-bg-dark);
   color: white;
 }
 .section[data-background="primary"] {
-  background: var(--section-bg-primary);
+  background-color: var(--section-bg-primary);
   color: var(--primary-foreground, white);
 }
 .section[data-background="secondary"] {
-  background: var(--section-bg-secondary);
+  background-color: var(--section-bg-secondary);
   color: var(--secondary-foreground, white);
 }
-.section[data-background="muted"] { background: var(--section-bg-muted); }
-.section[data-background="accent"] { background: var(--section-bg-accent); }
+.section[data-background="muted"] { background-color: var(--section-bg-muted); }
+.section[data-background="accent"] { background-color: var(--section-bg-accent); }
 
 /* ==========================================
  * SECTION BORDERS

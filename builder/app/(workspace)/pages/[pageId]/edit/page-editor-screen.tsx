@@ -37,6 +37,7 @@ import { useIsBuilder } from "@/lib/hooks/use-tier";
 import { useTenant } from "@/lib/hooks/use-tenants";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
+import { generatePageCSS } from "@enterprise/tokens";
 
 // =============================================================================
 // Page Editor
@@ -70,6 +71,12 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
 
   // Breakpoint state for responsive preview
   const [breakpoint, setBreakpoint] = React.useState<Breakpoint>("desktop");
+
+  // Generated page CSS — visual styles rendered via <style> tag, not inline
+  const pageCSS = React.useMemo(
+    () => generatePageCSS(editor.sections as never[]),
+    [editor.sections],
+  );
 
   // Modal states
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
@@ -656,6 +663,13 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                 }
               }}
             >
+              {/* Generated page styles — visual CSS from element styles */}
+              {pageCSS && (
+                <style
+                  id="page-styles"
+                  dangerouslySetInnerHTML={{ __html: pageCSS }}
+                />
+              )}
               {/* Floating toolbar above selected block */}
               {selectedBlockKey && selectedElement?.type === "block" && (
                 <BlockToolbar

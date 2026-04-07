@@ -28,375 +28,10 @@ import type { Block } from "@/lib/types/section";
 import type { ElementStyles } from "@enterprise/tokens";
 import { googleFonts } from "@/lib/fonts/google-fonts";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
-
-// =============================================================================
-// Visual Builders — replace raw text inputs with intuitive controls
-// =============================================================================
-
-/** Box Shadow Builder — X, Y, Blur, Spread, Color */
-function ShadowBuilder({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  // Parse "Xpx Ypx Bpx Spx #color"
-  const parts = (value || "").match(
-    /(-?\d+)px\s+(-?\d+)px\s+(\d+)px\s+(-?\d+)px\s+(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\))/,
-  );
-  const x = parts?.[1] || "0";
-  const y = parts?.[2] || "4";
-  const blur = parts?.[3] || "6";
-  const spread = parts?.[4] || "0";
-  const color = parts?.[5] || "rgba(0,0,0,0.1)";
-
-  const build = (nx: string, ny: string, nb: string, ns: string, nc: string) =>
-    `${nx}px ${ny}px ${nb}px ${ns}px ${nc}`;
-
-  return (
-    <>
-      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold px-0">
-        {label}
-      </span>
-      <PropertyRow label="X">
-        <Input value={x} onChange={(e) => onChange(build(e.target.value, y, blur, spread, color))} className="w-16 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Y">
-        <Input value={y} onChange={(e) => onChange(build(x, e.target.value, blur, spread, color))} className="w-16 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Blur">
-        <Input value={blur} onChange={(e) => onChange(build(x, y, e.target.value, spread, color))} className="w-16 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Spread">
-        <Input value={spread} onChange={(e) => onChange(build(x, y, blur, e.target.value, color))} className="w-16 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Color">
-        <div className="flex items-center gap-1.5">
-          <input type="color" value={color.startsWith("#") ? color : "#000000"} onChange={(e) => onChange(build(x, y, blur, spread, e.target.value))} className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer" />
-          <Input value={color} onChange={(e) => onChange(build(x, y, blur, spread, e.target.value))} className="flex-1 h-7 text-xs" />
-        </div>
-      </PropertyRow>
-      {value && (
-        <button
-          type="button"
-          onClick={() => onChange("")}
-          className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
-        >
-          Remove shadow
-        </button>
-      )}
-    </>
-  );
-}
-
-/** Transform Builder — individual controls for translate, rotate, scale, skew */
-function TransformBuilder({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  // Parse individual transforms
-  const getVal = (fn: string, def: string) => {
-    const match = (value || "").match(new RegExp(`${fn}\\(([^)]+)\\)`));
-    return match?.[1] || def;
-  };
-
-  const tx = getVal("translateX", "0px");
-  const ty = getVal("translateY", "0px");
-  const rotate = getVal("rotate", "0deg");
-  const sx = getVal("scaleX", "1");
-  const sy = getVal("scaleY", "1");
-  const skx = getVal("skewX", "0deg");
-  const sky = getVal("skewY", "0deg");
-
-  const build = (ntx: string, nty: string, nr: string, nsx: string, nsy: string, nskx: string, nsky: string) => {
-    const parts: string[] = [];
-    if (ntx !== "0px") parts.push(`translateX(${ntx})`);
-    if (nty !== "0px") parts.push(`translateY(${nty})`);
-    if (nr !== "0deg") parts.push(`rotate(${nr})`);
-    if (nsx !== "1" || nsy !== "1") parts.push(`scaleX(${nsx}) scaleY(${nsy})`);
-    if (nskx !== "0deg") parts.push(`skewX(${nskx})`);
-    if (nsky !== "0deg") parts.push(`skewY(${nsky})`);
-    return parts.join(" ") || "";
-  };
-
-  return (
-    <>
-      <PropertyRow label="Move X">
-        <Input value={tx} onChange={(e) => onChange(build(e.target.value, ty, rotate, sx, sy, skx, sky))} placeholder="0px" className="w-20 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Move Y">
-        <Input value={ty} onChange={(e) => onChange(build(tx, e.target.value, rotate, sx, sy, skx, sky))} placeholder="0px" className="w-20 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Rotate">
-        <Input value={rotate} onChange={(e) => onChange(build(tx, ty, e.target.value, sx, sy, skx, sky))} placeholder="0deg" className="w-20 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Scale X">
-        <Input value={sx} onChange={(e) => onChange(build(tx, ty, rotate, e.target.value, sy, skx, sky))} placeholder="1" className="w-20 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Scale Y">
-        <Input value={sy} onChange={(e) => onChange(build(tx, ty, rotate, sx, e.target.value, skx, sky))} placeholder="1" className="w-20 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Skew X">
-        <Input value={skx} onChange={(e) => onChange(build(tx, ty, rotate, sx, sy, e.target.value, sky))} placeholder="0deg" className="w-20 h-7 text-xs text-center" />
-      </PropertyRow>
-      <PropertyRow label="Skew Y">
-        <Input value={sky} onChange={(e) => onChange(build(tx, ty, rotate, sx, sy, skx, e.target.value))} placeholder="0deg" className="w-20 h-7 text-xs text-center" />
-      </PropertyRow>
-    </>
-  );
-}
-
-/** Filter Builder — sliders for blur, brightness, contrast, saturate, etc. */
-function FilterBuilder({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  const getVal = (fn: string, def: string) => {
-    const match = (value || "").match(new RegExp(`${fn}\\(([^)]+)\\)`));
-    return match?.[1] || def;
-  };
-
-  const blur = getVal("blur", "0px");
-  const brightness = getVal("brightness", "1");
-  const contrast = getVal("contrast", "1");
-  const saturate = getVal("saturate", "1");
-  const grayscale = getVal("grayscale", "0");
-  const hueRotate = getVal("hue-rotate", "0deg");
-
-  const build = (nb: string, nbr: string, nc: string, ns: string, ng: string, nh: string) => {
-    const parts: string[] = [];
-    if (nb !== "0px") parts.push(`blur(${nb})`);
-    if (nbr !== "1") parts.push(`brightness(${nbr})`);
-    if (nc !== "1") parts.push(`contrast(${nc})`);
-    if (ns !== "1") parts.push(`saturate(${ns})`);
-    if (ng !== "0") parts.push(`grayscale(${ng})`);
-    if (nh !== "0deg") parts.push(`hue-rotate(${nh})`);
-    return parts.join(" ") || "";
-  };
-
-  return (
-    <>
-      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">
-        {label}
-      </span>
-      <PropertyRow label="Blur">
-        <div className="flex items-center gap-2 flex-1">
-          <input type="range" min="0" max="20" step="1" value={parseFloat(blur)} onChange={(e) => onChange(build(`${e.target.value}px`, brightness, contrast, saturate, grayscale, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
-          <Input value={blur} onChange={(e) => onChange(build(e.target.value, brightness, contrast, saturate, grayscale, hueRotate))} className="w-14 h-7 text-xs text-center" />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Bright">
-        <div className="flex items-center gap-2 flex-1">
-          <input type="range" min="0" max="2" step="0.05" value={parseFloat(brightness)} onChange={(e) => onChange(build(blur, e.target.value, contrast, saturate, grayscale, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
-          <Input value={brightness} onChange={(e) => onChange(build(blur, e.target.value, contrast, saturate, grayscale, hueRotate))} className="w-14 h-7 text-xs text-center" />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Contrast">
-        <div className="flex items-center gap-2 flex-1">
-          <input type="range" min="0" max="2" step="0.05" value={parseFloat(contrast)} onChange={(e) => onChange(build(blur, brightness, e.target.value, saturate, grayscale, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
-          <Input value={contrast} onChange={(e) => onChange(build(blur, brightness, e.target.value, saturate, grayscale, hueRotate))} className="w-14 h-7 text-xs text-center" />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Saturate">
-        <div className="flex items-center gap-2 flex-1">
-          <input type="range" min="0" max="3" step="0.05" value={parseFloat(saturate)} onChange={(e) => onChange(build(blur, brightness, contrast, e.target.value, grayscale, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
-          <Input value={saturate} onChange={(e) => onChange(build(blur, brightness, contrast, e.target.value, grayscale, hueRotate))} className="w-14 h-7 text-xs text-center" />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Grayscale">
-        <div className="flex items-center gap-2 flex-1">
-          <input type="range" min="0" max="1" step="0.05" value={parseFloat(grayscale)} onChange={(e) => onChange(build(blur, brightness, contrast, saturate, e.target.value, hueRotate))} className="flex-1 h-1.5 accent-(--accent-primary)" />
-          <Input value={grayscale} onChange={(e) => onChange(build(blur, brightness, contrast, saturate, e.target.value, hueRotate))} className="w-14 h-7 text-xs text-center" />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Hue">
-        <div className="flex items-center gap-2 flex-1">
-          <input type="range" min="0" max="360" step="5" value={parseFloat(hueRotate)} onChange={(e) => onChange(build(blur, brightness, contrast, saturate, grayscale, `${e.target.value}deg`))} className="flex-1 h-1.5 accent-(--accent-primary)" />
-          <Input value={hueRotate} onChange={(e) => onChange(build(blur, brightness, contrast, saturate, grayscale, e.target.value))} className="w-14 h-7 text-xs text-center" />
-        </div>
-      </PropertyRow>
-    </>
-  );
-}
-
-
-/** Gradient Builder — comprehensive gradient editor with multiple stops */
-function GradientBuilder({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  const isGradient = value?.includes("gradient");
-
-  interface GradientStop {
-    color: string;
-    position: number; // 0-100
-  }
-
-  const parseStops = (): GradientStop[] => {
-    if (!isGradient) return [{ color: "#000000", position: 0 }, { color: "#ffffff", position: 100 }];
-    const stopRegex = /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\))\s*(\d+)?%?/g;
-    const stops: GradientStop[] = [];
-    let match;
-    while ((match = stopRegex.exec(value)) !== null) {
-      stops.push({ color: match[1], position: match[2] ? parseInt(match[2]) : stops.length === 0 ? 0 : 100 });
-    }
-    return stops.length >= 2 ? stops : [{ color: "#000000", position: 0 }, { color: "#ffffff", position: 100 }];
-  };
-
-  const parseType = () => value?.includes("radial") ? "radial" : "linear";
-  const parseAngle = () => {
-    const m = value?.match(/(\d+)deg/);
-    return m ? m[1] : "180";
-  };
-
-  const [enabled, setEnabled] = React.useState(isGradient);
-  const [type, setType] = React.useState(parseType);
-  const [angle, setAngle] = React.useState(parseAngle);
-  const [stops, setStops] = React.useState<GradientStop[]>(parseStops);
-
-  const buildGradient = (t: string, a: string, s: GradientStop[]) => {
-    const stopsStr = s.map((st) => `${st.color} ${st.position}%`).join(", ");
-    if (t === "radial") return `radial-gradient(circle, ${stopsStr})`;
-    return `linear-gradient(${a}deg, ${stopsStr})`;
-  };
-
-  const emit = (t: string, a: string, s: GradientStop[]) => {
-    onChange(buildGradient(t, a, s));
-  };
-
-  const updateStop = (index: number, field: "color" | "position", val: string | number) => {
-    const updated = [...stops];
-    if (field === "color") updated[index] = { ...updated[index], color: val as string };
-    else updated[index] = { ...updated[index], position: val as number };
-    setStops(updated);
-    emit(type, angle, updated);
-  };
-
-  const addStop = () => {
-    const mid = Math.round((stops[stops.length - 2]?.position ?? 0 + (stops[stops.length - 1]?.position ?? 100)) / 2);
-    const updated = [...stops];
-    updated.splice(stops.length - 1, 0, { color: "#888888", position: mid });
-    setStops(updated);
-    emit(type, angle, updated);
-  };
-
-  const removeStop = (index: number) => {
-    if (stops.length <= 2) return;
-    const updated = stops.filter((_, i) => i !== index);
-    setStops(updated);
-    emit(type, angle, updated);
-  };
-
-  if (!enabled) {
-    return (
-      <button
-        type="button"
-        onClick={() => {
-          setEnabled(true);
-          emit(type, angle, stops);
-        }}
-        className="text-[11px] text-(--accent-primary) bg-transparent border-none cursor-pointer hover:underline"
-      >
-        + Add gradient
-      </button>
-    );
-  }
-
-  return (
-    <>
-      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">
-        Gradient
-      </span>
-      {/* Live preview */}
-      <div
-        className="w-full h-10 rounded-[3px] border border-(--border-default)"
-        style={{ background: buildGradient(type, angle, stops) }}
-      />
-      <PropertyRow label="Type">
-        <PropertyToggle
-          value={type}
-          options={[
-            { value: "linear", label: "Linear" },
-            { value: "radial", label: "Radial" },
-          ]}
-          onChange={(v) => { setType(v); emit(v, angle, stops); }}
-        />
-      </PropertyRow>
-      {type === "linear" && (
-        <PropertyRow label="Angle">
-          <div className="flex items-center gap-2 flex-1">
-            <input
-              type="range" min="0" max="360" step="5" value={angle}
-              onChange={(e) => { setAngle(e.target.value); emit(type, e.target.value, stops); }}
-              className="flex-1 h-1.5 accent-(--accent-primary)"
-            />
-            <span className="text-[11px] text-(--el-500) w-10 text-right">{angle}°</span>
-          </div>
-        </PropertyRow>
-      )}
-      {/* Color stops */}
-      {stops.map((stop, i) => (
-        <div key={i} className="flex items-center gap-1.5">
-          <input
-            type="color" value={stop.color.startsWith("#") ? stop.color : "#000000"}
-            onChange={(e) => updateStop(i, "color", e.target.value)}
-            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer shrink-0"
-          />
-          <Input
-            value={stop.color}
-            onChange={(e) => updateStop(i, "color", e.target.value)}
-            className="w-20 h-7 text-xs shrink-0"
-          />
-          <Input
-            value={`${stop.position}`}
-            onChange={(e) => updateStop(i, "position", parseInt(e.target.value) || 0)}
-            className="w-10 h-7 text-xs text-center shrink-0"
-          />
-          <span className="text-[10px] text-(--el-400) shrink-0">%</span>
-          {stops.length > 2 && (
-            <button
-              type="button"
-              onClick={() => removeStop(i)}
-              className="text-[11px] text-(--el-400) hover:text-(--status-error) bg-transparent border-none cursor-pointer"
-            >
-              ×
-            </button>
-          )}
-        </div>
-      ))}
-      <div className="flex items-center justify-between">
-        <button
-          type="button"
-          onClick={addStop}
-          className="text-[11px] text-(--accent-primary) bg-transparent border-none cursor-pointer hover:underline"
-        >
-          + Add stop
-        </button>
-        <button
-          type="button"
-          onClick={() => { setEnabled(false); onChange(""); }}
-          className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
-        >
-          Remove
-        </button>
-      </div>
-    </>
-  );
-}
+import { ShadowBuilder } from "@/components/editors/shadow-builder";
+import { TransformBuilder } from "@/components/editors/transform-builder";
+import { FilterBuilder } from "@/components/editors/filter-builder";
+import { GradientBuilder } from "@/components/editors/gradient-builder";
 
 interface ElementStyleTabProps {
   /** The element's current styles object */
@@ -506,6 +141,117 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
         styles={getStyles()}
         onStyleChange={handleChange}
       />
+    </>
+  );
+}
+
+// =============================================================================
+// ElementStyleEditor — Generic wrapper for any element type
+// =============================================================================
+
+export interface ElementStyleEditorProps {
+  /** Current main element styles */
+  styles?: ElementStyles;
+  /** ::before pseudo-element styles */
+  stylesBefore?: ElementStyles & { content?: string };
+  /** ::after pseudo-element styles */
+  stylesAfter?: ElementStyles & { content?: string };
+  /** Called when main styles change */
+  onStylesChange: (styles: ElementStyles) => void;
+  /** Called when ::before styles change */
+  onStylesBeforeChange?: (
+    styles: ElementStyles & { content?: string },
+  ) => void;
+  /** Called when ::after styles change */
+  onStylesAfterChange?: (
+    styles: ElementStyles & { content?: string },
+  ) => void;
+  /** Show the Normal / ::before / ::after toggle (default true) */
+  showPseudoElements?: boolean;
+}
+
+/**
+ * ElementStyleEditor — Reusable style editor for sections, containers, and blocks.
+ * Includes pseudo-element mode toggle (::before/::after), responsive breakpoint
+ * indicator, and the full ElementStyleTab with all 11 CSS property sections.
+ */
+export function ElementStyleEditor({
+  styles,
+  stylesBefore,
+  stylesAfter,
+  onStylesChange,
+  onStylesBeforeChange,
+  onStylesAfterChange,
+  showPseudoElements = true,
+}: ElementStyleEditorProps) {
+  const [mode, setMode] = React.useState<"normal" | "before" | "after">(
+    "normal",
+  );
+  const breakpoint = useCurrentBreakpoint();
+  const isResponsive = breakpoint !== "desktop";
+
+  const hasPseudo = showPseudoElements && onStylesBeforeChange && onStylesAfterChange;
+
+  const currentStyles =
+    mode === "before"
+      ? stylesBefore || {}
+      : mode === "after"
+        ? stylesAfter || {}
+        : styles || {};
+
+  const handleChange = (updated: ElementStyles) => {
+    if (mode === "before" && onStylesBeforeChange) {
+      onStylesBeforeChange(updated as ElementStyles & { content?: string });
+    } else if (mode === "after" && onStylesAfterChange) {
+      onStylesAfterChange(updated as ElementStyles & { content?: string });
+    } else {
+      onStylesChange(updated);
+    }
+  };
+
+  return (
+    <>
+      {/* Breakpoint indicator */}
+      {isResponsive && (
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-(--status-info-subtle) text-(--status-info) text-[11px] font-medium">
+          <span>Editing: {breakpoint}</span>
+          <span className="text-[10px] opacity-60">
+            Changes only apply to this breakpoint
+          </span>
+        </div>
+      )}
+      {/* Mode toggle */}
+      {hasPseudo && (
+        <div className="flex items-center gap-0.5 px-3 py-2 border-b border-(--border-default)">
+          {(["normal", "before", "after"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === m ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+              onClick={() => setMode(m)}
+            >
+              {m === "normal" ? "Normal" : `::${m}`}
+            </button>
+          ))}
+        </div>
+      )}
+      {mode !== "normal" && (
+        <div className="px-3 py-2 border-b border-(--border-default)">
+          <PropertyRow label="Content">
+            <Input
+              value={
+                (currentStyles as Record<string, string>).content || ""
+              }
+              onChange={(e) =>
+                handleChange({ ...currentStyles, content: e.target.value })
+              }
+              placeholder='""'
+              className="w-full h-7 text-xs"
+            />
+          </PropertyRow>
+        </div>
+      )}
+      <ElementStyleTab styles={currentStyles} onStyleChange={handleChange} />
     </>
   );
 }

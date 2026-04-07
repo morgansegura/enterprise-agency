@@ -390,6 +390,10 @@ export interface Container<TBlock = Block> {
   };
   /** Raw CSS styles — rendered as CSS custom properties */
   styles?: ElementStyles;
+  /** ::before pseudo-element styles */
+  stylesBefore?: ElementStyles & { content?: string };
+  /** ::after pseudo-element styles */
+  stylesAfter?: ElementStyles & { content?: string };
   /** Content blocks */
   blocks: TBlock[];
 }
@@ -481,6 +485,10 @@ export interface Section<TBlock = Block> {
   };
   /** Raw CSS styles — rendered as CSS custom properties */
   styles?: ElementStyles;
+  /** ::before pseudo-element styles */
+  stylesBefore?: ElementStyles & { content?: string };
+  /** ::after pseudo-element styles */
+  stylesAfter?: ElementStyles & { content?: string };
   /** Child containers */
   containers: Container<TBlock>[];
 }
