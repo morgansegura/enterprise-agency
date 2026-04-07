@@ -47,6 +47,8 @@ import {
   BlockLinkSettings,
 } from "./block-settings";
 import { BlockStyleTab, ElementStyleEditor } from "./block-style-tab";
+import { SectionSettings } from "@/components/settings/element-settings/section-settings";
+import { ContainerSettings } from "@/components/settings/element-settings/container-settings";
 import "./settings-panel.css";
 
 // =============================================================================
@@ -247,6 +249,17 @@ export function SettingsPanel({
                 {panelTab === "style" && (
                   <>
                     {selectedElement.type === "section" && (
+                      <>
+                      <SectionSettings
+                        section={selectedData.data as Section}
+                        onChange={(updated) =>
+                          onSectionChange?.(
+                            selectedElement.sectionIndex,
+                            updated,
+                          )
+                        }
+                        tab="style"
+                      />
                       <ElementStyleEditor
                         styles={(selectedData.data as Section).styles}
                         stylesBefore={(selectedData.data as Section & { stylesBefore?: Record<string, string> }).stylesBefore}
@@ -273,8 +286,21 @@ export function SettingsPanel({
                           } as Section);
                         }}
                       />
+                      </>
                     )}
                     {selectedElement.type === "container" && (
+                      <>
+                      <ContainerSettings
+                        container={selectedData.data as Container}
+                        onChange={(updated) =>
+                          onContainerChange?.(
+                            selectedElement.sectionIndex,
+                            selectedElement.containerIndex!,
+                            updated,
+                          )
+                        }
+                        tab="style"
+                      />
                       <ElementStyleEditor
                         styles={(selectedData.data as Container).styles}
                         stylesBefore={(selectedData.data as Container & { stylesBefore?: Record<string, string> }).stylesBefore}
@@ -304,6 +330,7 @@ export function SettingsPanel({
                           );
                         }}
                       />
+                      </>
                     )}
                     {selectedElement.type === "block" && (
                       <BlockStyleTab
@@ -325,14 +352,29 @@ export function SettingsPanel({
                 {panelTab === "settings" && (
                   <>
                     {selectedElement.type === "section" && (
-                      <div className="p-4 text-center text-[14px] text-(--el-500)">
-                        Section styling is on the Style tab
-                      </div>
+                      <SectionSettings
+                        section={selectedData.data as Section}
+                        onChange={(updated) =>
+                          onSectionChange?.(
+                            selectedElement.sectionIndex,
+                            updated,
+                          )
+                        }
+                        tab="settings"
+                      />
                     )}
                     {selectedElement.type === "container" && (
-                      <div className="p-4 text-center text-[14px] text-(--el-500)">
-                        Container styling is on the Style tab
-                      </div>
+                      <ContainerSettings
+                        container={selectedData.data as Container}
+                        onChange={(updated) =>
+                          onContainerChange?.(
+                            selectedElement.sectionIndex,
+                            selectedElement.containerIndex!,
+                            updated,
+                          )
+                        }
+                        tab="settings"
+                      />
                     )}
                     {selectedElement.type === "block" && (
                       <>

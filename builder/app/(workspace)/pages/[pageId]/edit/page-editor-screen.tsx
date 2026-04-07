@@ -24,7 +24,8 @@ import { EditorSidebar } from "@/components/editor/editor-sidebar";
 import { BlocksLibrary } from "@/components/editor/blocks-library";
 import { PageRenderer } from "@/components/renderers/page-renderer";
 import { HeaderRenderer } from "@/components/headers";
-import { FooterRenderer } from "@/components/editor/footer-renderer";
+import { EditableHeader } from "@/components/editor/editable-header";
+import { EditableFooter } from "@/components/editor/editable-footer";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
 import { BlockToolbar } from "@/components/editor/canvas-toolbar/block-toolbar";
@@ -706,7 +707,13 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                   }
                 />
               )}
-              <HeaderRenderer tenantId={id} headerId={localPage.headerId} />
+              <EditableHeader
+                tenantId={id}
+                headerId={localPage.headerId}
+                onHeaderChange={(headerId) =>
+                  handlePageChange("headerId", headerId)
+                }
+              />
               {editor.sections.every(
                 (s) =>
                   !s.containers?.length ||
@@ -778,7 +785,13 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                   breakpoint={breakpoint}
                 />
               )}
-              <FooterRenderer tenantId={id} footerId={localPage.footerId} />
+              <EditableFooter
+                tenantId={id}
+                footerId={localPage.footerId}
+                onFooterChange={(footerId) =>
+                  handlePageChange("footerId", footerId)
+                }
+              />
             </div>
           </ResponsivePreview>
         </ResponsiveProvider>
