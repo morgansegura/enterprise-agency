@@ -62,11 +62,6 @@ export interface BackgroundEditorProps {
 // =============================================================================
 
 const DEFAULT_COLOR = "#f5f5f5";
-const DEFAULT_GRADIENT: TailwindGradient = {
-  direction: "to-r",
-  from: "blue-500",
-  to: "purple-500",
-};
 const DEFAULT_GRADIENT_CSS =
   "linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)";
 const DEFAULT_IMAGE: BackgroundValue["image"] = {

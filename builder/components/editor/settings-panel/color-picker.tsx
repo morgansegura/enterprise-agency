@@ -30,6 +30,7 @@ interface ColorPickerProps {
   value: string;
   onChange: (value: string) => void;
   label?: string;
+  className?: string;
 }
 
 type InputMode = "hex" | "rgb" | "hsl";
@@ -183,7 +184,7 @@ function HueSlider({
  * - Preset color swatches
  * - Transparent button
  */
-export function ColorPicker({ value, onChange, label }: ColorPickerProps) {
+export function ColorPicker({ value, onChange, label, className }: ColorPickerProps) {
   const params = useParams();
   const tenantId = params?.id as string;
   const { data: tokens } = useTenantTokens(tenantId);
@@ -302,7 +303,7 @@ export function ColorPicker({ value, onChange, label }: ColorPickerProps) {
   }, [tokens]);
 
   return (
-    <div className="color-picker-field">
+    <div className={className ? `color-picker-field ${className}` : "color-picker-field"}>
       {label && <span className="color-picker-label">{label}</span>}
       <Popover>
         <PopoverTrigger asChild>
