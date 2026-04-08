@@ -18,6 +18,10 @@ import { UpdateDesignTokensDto } from "./dto/update-design-tokens.dto";
 import { MarkAsTemplateDto } from "./dto/mark-as-template.dto";
 import { CloneTenantDto } from "./dto/clone-tenant.dto";
 import { generateDefaultPages } from "./default-pages";
+import {
+  generateDefaultHeader,
+  generateDefaultFooter,
+} from "./default-header-footer";
 
 @Injectable()
 export class TenantsService {
@@ -104,11 +108,13 @@ export class TenantsService {
       }
     }
 
-    // Generate default pages for the new tenant
+    // Generate default pages, header, and footer for the new tenant
     const defaultPages = generateDefaultPages(
       createData.businessName,
       creatorUserId,
     );
+    const defaultHeader = generateDefaultHeader(createData.businessName);
+    const defaultFooter = generateDefaultFooter(createData.businessName);
 
     // Create tenant with creator as owner and all default pages
     const tenant = await this.prisma.tenant.create({
@@ -145,6 +151,30 @@ export class TenantsService {
             ...page,
             content: page.content as Prisma.InputJsonValue,
           })),
+        },
+        // Create default header
+        headers: {
+          create: {
+            name: defaultHeader.name,
+            slug: defaultHeader.slug,
+            behavior: defaultHeader.behavior,
+            animation: defaultHeader.animation,
+            zones: defaultHeader.zones as Prisma.InputJsonValue,
+            style: defaultHeader.style as Prisma.InputJsonValue,
+            mobileMenu: defaultHeader.mobileMenu as Prisma.InputJsonValue,
+            isDefault: defaultHeader.isDefault,
+          },
+        },
+        // Create default footer
+        footers: {
+          create: {
+            name: defaultFooter.name,
+            slug: defaultFooter.slug,
+            layout: defaultFooter.layout,
+            zones: defaultFooter.zones as Prisma.InputJsonValue,
+            style: defaultFooter.style as Prisma.InputJsonValue,
+            isDefault: defaultFooter.isDefault,
+          },
         },
       },
       include: {
