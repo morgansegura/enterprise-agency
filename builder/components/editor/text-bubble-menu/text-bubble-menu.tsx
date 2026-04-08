@@ -36,8 +36,10 @@ export function TextBubbleMenu({ editor }: TextBubbleMenuProps) {
       const editorEl = editor.view.dom.closest("[data-block-key]");
       if (!editorEl) return;
 
+      // Position above the selected text, with safe distance from top of viewport
+      const desiredTop = start.top - 44;
       setPos({
-        top: start.top - 40,
+        top: Math.max(60, desiredTop),
         left: (start.left + end.left) / 2,
       });
       setVisible(true);

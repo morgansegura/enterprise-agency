@@ -1,31 +1,46 @@
 @reference "tailwindcss";
 
+/* Floating text formatting toolbar — appears above selected text */
 .text-bubble-menu {
-  @apply fixed z-50 flex items-center gap-0.5 px-1 py-0.5 rounded-[3px];
-  @apply bg-(--el-900) shadow-lg;
+  @apply fixed z-50 flex items-center gap-0.5 px-1 py-0.5;
+  @apply rounded-md;
+  @apply bg-(--surface-primary) border border-(--border-default);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.04);
   pointer-events: auto;
 }
 
 .text-bubble-btn {
   @apply flex items-center justify-center size-7 rounded-[3px] cursor-pointer;
-  @apply text-(--el-400) bg-transparent border-none;
+  @apply text-(--el-600) bg-transparent border-none;
   @apply transition-colors duration-75;
 }
 
 .text-bubble-btn:hover {
-  @apply text-(--el-0) bg-(--el-700);
+  @apply text-(--el-900) bg-(--el-100);
 }
 
 .text-bubble-btn[data-active] {
-  @apply text-(--el-0) bg-(--accent-primary);
+  @apply text-(--accent-primary-foreground) bg-(--accent-primary);
+}
+
+.text-bubble-btn[data-active]:hover {
+  @apply bg-(--accent-primary);
+  filter: brightness(0.95);
 }
 
 .text-bubble-divider {
-  @apply w-px h-4 bg-(--el-700) mx-0.5;
+  @apply w-px h-4 bg-(--border-default) mx-0.5;
 }
 
 .text-bubble-color-wrapper {
   @apply relative flex items-center justify-center size-7 cursor-pointer;
+  @apply rounded-[3px] transition-colors duration-75;
+}
+
+.text-bubble-color-wrapper:hover {
+  @apply bg-(--el-100);
 }
 
 .text-bubble-color-input {
@@ -35,5 +50,5 @@
 }
 
 .text-bubble-color-icon {
-  @apply text-(--el-400) pointer-events-none;
+  @apply text-(--el-600) pointer-events-none;
 }
