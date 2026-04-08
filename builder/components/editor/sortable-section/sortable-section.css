@@ -18,17 +18,16 @@
 
 .section-visual {
   @apply relative transition-all duration-200 ease-out;
-  @apply outline-2 outline-solid outline-transparent -outline-offset-2;
 }
 
-/* Section label — positioned above section to avoid content overlap */
+/* Section label — top-left badge, sits on the outline edge */
 .sortable-section-label {
   @apply absolute flex items-center gap-1.5 z-10;
-  @apply px-2 py-0.5 text-xs font-medium;
-  @apply left-0 -top-6 opacity-0 pointer-events-none;
-  @apply transition-opacity duration-200;
+  @apply px-2 py-0.5 text-[10px] font-medium;
+  @apply left-0 top-0 -translate-y-full opacity-0 pointer-events-none;
+  @apply transition-opacity duration-150;
   @apply bg-(--accent-primary) text-(--accent-primary-foreground);
-  @apply rounded-t-md;
+  @apply rounded-t-[3px];
 
   svg {
     @apply size-3 text-(--accent-primary-foreground);
@@ -40,9 +39,9 @@
   @apply opacity-100 pointer-events-auto;
 }
 
-/* Section hover outline */
+/* Section hover outline — inset box-shadow instead of outline to avoid cutting through content */
 .sortable-section:hover > .section-visual:not(:has(.sortable-container:hover)) {
-  @apply outline-(--accent-primary);
+  box-shadow: inset 0 0 0 2px var(--accent-primary);
 }
 
 /* Hide when hovering nested elements */
@@ -53,7 +52,7 @@
 
 /* Selected state */
 .section-visual.is-selected {
-  @apply outline-2 outline-solid outline-(--accent-primary) -outline-offset-2;
+  box-shadow: inset 0 0 0 2px var(--accent-primary);
 }
 
 /* =============================================================================
