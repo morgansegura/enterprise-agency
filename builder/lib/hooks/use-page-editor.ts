@@ -7,6 +7,8 @@ import {
 import { blockRegistry } from "@/lib/editor";
 import { logger } from "@/lib/logger";
 import { toast } from "sonner";
+import { useEditorStore } from "@/lib/stores/editor-store";
+import { useEditorHistory } from "@/lib/stores/editor-history";
 
 // =============================================================================
 // Helpers
@@ -33,32 +35,10 @@ export function createDefaultSection(): Section {
   };
 }
 
-function getContainerBlocks(
-  section: Section,
-  containerIndex: number,
-): Block[] {
-  return section.containers?.[containerIndex]?.blocks ?? [];
-}
-
-function updateContainerBlocks(
-  section: Section,
-  containerIndex: number,
-  blocks: Block[],
-): Section {
-  const containers = section.containers ?? [createDefaultContainer()];
-  const newContainers = [...containers];
-  if (newContainers[containerIndex]) {
-    newContainers[containerIndex] = {
-      ...newContainers[containerIndex],
-      blocks,
-    };
-  }
-  return { ...section, containers: newContainers };
-}
-
 function createDefaultBlock(blockType: string): Block {
-  // Normalize: ensure block type ends with "-block"
-  const normalizedType = blockType.endsWith("-block") ? blockType : `${blockType}-block`;
+  const normalizedType = blockType.endsWith("-block")
+    ? blockType
+    : `${blockType}-block`;
 
   const defaultBlock = blockRegistry.createDefault(normalizedType);
   if (!defaultBlock) {
@@ -71,99 +51,78 @@ function createDefaultBlock(blockType: string): Block {
 }
 
 // =============================================================================
-// Hook
+// Hook — Zustand-backed adapter with index-based API for legacy components
 // =============================================================================
 
 export function usePageEditor(initialSections: Section[]) {
-  const [sections, setSectionsRaw] = React.useState<Section[]>(initialSections);
-  const serverLoadedRef = React.useRef(false);
-
-  // History stack — snapshots of sections for undo/redo
-  // Use state for history index so canUndo/canRedo are reactive
-  const [history, setHistory] = React.useState<{
-    stack: Section[][];
-    index: number;
-  }>({ stack: [initialSections], index: 0 });
-  const MAX_HISTORY = 50;
-  const isApplyingHistoryRef = React.useRef(false);
-
-  // Wrapped setSections that pushes to history
-  const setSections = React.useCallback(
-    (action: React.SetStateAction<Section[]>) => {
-      setSectionsRaw((prev) => {
-        const next =
-          typeof action === "function"
-            ? (action as (p: Section[]) => Section[])(prev)
-            : action;
-
-        // Don't push to history when applying an undo/redo
-        if (!isApplyingHistoryRef.current) {
-          setHistory((h) => {
-            const trimmed = h.stack.slice(0, h.index + 1);
-            trimmed.push(next);
-            if (trimmed.length > MAX_HISTORY) trimmed.shift();
-            return { stack: trimmed, index: trimmed.length - 1 };
-          });
-        }
-
-        return next;
-      });
-    },
-    [],
+  // Subscribe to sections from Zustand store (single source of truth)
+  const sections = useEditorStore(
+    (s) => (s.page?.sections as Section[] | undefined) ?? [],
   );
 
-  // Undo
-  const undo = React.useCallback(() => {
-    setHistory((h) => {
-      if (h.index <= 0) return h;
-      const newIndex = h.index - 1;
-      isApplyingHistoryRef.current = true;
-      setSectionsRaw(h.stack[newIndex]);
-      isApplyingHistoryRef.current = false;
-      return { stack: h.stack, index: newIndex };
-    });
-  }, []);
+  // Store actions
+  const storeAddSection = useEditorStore((s) => s.addSection);
+  const storeUpdateSection = useEditorStore((s) => s.updateSection);
+  const storeDeleteSection = useEditorStore((s) => s.deleteSection);
+  const storeDuplicateSection = useEditorStore((s) => s.duplicateSection);
+  const storeMoveSection = useEditorStore((s) => s.moveSection);
+  const storeAddContainer = useEditorStore((s) => s.addContainer);
+  const storeAddBlock = useEditorStore((s) => s.addBlock);
+  const storeUpdateBlock = useEditorStore((s) => s.updateBlock);
+  const storeDeleteBlock = useEditorStore((s) => s.deleteBlock);
+  const storeMoveBlock = useEditorStore((s) => s.moveBlock);
+  const storeUndo = useEditorStore((s) => s.undo);
+  const storeRedo = useEditorStore((s) => s.redo);
 
-  // Redo
-  const redo = React.useCallback(() => {
-    setHistory((h) => {
-      if (h.index >= h.stack.length - 1) return h;
-      const newIndex = h.index + 1;
-      isApplyingHistoryRef.current = true;
-      setSectionsRaw(h.stack[newIndex]);
-      isApplyingHistoryRef.current = false;
-      return { stack: h.stack, index: newIndex };
-    });
-  }, []);
+  // History reactivity for canUndo/canRedo
+  const historyVersion = useEditorHistory((h) => h.past.length + h.future.length);
+  const canUndo = useEditorHistory((h) => h.past.length > 0);
+  const canRedo = useEditorHistory((h) => h.future.length > 0);
+  // historyVersion subscription forces re-render when history changes
+  React.useEffect(() => {
+    void historyVersion;
+  }, [historyVersion]);
 
-  const canUndo = history.index > 0;
-  const canRedo = history.index < history.stack.length - 1;
-
-  // Sync from server until real page data arrives.
-  // Once the server data has loaded (page fetch complete), local state becomes authoritative.
+  // Initialize the store with the loaded page sections (one-time per page)
+  const serverLoadedRef = React.useRef(false);
   React.useEffect(() => {
     if (!serverLoadedRef.current) {
-      setSectionsRaw(initialSections);
-      // Reset history with the loaded sections
-      setHistory({ stack: [initialSections], index: 0 });
-      // Consider loaded once we get data from the server (has _key from DB, not generated)
-      const isFromServer = initialSections.some(
-        (s) => s._key && !s._key.startsWith("section-"),
-      ) || initialSections.some(
-        (s) => s.containers?.some((c) => (c.blocks?.length ?? 0) > 0),
-      );
+      const isFromServer =
+        initialSections.some(
+          (s) => s._key && !s._key.startsWith("section-"),
+        ) ||
+        initialSections.some(
+          (s) => s.containers?.some((c) => (c.blocks?.length ?? 0) > 0),
+        );
+
+      // Always sync to store on mount; mark loaded once we have real server data
+      const currentPage = useEditorStore.getState().page;
+      const newPage =
+        currentPage ??
+        ({
+          id: "local-page",
+          title: "",
+          slug: "",
+          status: "draft",
+          sections: initialSections,
+        } as never);
+
+      useEditorStore.getState().setPage({
+        ...newPage,
+        sections: initialSections,
+      } as never);
+
       if (isFromServer) {
         serverLoadedRef.current = true;
       }
     }
   }, [initialSections]);
 
-  // Keyboard shortcuts: Ctrl/Cmd+Z (undo), Ctrl/Cmd+Shift+Z or Ctrl+Y (redo)
+  // Keyboard shortcuts: Cmd/Ctrl+Z (undo), Cmd/Ctrl+Shift+Z or Ctrl+Y (redo)
   React.useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const isMod = e.metaKey || e.ctrlKey;
       if (!isMod) return;
-      // Don't intercept when typing in inputs
       const target = e.target as HTMLElement;
       const tag = target.tagName?.toLowerCase();
       const isEditable =
@@ -175,15 +134,71 @@ export function usePageEditor(initialSections: Section[]) {
 
       if (e.key === "z" && !e.shiftKey) {
         e.preventDefault();
-        undo();
+        storeUndo();
       } else if ((e.key === "z" && e.shiftKey) || e.key === "y") {
         e.preventDefault();
-        redo();
+        storeRedo();
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [undo, redo]);
+  }, [storeUndo, storeRedo]);
+
+  // ==========================================================================
+  // setSections — for components that need to do bulk updates
+  // ==========================================================================
+
+  const setSections = React.useCallback(
+    (action: React.SetStateAction<Section[]>) => {
+      const current =
+        (useEditorStore.getState().page?.sections as Section[] | undefined) ??
+        [];
+      const next =
+        typeof action === "function"
+          ? (action as (p: Section[]) => Section[])(current)
+          : action;
+      const page = useEditorStore.getState().page;
+      if (page) {
+        useEditorStore.getState().setPage({
+          ...page,
+          sections: next,
+        } as never);
+      }
+    },
+    [],
+  );
+
+  // ==========================================================================
+  // Index-based handlers — wrap key-based store actions
+  // Looks up the section/container/block by index, then calls store with keys
+  // ==========================================================================
+
+  const getKeys = React.useCallback(
+    (
+      sectionIndex: number,
+      containerIndex?: number,
+      blockIndex?: number,
+    ): {
+      sectionKey?: string;
+      containerKey?: string;
+      blockKey?: string;
+    } => {
+      const current =
+        (useEditorStore.getState().page?.sections as Section[] | undefined) ??
+        [];
+      const section = current[sectionIndex];
+      if (!section) return {};
+      const sectionKey = section._key;
+      if (containerIndex === undefined) return { sectionKey };
+      const container = section.containers?.[containerIndex];
+      if (!container) return { sectionKey };
+      const containerKey = container._key;
+      if (blockIndex === undefined) return { sectionKey, containerKey };
+      const block = container.blocks?.[blockIndex];
+      return { sectionKey, containerKey, blockKey: block?._key };
+    },
+    [],
+  );
 
   // --- Block operations ---
 
@@ -194,258 +209,209 @@ export function usePageEditor(initialSections: Section[]) {
       blockIndex: number,
       updatedBlock: Block,
     ) => {
-      setSections((prev) => {
-        const updated = [...prev];
-        const blocks = getContainerBlocks(updated[sectionIndex], containerIndex);
-        const newBlocks = blocks.map((block: Block, idx: number) =>
-          idx === blockIndex ? updatedBlock : block,
-        );
-        updated[sectionIndex] = updateContainerBlocks(
-          updated[sectionIndex],
-          containerIndex,
-          newBlocks,
-        );
-        return updated;
-      });
+      const { sectionKey, containerKey, blockKey } = getKeys(
+        sectionIndex,
+        containerIndex,
+        blockIndex,
+      );
+      if (!sectionKey || !containerKey || !blockKey) return;
+      storeUpdateBlock(sectionKey, containerKey, blockKey, updatedBlock);
     },
-    [setSections],
+    [getKeys, storeUpdateBlock],
   );
 
   const handleBlockDelete = React.useCallback(
     (sectionIndex: number, containerIndex: number, blockIndex: number) => {
-      setSections((prev) => {
-        const updated = [...prev];
-        const blocks = getContainerBlocks(updated[sectionIndex], containerIndex);
-        const newBlocks = blocks.filter(
-          (_: Block, idx: number) => idx !== blockIndex,
-        );
-        updated[sectionIndex] = updateContainerBlocks(
-          updated[sectionIndex],
-          containerIndex,
-          newBlocks,
-        );
-        return updated;
-      });
+      const { sectionKey, containerKey, blockKey } = getKeys(
+        sectionIndex,
+        containerIndex,
+        blockIndex,
+      );
+      if (!sectionKey || !containerKey || !blockKey) return;
+      storeDeleteBlock(sectionKey, containerKey, blockKey);
       toast.success("Block deleted");
     },
-    [setSections],
+    [getKeys, storeDeleteBlock],
   );
 
   const handleBlockDuplicate = React.useCallback(
     (sectionIndex: number, containerIndex: number, blockIndex: number) => {
-      setSections((prev) => {
-        const updated = [...prev];
-        const blocks = getContainerBlocks(updated[sectionIndex], containerIndex);
-        const block = blocks[blockIndex];
-        const duplicated = { ...block, _key: `block-${Date.now()}` };
-        const newBlocks = [
-          ...blocks.slice(0, blockIndex + 1),
-          duplicated,
-          ...blocks.slice(blockIndex + 1),
-        ];
-        updated[sectionIndex] = updateContainerBlocks(
-          updated[sectionIndex],
-          containerIndex,
-          newBlocks,
-        );
-        return updated;
-      });
+      const { sectionKey, containerKey, blockKey } = getKeys(
+        sectionIndex,
+        containerIndex,
+        blockIndex,
+      );
+      if (!sectionKey || !containerKey || !blockKey) return;
+      const block = useEditorStore
+        .getState()
+        .getBlock(sectionKey, containerKey, blockKey);
+      if (!block) return;
+      const duplicated: Block = {
+        ...block,
+        _key: `block-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+      };
+      storeAddBlock(sectionKey, containerKey, duplicated, blockIndex + 1);
       toast.success("Block duplicated");
     },
-    [setSections],
+    [getKeys, storeAddBlock],
   );
 
   const handleBlockMoveUp = React.useCallback(
     (sectionIndex: number, containerIndex: number, blockIndex: number) => {
       if (blockIndex === 0) return;
-      setSections((prev) => {
-        const updated = [...prev];
-        const blocks = [
-          ...getContainerBlocks(updated[sectionIndex], containerIndex),
-        ];
-        [blocks[blockIndex - 1], blocks[blockIndex]] = [
-          blocks[blockIndex],
-          blocks[blockIndex - 1],
-        ];
-        updated[sectionIndex] = updateContainerBlocks(
-          updated[sectionIndex],
-          containerIndex,
-          blocks,
-        );
-        return updated;
-      });
+      const { sectionKey, containerKey, blockKey } = getKeys(
+        sectionIndex,
+        containerIndex,
+        blockIndex,
+      );
+      if (!sectionKey || !containerKey || !blockKey) return;
+      storeMoveBlock(
+        blockKey,
+        { sectionKey, containerKey, index: blockIndex },
+        { sectionKey, containerKey, index: blockIndex - 1 },
+      );
     },
-    [setSections],
+    [getKeys, storeMoveBlock],
   );
 
   const handleBlockMoveDown = React.useCallback(
     (sectionIndex: number, containerIndex: number, blockIndex: number) => {
-      setSections((prev) => {
-        const blocks = getContainerBlocks(prev[sectionIndex], containerIndex);
-        if (blockIndex >= blocks.length - 1) return prev;
-        const updated = [...prev];
-        const newBlocks = [...blocks];
-        [newBlocks[blockIndex], newBlocks[blockIndex + 1]] = [
-          newBlocks[blockIndex + 1],
-          newBlocks[blockIndex],
-        ];
-        updated[sectionIndex] = updateContainerBlocks(
-          updated[sectionIndex],
-          containerIndex,
-          newBlocks,
-        );
-        return updated;
-      });
+      const { sectionKey, containerKey, blockKey } = getKeys(
+        sectionIndex,
+        containerIndex,
+        blockIndex,
+      );
+      if (!sectionKey || !containerKey || !blockKey) return;
+      storeMoveBlock(
+        blockKey,
+        { sectionKey, containerKey, index: blockIndex },
+        { sectionKey, containerKey, index: blockIndex + 1 },
+      );
     },
-    [setSections],
+    [getKeys, storeMoveBlock],
+  );
+
+  const handleBlockReorder = React.useCallback(
+    (
+      sectionIndex: number,
+      containerIndex: number,
+      fromIndex: number,
+      toIndex: number,
+    ) => {
+      const { sectionKey, containerKey, blockKey } = getKeys(
+        sectionIndex,
+        containerIndex,
+        fromIndex,
+      );
+      if (!sectionKey || !containerKey || !blockKey) return;
+      storeMoveBlock(
+        blockKey,
+        { sectionKey, containerKey, index: fromIndex },
+        { sectionKey, containerKey, index: toIndex },
+      );
+    },
+    [getKeys, storeMoveBlock],
   );
 
   const handleAddBlockToContainer = React.useCallback(
     (sectionIndex: number, containerIndex: number, blockType: string) => {
+      const { sectionKey, containerKey } = getKeys(
+        sectionIndex,
+        containerIndex,
+      );
+      if (!sectionKey || !containerKey) return;
       const newBlock = createDefaultBlock(blockType);
-      setSections((prev) => {
-        const updated = [...prev];
-        const blocks = getContainerBlocks(updated[sectionIndex], containerIndex);
-        updated[sectionIndex] = updateContainerBlocks(
-          updated[sectionIndex],
-          containerIndex,
-          [...blocks, newBlock],
-        );
-        return updated;
-      });
+      storeAddBlock(sectionKey, containerKey, newBlock);
       toast.success("Block added!");
     },
-    [setSections],
+    [getKeys, storeAddBlock],
   );
 
   // --- Section operations ---
 
   const handleSectionChange = React.useCallback(
     (sectionIndex: number, updatedSection: Section) => {
-      setSections((prev) => {
-        const updated = [...prev];
-        updated[sectionIndex] = updatedSection;
-        return updated;
-      });
+      const { sectionKey } = getKeys(sectionIndex);
+      if (!sectionKey) return;
+      storeUpdateSection(sectionKey, updatedSection);
     },
-    [setSections],
+    [getKeys, storeUpdateSection],
   );
 
-  const handleSectionDelete = React.useCallback((sectionIndex: number) => {
-    setSections((prev) => prev.filter((_, idx) => idx !== sectionIndex));
-    toast.success("Section deleted");
-  }, [setSections]);
+  const handleSectionDelete = React.useCallback(
+    (sectionIndex: number) => {
+      const { sectionKey } = getKeys(sectionIndex);
+      if (!sectionKey) return;
+      storeDeleteSection(sectionKey);
+      toast.success("Section deleted");
+    },
+    [getKeys, storeDeleteSection],
+  );
 
-  const handleAddSectionAt = React.useCallback((index: number) => {
-    const newSection = createDefaultSection();
-    setSections((prev) => {
-      const updated = [...prev];
-      updated.splice(index, 0, newSection);
-      return updated;
-    });
-    toast.success("Section added");
-  }, [setSections]);
+  const handleAddSectionAt = React.useCallback(
+    (index: number) => {
+      const newSection = createDefaultSection();
+      storeAddSection(newSection, index);
+      toast.success("Section added");
+    },
+    [storeAddSection],
+  );
 
-  const handleSectionDuplicate = React.useCallback((sectionIndex: number) => {
-    setSections((prev) => {
-      const section = prev[sectionIndex];
-      const duplicatedContainers = (section.containers ?? []).map(
-        (container, idx) => ({
-          ...container,
-          _key: `container-${Date.now()}-${idx}`,
-          blocks: (container.blocks ?? []).map((block: Block) => ({
-            ...block,
-            _key: `block-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-          })),
-        }),
-      );
-      const duplicated: Section = {
-        ...section,
-        _key: `section-${Date.now()}`,
-        containers: duplicatedContainers,
-      };
-      const updated = [...prev];
-      updated.splice(sectionIndex + 1, 0, duplicated);
-      return updated;
-    });
-    toast.success("Section duplicated");
-  }, [setSections]);
+  const handleSectionDuplicate = React.useCallback(
+    (sectionIndex: number) => {
+      const { sectionKey } = getKeys(sectionIndex);
+      if (!sectionKey) return;
+      storeDuplicateSection(sectionKey);
+      toast.success("Section duplicated");
+    },
+    [getKeys, storeDuplicateSection],
+  );
 
-  const handleSectionMoveUp = React.useCallback((sectionIndex: number) => {
-    if (sectionIndex === 0) return;
-    setSections((prev) => {
-      const updated = [...prev];
-      [updated[sectionIndex - 1], updated[sectionIndex]] = [
-        updated[sectionIndex],
-        updated[sectionIndex - 1],
-      ];
-      return updated;
-    });
-  }, [setSections]);
+  const handleSectionMoveUp = React.useCallback(
+    (sectionIndex: number) => {
+      if (sectionIndex === 0) return;
+      const { sectionKey } = getKeys(sectionIndex);
+      if (!sectionKey) return;
+      storeMoveSection(sectionKey, sectionIndex - 1);
+    },
+    [getKeys, storeMoveSection],
+  );
 
-  const handleSectionMoveDown = React.useCallback((sectionIndex: number) => {
-    setSections((prev) => {
-      if (sectionIndex >= prev.length - 1) return prev;
-      const updated = [...prev];
-      [updated[sectionIndex], updated[sectionIndex + 1]] = [
-        updated[sectionIndex + 1],
-        updated[sectionIndex],
-      ];
-      return updated;
-    });
-  }, [setSections]);
+  const handleSectionMoveDown = React.useCallback(
+    (sectionIndex: number) => {
+      const { sectionKey } = getKeys(sectionIndex);
+      if (!sectionKey) return;
+      storeMoveSection(sectionKey, sectionIndex + 1);
+    },
+    [getKeys, storeMoveSection],
+  );
+
+  const handleSectionReorder = React.useCallback(
+    (fromIndex: number, toIndex: number) => {
+      const { sectionKey } = getKeys(fromIndex);
+      if (!sectionKey) return;
+      storeMoveSection(sectionKey, toIndex);
+    },
+    [getKeys, storeMoveSection],
+  );
 
   const handleAddContainerToSection = React.useCallback(
     (sectionIndex: number) => {
+      const { sectionKey } = getKeys(sectionIndex);
+      if (!sectionKey) return;
       const newContainer = createDefaultContainer();
-      setSections((prev) => {
-        const updated = [...prev];
-        const containers = updated[sectionIndex].containers ?? [];
-        updated[sectionIndex] = {
-          ...updated[sectionIndex],
-          containers: [...containers, newContainer],
-        };
-        return updated;
-      });
+      storeAddContainer(sectionKey, newContainer);
       toast.success("Container added!");
     },
-    [setSections],
-  );
-
-  // Reorder blocks within a container
-  const handleBlockReorder = React.useCallback(
-    (sectionIndex: number, containerIndex: number, fromIndex: number, toIndex: number) => {
-      setSections((prev) => {
-        const updated = [...prev];
-        const blocks = [...getContainerBlocks(updated[sectionIndex], containerIndex)];
-        const [moved] = blocks.splice(fromIndex, 1);
-        blocks.splice(toIndex, 0, moved);
-        updated[sectionIndex] = updateContainerBlocks(updated[sectionIndex], containerIndex, blocks);
-        return updated;
-      });
-    },
-    [setSections],
-  );
-
-  // Reorder sections
-  const handleSectionReorder = React.useCallback(
-    (fromIndex: number, toIndex: number) => {
-      setSections((prev) => {
-        const updated = [...prev];
-        const [moved] = updated.splice(fromIndex, 1);
-        updated.splice(toIndex, 0, moved);
-        return updated;
-      });
-    },
-    [setSections],
+    [getKeys, storeAddContainer],
   );
 
   return {
     sections,
     setSections,
     // History
-    undo,
-    redo,
+    undo: storeUndo,
+    redo: storeRedo,
     canUndo,
     canRedo,
     // Block operations
