@@ -7,6 +7,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import { getElementClass } from "@enterprise/tokens";
 
 interface TextBlockData {
   text?: string;
@@ -69,25 +70,28 @@ export default function TextBlockRenderer({
 
   const opacityPreset = getOpacityPreset(opacity);
 
-  // Data attributes matching client/components/block/text-block
+  // When block.styles has explicit CSS, skip the data-attribute so generated CSS wins
+  const styles = (block as Record<string, unknown>).styles as Record<string, string> | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+
   const dataAttributes: Record<string, string | number | boolean | undefined> =
     {
       "data-slot": "text-block",
-      "data-size": size,
-      "data-align": align,
+      "data-size": hasStyle("fontSize") ? undefined : size,
+      "data-align": hasStyle("textAlign") ? undefined : align,
       "data-variant": variant,
-      "data-weight": weight,
-      "data-letter-spacing": letterSpacing,
-      "data-line-height": lineHeight,
-      "data-font-style": fontStyle,
-      "data-text-transform": textTransform,
-      "data-text-decoration": textDecoration,
-      "data-white-space": whiteSpace,
-      "data-max-width": maxWidth,
+      "data-weight": hasStyle("fontWeight") ? undefined : weight,
+      "data-letter-spacing": hasStyle("letterSpacing") ? undefined : letterSpacing,
+      "data-line-height": hasStyle("lineHeight") ? undefined : lineHeight,
+      "data-font-style": hasStyle("fontStyle") ? undefined : fontStyle,
+      "data-text-transform": hasStyle("textTransform") ? undefined : textTransform,
+      "data-text-decoration": hasStyle("textDecoration") ? undefined : textDecoration,
+      "data-white-space": hasStyle("whiteSpace") ? undefined : whiteSpace,
+      "data-max-width": hasStyle("maxWidth") ? undefined : maxWidth,
       "data-columns": columns,
       "data-column-gap": columnGap,
-      "data-opacity": opacityPreset,
-      "data-color": color,
+      "data-opacity": hasStyle("opacity") ? undefined : opacityPreset,
+      "data-color": hasStyle("color") ? undefined : color,
       "data-drop-cap": dropCap,
     };
 
@@ -96,6 +100,8 @@ export default function TextBlockRenderer({
       ([, v]) => v !== undefined && v !== false,
     ),
   );
+
+  const elementClass = getElementClass(block._key);
 
   const editor = useEditor({
     extensions: [
@@ -134,14 +140,14 @@ export default function TextBlockRenderer({
     if (html) {
       return (
         <div
-          className={cn("text text-block prose prose-sm max-w-none")}
+          className={cn("text text-block prose prose-sm max-w-none", elementClass)}
           {...filteredAttrs}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       );
     }
     return (
-      <p className="text" {...filteredAttrs}>
+      <p className={cn("text", elementClass)} {...filteredAttrs}>
         {text || data.content}
       </p>
     );
@@ -150,7 +156,7 @@ export default function TextBlockRenderer({
   // Edit mode — TipTap
   return (
     <div
-      className={cn("text text-block prose prose-sm max-w-none")}
+      className={cn("text text-block prose prose-sm max-w-none", elementClass)}
       {...filteredAttrs}
       style={{ cursor: "text" }}
     >
