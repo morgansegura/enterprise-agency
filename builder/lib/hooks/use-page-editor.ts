@@ -75,14 +75,77 @@ function createDefaultBlock(blockType: string): Block {
 // =============================================================================
 
 export function usePageEditor(initialSections: Section[]) {
-  const [sections, setSections] = React.useState<Section[]>(initialSections);
+  const [sections, setSectionsRaw] = React.useState<Section[]>(initialSections);
   const serverLoadedRef = React.useRef(false);
+
+  // History stack — snapshots of sections for undo/redo
+  // Use state for history index so canUndo/canRedo are reactive
+  const [history, setHistory] = React.useState<{
+    stack: Section[][];
+    index: number;
+  }>({ stack: [initialSections], index: 0 });
+  const MAX_HISTORY = 50;
+  const isApplyingHistoryRef = React.useRef(false);
+
+  // Wrapped setSections that pushes to history
+  const setSections = React.useCallback(
+    (action: React.SetStateAction<Section[]>) => {
+      setSectionsRaw((prev) => {
+        const next =
+          typeof action === "function"
+            ? (action as (p: Section[]) => Section[])(prev)
+            : action;
+
+        // Don't push to history when applying an undo/redo
+        if (!isApplyingHistoryRef.current) {
+          setHistory((h) => {
+            const trimmed = h.stack.slice(0, h.index + 1);
+            trimmed.push(next);
+            if (trimmed.length > MAX_HISTORY) trimmed.shift();
+            return { stack: trimmed, index: trimmed.length - 1 };
+          });
+        }
+
+        return next;
+      });
+    },
+    [],
+  );
+
+  // Undo
+  const undo = React.useCallback(() => {
+    setHistory((h) => {
+      if (h.index <= 0) return h;
+      const newIndex = h.index - 1;
+      isApplyingHistoryRef.current = true;
+      setSectionsRaw(h.stack[newIndex]);
+      isApplyingHistoryRef.current = false;
+      return { stack: h.stack, index: newIndex };
+    });
+  }, []);
+
+  // Redo
+  const redo = React.useCallback(() => {
+    setHistory((h) => {
+      if (h.index >= h.stack.length - 1) return h;
+      const newIndex = h.index + 1;
+      isApplyingHistoryRef.current = true;
+      setSectionsRaw(h.stack[newIndex]);
+      isApplyingHistoryRef.current = false;
+      return { stack: h.stack, index: newIndex };
+    });
+  }, []);
+
+  const canUndo = history.index > 0;
+  const canRedo = history.index < history.stack.length - 1;
 
   // Sync from server until real page data arrives.
   // Once the server data has loaded (page fetch complete), local state becomes authoritative.
   React.useEffect(() => {
     if (!serverLoadedRef.current) {
-      setSections(initialSections);
+      setSectionsRaw(initialSections);
+      // Reset history with the loaded sections
+      setHistory({ stack: [initialSections], index: 0 });
       // Consider loaded once we get data from the server (has _key from DB, not generated)
       const isFromServer = initialSections.some(
         (s) => s._key && !s._key.startsWith("section-"),
@@ -94,6 +157,33 @@ export function usePageEditor(initialSections: Section[]) {
       }
     }
   }, [initialSections]);
+
+  // Keyboard shortcuts: Ctrl/Cmd+Z (undo), Ctrl/Cmd+Shift+Z or Ctrl+Y (redo)
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const isMod = e.metaKey || e.ctrlKey;
+      if (!isMod) return;
+      // Don't intercept when typing in inputs
+      const target = e.target as HTMLElement;
+      const tag = target.tagName?.toLowerCase();
+      const isEditable =
+        tag === "input" ||
+        tag === "textarea" ||
+        target.isContentEditable ||
+        target.closest("[contenteditable='true']");
+      if (isEditable) return;
+
+      if (e.key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+      } else if ((e.key === "z" && e.shiftKey) || e.key === "y") {
+        e.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [undo, redo]);
 
   // --- Block operations ---
 
@@ -353,6 +443,11 @@ export function usePageEditor(initialSections: Section[]) {
   return {
     sections,
     setSections,
+    // History
+    undo,
+    redo,
+    canUndo,
+    canRedo,
     // Block operations
     handleBlockChange,
     handleBlockDelete,

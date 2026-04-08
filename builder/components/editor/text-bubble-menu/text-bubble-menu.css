@@ -4,7 +4,7 @@
 .text-bubble-menu {
   @apply fixed z-50 flex items-center gap-0.5 px-1 py-0.5;
   @apply rounded-md;
-  @apply bg-(--surface-primary) border border-(--border-default);
+  @apply bg-(--el-0) border border-(--border-default);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
     0 2px 4px rgba(0, 0, 0, 0.04);

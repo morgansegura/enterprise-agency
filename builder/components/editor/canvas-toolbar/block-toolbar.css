@@ -2,9 +2,9 @@
 
 /* Floating block action toolbar — vertical, on right side of selected block */
 .block-toolbar {
-  @apply fixed z-50 flex flex-col items-center gap-0.5 px-0.5 py-1;
+  @apply fixed z-60 flex items-center gap-0.5 px-0.5 py-1 -top-2 -translate-y-full;
   @apply rounded-md;
-  @apply bg-(--surface-primary) border border-(--border-default);
+  @apply bg-(--el-0) border border-(--border-default);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.08),
     0 2px 4px rgba(0, 0, 0, 0.04);
