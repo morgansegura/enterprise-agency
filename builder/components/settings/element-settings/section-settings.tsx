@@ -174,14 +174,14 @@ export function SectionSettings({
 
       {/* Spacing */}
       <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
-        <PropertyRow label="Pad Top">
+        <PropertyRow label="Padding Top">
           <PropertySelect
             value={section.paddingTop || section.paddingY || "md"}
             options={EXTENDED_SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingTop", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Pad Bottom">
+        <PropertyRow label="Padding Bottom">
           <PropertySelect
             value={section.paddingBottom || section.paddingY || "md"}
             options={EXTENDED_SPACING_OPTIONS}
@@ -195,14 +195,14 @@ export function SectionSettings({
             onChange={(v) => handleChange("marginTop", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Margin Bot">
+        <PropertyRow label="Margin Bottom">
           <PropertySelect
             value={section.marginBottom || "none"}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("marginBottom", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Gap">
+        <PropertyRow label="Gap Between Containers">
           <PropertySelect
             value={section.gapY || "md"}
             options={SPACING_OPTIONS.slice(0, 7)}
