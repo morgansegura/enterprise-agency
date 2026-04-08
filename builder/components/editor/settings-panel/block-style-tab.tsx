@@ -395,13 +395,13 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("alignSelf", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Grow">
+        <PropertyRow label="Flex Grow">
           <UnitValueInput value={s("flexGrow")} onChange={(v) => updateStyle("flexGrow", v)} units={[]} placeholder="0" />
         </PropertyRow>
-        <PropertyRow label="Shrink">
+        <PropertyRow label="Flex Shrink">
           <UnitValueInput value={s("flexShrink")} onChange={(v) => updateStyle("flexShrink", v)} units={[]} placeholder="1" />
         </PropertyRow>
-        <PropertyRow label="Basis">
+        <PropertyRow label="Flex Basis">
           <UnitValueInput value={s("flexBasis")} onChange={(v) => updateStyle("flexBasis", v)} keywords={["auto"]} placeholder="auto" />
         </PropertyRow>
       </PropertySection>
@@ -430,23 +430,23 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
         {([
           ["width", "Width"],
           ["height", "Height"],
-          ["minWidth", "Min W"],
-          ["maxWidth", "Max W"],
-          ["minHeight", "Min H"],
-          ["maxHeight", "Max H"],
+          ["minWidth", "Min Width"],
+          ["maxWidth", "Max Width"],
+          ["minHeight", "Min Height"],
+          ["maxHeight", "Max Height"],
         ] as const).map(([prop, label]) => (
           <PropertyRow key={prop} label={label}>
             <UnitValueInput value={s(prop)} onChange={(v) => updateStyle(prop, v)} keywords={["auto"]} placeholder="auto" />
           </PropertyRow>
         ))}
-        <PropertyRow label="Aspect">
+        <PropertyRow label="Aspect Ratio">
           <UnitValueInput value={s("aspectRatio")} onChange={(v) => updateStyle("aspectRatio", v)} units={[]} keywords={["auto"]} placeholder="auto" />
         </PropertyRow>
         <PropertyRow label="Object Fit">
           <PropertySelect
             value={s("objectFit")}
             options={[
-              { value: "inherit", label: "None" },
+              { value: "inherit", label: "Inherit" },
               { value: "cover", label: "Cover" },
               { value: "contain", label: "Contain" },
               { value: "fill", label: "Fill" },
@@ -477,8 +477,15 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
         </PropertyRow>
         {positionVal !== "static" && (
           <>
-            {(["top", "right", "bottom", "left"] as const).map((prop) => (
-              <PropertyRow key={prop} label={prop.charAt(0).toUpperCase() + prop.slice(1)}>
+            {(
+              [
+                ["top", "Top"],
+                ["right", "Right"],
+                ["bottom", "Bottom"],
+                ["left", "Left"],
+              ] as const
+            ).map(([prop, label]) => (
+              <PropertyRow key={prop} label={label}>
                 <UnitValueInput value={s(prop)} onChange={(v) => updateStyle(prop, v)} keywords={["auto"]} placeholder="auto" />
               </PropertyRow>
             ))}
@@ -516,7 +523,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * TYPOGRAPHY
        * ================================================================ */}
       <PropertySection title="Typography" icon={<Type className="h-3.5 w-3.5" />}>
-        <PropertyRow label="Font">
+        <PropertyRow label="Font Family">
           <PropertySelect
             value={s("fontFamily")}
             options={[
@@ -529,7 +536,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("fontFamily", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Weight">
+        <PropertyRow label="Font Weight">
           <PropertySelect
             value={s("fontWeight")}
             options={[
@@ -547,18 +554,18 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("fontWeight", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Size">
-          <SliderInput value={s("fontSize")} onChange={(v) => updateStyle("fontSize", v)} min={8} max={120} placeholder="16px" />
+        <PropertyRow label="Font Size">
+          <SliderInput value={s("fontSize")} onChange={(v) => updateStyle("fontSize", v)} min={8} max={120} placeholder="16" />
         </PropertyRow>
-        <PropertyRow label="Height">
+        <PropertyRow label="Line Height">
           <SliderInput value={s("lineHeight")} onChange={(v) => updateStyle("lineHeight", v)} min={0.5} max={3} step={0.1} unit="" placeholder="1.5" />
         </PropertyRow>
         <ColorPicker
-          label="Color"
+          label="Text Color"
           value={s("color")}
           onChange={(v) => updateStyle("color", v)}
         />
-        <PropertyRow label="Align" stacked>
+        <PropertyRow label="Text Align" stacked>
           <PropertyToggle
             value={s("textAlign")}
             options={[
@@ -572,7 +579,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             fullWidth
           />
         </PropertyRow>
-        <PropertyRow label="Style">
+        <PropertyRow label="Font Style">
           <PropertyToggle
             value={s("fontStyle")}
             options={[
@@ -582,7 +589,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("fontStyle", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Decor" stacked>
+        <PropertyRow label="Decoration" stacked>
           <PropertyToggle
             value={s("textDecoration")}
             options={[
@@ -595,7 +602,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             fullWidth
           />
         </PropertyRow>
-        <PropertyRow label="Transform">
+        <PropertyRow label="Text Transform">
           <PropertySelect
             value={s("textTransform")}
             options={[
@@ -607,13 +614,13 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("textTransform", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Spacing">
+        <PropertyRow label="Letter Spacing">
           <UnitValueInput value={s("letterSpacing")} onChange={(v) => updateStyle("letterSpacing", v)} units={["em", "px", "rem"]} keywords={["normal"]} placeholder="normal" />
         </PropertyRow>
-        <PropertyRow label="Word">
+        <PropertyRow label="Word Spacing">
           <UnitValueInput value={s("wordSpacing")} onChange={(v) => updateStyle("wordSpacing", v)} units={["em", "px", "rem"]} keywords={["normal"]} placeholder="normal" />
         </PropertyRow>
-        <PropertyRow label="Indent">
+        <PropertyRow label="Text Indent">
           <UnitValueInput value={s("textIndent")} onChange={(v) => updateStyle("textIndent", v)} placeholder="0" />
         </PropertyRow>
         <ShadowBuilder
@@ -621,7 +628,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           value={s("textShadow")}
           onChange={(v) => updateStyle("textShadow", v)}
         />
-        <PropertyRow label="Columns">
+        <PropertyRow label="Text Columns">
           <Input value={s("columns")} onChange={(e) => updateStyle("columns", e.target.value)} placeholder="auto" className="w-20 h-7 text-xs text-center" />
         </PropertyRow>
         <PropertyRow label="White Space">
@@ -642,9 +649,9 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
       {/* ================================================================
        * BACKGROUNDS
        * ================================================================ */}
-      <PropertySection title="Backgrounds" icon={<Palette className="h-3.5 w-3.5" />} defaultOpen={false}>
+      <PropertySection title="Background" icon={<Palette className="h-3.5 w-3.5" />} defaultOpen={false}>
         <ColorPicker
-          label="Color"
+          label="Background Color"
           value={s("backgroundColor")}
           onChange={(v) => updateStyle("backgroundColor", v)}
         />
@@ -653,7 +660,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           <ImagePickerField
             value={s("backgroundImage").replace(/^url\(['"]?|['"]?\)$/g, "")}
             onChange={(url) => updateStyle("backgroundImage", url ? `url('${url}')` : "")}
-            label="Image"
+            label="Background Image"
           />
         )}
         {/* Gradient — only show when not a url() image */}
@@ -700,7 +707,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("backgroundRepeat", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Attach">
+        <PropertyRow label="Attachment">
           <PropertyToggle
             value={s("backgroundAttachment")}
             options={[
@@ -715,11 +722,11 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
       {/* ================================================================
        * BORDERS
        * ================================================================ */}
-      <PropertySection title="Borders" icon={<Square className="h-3.5 w-3.5" />} defaultOpen={false}>
-        <PropertyRow label="Width">
+      <PropertySection title="Border" icon={<Square className="h-3.5 w-3.5" />} defaultOpen={false}>
+        <PropertyRow label="Border Width">
           <UnitValueInput value={s("borderWidth")} onChange={(v) => updateStyle("borderWidth", v)} placeholder="0" />
         </PropertyRow>
-        <PropertyRow label="Style">
+        <PropertyRow label="Border Style">
           <PropertySelect
             value={s("borderStyle") || "inherit"}
             options={[
@@ -733,7 +740,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           />
         </PropertyRow>
         <ColorPicker
-          label="Color"
+          label="Border Color"
           value={s("borderColor")}
           onChange={(v) => updateStyle("borderColor", v)}
         />
@@ -748,10 +755,10 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
         />
         {/* Per-side border widths */}
         {([
-          ["borderTopWidth", "Top W"],
-          ["borderRightWidth", "Right W"],
-          ["borderBottomWidth", "Bottom W"],
-          ["borderLeftWidth", "Left W"],
+          ["borderTopWidth", "Top"],
+          ["borderRightWidth", "Right"],
+          ["borderBottomWidth", "Bottom"],
+          ["borderLeftWidth", "Left"],
         ] as const).map(([prop, label]) => (
           <PropertyRow key={prop} label={label}>
             <UnitValueInput value={s(prop)} onChange={(v) => updateStyle(prop, v)} placeholder="0" />
@@ -778,11 +785,11 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           </div>
         </PropertyRow>
         <ShadowBuilder
-          label="Shadow"
+          label="Box Shadow"
           value={s("boxShadow")}
           onChange={(v) => updateStyle("boxShadow", v)}
         />
-        <PropertyRow label="Blend">
+        <PropertyRow label="Blend Mode">
           <PropertySelect
             value={s("mixBlendMode") || "inherit"}
             options={[
@@ -885,12 +892,12 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
        * ================================================================ */}
       <PropertySection title="Filters" icon={<Sparkles className="h-3.5 w-3.5" />} defaultOpen={false}>
         <FilterBuilder
-          label="Filter"
+          label="Element Filter"
           value={s("filter")}
           onChange={(v) => updateStyle("filter", v)}
         />
         <FilterBuilder
-          label="Backdrop"
+          label="Backdrop Filter"
           value={s("backdropFilter")}
           onChange={(v) => updateStyle("backdropFilter", v)}
         />
@@ -917,7 +924,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("cursor", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Pointer">
+        <PropertyRow label="Pointer Events">
           <PropertyToggle
             value={s("pointerEvents")}
             options={[
@@ -927,7 +934,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
             onChange={(v) => updateStyle("pointerEvents", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Select">
+        <PropertyRow label="User Select">
           <PropertyToggle
             value={s("userSelect")}
             options={[
