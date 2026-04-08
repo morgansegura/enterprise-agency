@@ -21,14 +21,14 @@
   @apply outline-2 outline-solid outline-transparent -outline-offset-2;
 }
 
-/* Section label — top-left badge on hover */
+/* Section label — positioned above section to avoid content overlap */
 .sortable-section-label {
   @apply absolute flex items-center gap-1.5 z-10;
   @apply px-2 py-0.5 text-xs font-medium;
-  @apply left-0 top-0 opacity-0 pointer-events-none;
+  @apply left-0 -top-6 opacity-0 pointer-events-none;
   @apply transition-opacity duration-200;
   @apply bg-(--accent-primary) text-(--accent-primary-foreground);
-  @apply rounded-br-md;
+  @apply rounded-t-md;
 
   svg {
     @apply size-3 text-(--accent-primary-foreground);
