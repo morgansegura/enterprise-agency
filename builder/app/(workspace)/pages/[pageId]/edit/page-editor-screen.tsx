@@ -39,6 +39,16 @@ import { useTenant } from "@/lib/hooks/use-tenants";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { generatePageCSS } from "@enterprise/tokens";
+import {
+  useHeader,
+  useDefaultHeader,
+  useUpdateHeader,
+} from "@/lib/hooks/use-headers";
+import {
+  useFooter,
+  useDefaultFooter,
+  useUpdateFooter,
+} from "@/lib/hooks/use-footers";
 
 // =============================================================================
 // Page Editor
@@ -187,6 +197,33 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
       });
     }
   }, [page]);
+
+  // Header/footer data for settings panel
+  const { data: specificHeader } = useHeader(
+    id,
+    localPage.headerId && localPage.headerId !== "default"
+      ? localPage.headerId
+      : "",
+  );
+  const { data: defaultHeader } = useDefaultHeader(id);
+  const activeHeader =
+    localPage.headerId === "default" || !localPage.headerId
+      ? defaultHeader
+      : specificHeader || defaultHeader;
+  const updateHeader = useUpdateHeader(id);
+
+  const { data: specificFooter } = useFooter(
+    id,
+    localPage.footerId && localPage.footerId !== "default"
+      ? localPage.footerId
+      : "",
+  );
+  const { data: defaultFooter } = useDefaultFooter(id);
+  const activeFooter =
+    localPage.footerId === "default" || !localPage.footerId
+      ? defaultFooter
+      : specificFooter || defaultFooter;
+  const updateFooter = useUpdateFooter(id);
 
   // Set page context for header display
   React.useEffect(() => {
@@ -559,6 +596,24 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
             onBlockMoveDown={editor.handleBlockMoveDown}
             onBlockDuplicate={editor.handleBlockDuplicate}
             onBlockDelete={editor.handleBlockDelete}
+            headerData={(activeHeader as unknown as Record<string, unknown>) ?? null}
+            onHeaderDataChange={(data) => {
+              if (activeHeader) {
+                updateHeader.mutate({
+                  id: activeHeader.id,
+                  data: { style: data.style },
+                });
+              }
+            }}
+            footerData={(activeFooter as unknown as Record<string, unknown>) ?? null}
+            onFooterDataChange={(data) => {
+              if (activeFooter) {
+                updateFooter.mutate({
+                  id: activeFooter.id,
+                  data: { style: data.style },
+                });
+              }
+            }}
           />
         }
       >
