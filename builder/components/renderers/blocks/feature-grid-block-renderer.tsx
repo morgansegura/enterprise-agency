@@ -1,6 +1,7 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 import { cn } from "@/lib/utils";
 
 interface FeatureItem {
@@ -31,6 +32,12 @@ export default function FeatureGridBlockRenderer({
     variant = "default",
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   const updateFeature = (index: number, field: string, value: string) => {
     if (!onChange) return;
     const updated = [...features];
@@ -39,7 +46,11 @@ export default function FeatureGridBlockRenderer({
   };
 
   return (
-    <div data-slot="feature-grid-block" data-variant={variant}>
+    <div
+      className={elementClass}
+      data-slot="feature-grid-block"
+      data-variant={hasStyle("background") ? undefined : variant}
+    >
       {(heading || description || isEditing) && (
         <div data-slot="feature-grid-block-header" className="text-center mb-8">
           {(heading || isEditing) && (

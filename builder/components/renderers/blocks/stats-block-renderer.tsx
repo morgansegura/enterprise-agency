@@ -1,4 +1,5 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface StatItem {
   label: string;
@@ -22,8 +23,18 @@ export default function StatsBlockRenderer({ block }: BlockRendererProps) {
     variant = "default",
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
+  // Suppress unused-var lint — hasStyle is available for future style overrides
+  void hasStyle;
+
   return (
     <div
+      className={elementClass}
       data-slot="stats-block"
       data-layout={layout}
       data-variant={variant}

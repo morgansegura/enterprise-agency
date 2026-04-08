@@ -1,6 +1,7 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface ContactFormBlockData {
   heading?: string;
@@ -27,8 +28,17 @@ export default function ContactFormBlockRenderer({
     submitText = "Send Message",
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const _hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   return (
-    <div data-slot="contact-form-block" className="max-w-lg mx-auto">
+    <div
+      data-slot="contact-form-block"
+      className={`max-w-lg mx-auto ${elementClass}`}
+    >
       {heading && (
         <h3
           data-slot="contact-form-block-heading"

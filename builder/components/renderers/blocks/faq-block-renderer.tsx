@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +24,13 @@ export default function FaqBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as FaqBlockData;
   const { heading, description, items = [] } = data;
+
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const _hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   const [openItems, setOpenItems] = React.useState<Set<number>>(new Set([0]));
 
   const toggleItem = (index: number) => {
@@ -42,7 +50,7 @@ export default function FaqBlockRenderer({
   };
 
   return (
-    <div data-slot="faq-block" className="max-w-2xl mx-auto">
+    <div data-slot="faq-block" className={`max-w-2xl mx-auto ${elementClass}`}>
       {(heading || isEditing) && (
         <h3
           data-slot="faq-block-heading"

@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface TeamMember {
   name: string;
@@ -28,12 +29,19 @@ export default function TeamBlockRenderer({
     showBio = false,
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   if (members.length === 0) return null;
 
   return (
     <div
+      className={elementClass}
       data-slot="team-block"
-      data-columns={columns}
+      data-columns={hasStyle("gridTemplateColumns") ? undefined : columns}
       data-variant={variant}
     >
       {members.map((member, i) => (

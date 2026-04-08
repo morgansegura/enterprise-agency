@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { Music } from "lucide-react";
 import { MediaLibraryPicker } from "@/components/ui/media-library/media-library-picker";
+import { getElementClass } from "@enterprise/tokens";
 
 interface AudioBlockData {
   src?: string;
@@ -35,6 +36,12 @@ export default function AudioBlockRenderer({
     autoplay = false,
     loop = false,
   } = data;
+
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const _hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
 
   const audioUrl = src || url;
 
@@ -82,7 +89,7 @@ export default function AudioBlockRenderer({
   }
 
   return (
-    <figure data-slot="audio-block">
+    <figure className={elementClass} data-slot="audio-block">
       {title || artist ? (
         <div data-slot="audio-block-meta">
           {title ? (

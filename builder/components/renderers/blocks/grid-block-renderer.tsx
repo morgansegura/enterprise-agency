@@ -1,6 +1,7 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
+import { getElementClass } from "@enterprise/tokens";
 
 interface GridBlockData {
   columns?: number | { desktop?: number; tablet?: number; mobile?: number };
@@ -18,6 +19,12 @@ export default function GridBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as GridBlockData;
   const { columns, gap = "md", align, justify, blocks = [] } = data;
+
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const _hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
 
   const getBaseColValue = (): string => {
     if (typeof columns === "number") return String(columns);
@@ -52,7 +59,7 @@ export default function GridBlockRenderer({
   return (
     <div
       {...filtered}
-      className={columnClasses[colValue] || "grid-cols-2"}
+      className={`${columnClasses[colValue] || "grid-cols-2"} ${elementClass}`}
     >
       {blocks.map((childBlock, i) => (
         <BlockRenderer

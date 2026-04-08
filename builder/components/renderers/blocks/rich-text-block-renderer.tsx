@@ -6,6 +6,7 @@ import LinkExtension from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
+import { getElementClass } from "@enterprise/tokens";
 
 interface RichTextBlockData {
   html: string;
@@ -20,6 +21,12 @@ export default function RichTextBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as RichTextBlockData;
   const { html, align = "left" } = data;
+
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
 
   const editor = useEditor({
     extensions: [
@@ -54,8 +61,8 @@ export default function RichTextBlockRenderer({
   if (!isEditing || !editor) {
     return (
       <div
-        className="rich-text"
-        data-align={align}
+        className={`rich-text ${elementClass}`}
+        data-align={hasStyle("textAlign") ? undefined : align}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
@@ -63,7 +70,10 @@ export default function RichTextBlockRenderer({
 
   // Edit mode -- TipTap inline editor on canvas
   return (
-    <div className="rich-text" data-align={align}>
+    <div
+      className={`rich-text ${elementClass}`}
+      data-align={hasStyle("textAlign") ? undefined : align}
+    >
       <EditorContent editor={editor} />
     </div>
   );

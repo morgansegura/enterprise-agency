@@ -1,4 +1,5 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface MapBlockData {
   center: {
@@ -33,11 +34,21 @@ export default function MapBlockRenderer({
     embedUrl,
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   const resolvedHeight = heightMap[height];
 
   if (embedUrl) {
     return (
-      <div data-slot="map-block" data-height={height}>
+      <div
+        className={elementClass}
+        data-slot="map-block"
+        data-height={hasStyle("height") ? undefined : height}
+      >
         <iframe
           data-slot="map-block-iframe"
           src={embedUrl}
@@ -54,7 +65,11 @@ export default function MapBlockRenderer({
   if (!center?.lat || !center?.lng) {
     if (isEditing) {
       return (
-        <div data-slot="map-block" data-height={height}>
+        <div
+          className={elementClass}
+          data-slot="map-block"
+          data-height={hasStyle("height") ? undefined : height}
+        >
           <div
             data-slot="map-block-placeholder"
             onClick={() => {
@@ -72,7 +87,7 @@ export default function MapBlockRenderer({
       );
     }
     return (
-      <div data-slot="map-block-error">
+      <div className={elementClass} data-slot="map-block-error">
         <p>Map location data is missing or invalid.</p>
       </div>
     );
@@ -85,7 +100,11 @@ export default function MapBlockRenderer({
   const osmUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${center.lng - 0.02},${center.lat - 0.02},${center.lng + 0.02},${center.lat + 0.02}&layer=mapnik${markerParam}`;
 
   return (
-    <div data-slot="map-block" data-height={height}>
+    <div
+      className={elementClass}
+      data-slot="map-block"
+      data-height={hasStyle("height") ? undefined : height}
+    >
       <iframe
         data-slot="map-block-iframe"
         src={osmUrl}

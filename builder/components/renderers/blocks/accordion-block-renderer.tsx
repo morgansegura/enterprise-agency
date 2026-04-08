@@ -3,6 +3,7 @@
 import * as React from "react";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { ChevronDown } from "lucide-react";
+import { getElementClass } from "@enterprise/tokens";
 
 interface AccordionItem {
   title: string;
@@ -27,6 +28,15 @@ export default function AccordionBlockRenderer({
     allowMultiple = false,
     variant = "default",
   } = data;
+
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
+  // Suppress unused-var lint — hasStyle is available for future style overrides
+  void hasStyle;
 
   const [openItems, setOpenItems] = React.useState<Set<number>>(() => {
     const initial = new Set<number>();
@@ -53,6 +63,7 @@ export default function AccordionBlockRenderer({
 
   return (
     <div
+      className={elementClass}
       data-slot="accordion-block"
       data-variant={variant}
       data-allow-multiple={allowMultiple}

@@ -1,4 +1,5 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface VideoBlockData {
   url: string;
@@ -59,6 +60,12 @@ export default function VideoBlockRenderer({
     title = "Video",
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   if (!url) {
     if (isEditing) {
       return (
@@ -92,10 +99,10 @@ export default function VideoBlockRenderer({
     const videoId = getYouTubeId(url);
     if (!videoId) {
       return (
-        <figure data-slot="video-block">
+        <figure className={elementClass} data-slot="video-block">
           <div
             data-slot="video-block-wrapper"
-            data-aspect-ratio={aspectRatio}
+            data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}
             className="flex items-center justify-center bg-(--el-100) text-(--el-500)"
           >
             Invalid YouTube URL
@@ -109,10 +116,10 @@ export default function VideoBlockRenderer({
     const videoId = getVimeoId(url);
     if (!videoId) {
       return (
-        <figure data-slot="video-block">
+        <figure className={elementClass} data-slot="video-block">
           <div
             data-slot="video-block-wrapper"
-            data-aspect-ratio={aspectRatio}
+            data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}
             className="flex items-center justify-center bg-(--el-100) text-(--el-500)"
           >
             Invalid Vimeo URL
@@ -125,8 +132,11 @@ export default function VideoBlockRenderer({
   }
 
   return (
-    <figure data-slot="video-block">
-      <div data-slot="video-block-wrapper" data-aspect-ratio={aspectRatio}>
+    <figure className={elementClass} data-slot="video-block">
+      <div
+        data-slot="video-block-wrapper"
+        data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}
+      >
         {isEmbed ? (
           <iframe
             data-slot="video-block-iframe"

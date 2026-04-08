@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { ImageIcon, Upload } from "lucide-react";
 import { MediaLibraryPicker } from "@/components/ui/media-library/media-library-picker";
+import { getElementClass } from "@enterprise/tokens";
 
 interface ImageBlockData {
   src: string;
@@ -32,6 +33,12 @@ export default function ImageBlockRenderer({
     objectFit = "cover",
     href,
   } = data;
+
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
 
   // Edit mode: show media library picker when no src
   if (!src && isEditing) {
@@ -95,10 +102,10 @@ export default function ImageBlockRenderer({
   if (isEditing && onChange) {
     return (
       <>
-        <figure data-slot="image-block">
+        <figure className={elementClass} data-slot="image-block">
           <div
             data-slot="image-block-wrapper"
-            data-object-fit={objectFit}
+            data-object-fit={hasStyle("objectFit") ? undefined : objectFit}
             className="relative group cursor-pointer"
             onClick={() => setPickerOpen(true)}
           >
@@ -147,8 +154,11 @@ export default function ImageBlockRenderer({
 
   if (caption) {
     return (
-      <figure data-slot="image-block">
-        <div data-slot="image-block-wrapper" data-object-fit={objectFit}>
+      <figure className={elementClass} data-slot="image-block">
+        <div
+          data-slot="image-block-wrapper"
+          data-object-fit={hasStyle("objectFit") ? undefined : objectFit}
+        >
           {content}
         </div>
         <figcaption data-slot="image-block-caption">{caption}</figcaption>
@@ -157,8 +167,11 @@ export default function ImageBlockRenderer({
   }
 
   return (
-    <figure data-slot="image-block">
-      <div data-slot="image-block-wrapper" data-object-fit={objectFit}>
+    <figure className={elementClass} data-slot="image-block">
+      <div
+        data-slot="image-block-wrapper"
+        data-object-fit={hasStyle("objectFit") ? undefined : objectFit}
+      >
         {content}
       </div>
     </figure>

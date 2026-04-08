@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface LogoBarBlockData {
   logos: { src: string; alt: string; href?: string }[];
@@ -17,9 +18,20 @@ export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
     size = "md",
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   if (logos.length === 0) {
     return (
-      <div data-slot="logo-bar-block" data-variant={variant} data-size={size}>
+      <div
+        className={elementClass}
+        data-slot="logo-bar-block"
+        data-variant={variant}
+        data-size={hasStyle("width") ? undefined : size}
+      >
         <p data-slot="logo-bar-block-empty">No logos added yet</p>
       </div>
     );
@@ -27,9 +39,10 @@ export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
 
   return (
     <div
+      className={elementClass}
       data-slot="logo-bar-block"
       data-variant={variant}
-      data-size={size}
+      data-size={hasStyle("width") ? undefined : size}
     >
       {heading ? (
         <div data-slot="logo-bar-block-heading">{heading}</div>

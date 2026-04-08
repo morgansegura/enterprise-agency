@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface CardBlockData {
   title?: string;
@@ -31,6 +32,12 @@ export default function CardBlockRenderer({
     padding = "md",
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   // Normalize image data (support both old string format and new object)
   const imageSrc =
     typeof image === "string" ? image : image?.src;
@@ -44,9 +51,10 @@ export default function CardBlockRenderer({
 
   const content = (
     <div
+      className={elementClass}
       data-slot="card-block"
       data-variant={variant}
-      data-padding={padding}
+      data-padding={hasStyle("paddingTop") ? undefined : padding}
     >
       {imageSrc ? (
         <div data-slot="card-block-image">

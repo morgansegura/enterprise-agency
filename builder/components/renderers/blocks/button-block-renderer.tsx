@@ -1,6 +1,7 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface ButtonBlockData {
   text: string;
@@ -32,12 +33,19 @@ export default function ButtonBlockRenderer({
     openInNewTab = false,
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   if (isEditing) {
     return (
       <span
+        className={elementClass}
         data-slot="button-block"
         data-variant={variant}
-        data-size={size}
+        data-size={hasStyle("fontSize") ? undefined : size}
         {...(fullWidth ? { "data-full-width": "" } : {})}
         contentEditable
         suppressContentEditableWarning
@@ -57,9 +65,10 @@ export default function ButtonBlockRenderer({
   return (
     <a
       href={href}
+      className={elementClass}
       data-slot="button-block"
       data-variant={variant}
-      data-size={size}
+      data-size={hasStyle("fontSize") ? undefined : size}
       {...(fullWidth ? { "data-full-width": "" } : {})}
       {...(openInNewTab
         ? { target: "_blank", rel: "noopener noreferrer" }

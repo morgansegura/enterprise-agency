@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface TabItem {
   label: string;
@@ -22,18 +23,35 @@ export default function TabsBlockRenderer({
   const data = block.data as unknown as TabsBlockData;
   const { tabs = [], defaultTab = 0, variant = "default" } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
+  // Suppress unused-var lint — hasStyle is available for future style overrides
+  void hasStyle;
+
   const [activeTab, setActiveTab] = React.useState(defaultTab);
 
   if (tabs.length === 0) {
     return (
-      <div data-slot="tabs-block" data-variant={variant}>
+      <div
+        className={elementClass}
+        data-slot="tabs-block"
+        data-variant={variant}
+      >
         <p data-slot="tabs-block-empty">No tabs configured</p>
       </div>
     );
   }
 
   return (
-    <div data-slot="tabs-block" data-variant={variant}>
+    <div
+      className={elementClass}
+      data-slot="tabs-block"
+      data-variant={variant}
+    >
       <div data-slot="tabs-block-list" role="tablist">
         {tabs.map((tab, index) => (
           <button

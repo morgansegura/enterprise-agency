@@ -1,4 +1,5 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { getElementClass } from "@enterprise/tokens";
 
 interface DividerBlockData {
   style?: "solid" | "dashed" | "dotted";
@@ -20,12 +21,19 @@ export default function DividerBlockRenderer({
     variant = "default",
   } = data;
 
+  const styles = (block as Record<string, unknown>).styles as
+    | Record<string, string>
+    | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+  const elementClass = getElementClass(block._key);
+
   return (
     <hr
+      className={elementClass}
       data-slot="divider-block"
       data-style={style}
-      data-weight={weight}
-      data-spacing={spacing}
+      data-weight={hasStyle("fontWeight") ? undefined : weight}
+      data-spacing={hasStyle("paddingTop") ? undefined : spacing}
       data-variant={variant}
     />
   );
