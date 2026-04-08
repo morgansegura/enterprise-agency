@@ -23,6 +23,8 @@ import {
   useUpdateTenantTokens,
 } from "@/lib/hooks/use-tenant-tokens";
 import { toast } from "sonner";
+import { ThemePresetPicker } from "@/components/editor/theme-preset-picker";
+import { THEME_PRESETS, type ThemePreset } from "@/lib/theme/theme-presets";
 
 import "./global-settings-drawer.css";
 
@@ -218,6 +220,36 @@ export function GlobalSettingsDrawer({
     }));
   };
 
+  // Apply a theme preset — bulk-update all colors at once
+  const handleApplyPreset = React.useCallback(
+    (preset: ThemePreset) => {
+      setLocalTokens((prev) => ({
+        ...prev,
+        colors: {
+          primary: preset.colors.primary,
+          primaryForeground: preset.colors.primaryForeground,
+          secondary: preset.colors.secondary,
+          secondaryForeground: preset.colors.secondaryForeground,
+          accent: preset.colors.accent,
+          accentForeground: preset.colors.accentForeground,
+          background: preset.colors.background,
+          foreground: preset.colors.foreground,
+          card: preset.colors.card,
+          cardForeground: preset.colors.cardForeground,
+          popover: preset.colors.card,
+          popoverForeground: preset.colors.cardForeground,
+          muted: preset.colors.muted,
+          mutedForeground: preset.colors.mutedForeground,
+          border: preset.colors.border,
+          input: preset.colors.border,
+          ring: preset.colors.primary,
+          destructive: preset.colors.destructive,
+        },
+      }));
+    },
+    [],
+  );
+
   const handleTypographyChange = (key: string, value: string) => {
     setLocalTokens((prev) => ({
       ...prev,
@@ -354,6 +386,7 @@ export function GlobalSettingsDrawer({
                   <ColorSettings
                     colors={localTokens.colors}
                     onChange={handleColorChange}
+                    onApplyPreset={handleApplyPreset}
                   />
                 )}
                 {activeTab === "typography" && (
@@ -872,11 +905,36 @@ type SemanticColorKey =
 interface ColorSettingsProps {
   colors: Record<SemanticColorKey, string>;
   onChange: (key: SemanticColorKey, value: string) => void;
+  onApplyPreset?: (preset: ThemePreset) => void;
 }
 
-function ColorSettings({ colors, onChange }: ColorSettingsProps) {
+function ColorSettings({
+  colors,
+  onChange,
+  onApplyPreset,
+}: ColorSettingsProps) {
+  // Detect which preset (if any) matches the current colors
+  const activePresetId = React.useMemo(() => {
+    const match = THEME_PRESETS.find(
+      (p) =>
+        p.colors.primary === colors.primary &&
+        p.colors.background === colors.background &&
+        p.colors.foreground === colors.foreground &&
+        p.colors.accent === colors.accent,
+    );
+    return match?.id;
+  }, [colors.primary, colors.background, colors.foreground, colors.accent]);
+
   return (
     <div className="settings-section">
+      {/* Theme presets */}
+      {onApplyPreset && (
+        <ThemePresetPicker
+          onApply={onApplyPreset}
+          activePresetId={activePresetId}
+        />
+      )}
+
       <h3 className="settings-section-title">Brand Colors</h3>
       <p className="settings-section-description">
         Configure all semantic color tokens for this website. These will be
