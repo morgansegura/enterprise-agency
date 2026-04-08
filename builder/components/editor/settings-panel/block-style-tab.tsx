@@ -78,9 +78,18 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
       // Desktop — write directly to block
       onChange({ ...block, [styleKey]: updated });
     } else {
-      // Tablet/Mobile — write to _responsive.[breakpoint]
+      // Tablet/Mobile — write only the diff to _responsive.[breakpoint]
+      // so desktop styles aren't duplicated and overrides stay minimal
       const blockAny = block as Record<string, unknown>;
-      const responsive = (blockAny._responsive as Record<string, Record<string, unknown>>) || {};
+      const baseStyles = (blockAny[styleKey] as ElementStyles) || {};
+      const diff: ElementStyles = {};
+      for (const [k, v] of Object.entries(updated)) {
+        const baseVal = (baseStyles as Record<string, unknown>)[k];
+        if (v !== baseVal) diff[k] = v;
+      }
+
+      const responsive =
+        (blockAny._responsive as Record<string, Record<string, unknown>>) || {};
       const bpData = responsive[breakpoint] || {};
       onChange({
         ...block,
@@ -88,7 +97,7 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
           ...responsive,
           [breakpoint]: {
             ...bpData,
-            [styleKey]: updated,
+            [styleKey]: diff,
           },
         },
       });
@@ -153,21 +162,41 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
 // =============================================================================
 
 export interface ElementStyleEditorProps {
-  /** Current main element styles */
+  /** Current main element styles (desktop/base) */
   styles?: ElementStyles;
   /** ::before pseudo-element styles */
   stylesBefore?: ElementStyles & { content?: string };
   /** ::after pseudo-element styles */
   stylesAfter?: ElementStyles & { content?: string };
-  /** Called when main styles change */
+  /** Responsive overrides — if provided, the editor will write to these
+   * when the current breakpoint is tablet/mobile instead of base styles. */
+  responsive?: {
+    tablet?: {
+      styles?: ElementStyles;
+      stylesBefore?: ElementStyles & { content?: string };
+      stylesAfter?: ElementStyles & { content?: string };
+    };
+    mobile?: {
+      styles?: ElementStyles;
+      stylesBefore?: ElementStyles & { content?: string };
+      stylesAfter?: ElementStyles & { content?: string };
+    };
+  };
+  /** Called when main styles change (desktop) */
   onStylesChange: (styles: ElementStyles) => void;
-  /** Called when ::before styles change */
+  /** Called when ::before styles change (desktop) */
   onStylesBeforeChange?: (
     styles: ElementStyles & { content?: string },
   ) => void;
-  /** Called when ::after styles change */
+  /** Called when ::after styles change (desktop) */
   onStylesAfterChange?: (
     styles: ElementStyles & { content?: string },
+  ) => void;
+  /** Called when responsive styles change for a breakpoint */
+  onResponsiveChange?: (
+    breakpoint: "tablet" | "mobile",
+    key: "styles" | "stylesBefore" | "stylesAfter",
+    styles: ElementStyles,
   ) => void;
   /** Show the Normal / ::before / ::after toggle (default true) */
   showPseudoElements?: boolean;
@@ -182,9 +211,11 @@ export function ElementStyleEditor({
   styles,
   stylesBefore,
   stylesAfter,
+  responsive,
   onStylesChange,
   onStylesBeforeChange,
   onStylesAfterChange,
+  onResponsiveChange,
   showPseudoElements = true,
 }: ElementStyleEditorProps) {
   const [mode, setMode] = React.useState<"normal" | "before" | "after">(
@@ -195,14 +226,50 @@ export function ElementStyleEditor({
 
   const hasPseudo = showPseudoElements && onStylesBeforeChange && onStylesAfterChange;
 
-  const currentStyles =
+  // Resolve the active style key based on pseudo-element mode
+  const styleKey =
     mode === "before"
-      ? stylesBefore || {}
+      ? "stylesBefore"
       : mode === "after"
-        ? stylesAfter || {}
-        : styles || {};
+        ? "stylesAfter"
+        : "styles";
+
+  // Get the base styles for the current mode
+  const baseStyles =
+    mode === "before" ? stylesBefore : mode === "after" ? stylesAfter : styles;
+
+  // Get breakpoint overrides for the current mode
+  const bpOverrides = isResponsive
+    ? (responsive?.[breakpoint as "tablet" | "mobile"]?.[styleKey] as
+        | ElementStyles
+        | undefined)
+    : undefined;
+
+  // Display: merge base + overrides (so user sees the effective value)
+  const currentStyles: ElementStyles = isResponsive
+    ? { ...(baseStyles || {}), ...(bpOverrides || {}) }
+    : baseStyles || {};
 
   const handleChange = (updated: ElementStyles) => {
+    // Responsive mode: write only the diff to the responsive override
+    if (isResponsive && onResponsiveChange) {
+      // Calculate diff from base — only write properties that differ
+      const diff: ElementStyles = {};
+      for (const [k, v] of Object.entries(updated)) {
+        const baseVal = (baseStyles as Record<string, unknown> | undefined)?.[k];
+        if (v !== baseVal) {
+          diff[k] = v;
+        }
+      }
+      onResponsiveChange(
+        breakpoint as "tablet" | "mobile",
+        styleKey,
+        diff,
+      );
+      return;
+    }
+
+    // Desktop mode: write to base styles
     if (mode === "before" && onStylesBeforeChange) {
       onStylesBeforeChange(updated as ElementStyles & { content?: string });
     } else if (mode === "after" && onStylesAfterChange) {
@@ -270,6 +337,15 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
   const updateStyle = (property: string, value: string) => {
     const cleared = value === "inherit" || value === "" ? undefined : value;
     onStyleChange({ ...styles, [property]: cleared });
+  };
+
+  const updateStyles = (updates: Record<string, string>) => {
+    const next: ElementStyles = { ...styles };
+    for (const [k, v] of Object.entries(updates)) {
+      const cleared = v === "inherit" || v === "" ? undefined : v;
+      (next as Record<string, unknown>)[k] = cleared;
+    }
+    onStyleChange(next);
   };
 
   const s = (property: keyof ElementStyles) =>
@@ -420,6 +496,7 @@ export function ElementStyleTab({ styles: inputStyles, onStyleChange }: ElementS
           paddingBottom={s("paddingBottom")}
           paddingLeft={s("paddingLeft")}
           onChange={updateStyle}
+          onBatchChange={updateStyles}
         />
       </PropertySection>
 

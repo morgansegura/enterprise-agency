@@ -18,6 +18,8 @@ interface SpacingEditorProps {
   paddingBottom: string;
   paddingLeft: string;
   onChange: (property: string, value: string) => void;
+  /** Optional batch update for linked sides — applies multiple props in one call */
+  onBatchChange?: (updates: Record<string, string>) => void;
 }
 
 // =============================================================================
@@ -98,16 +100,26 @@ export function SpacingEditor({
   paddingBottom,
   paddingLeft,
   onChange,
+  onBatchChange,
 }: SpacingEditorProps) {
   const [marginLinked, setMarginLinked] = React.useState(false);
   const [paddingLinked, setPaddingLinked] = React.useState(false);
 
   const handleMarginChange = (side: string, value: string) => {
     if (marginLinked) {
-      onChange("marginTop", value);
-      onChange("marginRight", value);
-      onChange("marginBottom", value);
-      onChange("marginLeft", value);
+      if (onBatchChange) {
+        onBatchChange({
+          marginTop: value,
+          marginRight: value,
+          marginBottom: value,
+          marginLeft: value,
+        });
+      } else {
+        onChange("marginTop", value);
+        onChange("marginRight", value);
+        onChange("marginBottom", value);
+        onChange("marginLeft", value);
+      }
     } else {
       onChange(side, value);
     }
@@ -115,10 +127,19 @@ export function SpacingEditor({
 
   const handlePaddingChange = (side: string, value: string) => {
     if (paddingLinked) {
-      onChange("paddingTop", value);
-      onChange("paddingRight", value);
-      onChange("paddingBottom", value);
-      onChange("paddingLeft", value);
+      if (onBatchChange) {
+        onBatchChange({
+          paddingTop: value,
+          paddingRight: value,
+          paddingBottom: value,
+          paddingLeft: value,
+        });
+      } else {
+        onChange("paddingTop", value);
+        onChange("paddingRight", value);
+        onChange("paddingBottom", value);
+        onChange("paddingLeft", value);
+      }
     } else {
       onChange(side, value);
     }
@@ -239,10 +260,19 @@ export function SpacingEditor({
                 : ""
             }`}
             onClick={() => {
-              onChange("paddingTop", preset.value);
-              onChange("paddingRight", preset.value);
-              onChange("paddingBottom", preset.value);
-              onChange("paddingLeft", preset.value);
+              if (onBatchChange) {
+                onBatchChange({
+                  paddingTop: preset.value,
+                  paddingRight: preset.value,
+                  paddingBottom: preset.value,
+                  paddingLeft: preset.value,
+                });
+              } else {
+                onChange("paddingTop", preset.value);
+                onChange("paddingRight", preset.value);
+                onChange("paddingBottom", preset.value);
+                onChange("paddingLeft", preset.value);
+              }
             }}
           >
             {preset.label}

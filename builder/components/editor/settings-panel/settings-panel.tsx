@@ -271,6 +271,7 @@ export function SettingsPanel({
                         styles={(selectedData.data as Section).styles}
                         stylesBefore={(selectedData.data as Section & { stylesBefore?: Record<string, string> }).stylesBefore}
                         stylesAfter={(selectedData.data as Section & { stylesAfter?: Record<string, string> }).stylesAfter}
+                        responsive={(selectedData.data as Section & { _responsive?: { tablet?: { styles?: Record<string, string> }; mobile?: { styles?: Record<string, string> } } })._responsive}
                         onStylesChange={(updatedStyles) => {
                           const section = selectedData.data as Section;
                           onSectionChange?.(selectedElement.sectionIndex, {
@@ -292,6 +293,20 @@ export function SettingsPanel({
                             stylesAfter: updatedStyles,
                           } as Section);
                         }}
+                        onResponsiveChange={(bp, key, updatedStyles) => {
+                          const section = selectedData.data as Section & {
+                            _responsive?: Record<string, Record<string, unknown>>;
+                          };
+                          const prev = section._responsive || {};
+                          const bpData = prev[bp] || {};
+                          onSectionChange?.(selectedElement.sectionIndex, {
+                            ...section,
+                            _responsive: {
+                              ...prev,
+                              [bp]: { ...bpData, [key]: updatedStyles },
+                            },
+                          } as Section);
+                        }}
                       />
                       </>
                     )}
@@ -301,6 +316,7 @@ export function SettingsPanel({
                         styles={(selectedData.data as Container).styles}
                         stylesBefore={(selectedData.data as Container & { stylesBefore?: Record<string, string> }).stylesBefore}
                         stylesAfter={(selectedData.data as Container & { stylesAfter?: Record<string, string> }).stylesAfter}
+                        responsive={(selectedData.data as Container & { _responsive?: { tablet?: { styles?: Record<string, string> }; mobile?: { styles?: Record<string, string> } } })._responsive}
                         onStylesChange={(updatedStyles) => {
                           const container = selectedData.data as Container;
                           onContainerChange?.(
@@ -323,6 +339,24 @@ export function SettingsPanel({
                             selectedElement.sectionIndex,
                             selectedElement.containerIndex!,
                             { ...container, stylesAfter: updatedStyles } as Container,
+                          );
+                        }}
+                        onResponsiveChange={(bp, key, updatedStyles) => {
+                          const container = selectedData.data as Container & {
+                            _responsive?: Record<string, Record<string, unknown>>;
+                          };
+                          const prev = container._responsive || {};
+                          const bpData = prev[bp] || {};
+                          onContainerChange?.(
+                            selectedElement.sectionIndex,
+                            selectedElement.containerIndex!,
+                            {
+                              ...container,
+                              _responsive: {
+                                ...prev,
+                                [bp]: { ...bpData, [key]: updatedStyles },
+                              },
+                            } as Container,
                           );
                         }}
                       />
