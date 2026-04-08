@@ -123,6 +123,7 @@ export function ClientForm({
   // Track dirty state (edit mode)
   React.useEffect(() => {
     if (mode !== "edit") return;
+    // eslint-disable-next-line react-hooks/incompatible-library -- react-hook-form's watch() is a standard API
     const subscription = watch(() => {
       setIsDirty(true);
     });

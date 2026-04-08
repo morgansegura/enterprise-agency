@@ -208,7 +208,7 @@ export function usePageEditor(initialSections: Section[]) {
         return updated;
       });
     },
-    [],
+    [setSections],
   );
 
   const handleBlockDelete = React.useCallback(
@@ -228,7 +228,7 @@ export function usePageEditor(initialSections: Section[]) {
       });
       toast.success("Block deleted");
     },
-    [],
+    [setSections],
   );
 
   const handleBlockDuplicate = React.useCallback(
@@ -252,7 +252,7 @@ export function usePageEditor(initialSections: Section[]) {
       });
       toast.success("Block duplicated");
     },
-    [],
+    [setSections],
   );
 
   const handleBlockMoveUp = React.useCallback(
@@ -275,7 +275,7 @@ export function usePageEditor(initialSections: Section[]) {
         return updated;
       });
     },
-    [],
+    [setSections],
   );
 
   const handleBlockMoveDown = React.useCallback(
@@ -297,7 +297,7 @@ export function usePageEditor(initialSections: Section[]) {
         return updated;
       });
     },
-    [],
+    [setSections],
   );
 
   const handleAddBlockToContainer = React.useCallback(
@@ -315,7 +315,7 @@ export function usePageEditor(initialSections: Section[]) {
       });
       toast.success("Block added!");
     },
-    [],
+    [setSections],
   );
 
   // --- Section operations ---
@@ -328,13 +328,13 @@ export function usePageEditor(initialSections: Section[]) {
         return updated;
       });
     },
-    [],
+    [setSections],
   );
 
   const handleSectionDelete = React.useCallback((sectionIndex: number) => {
     setSections((prev) => prev.filter((_, idx) => idx !== sectionIndex));
     toast.success("Section deleted");
-  }, []);
+  }, [setSections]);
 
   const handleAddSectionAt = React.useCallback((index: number) => {
     const newSection = createDefaultSection();
@@ -344,7 +344,7 @@ export function usePageEditor(initialSections: Section[]) {
       return updated;
     });
     toast.success("Section added");
-  }, []);
+  }, [setSections]);
 
   const handleSectionDuplicate = React.useCallback((sectionIndex: number) => {
     setSections((prev) => {
@@ -369,7 +369,7 @@ export function usePageEditor(initialSections: Section[]) {
       return updated;
     });
     toast.success("Section duplicated");
-  }, []);
+  }, [setSections]);
 
   const handleSectionMoveUp = React.useCallback((sectionIndex: number) => {
     if (sectionIndex === 0) return;
@@ -381,7 +381,7 @@ export function usePageEditor(initialSections: Section[]) {
       ];
       return updated;
     });
-  }, []);
+  }, [setSections]);
 
   const handleSectionMoveDown = React.useCallback((sectionIndex: number) => {
     setSections((prev) => {
@@ -393,7 +393,7 @@ export function usePageEditor(initialSections: Section[]) {
       ];
       return updated;
     });
-  }, []);
+  }, [setSections]);
 
   const handleAddContainerToSection = React.useCallback(
     (sectionIndex: number) => {
@@ -409,7 +409,7 @@ export function usePageEditor(initialSections: Section[]) {
       });
       toast.success("Container added!");
     },
-    [],
+    [setSections],
   );
 
   // Reorder blocks within a container
@@ -424,7 +424,7 @@ export function usePageEditor(initialSections: Section[]) {
         return updated;
       });
     },
-    [],
+    [setSections],
   );
 
   // Reorder sections
@@ -437,7 +437,7 @@ export function usePageEditor(initialSections: Section[]) {
         return updated;
       });
     },
-    [],
+    [setSections],
   );
 
   return {
