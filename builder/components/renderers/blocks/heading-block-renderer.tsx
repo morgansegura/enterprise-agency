@@ -8,6 +8,7 @@ import { ColorMark } from "@/lib/editor/tiptap-color-mark";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
 import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
+import { getElementClass } from "@enterprise/tokens";
 
 interface HeadingBlockData {
   text: string;
@@ -89,25 +90,33 @@ export default function HeadingBlockRenderer({
 
   const Tag = level;
 
+  // When block.styles has an explicit CSS property, skip the corresponding
+  // data-attribute so the generated CSS rule wins over token CSS.
+  const styles = (block as Record<string, unknown>).styles as Record<string, string> | undefined;
+  const hasStyle = (prop: string) => !!styles?.[prop];
+
   const dataAttributes: Record<string, string | undefined> = {
     "data-slot": "heading-block",
-    "data-size": size,
-    "data-weight": weight,
-    "data-align": align,
-    "data-letter-spacing": letterSpacing,
-    "data-line-height": lineHeight,
-    "data-font-style": fontStyle,
-    "data-text-transform": textTransform,
-    "data-text-decoration": textDecoration,
-    "data-white-space": whiteSpace,
-    "data-max-width": maxWidth,
-    "data-opacity": getOpacityPreset(opacity),
-    "data-color": color,
+    "data-size": hasStyle("fontSize") ? undefined : size,
+    "data-weight": hasStyle("fontWeight") ? undefined : weight,
+    "data-align": hasStyle("textAlign") ? undefined : align,
+    "data-letter-spacing": hasStyle("letterSpacing") ? undefined : letterSpacing,
+    "data-line-height": hasStyle("lineHeight") ? undefined : lineHeight,
+    "data-font-style": hasStyle("fontStyle") ? undefined : fontStyle,
+    "data-text-transform": hasStyle("textTransform") ? undefined : textTransform,
+    "data-text-decoration": hasStyle("textDecoration") ? undefined : textDecoration,
+    "data-white-space": hasStyle("whiteSpace") ? undefined : whiteSpace,
+    "data-max-width": hasStyle("maxWidth") ? undefined : maxWidth,
+    "data-opacity": hasStyle("opacity") ? undefined : getOpacityPreset(opacity),
+    "data-color": hasStyle("color") ? undefined : color,
   };
 
   const filteredDataAttributes = Object.fromEntries(
     Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
   );
+
+  // Element class for generated CSS
+  const elementClass = getElementClass(block._key);
 
   // TipTap editor for inline editing
   const editor = useEditor({
@@ -162,14 +171,14 @@ export default function HeadingBlockRenderer({
     if (html) {
       return (
         <Tag
-          className="heading"
+          className={`heading ${elementClass}`}
           {...filteredDataAttributes}
           dangerouslySetInnerHTML={{ __html: html.replace(/<\/?p>/g, "") }}
         />
       );
     }
     return (
-      <Tag className="heading" {...filteredDataAttributes}>
+      <Tag className={`heading ${elementClass}`} {...filteredDataAttributes}>
         {text}
       </Tag>
     );
@@ -178,7 +187,7 @@ export default function HeadingBlockRenderer({
   // Edit mode — TipTap inline editor styled as the heading
   return (
     <Tag
-      className="heading"
+      className={`heading ${elementClass}`}
       {...filteredDataAttributes}
       style={{ cursor: "text" }}
     >

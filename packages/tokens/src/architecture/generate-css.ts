@@ -181,11 +181,19 @@ function stylesToDeclarations(styles: ElementStyles): string {
  * Build a CSS rule for an element.
  * Returns empty string if there are no declarations.
  */
+/**
+ * Build CSS rules for an element.
+ * Generates TWO selectors for maximum compatibility:
+ * 1. .e-key.e-key { ... } — when the class is on the element itself
+ * 2. .e-key > * { ... } — when the class is on a wrapper div (client withStyles pattern)
+ * Both have enough specificity to override data-attribute token rules.
+ */
 function buildRule(key: string, styles?: ElementStyles): string {
   if (!styles) return "";
   const decls = stylesToDeclarations(styles);
   if (!decls) return "";
-  return `.${CLASS_PREFIX}${key} {\n${decls}\n}`;
+  const cls = `.${CLASS_PREFIX}${key}`;
+  return `${cls}${cls},\n${cls}${cls} > * {\n${decls}\n}`;
 }
 
 /**
@@ -212,7 +220,8 @@ function buildPseudoRule(
   }
 
   if (decls.length <= 1 && contentValue === '""') return "";
-  return `.${CLASS_PREFIX}${key}::${pseudo} {\n${decls.join("\n")}\n}`;
+  const cls = `.${CLASS_PREFIX}${key}`;
+  return `${cls}${cls}::${pseudo},\n${cls}${cls} > *::${pseudo} {\n${decls.join("\n")}\n}`;
 }
 
 // ---------------------------------------------------------------------------
