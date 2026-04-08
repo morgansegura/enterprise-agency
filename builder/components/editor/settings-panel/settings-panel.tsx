@@ -267,16 +267,6 @@ export function SettingsPanel({
                   <>
                     {selectedElement.type === "section" && (
                       <>
-                      <SectionSettings
-                        section={selectedData.data as Section}
-                        onChange={(updated) =>
-                          onSectionChange?.(
-                            selectedElement.sectionIndex,
-                            updated,
-                          )
-                        }
-                        tab="style"
-                      />
                       <ElementStyleEditor
                         styles={(selectedData.data as Section).styles}
                         stylesBefore={(selectedData.data as Section & { stylesBefore?: Record<string, string> }).stylesBefore}
@@ -307,17 +297,6 @@ export function SettingsPanel({
                     )}
                     {selectedElement.type === "container" && (
                       <>
-                      <ContainerSettings
-                        container={selectedData.data as Container}
-                        onChange={(updated) =>
-                          onContainerChange?.(
-                            selectedElement.sectionIndex,
-                            selectedElement.containerIndex!,
-                            updated,
-                          )
-                        }
-                        tab="style"
-                      />
                       <ElementStyleEditor
                         styles={(selectedData.data as Container).styles}
                         stylesBefore={(selectedData.data as Container & { stylesBefore?: Record<string, string> }).stylesBefore}
