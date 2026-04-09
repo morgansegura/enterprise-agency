@@ -228,6 +228,18 @@ export const queryKeys = {
     byTenant: (tenantId: string) => [...queryKeys.menus.all, tenantId] as const,
   },
 
+  library: {
+    all: ["library"] as const,
+    lists: () => [...queryKeys.library.all, "list"] as const,
+    list: (
+      tenantId: string,
+      filters?: { type?: string; category?: string; search?: string },
+    ) => [...queryKeys.library.lists(), tenantId, filters] as const,
+    details: () => [...queryKeys.library.all, "detail"] as const,
+    detail: (tenantId: string, id: string) =>
+      [...queryKeys.library.details(), tenantId, id] as const,
+  },
+
   // ============================================================================
   // Media & Assets
   // ============================================================================

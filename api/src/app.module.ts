@@ -24,6 +24,7 @@ import { PreviewModule } from "./modules/preview/preview.module";
 import { MenusModule } from "./modules/menus/menus.module";
 import { HeadersModule } from "./modules/headers/headers.module";
 import { FootersModule } from "./modules/footers/footers.module";
+import { LibraryModule } from "./modules/library/library.module";
 import { RedirectsModule } from "./modules/redirects/redirects.module";
 import { PrismaService } from "./common/services/prisma.service";
 
@@ -70,6 +71,7 @@ import { PrismaService } from "./common/services/prisma.service";
     MenusModule,
     HeadersModule,
     FootersModule,
+    LibraryModule,
     // SEO
     RedirectsModule,
     // Integrations
