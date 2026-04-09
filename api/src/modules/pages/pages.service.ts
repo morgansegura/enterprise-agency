@@ -404,9 +404,27 @@ export class PagesService {
     return { success: true, id };
   }
 
+  /**
+   * Publish to production — copies the current draft content (or staging
+   * content if available) into productionContent. Sets status to "published".
+   */
   async publish(tenantId: string, id: string, userId?: string) {
-    const page = await this.update(tenantId, id, {
-      status: "published",
+    const existing = await this.findOne(tenantId, id);
+
+    // Prefer staging content if it exists (so the production publish promotes
+    // exactly what was reviewed on staging), otherwise use the working draft.
+    const promotedContent =
+      (existing as { stagingContent?: unknown }).stagingContent ??
+      existing.content;
+
+    const page = await this.prisma.page.update({
+      where: { id },
+      data: {
+        status: "published",
+        productionContent: promotedContent as Prisma.InputJsonValue,
+        publishedAt: new Date(),
+      },
+      include: { author: true },
     });
 
     // Create version snapshot on publish
@@ -438,9 +456,21 @@ export class PagesService {
     return page;
   }
 
+  /**
+   * Publish to staging — copies the current draft content into stagingContent.
+   * Production content is untouched, so the live site doesn't change.
+   */
   async publishToStaging(tenantId: string, id: string, userId?: string) {
-    const page = await this.update(tenantId, id, {
-      status: "staging",
+    const existing = await this.findOne(tenantId, id);
+
+    const page = await this.prisma.page.update({
+      where: { id },
+      data: {
+        status: "staging",
+        stagingContent: (existing.content ?? null) as Prisma.InputJsonValue,
+        stagingPublishedAt: new Date(),
+      },
+      include: { author: true },
     });
 
     if (userId) {
@@ -468,10 +498,19 @@ export class PagesService {
     return page;
   }
 
+  /**
+   * Promote staging content to production. Requires the page to have
+   * staging content. The publish() flow already prefers staging content,
+   * so this is a thin wrapper.
+   */
   async promoteToProduction(tenantId: string, id: string, userId?: string) {
     const page = await this.findOne(tenantId, id);
-    if (page.status !== "staging") {
-      throw new Error("Page must be in staging before promoting to production");
+    const stagingContent = (page as { stagingContent?: unknown })
+      .stagingContent;
+    if (!stagingContent) {
+      throw new Error(
+        "Page must have staging content before promoting to production",
+      );
     }
     return this.publish(tenantId, id, userId);
   }

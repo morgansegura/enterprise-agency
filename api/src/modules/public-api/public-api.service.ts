@@ -250,6 +250,7 @@ export class PublicApiService {
     tenantSlug: string,
     pageSlug: string,
     includeDrafts: boolean = false,
+    mode: "production" | "staging" = "production",
   ): Promise<PublicPageDto> {
     const tenant = await this.getTenantBySlug(tenantSlug);
 
@@ -258,14 +259,21 @@ export class PublicApiService {
       return this.getHomePage(tenant.id, tenantSlug, includeDrafts);
     }
 
-    // Build where clause - include drafts if preview mode is active
+    // Build where clause:
+    // - production mode: only published pages
+    // - staging mode: pages with stagingContent (status = staging or published)
+    // - includeDrafts (preview): all pages regardless of status
     const whereClause: Prisma.PageWhereInput = {
       tenantId: tenant.id,
       slug: pageSlug,
     };
 
     if (!includeDrafts) {
-      whereClause.status = "published";
+      if (mode === "staging") {
+        whereClause.OR = [{ status: "staging" }, { status: "published" }];
+      } else {
+        whereClause.status = "published";
+      }
     }
 
     const page = await this.prisma.page.findFirst({
@@ -275,11 +283,14 @@ export class PublicApiService {
         slug: true,
         title: true,
         content: true,
+        stagingContent: true,
+        productionContent: true,
         status: true,
         metaTitle: true,
         metaDescription: true,
         template: true,
         publishedAt: true,
+        stagingPublishedAt: true,
         updatedAt: true,
       },
     });
@@ -288,11 +299,25 @@ export class PublicApiService {
       throw new NotFoundException(`Page not found: ${tenantSlug}/${pageSlug}`);
     }
 
+    // Pick the right content version:
+    // - includeDrafts (preview mode): working draft
+    // - staging mode: stagingContent (fall back to productionContent then content)
+    // - production mode: productionContent (fall back to content for legacy pages)
+    let contentToServe: Prisma.JsonValue | null;
+    if (includeDrafts) {
+      contentToServe = page.content;
+    } else if (mode === "staging") {
+      contentToServe =
+        page.stagingContent ?? page.productionContent ?? page.content;
+    } else {
+      contentToServe = page.productionContent ?? page.content;
+    }
+
     return {
       id: page.id,
       slug: page.slug,
       title: page.title,
-      content: page.content,
+      content: contentToServe,
       metaTitle: page.metaTitle ?? undefined,
       metaDescription: page.metaDescription ?? undefined,
       template: page.template ?? undefined,

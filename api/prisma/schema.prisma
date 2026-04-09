@@ -621,8 +621,13 @@ model Page {
   slug  String @db.VarChar(255)
   title String @db.VarChar(255)
 
-  // Content (structured blocks)
-  content Json? @db.JsonB
+  // Content (structured blocks) — three independent versions
+  // - content: working draft (what's in the editor right now)
+  // - stagingContent: what's published to the staging URL
+  // - productionContent: what's live on the public site
+  content           Json? @db.JsonB
+  stagingContent    Json? @map("staging_content") @db.JsonB
+  productionContent Json? @map("production_content") @db.JsonB
 
   // SEO
   metaTitle       String? @map("meta_title") @db.VarChar(255)
@@ -649,9 +654,10 @@ model Page {
   footerId String? @map("footer_id")
 
   // Timestamps
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  publishedAt DateTime? @map("published_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+  publishedAt        DateTime? @map("published_at")
+  stagingPublishedAt DateTime? @map("staging_published_at")
 
   // Relations
   tenant   Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
