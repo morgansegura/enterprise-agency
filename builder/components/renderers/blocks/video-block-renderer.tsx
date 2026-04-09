@@ -42,9 +42,17 @@ function buildVimeoUrl(videoId: string, data: VideoBlockData): string {
   return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
 }
 
+function detectProvider(
+  url: string,
+): "youtube" | "vimeo" | "native" {
+  if (/youtube\.com|youtu\.be/.test(url)) return "youtube";
+  if (/vimeo\.com/.test(url)) return "vimeo";
+  return "native";
+}
+
 export default function VideoBlockRenderer({
   block,
-  onChange: _onChange,
+  onChange,
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as VideoBlockData;
@@ -66,26 +74,56 @@ export default function VideoBlockRenderer({
   const hasStyle = (prop: string) => !!styles?.[prop];
   const elementClass = getElementClass(block._key);
 
+  const handleUrlChange = (newUrl: string) => {
+    if (!onChange) return;
+    onChange({
+      ...block,
+      data: {
+        ...block.data,
+        url: newUrl,
+        provider: detectProvider(newUrl),
+      },
+    });
+  };
+
   if (!url) {
     if (isEditing) {
       return (
         <div
-          className="flex flex-col items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-8 rounded-[3px] aspect-video cursor-pointer hover:bg-(--accent-primary-subtle)/30"
-          onClick={() => {
-            // Block click-to-select will open settings panel
-          }}
+          className={`${elementClass} flex flex-col items-center justify-center gap-3 bg-(--el-50) border border-dashed border-(--border-default) text-(--el-500) p-8 rounded-md aspect-video`}
+          data-slot="video-block"
+          onClick={(e) => e.stopPropagation()}
         >
-          <span className="text-[14px] font-medium text-(--el-800)">
-            Click to select, then set URL in Settings
+          <span className="text-sm font-medium text-(--el-800)">
+            Paste a video URL
           </span>
-          <span className="text-[12px]">
-            YouTube, Vimeo, or direct URL via Settings panel
+          <input
+            type="url"
+            placeholder="https://youtube.com/watch?v=..."
+            className="w-full max-w-md h-9 px-3 text-xs font-mono bg-(--el-0) border border-(--border-default) rounded-md outline-none focus:border-(--accent-primary)"
+            onBlur={(e) => {
+              const value = e.target.value.trim();
+              if (value) handleUrlChange(value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                const value = (e.target as HTMLInputElement).value.trim();
+                if (value) handleUrlChange(value);
+              }
+            }}
+          />
+          <span className="text-[11px] text-(--el-400)">
+            YouTube, Vimeo, or direct video URL — auto-detected
           </span>
         </div>
       );
     }
     return (
-      <div className="flex items-center justify-center bg-(--el-100) text-(--el-500) p-8 rounded-[3px] aspect-video">
+      <div
+        className={`${elementClass} flex items-center justify-center bg-(--el-100) text-(--el-500) p-8 rounded-md aspect-video`}
+        data-slot="video-block"
+      >
         No video URL set
       </div>
     );

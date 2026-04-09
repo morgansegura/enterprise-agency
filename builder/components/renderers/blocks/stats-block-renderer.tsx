@@ -15,7 +15,11 @@ interface StatsBlockData {
   variant?: "default" | "bordered" | "cards";
 }
 
-export default function StatsBlockRenderer({ block }: BlockRendererProps) {
+export default function StatsBlockRenderer({
+  block,
+  isEditing,
+  onChange,
+}: BlockRendererProps) {
   const data = block.data as unknown as StatsBlockData;
   const {
     stats = [],
@@ -27,10 +31,23 @@ export default function StatsBlockRenderer({ block }: BlockRendererProps) {
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
+  void hasStyle;
   const elementClass = getElementClass(block._key);
 
-  // Suppress unused-var lint — hasStyle is available for future style overrides
-  void hasStyle;
+  // Update a single stat field on blur (canvas editing)
+  const updateStatField = (
+    index: number,
+    field: keyof StatItem,
+    value: string,
+  ) => {
+    if (!onChange) return;
+    const next = [...stats];
+    next[index] = { ...next[index], [field]: value };
+    onChange({
+      ...block,
+      data: { ...block.data, stats: next },
+    });
+  };
 
   return (
     <div
@@ -47,12 +64,51 @@ export default function StatsBlockRenderer({ block }: BlockRendererProps) {
                 {stat.icon}
               </span>
             ) : null}
-            <div data-slot="stats-block-value">{stat.value}</div>
+            <div
+              data-slot="stats-block-value"
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const newValue = e.currentTarget.textContent ?? "";
+                if (newValue !== stat.value) {
+                  updateStatField(index, "value", newValue);
+                }
+              }}
+              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            >
+              {stat.value}
+            </div>
           </div>
           <div data-slot="stats-block-meta">
-            <div data-slot="stats-block-label">{stat.label}</div>
-            {stat.description ? (
-              <div data-slot="stats-block-description">
+            <div
+              data-slot="stats-block-label"
+              contentEditable={!!isEditing}
+              suppressContentEditableWarning
+              onBlur={(e) => {
+                const newValue = e.currentTarget.textContent ?? "";
+                if (newValue !== stat.label) {
+                  updateStatField(index, "label", newValue);
+                }
+              }}
+              style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+            >
+              {stat.label}
+            </div>
+            {stat.description !== undefined ? (
+              <div
+                data-slot="stats-block-description"
+                contentEditable={!!isEditing}
+                suppressContentEditableWarning
+                onBlur={(e) => {
+                  const newValue = e.currentTarget.textContent ?? "";
+                  if (newValue !== stat.description) {
+                    updateStatField(index, "description", newValue);
+                  }
+                }}
+                style={
+                  isEditing ? { cursor: "text", outline: "none" } : undefined
+                }
+              >
                 {stat.description}
               </div>
             ) : null}

@@ -15,8 +15,8 @@ interface IconBlockData {
 
 export default function IconBlockRenderer({
   block,
-  onChange: _onChange,
-  isEditing: _isEditing,
+  onChange,
+  isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as IconBlockData;
   const {
@@ -39,6 +39,15 @@ export default function IconBlockRenderer({
     LucideIcons as unknown as Record<string, LucideIcons.LucideIcon>
   )[icon];
 
+  // Update a single field on blur (canvas editing)
+  const updateField = (field: keyof IconBlockData, value: string) => {
+    if (!onChange) return;
+    onChange({
+      ...block,
+      data: { ...block.data, [field]: value },
+    });
+  };
+
   if (!IconComponent) {
     return (
       <div
@@ -49,6 +58,16 @@ export default function IconBlockRenderer({
         <span data-slot="icon-block-icon" aria-hidden="true">
           {icon}
         </span>
+        {isEditing && (
+          <input
+            type="text"
+            defaultValue={icon}
+            placeholder="Lucide icon name (e.g. Star)"
+            className="ml-2 h-7 px-2 text-xs font-mono bg-(--el-0) border border-(--border-default) rounded outline-none focus:border-(--accent-primary)"
+            onClick={(e) => e.stopPropagation()}
+            onBlur={(e) => updateField("icon", e.target.value.trim())}
+          />
+        )}
       </div>
     );
   }
@@ -60,16 +79,28 @@ export default function IconBlockRenderer({
       className={elementClass}
       data-slot="icon-block"
       data-size={hasStyle("fontSize") ? undefined : size}
-      data-color={hasStyle("color") ? undefined : undefined}
       data-position={position}
       style={color && !hasStyle("color") ? { color } : undefined}
     >
       <span data-slot="icon-block-icon" aria-hidden="true">
         <IconComponent />
       </span>
-      {displayText ? (
-        <span data-slot="icon-block-text">{displayText}</span>
-      ) : null}
+      {(displayText || isEditing) && (
+        <span
+          data-slot="icon-block-text"
+          contentEditable={!!isEditing}
+          suppressContentEditableWarning
+          onBlur={(e) => {
+            const newText = e.currentTarget.textContent ?? "";
+            if (newText !== displayText) {
+              updateField("text", newText);
+            }
+          }}
+          style={isEditing ? { cursor: "text", outline: "none" } : undefined}
+        >
+          {displayText || (isEditing ? "Add label..." : "")}
+        </span>
+      )}
     </div>
   );
 }
