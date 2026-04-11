@@ -1,6 +1,15 @@
 "use client";
 
 import * as React from "react";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Link2, Link2Off } from "lucide-react";
 import "./spacing-editor.css";
 
@@ -18,76 +27,177 @@ interface SpacingEditorProps {
   paddingBottom: string;
   paddingLeft: string;
   onChange: (property: string, value: string) => void;
-  /** Optional batch update for linked sides — applies multiple props in one call */
   onBatchChange?: (updates: Record<string, string>) => void;
 }
 
-// =============================================================================
-// Inline Value Input (compact, for use on box model sides)
-// =============================================================================
-
-function SideInput({
-  value,
-  onChange,
-  className,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  className: string;
-}) {
-  const display = value ? value.replace("px", "").replace("rem", "") : "";
-
-  return (
-    <div className={`spacing-editor-side ${className}`}>
-      <input
-        type="text"
-        className="spacing-editor-input"
-        value={display}
-        onChange={(e) => {
-          const raw = e.target.value;
-          if (raw === "" || raw === "0") {
-            onChange(raw === "" ? "" : "0");
-            return;
-          }
-          // If just a number, append px
-          const num = parseFloat(raw);
-          if (!isNaN(num) && raw === String(num)) {
-            onChange(`${num}px`);
-          } else {
-            onChange(raw);
-          }
-        }}
-        placeholder="0"
-        onKeyDown={(e) => {
-          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-            e.preventDefault();
-            const current = parseFloat(value) || 0;
-            const step = e.shiftKey ? 10 : 1;
-            const delta = e.key === "ArrowUp" ? step : -step;
-            const unit = value.match(/[a-z%]+$/)?.[0] || "px";
-            onChange(`${current + delta}${unit}`);
-          }
-        }}
-      />
-    </div>
-  );
-}
+type SpacingMode = "presets" | "custom";
 
 // =============================================================================
 // Presets
 // =============================================================================
 
-const PADDING_PRESETS = [
+const PRESETS = [
   { value: "0", label: "0" },
+  { value: "4px", label: "2xs" },
   { value: "8px", label: "xs" },
   { value: "16px", label: "sm" },
   { value: "24px", label: "md" },
   { value: "32px", label: "lg" },
   { value: "48px", label: "xl" },
+  { value: "64px", label: "2xl" },
 ];
 
+const SIDES = ["Top", "Right", "Bottom", "Left"] as const;
+
+/** Find the preset label for a value, or return the raw value */
+function presetValueFor(value: string): string {
+  if (!value) return "0";
+  const match = PRESETS.find((p) => p.value === value);
+  return match ? match.value : value;
+}
+
 // =============================================================================
-// Component
+// Spacing Group — one section for margin or padding
+// =============================================================================
+
+function SpacingGroup({
+  label,
+  values,
+  mode,
+  onChange,
+  onBatchChange,
+}: {
+  label: "Margin" | "Padding";
+  values: { top: string; right: string; bottom: string; left: string };
+  mode: SpacingMode;
+  onChange: (property: string, value: string) => void;
+  onBatchChange?: (updates: Record<string, string>) => void;
+}) {
+  const [linked, setLinked] = React.useState(false);
+  const prefix = label.toLowerCase();
+
+  const handleChange = (side: string, value: string) => {
+    if (linked) {
+      const updates = {
+        [`${prefix}Top`]: value,
+        [`${prefix}Right`]: value,
+        [`${prefix}Bottom`]: value,
+        [`${prefix}Left`]: value,
+      };
+      if (onBatchChange) {
+        onBatchChange(updates);
+      } else {
+        Object.entries(updates).forEach(([k, v]) => onChange(k, v));
+      }
+    } else {
+      onChange(side, value);
+    }
+  };
+
+  const sideValues = {
+    Top: values.top,
+    Right: values.right,
+    Bottom: values.bottom,
+    Left: values.left,
+  };
+
+  return (
+    <div className="spacing-group">
+      <div className="spacing-group-header">
+        <span className="spacing-group-title">{label}</span>
+        <button
+          type="button"
+          className={`spacing-link-btn ${linked ? "is-linked" : ""}`}
+          onClick={() => setLinked(!linked)}
+          title={linked ? "Unlink sides" : "Link all sides"}
+        >
+          {linked ? (
+            <Link2 className="size-3" />
+          ) : (
+            <Link2Off className="size-3" />
+          )}
+        </button>
+      </div>
+
+      {mode === "presets" ? (
+        <div className="spacing-preset-grid">
+          {SIDES.map((side) => (
+            <div key={side} className="spacing-preset-cell">
+              <label className="spacing-preset-label">{side}</label>
+              <Select
+                value={presetValueFor(sideValues[side])}
+                onValueChange={(v) =>
+                  handleChange(`${prefix}${side}`, v)
+                }
+              >
+                <SelectTrigger className="spacing-preset-select">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {PRESETS.map((p) => (
+                    <SelectItem key={p.value} value={p.value}>
+                      {p.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="spacing-custom-stack">
+          {SIDES.map((side) => {
+            const raw = sideValues[side];
+            const num = parseFloat(raw) || 0;
+            return (
+              <div key={side} className="spacing-custom-row">
+                <label className="spacing-custom-label">{side}</label>
+                <Slider
+                  value={[num]}
+                  onValueChange={([v]) => {
+                    const unit = raw.match(/[a-z%]+$/)?.[0] || "px";
+                    handleChange(
+                      `${prefix}${side}`,
+                      v === 0 ? "0" : `${v}${unit}`,
+                    );
+                  }}
+                  min={0}
+                  max={120}
+                  step={1}
+                  className="spacing-custom-slider"
+                />
+                <Input
+                  type="text"
+                  inputMode="decimal"
+                  value={raw ? raw.replace("px", "").replace("rem", "") : ""}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v === "" || v === "0") {
+                      handleChange(
+                        `${prefix}${side}`,
+                        v === "" ? "" : "0",
+                      );
+                      return;
+                    }
+                    const n = parseFloat(v);
+                    if (!isNaN(n)) {
+                      handleChange(`${prefix}${side}`, `${n}px`);
+                    }
+                  }}
+                  placeholder="0"
+                  className="spacing-custom-input"
+                />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// =============================================================================
+// SpacingEditor
 // =============================================================================
 
 export function SpacingEditor({
@@ -102,183 +212,53 @@ export function SpacingEditor({
   onChange,
   onBatchChange,
 }: SpacingEditorProps) {
-  const [marginLinked, setMarginLinked] = React.useState(false);
-  const [paddingLinked, setPaddingLinked] = React.useState(false);
-
-  const handleMarginChange = (side: string, value: string) => {
-    if (marginLinked) {
-      if (onBatchChange) {
-        onBatchChange({
-          marginTop: value,
-          marginRight: value,
-          marginBottom: value,
-          marginLeft: value,
-        });
-      } else {
-        onChange("marginTop", value);
-        onChange("marginRight", value);
-        onChange("marginBottom", value);
-        onChange("marginLeft", value);
-      }
-    } else {
-      onChange(side, value);
-    }
-  };
-
-  const handlePaddingChange = (side: string, value: string) => {
-    if (paddingLinked) {
-      if (onBatchChange) {
-        onBatchChange({
-          paddingTop: value,
-          paddingRight: value,
-          paddingBottom: value,
-          paddingLeft: value,
-        });
-      } else {
-        onChange("paddingTop", value);
-        onChange("paddingRight", value);
-        onChange("paddingBottom", value);
-        onChange("paddingLeft", value);
-      }
-    } else {
-      onChange(side, value);
-    }
-  };
-
-  // Check if all padding values match for preset highlighting
-  const allPaddingSame =
-    paddingTop === paddingRight &&
-    paddingRight === paddingBottom &&
-    paddingBottom === paddingLeft;
+  const [mode, setMode] = React.useState<SpacingMode>("presets");
 
   return (
     <div className="spacing-editor">
-      {/* Box model diagram */}
-      <div className="spacing-editor-box">
-        {/* Margin layer */}
-        <div className="spacing-editor-margin">
-          <span className="spacing-editor-margin-label">MARGIN</span>
-
-          <SideInput
-            value={marginTop}
-            onChange={(v) => handleMarginChange("marginTop", v)}
-            className="spacing-editor-side--margin-top"
-          />
-          <SideInput
-            value={marginRight}
-            onChange={(v) => handleMarginChange("marginRight", v)}
-            className="spacing-editor-side--margin-right"
-          />
-          <SideInput
-            value={marginBottom}
-            onChange={(v) => handleMarginChange("marginBottom", v)}
-            className="spacing-editor-side--margin-bottom"
-          />
-          <SideInput
-            value={marginLeft}
-            onChange={(v) => handleMarginChange("marginLeft", v)}
-            className="spacing-editor-side--margin-left"
-          />
-
-          {/* Padding layer */}
-          <div className="spacing-editor-padding">
-            <span className="spacing-editor-padding-label">PADDING</span>
-
-            <SideInput
-              value={paddingTop}
-              onChange={(v) => handlePaddingChange("paddingTop", v)}
-              className="spacing-editor-side--padding-top"
-            />
-            <SideInput
-              value={paddingRight}
-              onChange={(v) => handlePaddingChange("paddingRight", v)}
-              className="spacing-editor-side--padding-right"
-            />
-            <SideInput
-              value={paddingBottom}
-              onChange={(v) => handlePaddingChange("paddingBottom", v)}
-              className="spacing-editor-side--padding-bottom"
-            />
-            <SideInput
-              value={paddingLeft}
-              onChange={(v) => handlePaddingChange("paddingLeft", v)}
-              className="spacing-editor-side--padding-left"
-            />
-
-            {/* Content center */}
-            <div className="spacing-editor-content">
-              <span className="spacing-editor-content-label">content</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Link toggles */}
-      <div className="spacing-editor-link-row">
+      {/* Mode toggle */}
+      <div className="spacing-mode-toggle">
         <button
           type="button"
-          className={`spacing-editor-link-btn ${marginLinked ? "is-linked" : ""}`}
-          onClick={() => setMarginLinked(!marginLinked)}
-          title={
-            marginLinked ? "Unlink margin sides" : "Link margin sides"
-          }
+          className={`spacing-mode-btn ${mode === "presets" ? "is-active" : ""}`}
+          onClick={() => setMode("presets")}
         >
-          {marginLinked ? (
-            <Link2 className="h-2.5 w-2.5" />
-          ) : (
-            <Link2Off className="h-2.5 w-2.5" />
-          )}
-          Margin
+          Presets
         </button>
         <button
           type="button"
-          className={`spacing-editor-link-btn ${paddingLinked ? "is-linked" : ""}`}
-          onClick={() => setPaddingLinked(!paddingLinked)}
-          title={
-            paddingLinked ? "Unlink padding sides" : "Link padding sides"
-          }
+          className={`spacing-mode-btn ${mode === "custom" ? "is-active" : ""}`}
+          onClick={() => setMode("custom")}
         >
-          {paddingLinked ? (
-            <Link2 className="h-2.5 w-2.5" />
-          ) : (
-            <Link2Off className="h-2.5 w-2.5" />
-          )}
-          Padding
+          Custom
         </button>
       </div>
 
-      {/* Padding presets */}
-      <div className="spacing-editor-presets">
-        <span className="spacing-editor-preset-label">Presets</span>
-        {PADDING_PRESETS.map((preset) => (
-          <button
-            key={preset.label}
-            type="button"
-            className={`spacing-editor-preset-btn ${
-              allPaddingSame && paddingTop === preset.value
-                ? "is-active"
-                : ""
-            }`}
-            onClick={() => {
-              if (onBatchChange) {
-                onBatchChange({
-                  paddingTop: preset.value,
-                  paddingRight: preset.value,
-                  paddingBottom: preset.value,
-                  paddingLeft: preset.value,
-                });
-              } else {
-                onChange("paddingTop", preset.value);
-                onChange("paddingRight", preset.value);
-                onChange("paddingBottom", preset.value);
-                onChange("paddingLeft", preset.value);
-              }
-            }}
-          >
-            {preset.label}
-          </button>
-        ))}
-      </div>
+      <SpacingGroup
+        label="Padding"
+        values={{
+          top: paddingTop,
+          right: paddingRight,
+          bottom: paddingBottom,
+          left: paddingLeft,
+        }}
+        mode={mode}
+        onChange={onChange}
+        onBatchChange={onBatchChange}
+      />
+
+      <SpacingGroup
+        label="Margin"
+        values={{
+          top: marginTop,
+          right: marginRight,
+          bottom: marginBottom,
+          left: marginLeft,
+        }}
+        mode={mode}
+        onChange={onChange}
+        onBatchChange={onBatchChange}
+      />
     </div>
   );
 }

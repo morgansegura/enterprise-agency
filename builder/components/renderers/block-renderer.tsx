@@ -89,6 +89,7 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
       className={styled ? getElementClass(block._key) : undefined}
       data-block-key={block._key}
       data-block-label={label}
+      data-element-type="block"
     >
       <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />
     </div>

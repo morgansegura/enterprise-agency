@@ -1,7 +1,7 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { PropertyRow } from "@/components/editor/settings-panel/components";
+import { SliderInput } from "@/components/editor/settings-panel/slider-input";
+import { ColorPicker } from "@/components/editor/settings-panel/color-picker";
 
 interface ShadowBuilderProps {
   label: string;
@@ -9,7 +9,7 @@ interface ShadowBuilderProps {
   onChange: (v: string) => void;
 }
 
-/** Box Shadow Builder — X, Y, Blur, Spread, Color */
+/** Box/Text Shadow Builder — stacked sliders + color picker */
 export function ShadowBuilder({ label, value, onChange }: ShadowBuilderProps) {
   const parts = (value || "").match(
     /(-?\d+)px\s+(-?\d+)px\s+(\d+)px\s+(-?\d+)px\s+(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\))/,
@@ -28,75 +28,74 @@ export function ShadowBuilder({ label, value, onChange }: ShadowBuilderProps) {
     nc: string,
   ) => `${nx}px ${ny}px ${nb}px ${ns}px ${nc}`;
 
+  const fields = [
+    {
+      label: "X",
+      val: x,
+      min: -50,
+      max: 50,
+      set: (v: string) => build(v, y, blur, spread, color),
+    },
+    {
+      label: "Y",
+      val: y,
+      min: -50,
+      max: 50,
+      set: (v: string) => build(x, v, blur, spread, color),
+    },
+    {
+      label: "Blur",
+      val: blur,
+      min: 0,
+      max: 100,
+      set: (v: string) => build(x, y, v, spread, color),
+    },
+    {
+      label: "Spread",
+      val: spread,
+      min: -20,
+      max: 50,
+      set: (v: string) => build(x, y, blur, v, color),
+    },
+  ];
+
   return (
-    <>
-      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold px-0">
-        {label}
-      </span>
-      <PropertyRow label="X">
-        <Input
-          value={x}
-          onChange={(e) =>
-            onChange(build(e.target.value, y, blur, spread, color))
-          }
-          className="w-16 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Y">
-        <Input
-          value={y}
-          onChange={(e) =>
-            onChange(build(x, e.target.value, blur, spread, color))
-          }
-          className="w-16 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Blur">
-        <Input
-          value={blur}
-          onChange={(e) =>
-            onChange(build(x, y, e.target.value, spread, color))
-          }
-          className="w-16 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Spread">
-        <Input
-          value={spread}
-          onChange={(e) =>
-            onChange(build(x, y, blur, e.target.value, color))
-          }
-          className="w-16 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Color">
-        <div className="flex items-center gap-1.5">
-          <input
-            type="color"
-            value={color.startsWith("#") ? color : "#000000"}
-            onChange={(e) =>
-              onChange(build(x, y, blur, spread, e.target.value))
-            }
-            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer"
-          />
-          <Input
-            value={color}
-            onChange={(e) =>
-              onChange(build(x, y, blur, spread, e.target.value))
-            }
-            className="flex-1 h-7 text-xs"
+    <div className="flex flex-col gap-2">
+      <span className="text-sm font-medium text-(--el-500)">{label}</span>
+
+      {fields.map((f) => (
+        <div key={f.label} className="flex flex-col gap-0.5">
+          <span className="text-sm font-medium text-(--el-500)">
+            {f.label}
+          </span>
+          <SliderInput
+            value={`${f.val}px`}
+            onChange={(v) => {
+              const num = parseInt(v) || 0;
+              onChange(f.set(String(num)));
+            }}
+            min={f.min}
+            max={f.max}
+            step={1}
           />
         </div>
-      </PropertyRow>
+      ))}
+
+      <ColorPicker
+        label="Shadow Color"
+        value={color}
+        onChange={(v) => onChange(build(x, y, blur, spread, v || "rgba(0,0,0,0.1)"))}
+      />
+
       {value && (
         <button
           type="button"
           onClick={() => onChange("")}
-          className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
+          className="text-xs text-(--status-error) bg-transparent border-none cursor-pointer hover:underline text-left"
         >
           Remove shadow
         </button>
       )}
-    </>
+    </div>
   );
 }

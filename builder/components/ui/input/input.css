@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 [data-slot="input"] {
-  @apply h-8 w-full min-w-0 rounded-[3px] border border-(--el-150) bg-transparent px-2.5 py-1 text-[14px] leading-5 shadow-xs transition-all duration-100 outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50;
+  @apply h-8 w-full min-w-0 rounded-md border border-(--el-300) bg-(--el-0) outline-1 outline-(--el-0)  px-2.5 py-1 text-sm leading-5 shadow-xs transition-all duration-100 outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 /* Allow padding overrides for inputs with icons */
@@ -14,11 +14,11 @@
 }
 
 [data-slot="input"]::selection {
-  @apply bg-(--accent-primary) text-(--accent-primary-foreground);
+  @apply bg-(--el-400) text-(--accent-primary-foreground);
 }
 
 [data-slot="input"]:focus-visible {
-  @apply border-(--accent-primary) ring-(--accent-primary)/50 ring-2;
+  @apply border-(--el-500) ring-(--el-300)/50 ring-2;
 }
 
 [data-slot="input"][aria-invalid="true"] {

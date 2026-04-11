@@ -5,7 +5,8 @@
  * ============================================================================= */
 
 .canvas-toolbar {
-  @apply fixed bottom-4 left-1/2 -translate-x-1/2 z-50;
+  @apply fixed bottom-4 left-1/2 -translate-x-1/2;
+  @apply z-200;
   @apply flex items-center gap-0.5 px-1.5 py-1 rounded-full;
   @apply bg-(--el-900) shadow-2xl;
   @apply border border-(--el-700);

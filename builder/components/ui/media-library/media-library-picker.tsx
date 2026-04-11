@@ -18,7 +18,14 @@ import {
   Loader2,
   Check,
 } from "lucide-react";
-import { useAssets, useUploadAsset, useUpdateAsset, useDeleteAsset, type Asset } from "@/lib/hooks/use-assets";
+import {
+  useAssets,
+  useUploadAsset,
+  useUpdateAsset,
+  useDeleteAsset,
+  type Asset,
+  type MediaTypeFilter,
+} from "@/lib/hooks/use-assets";
 import { Trash2, Download, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -63,8 +70,13 @@ export function MediaLibraryPicker({
   const [isDragging, setIsDragging] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  // Fetch assets
-  const { data: assets, isLoading } = useAssets(tenantId, { fileType });
+  // Fetch assets — convert lowercase prop to uppercase server enum
+  const serverType: MediaTypeFilter | undefined = fileType
+    ? (fileType.toUpperCase() as MediaTypeFilter)
+    : undefined;
+  const { data: assets, isLoading } = useAssets(tenantId, {
+    type: serverType,
+  });
   const uploadAsset = useUploadAsset(tenantId);
 
   // Filter assets by search
@@ -221,13 +233,6 @@ export function MediaLibraryPicker({
 
                   {/* Editable fields */}
                   <div className="media-library-detail-fields">
-                    <label>File Name</label>
-                    <Input
-                      value={selectedAsset.fileName || ""}
-                      onChange={(e) => setSelectedAsset({ ...selectedAsset, fileName: e.target.value })}
-                      onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { fileName: selectedAsset.fileName } })}
-                      className="h-7 text-xs"
-                    />
                     <label>Alternative Text</label>
                     <Input
                       value={selectedAsset.altText || ""}

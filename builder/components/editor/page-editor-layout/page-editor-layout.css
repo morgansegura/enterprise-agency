@@ -13,8 +13,8 @@
  * ============================================================================= */
 
 .page-editor-navbar {
-  @apply flex items-center justify-between px-2 h-10 z-10 shrink-0;
-  @apply bg-(--el-0) border-b border-(--border-default);
+  @apply flex items-center justify-between px-2 h-10 shrink-0 z-200;
+  @apply bg-linear-to-b from-(--el-700) via-(--el-700) to-(--el-800) border-b border-(--border-default);
 }
 
 .page-editor-navbar-left {
@@ -23,7 +23,7 @@
 
 .page-editor-navbar-brand {
   @apply flex items-center justify-center size-7 rounded-[3px];
-  @apply text-[13px] font-bold text-(--el-0) bg-(--accent-primary) no-underline;
+  @apply text-[13px] font-bold text-(--el-0) no-underline;
   @apply transition-opacity duration-100 mx-0.5;
 }
 
@@ -37,17 +37,17 @@
 }
 
 .page-editor-mode-tab {
-  @apply flex items-center gap-1.5 px-2.5 h-7 rounded-[3px];
-  @apply text-[13px] font-medium text-(--el-500) no-underline;
+  @apply flex items-center gap-1.5 px-2.5 h-7 rounded-md;
+  @apply text-base tracking-wider font-medium text-(--el-300) no-underline;
   @apply transition-colors duration-100 cursor-pointer;
 }
 
 .page-editor-mode-tab:hover {
-  @apply text-(--el-800) bg-(--el-100);
+  @apply bg-(--el-600);
 }
 
 .page-editor-mode-tab[data-active] {
-  @apply text-(--el-0) bg-(--accent-primary);
+  @apply text-(--el-0) bg-(--el-600);
 }
 
 /* Page selector */
@@ -84,7 +84,7 @@
 }
 
 .page-editor-save-indicator {
-  @apply text-[11px] text-(--el-400) animate-pulse;
+  @apply text-[11px] text-(--el-500) animate-pulse;
 }
 
 .page-editor-navbar-right {
@@ -130,7 +130,7 @@
 
 .page-editor-subbar {
   @apply flex items-center justify-between px-2 h-8 shrink-0;
-  @apply bg-(--card) border-b;
+  @apply bg-(--el-100) border-b;
   /* @apply border-b; */
 }
 
@@ -140,16 +140,20 @@
 
 .page-editor-subbar-btn {
   @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
-  @apply text-(--el-400) bg-transparent border-none;
+  @apply text-(--el-500) bg-transparent border-none;
   @apply transition-colors duration-100;
 }
 
 .page-editor-subbar-btn:hover {
-  @apply text-(--el-800) bg-(--el-200);
+  @apply text-(--el-800) bg-(--el-300);
 }
 
 .page-editor-subbar-btn:disabled {
   @apply opacity-30 cursor-not-allowed;
+}
+
+.page-editor-subbar-btn[data-active] {
+  @apply text-(--accent-primary) bg-(--accent-primary-subtle);
 }
 
 .page-editor-subbar-divider {
@@ -170,7 +174,7 @@
 }
 
 .page-editor-breadcrumb-item {
-  @apply text-[11px] text-(--el-400) truncate max-w-32 cursor-default;
+  @apply text-[11px] text-(--el-500) truncate max-w-32 cursor-default;
 }
 
 .page-editor-breadcrumb-item[data-active] {
@@ -184,7 +188,7 @@
 
 .page-editor-breakpoint-btn {
   @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
-  @apply text-(--el-400) bg-transparent border-none;
+  @apply text-(--el-500) bg-transparent border-none;
   @apply transition-colors duration-100;
 }
 
@@ -193,11 +197,11 @@
 }
 
 .page-editor-breakpoint-btn[data-active] {
-  @apply text-(--accent-primary) bg-(--accent-primary-subtle);
+  @apply text-(--accent-primary) bg-(--el-200);
 }
 
 .page-editor-viewport-width {
-  @apply text-[11px] text-(--el-400) font-mono tabular-nums;
+  @apply text-[11px] text-(--el-500) font-mono tabular-nums;
 }
 
 /* =============================================================================
@@ -218,39 +222,85 @@
  * Selection highlight
  * ============================================================================= */
 
-.page-editor-canvas-content [data-block-key] {
-  @apply transition-[outline] duration-75;
-}
-
-.page-editor-canvas-content [data-block-key].is-preview-selected {
-  @apply outline-2 outline-solid outline-(--accent-primary) -outline-offset-1;
-}
-
-.page-editor-canvas-content [data-block-key].is-preview-hovered {
-  @apply outline-1 outline-solid -outline-offset-1;
-  outline-color: color-mix(in srgb, var(--accent-primary) 50%, transparent);
-}
+/* ---------------------------------------------------------------------------
+ * Selection colors per element type:
+ *   Section  = blue    (#3b82f6)
+ *   Container = teal   (#14b8a6)
+ *   Block    = violet  (#8b5cf6)
+ * --------------------------------------------------------------------------- */
 
 .page-editor-canvas-content [data-block-key]:hover {
   @apply cursor-pointer;
 }
 
-/* Selection label — shows element type on selected/hovered blocks */
+/* Selected outline — color varies by element type, always inset to avoid clipping */
+.page-editor-canvas-content [data-block-key].is-preview-selected {
+  @apply outline-3 outline-solid relative -outline-offset-3;
+}
+
+.page-editor-canvas-content [data-element-type="section"].is-preview-selected {
+  @apply outline-rose-200;
+}
+
+.page-editor-canvas-content
+  [data-element-type="container"].is-preview-selected {
+  @apply outline-sky-400;
+}
+
+/* ---------------------------------------------------------------------------
+ * Show Layout mode — toggle outlines on all sections/containers/blocks
+ * --------------------------------------------------------------------------- */
+
+.page-editor-canvas-content.show-layout [data-element-type="section"] {
+  @apply outline-2 outline-dashed -outline-offset-2;
+  outline-color: oklch(65% 0.1 250 / 0.35);
+}
+
+.page-editor-canvas-content.show-layout [data-element-type="container"] {
+  @apply outline-2 outline-dashed -outline-offset-2;
+  outline-color: oklch(65% 0.1 180 / 0.35);
+}
+
+.page-editor-canvas-content.show-layout [data-element-type="block"] {
+  @apply outline-2 outline-dashed -outline-offset-2;
+  outline-color: oklch(65% 0.1 290 / 0.3);
+}
+
+/* Hover outline — subtler, same color scheme, inset */
+.page-editor-canvas-content [data-block-key].is-preview-hovered {
+  @apply outline-3 outline-solid relative -outline-offset-3;
+}
+
+.page-editor-canvas-content [data-element-type="section"].is-preview-hovered {
+  @apply outline-rose-100;
+}
+
+.page-editor-canvas-content [data-element-type="container"].is-preview-hovered {
+  @apply outline-teal-500;
+}
+
+/* Selection label — colored badge per element type */
 .page-editor-canvas-content [data-block-key].is-preview-selected::before,
 .page-editor-canvas-content [data-block-key].is-preview-hovered::before {
   content: attr(data-block-label);
-  @apply absolute -top-3.75 -left-0.5 z-10 px-1.5 py-0.5;
+  @apply absolute -top-3.5 left-0 z-100 px-1.5 py-0.5;
   @apply text-[10px] font-medium text-white leading-none whitespace-nowrap;
-  @apply bg-(--accent-primary) rounded-t-[3px] pointer-events-none;
+  @apply rounded-t-[3px] pointer-events-none;
+  background-color: #8b5cf6; /* block default */
 }
 
-.page-editor-canvas-content [data-block-key].is-preview-hovered::before {
-  @apply bg-(--accent-primary)/60;
+.page-editor-canvas-content
+  [data-element-type="section"].is-preview-selected::before,
+.page-editor-canvas-content
+  [data-element-type="section"].is-preview-hovered::before {
+  @apply bg-(--el-800);
 }
 
-.page-editor-canvas-content [data-block-key].is-preview-selected,
-.page-editor-canvas-content [data-block-key].is-preview-hovered {
-  @apply relative;
+.page-editor-canvas-content
+  [data-element-type="container"].is-preview-selected::before,
+.page-editor-canvas-content
+  [data-element-type="container"].is-preview-hovered::before {
+  background-color: #14b8a6;
 }
 
 /* Suppress TipTap/ProseMirror focus ring inside canvas — selection outline is enough */
@@ -260,7 +310,7 @@
 .page-editor-canvas-content .ProseMirror:focus-visible,
 .page-editor-canvas-content [data-block-key] :focus,
 .page-editor-canvas-content [data-block-key] :focus-visible {
-  @apply outline-none ring-0;
+  @apply outline-none ring-0 ring-transparent;
 }
 
 /* =============================================================================

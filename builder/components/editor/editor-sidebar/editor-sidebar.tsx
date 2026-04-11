@@ -98,6 +98,16 @@ export function EditorSidebar({
   blocksPanel,
 }: EditorSidebarProps) {
   const [activeTab, setActiveTab] = React.useState<SidebarTab>("layers");
+  /** Remember the last open tab so content stays rendered during close animation */
+  const [lastTab, setLastTab] = React.useState<SidebarTab>("layers");
+
+  React.useEffect(() => {
+    if (activeTab !== null) {
+      setLastTab(activeTab);
+    }
+  }, [activeTab]);
+
+  const sidebarRef = React.useRef<HTMLDivElement>(null);
 
   // Switch to Layers tab after adding a block
   React.useEffect(() => {
@@ -106,15 +116,34 @@ export function EditorSidebar({
     return () => window.removeEventListener("add-block", handleBlockAdded);
   }, []);
 
+  // Close panel when clicking outside the sidebar (on canvas, settings, etc.)
+  React.useEffect(() => {
+    if (activeTab === null) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(e.target as Node)
+      ) {
+        setActiveTab(null);
+      }
+    };
+    // Use capture so we detect clicks before they're stopped
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, [activeTab]);
+
   const handleRailClick = (tab: SidebarTab) => {
     // Toggle: clicking same icon closes panel
     setActiveTab((prev) => (prev === tab ? null : tab));
   };
 
   const isOpen = activeTab !== null;
+  // Use activeTab when open, or the last open tab during close animation
+  const displayTab = activeTab ?? lastTab;
 
   return (
-    <div className="editor-sidebar">
+    <div className="editor-sidebar" ref={sidebarRef}>
       {/* Icon Rail — always visible */}
       <div className="editor-sidebar-rail">
         {RAIL_ITEMS.map((item) => (
@@ -136,33 +165,30 @@ export function EditorSidebar({
         ))}
       </div>
 
-      {/* Expandable Panel */}
+      {/* Expandable Panel — always mounted so CSS transition plays on close */}
       <div
         className="editor-sidebar-panel"
         data-collapsed={!isOpen || undefined}
+        aria-hidden={!isOpen}
       >
-        {isOpen && (
-          <>
-            <div className="editor-sidebar-panel-header">
-              <span className="editor-sidebar-panel-title">
-                {PANEL_TITLES[activeTab!]}
-              </span>
-              <button
-                type="button"
-                className="editor-sidebar-panel-close"
-                onClick={() => setActiveTab(null)}
-                title="Close panel"
-              >
-                <X className="size-3.5" />
-              </button>
-            </div>
-            <div className="editor-sidebar-panel-content">
-              {activeTab === "pages" && <PagesPanel />}
-              {activeTab === "layers" && layersPanel}
-              {activeTab === "add" && blocksPanel}
-            </div>
-          </>
-        )}
+        <div className="editor-sidebar-panel-header">
+          <span className="editor-sidebar-panel-title">
+            {displayTab ? PANEL_TITLES[displayTab] : ""}
+          </span>
+          <button
+            type="button"
+            className="editor-sidebar-panel-close"
+            onClick={() => setActiveTab(null)}
+            title="Close panel"
+          >
+            <X className="size-3.5" />
+          </button>
+        </div>
+        <div className="editor-sidebar-panel-content">
+          {displayTab === "pages" && <PagesPanel />}
+          {displayTab === "layers" && layersPanel}
+          {displayTab === "add" && blocksPanel}
+        </div>
       </div>
     </div>
   );

@@ -11,24 +11,24 @@
 :root {
   /* =========================================================================
    * Base Neutral Scale (21 steps)
-   * Jira-aligned — warm slate undertone for professional feel
+   * Tailwind CSS v4 Mauve — exact values + interpolated half-steps
    * ========================================================================= */
   --base-0: #ffffff;
-  --base-50: #fafbfc;
-  --base-100: #f4f5f7;
-  --base-150: #dfe1e6;
-  --base-200: #c1c7d0;
-  --base-250: #b3bac5;
-  --base-300: #a5adba;
-  --base-400: #97a0af;
-  --base-500: #6b778c;
-  --base-600: #505f79;
-  --base-700: #344563;
-  --base-800: #172b4d;
-  --base-850: #112240;
-  --base-900: #091e42;
-  --base-950: #061730;
-  --base-1000: #000000;
+  --base-50: oklch(98.5% 0 0); /* tw mauve-50 */
+  --base-100: oklch(96% 0.003 325.6); /* tw mauve-100 */
+  --base-150: oklch(94.1% 0.004 325.61); /* interpolated 100↔200 */
+  --base-200: oklch(92.2% 0.005 325.62); /* tw mauve-200 */
+  --base-250: oklch(89.4% 0.008 325.65); /* interpolated 200↔300 */
+  --base-300: oklch(86.5% 0.012 325.68); /* tw mauve-300 */
+  --base-400: oklch(71.1% 0.019 323.02); /* tw mauve-400 */
+  --base-500: oklch(54.2% 0.034 322.5); /* tw mauve-500 */
+  --base-600: oklch(43.5% 0.029 321.78); /* tw mauve-600 */
+  --base-700: oklch(36.4% 0.029 323.89); /* tw mauve-700 */
+  --base-800: oklch(26.3% 0.024 320.12); /* tw mauve-800 */
+  --base-850: oklch(23.8% 0.022 321.12); /* interpolated 800↔900 */
+  --base-900: oklch(21.2% 0.019 322.12); /* tw mauve-900 */
+  --base-950: oklch(14.5% 0.008 326); /* tw mauve-950 */
+  --base-1000: oklch(10.5% 0.005 326); /* extrapolated beyond 950 */
 
   /* =========================================================================
    * Elevation Scale (semantic, auto-inverts in dark mode)
@@ -64,12 +64,20 @@
   --status-info-subtle: #deebff;
 
   /* =========================================================================
-   * Brand Accent (Jira blue)
+   * Brand Accent Primary
    * ========================================================================= */
-  --accent-primary: #0052cc;
-  --accent-primary-hover: #0065ff;
-  --accent-primary-subtle: #deebff;
+  --accent-primary: oklch(71.5% 0.143 215.221);
+  --accent-primary-hover: oklch(43.2% 0.232 292.759);
+  --accent-primary-subtle: oklch(96% 0.002 17.2);
   --accent-primary-foreground: #ffffff;
+
+  /* =========================================================================
+   * Brand Accent Secondary
+   * ========================================================================= */
+  --accent-secondary: oklch(59.1% 0.293 322.896);
+  --accent-secondary-hover: oklch(43.2% 0.232 292.759);
+  --accent-secondary-subtle: oklch(96% 0.002 17.2);
+  --accent-secondary-foreground: #ffffff;
 
   /* =========================================================================
    * Semantic Aliases
@@ -102,7 +110,9 @@
    * Typography
    * System font stack — fast, native, professional
    * ========================================================================= */
-  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-system:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
   --font-mono: "SF Mono", Menlo, Consolas, Monaco, monospace;
 
   --text-xs: 0.6875rem;

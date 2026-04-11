@@ -41,7 +41,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { PanelsTopLeft, Newspaper, Store, PlusCircle } from "lucide-react";
+import { PanelsTopLeft, Newspaper, Store } from "lucide-react";
 import { PostEditorLayout } from "@/components/editor/post-editor-layout";
 import { useUIStore } from "@/lib/stores/ui-store";
 
@@ -50,7 +50,10 @@ interface PostEditorScreenProps {
   postId: string;
 }
 
-export function PostEditorScreen({ tenantId: id, postId }: PostEditorScreenProps) {
+export function PostEditorScreen({
+  tenantId: id,
+  postId,
+}: PostEditorScreenProps) {
   const router = useRouter();
   const { data: post, isLoading, error } = usePost(id, postId);
   const updatePost = useUpdatePost(id);
@@ -67,8 +70,7 @@ export function PostEditorScreen({ tenantId: id, postId }: PostEditorScreenProps
 
   // Section/block operations (shared hook)
   const initialSections = React.useMemo(
-    () =>
-      (post?.content?.sections as Section[]) ?? [createDefaultSection()],
+    () => (post?.content?.sections as Section[]) ?? [createDefaultSection()],
     [post],
   );
   const editor = usePageEditor(initialSections);
@@ -117,7 +119,9 @@ export function PostEditorScreen({ tenantId: id, postId }: PostEditorScreenProps
   if (error) {
     return (
       <div className="flex h-full items-center justify-center">
-        <span className="text-[14px] text-(--status-error)">Error loading post: {error.message}</span>
+        <span className="text-[14px] text-(--status-error)">
+          Error loading post: {error.message}
+        </span>
       </div>
     );
   }
@@ -218,14 +222,18 @@ export function PostEditorScreen({ tenantId: id, postId }: PostEditorScreenProps
   ) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
-    const blocks = editor.sections[sectionIndex]?.containers?.[containerIndex]?.blocks ?? [];
+    const blocks =
+      editor.sections[sectionIndex]?.containers?.[containerIndex]?.blocks ?? [];
     const oldIndex = blocks.findIndex((b: Block) => b._key === active.id);
     const newIndex = blocks.findIndex((b: Block) => b._key === over.id);
     if (oldIndex !== -1 && newIndex !== -1) {
       const newBlocks = arrayMove(blocks, oldIndex, newIndex);
       const updated = [...editor.sections];
       const containers = [...(updated[sectionIndex].containers ?? [])];
-      containers[containerIndex] = { ...containers[containerIndex], blocks: newBlocks };
+      containers[containerIndex] = {
+        ...containers[containerIndex],
+        blocks: newBlocks,
+      };
       updated[sectionIndex] = { ...updated[sectionIndex], containers };
       editor.setSections(updated);
     }
@@ -300,9 +308,14 @@ export function PostEditorScreen({ tenantId: id, postId }: PostEditorScreenProps
                         section={section}
                         sectionIndex={sectionIndex}
                         onSectionChange={(updatedSection) =>
-                          editor.handleSectionChange(sectionIndex, updatedSection)
+                          editor.handleSectionChange(
+                            sectionIndex,
+                            updatedSection,
+                          )
                         }
-                        onDelete={() => editor.handleSectionDelete(sectionIndex)}
+                        onDelete={() =>
+                          editor.handleSectionDelete(sectionIndex)
+                        }
                         onAddContainer={() =>
                           editor.handleAddContainerToSection(sectionIndex)
                         }
@@ -395,10 +408,11 @@ export function PostEditorScreen({ tenantId: id, postId }: PostEditorScreenProps
                     <Button
                       variant="outline"
                       size="lg"
-                      onClick={() => editor.handleAddSectionAt(editor.sections.length)}
+                      onClick={() =>
+                        editor.handleAddSectionAt(editor.sections.length)
+                      }
                       className="w-full border-2 border-dashed hover:border-primary hover:bg-(--accent-primary)/5"
                     >
-                      <PlusCircle className="h-4 w-4 " />
                       Add Section
                     </Button>
                   </div>

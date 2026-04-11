@@ -173,14 +173,23 @@ export function rgbToHex(r: number, g: number, b: number): string {
   return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 }
 
-export function hexToRgb(hex: string): RGB {
+export function hexToRgb(hex: string): RGB & { a?: number } {
   let h = hex.replace("#", "");
-  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
-  return {
+  // Expand shorthand: #rgb → #rrggbb, #rgba → #rrggbbaa
+  if (h.length === 3)
+    h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+  if (h.length === 4)
+    h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2] + h[3] + h[3];
+  const result: RGB & { a?: number } = {
     r: parseInt(h.slice(0, 2), 16) || 0,
     g: parseInt(h.slice(2, 4), 16) || 0,
     b: parseInt(h.slice(4, 6), 16) || 0,
   };
+  // Parse alpha from 8-digit hex (#rrggbbaa)
+  if (h.length === 8) {
+    result.a = Math.round((parseInt(h.slice(6, 8), 16) / 255) * 100) / 100;
+  }
+  return result;
 }
 
 // ---------------------------------------------------------------------------
@@ -242,13 +251,13 @@ export function parseAnyColor(value: string): ParsedColor {
     };
   }
 
-  // Hex
+  // Hex (supports #rgb, #rrggbb, #rgba, #rrggbbaa)
   const rgb = hexToRgb(value);
   return {
     hex: rgbToHex(rgb.r, rgb.g, rgb.b),
-    rgb,
+    rgb: { r: rgb.r, g: rgb.g, b: rgb.b },
     hsv: rgbToHsv(rgb.r, rgb.g, rgb.b),
-    alpha: 1,
+    alpha: rgb.a ?? 1,
   };
 }
 

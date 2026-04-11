@@ -41,9 +41,7 @@ export function BlockToolbar({
   const [hasTextSelection, setHasTextSelection] = React.useState(false);
 
   React.useEffect(() => {
-    const el = document.querySelector(
-      `[data-block-key="${blockKey}"]`,
-    );
+    const el = document.querySelector(`[data-block-key="${blockKey}"]`);
     if (!el) {
       setPosition(null);
       return;
@@ -51,19 +49,19 @@ export function BlockToolbar({
 
     const updatePosition = () => {
       const rect = el.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      const toolbarWidth = 36;
-
-      // Position vertically centered on the block
-      // Prefer right side; fall back to left side if not enough space
-      const rightSpace = viewportWidth - rect.right;
-      const useRight = rightSpace >= toolbarWidth + 16;
-      const left = useRight ? rect.right + 8 : Math.max(8, rect.left - toolbarWidth - 8);
+      // Walk up to find a full-width container for right-edge alignment.
+      // The block wrapper shrinks to content width in flex layouts.
+      const section = el.closest("[data-section-key]");
+      const container = el.parentElement;
+      const refRect =
+        section?.getBoundingClientRect() ??
+        container?.getBoundingClientRect() ??
+        rect;
 
       setPosition({
-        top: rect.top + rect.height / 2,
-        left,
-        width: rect.width,
+        top: rect.top - 2,
+        left: refRect.right + 10,
+        width: refRect.width,
       });
     };
 
@@ -84,10 +82,13 @@ export function BlockToolbar({
   React.useEffect(() => {
     const checkSelection = () => {
       const sel = window.getSelection();
-      setHasTextSelection(!!sel && !sel.isCollapsed && sel.toString().length > 0);
+      setHasTextSelection(
+        !!sel && !sel.isCollapsed && sel.toString().length > 0,
+      );
     };
     document.addEventListener("selectionchange", checkSelection);
-    return () => document.removeEventListener("selectionchange", checkSelection);
+    return () =>
+      document.removeEventListener("selectionchange", checkSelection);
   }, []);
 
   if (!position || hasTextSelection) return null;
@@ -96,12 +97,15 @@ export function BlockToolbar({
     <div
       className="block-toolbar"
       style={{
-        top: Math.max(60, position.top),
+        top: Math.max(44, position.top),
         left: position.left,
-        transform: "translateY(-50%)",
+        transform: "translateX(-100%) translateY(-100%)",
       }}
     >
-      <button className="block-toolbar-btn block-toolbar-grip" title="Drag to move">
+      <button
+        className="block-toolbar-btn block-toolbar-grip"
+        title="Drag to move"
+      >
         <GripVertical className="size-3.5" />
       </button>
       <div className="block-toolbar-divider" />

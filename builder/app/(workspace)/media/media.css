@@ -4,9 +4,173 @@
    Media Library Page — Grid layout with upload zone
    ============================================================================ */
 
-/* Container */
+/* Container — sidebar + main column */
 .media-page {
-  @apply flex flex-col h-full min-h-0;
+  @apply flex h-full min-h-0;
+}
+
+/* Main column to the right of the folder sidebar */
+.media-main {
+  @apply flex flex-col flex-1 min-w-0 min-h-0;
+}
+
+/* ============================================================================
+   Folder Sidebar
+   ============================================================================ */
+
+.media-sidebar {
+  @apply w-[240px] shrink-0 flex flex-col border-r border-(--border-default);
+  @apply bg-(--el-50);
+}
+
+.media-sidebar-header {
+  @apply flex items-center justify-between px-3 py-2.5;
+  @apply border-b border-(--border-subtle);
+}
+
+.media-sidebar-title {
+  @apply text-[11px] font-semibold uppercase tracking-[0.04em] text-(--text-tertiary);
+}
+
+.media-sidebar-action {
+  @apply flex items-center justify-center h-6 w-6 rounded-[3px];
+  @apply text-(--text-secondary) hover:bg-(--el-100) hover:text-(--text-primary);
+  @apply transition-colors;
+}
+
+.media-sidebar-tree {
+  @apply flex-1 overflow-y-auto p-1;
+}
+
+/* Folder row */
+.media-folder-node {
+  @apply flex flex-col;
+}
+
+.media-folder-item {
+  @apply group flex items-center gap-1 w-full px-2 py-1 rounded-[3px];
+  @apply text-[12px] text-(--text-secondary) cursor-pointer;
+  @apply transition-colors;
+}
+
+.media-folder-item:hover {
+  @apply bg-(--el-100);
+}
+
+.media-folder-item-active {
+  @apply bg-(--accent-primary-subtle) text-(--accent-primary);
+}
+
+.media-folder-item-active:hover {
+  @apply bg-(--accent-primary-subtle);
+}
+
+/* Drop target highlight when dragging assets onto a folder */
+.media-folder-item-drop-target {
+  @apply bg-(--accent-primary-subtle);
+  outline: 2px dashed var(--accent-primary);
+  outline-offset: -2px;
+}
+
+.media-folder-toggle {
+  @apply flex items-center justify-center h-4 w-4 shrink-0;
+  @apply text-(--text-tertiary) hover:text-(--text-primary);
+}
+
+.media-folder-toggle-spacer {
+  @apply inline-block h-4 w-4 shrink-0;
+}
+
+.media-folder-label {
+  @apply flex items-center gap-1.5 flex-1 min-w-0 text-left;
+  @apply bg-transparent border-none p-0 cursor-pointer text-inherit;
+}
+
+.media-folder-name {
+  @apply truncate;
+}
+
+.media-folder-count {
+  @apply ml-auto text-[10px] text-(--text-tertiary) shrink-0;
+}
+
+.media-folder-actions {
+  @apply flex items-center gap-0.5 opacity-0 group-hover:opacity-100;
+  @apply transition-opacity;
+}
+
+.media-folder-action {
+  @apply flex items-center justify-center h-5 w-5 rounded-[3px];
+  @apply text-(--text-tertiary) hover:bg-(--el-200) hover:text-(--text-primary);
+  @apply transition-colors;
+}
+
+.media-folder-children {
+  @apply flex flex-col;
+}
+
+/* ============================================================================
+   Breadcrumb
+   ============================================================================ */
+
+.media-breadcrumb {
+  @apply flex items-center gap-1.5 px-4 py-2;
+  @apply border-b border-(--border-subtle);
+  @apply text-[12px] text-(--text-secondary);
+}
+
+.media-breadcrumb-link {
+  @apply bg-transparent border-none p-0 cursor-pointer;
+  @apply text-(--accent-primary) hover:underline;
+}
+
+.media-breadcrumb-current {
+  @apply text-(--text-primary) font-medium;
+}
+
+/* ============================================================================
+   Upload progress (per-file)
+   ============================================================================ */
+
+.media-upload-progress-list {
+  @apply w-full max-w-md mt-3 flex flex-col gap-1.5;
+}
+
+.media-upload-progress-row {
+  @apply flex items-center gap-2 text-[11px] text-(--text-secondary);
+}
+
+.media-upload-progress-name {
+  @apply truncate flex-1 text-left;
+}
+
+.media-upload-progress-bar {
+  @apply h-1.5 w-24 rounded-full bg-(--el-200) overflow-hidden;
+}
+
+.media-upload-progress-bar-fill {
+  @apply h-full bg-(--accent-primary) transition-all;
+}
+
+.media-upload-progress-pct {
+  @apply text-[10px] tabular-nums shrink-0 w-9 text-right;
+}
+
+/* ============================================================================
+   Bulk Action Bar
+   ============================================================================ */
+
+.media-bulk-bar {
+  @apply flex items-center justify-between px-4 py-2;
+  @apply bg-(--accent-primary-subtle) border-b border-(--accent-primary);
+}
+
+.media-bulk-count {
+  @apply text-[12px] font-semibold text-(--accent-primary);
+}
+
+.media-bulk-actions {
+  @apply flex items-center gap-2;
 }
 
 /* ============================================================================

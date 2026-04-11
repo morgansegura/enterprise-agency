@@ -151,8 +151,79 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
   }, [contextMenu]);
 
   // UI Store for block selection in sidebar
-  const { selectBlock, selectSection, selectContainer, selectedElement } =
-    useUIStore();
+  const {
+    selectBlock,
+    selectSection,
+    selectContainer,
+    selectedElement,
+    clearSelection,
+  } = useUIStore();
+
+  // ---------------------------------------------------------------------------
+  // Canvas click-to-select with double-click drill-down
+  // Single click → select section. Double-click → drill into container/block.
+  // ---------------------------------------------------------------------------
+  // Canvas click-to-select: single click selects the innermost element you
+  // clicked on. Layers panel handles parent selection when needed.
+  const handleCanvasClick = React.useCallback(
+    (e: React.MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const clicked = target.closest("[data-block-key]") as HTMLElement | null;
+      if (!clicked) {
+        setSelectedBlockKey(null);
+        clearSelection();
+        return;
+      }
+
+      const key = clicked.getAttribute("data-block-key")!;
+      const elementType = clicked.getAttribute("data-element-type");
+
+      // Find indices by walking the hierarchy
+      const sectionEl = clicked.closest(
+        "[data-element-type='section']",
+      ) as HTMLElement | null;
+      const sectionKey = sectionEl?.getAttribute("data-block-key");
+      const si = editor.sections.findIndex((s) => s._key === sectionKey);
+
+      if (elementType === "block") {
+        const containerEl = clicked.closest(
+          "[data-element-type='container']",
+        ) as HTMLElement | null;
+        const containerKey = containerEl?.getAttribute("data-block-key");
+        const ci =
+          si >= 0
+            ? (editor.sections[si].containers ?? []).findIndex(
+                (c) => c._key === containerKey,
+              )
+            : -1;
+        const bi =
+          si >= 0 && ci >= 0
+            ? (editor.sections[si].containers?.[ci]?.blocks ?? []).findIndex(
+                (b) => b._key === key,
+              )
+            : -1;
+        if (si >= 0 && ci >= 0 && bi >= 0) {
+          setSelectedBlockKey(key);
+          selectBlock(si, ci, bi, key);
+        }
+      } else if (elementType === "container") {
+        const ci =
+          si >= 0
+            ? (editor.sections[si].containers ?? []).findIndex(
+                (c) => c._key === key,
+              )
+            : -1;
+        if (si >= 0 && ci >= 0) {
+          setSelectedBlockKey(key);
+          selectContainer(si, ci, key);
+        }
+      } else if (elementType === "section" && si >= 0) {
+        setSelectedBlockKey(key);
+        selectSection(si, key);
+      }
+    },
+    [editor.sections, selectBlock, selectSection, selectContainer, clearSelection],
+  );
 
   // Local page state for editing
   const [localPage, setLocalPage] = React.useState({
@@ -509,6 +580,7 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
         pageStatus={page?.status || "draft"}
         onPreview={handlePreview}
         onGeneratePreviewLink={handleGeneratePreviewLink}
+        onCanvasClick={handleCanvasClick}
         leftPanel={
           <EditorSidebar
             layersPanel={

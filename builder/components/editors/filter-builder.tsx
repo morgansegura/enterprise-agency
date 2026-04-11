@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { SliderInput } from "@/components/editor/settings-panel/slider-input";
 import { PropertyRow } from "@/components/editor/settings-panel/components";
 
 interface FilterBuilderProps {
@@ -41,251 +41,79 @@ export function FilterBuilder({ label, value, onChange }: FilterBuilderProps) {
     return parts.join(" ") || "";
   };
 
+  const fields = [
+    {
+      label: "Blur",
+      val: blur,
+      min: 0,
+      max: 20,
+      step: 1,
+      unit: "px",
+      set: (v: string) => build(v, brightness, contrast, saturate, grayscale, hueRotate),
+    },
+    {
+      label: "Brightness",
+      val: brightness,
+      min: 0,
+      max: 2,
+      step: 0.05,
+      unit: "",
+      set: (v: string) => build(blur, v, contrast, saturate, grayscale, hueRotate),
+    },
+    {
+      label: "Contrast",
+      val: contrast,
+      min: 0,
+      max: 2,
+      step: 0.05,
+      unit: "",
+      set: (v: string) => build(blur, brightness, v, saturate, grayscale, hueRotate),
+    },
+    {
+      label: "Saturate",
+      val: saturate,
+      min: 0,
+      max: 3,
+      step: 0.05,
+      unit: "",
+      set: (v: string) => build(blur, brightness, contrast, v, grayscale, hueRotate),
+    },
+    {
+      label: "Grayscale",
+      val: grayscale,
+      min: 0,
+      max: 1,
+      step: 0.05,
+      unit: "",
+      set: (v: string) => build(blur, brightness, contrast, saturate, v, hueRotate),
+    },
+    {
+      label: "Hue Rotate",
+      val: hueRotate,
+      min: 0,
+      max: 360,
+      step: 5,
+      unit: "deg",
+      set: (v: string) => build(blur, brightness, contrast, saturate, grayscale, v),
+    },
+  ];
+
   return (
     <>
-      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">
-        {label}
-      </span>
-      <PropertyRow label="Blur">
-        <div className="flex items-center gap-2 flex-1">
-          <input
-            type="range"
-            min="0"
-            max="20"
-            step="1"
-            value={parseFloat(blur)}
-            onChange={(e) =>
-              onChange(
-                build(
-                  `${e.target.value}px`,
-                  brightness,
-                  contrast,
-                  saturate,
-                  grayscale,
-                  hueRotate,
-                ),
-              )
-            }
-            className="flex-1 h-1.5 accent-(--accent-primary)"
+      <span className="text-sm font-medium text-(--el-400)">{label}</span>
+      {fields.map((f) => (
+        <PropertyRow key={f.label} label={f.label}>
+          <SliderInput
+            value={f.val}
+            onChange={(v) => onChange(f.set(v))}
+            min={f.min}
+            max={f.max}
+            step={f.step}
+            unit={f.unit}
+            placeholder={f.val}
           />
-          <Input
-            value={blur}
-            onChange={(e) =>
-              onChange(
-                build(
-                  e.target.value,
-                  brightness,
-                  contrast,
-                  saturate,
-                  grayscale,
-                  hueRotate,
-                ),
-              )
-            }
-            className="w-14 h-7 text-xs text-center"
-          />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Bright">
-        <div className="flex items-center gap-2 flex-1">
-          <input
-            type="range"
-            min="0"
-            max="2"
-            step="0.05"
-            value={parseFloat(brightness)}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  e.target.value,
-                  contrast,
-                  saturate,
-                  grayscale,
-                  hueRotate,
-                ),
-              )
-            }
-            className="flex-1 h-1.5 accent-(--accent-primary)"
-          />
-          <Input
-            value={brightness}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  e.target.value,
-                  contrast,
-                  saturate,
-                  grayscale,
-                  hueRotate,
-                ),
-              )
-            }
-            className="w-14 h-7 text-xs text-center"
-          />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Contrast">
-        <div className="flex items-center gap-2 flex-1">
-          <input
-            type="range"
-            min="0"
-            max="2"
-            step="0.05"
-            value={parseFloat(contrast)}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  brightness,
-                  e.target.value,
-                  saturate,
-                  grayscale,
-                  hueRotate,
-                ),
-              )
-            }
-            className="flex-1 h-1.5 accent-(--accent-primary)"
-          />
-          <Input
-            value={contrast}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  brightness,
-                  e.target.value,
-                  saturate,
-                  grayscale,
-                  hueRotate,
-                ),
-              )
-            }
-            className="w-14 h-7 text-xs text-center"
-          />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Saturate">
-        <div className="flex items-center gap-2 flex-1">
-          <input
-            type="range"
-            min="0"
-            max="3"
-            step="0.05"
-            value={parseFloat(saturate)}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  brightness,
-                  contrast,
-                  e.target.value,
-                  grayscale,
-                  hueRotate,
-                ),
-              )
-            }
-            className="flex-1 h-1.5 accent-(--accent-primary)"
-          />
-          <Input
-            value={saturate}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  brightness,
-                  contrast,
-                  e.target.value,
-                  grayscale,
-                  hueRotate,
-                ),
-              )
-            }
-            className="w-14 h-7 text-xs text-center"
-          />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Grayscale">
-        <div className="flex items-center gap-2 flex-1">
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            value={parseFloat(grayscale)}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  brightness,
-                  contrast,
-                  saturate,
-                  e.target.value,
-                  hueRotate,
-                ),
-              )
-            }
-            className="flex-1 h-1.5 accent-(--accent-primary)"
-          />
-          <Input
-            value={grayscale}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  brightness,
-                  contrast,
-                  saturate,
-                  e.target.value,
-                  hueRotate,
-                ),
-              )
-            }
-            className="w-14 h-7 text-xs text-center"
-          />
-        </div>
-      </PropertyRow>
-      <PropertyRow label="Hue">
-        <div className="flex items-center gap-2 flex-1">
-          <input
-            type="range"
-            min="0"
-            max="360"
-            step="5"
-            value={parseFloat(hueRotate)}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  brightness,
-                  contrast,
-                  saturate,
-                  grayscale,
-                  `${e.target.value}deg`,
-                ),
-              )
-            }
-            className="flex-1 h-1.5 accent-(--accent-primary)"
-          />
-          <Input
-            value={hueRotate}
-            onChange={(e) =>
-              onChange(
-                build(
-                  blur,
-                  brightness,
-                  contrast,
-                  saturate,
-                  grayscale,
-                  e.target.value,
-                ),
-              )
-            }
-            className="w-14 h-7 text-xs text-center"
-          />
-        </div>
-      </PropertyRow>
+        </PropertyRow>
+      ))}
     </>
   );
 }

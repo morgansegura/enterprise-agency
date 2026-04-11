@@ -32,15 +32,18 @@ export function TextBubbleMenu({ editor }: TextBubbleMenuProps) {
 
       // Get position from TipTap's view
       const start = editor.view.coordsAtPos(from);
-      const end = editor.view.coordsAtPos(to);
       const editorEl = editor.view.dom.closest("[data-block-key]");
       if (!editorEl) return;
 
-      // Position above the selected text, with safe distance from top of viewport
+      // Position above the selected text, right-aligned to block edge
       const desiredTop = start.top - 44;
+      const container = editorEl.parentElement?.parentElement;
+      const refRight =
+        container?.getBoundingClientRect().right ??
+        editorEl.getBoundingClientRect().right;
       setPos({
         top: Math.max(60, desiredTop),
-        left: (start.left + end.left) / 2,
+        left: refRight,
       });
       setVisible(true);
     };
@@ -58,7 +61,7 @@ export function TextBubbleMenu({ editor }: TextBubbleMenuProps) {
   return (
     <div
       className="text-bubble-menu"
-      style={{ top: pos.top, left: pos.left, transform: "translateX(-50%)" }}
+      style={{ top: pos.top, left: pos.left, transform: "translateX(-100%)" }}
     >
       <button
         type="button"

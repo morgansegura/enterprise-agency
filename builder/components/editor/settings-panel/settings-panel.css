@@ -6,7 +6,7 @@
 
 .settings-panel {
   @apply relative flex flex-col w-[320px] h-full overflow-hidden;
-  @apply bg-(--el-0) border-l border-(--border-default);
+  @apply border-l border-(--border-default) bg-(--el-50);
   @apply translate-x-0 transition-all duration-250 ease-[cubic-bezier(0.4,0,0.2,1)];
 }
 
@@ -28,7 +28,8 @@
 }
 
 .settings-panel-toggle {
-  @apply fixed right-0 top-1/2 -translate-y-1/2 z-40;
+  @apply fixed right-0 top-1/2 -translate-y-1/2;
+  @apply z-200;
   @apply bg-(--el-0) border border-(--border-default) border-r-0;
   @apply rounded-l-md p-1;
   @apply transition-opacity duration-200;
@@ -68,21 +69,22 @@
 
 /* Style / Settings tab bar */
 .settings-panel-tab-bar {
-  @apply flex border-b border-(--border-default) shrink-0;
+  @apply flex shrink-0 border-b bg-(--el-100);
 }
 
 .settings-panel-tab-btn {
-  @apply flex-1 h-8 text-[12px] font-semibold;
-  @apply text-(--el-400) bg-transparent border-none cursor-pointer;
+  @apply flex-1 h-5.75 text-[12px] font-semibold;
+  @apply text-(--el-700) bg-transparent border-none cursor-pointer;
   @apply transition-colors duration-100;
+  @apply rounded-sm m-1 border border-white;
 }
 
 .settings-panel-tab-btn:hover {
-  @apply text-(--el-800);
+  @apply text-(--el-800) bg-(--el-50);
 }
 
 .settings-panel-tab-btn[data-active] {
-  @apply text-(--accent-primary) border-b-2 border-(--accent-primary);
+  @apply bg-(--el-200) border-(--accent-primary);
 }
 
 /* =============================================================================
@@ -132,7 +134,7 @@
 }
 
 .settings-panel-page-title {
-  @apply px-3 py-2.5 text-[12px] font-semibold text-(--el-800) border-b border-(--border-default);
+  @apply flex items-center px-3 h-8 text-[12px] font-semibold bg-(--el-100) text-(--el-500);
 }
 
 .settings-panel-page-controls {
@@ -144,11 +146,11 @@
 }
 
 .settings-panel-page-label {
-  @apply block text-[11px] font-semibold text-(--el-600);
+  @apply block text-sm font-semibold text-(--el-600);
 }
 
 .settings-panel-page-select {
-  @apply w-full h-7 px-2 text-[11px] rounded-[3px];
+  @apply w-full h-7 px-2 text-sm rounded-[3px];
   @apply bg-(--el-100) text-(--el-800) border-none;
 }
 
@@ -164,17 +166,13 @@
   @apply border-t border-(--border-default);
 }
 
-.property-section:first-child {
-  @apply border-t-0;
-}
-
 .property-section-header {
   @apply flex items-center gap-2 w-full px-3 py-2.5;
   @apply bg-transparent border-none cursor-pointer text-left;
 }
 
 .property-section-title {
-  @apply text-[12px] font-semibold text-(--el-800);
+  @apply text-xs font-bold text-(--el-500) uppercase tracking-wider;
 }
 
 .property-section-chevron {
@@ -200,7 +198,7 @@
 }
 
 .property-section-inner {
-  @apply overflow-hidden px-3 pb-2.5 flex flex-col gap-2;
+  @apply overflow-hidden px-3 pt-2 pb-3 flex flex-col gap-3;
 }
 
 .property-section-content--closed .property-section-inner {
@@ -212,15 +210,11 @@
  * ============================================================================= */
 
 .property-row {
-  @apply flex items-center justify-between gap-2 min-h-7;
-}
-
-.property-row--stacked {
-  @apply flex-col items-stretch gap-1;
+  @apply flex flex-col items-stretch gap-1 min-h-7 not-last:border-b pb-4;
 }
 
 .property-row-label {
-  @apply text-[11px] font-medium text-(--el-500) whitespace-nowrap w-16 shrink-0;
+  @apply text-sm font-medium text-(--el-500) whitespace-nowrap;
 }
 
 .property-row-responsive {
@@ -228,15 +222,11 @@
 }
 
 .property-row-control {
-  @apply flex-1 min-w-0;
-}
-
-.property-row--stacked .property-row-control {
-  @apply w-full;
+  @apply w-full min-w-0;
 }
 
 .property-row-help {
-  @apply text-[11px] text-(--el-500) mt-1;
+  @apply text-sm text-(--el-500) mt-1;
 }
 
 .property-row-compact {
@@ -280,7 +270,7 @@
  * ============================================================================= */
 
 .property-toggle {
-  @apply inline-flex gap-0.5 p-[3px] bg-(--el-100) rounded-md;
+  @apply inline-flex gap-0.5 p-[3px] bg-(--el-100) outline-1 outline-(--el-0) rounded-md inset-shadow-black/10 inset-shadow-sm;
 }
 
 .property-toggle--full {
@@ -294,7 +284,7 @@
 .property-toggle-btn {
   @apply flex items-center justify-center gap-1;
   @apply px-1.5 py-[4px];
-  @apply text-[11px] font-medium text-(--el-500);
+  @apply text-sm font-medium text-(--el-600);
   @apply bg-transparent border-none rounded-sm cursor-pointer;
   @apply transition-all duration-150 whitespace-nowrap;
 }
@@ -316,7 +306,7 @@
 }
 
 .property-toggle-label {
-  @apply text-[11px] font-medium;
+  @apply text-sm font-medium;
 }
 
 /* =============================================================================
@@ -324,8 +314,8 @@
  * ============================================================================= */
 
 .property-select {
-  @apply h-7 px-2 text-[11px] font-medium w-full;
-  @apply bg-(--el-100) text-(--el-800) border-none rounded-md;
+  @apply h-7 px-2 text-sm font-medium w-full;
+  @apply bg-(--el-0) border-(--el-300) text-(--el-800) rounded-md outline-1 outline-(--el-0);
 }
 
 .property-select:hover {
@@ -355,7 +345,7 @@
 .settings-section-trigger {
   @apply flex items-center justify-between w-full;
   @apply px-3 py-2.5;
-  @apply text-[11px] font-semibold uppercase tracking-wide;
+  @apply text-sm font-semibold uppercase tracking-wide;
   @apply text-(--el-500) bg-transparent border-none cursor-pointer;
   @apply transition-all duration-100;
 }
@@ -454,7 +444,8 @@
 
 @media (max-width: 640px) {
   .settings-panel-wrapper {
-    @apply fixed right-0 top-0 bottom-0 w-[320px] z-50;
+    @apply fixed right-0 top-0 bottom-0 w-[320px];
+    @apply z-200;
   }
 
   .settings-panel-wrapper.collapsed {

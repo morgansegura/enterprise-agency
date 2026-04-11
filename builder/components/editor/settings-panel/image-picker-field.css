@@ -39,11 +39,11 @@
 }
 
 .image-picker-empty {
-  @apply flex items-center justify-center gap-2 w-full h-16 rounded-[3px];
-  @apply text-[12px] text-(--el-400) bg-(--el-50) border border-dashed border-(--border-default);
+  @apply flex items-center justify-center gap-2 w-full h-16 rounded-md;
+  @apply text-sm font-semibold text-(--el-400) bg-(--el-50) border-2 border-dashed border-(--el-300);
   @apply cursor-pointer transition-colors duration-100;
 }
 
 .image-picker-empty:hover {
-  @apply bg-(--accent-primary-subtle)/30 border-(--accent-primary) text-(--accent-primary);
+  @apply bg-(--accent-primary-subtle)/30 border-(--el-400) text-(--el-600);
 }

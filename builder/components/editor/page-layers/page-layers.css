@@ -45,10 +45,14 @@
 
 .layer-group {
   @apply flex flex-col;
+
+  > .layer-group {
+    @apply bg-(--el-100);
+  }
 }
 
 .layer-item {
-  @apply flex items-center gap-2 px-2.5 py-1.5 rounded-[3px] cursor-pointer;
+  @apply flex items-center gap-x-2 px-1 py-1.5 cursor-pointer text-(--el-800) font-semibold;
   @apply text-[13px] transition-colors duration-100;
 }
 
@@ -57,7 +61,7 @@
 }
 
 .layer-item.is-selected {
-  @apply bg-(--accent-primary-subtle) text-(--el-800);
+  @apply bg-(--el-0);
 }
 
 .layer-item.is-hovered {
@@ -66,15 +70,15 @@
 
 /* Indent levels */
 .layer-item-section {
-  @apply font-semibold text-(--el-800);
+  @apply font-semibold text-(--el-800) border-b;
 }
 
 .layer-item-container {
-  @apply pl-6 text-(--el-600);
+  @apply text-(--el-800) ml-3 border-b;
 }
 
 .layer-item-block {
-  @apply pl-10 text-(--el-800);
+  @apply ml-4 text-(--el-800);
 }
 
 /* Toggle button */
@@ -140,15 +144,15 @@
 }
 
 .layer-add-btn {
-  @apply flex items-center justify-center gap-1.5 w-full;
-  @apply px-3 py-2 text-[13px] font-medium;
-  @apply border border-dashed border-(--border-default) rounded-[3px];
-  @apply text-(--el-500) bg-transparent;
-  @apply cursor-pointer transition-all duration-100;
+  @apply inline-flex items-center justify-center gap-1.5 w-full;
+  @apply py-2 text-sm font-semibold uppercase;
+  @apply rounded-md shadow;
+  @apply text-(--el-0) bg-linear-to-b from-(--el-600) via-(--el-700) to-(--el-600);
+  @apply cursor-pointer transition-colors duration-300 ease-out;
 }
 
 .layer-add-btn:hover {
-  @apply text-(--el-800) bg-(--el-100) border-(--el-300);
+  @apply bg-linear-to-b from-(--el-500) via-(--el-600) to-(--el-500);
 }
 
 .layer-add-container {

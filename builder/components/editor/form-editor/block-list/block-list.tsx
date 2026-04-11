@@ -10,7 +10,7 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
-import { Plus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { SectionGroup } from "../section-group";
 import type { Section } from "@/lib/types/section";
@@ -127,7 +127,6 @@ export function BlockList({
           onClick={onAddSection}
           className="block-list__add-section"
         >
-          <Plus className="block-list__add-icon" />
           Add Section
         </Button>
       </div>

@@ -49,14 +49,15 @@
 }
 
 .blocks-library-category-title {
-  @apply text-[11px] font-bold uppercase tracking-wider text-(--el-400);
+  @apply text-xs font-bold uppercase tracking-wider text-(--el-500);
 }
 
 .blocks-library-category-chevron {
-  @apply size-3.5 text-(--el-400) transition-transform duration-150;
+  @apply size-3.5 text-(--el-500) transition-transform duration-150;
 }
 
-.blocks-library-category-header[data-collapsed] .blocks-library-category-chevron {
+.blocks-library-category-header[data-collapsed]
+  .blocks-library-category-chevron {
   @apply -rotate-90;
 }
 
@@ -78,7 +79,7 @@
 
 .blocks-library-card-icon {
   @apply flex items-center justify-center w-full aspect-square rounded-[3px];
-  @apply bg-(--el-100) text-(--el-500);
+  @apply bg-(--el-0) border border-(--el-200) text-(--el-500);
   @apply transition-colors duration-100;
 }
 
@@ -87,7 +88,7 @@
 }
 
 .blocks-library-card-label {
-  @apply text-[10px] text-(--el-500) text-center leading-tight truncate w-full;
+  @apply text-[10px] text-(--el-500) font-bold text-center leading-tight truncate w-full;
 }
 
 .blocks-library-card:hover .blocks-library-card-label {

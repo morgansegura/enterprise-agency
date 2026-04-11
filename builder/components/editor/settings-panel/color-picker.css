@@ -5,31 +5,48 @@
 }
 
 .color-picker-label {
-  @apply text-xs font-medium text-(--el-500);
+  @apply text-sm font-medium text-(--el-400);
 }
 
 .color-picker-trigger {
-  @apply flex items-center gap-2 w-full h-8 px-2 rounded-[3px];
-  @apply bg-(--el-50) border border-(--border-default) cursor-pointer;
-  @apply transition-colors duration-100;
+  @apply flex items-center gap-2 w-full h-8 rounded-md;
+  @apply bg-(--el-0) border border-(--el-200) cursor-pointer;
+  @apply outline-none transition-colors duration-100;
 }
 
 .color-picker-trigger:hover {
-  @apply border-(--accent-primary)/50;
+  @apply border-(--el-300);
+}
+
+.color-picker-trigger:focus-visible {
+  @apply ring-1 ring-(--el-400);
 }
 
 .color-picker-swatch {
-  @apply w-5 h-5 rounded-[3px] border border-(--border-default) shrink-0;
-  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
-    linear-gradient(-45deg, #ccc 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #ccc 75%),
-    linear-gradient(-45deg, transparent 75%, #ccc 75%);
-  background-size: 8px 8px;
-  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+  @apply w-5 h-5 rounded-md border border-(--el-200) shrink-0;
+}
+
+/* Empty state — no color set */
+.color-picker-swatch--empty {
+  @apply bg-(--el-100);
+}
+
+/* Compact trigger — swatch-only, used inline in gradient stops etc. */
+.color-picker-swatch-trigger {
+  @apply w-8 h-8 rounded-md border border-(--el-200) cursor-pointer shrink-0;
+  @apply outline-none transition-all duration-100;
+}
+
+.color-picker-swatch-trigger:hover {
+  @apply border-(--el-400) scale-105;
+}
+
+.color-picker-swatch-trigger:focus-visible {
+  @apply ring-1 ring-(--el-400);
 }
 
 .color-picker-value {
-  @apply text-xs font-mono text-(--el-600) truncate;
+  @apply text-xs text-(--el-600) truncate;
 }
 
 .color-picker-popover {
@@ -50,7 +67,9 @@
 .color-picker-sv-marker {
   @apply absolute w-3.5 h-3.5 rounded-full border-2 border-white pointer-events-none;
   @apply -translate-x-1/2 -translate-y-1/2;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* Hue slider */
@@ -59,7 +78,7 @@
 }
 
 .color-picker-hue-slider {
-  @apply w-full h-3 rounded-sm cursor-pointer appearance-none;
+  @apply w-full h-4 rounded-xs cursor-pointer appearance-none outline-1 outline-(--el-0);
   background: linear-gradient(
     to right,
     #ff0000 0%,
@@ -73,12 +92,12 @@
 }
 
 .color-picker-hue-slider::-webkit-slider-thumb {
-  @apply appearance-none w-3 h-3 rounded-full bg-white border border-gray-400 cursor-pointer;
+  @apply appearance-none w-3 h-3 rounded-full bg-white border border-(--el-500) cursor-pointer;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .color-picker-hue-slider::-moz-range-thumb {
-  @apply w-3 h-3 rounded-full bg-white border border-gray-400 cursor-pointer;
+  @apply w-3 h-3 rounded-full bg-white border border-(--el-500) cursor-pointer;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
@@ -88,11 +107,11 @@
 }
 
 .color-picker-alpha-label {
-  @apply text-[10px] text-(--el-400) w-10 shrink-0;
+  @apply text-xs text-(--el-500) font-semibold w-10 shrink-0;
 }
 
 .color-picker-alpha-slider {
-  @apply flex-1 h-1.5 accent-(--accent-primary);
+  @apply flex-1 h-1.5 bg-(--el-700);
 }
 
 .color-picker-alpha-value {
@@ -119,11 +138,11 @@
 }
 
 .color-picker-mode-btn.is-active {
-  @apply bg-(--accent-primary)/10 text-(--accent-primary) border-(--accent-primary)/30;
+  @apply bg-(--el-200) text-(--el-700) border-(--el-300);
 }
 
 .color-picker-text-input {
-  @apply h-7 text-xs font-mono;
+  @apply h-7 text-sm;
 }
 
 .color-picker-channel-inputs {
@@ -131,7 +150,7 @@
 }
 
 .color-picker-channel-input {
-  @apply h-7 text-xs font-mono text-center flex-1;
+  @apply h-7 text-sm text-center flex-1;
 }
 
 /* Sections */

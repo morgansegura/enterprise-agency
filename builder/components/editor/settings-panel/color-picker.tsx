@@ -30,6 +30,8 @@ interface ColorPickerProps {
   value: string;
   onChange: (value: string) => void;
   label?: string;
+  /** Compact mode — shows only the color swatch, no label or hex text */
+  compact?: boolean;
   className?: string;
 }
 
@@ -184,7 +186,7 @@ function HueSlider({
  * - Preset color swatches
  * - Transparent button
  */
-export function ColorPicker({ value, onChange, label, className }: ColorPickerProps) {
+export function ColorPicker({ value, onChange, label, compact, className }: ColorPickerProps) {
   const params = useParams();
   const tenantId = params?.id as string;
   const { data: tokens } = useTenantTokens(tenantId);
@@ -248,18 +250,34 @@ export function ColorPicker({ value, onChange, label, className }: ColorPickerPr
   const currentHex = rgbToHex(currentRgb.r, currentRgb.g, currentRgb.b);
   const currentHsl = rgbToHsl(currentRgb.r, currentRgb.g, currentRgb.b);
 
-  // Handle direct text input
-  const handleTextInput = (raw: string) => {
-    // Try to parse whatever they type
+  // Handle direct text input — typed value is stored locally,
+  // only committed on blur or Enter so partial hex doesn't flicker.
+  const [textDraft, setTextDraft] = React.useState<string | null>(null);
+
+  const commitTextInput = (raw: string) => {
     if (!raw) return;
+    // Validate: must be a recognized color format
+    if (
+      !raw.startsWith("#") &&
+      !raw.startsWith("rgb") &&
+      !raw.startsWith("hsl")
+    )
+      return;
+    // Hex: #rgb (4), #rrggbb (7), #rgba (5), #rrggbbaa (9)
+    if (
+      raw.startsWith("#") &&
+      raw.length !== 4 &&
+      raw.length !== 5 &&
+      raw.length !== 7 &&
+      raw.length !== 9
+    )
+      return;
     const p = parseAnyColor(raw);
-    // Only update if it's a valid color (not the black fallback for garbage input)
-    if (raw.startsWith("#") || raw.startsWith("rgb") || raw.startsWith("hsl")) {
-      setLocalHsv(p.hsv);
-      setLocalAlpha(p.alpha);
-      prevValue.current = raw;
-      onChange(raw);
-    }
+    setLocalHsv(p.hsv);
+    setLocalAlpha(p.alpha);
+    prevValue.current = raw;
+    onChange(raw);
+    setTextDraft(null);
   };
 
   // RGB input handlers
@@ -304,16 +322,24 @@ export function ColorPicker({ value, onChange, label, className }: ColorPickerPr
 
   return (
     <div className={className ? `color-picker-field ${className}` : "color-picker-field"}>
-      {label && <span className="color-picker-label">{label}</span>}
+      {label && !compact && <span className="color-picker-label">{label}</span>}
       <Popover>
         <PopoverTrigger asChild>
-          <button type="button" className="color-picker-trigger">
-            <div
-              className="color-picker-swatch"
-              style={{ backgroundColor: value || "transparent" }}
+          {compact ? (
+            <button
+              type="button"
+              className="color-picker-swatch-trigger"
+              style={value ? { backgroundColor: value } : undefined}
             />
-            <span className="color-picker-value">{value || "none"}</span>
-          </button>
+          ) : (
+            <button type="button" className="color-picker-trigger">
+              <div
+                className={`color-picker-swatch ${!value ? "color-picker-swatch--empty" : ""}`}
+                style={value ? { backgroundColor: value } : undefined}
+              />
+              <span className="color-picker-value">{value || "Inherit"}</span>
+            </button>
+          )}
         </PopoverTrigger>
         <PopoverContent
           align="start"
@@ -367,8 +393,14 @@ export function ColorPicker({ value, onChange, label, className }: ColorPickerPr
 
             {inputMode === "hex" && (
               <Input
-                value={currentHex}
-                onChange={(e) => handleTextInput(e.target.value)}
+                value={textDraft ?? currentHex}
+                onChange={(e) => setTextDraft(e.target.value)}
+                onBlur={(e) => commitTextInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    commitTextInput((e.target as HTMLInputElement).value);
+                  }
+                }}
                 placeholder="#000000"
                 className="color-picker-text-input"
               />

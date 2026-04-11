@@ -98,13 +98,28 @@ function getBlockLabel(block: Block): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function SortableBlockItem({ id, children }: { id: string; children: React.ReactNode }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+function SortableBlockItem({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
   return (
     <div
       ref={setNodeRef}
       style={{
-        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+        transform: transform
+          ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+          : undefined,
         transition,
         opacity: isDragging ? 0.5 : 1,
       }}
@@ -211,7 +226,6 @@ export function PageLayers({
           <span>Add a section to get started</span>
           {onAddSection && (
             <button className="layer-add-btn" onClick={onAddSection}>
-              <Plus className="size-3" />
               Add Section
             </button>
           )}
@@ -361,10 +375,19 @@ export function PageLayers({
                           onDragEnd={(event: DragEndEvent) => {
                             const { active, over } = event;
                             if (!over || active.id === over.id) return;
-                            const fromIdx = blocks.findIndex((b) => b._key === active.id);
-                            const toIdx = blocks.findIndex((b) => b._key === over.id);
+                            const fromIdx = blocks.findIndex(
+                              (b) => b._key === active.id,
+                            );
+                            const toIdx = blocks.findIndex(
+                              (b) => b._key === over.id,
+                            );
                             if (fromIdx !== -1 && toIdx !== -1) {
-                              onBlockReorder?.(sectionIndex, containerIndex, fromIdx, toIdx);
+                              onBlockReorder?.(
+                                sectionIndex,
+                                containerIndex,
+                                fromIdx,
+                                toIdx,
+                              );
                             }
                           }}
                         >
@@ -372,143 +395,146 @@ export function PageLayers({
                             items={blocks.map((b) => b._key)}
                             strategy={verticalListSortingStrategy}
                           >
-                        {blocks.map((block, blockIndex) => {
-                          const Icon = blockIcons[block._type] || Box;
-                          const nestedBlocks = (block.blocks as Block[] | undefined) ?? [];
-                          return (
-                            <React.Fragment key={block._key}>
-                            <SortableBlockItem id={block._key}>
-                            <div
-                              className={cn(
-                                "layer-item layer-item-block",
-                                selectedKey === block._key && "is-selected",
-                                hoveredKey === block._key && "is-hovered",
-                              )}
-                              onClick={() =>
-                                onSelectBlock?.(
-                                  sectionIndex,
-                                  containerIndex,
-                                  blockIndex,
-                                  block._key,
-                                )
-                              }
-                              onMouseEnter={() => onHover?.(block._key)}
-                              onMouseLeave={() => onHover?.(null)}
-                            >
-                              <Icon className="layer-type-icon" />
-                              <span className="layer-label">
-                                {getBlockLabel(block)}
-                              </span>
-                              {selectedKey === block._key && (
-                                <div className="layer-actions">
-                                  {onMoveBlockUp && blockIndex > 0 && (
-                                    <button
-                                      className="layer-action"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        onMoveBlockUp(
+                            {blocks.map((block, blockIndex) => {
+                              const Icon = blockIcons[block._type] || Box;
+                              const nestedBlocks =
+                                (block.blocks as Block[] | undefined) ?? [];
+                              return (
+                                <React.Fragment key={block._key}>
+                                  <SortableBlockItem id={block._key}>
+                                    <div
+                                      className={cn(
+                                        "layer-item layer-item-block",
+                                        selectedKey === block._key &&
+                                          "is-selected",
+                                        hoveredKey === block._key &&
+                                          "is-hovered",
+                                      )}
+                                      onClick={() =>
+                                        onSelectBlock?.(
                                           sectionIndex,
                                           containerIndex,
                                           blockIndex,
-                                        );
-                                      }}
-                                      title="Move up"
+                                          block._key,
+                                        )
+                                      }
+                                      onMouseEnter={() => onHover?.(block._key)}
+                                      onMouseLeave={() => onHover?.(null)}
                                     >
-                                      <ArrowUp className="size-3" />
-                                    </button>
-                                  )}
-                                  {onMoveBlockDown &&
-                                    blockIndex < blocks.length - 1 && (
-                                      <button
-                                        className="layer-action"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          onMoveBlockDown(
-                                            sectionIndex,
-                                            containerIndex,
-                                            blockIndex,
-                                          );
-                                        }}
-                                        title="Move down"
-                                      >
-                                        <ArrowDown className="size-3" />
-                                      </button>
-                                    )}
-                                  {onDuplicateBlock && (
-                                    <button
-                                      className="layer-action"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        onDuplicateBlock(
-                                          sectionIndex,
-                                          containerIndex,
-                                          blockIndex,
+                                      <Icon className="layer-type-icon" />
+                                      <span className="layer-label">
+                                        {getBlockLabel(block)}
+                                      </span>
+                                      {selectedKey === block._key && (
+                                        <div className="layer-actions">
+                                          {onMoveBlockUp && blockIndex > 0 && (
+                                            <button
+                                              className="layer-action"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                onMoveBlockUp(
+                                                  sectionIndex,
+                                                  containerIndex,
+                                                  blockIndex,
+                                                );
+                                              }}
+                                              title="Move up"
+                                            >
+                                              <ArrowUp className="size-3" />
+                                            </button>
+                                          )}
+                                          {onMoveBlockDown &&
+                                            blockIndex < blocks.length - 1 && (
+                                              <button
+                                                className="layer-action"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  onMoveBlockDown(
+                                                    sectionIndex,
+                                                    containerIndex,
+                                                    blockIndex,
+                                                  );
+                                                }}
+                                                title="Move down"
+                                              >
+                                                <ArrowDown className="size-3" />
+                                              </button>
+                                            )}
+                                          {onDuplicateBlock && (
+                                            <button
+                                              className="layer-action"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                onDuplicateBlock(
+                                                  sectionIndex,
+                                                  containerIndex,
+                                                  blockIndex,
+                                                );
+                                              }}
+                                              title="Duplicate"
+                                            >
+                                              <Copy className="size-3" />
+                                            </button>
+                                          )}
+                                          {onDeleteBlock && (
+                                            <button
+                                              className="layer-action layer-action-danger"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                onDeleteBlock(
+                                                  sectionIndex,
+                                                  containerIndex,
+                                                  blockIndex,
+                                                );
+                                              }}
+                                              title="Delete"
+                                            >
+                                              <Trash2 className="size-3" />
+                                            </button>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                    {/* Nested blocks (for container-type blocks) */}
+                                    {nestedBlocks.length > 0 &&
+                                      nestedBlocks.map((childBlock) => {
+                                        const ChildIcon =
+                                          blockIcons[childBlock._type] || Box;
+                                        return (
+                                          <div
+                                            key={childBlock._key}
+                                            className={cn(
+                                              "layer-item",
+                                              selectedKey === childBlock._key &&
+                                                "is-selected",
+                                              hoveredKey === childBlock._key &&
+                                                "is-hovered",
+                                            )}
+                                            style={{ paddingLeft: "3.5rem" }}
+                                            onClick={() =>
+                                              onSelectBlock?.(
+                                                sectionIndex,
+                                                containerIndex,
+                                                blockIndex,
+                                                childBlock._key,
+                                              )
+                                            }
+                                            onMouseEnter={() =>
+                                              onHover?.(childBlock._key)
+                                            }
+                                            onMouseLeave={() => onHover?.(null)}
+                                          >
+                                            <ChildIcon className="layer-type-icon" />
+                                            <span className="layer-label">
+                                              {getBlockLabel(childBlock)}
+                                            </span>
+                                          </div>
                                         );
-                                      }}
-                                      title="Duplicate"
-                                    >
-                                      <Copy className="size-3" />
-                                    </button>
-                                  )}
-                                  {onDeleteBlock && (
-                                    <button
-                                      className="layer-action layer-action-danger"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        onDeleteBlock(
-                                          sectionIndex,
-                                          containerIndex,
-                                          blockIndex,
-                                        );
-                                      }}
-                                      title="Delete"
-                                    >
-                                      <Trash2 className="size-3" />
-                                    </button>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                            {/* Nested blocks (for container-type blocks) */}
-                            {nestedBlocks.length > 0 &&
-                              nestedBlocks.map((childBlock) => {
-                                const ChildIcon =
-                                  blockIcons[childBlock._type] || Box;
-                                return (
-                                  <div
-                                    key={childBlock._key}
-                                    className={cn(
-                                      "layer-item",
-                                      selectedKey === childBlock._key &&
-                                        "is-selected",
-                                      hoveredKey === childBlock._key &&
-                                        "is-hovered",
-                                    )}
-                                    style={{ paddingLeft: "3.5rem" }}
-                                    onClick={() =>
-                                      onSelectBlock?.(
-                                        sectionIndex,
-                                        containerIndex,
-                                        blockIndex,
-                                        childBlock._key,
-                                      )
-                                    }
-                                    onMouseEnter={() =>
-                                      onHover?.(childBlock._key)
-                                    }
-                                    onMouseLeave={() => onHover?.(null)}
-                                  >
-                                    <ChildIcon className="layer-type-icon" />
-                                    <span className="layer-label">
-                                      {getBlockLabel(childBlock)}
-                                    </span>
-                                  </div>
-                                );
-                              })}
-                            </SortableBlockItem>
-                            </React.Fragment>
-                          );
-                        })}
+                                      })}
+                                  </SortableBlockItem>
+                                </React.Fragment>
+                              );
+                            })}
                           </SortableContext>
                         </DndContext>
                       )}
@@ -519,9 +545,8 @@ export function PageLayers({
           );
         })}
         {onAddSection && (
-          <div className="mt-2 px-1">
+          <div className="mt-4 px-10">
             <button className="layer-add-btn" onClick={onAddSection}>
-              <Plus className="size-3.5" />
               Add Section
             </button>
           </div>

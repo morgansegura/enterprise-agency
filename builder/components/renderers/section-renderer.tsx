@@ -89,6 +89,7 @@ export function SectionRenderer({
       )}
       data-block-key={section._key}
       data-block-label={`Section ${sectionIndex + 1}`}
+      data-element-type="section"
     >
       <div className={cn(sectionSpacing, sectionWidth)}>
         {containers.map((container, containerIndex) => {
@@ -115,6 +116,7 @@ export function SectionRenderer({
             className={cn(getElementClass(container._key), layoutClasses)}
             data-block-key={container._key}
             data-block-label={`Container ${containerIndex + 1}`}
+            data-element-type="container"
           >
             {container.blocks?.map((block, blockIndex) => (
               <BlockRenderer

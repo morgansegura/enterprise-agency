@@ -1,11 +1,11 @@
 @reference "tailwindcss";
 
 .profile-dropdown-avatar {
-  @apply flex h-8 w-8 items-center justify-center rounded-full bg-(--accent-primary) text-(--primary-foreground);
+  @apply flex h-8 w-8 items-center justify-center rounded-full bg-(--accent-primary) text-(--accent-primary-foreground);
 }
 
 .profile-dropdown-avatar-initials {
-  @apply text-[14px] font-medium text-(--secondary-foreground);
+  @apply text-[14px] font-medium text-(--accent-primary-foreground);
 }
 
 .profile-dropdown-user-info {

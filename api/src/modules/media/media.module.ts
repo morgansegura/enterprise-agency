@@ -8,7 +8,10 @@ import { StorageService } from "@/common/services/storage.service";
 import { AuditLogService } from "@/common/services/audit-log.service";
 
 @Module({
-  controllers: [MediaController, FoldersController],
+  // FoldersController must come first so its more-specific
+  // /tenants/:tenantId/media/folders routes win over MediaController's
+  // /tenants/:tenantId/media/:id route.
+  controllers: [FoldersController, MediaController],
   providers: [
     MediaService,
     FoldersService,

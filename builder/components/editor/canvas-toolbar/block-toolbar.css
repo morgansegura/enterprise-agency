@@ -1,8 +1,10 @@
 @reference "tailwindcss";
 
-/* Floating block action toolbar — vertical, on right side of selected block */
+/* Floating block action toolbar — right side of selected block.
+   Position (top/left/transform) is set via inline styles in block-toolbar.tsx. */
 .block-toolbar {
-  @apply fixed z-60 flex items-center gap-0.5 px-0.5 py-1 -top-2 -translate-y-full;
+  @apply fixed flex items-center gap-0.5 px-0.5 py-1;
+  @apply z-200;
   @apply rounded-md;
   @apply bg-(--el-0) border border-(--border-default);
   box-shadow:

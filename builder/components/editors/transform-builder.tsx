@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { SliderInput } from "@/components/editor/settings-panel/slider-input";
 import { PropertyRow } from "@/components/editor/settings-panel/components";
 
 interface TransformBuilderProps {
@@ -8,7 +8,7 @@ interface TransformBuilderProps {
   onChange: (v: string) => void;
 }
 
-/** Transform Builder — individual controls for translate, rotate, scale, skew */
+/** Transform Builder — sliders for translate, rotate, scale, skew */
 export function TransformBuilder({ value, onChange }: TransformBuilderProps) {
   const getVal = (fn: string, def: string) => {
     const match = (value || "").match(new RegExp(`${fn}\\(([^)]+)\\)`));
@@ -43,78 +43,82 @@ export function TransformBuilder({ value, onChange }: TransformBuilderProps) {
     return parts.join(" ") || "";
   };
 
+  const fields = [
+    {
+      label: "Move X",
+      val: tx,
+      min: -200,
+      max: 200,
+      unit: "px",
+      set: (v: string) => build(v, ty, rotate, sx, sy, skx, sky),
+    },
+    {
+      label: "Move Y",
+      val: ty,
+      min: -200,
+      max: 200,
+      unit: "px",
+      set: (v: string) => build(tx, v, rotate, sx, sy, skx, sky),
+    },
+    {
+      label: "Rotate",
+      val: rotate,
+      min: -360,
+      max: 360,
+      unit: "deg",
+      set: (v: string) => build(tx, ty, v, sx, sy, skx, sky),
+    },
+    {
+      label: "Scale X",
+      val: sx,
+      min: 0,
+      max: 3,
+      step: 0.1,
+      unit: "",
+      set: (v: string) => build(tx, ty, rotate, v, sy, skx, sky),
+    },
+    {
+      label: "Scale Y",
+      val: sy,
+      min: 0,
+      max: 3,
+      step: 0.1,
+      unit: "",
+      set: (v: string) => build(tx, ty, rotate, sx, v, skx, sky),
+    },
+    {
+      label: "Skew X",
+      val: skx,
+      min: -45,
+      max: 45,
+      unit: "deg",
+      set: (v: string) => build(tx, ty, rotate, sx, sy, v, sky),
+    },
+    {
+      label: "Skew Y",
+      val: sky,
+      min: -45,
+      max: 45,
+      unit: "deg",
+      set: (v: string) => build(tx, ty, rotate, sx, sy, skx, v),
+    },
+  ];
+
   return (
     <>
-      <PropertyRow label="Move X">
-        <Input
-          value={tx}
-          onChange={(e) =>
-            onChange(build(e.target.value, ty, rotate, sx, sy, skx, sky))
-          }
-          placeholder="0px"
-          className="w-20 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Move Y">
-        <Input
-          value={ty}
-          onChange={(e) =>
-            onChange(build(tx, e.target.value, rotate, sx, sy, skx, sky))
-          }
-          placeholder="0px"
-          className="w-20 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Rotate">
-        <Input
-          value={rotate}
-          onChange={(e) =>
-            onChange(build(tx, ty, e.target.value, sx, sy, skx, sky))
-          }
-          placeholder="0deg"
-          className="w-20 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Scale X">
-        <Input
-          value={sx}
-          onChange={(e) =>
-            onChange(build(tx, ty, rotate, e.target.value, sy, skx, sky))
-          }
-          placeholder="1"
-          className="w-20 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Scale Y">
-        <Input
-          value={sy}
-          onChange={(e) =>
-            onChange(build(tx, ty, rotate, sx, e.target.value, skx, sky))
-          }
-          placeholder="1"
-          className="w-20 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Skew X">
-        <Input
-          value={skx}
-          onChange={(e) =>
-            onChange(build(tx, ty, rotate, sx, sy, e.target.value, sky))
-          }
-          placeholder="0deg"
-          className="w-20 h-7 text-xs text-center"
-        />
-      </PropertyRow>
-      <PropertyRow label="Skew Y">
-        <Input
-          value={sky}
-          onChange={(e) =>
-            onChange(build(tx, ty, rotate, sx, sy, skx, e.target.value))
-          }
-          placeholder="0deg"
-          className="w-20 h-7 text-xs text-center"
-        />
-      </PropertyRow>
+      {fields.map((f) => (
+        <PropertyRow key={f.label} label={f.label}>
+          <SliderInput
+            value={f.val}
+            onChange={(v) => onChange(f.set(v))}
+            min={f.min}
+            max={f.max}
+            step={f.step ?? 1}
+            unit={f.unit}
+            placeholder={f.val}
+          />
+        </PropertyRow>
+      ))}
     </>
   );
 }

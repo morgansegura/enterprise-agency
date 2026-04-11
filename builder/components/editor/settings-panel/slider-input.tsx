@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 
 interface SliderInputProps {
@@ -14,7 +15,7 @@ interface SliderInputProps {
 }
 
 /**
- * SliderInput — combines a range slider with a numeric text input.
+ * SliderInput — shadcn Slider + Input combo.
  * Parses numeric value from string (e.g., "24px" → 24),
  * and appends unit back on change.
  */
@@ -27,11 +28,8 @@ export function SliderInput({
   unit = "px",
   placeholder,
 }: SliderInputProps) {
-  // Parse numeric value, defaulting to min for slider position
   const parsed = parseFloat(value);
   const numericValue = isNaN(parsed) ? min : parsed;
-
-  // Display value: just the number, not the full "24px" string
   const displayValue = isNaN(parsed) ? "" : String(parsed);
 
   const emit = (num: number) => {
@@ -42,8 +40,8 @@ export function SliderInput({
     onChange(unit ? `${num}${unit}` : String(num));
   };
 
-  const handleSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
-    emit(parseFloat(e.target.value));
+  const handleSlider = (values: number[]) => {
+    emit(values[0]);
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,13 +56,12 @@ export function SliderInput({
 
   return (
     <div className="slider-input">
-      <input
-        type="range"
+      <Slider
+        value={[numericValue]}
+        onValueChange={handleSlider}
         min={min}
         max={max}
         step={step}
-        value={numericValue}
-        onChange={handleSlider}
         className="slider-input-range"
       />
       <Input

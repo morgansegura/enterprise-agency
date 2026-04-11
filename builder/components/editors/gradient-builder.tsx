@@ -1,15 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { Input } from "@/components/ui/input";
+import { SliderInput } from "@/components/editor/settings-panel/slider-input";
 import {
   PropertyRow,
   PropertyToggle,
 } from "@/components/editor/settings-panel/components";
+import { ColorPicker } from "@/components/editor/settings-panel/color-picker";
+import { Plus, X } from "lucide-react";
 
 interface GradientStop {
   color: string;
-  position: number; // 0-100
+  position: number;
 }
 
 interface GradientBuilderProps {
@@ -17,7 +19,7 @@ interface GradientBuilderProps {
   onChange: (v: string) => void;
 }
 
-/** Gradient Builder — multi-stop, linear/radial, angle control */
+/** Gradient Builder — multi-stop, linear/radial, angle slider */
 export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
   const isGradient = value?.includes("gradient");
 
@@ -27,18 +29,13 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
         { color: "#000000", position: 0 },
         { color: "#ffffff", position: 100 },
       ];
-    const stopRegex =
-      /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\))\s*(\d+)?%?/g;
+    const stopRegex = /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\))\s*(\d+)?%?/g;
     const stops: GradientStop[] = [];
     let match;
     while ((match = stopRegex.exec(value)) !== null) {
       stops.push({
         color: match[1],
-        position: match[2]
-          ? parseInt(match[2])
-          : stops.length === 0
-            ? 0
-            : 100,
+        position: match[2] ? parseInt(match[2]) : stops.length === 0 ? 0 : 100,
       });
     }
     return stops.length >= 2
@@ -49,8 +46,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
         ];
   };
 
-  const parseType = () =>
-    value?.includes("radial") ? "radial" : "linear";
+  const parseType = () => (value?.includes("radial") ? "radial" : "linear");
   const parseAngle = () => {
     const m = value?.match(/(\d+)deg/);
     return m ? m[1] : "180";
@@ -61,14 +57,8 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
   const [angle, setAngle] = React.useState(parseAngle);
   const [stops, setStops] = React.useState<GradientStop[]>(parseStops);
 
-  const buildGradient = (
-    t: string,
-    a: string,
-    s: GradientStop[],
-  ) => {
-    const stopsStr = s
-      .map((st) => `${st.color} ${st.position}%`)
-      .join(", ");
+  const buildGradient = (t: string, a: string, s: GradientStop[]) => {
+    const stopsStr = s.map((st) => `${st.color} ${st.position}%`).join(", ");
     if (t === "radial") return `radial-gradient(circle, ${stopsStr})`;
     return `linear-gradient(${a}deg, ${stopsStr})`;
   };
@@ -85,8 +75,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
     const updated = [...stops];
     if (field === "color")
       updated[index] = { ...updated[index], color: val as string };
-    else
-      updated[index] = { ...updated[index], position: val as number };
+    else updated[index] = { ...updated[index], position: val as number };
     setStops(updated);
     emit(type, angle, updated);
   };
@@ -121,7 +110,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
           setEnabled(true);
           emit(type, angle, stops);
         }}
-        className="text-[11px] text-(--accent-primary) bg-transparent border-none cursor-pointer hover:underline"
+        className="w-26 mx-auto py-1 bg-(--el-600) rounded-lg text-sm text-(--el-0) border cursor-pointer hover:bg-(--el-500) transition-colors duration ease-out"
       >
         + Add gradient
       </button>
@@ -129,16 +118,17 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
   }
 
   return (
-    <>
-      <span className="text-[10px] uppercase tracking-wider text-(--el-400) font-semibold">
-        Gradient
-      </span>
-      {/* Live preview */}
+    <div className="flex flex-col gap-2">
+      <span className="text-sm font-medium text-(--el-400)">Gradient</span>
+
+      {/* Preview */}
       <div
-        className="w-full h-10 rounded-[3px] border border-(--border-default)"
+        className="w-full h-6 rounded-md border border-(--el-200)"
         style={{ background: buildGradient(type, angle, stops) }}
       />
-      <PropertyRow label="Type">
+
+      {/* Type */}
+      <PropertyRow label="Type" stacked>
         <PropertyToggle
           value={type}
           options={[
@@ -149,77 +139,70 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
             setType(v);
             emit(v, angle, stops);
           }}
+          fullWidth
         />
       </PropertyRow>
+
+      {/* Angle */}
       {type === "linear" && (
         <PropertyRow label="Angle">
-          <div className="flex items-center gap-2 flex-1">
-            <input
-              type="range"
-              min="0"
-              max="360"
-              step="5"
-              value={angle}
-              onChange={(e) => {
-                setAngle(e.target.value);
-                emit(type, e.target.value, stops);
-              }}
-              className="flex-1 h-1.5 accent-(--accent-primary)"
-            />
-            <span className="text-[11px] text-(--el-500) w-10 text-right">
-              {angle}°
-            </span>
-          </div>
+          <SliderInput
+            value={`${angle}deg`}
+            onChange={(v) => {
+              const num = String(parseInt(v) || 0);
+              setAngle(num);
+              emit(type, num, stops);
+            }}
+            min={0}
+            max={360}
+            step={5}
+            unit="deg"
+            placeholder="180"
+          />
         </PropertyRow>
       )}
+
       {/* Color stops */}
+      <span className="text-sm font-medium text-(--el-400)">Stops</span>
       {stops.map((stop, i) => (
-        <div key={i} className="flex items-center gap-1.5">
-          <input
-            type="color"
-            value={
-              stop.color.startsWith("#") ? stop.color : "#000000"
-            }
-            onChange={(e) => updateStop(i, "color", e.target.value)}
-            className="w-7 h-7 rounded-[3px] border border-(--border-default) cursor-pointer shrink-0"
-          />
-          <Input
+        <div key={i} className="flex items-center gap-2">
+          <ColorPicker
+            compact
             value={stop.color}
-            onChange={(e) => updateStop(i, "color", e.target.value)}
-            className="w-20 h-7 text-xs shrink-0"
+            onChange={(v) => updateStop(i, "color", v || "#000000")}
           />
-          <Input
-            value={`${stop.position}`}
-            onChange={(e) =>
-              updateStop(
-                i,
-                "position",
-                parseInt(e.target.value) || 0,
-              )
+          <SliderInput
+            value={`${stop.position}%`}
+            onChange={(v) =>
+              updateStop(i, "position", parseInt(v) || 0)
             }
-            className="w-10 h-7 text-xs text-center shrink-0"
+            min={0}
+            max={100}
+            step={1}
+            unit="%"
+            placeholder="0"
           />
-          <span className="text-[10px] text-(--el-400) shrink-0">
-            %
-          </span>
           {stops.length > 2 && (
             <button
               type="button"
               onClick={() => removeStop(i)}
-              className="text-[11px] text-(--el-400) hover:text-(--status-error) bg-transparent border-none cursor-pointer"
+              className="flex items-center justify-center size-5 rounded-[3px] text-(--el-400) hover:text-(--status-error) bg-transparent border-none cursor-pointer shrink-0"
             >
-              x
+              <X className="size-3" />
             </button>
           )}
         </div>
       ))}
+
+      {/* Actions */}
       <div className="flex items-center justify-between">
         <button
           type="button"
           onClick={addStop}
-          className="text-[11px] text-(--accent-primary) bg-transparent border-none cursor-pointer hover:underline"
+          className="flex items-center gap-1 text-xs text-(--accent-primary) bg-transparent border-none cursor-pointer hover:underline"
         >
-          + Add stop
+          <Plus className="size-3" />
+          Add stop
         </button>
         <button
           type="button"
@@ -227,11 +210,11 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
             setEnabled(false);
             onChange("");
           }}
-          className="text-[11px] text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
+          className="text-xs text-(--status-error) bg-transparent border-none cursor-pointer hover:underline"
         >
           Remove
         </button>
       </div>
-    </>
+    </div>
   );
 }

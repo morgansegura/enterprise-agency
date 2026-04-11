@@ -13,46 +13,67 @@
  * ============================================================================= */
 
 .editor-sidebar-rail {
-  @apply flex flex-col items-center w-12 h-full shrink-0 py-2 gap-0.5;
-  @apply bg-(--el-0) border-r border-(--border-default);
+  @apply flex flex-col items-center w-12 h-full shrink-0 py-2 gap-4;
+  @apply bg-(--el-0) border-r border-(--el-200);
 }
 
 .editor-sidebar-rail-btn {
-  @apply flex items-center justify-center size-9 rounded-[3px] cursor-pointer;
-  @apply text-(--el-400) bg-transparent border-none;
-  @apply transition-colors duration-100;
+  @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
+  @apply text-(--el-500) bg-transparent border-none;
+  @apply transition-colors duration-100 ease-out;
 }
 
 .editor-sidebar-rail-btn:hover {
-  @apply bg-(--accent-primary-subtle)/50 text-(--el-700);
+  @apply bg-(--el-200) text-(--el-700);
 }
 
 .editor-sidebar-rail-btn[data-active] {
-  @apply bg-(--accent-primary-subtle) text-(--accent-primary);
+  @apply bg-(--el-100) text-(--accent-primary);
 }
 
 /* =============================================================================
  * Overlay Panel — fixed position, overlays the canvas
  * ============================================================================= */
 
+/* Panel slides out from underneath the icon rail.
+   Editor chrome z-indexes: rail 210, panel 200, canvas content ≤50. */
+/* Mobile: fixed overlay that slides from under the rail.
+   md+: inline panel that collapses width when closed. */
 .editor-sidebar-panel {
-  @apply fixed top-18 bottom-0 left-12 flex flex-col w-[240px] z-60;
-  @apply bg-(--el-0) border-r border-(--border-default) shadow-lg;
-  @apply transition-[transform,opacity] duration-200 ease-out;
-  @apply translate-x-0;
+  @apply fixed top-10 left-12 bottom-0 flex flex-col w-[240px];
+  @apply bg-(--el-50) border-r border-(--border-default) shadow-lg;
+  @apply z-200 will-change-[transform,opacity] translate-x-0 opacity-100;
+  @apply transition-[transform,opacity] duration-350 ease-[cubic-bezier(0.32,0.72,0,1)];
 }
 
 .editor-sidebar-panel[data-collapsed] {
-  @apply -translate-x-[252px] opacity-0 pointer-events-none;
+  @apply pointer-events-none -translate-x-[252px] opacity-0;
+}
+
+@media (min-width: 768px) {
+  .editor-sidebar-panel {
+    @apply relative top-0 left-0 bottom-auto h-full shadow-none;
+    @apply translate-x-0 overflow-hidden;
+    @apply transition-[width,opacity] duration-250 ease-out;
+  }
+
+  .editor-sidebar-panel[data-collapsed] {
+    @apply w-0 opacity-0 border-r-0 translate-x-0;
+  }
+}
+
+/* Rail must sit above the sliding panel */
+.editor-sidebar-rail {
+  @apply relative z-210;
 }
 
 .editor-sidebar-panel-header {
   @apply flex items-center justify-between px-3 h-9 shrink-0;
-  @apply border-b border-(--border-default);
+  /* @apply border-b border-(--border-default); */
 }
 
 .editor-sidebar-panel-title {
-  @apply text-[12px] font-semibold uppercase tracking-wider text-(--el-400);
+  @apply text-xs font-bold uppercase tracking-wider text-(--el-500);
 }
 
 .editor-sidebar-panel-close {

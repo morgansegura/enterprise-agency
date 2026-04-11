@@ -23,6 +23,7 @@ import {
   Settings,
   Home,
   Play,
+  LayoutGrid,
 } from "lucide-react";
 import { type Breakpoint } from "../breakpoint-selector";
 import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
@@ -53,6 +54,7 @@ interface PageEditorLayoutProps {
   lastSaved?: Date | null;
   leftPanel?: React.ReactNode;
   rightPanel?: React.ReactNode;
+  onCanvasClick?: (e: React.MouseEvent) => void;
   children: React.ReactNode;
 }
 
@@ -85,10 +87,12 @@ export function PageEditorLayout({
   hasUnsavedChanges: _hasUnsavedChanges = false,
   leftPanel,
   rightPanel,
+  onCanvasClick,
   children,
 }: PageEditorLayoutProps) {
   const { setHasCustomToolbar } = usePreviewModeOptional();
   const { selectedElement } = useUIStore();
+  const [showLayout, setShowLayout] = React.useState(false);
 
   React.useEffect(() => {
     setHasCustomToolbar(true);
@@ -278,6 +282,15 @@ export function PageEditorLayout({
                   <Redo2 className="size-3.5" />
                 </button>
 
+                <button
+                  className="page-editor-subbar-btn"
+                  data-active={showLayout || undefined}
+                  onClick={() => setShowLayout((v) => !v)}
+                  title="Show layout outlines"
+                >
+                  <LayoutGrid className="size-3.5" />
+                </button>
+
                 <div className="page-editor-subbar-divider" />
 
                 <div className="page-editor-breadcrumb">
@@ -336,7 +349,10 @@ export function PageEditorLayout({
 
             {/* Canvas */}
             <main className="page-editor-canvas">
-              <div className="page-editor-canvas-content design-preview">
+              <div
+                className={`page-editor-canvas-content design-preview${showLayout ? " show-layout" : ""}`}
+                onClick={onCanvasClick}
+              >
                 {children}
               </div>
             </main>
