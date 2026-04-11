@@ -76,7 +76,15 @@ export function SectionRenderer({
         ? background.color
         : "none";
   const sectionBackground = backgroundClasses[bgValue || "none"] || "";
-  const sectionSpacing = spacingClasses[paddingY] || spacingClasses.md;
+  // Skip default spacing if custom padding is set via the style panel
+  const hasCustomPadding =
+    section.styles?.paddingTop ||
+    section.styles?.paddingBottom ||
+    section.styles?.paddingLeft ||
+    section.styles?.paddingRight;
+  const sectionSpacing = hasCustomPadding
+    ? ""
+    : spacingClasses[paddingY] || spacingClasses.md;
   const sectionWidth = widthClasses[width] || widthClasses.full;
   const sectionAlign = alignClasses[align] || "";
 

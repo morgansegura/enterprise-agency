@@ -201,7 +201,7 @@ export function PageEditorLayout({
             </button>
           )}
 
-          <div className="page-editor-navbar-divider" />
+          {/* <div className="page-editor-navbar-divider" /> */}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import "./cookie-consent.css";
@@ -26,18 +26,23 @@ interface WindowWithGtag extends Window {
  * - Accessibility compliant
  */
 export function CookieConsent() {
-  const [isVisible, setIsVisible] = useState(() => {
-    // Check if user has already made a choice during initial render
-    if (typeof window !== "undefined") {
-      const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
-      return !consent;
-    }
-    return false;
-  });
+  const [dismissed, setDismissed] = useState(false);
+
+  // Read consent from localStorage without hydration mismatch
+  const hasConsent = useSyncExternalStore(
+    (cb) => {
+      window.addEventListener("storage", cb);
+      return () => window.removeEventListener("storage", cb);
+    },
+    () => !!localStorage.getItem(COOKIE_CONSENT_KEY),
+    () => true, // server snapshot: assume consent exists (hidden)
+  );
+
+  const isVisible = !hasConsent && !dismissed;
 
   const handleAccept = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
-    setIsVisible(false);
+    setDismissed(true);
     // Optional: Track acceptance
     if (
       typeof window !== "undefined" &&
@@ -51,7 +56,7 @@ export function CookieConsent() {
 
   const handleDecline = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, "declined");
-    setIsVisible(false);
+    setDismissed(true);
     // Optional: Track decline
     if (
       typeof window !== "undefined" &&

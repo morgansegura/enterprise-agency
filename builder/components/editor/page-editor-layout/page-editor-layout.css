@@ -62,13 +62,13 @@
 }
 
 .page-editor-navbar-btn {
-  @apply flex items-center justify-center size-7 rounded-[3px] cursor-pointer;
-  @apply text-(--el-500) bg-transparent border-none;
+  @apply flex items-center justify-center size-7 rounded-md cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none;
   @apply transition-colors duration-100;
 }
 
 .page-editor-navbar-btn:hover {
-  @apply text-(--el-800) bg-(--el-100);
+  @apply text-(--el-0) bg-(--el-600);
 }
 
 .page-editor-navbar-btn:disabled {
@@ -76,7 +76,7 @@
 }
 
 .page-editor-navbar-divider {
-  @apply w-px h-4 bg-(--border-default) mx-1;
+  @apply w-px h-4 bg-(--el-400) mx-1;
 }
 
 .page-editor-navbar-center {
@@ -92,7 +92,7 @@
 }
 
 .page-editor-publish-btn {
-  @apply text-[12px] h-7;
+  @apply text-sm h-7 pl-3 pr-2 ml-2 font-semibold tracking-wider;
 }
 
 .page-editor-publish-btn[data-published] {

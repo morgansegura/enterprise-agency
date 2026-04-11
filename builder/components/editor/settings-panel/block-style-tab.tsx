@@ -778,9 +778,9 @@ export function ElementStyleTab({
         />
         <PropertyRow label="Text Align" stacked>
           <PropertyToggle
-            value={s("textAlign")}
+            value={s("textAlign") || "inherit"}
             options={[
-              { value: "inherit", label: "Auto" },
+              { value: "inherit", label: "Inherit" },
               { value: "left", label: "Left" },
               { value: "center", label: "Center" },
               { value: "right", label: "Right" },
