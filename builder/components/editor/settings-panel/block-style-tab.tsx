@@ -208,6 +208,8 @@ export interface ElementStyleEditorProps {
   ) => void;
   /** Show the Normal / ::before / ::after toggle (default true) */
   showPseudoElements?: boolean;
+  /** Element type — controls which style sections are shown */
+  elementType?: "section" | "container" | "block";
 }
 
 /**
@@ -225,6 +227,7 @@ export function ElementStyleEditor({
   onStylesAfterChange,
   onResponsiveChange,
   showPseudoElements = true,
+  elementType = "block",
 }: ElementStyleEditorProps) {
   const [mode, setMode] = React.useState<"normal" | "before" | "after">(
     "normal",
@@ -326,20 +329,25 @@ export function ElementStyleEditor({
           </PropertyRow>
         </div>
       )}
-      <ElementStyleTab styles={currentStyles} onStyleChange={handleChange} />
+      <ElementStyleTab styles={currentStyles} onStyleChange={handleChange} elementType={elementType} />
     </>
   );
 }
 
 /**
  * ElementStyleTab — Full Webflow-level CSS property editor.
- * Works for blocks, containers, and sections.
- * Every CSS property available for direct control.
+ * Shows different sections based on element type:
+ * - Sections/Containers: Layout, Spacing, Size, Position, Background, Border, Effects
+ *   + "Default Typography" (cascades to children)
+ * - Blocks: Full controls including Typography, Transforms, Transitions, Filters, Cursor
  */
 export function ElementStyleTab({
   styles: inputStyles,
   onStyleChange,
-}: ElementStyleTabProps) {
+  elementType = "block",
+}: ElementStyleTabProps & {
+  elementType?: "section" | "container" | "block";
+}) {
   const styles: ElementStyles = inputStyles || {};
 
   const updateStyle = (property: string, value: string) => {
@@ -355,6 +363,8 @@ export function ElementStyleTab({
     }
     onStyleChange(next);
   };
+
+  const isBlock = elementType === "block";
 
   const s = (property: keyof ElementStyles) =>
     (styles[property] as string) || "";
@@ -717,7 +727,7 @@ export function ElementStyleTab({
        * TYPOGRAPHY
        * ================================================================ */}
       <PropertySection
-        title="Typography"
+        title={isBlock ? "Typography" : "Default Typography"}
         icon={<Type className="h-3.5 w-3.5" />}
       >
         <PropertyRow label="Font Family">
@@ -1132,9 +1142,9 @@ export function ElementStyleTab({
       </PropertySection>
 
       {/* ================================================================
-       * TRANSFORMS
+       * TRANSFORMS (blocks only)
        * ================================================================ */}
-      <PropertySection
+      {isBlock && <PropertySection
         title="Transforms"
         icon={<Zap className="h-3.5 w-3.5" />}
         defaultOpen={false}
@@ -1160,12 +1170,12 @@ export function ElementStyleTab({
             onChange={(v) => updateStyle("transformOrigin", v)}
           />
         </PropertyRow>
-      </PropertySection>
+      </PropertySection>}
 
       {/* ================================================================
-       * TRANSITIONS
+       * TRANSITIONS (blocks only)
        * ================================================================ */}
-      <PropertySection
+      {isBlock && <PropertySection
         title="Transitions"
         icon={<Zap className="h-3.5 w-3.5" />}
         defaultOpen={false}
@@ -1221,12 +1231,12 @@ export function ElementStyleTab({
             onChange={(v) => updateStyle("transitionTimingFunction", v)}
           />
         </PropertyRow>
-      </PropertySection>
+      </PropertySection>}
 
       {/* ================================================================
-       * FILTERS
+       * FILTERS (blocks only)
        * ================================================================ */}
-      <PropertySection
+      {isBlock && <PropertySection
         title="Filters"
         icon={<Sparkles className="h-3.5 w-3.5" />}
         defaultOpen={false}
@@ -1241,12 +1251,12 @@ export function ElementStyleTab({
           value={s("backdropFilter")}
           onChange={(v) => updateStyle("backdropFilter", v)}
         />
-      </PropertySection>
+      </PropertySection>}
 
       {/* ================================================================
-       * CURSOR & INTERACTION
+       * CURSOR & INTERACTION (blocks only)
        * ================================================================ */}
-      <PropertySection
+      {isBlock && <PropertySection
         title="Cursor"
         icon={<MousePointer2 className="h-3.5 w-3.5" />}
         defaultOpen={false}
@@ -1291,7 +1301,7 @@ export function ElementStyleTab({
             fullWidth
           />
         </PropertyRow>
-      </PropertySection>
+      </PropertySection>}
     </PropertyAccordion>
   );
 }

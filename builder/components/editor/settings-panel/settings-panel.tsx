@@ -268,6 +268,7 @@ export function SettingsPanel({
                     {selectedElement.type === "section" && (
                       <>
                       <ElementStyleEditor
+                        elementType="section"
                         styles={(selectedData.data as Section).styles}
                         stylesBefore={(selectedData.data as Section & { stylesBefore?: Record<string, string> }).stylesBefore}
                         stylesAfter={(selectedData.data as Section & { stylesAfter?: Record<string, string> }).stylesAfter}
@@ -313,6 +314,7 @@ export function SettingsPanel({
                     {selectedElement.type === "container" && (
                       <>
                       <ElementStyleEditor
+                        elementType="container"
                         styles={(selectedData.data as Container).styles}
                         stylesBefore={(selectedData.data as Container & { stylesBefore?: Record<string, string> }).stylesBefore}
                         stylesAfter={(selectedData.data as Container & { stylesAfter?: Record<string, string> }).stylesAfter}
