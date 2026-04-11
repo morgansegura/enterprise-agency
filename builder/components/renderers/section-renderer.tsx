@@ -77,11 +77,13 @@ export function SectionRenderer({
         : "none";
   const sectionBackground = backgroundClasses[bgValue || "none"] || "";
   // Skip default spacing if custom padding is set via the style panel
+  // Use `!= null` so "0" still counts as custom
+  const styles = section.styles as Record<string, string> | undefined;
   const hasCustomPadding =
-    section.styles?.paddingTop ||
-    section.styles?.paddingBottom ||
-    section.styles?.paddingLeft ||
-    section.styles?.paddingRight;
+    styles?.paddingTop != null ||
+    styles?.paddingBottom != null ||
+    styles?.paddingLeft != null ||
+    styles?.paddingRight != null;
   const sectionSpacing = hasCustomPadding
     ? ""
     : spacingClasses[paddingY] || spacingClasses.md;

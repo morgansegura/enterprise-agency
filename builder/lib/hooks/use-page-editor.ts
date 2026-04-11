@@ -54,10 +54,13 @@ function createDefaultBlock(blockType: string): Block {
 // Hook — Zustand-backed adapter with index-based API for legacy components
 // =============================================================================
 
+const EMPTY_SECTIONS: Section[] = [];
+
 export function usePageEditor(initialSections: Section[]) {
   // Subscribe to sections from Zustand store (single source of truth)
+  // Use a stable empty array to avoid infinite re-renders from getSnapshot
   const sections = useEditorStore(
-    (s) => (s.page?.sections as Section[] | undefined) ?? [],
+    (s) => (s.page?.sections as Section[] | undefined) ?? EMPTY_SECTIONS,
   );
 
   // Store actions

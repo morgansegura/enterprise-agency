@@ -37,6 +37,7 @@ type SpacingMode = "presets" | "custom";
 // =============================================================================
 
 const PRESETS = [
+  { value: "__auto__", label: "Auto" },
   { value: "0", label: "0" },
   { value: "4px", label: "2xs" },
   { value: "8px", label: "xs" },
@@ -45,13 +46,16 @@ const PRESETS = [
   { value: "32px", label: "lg" },
   { value: "48px", label: "xl" },
   { value: "64px", label: "2xl" },
+  { value: "80px", label: "3xl" },
+  { value: "96px", label: "4xl" },
+  { value: "128px", label: "5xl" },
 ];
 
 const SIDES = ["Top", "Right", "Bottom", "Left"] as const;
 
 /** Find the preset label for a value, or return the raw value */
 function presetValueFor(value: string): string {
-  if (!value) return "0";
+  if (!value) return "__auto__";
   const match = PRESETS.find((p) => p.value === value);
   return match ? match.value : value;
 }
@@ -127,7 +131,7 @@ function SpacingGroup({
               <Select
                 value={presetValueFor(sideValues[side])}
                 onValueChange={(v) =>
-                  handleChange(`${prefix}${side}`, v)
+                  handleChange(`${prefix}${side}`, v === "__auto__" ? "" : v)
                 }
               >
                 <SelectTrigger className="spacing-preset-select">

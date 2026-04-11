@@ -5,7 +5,7 @@
  * ============================================================================= */
 
 .add-block-popover {
-  @apply w-[420px] p-0 max-h-[500px] flex flex-col;
+  @apply w-[420px] p-0 max-h-[500px] flex flex-col z-300;
 }
 
 /* Search bar - sticky at top */

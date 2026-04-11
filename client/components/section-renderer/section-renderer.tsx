@@ -110,10 +110,19 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
         // Data-background is only used when there are NO element styles
         // overriding the background. The generated CSS handles both cases,
         // but we keep data-background for structural presets that set text color.
-        const hasElementBg = !!(section as SectionType & { styles?: Record<string, string> }).styles?.backgroundColor;
+        const sectionStyles = (section as SectionType & { styles?: Record<string, string> }).styles;
+        const hasElementBg = !!sectionStyles?.backgroundColor;
         const { dataBackground } = hasElementBg
           ? { dataBackground: "none" as BackgroundVariant }
           : normalizeBackground(section.background);
+
+        // Skip legacy padding props when custom styles are set
+        // (generated CSS handles it via .e-{key} class)
+        const hasCustomPadding =
+          sectionStyles?.paddingTop != null ||
+          sectionStyles?.paddingBottom != null ||
+          sectionStyles?.paddingLeft != null ||
+          sectionStyles?.paddingRight != null;
 
         return (
           <Section
@@ -122,14 +131,14 @@ export function SectionRenderer({ sections, className }: SectionRendererProps) {
             className={sectionClass}
             // Background preset (structural: sets text color)
             background={dataBackground}
-            // Padding
-            paddingY={section.paddingY}
-            paddingTop={section.paddingTop}
-            paddingBottom={section.paddingBottom}
-            spacing={section.spacing}
-            // Margin
-            marginTop={section.marginTop}
-            marginBottom={section.marginBottom}
+            // Padding — skip legacy presets when custom styles exist
+            paddingY={hasCustomPadding ? "none" : section.paddingY}
+            paddingTop={hasCustomPadding ? "none" : section.paddingTop}
+            paddingBottom={hasCustomPadding ? "none" : section.paddingBottom}
+            spacing={hasCustomPadding ? "none" : section.spacing}
+            // Margin — skip legacy presets when custom styles exist
+            marginTop={sectionStyles?.marginTop != null ? "none" : section.marginTop}
+            marginBottom={sectionStyles?.marginBottom != null ? "none" : section.marginBottom}
             // Gap between containers
             gapY={section.gapY}
             // Width

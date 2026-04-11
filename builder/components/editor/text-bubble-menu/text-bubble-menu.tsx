@@ -5,7 +5,9 @@ import { type Editor } from "@tiptap/react";
 import {
   Bold,
   Italic,
+  Underline,
   Strikethrough,
+  Link,
   Palette,
 } from "lucide-react";
 import "./text-bubble-menu.css";
@@ -84,11 +86,40 @@ export function TextBubbleMenu({ editor }: TextBubbleMenuProps) {
       <button
         type="button"
         className="text-bubble-btn"
+        data-active={editor.isActive("underline") || undefined}
+        onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleUnderline().run(); }}
+        title="Underline"
+      >
+        <Underline className="size-3.5" />
+      </button>
+      <button
+        type="button"
+        className="text-bubble-btn"
         data-active={editor.isActive("strike") || undefined}
         onMouseDown={(e) => { e.preventDefault(); editor.chain().focus().toggleStrike().run(); }}
         title="Strikethrough"
       >
         <Strikethrough className="size-3.5" />
+      </button>
+      <div className="text-bubble-divider" />
+      <button
+        type="button"
+        className="text-bubble-btn"
+        data-active={editor.isActive("link") || undefined}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          if (editor.isActive("link")) {
+            editor.chain().focus().unsetLink().run();
+          } else {
+            const url = window.prompt("URL");
+            if (url) {
+              editor.chain().focus().setLink({ href: url }).run();
+            }
+          }
+        }}
+        title="Link"
+      >
+        <Link className="size-3.5" />
       </button>
       <div className="text-bubble-divider" />
       {/* Color picker — select text, pick a color */}

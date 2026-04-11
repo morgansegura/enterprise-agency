@@ -3,7 +3,10 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import LinkExtension from "@tiptap/extension-link";
+import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
+import { ColorMark } from "@/lib/editor/tiptap-color-mark";
+import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
 import { getElementClass } from "@enterprise/tokens";
@@ -34,6 +37,8 @@ export default function RichTextBlockRenderer({
       LinkExtension.configure({
         openOnClick: false,
       }),
+      Underline,
+      ColorMark,
       Placeholder.configure({
         placeholder: "Start typing...",
       }),
@@ -75,6 +80,7 @@ export default function RichTextBlockRenderer({
       data-align={hasStyle("textAlign") ? undefined : align}
     >
       <EditorContent editor={editor} />
+      <TextBubbleMenu editor={editor} />
     </div>
   );
 }

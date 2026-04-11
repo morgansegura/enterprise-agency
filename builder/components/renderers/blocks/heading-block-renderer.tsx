@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import TipTapLink from "@tiptap/extension-link";
+import Underline from "@tiptap/extension-underline";
 import { ColorMark } from "@/lib/editor/tiptap-color-mark";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
@@ -133,12 +134,13 @@ export default function HeadingBlockRenderer({
         openOnClick: false,
         HTMLAttributes: { class: "text-inherit underline" },
       }),
+      Underline,
       ColorMark,
       Placeholder.configure({
         placeholder: "Type a heading...",
       }),
     ],
-    content: text ? `<p>${text}</p>` : "",
+    content: (data as { html?: string }).html || (text ? `<p>${text}</p>` : ""),
     immediatelyRender: false,
     editable: !!isEditing,
     onUpdate: ({ editor: e }) => {

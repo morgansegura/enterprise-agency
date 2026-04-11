@@ -84,7 +84,15 @@ export function HeadingBlock({ data }: HeadingBlockProps) {
         opacityPreset as "10" | "25" | "50" | "75" | "90" | "100" | undefined
       }
     >
-      {text}
+      {(data as { html?: string }).html ? (
+        <span
+          dangerouslySetInnerHTML={{
+            __html: (data as { html?: string }).html!,
+          }}
+        />
+      ) : (
+        text
+      )}
     </Heading>
   );
 }

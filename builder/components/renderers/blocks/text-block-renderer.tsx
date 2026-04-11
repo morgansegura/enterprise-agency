@@ -3,7 +3,10 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import LinkExtension from "@tiptap/extension-link";
+import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
+import { ColorMark } from "@/lib/editor/tiptap-color-mark";
+import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
@@ -112,6 +115,8 @@ export default function TextBlockRenderer({
           class: "text-(--accent-primary) underline",
         },
       }),
+      Underline,
+      ColorMark,
       Placeholder.configure({ placeholder: "Type some text..." }),
     ],
     content: html || (text ? `<p>${text}</p>` : ""),
@@ -161,6 +166,7 @@ export default function TextBlockRenderer({
       style={{ cursor: "text" }}
     >
       <EditorContent editor={editor} style={{ outline: "none" }} />
+      <TextBubbleMenu editor={editor} />
     </div>
   );
 }
