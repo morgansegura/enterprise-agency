@@ -231,24 +231,24 @@ export function Section({
       id={anchorId}
       className={cn("section", className)}
       // Section-level data attributes (all styling via CSS)
-      data-padding-top={effectivePaddingTop}
-      data-padding-bottom={effectivePaddingBottom}
-      data-margin-top={marginTop}
-      data-margin-bottom={marginBottom}
-      data-gap-y={gapY}
-      data-background={dataBackground}
-      data-width={width}
-      data-align={align}
-      data-border-top={borderTop}
-      data-border-bottom={borderBottom}
-      data-border-left={borderLeft}
-      data-border-right={borderRight}
-      data-border-radius={borderRadius}
-      data-shadow={shadow}
-      data-min-height={minHeight}
-      data-vertical-align={minHeight !== "none" ? verticalAlign : undefined}
-      data-overflow-x={overflowX}
-      data-overflow-y={overflowY}
+      data-padding-top={effectivePaddingTop !== "none" ? effectivePaddingTop : undefined}
+      data-padding-bottom={effectivePaddingBottom !== "none" ? effectivePaddingBottom : undefined}
+      data-margin-top={marginTop && marginTop !== "none" ? marginTop : undefined}
+      data-margin-bottom={marginBottom && marginBottom !== "none" ? marginBottom : undefined}
+      data-gap-y={gapY && gapY !== "none" ? gapY : undefined}
+      data-background={dataBackground && dataBackground !== "none" ? dataBackground : undefined}
+      data-width={width && width !== "container" ? width : undefined}
+      data-align={align && align !== "left" ? align : undefined}
+      data-border-top={borderTop && borderTop !== "none" ? borderTop : undefined}
+      data-border-bottom={borderBottom && borderBottom !== "none" ? borderBottom : undefined}
+      data-border-left={borderLeft && borderLeft !== "none" ? borderLeft : undefined}
+      data-border-right={borderRight && borderRight !== "none" ? borderRight : undefined}
+      data-border-radius={borderRadius && borderRadius !== "none" ? borderRadius : undefined}
+      data-shadow={shadow && shadow !== "none" ? shadow : undefined}
+      data-min-height={minHeight && minHeight !== "none" ? minHeight : undefined}
+      data-vertical-align={minHeight && minHeight !== "none" ? verticalAlign : undefined}
+      data-overflow-x={overflowX && overflowX !== "visible" ? overflowX : undefined}
+      data-overflow-y={overflowY && overflowY !== "visible" ? overflowY : undefined}
       style={Object.keys(sectionStyle).length > 0 ? sectionStyle : undefined}
     >
       {children}

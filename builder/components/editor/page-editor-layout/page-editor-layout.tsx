@@ -30,6 +30,7 @@ import { usePreviewModeOptional } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { ResponsiveProvider } from "@/lib/responsive/context";
 import { BRAND_NAME } from "@/lib/constants/brand";
+import { initials } from "@/lib/utils";
 import "./page-editor-layout.css";
 
 interface PageEditorLayoutProps {
@@ -142,7 +143,7 @@ export function PageEditorLayout({
             className="page-editor-navbar-brand"
             title="Back to dashboard"
           >
-            {BRAND_NAME.charAt(0)}
+            {initials(BRAND_NAME) || "WF"}
           </a>
 
           {/* Mode tabs */}
@@ -151,17 +152,11 @@ export function PageEditorLayout({
               <PenTool className="size-3.5" />
               Design
             </span>
-            <a
-              href="/pages"
-              className="page-editor-mode-tab"
-            >
+            <a href="/pages" className="page-editor-mode-tab">
               <FileText className="size-3.5" />
               CMS
             </a>
-            <a
-              href="/theme"
-              className="page-editor-mode-tab"
-            >
+            <a href="/theme" className="page-editor-mode-tab">
               <Settings className="size-3.5" />
               Settings
             </a>
@@ -234,9 +229,7 @@ export function PageEditorLayout({
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem onClick={onPublish}>
-                {isPublished
-                  ? "Update Production"
-                  : "Publish to Production"}
+                {isPublished ? "Update Production" : "Publish to Production"}
               </DropdownMenuItem>
               {(isPublished || pageStatus === "staging") && onUnpublish && (
                 <DropdownMenuItem

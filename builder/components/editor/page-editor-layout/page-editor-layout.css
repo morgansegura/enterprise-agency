@@ -14,7 +14,7 @@
 
 .page-editor-navbar {
   @apply flex items-center justify-between px-2 h-10 shrink-0 z-200;
-  @apply bg-linear-to-b from-(--el-700) via-(--el-700) to-(--el-800) border-b border-(--border-default);
+  @apply bg-(--el-700) border-b border-(--border-default);
 }
 
 .page-editor-navbar-left {
@@ -22,7 +22,7 @@
 }
 
 .page-editor-navbar-brand {
-  @apply flex items-center justify-center size-7 rounded-[3px];
+  @apply flex items-center justify-center  rounded-[3px];
   @apply text-[13px] font-bold text-(--el-0) no-underline;
   @apply transition-opacity duration-100 mx-0.5;
 }

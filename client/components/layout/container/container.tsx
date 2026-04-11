@@ -105,31 +105,26 @@ export function Container({
     <div
       className={cn("container", className)}
       // Layout attributes
-      data-layout-type={layout?.type || "stack"}
-      data-layout-direction={layout?.direction}
-      data-layout-wrap={layout?.wrap}
-      data-layout-gap={layout?.gap}
-      data-layout-columns={layout?.columns}
-      data-layout-rows={layout?.rows}
-      data-layout-justify={layout?.justify}
-      data-layout-align={layout?.align}
-      // Size attributes
-      data-max-width={maxWidth}
-      data-min-height={minHeight}
-      // Padding attributes
-      data-padding-x={paddingX}
-      data-padding-y={paddingY}
-      // Border attributes
-      data-border-top={effectiveBorderTop}
-      data-border-bottom={effectiveBorderBottom}
-      data-border-left={effectiveBorderLeft}
-      data-border-right={effectiveBorderRight}
-      data-border-radius={borderRadius}
-      // Shadow
-      data-shadow={shadow}
-      // Content alignment
-      data-align={align}
-      data-vertical-align={verticalAlign}
+      data-layout-type={layout?.type && layout.type !== "stack" ? layout.type : undefined}
+      data-layout-direction={layout?.direction || undefined}
+      data-layout-wrap={layout?.wrap || undefined}
+      data-layout-gap={layout?.gap || undefined}
+      data-layout-columns={layout?.columns || undefined}
+      data-layout-rows={layout?.rows || undefined}
+      data-layout-justify={layout?.justify || undefined}
+      data-layout-align={layout?.align || undefined}
+      data-max-width={maxWidth && maxWidth !== "none" ? maxWidth : undefined}
+      data-min-height={minHeight && minHeight !== "none" ? minHeight : undefined}
+      data-padding-x={paddingX && paddingX !== "none" ? paddingX : undefined}
+      data-padding-y={paddingY && paddingY !== "none" ? paddingY : undefined}
+      data-border-top={effectiveBorderTop && effectiveBorderTop !== "none" ? effectiveBorderTop : undefined}
+      data-border-bottom={effectiveBorderBottom && effectiveBorderBottom !== "none" ? effectiveBorderBottom : undefined}
+      data-border-left={effectiveBorderLeft && effectiveBorderLeft !== "none" ? effectiveBorderLeft : undefined}
+      data-border-right={effectiveBorderRight && effectiveBorderRight !== "none" ? effectiveBorderRight : undefined}
+      data-border-radius={borderRadius && borderRadius !== "none" ? borderRadius : undefined}
+      data-shadow={shadow && shadow !== "none" ? shadow : undefined}
+      data-align={align && align !== "left" ? align : undefined}
+      data-vertical-align={verticalAlign || undefined}
       style={
         Object.keys(containerStyle).length > 0 ? containerStyle : undefined
       }
