@@ -56,14 +56,15 @@ export class ApiClient {
       });
 
       if (!response.ok) {
-        // Try to refresh token on 401 and retry once
-        if (
-          response.status === 401 &&
-          retryCount === 0 &&
-          !endpoint.includes("/refresh") &&
-          !endpoint.includes("/login") &&
-          !endpoint.includes("/logout")
-        ) {
+        // Try to refresh token on 401 or 403 and retry once
+        const isAuthError =
+          response.status === 401 || response.status === 403;
+        const isAuthEndpoint =
+          endpoint.includes("/refresh") ||
+          endpoint.includes("/login") ||
+          endpoint.includes("/logout");
+
+        if (isAuthError && retryCount === 0 && !isAuthEndpoint) {
           const refreshed = await this.refreshTokenIfNeeded();
           if (refreshed) {
             return this.request<T>(
@@ -99,7 +100,6 @@ export class ApiClient {
     }
   }
 
-  private isRefreshing = false;
   private refreshPromise: Promise<boolean> | null = null;
 
   private async handleErrorResponse(response: Response): Promise<never> {
@@ -133,23 +133,36 @@ export class ApiClient {
   }
 
   async refreshTokenIfNeeded(): Promise<boolean> {
-    if (this.isRefreshing) {
-      return this.refreshPromise!;
+    // Coalesce concurrent refresh requests into a single call.
+    // The promise is kept until it resolves, then cleared after a tick
+    // so all concurrent waiters get the same result.
+    if (this.refreshPromise) {
+      return this.refreshPromise;
     }
 
-    this.isRefreshing = true;
     this.refreshPromise = (async () => {
       try {
         const res = await fetch(`${this.authBaseUrl}/refresh`, {
           method: "POST",
           credentials: "include",
         });
+        if (res.status === 429) {
+          // Throttled — wait and retry once
+          await new Promise((r) => setTimeout(r, 2000));
+          const retry = await fetch(`${this.authBaseUrl}/refresh`, {
+            method: "POST",
+            credentials: "include",
+          });
+          return retry.ok;
+        }
         return res.ok;
       } catch {
         return false;
       } finally {
-        this.isRefreshing = false;
-        this.refreshPromise = null;
+        // Clear after a microtask so concurrent callers still see the promise
+        setTimeout(() => {
+          this.refreshPromise = null;
+        }, 100);
       }
     })();
 

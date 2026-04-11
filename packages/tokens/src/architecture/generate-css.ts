@@ -515,7 +515,20 @@ function collectSectionRules(
  * <style id="page-styles">{generatePageCSS(sections)}</style>
  * ```
  */
-export function generatePageCSS(sections: Section[]): string {
+/**
+ * Generate page CSS from sections.
+ *
+ * @param sections - Page section data
+ * @param activeBreakpoint - When set (builder preview), responsive overrides
+ *   for the active breakpoint are injected directly into the base rules
+ *   instead of being wrapped in @media queries. This makes them visible
+ *   in the builder canvas regardless of viewport width.
+ *   Use "desktop" or omit for normal @media query output (client/production).
+ */
+export function generatePageCSS(
+  sections: Section[],
+  activeBreakpoint?: "desktop" | "tablet" | "mobile",
+): string {
   if (!sections || sections.length === 0) return "";
 
   const collector: CSSCollector = {
@@ -530,23 +543,37 @@ export function generatePageCSS(sections: Section[]): string {
 
   const parts: string[] = [];
 
-  // Desktop rules (no media query wrapper)
+  // Desktop rules (always included, no media query wrapper)
   if (collector.desktop.length > 0) {
     parts.push(collector.desktop.join("\n\n"));
   }
 
-  // Tablet overrides
-  if (collector.tablet.length > 0) {
-    parts.push(
-      `${TABLET_QUERY} {\n${collector.tablet.join("\n\n")}\n}`,
-    );
-  }
-
-  // Mobile overrides
-  if (collector.mobile.length > 0) {
-    parts.push(
-      `${MOBILE_QUERY} {\n${collector.mobile.join("\n\n")}\n}`,
-    );
+  if (activeBreakpoint && activeBreakpoint !== "desktop") {
+    // Builder preview mode: inject responsive overrides directly so
+    // they apply at any viewport width (no @media wrapper).
+    // Tablet overrides apply for both "tablet" and "mobile".
+    if (collector.tablet.length > 0) {
+      parts.push(
+        `/* tablet overrides (preview) */\n${collector.tablet.join("\n\n")}`,
+      );
+    }
+    if (activeBreakpoint === "mobile" && collector.mobile.length > 0) {
+      parts.push(
+        `/* mobile overrides (preview) */\n${collector.mobile.join("\n\n")}`,
+      );
+    }
+  } else {
+    // Production mode: use proper @media queries
+    if (collector.tablet.length > 0) {
+      parts.push(
+        `${TABLET_QUERY} {\n${collector.tablet.join("\n\n")}\n}`,
+      );
+    }
+    if (collector.mobile.length > 0) {
+      parts.push(
+        `${MOBILE_QUERY} {\n${collector.mobile.join("\n\n")}\n}`,
+      );
+    }
   }
 
   return parts.join("\n\n");

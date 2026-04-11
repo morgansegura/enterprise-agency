@@ -63,6 +63,22 @@ export function useAutoSave({
       }));
       logger.error("Auto-save failed", error);
       onSaveError?.(error);
+
+      // Retry once after 3 seconds — the auth refresh may have
+      // succeeded by then, so the retry has a good chance of working.
+      if (pendingDataRef.current === null) {
+        const lastData = saveMutation.variables;
+        if (lastData) {
+          pendingDataRef.current = lastData;
+          setTimeout(() => {
+            if (pendingDataRef.current) {
+              logger.log("Auto-save retrying after auth failure...");
+              saveMutation.mutate(pendingDataRef.current);
+              pendingDataRef.current = null;
+            }
+          }, 3000);
+        }
+      }
     },
   });
 

@@ -33,6 +33,7 @@ import { NewsletterBlock } from "@/components/block/newsletter-block";
 import { FeatureGridBlock } from "@/components/block/feature-grid-block";
 import { SocialLinksBlock } from "@/components/block/social-links-block";
 import { FaqBlock } from "@/components/block/faq-block";
+import { LinkBlock } from "@/components/block/link-block";
 
 // E-Commerce blocks
 import { ProductGridBlock } from "@/components/block/product-grid-block";
@@ -245,6 +246,9 @@ function renderBlock(block: RootBlock): React.ReactNode {
 
     case "faq-block":
       return <FaqBlock key={block._key} data={block.data} />;
+
+    case "link-block":
+      return <LinkBlock key={block._key} data={block.data} />;
 
     // E-Commerce blocks
     case "product-grid-block":

@@ -85,8 +85,8 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
 
   // Generated page CSS — visual styles rendered via <style> tag, not inline
   const pageCSS = React.useMemo(
-    () => generatePageCSS(editor.sections as never[]),
-    [editor.sections],
+    () => generatePageCSS(editor.sections as never[], breakpoint),
+    [editor.sections, breakpoint],
   );
 
   // Modal states

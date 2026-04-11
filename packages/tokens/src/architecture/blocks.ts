@@ -632,7 +632,8 @@ export type ContentBlock =
   | { _type: "newsletter-block"; _key: string; data: Record<string, unknown> }
   | { _type: "feature-grid-block"; _key: string; data: Record<string, unknown> }
   | { _type: "social-links-block"; _key: string; data: Record<string, unknown> }
-  | { _type: "faq-block"; _key: string; data: Record<string, unknown> };
+  | { _type: "faq-block"; _key: string; data: Record<string, unknown> }
+  | { _type: "link-block"; _key: string; data: Record<string, unknown> };
 
 /**
  * Level 3 - Shallow Container Blocks
