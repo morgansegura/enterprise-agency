@@ -79,7 +79,12 @@ function withStyles(block: RootBlock, content: React.ReactNode, key?: string): R
   const styles = blockAny.styles as Record<string, string> | undefined;
   const stylesBefore = blockAny.stylesBefore as Record<string, string> | undefined;
   const stylesAfter = blockAny.stylesAfter as Record<string, string> | undefined;
-  const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter);
+  const responsive = blockAny._responsive as Record<string, unknown> | undefined;
+  const hasResponsive = responsive && (
+    hasStyles((responsive.tablet as Record<string, unknown>)?.styles as Record<string, string> | undefined) ||
+    hasStyles((responsive.mobile as Record<string, unknown>)?.styles as Record<string, string> | undefined)
+  );
+  const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter) || hasResponsive;
 
   if (!styled) return content;
 
