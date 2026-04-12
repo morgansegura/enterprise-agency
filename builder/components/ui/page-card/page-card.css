@@ -37,7 +37,7 @@
 }
 
 .page-row-slug-text {
-  @apply text-[14px] text-(--el-400) truncate block;
+  @apply text-[14px] text-(--el-600) bg-(--el-100) rounded-md px-1.5 py-0.5 truncate block;
 }
 
 /* Status cell */
@@ -51,7 +51,7 @@
 }
 
 .page-row-date-text {
-  @apply text-[14px] text-(--el-400);
+  @apply text-[14px] text-(--el-500);
 }
 
 /* Actions cell */
@@ -89,11 +89,11 @@
    ============================================================================ */
 
 .page-table {
-  @apply w-full;
+  @apply w-full p-4;
 }
 
 .page-table-header {
-  @apply border-b border-(--el-200);
+  @apply border-b border-(--el-300) bg-(--el-100);
 }
 
 .page-table-header-row {
@@ -103,7 +103,7 @@
 .page-table-header-cell {
   @apply px-3 py-2 text-left;
   @apply text-[11px] font-semibold uppercase tracking-wider;
-  @apply text-(--el-400) select-none;
+  @apply text-(--el-500) select-none;
 }
 
 .page-table-body {
@@ -115,7 +115,7 @@
    ============================================================================ */
 
 .page-list-empty {
-  @apply flex flex-col items-center justify-center py-20 text-center;
+  @apply flex flex-col items-center justify-start text-center py-20 h-full border-none shadow-none flex-1;
 }
 
 .page-list-empty-icon {

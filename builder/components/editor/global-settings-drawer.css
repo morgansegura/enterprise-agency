@@ -11,7 +11,7 @@
 /* Navigation sidebar */
 .global-settings-nav {
   @apply flex flex-col gap-1 py-4;
-  border-right: 1px solid var(--el-0);
+  border-right: 1px solid var(--border);
   @apply min-w-[180px];
 }
 

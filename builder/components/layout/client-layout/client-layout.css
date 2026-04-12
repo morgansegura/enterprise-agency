@@ -11,7 +11,7 @@
 
 .client-layout-header {
   @apply flex h-11 shrink-0 items-center gap-2 px-4;
-  @apply bg-(--el-0) border-b border-(--el-200) outline outline-(--el-0) justify-between;
+  @apply bg-(--el-700) border-b border-(--el-200) outline outline-(--el-0) justify-between;
 }
 
 .client-layout-header-left {
@@ -56,6 +56,10 @@
 
 .client-layout-header-right {
   @apply flex items-center gap-1.5;
+
+  button {
+    @apply text-(--el-400) hover:bg-transparent hover:text-(--el-0);
+  }
 }
 
 /* =========================================================================
@@ -63,7 +67,7 @@
  * ========================================================================= */
 
 .client-layout-main {
-  @apply flex-1 overflow-hidden;
+  @apply flex-1 overflow-hidden h-full;
 }
 
 /* Editor pages fill full bleed, list pages get padding + scroll */
@@ -98,10 +102,10 @@
  * ========================================================================= */
 
 .client-layout-header-logo {
-  @apply flex items-center text-(--el-800) font-(family-name:--font-heading);
-  @apply hover:text-(--el-800)/80 transition-colors duration-100;
+  @apply flex items-center text-(--el-300) font-(family-name:--font-heading);
+  @apply hover:text-(--el-0) transition-colors duration-100;
 }
 
 .client-layout-header-logo-text {
-  @apply text-[15px] font-bold tracking-tight;
+  @apply text-[15px] font-semibold tracking-tight;
 }

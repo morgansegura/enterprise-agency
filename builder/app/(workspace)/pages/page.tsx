@@ -142,7 +142,7 @@ export default function PagesPage() {
   }
 
   return (
-    <div className="flex-1 flex flex-col gap-3 p-4 bg-(--card) rounded-md border border-(--border)/50 shadow-xs">
+    <div className="flex-1 flex flex-col gap-3 bg-(--el-0) h-full">
       <PageHeader
         title="Pages"
         icon={FileText}
@@ -167,7 +167,10 @@ export default function PagesPage() {
       {isLoading ? (
         <div className="space-y-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-4 px-3 py-2.5 border-b border-[var(--border-subtle)]">
+            <div
+              key={i}
+              className="flex items-center gap-4 px-3 py-2.5 border-b border-[var(--border-subtle)]"
+            >
               <div className="h-4 flex-1 bg-[var(--el-100)] rounded animate-pulse" />
               <div className="h-4 w-32 bg-[var(--el-100)] rounded animate-pulse" />
               <div className="h-4 w-20 bg-[var(--el-100)] rounded animate-pulse" />

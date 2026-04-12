@@ -14,13 +14,15 @@ import {
   Receipt,
   Users,
   Settings,
-  Palette,
-  PanelTop,
-  PanelBottom,
-  Menu,
   UserCog,
-  Paintbrush,
+  Figma,
   LibraryBig,
+  SwatchBook,
+  RectangleEllipsis,
+  Dock,
+  AppWindow,
+  ShoppingBag,
+  ReceiptText,
 } from "lucide-react";
 
 import {
@@ -88,7 +90,11 @@ function ClientNavLink({
     <SidebarMenuItem>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Link href={href} className="client-sidebar-link" data-active={isActive}>
+          <Link
+            href={href}
+            className="client-sidebar-link"
+            data-active={isActive}
+          >
             <Icon />
             <span>{title}</span>
           </Link>
@@ -163,21 +169,19 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
       separatorBefore: true,
       defaultOpen: true,
       items: [
-        { title: "Products", url: "/shop/products", icon: Package },
-        { title: "Orders", url: "/shop/orders", icon: Receipt },
+        { title: "Products", url: "/shop/products", icon: ShoppingBag },
+        { title: "Orders", url: "/shop/orders", icon: ReceiptText },
         { title: "Customers", url: "/shop/customers", icon: Users },
       ],
     },
     {
       label: "Design",
       defaultOpen: true,
+      separatorBefore: true,
       items: [
-        { title: "Library", url: "/library", icon: LibraryBig },
-        { title: "Theme", url: "/theme", icon: Palette },
-        { title: "Headers", url: "/headers", icon: PanelTop },
-        { title: "Footers", url: "/footers", icon: PanelBottom },
-        { title: "Menus", url: "/menus", icon: Menu },
-        { title: "Figma", url: "/integrations/figma", icon: Paintbrush },
+        { title: "Headers", url: "/headers", icon: AppWindow },
+        { title: "Footers", url: "/footers", icon: Dock },
+        { title: "Menus", url: "/menus", icon: RectangleEllipsis },
       ],
     },
     {
@@ -185,15 +189,16 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
       separatorBefore: true,
       defaultOpen: true,
       items: [
+        { title: "Library", url: "/library", icon: LibraryBig },
+        { title: "Theme", url: "/theme", icon: SwatchBook },
+        { title: "Figma", url: "/integrations/figma", icon: Figma },
         { title: "Settings", url: "/settings", icon: Settings },
       ],
     },
     {
       label: "Management",
       defaultOpen: false,
-      items: [
-        { title: "Team", url: "/team", icon: UserCog },
-      ],
+      items: [{ title: "Team", url: "/team", icon: UserCog }],
     },
   ];
 
@@ -202,9 +207,7 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
       {/* Project header — Jira-style project identity */}
       <SidebarHeader>
         <Link href="/clients" className="client-sidebar-project">
-          <div className="client-sidebar-project-avatar">
-            {tenantInitial}
-          </div>
+          <div className="client-sidebar-project-avatar">{tenantInitial}</div>
           <div className="client-sidebar-project-info">
             <span className="client-sidebar-project-name">{tenantName}</span>
             <span className="client-sidebar-project-type">CMS Project</span>

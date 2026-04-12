@@ -6,7 +6,7 @@
 
 /* Container — sidebar + main column */
 .media-page {
-  @apply flex h-full min-h-0;
+  @apply flex h-full min-h-0 bg-(--el-0);
 }
 
 /* Main column to the right of the folder sidebar */
@@ -29,7 +29,7 @@
 }
 
 .media-sidebar-title {
-  @apply text-[11px] font-semibold uppercase tracking-[0.04em] text-(--text-tertiary);
+  @apply text-[11px] font-semibold uppercase tracking-[0.04em] text-(--el-500);
 }
 
 .media-sidebar-action {

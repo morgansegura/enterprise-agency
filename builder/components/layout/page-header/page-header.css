@@ -3,7 +3,7 @@
 /* Page Header — Jira-style dense header with toolbar */
 
 .page-header {
-  @apply flex flex-col gap-3;
+  @apply flex flex-col gap-3 p-4 bg-(--el-50) border-b border-(--el-200);
 }
 
 /* Header Row — Title & Actions */
@@ -56,7 +56,7 @@
 
 /* Search — Jira-style border-only on white surface */
 .page-header-search {
-  @apply relative flex-1 max-w-xs;
+  @apply relative flex-1 max-w-xs bg-(--el-0) border rounded-md border-(--el-300) outline outline-(--el-0) shadow-none;
 }
 
 .page-header-search-icon {
