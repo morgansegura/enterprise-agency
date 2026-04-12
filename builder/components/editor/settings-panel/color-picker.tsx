@@ -511,6 +511,16 @@ export function ColorPicker({ value, onChange, label, compact, className }: Colo
           >
             Set transparent
           </button>
+          <button
+            type="button"
+            className="color-picker-transparent"
+            onClick={() => {
+              prevValue.current = "";
+              onChange("");
+            }}
+          >
+            Clear (Inherit)
+          </button>
         </PopoverContent>
       </Popover>
     </div>
