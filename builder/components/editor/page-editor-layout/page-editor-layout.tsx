@@ -21,7 +21,6 @@ import {
   PenTool,
   FileText,
   Settings,
-  Home,
   Play,
   LayoutGrid,
 } from "lucide-react";
@@ -31,6 +30,9 @@ import { useUIStore } from "@/lib/stores/ui-store";
 import { ResponsiveProvider } from "@/lib/responsive/context";
 import { BRAND_NAME } from "@/lib/constants/brand";
 import { initials } from "@/lib/utils";
+import { usePages } from "@/lib/hooks/use-pages";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
+import { useRouter } from "next/navigation";
 import "./page-editor-layout.css";
 
 interface PageEditorLayoutProps {
@@ -65,10 +67,49 @@ const BREAKPOINT_WIDTHS: Record<Breakpoint, string> = {
   mobile: "375px",
 };
 
+/** Page switcher dropdown — lists all pages, click to navigate */
+function PageSwitcherMenu({ pageId }: { pageId: string }) {
+  const { tenantId } = useResolvedTenant();
+  const { data: pages } = usePages(tenantId || "");
+  const router = useRouter();
+
+  if (!pages?.length) {
+    return <DropdownMenuItem disabled>No pages</DropdownMenuItem>;
+  }
+
+  return (
+    <>
+      {pages.map((page) => (
+        <DropdownMenuItem
+          key={page.id}
+          className={page.id === pageId ? "font-semibold" : ""}
+          onClick={() => router.push(`/pages/${page.id}/edit`)}
+        >
+          <span className="truncate flex-1">{page.title || "Untitled"}</span>
+          {page.status === "published" && (
+            <span className="text-[9px] font-bold uppercase text-(--status-success)">
+              Live
+            </span>
+          )}
+          {page.id === pageId && (
+            <Check className="size-3 text-(--accent-primary)" />
+          )}
+        </DropdownMenuItem>
+      ))}
+      <div className="border-t border-(--border-default) mt-1 pt-1">
+        <DropdownMenuItem onClick={() => router.push("/pages")}>
+          All pages
+        </DropdownMenuItem>
+      </div>
+    </>
+  );
+}
+
 /**
  * Page Editor Layout — Webflow-style two-bar toolbar + 3-panel editor
  */
 export function PageEditorLayout({
+  pageId,
   pageTitle,
   breakpoint = "desktop",
   onBreakpointChange,
@@ -165,15 +206,21 @@ export function PageEditorLayout({
 
         <div className="page-editor-navbar-center">
           {/* Page selector + save indicator */}
-          <a
-            href="/pages"
-            className="page-editor-page-selector"
-            title="Switch page"
-          >
-            <Home className="size-3.5" />
-            <span>{pageTitle || "Untitled"}</span>
-            <ChevronDown className="size-3" />
-          </a>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="page-editor-page-selector"
+                title="Switch page"
+              >
+                <span>{pageTitle || "Untitled"}</span>
+                <ChevronDown className="size-3" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center" className="w-56">
+              <PageSwitcherMenu pageId={pageId} />
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {isSaving && (
             <span className="page-editor-save-indicator" data-state={statusDot}>

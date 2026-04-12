@@ -85,11 +85,11 @@
 .layer-toggle {
   @apply flex items-center justify-center size-5 p-0;
   @apply border-none bg-transparent cursor-pointer;
-  @apply text-(--el-400);
+  @apply text-(--el-500);
 }
 
 .layer-toggle-icon {
-  @apply size-3.5;
+  @apply size-3.5 text-(--el-900);
 }
 
 /* Type icon */

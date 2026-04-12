@@ -93,7 +93,7 @@
 }
 
 .page-table-header {
-  @apply border-b border-(--border-subtle);
+  @apply border-b border-(--el-200);
 }
 
 .page-table-header-row {
@@ -107,7 +107,7 @@
 }
 
 .page-table-body {
-  @apply divide-y divide-(--border-subtle);
+  @apply divide-y divide-(--el-200);
 }
 
 /* ============================================================================

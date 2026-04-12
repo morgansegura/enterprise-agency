@@ -13,12 +13,12 @@
 }
 
 .clients-table-header {
-  @apply sticky top-0 z-10 bg-(--surface-raised);
+  @apply sticky top-0 z-10 bg-(--el-100);
 }
 
 .clients-table-header th {
   @apply px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap;
-  @apply text-(--text-secondary) border-b border-(--border-default);
+  @apply text-(--text-secondary) border-b border-(--el-200);
 }
 
 .clients-table-body tr {
@@ -31,7 +31,7 @@
 
 .clients-table-body td {
   @apply px-3 py-2.5 whitespace-nowrap;
-  @apply text-(--text-primary) border-b border-(--border-subtle);
+  @apply text-(--text-primary) border-b border-(--el-200);
 }
 
 /* Columns
@@ -115,7 +115,7 @@
 
 .clients-skeleton-row {
   @apply flex items-center gap-4 px-3 py-3;
-  @apply border-b border-(--border-subtle);
+  @apply border-b border-(--el-200);
 }
 
 /* Actions trigger

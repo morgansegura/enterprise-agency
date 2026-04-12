@@ -53,12 +53,12 @@
 /* Page selector */
 .page-editor-page-selector {
   @apply flex items-center gap-1.5 px-2 h-7 rounded-[3px];
-  @apply text-[13px] text-(--el-600) no-underline;
+  @apply text-[13px] text-(--el-300) no-underline;
   @apply transition-colors duration-100 cursor-pointer;
 }
 
 .page-editor-page-selector:hover {
-  @apply text-(--el-800) bg-(--el-100);
+  @apply text-(--el-0) bg-(--el-600);
 }
 
 .page-editor-navbar-btn {
