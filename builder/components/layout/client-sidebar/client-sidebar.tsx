@@ -66,6 +66,8 @@ interface NavSection {
   label: string;
   items: NavItem[];
   defaultOpen?: boolean;
+  /** Show a separator line before this section */
+  separatorBefore?: boolean;
 }
 
 /* ── Internal nav link ─────────────────────────────────────────────────── */
@@ -158,6 +160,7 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
     },
     {
       label: "Commerce",
+      separatorBefore: true,
       defaultOpen: true,
       items: [
         { title: "Products", url: "/shop/products", icon: Package },
@@ -179,6 +182,7 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
     },
     {
       label: "Configuration",
+      separatorBefore: true,
       defaultOpen: true,
       items: [
         { title: "Settings", url: "/settings", icon: Settings },
@@ -213,7 +217,10 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
       <SidebarContent>
         {tenantId &&
           sections.map((section) => (
-            <SidebarSection key={section.label} {...section} />
+            <React.Fragment key={section.label}>
+              {section.separatorBefore && <SidebarSeparator />}
+              <SidebarSection {...section} />
+            </React.Fragment>
           ))}
       </SidebarContent>
 
