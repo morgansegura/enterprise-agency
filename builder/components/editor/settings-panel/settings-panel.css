@@ -74,9 +74,8 @@
 
 .settings-panel-tab-btn {
   @apply flex-1 h-5.75 text-[12px] font-semibold;
-  @apply text-(--el-700) bg-transparent border-none cursor-pointer;
+  @apply text-(--el-700) bg-transparent border-none cursor-pointer rounded-sm m-1;
   @apply transition-colors duration-100;
-  @apply rounded-sm m-1 border border-white;
 }
 
 .settings-panel-tab-btn:hover {
@@ -85,6 +84,7 @@
 
 .settings-panel-tab-btn[data-active] {
   @apply bg-(--el-200) border-(--accent-primary);
+  @apply inset-shadow-xs inset-shadow-black/10;
 }
 
 /* =============================================================================

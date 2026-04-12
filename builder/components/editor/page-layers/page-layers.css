@@ -147,12 +147,12 @@
   @apply inline-flex items-center justify-center gap-1.5 w-full;
   @apply py-2 text-sm font-semibold uppercase;
   @apply rounded-md shadow;
-  @apply text-(--el-0) bg-linear-to-b from-(--el-600) via-(--el-700) to-(--el-600);
+  @apply text-(--el-0) bg-(--el-600);
   @apply cursor-pointer transition-colors duration-300 ease-out;
 }
 
 .layer-add-btn:hover {
-  @apply bg-linear-to-b from-(--el-500) via-(--el-600) to-(--el-500);
+  @apply bg-(--el-500);
 }
 
 .layer-add-container {

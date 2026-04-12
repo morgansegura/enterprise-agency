@@ -307,7 +307,7 @@ export function ElementStyleEditor({
             <button
               key={m}
               type="button"
-              className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === m ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+              className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === m ? "bg-(--el-200) inset-shadow-xs inset-shadow-black/10 text-(--el-500" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
               onClick={() => setMode(m)}
             >
               {m === "normal" ? "Normal" : `::${m}`}
@@ -329,7 +329,7 @@ export function ElementStyleEditor({
           </PropertyRow>
         </div>
       )}
-      <ElementStyleTab styles={currentStyles} onStyleChange={handleChange} elementType={elementType} />
+      <ElementStyleTab styles={currentStyles} onStyleChange={handleChange} />
     </>
   );
 }
@@ -1144,164 +1144,172 @@ export function ElementStyleTab({
       {/* ================================================================
        * TRANSFORMS (blocks only)
        * ================================================================ */}
-      {isBlock && <PropertySection
-        title="Transforms"
-        icon={<Zap className="h-3.5 w-3.5" />}
-        defaultOpen={false}
-      >
-        <TransformBuilder
-          value={s("transform")}
-          onChange={(v) => updateStyle("transform", v)}
-        />
-        <PropertyRow label="Origin">
-          <PropertySelect
-            value={s("transformOrigin") || "inherit"}
-            options={[
-              { value: "inherit", label: "Center" },
-              { value: "top left", label: "Top Left" },
-              { value: "top center", label: "Top" },
-              { value: "top right", label: "Top Right" },
-              { value: "center left", label: "Left" },
-              { value: "center right", label: "Right" },
-              { value: "bottom left", label: "Bottom Left" },
-              { value: "bottom center", label: "Bottom" },
-              { value: "bottom right", label: "Bottom Right" },
-            ]}
-            onChange={(v) => updateStyle("transformOrigin", v)}
+      {isBlock && (
+        <PropertySection
+          title="Transforms"
+          icon={<Zap className="h-3.5 w-3.5" />}
+          defaultOpen={false}
+        >
+          <TransformBuilder
+            value={s("transform")}
+            onChange={(v) => updateStyle("transform", v)}
           />
-        </PropertyRow>
-      </PropertySection>}
+          <PropertyRow label="Origin">
+            <PropertySelect
+              value={s("transformOrigin") || "inherit"}
+              options={[
+                { value: "inherit", label: "Center" },
+                { value: "top left", label: "Top Left" },
+                { value: "top center", label: "Top" },
+                { value: "top right", label: "Top Right" },
+                { value: "center left", label: "Left" },
+                { value: "center right", label: "Right" },
+                { value: "bottom left", label: "Bottom Left" },
+                { value: "bottom center", label: "Bottom" },
+                { value: "bottom right", label: "Bottom Right" },
+              ]}
+              onChange={(v) => updateStyle("transformOrigin", v)}
+            />
+          </PropertyRow>
+        </PropertySection>
+      )}
 
       {/* ================================================================
        * TRANSITIONS (blocks only)
        * ================================================================ */}
-      {isBlock && <PropertySection
-        title="Transitions"
-        icon={<Zap className="h-3.5 w-3.5" />}
-        defaultOpen={false}
-      >
-        <PropertyRow label="Property">
-          <PropertySelect
-            value={s("transitionProperty") || "inherit"}
-            options={[
-              { value: "inherit", label: "None" },
-              { value: "all", label: "All" },
-              { value: "opacity", label: "Opacity" },
-              { value: "transform", label: "Transform" },
-              { value: "background-color", label: "Background" },
-              { value: "color", label: "Color" },
-              { value: "box-shadow", label: "Shadow" },
-            ]}
-            onChange={(v) => updateStyle("transitionProperty", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Duration">
-          <SliderInput
-            value={s("transitionDuration") || "0ms"}
-            onChange={(v) => updateStyle("transitionDuration", v)}
-            min={0}
-            max={2000}
-            step={50}
-            unit="ms"
-            placeholder="0"
-          />
-        </PropertyRow>
-        <PropertyRow label="Delay">
-          <SliderInput
-            value={s("transitionDelay") || "0ms"}
-            onChange={(v) => updateStyle("transitionDelay", v)}
-            min={0}
-            max={2000}
-            step={50}
-            unit="ms"
-            placeholder="0"
-          />
-        </PropertyRow>
-        <PropertyRow label="Easing">
-          <PropertySelect
-            value={s("transitionTimingFunction") || "inherit"}
-            options={[
-              { value: "inherit", label: "Ease" },
-              { value: "linear", label: "Linear" },
-              { value: "ease-in", label: "Ease In" },
-              { value: "ease-out", label: "Ease Out" },
-              { value: "ease-in-out", label: "Ease In-Out" },
-              { value: "cubic-bezier(0.4,0,0.2,1)", label: "Smooth" },
-            ]}
-            onChange={(v) => updateStyle("transitionTimingFunction", v)}
-          />
-        </PropertyRow>
-      </PropertySection>}
+      {isBlock && (
+        <PropertySection
+          title="Transitions"
+          icon={<Zap className="h-3.5 w-3.5" />}
+          defaultOpen={false}
+        >
+          <PropertyRow label="Property">
+            <PropertySelect
+              value={s("transitionProperty") || "inherit"}
+              options={[
+                { value: "inherit", label: "None" },
+                { value: "all", label: "All" },
+                { value: "opacity", label: "Opacity" },
+                { value: "transform", label: "Transform" },
+                { value: "background-color", label: "Background" },
+                { value: "color", label: "Color" },
+                { value: "box-shadow", label: "Shadow" },
+              ]}
+              onChange={(v) => updateStyle("transitionProperty", v)}
+            />
+          </PropertyRow>
+          <PropertyRow label="Duration">
+            <SliderInput
+              value={s("transitionDuration") || "0ms"}
+              onChange={(v) => updateStyle("transitionDuration", v)}
+              min={0}
+              max={2000}
+              step={50}
+              unit="ms"
+              placeholder="0"
+            />
+          </PropertyRow>
+          <PropertyRow label="Delay">
+            <SliderInput
+              value={s("transitionDelay") || "0ms"}
+              onChange={(v) => updateStyle("transitionDelay", v)}
+              min={0}
+              max={2000}
+              step={50}
+              unit="ms"
+              placeholder="0"
+            />
+          </PropertyRow>
+          <PropertyRow label="Easing">
+            <PropertySelect
+              value={s("transitionTimingFunction") || "inherit"}
+              options={[
+                { value: "inherit", label: "Ease" },
+                { value: "linear", label: "Linear" },
+                { value: "ease-in", label: "Ease In" },
+                { value: "ease-out", label: "Ease Out" },
+                { value: "ease-in-out", label: "Ease In-Out" },
+                { value: "cubic-bezier(0.4,0,0.2,1)", label: "Smooth" },
+              ]}
+              onChange={(v) => updateStyle("transitionTimingFunction", v)}
+            />
+          </PropertyRow>
+        </PropertySection>
+      )}
 
       {/* ================================================================
        * FILTERS (blocks only)
        * ================================================================ */}
-      {isBlock && <PropertySection
-        title="Filters"
-        icon={<Sparkles className="h-3.5 w-3.5" />}
-        defaultOpen={false}
-      >
-        <FilterBuilder
-          label="Element Filter"
-          value={s("filter")}
-          onChange={(v) => updateStyle("filter", v)}
-        />
-        <FilterBuilder
-          label="Backdrop Filter"
-          value={s("backdropFilter")}
-          onChange={(v) => updateStyle("backdropFilter", v)}
-        />
-      </PropertySection>}
+      {isBlock && (
+        <PropertySection
+          title="Filters"
+          icon={<Sparkles className="h-3.5 w-3.5" />}
+          defaultOpen={false}
+        >
+          <FilterBuilder
+            label="Element Filter"
+            value={s("filter")}
+            onChange={(v) => updateStyle("filter", v)}
+          />
+          <FilterBuilder
+            label="Backdrop Filter"
+            value={s("backdropFilter")}
+            onChange={(v) => updateStyle("backdropFilter", v)}
+          />
+        </PropertySection>
+      )}
 
       {/* ================================================================
        * CURSOR & INTERACTION (blocks only)
        * ================================================================ */}
-      {isBlock && <PropertySection
-        title="Cursor"
-        icon={<MousePointer2 className="h-3.5 w-3.5" />}
-        defaultOpen={false}
-      >
-        <PropertyRow label="Cursor">
-          <PropertySelect
-            value={s("cursor")}
-            options={[
-              { value: "inherit", label: "Auto" },
-              { value: "default", label: "Default" },
-              { value: "pointer", label: "Pointer" },
-              { value: "text", label: "Text" },
-              { value: "move", label: "Move" },
-              { value: "grab", label: "Grab" },
-              { value: "not-allowed", label: "Not Allowed" },
-              { value: "crosshair", label: "Crosshair" },
-              { value: "none", label: "None" },
-            ]}
-            onChange={(v) => updateStyle("cursor", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Pointer Events" stacked>
-          <PropertyToggle
-            value={s("pointerEvents") || "inherit"}
-            options={[
-              { value: "inherit", label: "Auto" },
-              { value: "none", label: "None" },
-            ]}
-            onChange={(v) => updateStyle("pointerEvents", v)}
-            fullWidth
-          />
-        </PropertyRow>
-        <PropertyRow label="User Select" stacked>
-          <PropertyToggle
-            value={s("userSelect") || "inherit"}
-            options={[
-              { value: "inherit", label: "Auto" },
-              { value: "none", label: "None" },
-              { value: "all", label: "All" },
-            ]}
-            onChange={(v) => updateStyle("userSelect", v)}
-            fullWidth
-          />
-        </PropertyRow>
-      </PropertySection>}
+      {isBlock && (
+        <PropertySection
+          title="Cursor"
+          icon={<MousePointer2 className="h-3.5 w-3.5" />}
+          defaultOpen={false}
+        >
+          <PropertyRow label="Cursor">
+            <PropertySelect
+              value={s("cursor")}
+              options={[
+                { value: "inherit", label: "Auto" },
+                { value: "default", label: "Default" },
+                { value: "pointer", label: "Pointer" },
+                { value: "text", label: "Text" },
+                { value: "move", label: "Move" },
+                { value: "grab", label: "Grab" },
+                { value: "not-allowed", label: "Not Allowed" },
+                { value: "crosshair", label: "Crosshair" },
+                { value: "none", label: "None" },
+              ]}
+              onChange={(v) => updateStyle("cursor", v)}
+            />
+          </PropertyRow>
+          <PropertyRow label="Pointer Events" stacked>
+            <PropertyToggle
+              value={s("pointerEvents") || "inherit"}
+              options={[
+                { value: "inherit", label: "Auto" },
+                { value: "none", label: "None" },
+              ]}
+              onChange={(v) => updateStyle("pointerEvents", v)}
+              fullWidth
+            />
+          </PropertyRow>
+          <PropertyRow label="User Select" stacked>
+            <PropertyToggle
+              value={s("userSelect") || "inherit"}
+              options={[
+                { value: "inherit", label: "Auto" },
+                { value: "none", label: "None" },
+                { value: "all", label: "All" },
+              ]}
+              onChange={(v) => updateStyle("userSelect", v)}
+              fullWidth
+            />
+          </PropertyRow>
+        </PropertySection>
+      )}
     </PropertyAccordion>
   );
 }

@@ -215,7 +215,7 @@
 
 .page-editor-canvas-content {
   @apply w-full min-h-full flex flex-col;
-  @apply bg-white;
+  @apply bg-inherit;
 }
 
 /* =============================================================================
@@ -226,7 +226,7 @@
  * Selection colors per element type:
  *   Section  = blue    (#3b82f6)
  *   Container = teal   (#14b8a6)
- *   Block    = violet  (#8b5cf6)
+ *   Block    = fuchsia  (#8b5cf6)
  * --------------------------------------------------------------------------- */
 
 .page-editor-canvas-content [data-block-key]:hover {
@@ -235,16 +235,16 @@
 
 /* Selected outline — color varies by element type, always inset to avoid clipping */
 .page-editor-canvas-content [data-block-key].is-preview-selected {
-  @apply outline-3 outline-solid relative -outline-offset-3;
+  @apply outline-2 outline-solid relative -outline-offset-2 outline-pink-600;
 }
 
 .page-editor-canvas-content [data-element-type="section"].is-preview-selected {
-  @apply outline-rose-200;
+  @apply outline-pink-600;
 }
 
 .page-editor-canvas-content
   [data-element-type="container"].is-preview-selected {
-  @apply outline-sky-400;
+  @apply outline-pink-600;
 }
 
 /* ---------------------------------------------------------------------------
@@ -252,55 +252,52 @@
  * --------------------------------------------------------------------------- */
 
 .page-editor-canvas-content.show-layout [data-element-type="section"] {
-  @apply outline-2 outline-dashed -outline-offset-2;
-  outline-color: oklch(65% 0.1 250 / 0.35);
+  @apply outline-2 outline-dashed -outline-offset-2 outline-pink-600;
 }
 
 .page-editor-canvas-content.show-layout [data-element-type="container"] {
-  @apply outline-2 outline-dashed -outline-offset-2;
-  outline-color: oklch(65% 0.1 180 / 0.35);
+  @apply outline-2 outline-dashed -outline-offset-2 outline-pink-600;
 }
 
 .page-editor-canvas-content.show-layout [data-element-type="block"] {
-  @apply outline-2 outline-dashed -outline-offset-2;
-  outline-color: oklch(65% 0.1 290 / 0.3);
+  @apply outline-2 outline-dashed -outline-offset-2 outline-pink-600;
 }
 
 /* Hover outline — subtler, same color scheme, inset */
 .page-editor-canvas-content [data-block-key].is-preview-hovered {
-  @apply outline-3 outline-solid relative -outline-offset-3;
+  @apply outline-2 outline-solid relative -outline-offset-2 outline-pink-600;
 }
 
 .page-editor-canvas-content [data-element-type="section"].is-preview-hovered {
-  @apply outline-rose-100;
+  @apply outline-pink-600;
 }
 
 .page-editor-canvas-content [data-element-type="container"].is-preview-hovered {
-  @apply outline-teal-500;
+  @apply outline-pink-600;
 }
 
 /* Selection label — colored badge per element type */
 .page-editor-canvas-content [data-block-key].is-preview-selected::before,
 .page-editor-canvas-content [data-block-key].is-preview-hovered::before {
   content: attr(data-block-label);
-  @apply absolute -top-3.5 left-0 z-100 px-1.5 py-0.5;
-  @apply text-[10px] font-medium text-white leading-none whitespace-nowrap;
-  @apply rounded-t-[3px] pointer-events-none;
-  background-color: #8b5cf6; /* block default */
+  @apply absolute -top-3.75 left-0 z-100 px-1.5 py-0.75;
+  @apply text-xs font-semibold tracking-wide text-white leading-none whitespace-nowrap;
+
+  @apply rounded-t-[3px] pointer-events-none bg-pink-600;
 }
 
 .page-editor-canvas-content
   [data-element-type="section"].is-preview-selected::before,
 .page-editor-canvas-content
   [data-element-type="section"].is-preview-hovered::before {
-  @apply bg-(--el-800);
+  @apply bg-pink-600;
 }
 
 .page-editor-canvas-content
   [data-element-type="container"].is-preview-selected::before,
 .page-editor-canvas-content
   [data-element-type="container"].is-preview-hovered::before {
-  background-color: #14b8a6;
+  @apply bg-pink-600;
 }
 
 /* Suppress TipTap/ProseMirror focus ring inside canvas — selection outline is enough */

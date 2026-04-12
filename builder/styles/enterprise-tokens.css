@@ -54,7 +54,7 @@
   /* =========================================================================
    * Status Colors (Jira-aligned)
    * ========================================================================= */
-  --status-success: #00875a;
+  --status-success: oklch(62.7% 0.194 149.214);
   --status-success-subtle: #e3fcef;
   --status-warning: #ff991f;
   --status-warning-subtle: #fffae6;
@@ -66,18 +66,10 @@
   /* =========================================================================
    * Brand Accent Primary
    * ========================================================================= */
-  --accent-primary: oklch(71.5% 0.143 215.221);
-  --accent-primary-hover: oklch(43.2% 0.232 292.759);
-  --accent-primary-subtle: oklch(96% 0.002 17.2);
+  --accent-primary: oklch(36.4% 0.029 323.89);
+  --accent-primary-hover: oklch(43.5% 0.029 321.78);
+  --accent-primary-subtle: oklch(96% 0.003 325.6);
   --accent-primary-foreground: #ffffff;
-
-  /* =========================================================================
-   * Brand Accent Secondary
-   * ========================================================================= */
-  --accent-secondary: oklch(59.1% 0.293 322.896);
-  --accent-secondary-hover: oklch(43.2% 0.232 292.759);
-  --accent-secondary-subtle: oklch(96% 0.002 17.2);
-  --accent-secondary-foreground: #ffffff;
 
   /* =========================================================================
    * Semantic Aliases

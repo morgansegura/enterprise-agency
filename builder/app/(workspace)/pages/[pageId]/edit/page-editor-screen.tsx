@@ -38,6 +38,7 @@ import { useIsBuilder } from "@/lib/hooks/use-tier";
 import { useTenant } from "@/lib/hooks/use-tenants";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
+import { SaveToLibraryDialog } from "@/components/editor/library-picker/save-to-library-dialog";
 import { generatePageCSS } from "@enterprise/tokens";
 import {
   useHeader,
@@ -91,6 +92,10 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
 
   // Modal states
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false);
+  const [saveToLibrarySection, setSaveToLibrarySection] = React.useState<{
+    section: Section;
+    index: number;
+  } | null>(null);
 
   // Preview mode from context
   const {
@@ -1025,6 +1030,20 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
               >
                 Duplicate
               </button>
+              <div className="canvas-context-menu-divider" />
+              <button
+                type="button"
+                className="canvas-context-menu-item"
+                onClick={() => {
+                  setSaveToLibrarySection({
+                    section: editor.sections[contextMenu.sectionIndex],
+                    index: contextMenu.sectionIndex,
+                  });
+                  setContextMenu(null);
+                }}
+              >
+                Save to Library
+              </button>
               <button
                 type="button"
                 className="canvas-context-menu-item canvas-context-menu-item-danger"
@@ -1040,6 +1059,27 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
           )}
         </div>
       )}
+
+      {/* Save section to library dialog */}
+      <SaveToLibraryDialog
+        tenantId={id}
+        open={!!saveToLibrarySection}
+        onOpenChange={(open) => !open && setSaveToLibrarySection(null)}
+        type="SECTION"
+        content={
+          saveToLibrarySection
+            ? (saveToLibrarySection.section as unknown as Record<
+                string,
+                unknown
+              >)
+            : {}
+        }
+        defaultName={
+          saveToLibrarySection
+            ? `Section ${saveToLibrarySection.index + 1}`
+            : ""
+        }
+      />
     </>
   );
 }

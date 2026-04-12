@@ -46,7 +46,10 @@ import {
   Copy,
   ArrowUp,
   ArrowDown,
+  BookmarkPlus,
 } from "lucide-react";
+import { SaveToLibraryDialog } from "@/components/editor/library-picker/save-to-library-dialog";
+import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 import type { Section, Block } from "@/lib/hooks/use-pages";
 import { cn } from "@/lib/utils";
 
@@ -203,7 +206,12 @@ export function PageLayers({
   onMoveBlockUp,
   onMoveBlockDown,
 }: PageLayersProps) {
+  const { tenantId } = useResolvedTenant();
   const [collapsed, setCollapsed] = React.useState<Set<string>>(new Set());
+  const [saveToLibrary, setSaveToLibrary] = React.useState<{
+    section: Section;
+    index: number;
+  } | null>(null);
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
   );
@@ -288,17 +296,34 @@ export function PageLayers({
                     <Plus className="size-3" />
                   </button>
                 )}
-                {selectedKey === sectionKey && onDeleteSection && (
-                  <button
-                    className="layer-action"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteSection(sectionIndex);
-                    }}
-                    title="Delete section"
-                  >
-                    <Trash2 className="size-3" />
-                  </button>
+                {selectedKey === sectionKey && (
+                  <>
+                    <button
+                      className="layer-action"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSaveToLibrary({
+                          section: sections[sectionIndex],
+                          index: sectionIndex,
+                        });
+                      }}
+                      title="Save section to library"
+                    >
+                      <BookmarkPlus className="size-3" />
+                    </button>
+                    {onDeleteSection && (
+                      <button
+                        className="layer-action"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteSection(sectionIndex);
+                        }}
+                        title="Delete section"
+                      >
+                        <Trash2 className="size-3" />
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -552,6 +577,26 @@ export function PageLayers({
           </div>
         )}
       </div>
+
+      {/* Save to Library dialog */}
+      {tenantId && (
+        <SaveToLibraryDialog
+          tenantId={tenantId}
+          open={!!saveToLibrary}
+          onOpenChange={(open) => !open && setSaveToLibrary(null)}
+          type="SECTION"
+          content={
+            saveToLibrary
+              ? (saveToLibrary.section as unknown as Record<string, unknown>)
+              : {}
+          }
+          defaultName={
+            saveToLibrary
+              ? `Section ${saveToLibrary.index + 1}`
+              : ""
+          }
+        />
+      )}
     </div>
   );
 }
