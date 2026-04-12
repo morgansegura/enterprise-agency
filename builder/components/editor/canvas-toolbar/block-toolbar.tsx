@@ -1,13 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  ChevronUp,
-  ChevronDown,
-  Copy,
-  Trash2,
-  GripVertical,
-} from "lucide-react";
+import { ChevronUp, ChevronDown, Copy, Trash2 } from "lucide-react";
 import "./block-toolbar.css";
 
 interface BlockToolbarProps {
@@ -103,13 +97,6 @@ export function BlockToolbar({
       }}
     >
       <button
-        className="block-toolbar-btn block-toolbar-grip"
-        title="Drag to move"
-      >
-        <GripVertical className="size-3.5" />
-      </button>
-      <div className="block-toolbar-divider" />
-      <button
         className="block-toolbar-btn"
         onClick={onMoveUp}
         disabled={!canMoveUp}
@@ -125,7 +112,6 @@ export function BlockToolbar({
       >
         <ChevronDown className="size-3.5" />
       </button>
-      <div className="block-toolbar-divider" />
       <button
         className="block-toolbar-btn"
         onClick={onDuplicate}

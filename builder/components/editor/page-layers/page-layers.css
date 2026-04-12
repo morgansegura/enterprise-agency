@@ -61,7 +61,7 @@
 }
 
 .layer-item.is-selected {
-  @apply bg-(--el-0);
+  @apply bg-(--el-0) outline-2 outline-pink-500 -outline-offset-2;
 }
 
 .layer-item.is-hovered {
@@ -78,7 +78,7 @@
 }
 
 .layer-item-block {
-  @apply ml-4 text-(--el-800);
+  @apply pl-11 text-(--el-800);
 }
 
 /* Toggle button */
