@@ -118,7 +118,7 @@
 /* Icon mode — square icon buttons */
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
   .client-sidebar-link {
-  @apply justify-center px-0 size-8 rounded-[3px];
+  @apply justify-center px-0 size-8 rounded-md;
 }
 
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
@@ -158,7 +158,7 @@
 /* Icon mode — square icon buttons for actions */
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
   .client-sidebar-action {
-  @apply justify-center px-0 size-8 rounded-[3px];
+  @apply justify-center px-0 size-8 rounded-md;
 }
 
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]

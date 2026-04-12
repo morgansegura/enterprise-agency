@@ -12,7 +12,7 @@
 }
 
 .text-bubble-btn {
-  @apply flex items-center justify-center size-7 rounded-[3px] cursor-pointer;
+  @apply flex items-center justify-center size-7 rounded-md cursor-pointer;
   @apply text-(--el-600) bg-transparent border-none;
   @apply transition-colors duration-75;
 }
@@ -36,7 +36,7 @@
 
 .text-bubble-color-wrapper {
   @apply relative flex items-center justify-center size-7 cursor-pointer;
-  @apply rounded-[3px] transition-colors duration-75;
+  @apply rounded-md transition-colors duration-75;
 }
 
 .text-bubble-color-wrapper:hover {

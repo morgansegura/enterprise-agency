@@ -22,7 +22,7 @@
 }
 
 .theme-color-preset {
-  @apply flex flex-col items-center gap-1.5 p-2 rounded-[3px] cursor-pointer;
+  @apply flex flex-col items-center gap-1.5 p-2 rounded-md cursor-pointer;
   @apply bg-transparent border border-transparent;
   @apply transition-all duration-100;
 }
@@ -61,7 +61,7 @@
 }
 
 .theme-color-picker {
-  @apply w-8 h-8 rounded-[3px] border border-(--border-default) cursor-pointer;
+  @apply w-8 h-8 rounded-md border border-(--border-default) cursor-pointer;
   @apply p-0 bg-transparent;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .theme-select {
-  @apply h-8 px-2.5 text-[14px] rounded-[3px];
+  @apply h-8 px-2.5 text-[14px] rounded-md;
   @apply bg-(--el-0) border border-(--border-default) text-(--el-800);
   @apply cursor-pointer outline-none;
 }
@@ -89,7 +89,7 @@
 }
 
 .theme-font-preview {
-  @apply p-4 bg-(--el-50) rounded-[3px] border border-(--border-default) space-y-2;
+  @apply p-4 bg-(--el-50) rounded-md border border-(--border-default) space-y-2;
 }
 
 .theme-font-preview-heading {
@@ -106,7 +106,7 @@
 }
 
 .theme-radius-option {
-  @apply flex flex-col items-center gap-1.5 p-3 rounded-[3px] cursor-pointer;
+  @apply flex flex-col items-center gap-1.5 p-3 rounded-md cursor-pointer;
   @apply bg-transparent border border-(--border-default);
   @apply text-[12px] font-medium text-(--el-500);
   @apply transition-all duration-100;

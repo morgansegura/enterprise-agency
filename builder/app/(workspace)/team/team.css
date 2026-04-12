@@ -132,7 +132,7 @@
 
 .team-role-pill {
   @apply inline-flex items-center px-2 py-0.5;
-  @apply rounded-[3px];
+  @apply rounded-md;
   @apply text-[11px] font-medium;
 }
 
@@ -158,7 +158,7 @@
 
 .team-status-pill {
   @apply inline-flex items-center gap-1 px-2 py-0.5;
-  @apply rounded-[3px];
+  @apply rounded-md;
   @apply text-[11px] font-medium;
 }
 

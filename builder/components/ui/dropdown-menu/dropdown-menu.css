@@ -2,7 +2,7 @@
 
 /* SubTrigger */
 [data-radix-dropdown-menu-sub-trigger] {
-  @apply flex cursor-default select-none items-center gap-2 rounded-[3px] px-2 py-1.5 text-[14px] outline-none;
+  @apply flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-[14px] outline-none;
 }
 
 [data-radix-dropdown-menu-sub-trigger]:focus {
@@ -27,7 +27,7 @@
 
 /* SubContent */
 [data-radix-dropdown-menu-sub-content] {
-  @apply z-50 min-w-32 overflow-hidden rounded-[3px] border bg-(--el-0) p-1 text-(--el-800) shadow-lg;
+  @apply z-50 min-w-32 overflow-hidden rounded-md border bg-(--el-0) p-1 text-(--el-800) shadow-lg;
   transform-origin: var(--radix-dropdown-menu-content-transform-origin);
 }
 
@@ -57,7 +57,7 @@
 
 /* Content */
 [data-radix-dropdown-menu-content] {
-  @apply z-50 min-w-32 overflow-y-auto overflow-x-hidden rounded-[3px] border bg-(--el-0) p-1 text-(--el-800) shadow-md;
+  @apply z-50 min-w-32 overflow-y-auto overflow-x-hidden rounded-md border bg-(--el-0) p-1 text-(--el-800) shadow-md;
   max-height: var(--radix-dropdown-menu-content-available-height);
   transform-origin: var(--radix-dropdown-menu-content-transform-origin);
 }
@@ -88,7 +88,7 @@
 
 /* MenuItem */
 [data-radix-dropdown-menu-item] {
-  @apply relative flex cursor-default select-none items-center gap-2 rounded-[3px] px-2 py-1.5 text-[14px] outline-none transition-colors duration-100;
+  @apply relative flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-[14px] outline-none transition-colors duration-100;
 }
 
 [data-radix-dropdown-menu-item]:focus {
@@ -110,7 +110,7 @@
 /* CheckboxItem & RadioItem */
 [data-radix-dropdown-menu-checkbox-item],
 [data-radix-dropdown-menu-radio-item] {
-  @apply relative flex cursor-default select-none items-center rounded-[3px] py-1.5 pl-8 pr-2 text-[14px] outline-none transition-colors duration-100;
+  @apply relative flex cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-2 text-[14px] outline-none transition-colors duration-100;
 }
 
 [data-radix-dropdown-menu-checkbox-item]:focus,

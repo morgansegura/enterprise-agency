@@ -18,7 +18,7 @@
 
 .size-controls-input {
   @apply w-full h-7 text-center text-[13px] font-medium;
-  @apply bg-(--el-100) border-none rounded-[3px] text-(--el-800);
+  @apply bg-(--el-100) border-none rounded-md text-(--el-800);
   @apply outline-none;
 }
 

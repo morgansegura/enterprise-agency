@@ -73,12 +73,12 @@
 }
 
 .order-item-fulfilled {
-  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[10px] font-medium;
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-medium;
   @apply bg-(--status-success-subtle) text-(--status-success);
 }
 
 .order-item-unfulfilled {
-  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[10px] font-medium;
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-medium;
   @apply bg-(--status-warning-subtle) text-(--status-warning);
 }
 

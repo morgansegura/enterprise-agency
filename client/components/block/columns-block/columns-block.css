@@ -18,26 +18,14 @@
   @apply grid-cols-4;
 }
 
-/* Gap sizes */
-[data-slot="columns-block"][data-gap="none"] {
-  @apply gap-0;
-}
-
-[data-slot="columns-block"][data-gap="sm"] {
-  @apply gap-[var(--spacing-block-sm)];
-}
-
-[data-slot="columns-block"][data-gap="md"] {
-  @apply gap-[var(--spacing-block-md)];
-}
-
-[data-slot="columns-block"][data-gap="lg"] {
-  @apply gap-[var(--spacing-block-lg)];
-}
-
-[data-slot="columns-block"][data-gap="xl"] {
-  @apply gap-[var(--spacing-container)];
-}
+/* Gap sizes — using fixed values for reliability */
+[data-slot="columns-block"][data-gap="none"] { gap: 0; }
+[data-slot="columns-block"][data-gap="xs"] { gap: 0.25rem; }
+[data-slot="columns-block"][data-gap="sm"] { gap: 0.5rem; }
+[data-slot="columns-block"][data-gap="md"] { gap: 1rem; }
+[data-slot="columns-block"][data-gap="lg"] { gap: 1.5rem; }
+[data-slot="columns-block"][data-gap="xl"] { gap: 2rem; }
+[data-slot="columns-block"][data-gap="2xl"] { gap: 3rem; }
 
 /* Responsive stacking - stack to single column on mobile */
 @media (max-width: 768px) {

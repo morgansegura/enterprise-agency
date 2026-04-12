@@ -30,7 +30,7 @@
  * -------------------------------------------------------------------------- */
 
 .client-form-card {
-  @apply rounded-[3px] border p-0 overflow-hidden;
+  @apply rounded-md border p-0 overflow-hidden;
   @apply bg-(--surface) border-(--border-default);
 }
 

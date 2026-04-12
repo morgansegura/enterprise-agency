@@ -26,6 +26,6 @@
 }
 
 .customer-stats-account-badge {
-  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[10px] font-medium mt-3;
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-medium mt-3;
   @apply bg-(--status-info-subtle) text-(--status-info);
 }

@@ -9,7 +9,7 @@
 /* Individual toast */
 .toast {
   @apply pointer-events-auto;
-  @apply flex items-start gap-3 p-4 rounded-[3px] shadow-lg;
+  @apply flex items-start gap-3 p-4 rounded-md shadow-lg;
   @apply border bg-(--el-0) text-(--el-800);
   @apply animate-[toast-slide-in_0.2s_ease-out];
 }

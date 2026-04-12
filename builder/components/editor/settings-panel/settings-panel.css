@@ -58,7 +58,7 @@
 }
 
 .settings-panel-header-btn {
-  @apply flex items-center justify-center size-7 rounded-[3px] cursor-pointer;
+  @apply flex items-center justify-center size-7 rounded-md cursor-pointer;
   @apply text-(--el-400) bg-transparent border-none;
   @apply transition-colors duration-100;
 }
@@ -150,7 +150,7 @@
 }
 
 .settings-panel-page-select {
-  @apply w-full h-7 px-2 text-sm rounded-[3px];
+  @apply w-full h-7 px-2 text-sm rounded-md;
   @apply bg-(--el-100) text-(--el-800) border-none;
 }
 
@@ -435,7 +435,7 @@
 
 .settings-panel-interactions-empty p {
   @apply text-[12px] text-(--el-400) leading-relaxed;
-  @apply px-3 py-4 rounded-[3px] bg-(--el-50) text-center;
+  @apply px-3 py-4 rounded-md bg-(--el-50) text-center;
 }
 
 /* =============================================================================

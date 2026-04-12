@@ -50,7 +50,7 @@ export default function AudioBlockRenderer({
       return (
         <>
           <div
-            className="flex flex-col items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-6 rounded-[3px] cursor-pointer hover:bg-(--accent-primary-subtle)/30"
+            className="flex flex-col items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-6 rounded-md cursor-pointer hover:bg-(--accent-primary-subtle)/30"
             onClick={() => setPickerOpen(true)}
           >
             <Music className="size-6 text-(--el-400)" />
@@ -82,7 +82,7 @@ export default function AudioBlockRenderer({
       );
     }
     return (
-      <div className="flex items-center justify-center bg-(--el-100) text-(--el-500) p-4 rounded-[3px]">
+      <div className="flex items-center justify-center bg-(--el-100) text-(--el-500) p-4 rounded-md">
         No audio file set
       </div>
     );
@@ -92,12 +92,8 @@ export default function AudioBlockRenderer({
     <figure className={elementClass} data-slot="audio-block">
       {title || artist ? (
         <div data-slot="audio-block-meta">
-          {title ? (
-            <div data-slot="audio-block-title">{title}</div>
-          ) : null}
-          {artist ? (
-            <div data-slot="audio-block-artist">{artist}</div>
-          ) : null}
+          {title ? <div data-slot="audio-block-title">{title}</div> : null}
+          {artist ? <div data-slot="audio-block-artist">{artist}</div> : null}
         </div>
       ) : null}
       <audio

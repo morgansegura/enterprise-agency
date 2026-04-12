@@ -22,7 +22,7 @@
 }
 
 .page-editor-navbar-brand {
-  @apply flex items-center justify-center  rounded-[3px];
+  @apply flex items-center justify-center  rounded-md;
   @apply text-[13px] font-bold text-(--el-0) no-underline;
   @apply transition-opacity duration-100 mx-0.5;
 }
@@ -52,7 +52,7 @@
 
 /* Page selector */
 .page-editor-page-selector {
-  @apply flex items-center gap-1.5 px-2 h-7 rounded-[3px];
+  @apply flex items-center gap-1.5 px-2 h-7 rounded-md;
   @apply text-[13px] text-(--el-300) no-underline;
   @apply transition-colors duration-100 cursor-pointer;
 }
@@ -139,7 +139,7 @@
 }
 
 .page-editor-subbar-btn {
-  @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
+  @apply flex items-center justify-center size-6 rounded-md cursor-pointer;
   @apply text-(--el-500) bg-transparent border-none;
   @apply transition-colors duration-100;
 }
@@ -187,7 +187,7 @@
 }
 
 .page-editor-breakpoint-btn {
-  @apply flex items-center justify-center size-6 rounded-[3px] cursor-pointer;
+  @apply flex items-center justify-center size-6 rounded-md cursor-pointer;
   @apply text-(--el-500) bg-transparent border-none;
   @apply transition-colors duration-100;
 }
@@ -319,7 +319,7 @@
  * ============================================================================= */
 
 .canvas-context-menu {
-  @apply fixed z-50 min-w-[140px] py-1 rounded-[3px];
+  @apply fixed z-50 min-w-[140px] py-1 rounded-md;
   @apply bg-(--el-0) border border-(--border-default) shadow-lg;
 }
 

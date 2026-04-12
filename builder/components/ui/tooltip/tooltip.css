@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 [data-slot="tooltip-content"] {
-  @apply z-50 w-fit rounded-[3px] px-2.5 py-1 text-[12px] text-balance;
+  @apply z-50 w-fit rounded-md px-2.5 py-1 text-[12px] text-balance;
   @apply bg-(--el-800) text-(--el-0);
   transform-origin: var(--radix-tooltip-content-transform-origin);
 }

@@ -26,13 +26,7 @@ export default function ImageBlockRenderer({
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const data = block.data as unknown as ImageBlockData;
-  const {
-    src,
-    alt = "",
-    caption,
-    objectFit = "cover",
-    href,
-  } = data;
+  const { src, alt = "", caption, objectFit = "cover", href } = data;
 
   const styles = (block as Record<string, unknown>).styles as
     | Record<string, string>
@@ -45,7 +39,7 @@ export default function ImageBlockRenderer({
     return (
       <>
         <div
-          className="flex flex-col items-center justify-center gap-3 py-12 px-8 border-2 border-dashed border-(--border-default) rounded-[3px] cursor-pointer transition-colors duration-100 hover:border-(--accent-primary) hover:bg-(--accent-primary-subtle)/30"
+          className="flex flex-col items-center justify-center gap-3 py-12 px-8 border-2 border-dashed border-(--border-default) rounded-md cursor-pointer transition-colors duration-100 hover:border-(--accent-primary) hover:bg-(--accent-primary-subtle)/30"
           onClick={() => setPickerOpen(true)}
         >
           <Upload className="size-8 text-(--el-400)" />
@@ -83,7 +77,7 @@ export default function ImageBlockRenderer({
 
   if (!src) {
     return (
-      <div className="flex items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-8 rounded-[3px]">
+      <div className="flex items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-8 rounded-md">
         <ImageIcon className="size-5" />
         <span className="text-[14px]">No image set</span>
       </div>
@@ -91,11 +85,7 @@ export default function ImageBlockRenderer({
   }
 
   const imageElement = (
-    <img
-      src={src}
-      alt={alt}
-      data-slot="image-block-image"
-    />
+    <img src={src} alt={alt} data-slot="image-block-image" />
   );
 
   // In edit mode, click image to open media picker
@@ -110,16 +100,14 @@ export default function ImageBlockRenderer({
             onClick={() => setPickerOpen(true)}
           >
             {imageElement}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-100 flex items-center justify-center rounded-[3px]">
-              <span className="opacity-0 group-hover:opacity-100 text-white text-[14px] font-medium bg-black/60 px-3 py-1.5 rounded-[3px] transition-opacity duration-100">
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-100 flex items-center justify-center rounded-md">
+              <span className="opacity-0 group-hover:opacity-100 text-white text-[14px] font-medium bg-black/60 px-3 py-1.5 rounded-md transition-opacity duration-100">
                 Click to change
               </span>
             </div>
           </div>
           {caption ? (
-            <figcaption data-slot="image-block-caption">
-              {caption}
-            </figcaption>
+            <figcaption data-slot="image-block-caption">{caption}</figcaption>
           ) : null}
         </figure>
         <MediaLibraryPicker

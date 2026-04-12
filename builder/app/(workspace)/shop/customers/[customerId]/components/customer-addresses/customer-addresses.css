@@ -22,7 +22,7 @@
 }
 
 .customer-address-default-badge {
-  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[10px] font-medium;
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-medium;
   @apply bg-(--status-info-subtle) text-(--status-info);
 }
 
@@ -79,7 +79,7 @@
 }
 
 .customer-addresses-field-input {
-  @apply h-10 rounded-[3px];
+  @apply h-10 rounded-md;
 }
 
 .customer-addresses-field-row {

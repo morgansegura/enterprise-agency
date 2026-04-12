@@ -25,7 +25,7 @@
 }
 
 .builder-footer-layout {
-  @apply text-[11px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-[3px];
+  @apply text-[11px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-md;
   @apply bg-(--el-100) text-(--el-400);
 }
 

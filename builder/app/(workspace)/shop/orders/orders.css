@@ -5,7 +5,7 @@
    ============================================================================ */
 
 .orders-page {
-  @apply flex-1 flex flex-col gap-3 bg-(--el-0) rounded-[3px] h-full;
+  @apply flex-1 flex flex-col gap-3 bg-(--el-0) rounded-md h-full;
 }
 
 .orders-page-header {
@@ -109,7 +109,7 @@
 
 /* Status Pills */
 .orders-status-pill {
-  @apply inline-flex items-center px-2 py-0.5 rounded-[3px] text-[11px] font-medium leading-tight;
+  @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium leading-tight;
 }
 
 .orders-status-pending {
@@ -142,7 +142,7 @@
 
 /* Payment Pills */
 .orders-payment-pill {
-  @apply inline-flex items-center px-2 py-0.5 rounded-[3px] text-[11px] font-medium leading-tight;
+  @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium leading-tight;
 }
 
 .orders-payment-pending {

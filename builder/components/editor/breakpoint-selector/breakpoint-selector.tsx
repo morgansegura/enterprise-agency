@@ -37,7 +37,7 @@ export function BreakpointSelector({
   onChange,
 }: BreakpointSelectorProps) {
   return (
-    <div className="flex items-center p-0.5 rounded-[3px] bg-[var(--el-100)] gap-0.5">
+    <div className="flex items-center p-0.5 rounded-md bg-[var(--el-100)] gap-0.5">
       {breakpoints.map((breakpoint) => {
         const Icon = breakpoint.icon;
         const isActive = value === breakpoint.value;
@@ -48,7 +48,7 @@ export function BreakpointSelector({
             type="button"
             onClick={() => onChange(breakpoint.value)}
             className={cn(
-              "flex items-center justify-center size-7 rounded-[3px] transition-colors duration-100 cursor-pointer",
+              "flex items-center justify-center size-7 rounded-md transition-colors duration-100 cursor-pointer",
               isActive
                 ? "bg-[var(--el-0)] text-[var(--el-800)] shadow-sm"
                 : "text-[var(--el-400)] hover:text-[var(--el-800)]",

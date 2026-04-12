@@ -2,7 +2,7 @@
 
 /* Select Trigger */
 [data-slot="select-trigger"] {
-  @apply flex h-8 w-full items-center justify-between whitespace-nowrap rounded-[3px] border border-(--el-300) bg-(--el-0) px-2.5 py-1 text-[14px] shadow-xs ring-(--offset-background) outline-1 outline-(--el-0) transition-all duration-100 disabled:cursor-not-allowed disabled:opacity-50;
+  @apply flex h-8 w-full items-center justify-between whitespace-nowrap rounded-md border border-(--el-300) bg-(--el-0) px-2.5 py-1 text-[14px] shadow-xs ring-(--offset-background) outline-1 outline-(--el-0) transition-all duration-100 disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 [data-slot="select-trigger"][data-placeholder] {
@@ -23,7 +23,7 @@
 
 /* Select Content */
 [data-slot="select-content"] {
-  @apply relative z-50 min-w-[8rem] overflow-hidden rounded-[3px] border bg-(--el-0) text-(--el-800) shadow-md;
+  @apply relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-(--el-0) text-(--el-800) shadow-md;
   max-height: min(var(--radix-select-content-available-height, 300px), 300px);
   transform-origin: var(--radix-select-content-transform-origin);
 }
@@ -86,7 +86,7 @@
 
 /* Select Item */
 [data-slot="select-item"] {
-  @apply relative flex w-full cursor-default select-none items-center rounded-[3px] py-1.5 pl-2 pr-8 text-[14px] outline-none transition-colors duration-100;
+  @apply relative flex w-full cursor-default select-none items-center rounded-md py-1.5 pl-2 pr-8 text-[14px] outline-none transition-colors duration-100;
 }
 
 [data-slot="select-item"]:focus {

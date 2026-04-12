@@ -15,7 +15,7 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-[3px] bg-[var(--el-0)] text-[var(--el-800)]",
+      "flex h-full w-full flex-col overflow-hidden rounded-md bg-[var(--el-0)] text-[var(--el-800)]",
       className,
     )}
     {...props}
@@ -39,12 +39,15 @@ const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b border-[var(--border-default)] px-3" cmdk-input-wrapper="">
+  <div
+    className="flex items-center border-b border-[var(--border-default)] px-3"
+    cmdk-input-wrapper=""
+  >
     <Search className="mr-2 h-4 w-4 shrink-0 text-[var(--el-400)]" />
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        "flex h-10 w-full rounded-[3px] bg-transparent py-3 text-[14px] outline-none placeholder:text-[var(--el-400)] disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-10 w-full rounded-md bg-transparent py-3 text-[14px] outline-none placeholder:text-[var(--el-400)] disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
       {...props}
@@ -115,7 +118,7 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default gap-2 select-none items-center rounded-[3px] px-2 py-1.5 text-[14px] outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-[var(--accent-primary-subtle)] data-[selected=true]:text-[var(--el-800)] data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0",
+      "relative flex cursor-default gap-2 select-none items-center rounded-md px-2 py-1.5 text-[14px] outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-[var(--accent-primary-subtle)] data-[selected=true]:text-[var(--el-800)] data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0",
       className,
     )}
     {...props}

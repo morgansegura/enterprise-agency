@@ -88,14 +88,14 @@ export default function ContactFormBlockRenderer({
             </label>
             {field.type === "textarea" ? (
               <textarea
-                className="w-full h-24 px-3 py-2 text-[14px] border border-(--border-default) rounded-[3px] bg-(--el-0)"
+                className="w-full h-24 px-3 py-2 text-[14px] border border-(--border-default) rounded-md bg-(--el-0)"
                 placeholder={`Your ${field.label.toLowerCase()}`}
                 disabled={isEditing}
               />
             ) : (
               <input
                 type={field.type}
-                className="w-full h-8 px-3 text-[14px] border border-(--border-default) rounded-[3px] bg-(--el-0)"
+                className="w-full h-8 px-3 text-[14px] border border-(--border-default) rounded-md bg-(--el-0)"
                 placeholder={`Your ${field.label.toLowerCase()}`}
                 disabled={isEditing}
               />
@@ -105,7 +105,7 @@ export default function ContactFormBlockRenderer({
         <button
           data-slot="contact-form-block-submit"
           type="button"
-          className="w-full h-10 bg-(--accent-primary) text-(--accent-primary-foreground) rounded-[3px] text-[14px] font-medium"
+          className="w-full h-10 bg-(--accent-primary) text-(--accent-primary-foreground) rounded-md text-[14px] font-medium"
           disabled={isEditing}
         >
           {submitText}

@@ -38,7 +38,7 @@
 }
 
 .border-radius-editor-link-btn {
-  @apply flex items-center gap-1 px-2 py-0.5 text-[9px] font-medium rounded-[3px];
+  @apply flex items-center gap-1 px-2 py-0.5 text-[9px] font-medium rounded-md;
   @apply bg-(--el-50) text-(--el-400) border border-(--border-default);
   @apply cursor-pointer transition-colors duration-100;
 }

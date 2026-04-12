@@ -173,9 +173,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
           />
           <SliderInput
             value={`${stop.position}%`}
-            onChange={(v) =>
-              updateStop(i, "position", parseInt(v) || 0)
-            }
+            onChange={(v) => updateStop(i, "position", parseInt(v) || 0)}
             min={0}
             max={100}
             step={1}
@@ -186,7 +184,7 @@ export function GradientBuilder({ value, onChange }: GradientBuilderProps) {
             <button
               type="button"
               onClick={() => removeStop(i)}
-              className="flex items-center justify-center size-5 rounded-[3px] text-(--el-400) hover:text-(--status-error) bg-transparent border-none cursor-pointer shrink-0"
+              className="flex items-center justify-center size-5 rounded-md text-(--el-400) hover:text-(--status-error) bg-transparent border-none cursor-pointer shrink-0"
             >
               <X className="size-3" />
             </button>

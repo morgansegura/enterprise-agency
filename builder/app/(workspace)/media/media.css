@@ -33,7 +33,7 @@
 }
 
 .media-sidebar-action {
-  @apply flex items-center justify-center h-6 w-6 rounded-[3px];
+  @apply flex items-center justify-center h-6 w-6 rounded-md;
   @apply text-(--text-secondary) hover:bg-(--el-100) hover:text-(--text-primary);
   @apply transition-colors;
 }
@@ -48,7 +48,7 @@
 }
 
 .media-folder-item {
-  @apply flex items-center gap-1 w-full px-2 py-1 rounded-[3px];
+  @apply flex items-center gap-1 w-full px-2 py-1 rounded-md;
   @apply text-[12px] text-(--text-secondary) cursor-pointer;
   @apply transition-colors;
 }
@@ -100,7 +100,7 @@
 }
 
 .media-folder-action {
-  @apply flex items-center justify-center h-5 w-5 rounded-[3px];
+  @apply flex items-center justify-center h-5 w-5 rounded-md;
   @apply text-(--text-tertiary) hover:bg-(--el-200) hover:text-(--text-primary);
   @apply transition-colors;
 }
@@ -223,7 +223,7 @@
 }
 
 .media-toolbar-search-input {
-  @apply pl-9 h-9 rounded-[3px] outline outline-(--e,-0);
+  @apply pl-9 h-9 rounded-md outline outline-(--e,-0);
 }
 
 .media-toolbar-filters {
@@ -369,7 +369,7 @@
 }
 
 .media-detail-url-input {
-  @apply flex-1 font-mono text-xs h-8 rounded-[3px];
+  @apply flex-1 font-mono text-xs h-8 rounded-md;
 }
 
 .media-detail-actions {
@@ -526,7 +526,7 @@
 }
 
 .media-attachment-field textarea {
-  @apply w-full px-3 py-2 text-[13px] rounded-[3px];
+  @apply w-full px-3 py-2 text-[13px] rounded-md;
   @apply border border-(--border-default) bg-(--el-0);
   @apply resize-y;
 }

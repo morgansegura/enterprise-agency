@@ -42,7 +42,7 @@
 
 /* Connected state */
 .figma-connected {
-  @apply flex items-center justify-between px-3 py-2.5 rounded-[3px];
+  @apply flex items-center justify-between px-3 py-2.5 rounded-md;
   @apply bg-(--status-success-subtle)/30 border border-(--status-success)/20;
 }
 
@@ -65,13 +65,13 @@
 }
 
 .figma-badge {
-  @apply ml-auto text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-[3px];
+  @apply ml-auto text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-md;
   @apply bg-(--status-success-subtle) text-(--status-success);
 }
 
 /* Page item (used for theme toggle too) */
 .figma-page-item {
-  @apply flex items-center gap-2 px-3 py-2 rounded-[3px] cursor-pointer;
+  @apply flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer;
   @apply text-[14px] text-(--el-800);
   @apply hover:bg-(--accent-primary-subtle)/30;
 }
@@ -93,11 +93,11 @@
 }
 
 .figma-frame-page {
-  @apply rounded-[3px] overflow-hidden;
+  @apply rounded-md overflow-hidden;
 }
 
 .figma-frame-page-header {
-  @apply flex items-center gap-2 px-2 py-2 rounded-[3px];
+  @apply flex items-center gap-2 px-2 py-2 rounded-md;
   @apply text-[13px] font-medium text-(--el-800);
   @apply hover:bg-(--el-50);
 }
@@ -107,7 +107,7 @@
 }
 
 .figma-frame-page-toggle {
-  @apply flex items-center justify-center size-5 rounded-[3px];
+  @apply flex items-center justify-center size-5 rounded-md;
   @apply bg-transparent border-none cursor-pointer text-(--el-400);
 }
 
@@ -128,7 +128,7 @@
 }
 
 .figma-frame-item {
-  @apply flex items-center gap-2 px-2 py-1.5 rounded-[3px] cursor-pointer;
+  @apply flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer;
   @apply text-[13px] text-(--el-600);
   @apply hover:bg-(--accent-primary-subtle)/30;
 }
@@ -147,7 +147,7 @@
 }
 
 .figma-color-swatch {
-  @apply flex items-center gap-1.5 px-2 py-1 rounded-[3px] bg-(--el-50);
+  @apply flex items-center gap-1.5 px-2 py-1 rounded-md bg-(--el-50);
 }
 
 .figma-color-dot {
@@ -164,7 +164,7 @@
 }
 
 .figma-text-style {
-  @apply flex items-center justify-between px-3 py-2 rounded-[3px] bg-(--el-50);
+  @apply flex items-center justify-between px-3 py-2 rounded-md bg-(--el-50);
 }
 
 .figma-text-meta {
@@ -184,7 +184,7 @@
 
 /* Result summary */
 .figma-result-summary {
-  @apply space-y-2 px-4 py-3 rounded-[3px] bg-(--el-50);
+  @apply space-y-2 px-4 py-3 rounded-md bg-(--el-50);
 }
 
 .figma-result-row {

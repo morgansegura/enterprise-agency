@@ -45,7 +45,7 @@
 }
 
 .spacing-link-btn {
-  @apply flex items-center justify-center size-5 rounded-[3px] cursor-pointer;
+  @apply flex items-center justify-center size-5 rounded-md cursor-pointer;
   @apply bg-transparent border-none text-(--text-tertiary);
   @apply transition-colors duration-100;
 }

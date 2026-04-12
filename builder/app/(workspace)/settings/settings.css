@@ -90,11 +90,11 @@
 }
 
 .settings-field-input {
-  @apply h-10 rounded-[3px];
+  @apply h-10 rounded-md;
 }
 
 .settings-field-textarea {
-  @apply rounded-[3px];
+  @apply rounded-md;
 }
 
 .settings-field-hint {
@@ -139,7 +139,7 @@
 
 /* Tier badge */
 .settings-tier-pill {
-  @apply inline-flex items-center px-2.5 py-1 rounded-[3px] text-[11px] font-semibold;
+  @apply inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold;
 }
 
 .settings-tier-pill-builder {

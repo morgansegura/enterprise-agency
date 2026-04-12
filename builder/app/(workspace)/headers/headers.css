@@ -5,7 +5,7 @@
    ============================================================================ */
 
 .headers-page {
-  @apply flex-1 flex flex-col gap-3 p-4 bg-(--el-0) rounded-[3px] border border-(--border)/50 shadow-xs;
+  @apply flex-1 flex flex-col gap-3 p-4 bg-(--el-0) rounded-md border border-(--border)/50 shadow-xs;
 }
 
 /* Template picker */
@@ -22,7 +22,7 @@
 }
 
 .headers-template-card {
-  @apply flex flex-col gap-1.5 p-0 rounded-[3px] overflow-hidden cursor-pointer;
+  @apply flex flex-col gap-1.5 p-0 rounded-md overflow-hidden cursor-pointer;
   @apply border border-(--border-default) bg-(--el-0);
   @apply transition-all duration-150;
 }
@@ -60,7 +60,7 @@
 /* Default badge */
 .headers-default-badge {
   @apply inline-flex items-center gap-1 px-1.5 py-0.5;
-  @apply text-[11px] font-medium rounded-[3px];
+  @apply text-[11px] font-medium rounded-md;
   @apply bg-blue-100 text-blue-700;
 }
 

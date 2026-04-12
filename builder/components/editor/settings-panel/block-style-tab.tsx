@@ -130,21 +130,21 @@ export function BlockStyleTab({ block, onChange }: BlockStyleTabProps) {
       <div className="flex items-center gap-0.5 p-1 border-b-0 bg-(--el-50)">
         <button
           type="button"
-          className={`px-2.5 py-1 text-xs font-semibold tracking-wider rounded-[3px] border-none cursor-pointer transition-colors ${mode === "normal" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+          className={`px-2.5 py-1 text-xs font-semibold tracking-wider rounded-md border-none cursor-pointer transition-colors ${mode === "normal" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
           onClick={() => setMode("normal")}
         >
           Normal
         </button>
         <button
           type="button"
-          className={`px-2.5 py-1 text-xs font-semibold rounded-[3px] border-none cursor-pointer transition-colors ${mode === "before" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-700) hover:text-(--el-800)"}`}
+          className={`px-2.5 py-1 text-xs font-semibold rounded-md border-none cursor-pointer transition-colors ${mode === "before" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-700) hover:text-(--el-800)"}`}
           onClick={() => setMode("before")}
         >
           ::before
         </button>
         <button
           type="button"
-          className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === "after" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+          className={`px-2.5 py-1 text-[11px] font-medium rounded-md border-none cursor-pointer transition-colors ${mode === "after" ? "bg-(--accent-primary) text-white" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
           onClick={() => setMode("after")}
         >
           ::after
@@ -307,7 +307,7 @@ export function ElementStyleEditor({
             <button
               key={m}
               type="button"
-              className={`px-2.5 py-1 text-[11px] font-medium rounded-[3px] border-none cursor-pointer transition-colors ${mode === m ? "bg-(--el-200) inset-shadow-xs inset-shadow-black/10 text-(--el-500" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
+              className={`px-2.5 py-1 text-[11px] font-medium rounded-md border-none cursor-pointer transition-colors ${mode === m ? "bg-(--el-200) inset-shadow-xs inset-shadow-black/10 text-(--el-500" : "bg-transparent text-(--el-500) hover:text-(--el-800)"}`}
               onClick={() => setMode(m)}
             >
               {m === "normal" ? "Normal" : `::${m}`}

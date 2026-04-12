@@ -14,7 +14,7 @@
 }
 
 .image-editor-tool {
-  @apply flex items-center gap-1.5 px-2.5 h-7 rounded-[3px];
+  @apply flex items-center gap-1.5 px-2.5 h-7 rounded-md;
   @apply text-[12px] font-medium text-(--el-500) bg-transparent border-none cursor-pointer;
   @apply transition-colors duration-100;
 }

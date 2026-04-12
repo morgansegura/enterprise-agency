@@ -5,13 +5,13 @@
 }
 
 .position-type-toggle {
-  @apply flex gap-0.5 p-0.5 rounded-[3px] bg-(--el-100);
+  @apply flex gap-0.5 p-0.5 rounded-md bg-(--el-100);
 }
 
 .position-type-btn {
   @apply flex-1 h-7 flex items-center justify-center;
   @apply text-[11px] font-medium text-(--el-500);
-  @apply bg-transparent border-none rounded-[3px] cursor-pointer;
+  @apply bg-transparent border-none rounded-md cursor-pointer;
   @apply transition-colors duration-100;
 }
 
@@ -42,7 +42,7 @@
 
 .position-offset-input {
   @apply w-14 h-7 text-center text-[13px] font-medium;
-  @apply bg-(--el-100) border-none rounded-[3px] text-(--el-800);
+  @apply bg-(--el-100) border-none rounded-md text-(--el-800);
   @apply outline-none;
 }
 
@@ -69,7 +69,7 @@
 
 .position-input {
   @apply w-16 h-7 text-center text-[13px] font-medium;
-  @apply bg-(--el-100) border-none rounded-[3px] text-(--el-800);
+  @apply bg-(--el-100) border-none rounded-md text-(--el-800);
   @apply outline-none;
 }
 

@@ -44,40 +44,74 @@ export default function NewPagePage() {
   });
 
   // Generate starter sections based on template
-  const getStarterSections = React.useCallback((template: string, title?: string) => {
-    const ts = Date.now();
-    if (template === "blank") return [];
-    // Default template: hero section + content section
-    return [
-      {
-        _type: "section" as const,
-        _key: `section-hero-${ts}`,
-        width: "full",
-        paddingY: "xl",
-        containers: [{
-          _type: "container" as const,
-          _key: `container-hero-${ts}`,
-          blocks: [
-            { _key: `heading-${ts}`, _type: "heading-block", data: { text: title || "Page Title", level: "h1", size: "4xl", align: "center", weight: "bold" } },
-            { _key: `text-${ts}`, _type: "text-block", data: { text: "Welcome to your new page. Click on any text to edit it directly.", size: "lg", align: "center", variant: "muted" } },
+  const getStarterSections = React.useCallback(
+    (template: string, title?: string) => {
+      const ts = Date.now();
+      if (template === "blank") return [];
+      // Default template: hero section + content section
+      return [
+        {
+          _type: "section" as const,
+          _key: `section-hero-${ts}`,
+          width: "full",
+          paddingY: "xl",
+          containers: [
+            {
+              _type: "container" as const,
+              _key: `container-hero-${ts}`,
+              blocks: [
+                {
+                  _key: `heading-${ts}`,
+                  _type: "heading-block",
+                  data: {
+                    text: title || "Page Title",
+                    level: "h1",
+                    size: "4xl",
+                    align: "center",
+                    weight: "bold",
+                  },
+                },
+                {
+                  _key: `text-${ts}`,
+                  _type: "text-block",
+                  data: {
+                    text: "Welcome to your new page. Click on any text to edit it directly.",
+                    size: "lg",
+                    align: "center",
+                    variant: "muted",
+                  },
+                },
+              ],
+            },
           ],
-        }],
-      },
-      {
-        _type: "section" as const,
-        _key: `section-content-${ts + 1}`,
-        width: "container",
-        paddingY: "lg",
-        containers: [{
-          _type: "container" as const,
-          _key: `container-content-${ts + 1}`,
-          blocks: [
-            { _key: `richtext-${ts + 1}`, _type: "rich-text-block", data: { html: "<p>Start adding your content here. Use the <strong>Add</strong> panel on the left to insert new blocks.</p>", size: "md", align: "left" } },
+        },
+        {
+          _type: "section" as const,
+          _key: `section-content-${ts + 1}`,
+          width: "container",
+          paddingY: "lg",
+          containers: [
+            {
+              _type: "container" as const,
+              _key: `container-content-${ts + 1}`,
+              blocks: [
+                {
+                  _key: `richtext-${ts + 1}`,
+                  _type: "rich-text-block",
+                  data: {
+                    html: "<p>Start adding your content here. Use the <strong>Add</strong> panel on the left to insert new blocks.</p>",
+                    size: "md",
+                    align: "left",
+                  },
+                },
+              ],
+            },
           ],
-        }],
-      },
-    ];
-  }, []);
+        },
+      ];
+    },
+    [],
+  );
 
   const onSubmit = (formData: PageForm) => {
     createPage.mutate(
@@ -86,7 +120,10 @@ export default function NewPagePage() {
         slug: formData.slug,
         template: formData.template,
         status: "draft",
-        sections: getStarterSections(formData.template || "default", formData.title) as unknown as Section[],
+        sections: getStarterSections(
+          formData.template || "default",
+          formData.title,
+        ) as unknown as Section[],
       },
       {
         onSuccess: (page) => {
@@ -112,7 +149,6 @@ export default function NewPagePage() {
       backHref="/pages"
       maxWidth="md"
     >
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <Card>
@@ -163,9 +199,11 @@ export default function NewPagePage() {
                     <FormControl>
                       <select
                         {...field}
-                        className="w-full h-8 px-2.5 text-[14px] rounded-[3px] bg-[var(--el-0)] border border-[var(--border-default)] text-[var(--el-800)]"
+                        className="w-full h-8 px-2.5 text-[14px] rounded-md bg-[var(--el-0)] border border-[var(--border-default)] text-[var(--el-800)]"
                       >
-                        <option value="default">Default (Hero + Content)</option>
+                        <option value="default">
+                          Default (Hero + Content)
+                        </option>
                         <option value="blank">Blank Page</option>
                       </select>
                     </FormControl>

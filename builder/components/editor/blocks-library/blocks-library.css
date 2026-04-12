@@ -29,7 +29,7 @@
 
 /* Search */
 .blocks-library-search {
-  @apply flex items-center gap-2 px-2.5 h-8 rounded-[3px];
+  @apply flex items-center gap-2 px-2.5 h-8 rounded-md;
   @apply bg-(--el-100) border border-(--border-default);
   @apply text-[12px] text-(--el-500);
 }
@@ -68,7 +68,7 @@
 
 /* Block card */
 .blocks-library-card {
-  @apply flex flex-col items-center gap-1.5 p-2 rounded-[3px] cursor-pointer;
+  @apply flex flex-col items-center gap-1.5 p-2 rounded-md cursor-pointer;
   @apply bg-transparent border-none;
   @apply transition-colors duration-100;
 }
@@ -78,7 +78,7 @@
 }
 
 .blocks-library-card-icon {
-  @apply flex items-center justify-center w-full aspect-square rounded-[3px];
+  @apply flex items-center justify-center w-full aspect-square rounded-md;
   @apply bg-(--el-0) border border-(--el-200) text-(--el-500);
   @apply transition-colors duration-100;
 }
@@ -104,7 +104,7 @@
 }
 
 .blocks-library-section-card {
-  @apply flex flex-col w-full rounded-[3px] overflow-hidden cursor-pointer;
+  @apply flex flex-col w-full rounded-md overflow-hidden cursor-pointer;
   @apply border border-(--border-default) bg-(--el-0) text-left;
   @apply transition-all duration-150;
 }

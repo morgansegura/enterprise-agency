@@ -31,7 +31,7 @@
 
 .settings-drawer-nav-item {
   @apply flex items-center gap-3 w-full;
-  @apply px-4 py-3 rounded-[3px];
+  @apply px-4 py-3 rounded-md;
   @apply text-left;
   @apply text-(--el-500);
   @apply hover:bg-(--el-100) hover:text-(--el-800);
@@ -104,7 +104,7 @@
 
 .settings-placeholder {
   @apply text-[14px] text-(--el-500);
-  @apply p-8 border border-dashed border-(--border-default) rounded-[3px];
+  @apply p-8 border border-dashed border-(--border-default) rounded-md;
   @apply text-center;
 }
 

@@ -9,7 +9,7 @@
 }
 
 .image-picker-preview {
-  @apply relative rounded-[3px] overflow-hidden border border-(--border-default);
+  @apply relative rounded-md overflow-hidden border border-(--border-default);
 }
 
 .image-picker-thumb {
@@ -29,7 +29,7 @@
 }
 
 .image-picker-remove {
-  @apply flex items-center justify-center size-6 rounded-[3px];
+  @apply flex items-center justify-center size-6 rounded-md;
   @apply bg-(--el-900)/60 text-white border-none cursor-pointer;
   @apply transition-colors duration-100;
 }

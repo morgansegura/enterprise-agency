@@ -55,7 +55,7 @@
 
 /* SV Canvas area */
 .color-picker-sv-area {
-  @apply relative w-full rounded-[3px] overflow-hidden cursor-crosshair;
+  @apply relative w-full rounded-md overflow-hidden cursor-crosshair;
   @apply border border-(--border-default);
 }
 
@@ -128,7 +128,7 @@
 }
 
 .color-picker-mode-btn {
-  @apply px-2 py-0.5 text-[10px] font-semibold rounded-[3px] cursor-pointer;
+  @apply px-2 py-0.5 text-[10px] font-semibold rounded-md cursor-pointer;
   @apply bg-(--el-50) text-(--el-400) border border-(--border-default);
   @apply transition-colors duration-100;
 }
@@ -167,7 +167,7 @@
 }
 
 .color-picker-swatch-btn {
-  @apply w-5 h-5 rounded-[3px] border border-(--border-default) cursor-pointer;
+  @apply w-5 h-5 rounded-md border border-(--border-default) cursor-pointer;
   @apply transition-transform duration-100;
 }
 
@@ -177,7 +177,7 @@
 
 /* Transparent button */
 .color-picker-transparent {
-  @apply w-full h-7 rounded-[3px];
+  @apply w-full h-7 rounded-md;
   @apply text-[11px] text-(--el-500) bg-(--el-50) border border-(--border-default);
   @apply cursor-pointer transition-colors duration-100;
 }
@@ -188,7 +188,7 @@
 
 /* Preview */
 .color-picker-preview {
-  @apply w-8 h-8 rounded-[3px] border border-(--border-default) shrink-0;
+  @apply w-8 h-8 rounded-md border border-(--border-default) shrink-0;
 }
 
 .color-picker-hex-row {

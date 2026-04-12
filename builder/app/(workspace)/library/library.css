@@ -132,7 +132,7 @@
 
 /* Scope badge */
 .library-card-scope {
-  @apply absolute top-2 left-2 px-1.5 py-0.5 rounded-[3px];
+  @apply absolute top-2 left-2 px-1.5 py-0.5 rounded-md;
   @apply text-[9px] font-bold uppercase tracking-wider;
 }
 

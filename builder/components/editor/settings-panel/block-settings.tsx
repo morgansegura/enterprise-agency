@@ -13,10 +13,7 @@ import {
 } from "./components";
 import { HeadingSettings } from "@/components/settings/element-settings/heading-settings";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
-import {
-  setResponsiveOverride,
-  getResponsiveValue,
-} from "@/lib/responsive";
+import { setResponsiveOverride, getResponsiveValue } from "@/lib/responsive";
 import type { Block } from "@/lib/hooks/use-pages";
 
 // =============================================================================
@@ -84,10 +81,7 @@ function TextBlockSettings({
   ];
 
   return (
-    <PropertySection
-      title="Typography"
-      icon={<Type className="h-3.5 w-3.5" />}
-    >
+    <PropertySection title="Typography" icon={<Type className="h-3.5 w-3.5" />}>
       <PropertyRow label="Size">
         <PropertySelect
           value={size}
@@ -520,21 +514,30 @@ function VideoBlockSettings({
       <PropertyRow label="Autoplay">
         <PropertyToggle
           value={data.autoplay ? "yes" : "no"}
-          options={[{ value: "no", label: "No" }, { value: "yes", label: "Yes" }]}
+          options={[
+            { value: "no", label: "No" },
+            { value: "yes", label: "Yes" },
+          ]}
           onChange={(v) => handleChange("autoplay", v === "yes")}
         />
       </PropertyRow>
       <PropertyRow label="Muted">
         <PropertyToggle
           value={data.muted ? "yes" : "no"}
-          options={[{ value: "no", label: "No" }, { value: "yes", label: "Yes" }]}
+          options={[
+            { value: "no", label: "No" },
+            { value: "yes", label: "Yes" },
+          ]}
           onChange={(v) => handleChange("muted", v === "yes")}
         />
       </PropertyRow>
       <PropertyRow label="Loop">
         <PropertyToggle
           value={data.loop ? "yes" : "no"}
-          options={[{ value: "no", label: "No" }, { value: "yes", label: "Yes" }]}
+          options={[
+            { value: "no", label: "No" },
+            { value: "yes", label: "Yes" },
+          ]}
           onChange={(v) => handleChange("loop", v === "yes")}
         />
       </PropertyRow>
@@ -642,16 +645,30 @@ function MapBlockSettings({
       </PropertyRow>
       <PropertyRow label="Latitude" stacked>
         <Input
-          value={String(((data.center as Record<string, unknown>)?.lat as number) || "")}
-          onChange={(e) => handleChange("center", { ...((data.center as Record<string, unknown>) || {}), lat: parseFloat(e.target.value) || 0 })}
+          value={String(
+            ((data.center as Record<string, unknown>)?.lat as number) || "",
+          )}
+          onChange={(e) =>
+            handleChange("center", {
+              ...((data.center as Record<string, unknown>) || {}),
+              lat: parseFloat(e.target.value) || 0,
+            })
+          }
           placeholder="40.7128"
           className="settings-input"
         />
       </PropertyRow>
       <PropertyRow label="Longitude" stacked>
         <Input
-          value={String(((data.center as Record<string, unknown>)?.lng as number) || "")}
-          onChange={(e) => handleChange("center", { ...((data.center as Record<string, unknown>) || {}), lng: parseFloat(e.target.value) || 0 })}
+          value={String(
+            ((data.center as Record<string, unknown>)?.lng as number) || "",
+          )}
+          onChange={(e) =>
+            handleChange("center", {
+              ...((data.center as Record<string, unknown>) || {}),
+              lng: parseFloat(e.target.value) || 0,
+            })
+          }
           placeholder="-74.0060"
           className="settings-input"
         />
@@ -836,26 +853,51 @@ function HeroBlockSettings({
           />
         </PropertyRow>
       </PropertySection>
-      <PropertySection title="Links" icon={<Box className="h-3.5 w-3.5" />} defaultOpen={false}>
+      <PropertySection
+        title="Links"
+        icon={<Box className="h-3.5 w-3.5" />}
+        defaultOpen={false}
+      >
         <PropertyRow label="Primary CTA URL" stacked>
           <Input
-            value={((data.primaryCta as Record<string, unknown>)?.href as string) || ""}
-            onChange={(e) => handleChange("primaryCta", { ...(data.primaryCta as Record<string, unknown>), href: e.target.value })}
+            value={
+              ((data.primaryCta as Record<string, unknown>)?.href as string) ||
+              ""
+            }
+            onChange={(e) =>
+              handleChange("primaryCta", {
+                ...(data.primaryCta as Record<string, unknown>),
+                href: e.target.value,
+              })
+            }
             placeholder="https://..."
             className="settings-input"
           />
         </PropertyRow>
         <PropertyRow label="Secondary CTA URL" stacked>
           <Input
-            value={((data.secondaryCta as Record<string, unknown>)?.href as string) || ""}
-            onChange={(e) => handleChange("secondaryCta", { ...(data.secondaryCta as Record<string, unknown>), href: e.target.value })}
+            value={
+              ((data.secondaryCta as Record<string, unknown>)
+                ?.href as string) || ""
+            }
+            onChange={(e) =>
+              handleChange("secondaryCta", {
+                ...(data.secondaryCta as Record<string, unknown>),
+                href: e.target.value,
+              })
+            }
             placeholder="https://..."
             className="settings-input"
           />
         </PropertyRow>
         <ImagePickerField
           value={((data.image as Record<string, unknown>)?.src as string) || ""}
-          onChange={(url) => handleChange("image", { ...(data.image as Record<string, unknown>), src: url })}
+          onChange={(url) =>
+            handleChange("image", {
+              ...(data.image as Record<string, unknown>),
+              src: url,
+            })
+          }
           label="Background Image"
         />
       </PropertySection>
@@ -1000,7 +1042,10 @@ function TestimonialBlockSettings({
   };
 
   return (
-    <PropertySection title="Testimonials" icon={<Type className="h-3.5 w-3.5" />}>
+    <PropertySection
+      title="Testimonials"
+      icon={<Type className="h-3.5 w-3.5" />}
+    >
       <PropertyRow label="Columns">
         <PropertySelect
           value={String((data.columns as number) || 2)}
@@ -1128,7 +1173,18 @@ function TeamBlockSettings({
 
 interface FormField {
   id: string;
-  type: "text" | "email" | "phone" | "textarea" | "select" | "checkbox" | "radio" | "file" | "number" | "date" | "url";
+  type:
+    | "text"
+    | "email"
+    | "phone"
+    | "textarea"
+    | "select"
+    | "checkbox"
+    | "radio"
+    | "file"
+    | "number"
+    | "date"
+    | "url";
   label: string;
   placeholder?: string;
   required?: boolean;
@@ -1158,9 +1214,27 @@ function ContactFormBlockSettings({
 }) {
   const data = block.data || {};
   const fields = ((data.fields as FormField[]) || [
-    { id: "name", type: "text", label: "Name", placeholder: "Your name", required: true },
-    { id: "email", type: "email", label: "Email", placeholder: "you@example.com", required: true },
-    { id: "message", type: "textarea", label: "Message", placeholder: "How can we help?", required: false },
+    {
+      id: "name",
+      type: "text",
+      label: "Name",
+      placeholder: "Your name",
+      required: true,
+    },
+    {
+      id: "email",
+      type: "email",
+      label: "Email",
+      placeholder: "you@example.com",
+      required: true,
+    },
+    {
+      id: "message",
+      type: "textarea",
+      label: "Message",
+      placeholder: "How can we help?",
+      required: false,
+    },
   ]) as FormField[];
 
   const handleChange = (field: string, value: unknown) => {
@@ -1175,11 +1249,23 @@ function ContactFormBlockSettings({
 
   const addField = () => {
     const id = `field-${Date.now()}`;
-    handleChange("fields", [...fields, { id, type: "text", label: "New Field", placeholder: "", required: false }]);
+    handleChange("fields", [
+      ...fields,
+      {
+        id,
+        type: "text",
+        label: "New Field",
+        placeholder: "",
+        required: false,
+      },
+    ]);
   };
 
   const removeField = (index: number) => {
-    handleChange("fields", fields.filter((_, i) => i !== index));
+    handleChange(
+      "fields",
+      fields.filter((_, i) => i !== index),
+    );
   };
 
   const moveField = (index: number, direction: -1 | 1) => {
@@ -1192,52 +1278,120 @@ function ContactFormBlockSettings({
 
   return (
     <>
-      <PropertySection title="Form Settings" icon={<Type className="h-3.5 w-3.5" />}>
+      <PropertySection
+        title="Form Settings"
+        icon={<Type className="h-3.5 w-3.5" />}
+      >
         <PropertyRow label="Heading" stacked>
-          <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+          <Input
+            value={(data.heading as string) || ""}
+            onChange={(e) => handleChange("heading", e.target.value)}
+            className="settings-input"
+          />
         </PropertyRow>
         <PropertyRow label="Description" stacked>
-          <Input value={(data.description as string) || ""} onChange={(e) => handleChange("description", e.target.value)} className="settings-input" />
+          <Input
+            value={(data.description as string) || ""}
+            onChange={(e) => handleChange("description", e.target.value)}
+            className="settings-input"
+          />
         </PropertyRow>
         <PropertyRow label="Button Text" stacked>
-          <Input value={(data.submitText as string) || "Submit"} onChange={(e) => handleChange("submitText", e.target.value)} className="settings-input" />
+          <Input
+            value={(data.submitText as string) || "Submit"}
+            onChange={(e) => handleChange("submitText", e.target.value)}
+            className="settings-input"
+          />
         </PropertyRow>
         <PropertyRow label="Email To" stacked>
-          <Input value={(data.recipientEmail as string) || ""} onChange={(e) => handleChange("recipientEmail", e.target.value)} className="settings-input" placeholder="you@company.com" />
+          <Input
+            value={(data.recipientEmail as string) || ""}
+            onChange={(e) => handleChange("recipientEmail", e.target.value)}
+            className="settings-input"
+            placeholder="you@company.com"
+          />
         </PropertyRow>
         <PropertyRow label="Success Msg" stacked>
-          <Input value={(data.successMessage as string) || ""} onChange={(e) => handleChange("successMessage", e.target.value)} className="settings-input" placeholder="Thanks! We'll be in touch." />
+          <Input
+            value={(data.successMessage as string) || ""}
+            onChange={(e) => handleChange("successMessage", e.target.value)}
+            className="settings-input"
+            placeholder="Thanks! We'll be in touch."
+          />
         </PropertyRow>
       </PropertySection>
 
-      <PropertySection title="Form Fields" icon={<Box className="h-3.5 w-3.5" />}>
+      <PropertySection
+        title="Form Fields"
+        icon={<Box className="h-3.5 w-3.5" />}
+      >
         {fields.map((field, i) => (
-          <div key={field.id} className="border border-(--border-default) rounded-[3px] p-2 space-y-2">
+          <div
+            key={field.id}
+            className="border border-(--border-default) rounded-md p-2 space-y-2"
+          >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold text-(--el-600)">{field.label}</span>
+              <span className="text-[11px] font-semibold text-(--el-600)">
+                {field.label}
+              </span>
               <div className="flex items-center gap-0.5">
-                <button type="button" onClick={() => moveField(i, -1)} disabled={i === 0} className="text-[11px] text-(--el-400) hover:text-(--el-800) disabled:opacity-30 bg-transparent border-none cursor-pointer">↑</button>
-                <button type="button" onClick={() => moveField(i, 1)} disabled={i === fields.length - 1} className="text-[11px] text-(--el-400) hover:text-(--el-800) disabled:opacity-30 bg-transparent border-none cursor-pointer">↓</button>
-                <button type="button" onClick={() => removeField(i)} className="text-[11px] text-(--status-error) hover:text-(--status-error) bg-transparent border-none cursor-pointer">×</button>
+                <button
+                  type="button"
+                  onClick={() => moveField(i, -1)}
+                  disabled={i === 0}
+                  className="text-[11px] text-(--el-400) hover:text-(--el-800) disabled:opacity-30 bg-transparent border-none cursor-pointer"
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  onClick={() => moveField(i, 1)}
+                  disabled={i === fields.length - 1}
+                  className="text-[11px] text-(--el-400) hover:text-(--el-800) disabled:opacity-30 bg-transparent border-none cursor-pointer"
+                >
+                  ↓
+                </button>
+                <button
+                  type="button"
+                  onClick={() => removeField(i)}
+                  className="text-[11px] text-(--status-error) hover:text-(--status-error) bg-transparent border-none cursor-pointer"
+                >
+                  ×
+                </button>
               </div>
             </div>
             <PropertyRow label="Label">
-              <Input value={field.label} onChange={(e) => updateField(i, { label: e.target.value })} className="h-7 text-xs" />
+              <Input
+                value={field.label}
+                onChange={(e) => updateField(i, { label: e.target.value })}
+                className="h-7 text-xs"
+              />
             </PropertyRow>
             <PropertyRow label="Type">
               <PropertySelect
                 value={field.type}
                 options={FIELD_TYPES}
-                onChange={(v) => updateField(i, { type: v as FormField["type"] })}
+                onChange={(v) =>
+                  updateField(i, { type: v as FormField["type"] })
+                }
               />
             </PropertyRow>
             <PropertyRow label="Placeholder">
-              <Input value={field.placeholder || ""} onChange={(e) => updateField(i, { placeholder: e.target.value })} className="h-7 text-xs" />
+              <Input
+                value={field.placeholder || ""}
+                onChange={(e) =>
+                  updateField(i, { placeholder: e.target.value })
+                }
+                className="h-7 text-xs"
+              />
             </PropertyRow>
             <PropertyRow label="Required">
               <PropertyToggle
                 value={field.required ? "yes" : "no"}
-                options={[{ value: "no", label: "No" }, { value: "yes", label: "Yes" }]}
+                options={[
+                  { value: "no", label: "No" },
+                  { value: "yes", label: "Yes" },
+                ]}
                 onChange={(v) => updateField(i, { required: v === "yes" })}
               />
             </PropertyRow>
@@ -1245,7 +1399,14 @@ function ContactFormBlockSettings({
               <PropertyRow label="Options" stacked>
                 <Input
                   value={(field.options || []).join(", ")}
-                  onChange={(e) => updateField(i, { options: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })}
+                  onChange={(e) =>
+                    updateField(i, {
+                      options: e.target.value
+                        .split(",")
+                        .map((s) => s.trim())
+                        .filter(Boolean),
+                    })
+                  }
                   className="h-7 text-xs"
                   placeholder="Option 1, Option 2, Option 3"
                 />
@@ -1256,7 +1417,7 @@ function ContactFormBlockSettings({
         <button
           type="button"
           onClick={addField}
-          className="w-full py-2 rounded-[3px] text-[12px] font-medium text-(--accent-primary) border border-dashed border-(--border-default) bg-transparent cursor-pointer hover:bg-(--accent-primary-subtle)/30 hover:border-(--accent-primary) transition-colors"
+          className="w-full py-2 rounded-md text-[12px] font-medium text-(--accent-primary) border border-dashed border-(--border-default) bg-transparent cursor-pointer hover:bg-(--accent-primary-subtle)/30 hover:border-(--accent-primary) transition-colors"
         >
           + Add Field
         </button>
@@ -1280,18 +1441,33 @@ function NewsletterBlockSettings({
   return (
     <PropertySection title="Newsletter" icon={<Type className="h-3.5 w-3.5" />}>
       <PropertyRow label="Heading" stacked>
-        <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+        <Input
+          value={(data.heading as string) || ""}
+          onChange={(e) => handleChange("heading", e.target.value)}
+          className="settings-input"
+        />
       </PropertyRow>
       <PropertyRow label="Button Text" stacked>
-        <Input value={(data.buttonText as string) || ""} onChange={(e) => handleChange("buttonText", e.target.value)} className="settings-input" />
+        <Input
+          value={(data.buttonText as string) || ""}
+          onChange={(e) => handleChange("buttonText", e.target.value)}
+          className="settings-input"
+        />
       </PropertyRow>
       <PropertyRow label="Placeholder" stacked>
-        <Input value={(data.placeholder as string) || ""} onChange={(e) => handleChange("placeholder", e.target.value)} className="settings-input" />
+        <Input
+          value={(data.placeholder as string) || ""}
+          onChange={(e) => handleChange("placeholder", e.target.value)}
+          className="settings-input"
+        />
       </PropertyRow>
       <PropertyRow label="Layout" stacked>
         <PropertyToggle
           value={(data.variant as string) || "inline"}
-          options={[{ value: "inline", label: "Inline" }, { value: "stacked", label: "Stacked" }]}
+          options={[
+            { value: "inline", label: "Inline" },
+            { value: "stacked", label: "Stacked" },
+          ]}
           onChange={(v) => handleChange("variant", v)}
           fullWidth
         />
@@ -1313,21 +1489,36 @@ function FeatureGridBlockSettings({
   };
 
   return (
-    <PropertySection title="Feature Grid" icon={<Type className="h-3.5 w-3.5" />}>
+    <PropertySection
+      title="Feature Grid"
+      icon={<Type className="h-3.5 w-3.5" />}
+    >
       <PropertyRow label="Heading" stacked>
-        <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+        <Input
+          value={(data.heading as string) || ""}
+          onChange={(e) => handleChange("heading", e.target.value)}
+          className="settings-input"
+        />
       </PropertyRow>
       <PropertyRow label="Columns">
         <PropertySelect
           value={String((data.columns as number) || 3)}
-          options={[{ value: "2", label: "2" }, { value: "3", label: "3" }, { value: "4", label: "4" }]}
+          options={[
+            { value: "2", label: "2" },
+            { value: "3", label: "3" },
+            { value: "4", label: "4" },
+          ]}
           onChange={(v) => handleChange("columns", parseInt(v))}
         />
       </PropertyRow>
       <PropertyRow label="Variant" stacked>
         <PropertyToggle
           value={(data.variant as string) || "card"}
-          options={[{ value: "default", label: "Default" }, { value: "card", label: "Card" }, { value: "centered", label: "Center" }]}
+          options={[
+            { value: "default", label: "Default" },
+            { value: "card", label: "Card" },
+            { value: "centered", label: "Center" },
+          ]}
           onChange={(v) => handleChange("variant", v)}
           fullWidth
         />
@@ -1351,10 +1542,18 @@ function FaqBlockSettings({
   return (
     <PropertySection title="FAQ" icon={<Type className="h-3.5 w-3.5" />}>
       <PropertyRow label="Heading" stacked>
-        <Input value={(data.heading as string) || ""} onChange={(e) => handleChange("heading", e.target.value)} className="settings-input" />
+        <Input
+          value={(data.heading as string) || ""}
+          onChange={(e) => handleChange("heading", e.target.value)}
+          className="settings-input"
+        />
       </PropertyRow>
       <PropertyRow label="Description" stacked>
-        <Input value={(data.description as string) || ""} onChange={(e) => handleChange("description", e.target.value)} className="settings-input" />
+        <Input
+          value={(data.description as string) || ""}
+          onChange={(e) => handleChange("description", e.target.value)}
+          className="settings-input"
+        />
       </PropertyRow>
     </PropertySection>
   );
@@ -1415,15 +1614,23 @@ function GapEditor({
         <PropertyRow label="Gap" stacked>
           <SliderInput
             value={
-              value === "none" ? "0px"
-                : value === "xs" ? "4px"
-                : value === "sm" ? "8px"
-                : value === "md" ? "16px"
-                : value === "lg" ? "24px"
-                : value === "xl" ? "32px"
-                : value === "2xl" ? "48px"
-                : value.includes("px") ? value
-                : "16px"
+              value === "none"
+                ? "0px"
+                : value === "xs"
+                  ? "4px"
+                  : value === "sm"
+                    ? "8px"
+                    : value === "md"
+                      ? "16px"
+                      : value === "lg"
+                        ? "24px"
+                        : value === "xl"
+                          ? "32px"
+                          : value === "2xl"
+                            ? "48px"
+                            : value.includes("px")
+                              ? value
+                              : "16px"
             }
             onChange={(v) => onChange(v || "none")}
             min={0}
@@ -1582,7 +1789,10 @@ function LayoutBlockSettings({
       )}
 
       {/* Gap — all layout blocks with Presets/Custom toggle */}
-      <GapEditor value={(data.gap as string) || "md"} onChange={(v) => handleChange("gap", v)} />
+      <GapEditor
+        value={(data.gap as string) || "md"}
+        onChange={(v) => handleChange("gap", v)}
+      />
     </>
   );
 }
@@ -1683,7 +1893,7 @@ function BlockLinkSettings({
         <button
           type="button"
           onClick={() => updateLink("href", "#")}
-          className="w-full py-2 rounded-[3px] text-[12px] font-medium text-(--accent-primary) border border-dashed border-(--border-default) bg-transparent cursor-pointer hover:bg-(--accent-primary-subtle)/30 hover:border-(--accent-primary) transition-colors"
+          className="w-full py-2 rounded-md text-[12px] font-medium text-(--accent-primary) border border-dashed border-(--border-default) bg-transparent cursor-pointer hover:bg-(--accent-primary-subtle)/30 hover:border-(--accent-primary) transition-colors"
         >
           + Add link to this element
         </button>

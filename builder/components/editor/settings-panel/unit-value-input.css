@@ -2,7 +2,7 @@
 
 /* Container */
 .unit-value-input {
-  @apply flex items-center h-7 rounded-[3px] overflow-hidden;
+  @apply flex items-center h-7 rounded-md overflow-hidden;
   @apply bg-(--el-50) border border-(--border-default);
   @apply transition-colors duration-100;
 }

@@ -21,7 +21,7 @@
 }
 
 .media-library-tabs-list {
-  @apply mx-5 mb-0;
+  @apply mx-5 mb-0 inset-shadow-xs inset-shadow-black/10 p-4.5 outline outline-(--el-0);
 }
 
 .media-library-content {
@@ -89,7 +89,7 @@
 }
 
 .media-library-detail-preview {
-  @apply flex items-center justify-center bg-(--el-50) rounded-[3px] overflow-hidden;
+  @apply flex items-center justify-center bg-(--el-50) rounded-md overflow-hidden;
 }
 
 .media-library-detail-preview img {
@@ -164,7 +164,7 @@
 
 /* Grid item */
 .media-library-asset-grid-item {
-  @apply relative rounded-[3px] overflow-hidden cursor-pointer;
+  @apply relative rounded-md overflow-hidden cursor-pointer;
   @apply border-2 border-transparent bg-(--el-50);
   @apply transition-all duration-100;
   aspect-ratio: 1;
@@ -202,13 +202,13 @@
 }
 
 .media-library-asset-current-indicator {
-  @apply absolute bottom-1 left-1 px-1.5 py-0.5 rounded-[3px];
+  @apply absolute bottom-1 left-1 px-1.5 py-0.5 rounded-md;
   @apply text-[9px] font-bold uppercase bg-(--status-success) text-white;
 }
 
 /* List item */
 .media-library-asset-list-item {
-  @apply flex items-center gap-3 px-3 py-2 rounded-[3px] cursor-pointer w-full;
+  @apply flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer w-full;
   @apply border border-transparent bg-transparent;
   @apply transition-colors duration-100 text-left;
 }
@@ -222,7 +222,7 @@
 }
 
 .media-library-asset-list-thumb {
-  @apply w-10 h-10 rounded-[3px] overflow-hidden bg-(--el-100) shrink-0;
+  @apply w-10 h-10 rounded-md overflow-hidden bg-(--el-100) shrink-0;
   @apply flex items-center justify-center;
 }
 
@@ -243,20 +243,20 @@
 }
 
 .media-library-asset-current-badge {
-  @apply text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-[3px];
+  @apply text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-md;
   @apply bg-(--status-success-subtle) text-(--status-success);
 }
 
 /* Upload dropzone */
 .media-library-dropzone {
   @apply flex flex-col items-center justify-center gap-3 mx-5 my-5 py-16;
-  @apply rounded-[3px] border-2 border-dashed border-(--border-default);
+  @apply rounded-md border-2 border-dashed border-(--el-200) bg-linear-to-b from-(--el-50) via-(--el-200) to-(--el-100);
   @apply text-(--el-400) cursor-pointer;
-  @apply transition-colors duration-150;
+  @apply transition-colors duration-300 ease-out outline outline-(--el-0);
 }
 
 .media-library-dropzone:hover {
-  @apply border-(--accent-primary)/50 bg-(--accent-primary-subtle)/10;
+  @apply border-(--el-300);
 }
 
 .media-library-dropzone-active {
@@ -268,7 +268,7 @@
 }
 
 .media-library-dropzone span {
-  @apply text-[12px];
+  @apply text-[12px] text-(--el-500);
 }
 
 /* URL Import tab */
@@ -281,7 +281,7 @@
 }
 
 .media-library-url-preview {
-  @apply w-full max-h-48 object-contain rounded-[3px] border border-(--border-default);
+  @apply w-full max-h-48 object-contain rounded-md border border-(--border-default);
 }
 
 /* Stock Photos tab */

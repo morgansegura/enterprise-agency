@@ -108,7 +108,7 @@
 
 /* Count badge */
 .layer-badge {
-  @apply text-[11px] font-semibold min-w-5 h-5 flex items-center justify-center px-1.5 rounded-[3px];
+  @apply text-[11px] font-semibold min-w-5 h-5 flex items-center justify-center px-1.5 rounded-md;
   @apply bg-(--el-100) text-(--el-500);
 }
 
@@ -122,7 +122,7 @@
 
 .layer-action {
   @apply flex items-center justify-center size-6 p-0;
-  @apply border-none bg-transparent cursor-pointer rounded-[3px];
+  @apply border-none bg-transparent cursor-pointer rounded-md;
   @apply text-(--el-400) opacity-60;
   @apply transition-all duration-100;
 }
@@ -162,7 +162,7 @@
 .layer-add-container-btn {
   @apply flex items-center gap-1.5 w-full;
   @apply px-2 py-1.5 text-[11px] font-medium;
-  @apply border border-dashed border-(--border-default) rounded-[3px];
+  @apply border border-dashed border-(--border-default) rounded-md;
   @apply text-(--accent-primary) bg-transparent;
   @apply cursor-pointer transition-all duration-100;
 }

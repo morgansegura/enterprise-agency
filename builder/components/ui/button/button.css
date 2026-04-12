@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 [data-slot="button"] {
-  @apply inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-[3px] text-[14px] font-medium transition-colors duration-100 enabled:cursor-pointer
+  @apply inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md text-[14px] font-medium transition-colors duration-100 enabled:cursor-pointer
   select-none disabled:cursor-default disabled:pointer-events-none disabled:opacity-50 shrink-0 outline-none;
 }
 
@@ -60,7 +60,7 @@
 }
 
 [data-slot="button"][data-size="sm"] {
-  @apply h-6 rounded-[3px] gap-1 px-2 text-[12px];
+  @apply h-6 rounded-md gap-1 px-2 text-[12px];
 }
 
 [data-slot="button"][data-size="sm"]:has(> svg) {
@@ -68,7 +68,7 @@
 }
 
 [data-slot="button"][data-size="lg"] {
-  @apply h-10 rounded-[3px] px-4;
+  @apply h-10 rounded-md px-4;
 }
 
 [data-slot="button"][data-size="lg"]:has(> svg) {

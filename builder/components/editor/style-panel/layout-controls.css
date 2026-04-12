@@ -10,13 +10,13 @@
 
 /* Display mode toggle */
 .layout-mode-toggle {
-  @apply flex gap-0.5 p-0.5 rounded-[3px] bg-(--el-100);
+  @apply flex gap-0.5 p-0.5 rounded-md bg-(--el-100);
 }
 
 .layout-mode-btn {
   @apply flex-1 h-7 flex items-center justify-center;
   @apply text-[12px] font-medium text-(--el-500);
-  @apply bg-transparent border-none rounded-[3px] cursor-pointer;
+  @apply bg-transparent border-none rounded-md cursor-pointer;
   @apply transition-colors duration-100;
 }
 
@@ -30,12 +30,12 @@
 
 /* Flex direction */
 .layout-direction-toggle {
-  @apply flex gap-0.5 p-0.5 rounded-[3px] bg-(--el-100);
+  @apply flex gap-0.5 p-0.5 rounded-md bg-(--el-100);
 }
 
 .layout-direction-btn {
   @apply flex-1 h-7 flex items-center justify-center;
-  @apply text-(--el-400) bg-transparent border-none rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none rounded-md cursor-pointer;
   @apply transition-colors duration-100;
 }
 
@@ -53,12 +53,12 @@
 
 /* Align/Justify icons */
 .layout-align-toggle {
-  @apply flex gap-0.5 p-0.5 rounded-[3px] bg-(--el-100);
+  @apply flex gap-0.5 p-0.5 rounded-md bg-(--el-100);
 }
 
 .layout-align-btn {
   @apply flex-1 h-7 flex items-center justify-center;
-  @apply text-(--el-400) bg-transparent border-none rounded-[3px] cursor-pointer;
+  @apply text-(--el-400) bg-transparent border-none rounded-md cursor-pointer;
   @apply transition-colors duration-100;
 }
 
@@ -85,7 +85,7 @@
 
 .layout-gap-input {
   @apply w-16 h-7 text-center text-[13px] font-medium;
-  @apply bg-(--el-100) border-none rounded-[3px] text-(--el-800);
+  @apply bg-(--el-100) border-none rounded-md text-(--el-800);
   @apply outline-none;
 }
 

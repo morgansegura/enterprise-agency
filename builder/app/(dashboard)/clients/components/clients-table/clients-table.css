@@ -61,7 +61,7 @@
  * -------------------------------------------------------------------------- */
 
 .clients-status-pill {
-  @apply inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-[3px] text-[11px] font-bold uppercase tracking-wide;
+  @apply inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide;
 }
 
 .clients-status-active {
@@ -80,7 +80,7 @@
  * -------------------------------------------------------------------------- */
 
 .clients-tier-badge {
-  @apply inline-flex items-center px-1.5 py-0.5 rounded-[3px] text-[11px] font-bold uppercase tracking-wide;
+  @apply inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide;
 }
 
 .clients-tier-builder {

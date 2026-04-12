@@ -75,14 +75,14 @@ export default function NewsletterBlockRenderer({
         <input
           data-slot="newsletter-block-input"
           type="email"
-          className="flex-1 h-10 px-3 text-[14px] border border-(--border-default) rounded-[3px] bg-(--el-0)"
+          className="flex-1 h-10 px-3 text-[14px] border border-(--border-default) rounded-md bg-(--el-0)"
           placeholder={placeholder}
           disabled={isEditing}
         />
         <button
           data-slot="newsletter-block-submit"
           type="button"
-          className="h-10 px-6 bg-(--accent-primary) text-(--accent-primary-foreground) rounded-[3px] text-[14px] font-medium whitespace-nowrap"
+          className="h-10 px-6 bg-(--accent-primary) text-(--accent-primary-foreground) rounded-md text-[14px] font-medium whitespace-nowrap"
           disabled={isEditing}
         >
           {buttonText}

@@ -18,7 +18,7 @@
 }
 
 .customer-info-field-input {
-  @apply h-10 rounded-[3px];
+  @apply h-10 rounded-md;
 }
 
 .customer-info-field-row {

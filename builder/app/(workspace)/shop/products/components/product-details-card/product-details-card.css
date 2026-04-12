@@ -18,11 +18,11 @@
 }
 
 .product-form-field-input {
-  @apply h-10 rounded-[3px];
+  @apply h-10 rounded-md;
 }
 
 .product-form-field-textarea {
-  @apply rounded-[3px];
+  @apply rounded-md;
 }
 
 .product-form-field-hint {

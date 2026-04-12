@@ -143,10 +143,7 @@ export function MediaLibraryPicker({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="media-library-dialog">
         <DialogHeader>
-          <DialogTitle className="media-library-title">
-            <ImageIcon className="h-5 w-5" />
-            {title}
-          </DialogTitle>
+          <DialogTitle className="media-library-title">{title}</DialogTitle>
         </DialogHeader>
 
         <Tabs defaultValue="library" className="media-library-tabs">
@@ -209,12 +206,17 @@ export function MediaLibraryPicker({
               {/* Right: Detail panel (shows when asset selected) */}
               {selectedAsset && (
                 <div className="media-library-detail-side">
-                  <h3 className="media-library-detail-heading">Attachment details</h3>
+                  <h3 className="media-library-detail-heading">
+                    Attachment details
+                  </h3>
 
                   {/* Preview */}
                   <div className="media-library-detail-preview">
                     {selectedAsset.mimeType?.startsWith("image/") ? (
-                      <img src={selectedAsset.url} alt={selectedAsset.altText || selectedAsset.fileName} />
+                      <img
+                        src={selectedAsset.url}
+                        alt={selectedAsset.altText || selectedAsset.fileName}
+                      />
                     ) : (
                       <ImageIcon className="h-10 w-10" />
                     )}
@@ -222,12 +224,22 @@ export function MediaLibraryPicker({
 
                   {/* Read-only metadata */}
                   <div className="media-library-detail-meta">
-                    <p>{selectedAsset.mimeType} · {formatBytes(selectedAsset.sizeBytes)}</p>
+                    <p>
+                      {selectedAsset.mimeType} ·{" "}
+                      {formatBytes(selectedAsset.sizeBytes)}
+                    </p>
                     {selectedAsset.width && selectedAsset.height && (
-                      <p>{selectedAsset.width} × {selectedAsset.height} pixels</p>
+                      <p>
+                        {selectedAsset.width} × {selectedAsset.height} pixels
+                      </p>
                     )}
                     {selectedAsset.createdAt && (
-                      <p>{new Date(selectedAsset.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+                      <p>
+                        {new Date(selectedAsset.createdAt).toLocaleDateString(
+                          "en-US",
+                          { month: "short", day: "numeric", year: "numeric" },
+                        )}
+                      </p>
                     )}
                   </div>
 
@@ -236,23 +248,53 @@ export function MediaLibraryPicker({
                     <label>Alternative Text</label>
                     <Input
                       value={selectedAsset.altText || ""}
-                      onChange={(e) => setSelectedAsset({ ...selectedAsset, altText: e.target.value })}
-                      onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { altText: selectedAsset.altText } })}
+                      onChange={(e) =>
+                        setSelectedAsset({
+                          ...selectedAsset,
+                          altText: e.target.value,
+                        })
+                      }
+                      onBlur={() =>
+                        updateAsset.mutate({
+                          id: selectedAsset.id,
+                          data: { altText: selectedAsset.altText },
+                        })
+                      }
                       placeholder="Describe this image for SEO & accessibility"
                       className="h-7 text-xs"
                     />
                     <label>Title</label>
                     <Input
                       value={selectedAsset.title || ""}
-                      onChange={(e) => setSelectedAsset({ ...selectedAsset, title: e.target.value })}
-                      onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { title: selectedAsset.title } })}
+                      onChange={(e) =>
+                        setSelectedAsset({
+                          ...selectedAsset,
+                          title: e.target.value,
+                        })
+                      }
+                      onBlur={() =>
+                        updateAsset.mutate({
+                          id: selectedAsset.id,
+                          data: { title: selectedAsset.title },
+                        })
+                      }
                       className="h-7 text-xs"
                     />
                     <label>Caption</label>
                     <Input
                       value={selectedAsset.caption || ""}
-                      onChange={(e) => setSelectedAsset({ ...selectedAsset, caption: e.target.value })}
-                      onBlur={() => updateAsset.mutate({ id: selectedAsset.id, data: { caption: selectedAsset.caption } })}
+                      onChange={(e) =>
+                        setSelectedAsset({
+                          ...selectedAsset,
+                          caption: e.target.value,
+                        })
+                      }
+                      onBlur={() =>
+                        updateAsset.mutate({
+                          id: selectedAsset.id,
+                          data: { caption: selectedAsset.caption },
+                        })
+                      }
                       className="h-7 text-xs"
                     />
                   </div>
@@ -261,8 +303,20 @@ export function MediaLibraryPicker({
                   <div className="media-library-detail-fields">
                     <label>File URL</label>
                     <div className="media-library-detail-url-row">
-                      <Input value={selectedAsset.url} readOnly className="h-7 text-xs flex-1" />
-                      <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0" onClick={() => { navigator.clipboard.writeText(selectedAsset.url); toast.success("URL copied"); }}>
+                      <Input
+                        value={selectedAsset.url}
+                        readOnly
+                        className="h-7 text-xs flex-1"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 shrink-0"
+                        onClick={() => {
+                          navigator.clipboard.writeText(selectedAsset.url);
+                          toast.success("URL copied");
+                        }}
+                      >
                         <Copy className="size-3" />
                       </Button>
                     </div>
@@ -270,7 +324,12 @@ export function MediaLibraryPicker({
 
                   {/* Actions */}
                   <div className="media-library-detail-actions">
-                    <a href={selectedAsset.url} target="_blank" rel="noopener noreferrer" className="media-library-detail-link">
+                    <a
+                      href={selectedAsset.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="media-library-detail-link"
+                    >
                       <Download className="size-3" /> Download
                     </a>
                     <span className="media-library-detail-divider">|</span>
@@ -301,7 +360,11 @@ export function MediaLibraryPicker({
                         </button>
                       </span>
                     ) : (
-                      <button type="button" className="media-library-detail-delete" onClick={() => setConfirmDelete(true)}>
+                      <button
+                        type="button"
+                        className="media-library-detail-delete"
+                        onClick={() => setConfirmDelete(true)}
+                      >
                         <Trash2 className="size-3" /> Delete permanently
                       </button>
                     )}
@@ -474,13 +537,22 @@ function AssetItem({
           className="media-library-asset-grid-image"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = "none";
-            (e.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden");
+            (e.target as HTMLImageElement).nextElementSibling?.classList.remove(
+              "hidden",
+            );
           }}
         />
       ) : null}
-      <div className={cn("media-library-asset-grid-placeholder", isImage && "hidden")}>
+      <div
+        className={cn(
+          "media-library-asset-grid-placeholder",
+          isImage && "hidden",
+        )}
+      >
         <ImageIcon className="h-6 w-6" />
-        <span className="media-library-asset-grid-name">{asset.fileName.slice(0, 20)}</span>
+        <span className="media-library-asset-grid-name">
+          {asset.fileName.slice(0, 20)}
+        </span>
       </div>
       {isSelected && (
         <div className="media-library-asset-check">
@@ -509,7 +581,10 @@ function UrlImportTab({ onSelect }: { onSelect: (asset: Asset) => void }) {
   const handlePaste = (value: string) => {
     setUrl(value);
     // Show preview for image URLs
-    if (value.match(/\.(jpg|jpeg|png|gif|svg|webp)(\?.*)?$/i) || value.startsWith("data:image")) {
+    if (
+      value.match(/\.(jpg|jpeg|png|gif|svg|webp)(\?.*)?$/i) ||
+      value.startsWith("data:image")
+    ) {
       setPreview(value);
     } else {
       setPreview("");
@@ -540,8 +615,11 @@ function UrlImportTab({ onSelect }: { onSelect: (asset: Asset) => void }) {
         className="h-9 text-[13px]"
       />
       {preview && (
-         
-        <img src={preview} alt="Preview" className="media-library-url-preview" />
+        <img
+          src={preview}
+          alt="Preview"
+          className="media-library-url-preview"
+        />
       )}
       <Button onClick={handleImport} disabled={!url} className="w-full">
         Use This Image
@@ -574,16 +652,19 @@ function StockPhotosTab({ onSelect }: { onSelect: (url: string) => void }) {
 
     if (!PEXELS_API_KEY) {
       // Fallback: use Unsplash Source (no API key needed)
-      const unsplashPhotos: PexelsPhoto[] = Array.from({ length: 12 }, (_, i) => ({
-        id: i,
-        src: {
-          medium: `https://source.unsplash.com/400x300/?${encodeURIComponent(query)}&sig=${i}`,
-          large: `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}&sig=${i}`,
-          original: `https://source.unsplash.com/1200x800/?${encodeURIComponent(query)}&sig=${i}`,
-        },
-        alt: `${query} stock photo ${i + 1}`,
-        photographer: "Unsplash",
-      }));
+      const unsplashPhotos: PexelsPhoto[] = Array.from(
+        { length: 12 },
+        (_, i) => ({
+          id: i,
+          src: {
+            medium: `https://source.unsplash.com/400x300/?${encodeURIComponent(query)}&sig=${i}`,
+            large: `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}&sig=${i}`,
+            original: `https://source.unsplash.com/1200x800/?${encodeURIComponent(query)}&sig=${i}`,
+          },
+          alt: `${query} stock photo ${i + 1}`,
+          photographer: "Unsplash",
+        }),
+      );
       setPhotos(unsplashPhotos);
       setSearched(true);
       return;
@@ -615,8 +696,16 @@ function StockPhotosTab({ onSelect }: { onSelect: (url: string) => void }) {
           className="h-9 text-[13px] flex-1"
           onKeyDown={(e) => e.key === "Enter" && searchPhotos()}
         />
-        <Button onClick={searchPhotos} disabled={loading || !query.trim()} size="sm">
-          {loading ? <Loader2 className="size-4 animate-spin" /> : <Search className="size-4" />}
+        <Button
+          onClick={searchPhotos}
+          disabled={loading || !query.trim()}
+          size="sm"
+        >
+          {loading ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Search className="size-4" />
+          )}
         </Button>
       </div>
 
@@ -624,7 +713,9 @@ function StockPhotosTab({ onSelect }: { onSelect: (url: string) => void }) {
         <div className="media-library-empty">
           <ImageIcon className="h-10 w-10" />
           <p>Search for free stock photos</p>
-          <span>{PEXELS_API_KEY ? "Powered by Pexels" : "Powered by Unsplash"}</span>
+          <span>
+            {PEXELS_API_KEY ? "Powered by Pexels" : "Powered by Unsplash"}
+          </span>
         </div>
       )}
 
@@ -645,7 +736,7 @@ function StockPhotosTab({ onSelect }: { onSelect: (url: string) => void }) {
               onClick={() => onSelect(photo.src.large)}
               title={`${photo.alt} by ${photo.photographer}`}
             >
-              { }
+              {}
               <img
                 src={photo.src.medium}
                 alt={photo.alt}
@@ -658,7 +749,9 @@ function StockPhotosTab({ onSelect }: { onSelect: (url: string) => void }) {
       )}
 
       <p className="media-library-stock-credit">
-        {PEXELS_API_KEY ? "Photos provided by Pexels" : "Photos provided by Unsplash"}
+        {PEXELS_API_KEY
+          ? "Photos provided by Pexels"
+          : "Photos provided by Unsplash"}
       </p>
     </div>
   );

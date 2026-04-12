@@ -17,7 +17,7 @@
 .auth-card {
   @apply w-full max-w-[400px] px-10 pt-10 pb-8;
   @apply bg-(--el-0);
-  @apply border border-(--border-subtle) rounded-[3px] shadow-lg;
+  @apply border border-(--border-subtle) rounded-md shadow-lg;
 }
 
 /* =============================================================================
@@ -67,7 +67,7 @@
   @apply font-(family-name:--font-system);
   @apply text-(--text-primary);
   @apply bg-(--el-0);
-  @apply border border-(--border-default) rounded-[3px];
+  @apply border border-(--border-default) rounded-md;
   @apply transition-all duration-100;
 }
 
@@ -123,7 +123,7 @@
   @apply font-(family-name:--font-system);
   @apply text-(--accent-primary-foreground);
   @apply bg-(--accent-primary);
-  @apply rounded-[3px];
+  @apply rounded-md;
   @apply transition-colors duration-100;
 }
 
@@ -175,7 +175,7 @@
   @apply text-[12px] px-3 py-2;
   @apply text-(--status-error);
   @apply bg-(--status-error-subtle);
-  @apply border border-(--status-error)/30 rounded-[3px];
+  @apply border border-(--status-error)/30 rounded-md;
 }
 
 /* =============================================================================
@@ -186,5 +186,5 @@
   @apply text-[12px] px-3 py-2;
   @apply text-(--status-success);
   @apply bg-(--status-success-subtle);
-  @apply border border-(--status-success)/30 rounded-[3px];
+  @apply border border-(--status-success)/30 rounded-md;
 }

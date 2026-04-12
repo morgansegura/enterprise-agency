@@ -18,7 +18,7 @@
 }
 
 .block-toolbar-btn {
-  @apply flex items-center justify-center size-7 rounded-[3px] cursor-pointer;
+  @apply flex items-center justify-center size-7 rounded-md cursor-pointer;
   @apply text-(--el-600) bg-transparent border-none;
   @apply transition-colors duration-75;
 }

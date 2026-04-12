@@ -12,13 +12,13 @@
 
 /* Margin layer (outer) */
 .spacing-box-margin {
-  @apply absolute inset-0 rounded-[3px];
+  @apply absolute inset-0 rounded-md;
   @apply bg-(--status-warning-subtle);
 }
 
 /* Padding layer (inner) */
 .spacing-box-padding {
-  @apply absolute rounded-[3px];
+  @apply absolute rounded-md;
   top: 28px;
   right: 28px;
   bottom: 28px;
@@ -28,7 +28,7 @@
 
 /* Content (center box) */
 .spacing-box-content {
-  @apply absolute rounded-[3px] flex items-center justify-center;
+  @apply absolute rounded-md flex items-center justify-center;
   top: 56px;
   right: 56px;
   bottom: 56px;
@@ -67,13 +67,45 @@
 }
 
 /* Margin inputs */
-.spacing-box-input-mt { top: 4px; left: 50%; transform: translateX(-50%); }
-.spacing-box-input-mr { right: 2px; top: 50%; transform: translateY(-50%); }
-.spacing-box-input-mb { bottom: 4px; left: 50%; transform: translateX(-50%); }
-.spacing-box-input-ml { left: 2px; top: 50%; transform: translateY(-50%); }
+.spacing-box-input-mt {
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.spacing-box-input-mr {
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.spacing-box-input-mb {
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.spacing-box-input-ml {
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 /* Padding inputs */
-.spacing-box-input-pt { top: 32px; left: 50%; transform: translateX(-50%); }
-.spacing-box-input-pr { right: 30px; top: 50%; transform: translateY(-50%); }
-.spacing-box-input-pb { bottom: 32px; left: 50%; transform: translateX(-50%); }
-.spacing-box-input-pl { left: 30px; top: 50%; transform: translateY(-50%); }
+.spacing-box-input-pt {
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.spacing-box-input-pr {
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.spacing-box-input-pb {
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.spacing-box-input-pl {
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+}
