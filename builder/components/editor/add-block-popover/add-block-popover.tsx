@@ -20,10 +20,7 @@ import {
   Search,
   Heading1,
   AlignLeft,
-  Grid3X3,
-  Columns,
   Box,
-  Rows,
   SeparatorHorizontal,
   LayoutList,
   List,
@@ -49,7 +46,6 @@ import "./add-block-popover.css";
 const CATEGORIES = [
   { id: "text", label: "Text" },
   { id: "media", label: "Media" },
-  { id: "layout", label: "Layout" },
   { id: "interactive", label: "Interactive" },
   { id: "content", label: "Content" },
   { id: "advanced", label: "Advanced" },
@@ -141,41 +137,20 @@ const BLOCK_TYPES: BlockType[] = [
     category: "media",
   },
 
-  // Layout blocks
-  {
-    id: "columns-block",
-    label: "Columns",
-    description: "Multi-column layout",
-    icon: <Columns className="h-5 w-5" />,
-    category: "layout",
-  },
-  {
-    id: "grid-block",
-    label: "Grid",
-    description: "CSS grid layout",
-    icon: <Grid3X3 className="h-5 w-5" />,
-    category: "layout",
-  },
-  {
-    id: "stack-block",
-    label: "Stack",
-    description: "Vertical stack with gap",
-    icon: <Rows className="h-5 w-5" />,
-    category: "layout",
-  },
+  // Structural content blocks
   {
     id: "divider-block",
     label: "Divider",
     description: "Horizontal separator",
     icon: <SeparatorHorizontal className="h-5 w-5" />,
-    category: "layout",
+    category: "content",
   },
   {
     id: "spacer-block",
     label: "Spacer",
     description: "Vertical spacing",
     icon: <Box className="h-5 w-5" />,
-    category: "layout",
+    category: "content",
   },
 
   // Interactive blocks

@@ -576,6 +576,8 @@ function BlockStyleSettings({
       case "logo-bar-block":
       case "social-links-block":
         return <GenericBlockSettings block={block} onChange={onChange} />;
+      // Layout blocks deprecated — layout handled at container level.
+      // Kept for backwards compatibility with existing page data.
       case "columns-block":
       case "container-block":
       case "grid-block":
