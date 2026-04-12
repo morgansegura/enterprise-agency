@@ -4,6 +4,7 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Type, Box } from "lucide-react";
 import { ImagePickerField } from "./image-picker-field";
+import { SliderInput } from "./slider-input";
 import {
   PropertySection,
   PropertyRow,
@@ -1360,6 +1361,82 @@ function FaqBlockSettings({
 }
 
 // =============================================================================
+// Gap Editor — Presets / Custom toggle (matches Spacing editor pattern)
+// =============================================================================
+
+const GAP_PRESETS = [
+  { value: "none", label: "0" },
+  { value: "xs", label: "XS" },
+  { value: "sm", label: "SM" },
+  { value: "md", label: "MD" },
+  { value: "lg", label: "LG" },
+  { value: "xl", label: "XL" },
+  { value: "2xl", label: "2XL" },
+];
+
+function GapEditor({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const [mode, setMode] = React.useState<"presets" | "custom">("presets");
+
+  return (
+    <PropertySection title="Spacing">
+      <div className="spacing-mode-toggle">
+        <button
+          type="button"
+          className={`spacing-mode-btn ${mode === "presets" ? "is-active" : ""}`}
+          onClick={() => setMode("presets")}
+        >
+          Presets
+        </button>
+        <button
+          type="button"
+          className={`spacing-mode-btn ${mode === "custom" ? "is-active" : ""}`}
+          onClick={() => setMode("custom")}
+        >
+          Custom
+        </button>
+      </div>
+
+      {mode === "presets" ? (
+        <PropertyRow label="Gap" stacked>
+          <PropertyToggle
+            value={value}
+            options={GAP_PRESETS}
+            onChange={onChange}
+            fullWidth
+          />
+        </PropertyRow>
+      ) : (
+        <PropertyRow label="Gap" stacked>
+          <SliderInput
+            value={
+              value === "none" ? "0px"
+                : value === "xs" ? "4px"
+                : value === "sm" ? "8px"
+                : value === "md" ? "16px"
+                : value === "lg" ? "24px"
+                : value === "xl" ? "32px"
+                : value === "2xl" ? "48px"
+                : value.includes("px") ? value
+                : "16px"
+            }
+            onChange={(v) => onChange(v || "none")}
+            min={0}
+            max={80}
+            placeholder="0"
+          />
+        </PropertyRow>
+      )}
+    </PropertySection>
+  );
+}
+
+// =============================================================================
 // Layout Block Settings — Grid, Stack, Flex, Columns, Container
 // =============================================================================
 
@@ -1504,25 +1581,8 @@ function LayoutBlockSettings({
         </PropertySection>
       )}
 
-      {/* Gap — all layout blocks */}
-      <PropertySection title="Spacing">
-        <PropertyRow label="Gap" stacked>
-          <PropertyToggle
-            value={(data.gap as string) || "md"}
-            options={[
-              { value: "none", label: "0" },
-              { value: "xs", label: "XS" },
-              { value: "sm", label: "SM" },
-              { value: "md", label: "MD" },
-              { value: "lg", label: "LG" },
-              { value: "xl", label: "XL" },
-              { value: "2xl", label: "2XL" },
-            ]}
-            onChange={(v) => handleChange("gap", v)}
-            fullWidth
-          />
-        </PropertyRow>
-      </PropertySection>
+      {/* Gap — all layout blocks with Presets/Custom toggle */}
+      <GapEditor value={(data.gap as string) || "md"} onChange={(v) => handleChange("gap", v)} />
     </>
   );
 }
