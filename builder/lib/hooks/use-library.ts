@@ -8,7 +8,12 @@ import { queryKeys } from "./query-keys";
 // Types
 // =============================================================================
 
-export type LibraryItemType = "SECTION" | "BLOCK" | "CONTAINER";
+export type LibraryItemType =
+  | "SECTION"
+  | "BLOCK"
+  | "HEADER"
+  | "FOOTER"
+  | "MENU";
 
 export interface LibraryItem {
   id: string;
@@ -163,5 +168,22 @@ export function useUseLibraryItem(tenantId: string) {
   return useMutation({
     mutationFn: (id: string) =>
       apiClient.post(`/tenants/${tenantId}/library/${id}/use`),
+  });
+}
+
+/**
+ * Toggle favorite on a library item.
+ */
+export function useToggleFavorite(tenantId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) =>
+      apiClient.post<LibraryItem>(
+        `/tenants/${tenantId}/library/${id}/favorite`,
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.library.lists() });
+    },
   });
 }

@@ -11,15 +11,20 @@ import {
   AuditAction,
 } from "@/common/services/audit-log.service";
 
-// Schema enum supports SECTION and BLOCK for the library API
-// (HEADER/FOOTER/MENU have their own modules)
-export type LibraryItemType = "SECTION" | "BLOCK";
+export type LibraryItemType =
+  | "SECTION"
+  | "BLOCK"
+  | "HEADER"
+  | "FOOTER"
+  | "MENU";
 
 export interface ListLibraryOptions {
   type?: LibraryItemType;
   category?: string;
   search?: string;
   scope?: "TENANT" | "GLOBAL" | "ALL";
+  tags?: string[];
+  favorites?: boolean;
 }
 
 @Injectable()
@@ -49,11 +54,9 @@ export class LibraryService {
       where.OR = [{ tenantId }, { scope: "GLOBAL", tenantId: null }];
     }
 
-    // Restrict to SECTION/BLOCK for the library API
+    // Type filter — supports all component types
     if (options.type) {
       where.type = options.type;
-    } else {
-      where.type = { in: ["SECTION", "BLOCK"] };
     }
 
     if (options.category) {
@@ -64,7 +67,16 @@ export class LibraryService {
       where.OR = [
         { name: { contains: options.search, mode: "insensitive" } },
         { description: { contains: options.search, mode: "insensitive" } },
+        { tags: { hasSome: [options.search] } },
       ];
+    }
+
+    if (options.tags && options.tags.length > 0) {
+      where.tags = { hasSome: options.tags };
+    }
+
+    if (options.favorites) {
+      where.isFavorite = true;
     }
 
     return this.prisma.libraryComponent.findMany({
@@ -74,6 +86,21 @@ export class LibraryService {
         { usageCount: "desc" },
         { createdAt: "desc" },
       ],
+    });
+  }
+
+  /**
+   * Toggle favorite status on a library item.
+   */
+  async toggleFavorite(tenantId: string, id: string) {
+    const item = await this.prisma.libraryComponent.findFirst({
+      where: { id, OR: [{ tenantId }, { scope: "GLOBAL" }] },
+    });
+    if (!item) throw new NotFoundException("Library item not found");
+
+    return this.prisma.libraryComponent.update({
+      where: { id },
+      data: { isFavorite: !item.isFavorite },
     });
   }
 

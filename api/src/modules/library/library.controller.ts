@@ -39,12 +39,19 @@ export class LibraryController {
   @ApiResponse({ status: 200, description: "List of library items" })
   list(
     @TenantId() tenantId: string,
-    @Query("type") type?: "SECTION" | "BLOCK",
+    @Query("type") type?: "SECTION" | "BLOCK" | "HEADER" | "FOOTER" | "MENU",
     @Query("category") category?: string,
     @Query("search") search?: string,
     @Query("scope") scope?: "TENANT" | "GLOBAL" | "ALL",
+    @Query("favorites") favorites?: string,
   ) {
-    return this.library.list(tenantId, { type, category, search, scope });
+    return this.library.list(tenantId, {
+      type,
+      category,
+      search,
+      scope,
+      favorites: favorites === "true",
+    });
   }
 
   @Get(":id")
@@ -84,5 +91,12 @@ export class LibraryController {
   @ApiOperation({ summary: "Increment usage count for a library item" })
   use(@TenantId() tenantId: string, @Param("id") id: string) {
     return this.library.incrementUsage(tenantId, id);
+  }
+
+  @Post(":id/favorite")
+  @Permissions(Permission.LIBRARY_EDIT)
+  @ApiOperation({ summary: "Toggle favorite status on a library item" })
+  toggleFavorite(@TenantId() tenantId: string, @Param("id") id: string) {
+    return this.library.toggleFavorite(tenantId, id);
   }
 }

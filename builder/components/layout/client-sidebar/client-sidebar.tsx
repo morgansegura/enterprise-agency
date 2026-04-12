@@ -20,6 +20,7 @@ import {
   Menu,
   UserCog,
   Paintbrush,
+  LibraryBig,
 } from "lucide-react";
 
 import {
@@ -165,15 +166,22 @@ export function ClientSidebar({ user: _user, ...props }: ClientSidebarProps) {
       ],
     },
     {
-      label: "Configuration",
+      label: "Design",
       defaultOpen: true,
       items: [
+        { title: "Library", url: "/library", icon: LibraryBig },
         { title: "Theme", url: "/theme", icon: Palette },
         { title: "Headers", url: "/headers", icon: PanelTop },
         { title: "Footers", url: "/footers", icon: PanelBottom },
         { title: "Menus", url: "/menus", icon: Menu },
-        { title: "Settings", url: "/settings", icon: Settings },
         { title: "Figma", url: "/integrations/figma", icon: Paintbrush },
+      ],
+    },
+    {
+      label: "Configuration",
+      defaultOpen: true,
+      items: [
+        { title: "Settings", url: "/settings", icon: Settings },
       ],
     },
     {

@@ -1,0 +1,205 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+   Library Page — Enterprise component library with type tabs
+   ============================================================================= */
+
+.library-page {
+  @apply flex flex-col h-full min-h-0;
+}
+
+/* Header with type tabs */
+.library-header {
+  @apply px-6 pt-6 pb-0;
+}
+
+.library-title {
+  @apply text-xl font-bold text-(--el-800) mb-1;
+}
+
+.library-subtitle {
+  @apply text-sm text-(--el-400) mb-4;
+}
+
+/* Type tabs — horizontal pill tabs */
+.library-tabs {
+  @apply flex gap-1 p-[3px] bg-(--el-100) rounded-lg inset-shadow-sm inset-shadow-black/10 w-fit;
+}
+
+.library-tab {
+  @apply px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer;
+  @apply bg-transparent text-(--el-500) border-none;
+  @apply transition-all duration-150;
+}
+
+.library-tab:hover {
+  @apply text-(--el-700);
+}
+
+.library-tab[data-active] {
+  @apply bg-(--el-0) text-(--el-800) shadow-sm;
+}
+
+.library-tab-count {
+  @apply ml-1 text-[10px] text-(--el-400);
+}
+
+/* Toolbar — search + filters */
+.library-toolbar {
+  @apply flex items-center gap-3 px-6 py-3 border-b border-(--border-default);
+}
+
+.library-search {
+  @apply relative flex-1 max-w-sm;
+}
+
+.library-search-icon {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 size-4 text-(--el-400);
+}
+
+.library-search-input {
+  @apply pl-9 h-8;
+}
+
+.library-filters {
+  @apply flex items-center gap-2;
+}
+
+.library-scope-toggle {
+  @apply flex gap-0.5 p-[2px] bg-(--el-100) rounded-md;
+}
+
+.library-scope-btn {
+  @apply px-2.5 py-1 text-[11px] font-medium rounded-[3px] cursor-pointer;
+  @apply bg-transparent text-(--el-500) border-none;
+  @apply transition-colors duration-100;
+}
+
+.library-scope-btn[data-active] {
+  @apply bg-(--el-0) text-(--el-700) shadow-sm;
+}
+
+/* Grid */
+.library-grid {
+  @apply flex-1 overflow-y-auto px-6 py-4;
+}
+
+.library-grid-inner {
+  @apply grid gap-4 grid-cols-1;
+}
+
+@media (min-width: 640px) {
+  .library-grid-inner {
+    @apply grid-cols-2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .library-grid-inner {
+    @apply grid-cols-3;
+  }
+}
+
+@media (min-width: 1280px) {
+  .library-grid-inner {
+    @apply grid-cols-4;
+  }
+}
+
+/* Card */
+.library-card {
+  @apply group relative flex flex-col overflow-hidden rounded-lg;
+  @apply bg-(--el-0) border border-(--el-200);
+  @apply transition-all duration-150;
+}
+
+.library-card:hover {
+  @apply border-(--el-300) shadow-md;
+}
+
+/* Preview area */
+.library-card-preview {
+  @apply relative h-32 bg-(--el-50) flex items-center justify-center overflow-hidden;
+}
+
+.library-card-preview-icon {
+  @apply size-10 text-(--el-300);
+}
+
+.library-card-preview img {
+  @apply w-full h-full object-cover;
+}
+
+/* Scope badge */
+.library-card-scope {
+  @apply absolute top-2 left-2 px-1.5 py-0.5 rounded-[3px];
+  @apply text-[9px] font-bold uppercase tracking-wider;
+}
+
+.library-card-scope[data-scope="GLOBAL"] {
+  @apply bg-(--accent-primary) text-white;
+}
+
+.library-card-scope[data-scope="TENANT"] {
+  @apply bg-(--el-200) text-(--el-600);
+}
+
+/* Favorite button */
+.library-card-fav {
+  @apply absolute top-2 right-2 size-6 rounded-full flex items-center justify-center;
+  @apply bg-(--el-0)/80 backdrop-blur-sm border-none cursor-pointer;
+  @apply opacity-0 group-hover:opacity-100 transition-opacity;
+}
+
+.library-card-fav[data-active] {
+  @apply opacity-100 text-amber-500;
+}
+
+/* Body */
+.library-card-body {
+  @apply flex flex-col gap-1 p-3;
+}
+
+.library-card-name {
+  @apply text-sm font-semibold text-(--el-800) truncate;
+}
+
+.library-card-desc {
+  @apply text-xs text-(--el-400) line-clamp-2;
+}
+
+.library-card-meta {
+  @apply flex items-center justify-between mt-1;
+}
+
+.library-card-category {
+  @apply text-[10px] font-medium text-(--el-400) uppercase tracking-wider;
+}
+
+.library-card-usage {
+  @apply text-[10px] text-(--el-400);
+}
+
+/* Actions overlay */
+.library-card-actions {
+  @apply absolute inset-0 flex items-center justify-center gap-2;
+  @apply bg-(--el-0)/80 backdrop-blur-sm;
+  @apply opacity-0 group-hover:opacity-100 transition-opacity;
+}
+
+/* Empty state */
+.library-empty {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+}
+
+.library-empty-icon {
+  @apply size-16 mb-4 text-(--el-300);
+}
+
+.library-empty h3 {
+  @apply text-base font-medium text-(--el-800) mb-1;
+}
+
+.library-empty p {
+  @apply text-sm text-(--el-400) mb-4 max-w-md;
+}

@@ -18,8 +18,8 @@ export class CreateLibraryItemDto {
   description?: string;
 
   @IsString()
-  @IsIn(["SECTION", "BLOCK"])
-  type!: "SECTION" | "BLOCK";
+  @IsIn(["SECTION", "BLOCK", "HEADER", "FOOTER", "MENU"])
+  type!: "SECTION" | "BLOCK" | "HEADER" | "FOOTER" | "MENU";
 
   @IsObject()
   content!: Record<string, unknown>;
