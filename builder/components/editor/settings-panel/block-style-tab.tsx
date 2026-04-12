@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ImagePickerField } from "./image-picker-field";
 import { ColorPicker } from "./color-picker";
 import { SliderInput } from "./slider-input";
-import { UnitValueInput } from "./unit-value-input";
+
 import { SpacingEditor } from "./spacing-editor";
 
 import "./slider-input.css";
@@ -467,41 +467,38 @@ export function ElementStyleTab({
         {displayVal === "grid" && (
           <>
             <PropertyRow label="Columns" stacked>
-              <Input
-                value={s("gridTemplateColumns")}
-                onChange={(e) =>
-                  updateStyle("gridTemplateColumns", e.target.value)
-                }
-                placeholder="1fr 1fr"
-                className="h-7 text-xs"
+              <PropertyToggle
+                value={s("gridTemplateColumns") || "1fr 1fr"}
+                options={[
+                  { value: "1fr", label: "1" },
+                  { value: "1fr 1fr", label: "2" },
+                  { value: "1fr 1fr 1fr", label: "3" },
+                  { value: "1fr 1fr 1fr 1fr", label: "4" },
+                  { value: "1fr 1fr 1fr 1fr 1fr", label: "5" },
+                  { value: "1fr 1fr 1fr 1fr 1fr 1fr", label: "6" },
+                ]}
+                onChange={(v) => updateStyle("gridTemplateColumns", v)}
+                fullWidth
               />
             </PropertyRow>
-            <PropertyRow label="Rows" stacked>
-              <Input
-                value={s("gridTemplateRows")}
-                onChange={(e) =>
-                  updateStyle("gridTemplateRows", e.target.value)
-                }
-                placeholder="auto"
-                className="h-7 text-xs"
+            <PropertyRow label="Row Gap">
+              <SliderInput
+                value={s("rowGap") || "0px"}
+                onChange={(v) => updateStyle("rowGap", v)}
+                min={0}
+                max={80}
+                placeholder="0"
               />
             </PropertyRow>
-            <div className="grid grid-cols-2 gap-2">
-              <PropertyRow label="Row Gap">
-                <UnitValueInput
-                  value={s("rowGap")}
-                  onChange={(v) => updateStyle("rowGap", v)}
-                  placeholder="0"
-                />
-              </PropertyRow>
-              <PropertyRow label="Col Gap">
-                <UnitValueInput
-                  value={s("columnGap")}
-                  onChange={(v) => updateStyle("columnGap", v)}
-                  placeholder="0"
-                />
-              </PropertyRow>
-            </div>
+            <PropertyRow label="Column Gap">
+              <SliderInput
+                value={s("columnGap") || "0px"}
+                onChange={(v) => updateStyle("columnGap", v)}
+                min={0}
+                max={80}
+                placeholder="0"
+              />
+            </PropertyRow>
           </>
         )}
 
@@ -671,10 +668,11 @@ export function ElementStyleTab({
               ] as const
             ).map(([prop, label]) => (
               <PropertyRow key={prop} label={label}>
-                <UnitValueInput
-                  value={s(prop)}
+                <SliderInput
+                  value={s(prop) || ""}
                   onChange={(v) => updateStyle(prop, v)}
-                  keywords={["auto"]}
+                  min={-200}
+                  max={200}
                   placeholder="auto"
                 />
               </PropertyRow>
