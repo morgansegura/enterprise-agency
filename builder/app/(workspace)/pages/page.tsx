@@ -156,6 +156,7 @@ export default function PagesPage() {
         searchValue={search}
         onSearchChange={setSearch}
         showFilter
+        className="bg-(--el-100) py-6 px-4 border-b border-(--el-300) outline outline-(--el-0) gap-3"
         filterOptions={[
           { value: "published", label: "Published" },
           { value: "draft", label: "Draft" },

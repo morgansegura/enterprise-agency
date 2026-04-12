@@ -181,14 +181,11 @@
   @apply mx-4 mt-4 mb-3;
   @apply flex flex-col items-center justify-center gap-2 py-8;
   @apply border-2 border-dashed border-(--border-default) rounded-(--radius-md);
-  @apply bg-(--el-50) cursor-pointer;
-  transition:
-    border-color var(--duration-normal) var(--ease-out),
-    background var(--duration-normal) var(--ease-out);
+  @apply bg-linear-to-b from-(--el-50) via-(--el-200) to-(--el-100) outline outline-(--el-0) cursor-pointer transition-colors duration-300 ease-out;
 }
 
 .media-upload-zone:hover {
-  @apply border-(--accent-primary) bg-(--accent-primary-subtle);
+  @apply border-(--el-300);
 }
 
 .media-upload-zone-active {
@@ -200,11 +197,11 @@
 }
 
 .media-upload-zone-text {
-  @apply text-[14px] font-medium text-(--text-secondary);
+  @apply text-[14px] font-medium text-(--el-600);
 }
 
 .media-upload-zone-hint {
-  @apply text-xs text-(--text-tertiary);
+  @apply text-xs text-(--el-500);
 }
 
 /* ============================================================================
@@ -226,7 +223,7 @@
 }
 
 .media-toolbar-search-input {
-  @apply pl-9 h-8 rounded-[3px];
+  @apply pl-9 h-9 rounded-[3px] outline outline-(--e,-0);
 }
 
 .media-toolbar-filters {

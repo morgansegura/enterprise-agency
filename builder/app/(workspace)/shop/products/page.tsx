@@ -135,18 +135,16 @@ export default function ProductsPage() {
 
   return (
     <div className="products-page">
-      <div className="products-page-header">
-        <PageHeader
-          title="Products"
-          icon={Package}
-          count={total}
-          singularName="product"
-          pluralName="products"
-          actionLabel="Add Product"
-          actionIcon={PlusCircle}
-          onAction={() => router.push("/shop/products/new")}
-        />
-
+      <PageHeader
+        title="Products"
+        icon={Package}
+        count={total}
+        singularName="product"
+        pluralName="products"
+        actionLabel="Add Product"
+        actionIcon={PlusCircle}
+        onAction={() => router.push("/shop/products/new")}
+      >
         {/* Filters */}
         <div className="products-filters">
           <div className="products-search">
@@ -170,7 +168,7 @@ export default function ProductsPage() {
             </SelectContent>
           </Select>
         </div>
-      </div>
+      </PageHeader>
 
       {/* Table */}
       {isLoading ? (

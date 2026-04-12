@@ -9,7 +9,7 @@
 }
 
 .products-page-header {
-  @apply grid gap-2 bg-(--el-100) py-6 px-4;
+  @apply grid gap-2 bg-(--el-100) pt-6 px-4;
 }
 
 /* Filters */

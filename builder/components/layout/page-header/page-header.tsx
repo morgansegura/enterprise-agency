@@ -70,6 +70,7 @@ export interface PageHeaderProps {
 
   /** Additional toolbar content */
   toolbarContent?: React.ReactNode;
+  children?: React.ReactNode;
 
   /** Additional actions (beside primary action) */
   additionalActions?: React.ReactNode;
@@ -83,6 +84,7 @@ export interface PageHeaderProps {
 // =============================================================================
 
 export function PageHeader({
+  children,
   title,
   icon: _Icon,
   count,
@@ -208,6 +210,7 @@ export function PageHeader({
           </div>
         </div>
       )}
+      {children}
     </div>
   );
 }

@@ -155,92 +155,92 @@ export default function OrdersPage() {
           count={total}
           singularName="order"
           pluralName="orders"
-        />
-
-        {/* Stats Row */}
-        <div className="orders-stats-row">
-          {statsLoading ? (
-            <>
-              {[1, 2, 3, 4].map((i) => (
-                <Skeleton key={i} className="orders-skeleton-stat" />
-              ))}
-            </>
-          ) : stats ? (
-            <>
-              <div className="orders-stat-card">
-                <div className="orders-stat-header">
-                  <span className="orders-stat-label">Total Orders</span>
-                  <ShoppingCart className="orders-stat-icon" />
+        >
+          {/* Stats Row */}
+          <div className="orders-stats-row">
+            {statsLoading ? (
+              <>
+                {[1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="orders-skeleton-stat" />
+                ))}
+              </>
+            ) : stats ? (
+              <>
+                <div className="orders-stat-card">
+                  <div className="orders-stat-header">
+                    <span className="orders-stat-label">Total Orders</span>
+                    <ShoppingCart className="orders-stat-icon" />
+                  </div>
+                  <div className="orders-stat-value">{stats.totalOrders}</div>
                 </div>
-                <div className="orders-stat-value">{stats.totalOrders}</div>
-              </div>
-              <div className="orders-stat-card">
-                <div className="orders-stat-header">
-                  <span className="orders-stat-label">Pending</span>
-                  <Clock className="orders-stat-icon" />
+                <div className="orders-stat-card">
+                  <div className="orders-stat-header">
+                    <span className="orders-stat-label">Pending</span>
+                    <Clock className="orders-stat-icon" />
+                  </div>
+                  <div className="orders-stat-value">{stats.pendingOrders}</div>
                 </div>
-                <div className="orders-stat-value">{stats.pendingOrders}</div>
-              </div>
-              <div className="orders-stat-card">
-                <div className="orders-stat-header">
-                  <span className="orders-stat-label">Revenue</span>
-                  <DollarSign className="orders-stat-icon" />
+                <div className="orders-stat-card">
+                  <div className="orders-stat-header">
+                    <span className="orders-stat-label">Revenue</span>
+                    <DollarSign className="orders-stat-icon" />
+                  </div>
+                  <div className="orders-stat-value">
+                    {formatCurrency(stats.totalRevenue)}
+                  </div>
                 </div>
-                <div className="orders-stat-value">
-                  {formatCurrency(stats.totalRevenue)}
+                <div className="orders-stat-card">
+                  <div className="orders-stat-header">
+                    <span className="orders-stat-label">Avg. Order Value</span>
+                    <TrendingUp className="orders-stat-icon" />
+                  </div>
+                  <div className="orders-stat-value">
+                    {formatCurrency(stats.averageOrderValue)}
+                  </div>
                 </div>
-              </div>
-              <div className="orders-stat-card">
-                <div className="orders-stat-header">
-                  <span className="orders-stat-label">Avg. Order Value</span>
-                  <TrendingUp className="orders-stat-icon" />
-                </div>
-                <div className="orders-stat-value">
-                  {formatCurrency(stats.averageOrderValue)}
-                </div>
-              </div>
-            </>
-          ) : null}
-        </div>
-
-        {/* Filters */}
-        <div className="orders-filters">
-          <div className="orders-search">
-            <Search className="orders-search-icon" />
-            <Input
-              placeholder="Search orders..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="orders-search-input"
-            />
+              </>
+            ) : null}
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="orders-filter-select">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="confirmed">Confirmed</SelectItem>
-              <SelectItem value="processing">Processing</SelectItem>
-              <SelectItem value="shipped">Shipped</SelectItem>
-              <SelectItem value="delivered">Delivered</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={paymentFilter} onValueChange={setPaymentFilter}>
-            <SelectTrigger className="orders-filter-select">
-              <SelectValue placeholder="Payment" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Payments</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
-              <SelectItem value="failed">Failed</SelectItem>
-              <SelectItem value="refunded">Refunded</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+
+          {/* Filters */}
+          <div className="orders-filters">
+            <div className="orders-search">
+              <Search className="orders-search-icon" />
+              <Input
+                placeholder="Search orders..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="orders-search-input"
+              />
+            </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="orders-filter-select">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="confirmed">Confirmed</SelectItem>
+                <SelectItem value="processing">Processing</SelectItem>
+                <SelectItem value="shipped">Shipped</SelectItem>
+                <SelectItem value="delivered">Delivered</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={paymentFilter} onValueChange={setPaymentFilter}>
+              <SelectTrigger className="orders-filter-select">
+                <SelectValue placeholder="Payment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Payments</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="paid">Paid</SelectItem>
+                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="refunded">Refunded</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </PageHeader>
       </div>
       {/* Table */}
       {isLoading ? (

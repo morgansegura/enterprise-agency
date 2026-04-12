@@ -58,6 +58,7 @@ import {
 } from "lucide-react";
 
 import { ImageEditor } from "@/components/ui/media-library/image-editor";
+import { ConfirmDialog, PromptDialog } from "@/components/ui/confirm-dialog";
 import "./media.css";
 
 // =============================================================================
@@ -103,6 +104,16 @@ export default function MediaLibraryPage() {
   const [uploadProgress, setUploadProgress] = React.useState<{
     [name: string]: number;
   }>({});
+
+  // Dialog states (replacing native window.prompt/confirm)
+  const [createFolderOpen, setCreateFolderOpen] = React.useState(false);
+  const [renameFolderTarget, setRenameFolderTarget] =
+    React.useState<MediaFolder | null>(null);
+  const [deleteFolderTarget, setDeleteFolderTarget] =
+    React.useState<MediaFolder | null>(null);
+  const [deleteAssetTarget, setDeleteAssetTarget] =
+    React.useState<Asset | null>(null);
+  const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState(false);
 
   // Debounce search so we don't refetch on every keystroke
   const [debouncedSearch, setDebouncedSearch] = React.useState("");
