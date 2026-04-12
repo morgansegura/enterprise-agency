@@ -72,7 +72,7 @@
 }
 
 .client-layout-main:not(:has(.page-editor-layout)) {
-  @apply p-3 overflow-y-auto;
+  @apply overflow-y-auto;
 }
 
 .client-layout-loading {

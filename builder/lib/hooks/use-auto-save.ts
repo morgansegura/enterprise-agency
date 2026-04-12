@@ -64,6 +64,11 @@ export function useAutoSave({
       logger.error("Auto-save failed", error);
       onSaveError?.(error);
 
+      // Don't retry on 404 (resource deleted) or 400 (bad data)
+      const is404 = error.message?.includes("404") || error.message?.includes("Not Found");
+      const is400 = error.message?.includes("400") || error.message?.includes("Bad Request");
+      if (is404 || is400) return;
+
       // Retry once after 3 seconds — the auth refresh may have
       // succeeded by then, so the retry has a good chance of working.
       if (pendingDataRef.current === null) {

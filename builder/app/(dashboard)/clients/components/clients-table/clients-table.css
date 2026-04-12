@@ -42,7 +42,7 @@
 }
 
 .clients-col-slug {
-  @apply font-mono text-[12px] text-(--text-secondary);
+  @apply text-[12px] text-(--el-600) bg-(--el-100) px-1 py-1 rounded-md;
 }
 
 .clients-col-pages {
