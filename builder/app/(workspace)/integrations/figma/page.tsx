@@ -22,6 +22,7 @@ import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 import {
   extractFileKey,
   fetchFigmaFile,
+  exportFigmaImages,
   extractColors,
   extractTextStyles,
   mapFigmaPageToSections,
@@ -239,11 +240,59 @@ export default function FigmaImportPage() {
       // 2. Import each selected frame as its own page
       const selected = frames.filter((f) => selectedFrames.has(f.id));
 
+      // Get the file key for image export
+      const fileKey = extractFileKey(fileUrl)!;
+
       for (const frame of selected) {
         const sections = mapFigmaPageToSections(frame.node);
         if (sections.length === 0) {
           skipped.push(`${frame.name} (no content)`);
           continue;
+        }
+
+        // Collect all image node IDs from sections
+        const imageNodeIds: string[] = [];
+        for (const section of sections) {
+          for (const container of section.containers) {
+            for (const block of container.blocks) {
+              const figmaNodeId = (block.data as Record<string, unknown>)
+                ._figmaNodeId as string | undefined;
+              if (figmaNodeId && block._type === "image-block") {
+                imageNodeIds.push(figmaNodeId);
+              }
+            }
+          }
+        }
+
+        // Export images from Figma and replace src URLs
+        if (imageNodeIds.length > 0) {
+          try {
+            const imageUrls = await exportFigmaImages(
+              fileKey,
+              imageNodeIds,
+              token,
+              "png",
+              2,
+            );
+            // Replace image block src with exported URLs
+            for (const section of sections) {
+              for (const container of section.containers) {
+                for (const block of container.blocks) {
+                  const data = block.data as Record<string, unknown>;
+                  const nodeId = data._figmaNodeId as string | undefined;
+                  if (nodeId && imageUrls[nodeId]) {
+                    data.src = imageUrls[nodeId];
+                    delete data._figmaNodeId;
+                  }
+                }
+              }
+            }
+          } catch (imgErr) {
+            // Non-fatal — pages still import without images
+            skipped.push(
+              `${frame.name} images (${imgErr instanceof Error ? imgErr.message : "export failed"})`,
+            );
+          }
         }
 
         const baseSlug = frame.name
@@ -257,8 +306,7 @@ export default function FigmaImportPage() {
             title: frame.name,
             slug: `${baseSlug || "page"}-${uniqueSuffix}`,
             status: "draft",
-            sections:
-              sections as unknown as Section[],
+            sections: sections as unknown as Section[],
           });
           imported++;
         } catch (err) {
