@@ -35,7 +35,7 @@
   font-family: var(--font-heading);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
-  color: var(--foreground);
+  color: inherit;
   margin-block-start: var(--rich-text-heading-spacing);
   margin-block-end: var(--spacing-block-sm);
 }
