@@ -28,7 +28,6 @@ import { EditableHeader } from "@/components/editor/editable-header";
 import { EditableFooter } from "@/components/editor/editable-footer";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
-import { BlockToolbar } from "@/components/editor/canvas-toolbar/block-toolbar";
 import { logger } from "@/lib/logger";
 import { toast } from "sonner";
 import { Eye } from "lucide-react";
@@ -803,42 +802,9 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                   dangerouslySetInnerHTML={{ __html: pageCSS }}
                 />
               )}
-              {/* Floating toolbar above selected block */}
-              {selectedBlockKey && selectedElement?.type === "block" && (
-                <BlockToolbar
-                  blockKey={selectedBlockKey}
-                  onMoveUp={() => editor.handleBlockMoveUp(
-                    selectedElement.sectionIndex,
-                    selectedElement.containerIndex!,
-                    selectedElement.blockIndex!,
-                  )}
-                  onMoveDown={() => editor.handleBlockMoveDown(
-                    selectedElement.sectionIndex,
-                    selectedElement.containerIndex!,
-                    selectedElement.blockIndex!,
-                  )}
-                  onDuplicate={() => editor.handleBlockDuplicate(
-                    selectedElement.sectionIndex,
-                    selectedElement.containerIndex!,
-                    selectedElement.blockIndex!,
-                  )}
-                  onDelete={() => {
-                    editor.handleBlockDelete(
-                      selectedElement.sectionIndex,
-                      selectedElement.containerIndex!,
-                      selectedElement.blockIndex!,
-                    );
-                    setSelectedBlockKey(null);
-                  }}
-                  canMoveUp={selectedElement.blockIndex! > 0}
-                  canMoveDown={
-                    selectedElement.blockIndex! <
-                    (editor.sections[selectedElement.sectionIndex]?.containers?.[
-                      selectedElement.containerIndex!
-                    ]?.blocks?.length ?? 0) - 1
-                  }
-                />
-              )}
+              {/* Floating toolbar removed — actions available via right-click
+                  context menu and layers panel icons. Text blocks use the
+                  TipTap bubble menu for inline formatting instead. */}
               <EditableHeader
                 tenantId={id}
                 headerId={localPage.headerId}
