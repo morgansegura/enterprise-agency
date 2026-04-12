@@ -38,15 +38,22 @@ export function TextBubbleMenu({ editor }: TextBubbleMenuProps) {
       const editorEl = editor.view.dom.closest("[data-block-key]");
       if (!editorEl) return;
 
-      // Position above the selected text, right-aligned to block edge
+      // Position above the selected text, centered on the selection
+      const end = editor.view.coordsAtPos(to);
       const desiredTop = start.top - 44;
-      const container = editorEl.parentElement?.parentElement;
-      const refRight =
-        container?.getBoundingClientRect().right ??
-        editorEl.getBoundingClientRect().right;
+      const centerX = (start.left + end.left) / 2;
+
+      // Clamp to canvas — don't overlap settings panel on the right
+      const canvas = editorEl.closest(".page-editor-canvas");
+      const canvasRight = canvas
+        ? canvas.getBoundingClientRect().right - 10
+        : window.innerWidth - 340;
+      const menuWidth = 240; // approximate bubble menu width
+      const clampedLeft = Math.min(centerX, canvasRight - menuWidth / 2);
+
       setPos({
         top: Math.max(60, desiredTop),
-        left: refRight,
+        left: clampedLeft,
       });
       setVisible(true);
     };
@@ -64,7 +71,7 @@ export function TextBubbleMenu({ editor }: TextBubbleMenuProps) {
   return (
     <div
       className="text-bubble-menu"
-      style={{ top: pos.top, left: pos.left, transform: "translateX(-100%)" }}
+      style={{ top: pos.top, left: pos.left, transform: "translateX(-50%)" }}
     >
       <button
         type="button"
