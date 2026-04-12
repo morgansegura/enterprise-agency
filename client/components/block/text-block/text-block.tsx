@@ -208,7 +208,7 @@ export function TextBlock({ data }: TextBlockProps) {
         )}
         data-size={!hasOverrides ? size : undefined}
         data-align={!hasOverrides ? align : undefined}
-        data-variant={variant}
+        data-variant={variant !== "default" ? variant : undefined}
         data-weight={weight}
         data-letter-spacing={letterSpacing}
         data-line-height={lineHeight}

@@ -107,7 +107,7 @@ export function Heading({
       data-white-space={whiteSpace}
       data-max-width={maxWidth}
       data-opacity={opacity}
-      data-color={color}
+      data-color={color && color !== "default" ? color : undefined}
       style={style}
     >
       {children}

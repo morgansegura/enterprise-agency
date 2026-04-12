@@ -19,7 +19,7 @@
   font-family: var(--font-body);
   font-size: var(--text-size-base);
   line-height: var(--line-height-relaxed);
-  color: var(--foreground);
+  color: inherit;
 
   /* Max width for readability */
   max-width: var(--rich-text-max-width);
