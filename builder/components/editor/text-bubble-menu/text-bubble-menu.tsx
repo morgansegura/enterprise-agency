@@ -9,6 +9,7 @@ import {
   Strikethrough,
   Link,
   Palette,
+  X,
 } from "lucide-react";
 import "./text-bubble-menu.css";
 
@@ -128,26 +129,27 @@ export function TextBubbleMenu({ editor }: TextBubbleMenuProps) {
           type="color"
           className="text-bubble-color-input"
           value={editor.getAttributes("colorMark")?.color || "#000000"}
-          onInput={(e) => {
-            e.preventDefault();
-            const color = (e.target as HTMLInputElement).value;
+          onChange={(e) => {
+            const color = e.target.value;
             editor.chain().focus().setMark("colorMark", { color }).run();
           }}
           title="Text color"
         />
         <Palette className="size-3.5 text-bubble-color-icon" />
       </div>
-      <button
-        type="button"
-        className="text-bubble-btn"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.chain().focus().unsetMark("colorMark").run();
-        }}
-        title="Remove color"
-      >
-        ×
-      </button>
+      {editor.isActive("colorMark") && (
+        <button
+          type="button"
+          className="text-bubble-btn"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            editor.chain().focus().unsetMark("colorMark").run();
+          }}
+          title="Remove color"
+        >
+          <X className="size-3.5" />
+        </button>
+      )}
     </div>
   );
 }

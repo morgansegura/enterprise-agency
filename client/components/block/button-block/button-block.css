@@ -1,8 +1,68 @@
 @reference "tailwindcss";
 
 [data-slot="button-block"] {
-  /* Inherits all styling from Button UI component */
-  /* Additional block-specific styles can be added here */
+  @apply inline-flex items-center justify-center gap-2 whitespace-nowrap;
+  @apply font-medium rounded-md cursor-pointer no-underline;
+  @apply transition-colors duration-150;
+}
+
+/* Variants */
+[data-slot="button-block"][data-variant="default"] {
+  @apply bg-(--accent-primary) text-white;
+}
+
+[data-slot="button-block"][data-variant="default"]:hover {
+  @apply opacity-90;
+}
+
+[data-slot="button-block"][data-variant="secondary"] {
+  @apply bg-(--el-200) text-(--el-800);
+}
+
+[data-slot="button-block"][data-variant="secondary"]:hover {
+  @apply bg-(--el-300);
+}
+
+[data-slot="button-block"][data-variant="outline"] {
+  @apply bg-transparent border border-(--el-300) text-(--el-800);
+}
+
+[data-slot="button-block"][data-variant="outline"]:hover {
+  @apply bg-(--el-100);
+}
+
+[data-slot="button-block"][data-variant="ghost"] {
+  @apply bg-transparent text-(--el-800);
+}
+
+[data-slot="button-block"][data-variant="ghost"]:hover {
+  @apply bg-(--el-100);
+}
+
+[data-slot="button-block"][data-variant="destructive"] {
+  @apply bg-(--status-error) text-white;
+}
+
+[data-slot="button-block"][data-variant="destructive"]:hover {
+  @apply opacity-90;
+}
+
+/* Sizes */
+[data-slot="button-block"][data-size="sm"] {
+  @apply h-8 px-3 text-xs;
+}
+
+[data-slot="button-block"][data-size="default"] {
+  @apply h-9 px-4 py-2 text-sm;
+}
+
+[data-slot="button-block"][data-size="lg"] {
+  @apply h-10 px-8 text-base;
+}
+
+/* Full width */
+[data-slot="button-block"][data-full-width] {
+  @apply w-full;
 }
 
 /* ==============================================

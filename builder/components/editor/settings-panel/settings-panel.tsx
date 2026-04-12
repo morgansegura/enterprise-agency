@@ -443,18 +443,20 @@ export function SettingsPanel({
                             )
                           }
                         />
-                        {/* Link settings — available on every block */}
-                        <BlockLinkSettings
-                          block={selectedData.data as Block}
-                          onChange={(updated) =>
-                            onBlockChange?.(
-                              selectedElement.sectionIndex,
-                              selectedElement.containerIndex!,
-                              selectedElement.blockIndex!,
-                              updated,
-                            )
-                          }
-                        />
+                        {/* Link settings — available on every block except buttons (which have their own URL) */}
+                        {(selectedData.data as Block)._type !== "button-block" && (
+                          <BlockLinkSettings
+                            block={selectedData.data as Block}
+                            onChange={(updated) =>
+                              onBlockChange?.(
+                                selectedElement.sectionIndex,
+                                selectedElement.containerIndex!,
+                                selectedElement.blockIndex!,
+                                updated,
+                              )
+                            }
+                          />
+                        )}
                       </>
                     )}
                   </>
