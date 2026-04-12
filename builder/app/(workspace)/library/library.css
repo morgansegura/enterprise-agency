@@ -10,7 +10,7 @@
 
 /* Header with type tabs */
 .library-header {
-  @apply px-6 pt-6 pb-0;
+  @apply px-6 pt-6 pb-4 bg-(--el-100);
 }
 
 .library-title {
@@ -18,17 +18,17 @@
 }
 
 .library-subtitle {
-  @apply text-sm text-(--el-400) mb-4;
+  @apply text-sm text-(--el-600) mb-4;
 }
 
 /* Type tabs — horizontal pill tabs */
 .library-tabs {
-  @apply flex gap-1 p-[3px] bg-(--el-100) rounded-lg inset-shadow-sm inset-shadow-black/10 w-fit;
+  @apply flex gap-1 p-[3px] bg-(--el-200)/75 rounded-lg inset-shadow-xs inset-shadow-black/10 w-fit outline outline-(--el-0);
 }
 
 .library-tab {
   @apply px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer;
-  @apply bg-transparent text-(--el-500) border-none;
+  @apply bg-transparent text-(--el-600) border-none;
   @apply transition-all duration-150;
 }
 
@@ -46,11 +46,11 @@
 
 /* Toolbar — search + filters */
 .library-toolbar {
-  @apply flex items-center gap-3 px-6 py-3 border-b border-(--border-default);
+  @apply flex items-center gap-3 px-6 py-3 border-b border-(--border-default) bg-(--el-100) outline outline-(--el-0);
 }
 
 .library-search {
-  @apply relative flex-1 max-w-sm;
+  @apply relative flex-1 max-w-sm outline outline-(--el-0) rounded-md;
 }
 
 .library-search-icon {
@@ -66,11 +66,11 @@
 }
 
 .library-scope-toggle {
-  @apply flex gap-0.5 p-[2px] bg-(--el-100) rounded-md;
+  @apply flex gap-0.5 p-[2px] bg-(--el-200) text-(--el-600) inset-shadow-xs inset-shadow-black/10 rounded-md outline outline-(--el-0);
 }
 
 .library-scope-btn {
-  @apply px-2.5 py-1 text-[11px] font-medium rounded-[3px] cursor-pointer;
+  @apply px-2.5 py-1 text-[11px] font-medium rounded-md cursor-pointer;
   @apply bg-transparent text-(--el-500) border-none;
   @apply transition-colors duration-100;
 }
@@ -108,13 +108,13 @@
 
 /* Card */
 .library-card {
-  @apply group relative flex flex-col overflow-hidden rounded-lg;
+  @apply relative flex flex-col overflow-hidden rounded-lg;
   @apply bg-(--el-0) border border-(--el-200);
-  @apply transition-all duration-150;
+  @apply transition-all duration-300 outline outline-(--el-0);
 }
 
 .library-card:hover {
-  @apply border-(--el-300) shadow-md;
+  @apply border-(--el-300) shadow-md outline-transparent;
 }
 
 /* Preview area */
@@ -148,7 +148,11 @@
 .library-card-fav {
   @apply absolute top-2 right-2 size-6 rounded-full flex items-center justify-center;
   @apply bg-(--el-0)/80 backdrop-blur-sm border-none cursor-pointer;
-  @apply opacity-0 group-hover:opacity-100 transition-opacity;
+  @apply opacity-0 transition-opacity;
+}
+
+.library-card:hover .library-card-fav {
+  @apply opacity-100;
 }
 
 .library-card-fav[data-active] {
@@ -165,7 +169,7 @@
 }
 
 .library-card-desc {
-  @apply text-xs text-(--el-400) line-clamp-2;
+  @apply text-xs text-(--el-500) line-clamp-2;
 }
 
 .library-card-meta {
@@ -173,18 +177,22 @@
 }
 
 .library-card-category {
-  @apply text-[10px] font-medium text-(--el-400) uppercase tracking-wider;
+  @apply text-[10px] font-medium text-(--el-500) uppercase tracking-wider;
 }
 
 .library-card-usage {
-  @apply text-[10px] text-(--el-400);
+  @apply text-[10px] text-(--el-500);
 }
 
 /* Actions overlay */
 .library-card-actions {
   @apply absolute inset-0 flex items-center justify-center gap-2;
   @apply bg-(--el-0)/80 backdrop-blur-sm;
-  @apply opacity-0 group-hover:opacity-100 transition-opacity;
+  @apply opacity-0 transition-opacity;
+}
+
+.library-card:hover .library-card-actions {
+  @apply opacity-100 bg-linear-to-br from-(--el-50) via-(--el-50) to-(--el-50);
 }
 
 /* Empty state */

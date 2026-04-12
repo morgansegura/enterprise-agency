@@ -270,7 +270,7 @@
  * ============================================================================= */
 
 .property-toggle {
-  @apply inline-flex gap-0.5 p-[3px] bg-(--el-100) outline-1 outline-(--el-0) rounded-md inset-shadow-black/10 inset-shadow-sm;
+  @apply inline-flex gap-0.5 p-[3px] bg-(--el-200)/75 outline-1 outline-(--el-0) rounded-md inset-shadow-black/10 inset-shadow-xs;
 }
 
 .property-toggle--full {

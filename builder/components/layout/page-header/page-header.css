@@ -34,7 +34,7 @@
 }
 
 .page-header-count {
-  @apply inline-flex font-medium px-1.5 h-[18px] items-center rounded text-[10px] text-(--el-500) bg-(--border-default);
+  @apply inline-flex font-medium px-1.5 h-[18px] items-center rounded text-[10px] text-(--el-600) bg-(--el-0) border border-(--el-300) outline outline-(--el-0);
 }
 
 .page-header-actions {

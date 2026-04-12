@@ -1,6 +1,7 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
+import { ContainerAddButton } from "./container-add-button";
 import { getElementClass } from "@enterprise/tokens";
 
 interface StackBlockData {
@@ -17,25 +18,18 @@ export default function StackBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as StackBlockData;
   const { gap = "md", align = "stretch", blocks = [] } = data;
-
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const _hasStyle = (prop: string) => !!styles?.[prop];
   const elementClass = getElementClass(block._key);
 
-  const dataAttributes: Record<string, string | undefined> = {
-    "data-slot": "stack-block",
-    "data-gap": gap,
-    "data-align": align,
-  };
-
-  const filtered = Object.fromEntries(
-    Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
-  );
-
   return (
-    <div className={elementClass} {...filtered}>
+    <div
+      className={elementClass}
+      data-slot="stack-block"
+      data-gap={gap}
+      data-align={align}
+      style={{
+        minHeight: blocks.length === 0 && isEditing ? "60px" : undefined,
+      }}
+    >
       {blocks.map((childBlock, i) => (
         <BlockRenderer
           key={childBlock._key}
@@ -56,6 +50,12 @@ export default function StackBlockRenderer({
           }
         />
       ))}
+      <ContainerAddButton
+        block={block}
+        blocks={blocks}
+        onChange={onChange}
+        isEditing={isEditing}
+      />
     </div>
   );
 }

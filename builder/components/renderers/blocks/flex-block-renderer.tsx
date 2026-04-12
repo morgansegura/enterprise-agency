@@ -1,6 +1,7 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
+import { ContainerAddButton } from "./container-add-button";
 import { getElementClass } from "@enterprise/tokens";
 
 interface FlexBlockData {
@@ -27,28 +28,21 @@ export default function FlexBlockRenderer({
     wrap = false,
     blocks = [],
   } = data;
-
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const _hasStyle = (prop: string) => !!styles?.[prop];
   const elementClass = getElementClass(block._key);
 
-  const dataAttributes: Record<string, string | undefined> = {
-    "data-slot": "flex-block",
-    "data-direction": direction,
-    "data-wrap": wrap ? "wrap" : "nowrap",
-    "data-gap": gap,
-    "data-align": align,
-    "data-justify": justify,
-  };
-
-  const filtered = Object.fromEntries(
-    Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
-  );
-
   return (
-    <div className={elementClass} {...filtered}>
+    <div
+      className={elementClass}
+      data-slot="flex-block"
+      data-direction={direction}
+      data-wrap={wrap ? "wrap" : "nowrap"}
+      data-gap={gap}
+      data-align={align}
+      data-justify={justify}
+      style={{
+        minHeight: blocks.length === 0 && isEditing ? "60px" : undefined,
+      }}
+    >
       {blocks.map((childBlock, i) => (
         <BlockRenderer
           key={childBlock._key}
@@ -69,6 +63,12 @@ export default function FlexBlockRenderer({
           }
         />
       ))}
+      <ContainerAddButton
+        block={block}
+        blocks={blocks}
+        onChange={onChange}
+        isEditing={isEditing}
+      />
     </div>
   );
 }

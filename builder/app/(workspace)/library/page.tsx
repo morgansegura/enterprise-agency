@@ -35,9 +35,21 @@ type TabType = "all" | LibraryItemType;
 
 const TABS: Array<{ value: TabType; label: string; icon: React.ReactNode }> = [
   { value: "all", label: "All", icon: <LibraryBig className="size-3.5" /> },
-  { value: "HEADER", label: "Headers", icon: <PanelTop className="size-3.5" /> },
-  { value: "FOOTER", label: "Footers", icon: <PanelBottom className="size-3.5" /> },
-  { value: "SECTION", label: "Sections", icon: <LayoutGrid className="size-3.5" /> },
+  {
+    value: "HEADER",
+    label: "Headers",
+    icon: <PanelTop className="size-3.5" />,
+  },
+  {
+    value: "FOOTER",
+    label: "Footers",
+    icon: <PanelBottom className="size-3.5" />,
+  },
+  {
+    value: "SECTION",
+    label: "Sections",
+    icon: <LayoutGrid className="size-3.5" />,
+  },
   { value: "BLOCK", label: "Blocks", icon: <Box className="size-3.5" /> },
   { value: "MENU", label: "Menus", icon: <Menu className="size-3.5" /> },
 ];
@@ -105,7 +117,8 @@ export default function LibraryPage() {
       <div className="library-header">
         <h1 className="library-title">Component Library</h1>
         <p className="library-subtitle">
-          Reusable headers, footers, sections, and blocks — save once, use everywhere
+          Reusable headers, footers, sections, and blocks — save once, use
+          everywhere
         </p>
 
         {/* Type tabs */}
@@ -118,13 +131,13 @@ export default function LibraryPage() {
               data-active={activeTab === tab.value || undefined}
               onClick={() => setActiveTab(tab.value)}
             >
-              {tab.icon}
+              {/* {tab.icon} */}
               <span className="ml-1">{tab.label}</span>
-              {typeCounts[tab.value] !== undefined && (
+              {/* {typeCounts[tab.value] !== undefined && (
                 <span className="library-tab-count">
                   {typeCounts[tab.value]}
                 </span>
-              )}
+              )} */}
             </button>
           ))}
         </div>
@@ -152,7 +165,11 @@ export default function LibraryPage() {
                 data-active={scope === s || undefined}
                 onClick={() => setScope(s)}
               >
-                {s === "ALL" ? "All" : s === "TENANT" ? "My Items" : "Templates"}
+                {s === "ALL"
+                  ? "All"
+                  : s === "TENANT"
+                    ? "My Items"
+                    : "Templates"}
               </button>
             ))}
           </div>
@@ -164,10 +181,7 @@ export default function LibraryPage() {
         {isLoading ? (
           <div className="library-grid-inner">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="library-card animate-pulse"
-              >
+              <div key={i} className="library-card animate-pulse">
                 <div className="library-card-preview bg-(--el-100)" />
                 <div className="library-card-body">
                   <div className="h-4 w-2/3 bg-(--el-100) rounded" />
@@ -200,10 +214,7 @@ export default function LibraryPage() {
                 <div className="library-card-preview">
                   {item.thumbnailUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item.thumbnailUrl}
-                      alt={item.name}
-                    />
+                    <img src={item.thumbnailUrl} alt={item.name} />
                   ) : (
                     TYPE_ICONS[item.type] || (
                       <Box className="library-card-preview-icon" />
@@ -211,10 +222,7 @@ export default function LibraryPage() {
                   )}
 
                   {/* Scope badge */}
-                  <span
-                    className="library-card-scope"
-                    data-scope={item.scope}
-                  >
+                  <span className="library-card-scope" data-scope={item.scope}>
                     {item.scope === "GLOBAL" ? "Template" : "Custom"}
                   </span>
 
@@ -260,7 +268,7 @@ export default function LibraryPage() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="h-7 text-xs"
+                    className="h-7 text-xs border-(--el-200)"
                     onClick={() => handleCopyId(item)}
                   >
                     <Copy className="size-3" />
@@ -270,7 +278,7 @@ export default function LibraryPage() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="h-7 text-xs text-(--status-error)"
+                      className="h-7 text-xs border-(--el-200) text-(--status-error)"
                       onClick={() => handleDelete(item)}
                     >
                       <Trash2 className="size-3" />
