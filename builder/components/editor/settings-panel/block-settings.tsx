@@ -1359,6 +1359,174 @@ function FaqBlockSettings({
   );
 }
 
+// =============================================================================
+// Layout Block Settings — Grid, Stack, Flex, Columns, Container
+// =============================================================================
+
+function LayoutBlockSettings({
+  block,
+  onChange,
+}: {
+  block: Block;
+  onChange: (block: Block) => void;
+}) {
+  const data = block.data as Record<string, unknown>;
+  const blockType = block._type;
+
+  const handleChange = (field: string, value: unknown) => {
+    onChange({ ...block, data: { ...data, [field]: value } });
+  };
+
+  return (
+    <>
+      {/* Column count — Grid and Columns */}
+      {(blockType === "grid-block" || blockType === "columns-block") && (
+        <PropertySection title="Columns">
+          <PropertyRow label="Count" stacked>
+            <PropertyToggle
+              value={String(
+                blockType === "columns-block"
+                  ? data.count || "2"
+                  : typeof data.columns === "number"
+                    ? data.columns
+                    : 2,
+              )}
+              options={[
+                { value: "1", label: "1" },
+                { value: "2", label: "2" },
+                { value: "3", label: "3" },
+                { value: "4", label: "4" },
+                { value: "5", label: "5" },
+                { value: "6", label: "6" },
+              ]}
+              onChange={(v) =>
+                handleChange(
+                  blockType === "columns-block" ? "count" : "columns",
+                  blockType === "columns-block" ? v : parseInt(v),
+                )
+              }
+              fullWidth
+            />
+          </PropertyRow>
+        </PropertySection>
+      )}
+
+      {/* Direction — Flex only */}
+      {blockType === "flex-block" && (
+        <PropertySection title="Direction">
+          <PropertyRow label="Direction" stacked>
+            <PropertyToggle
+              value={(data.direction as string) || "row"}
+              options={[
+                { value: "row", label: "→ Row" },
+                { value: "column", label: "↓ Column" },
+                { value: "row-reverse", label: "← Reverse" },
+                { value: "column-reverse", label: "↑ Col Rev" },
+              ]}
+              onChange={(v) => handleChange("direction", v)}
+              fullWidth
+            />
+          </PropertyRow>
+          <PropertyRow label="Wrap" stacked>
+            <PropertyToggle
+              value={data.wrap ? "true" : "false"}
+              options={[
+                { value: "false", label: "No Wrap" },
+                { value: "true", label: "Wrap" },
+              ]}
+              onChange={(v) => handleChange("wrap", v === "true")}
+              fullWidth
+            />
+          </PropertyRow>
+          <PropertyRow label="Justify" stacked>
+            <PropertyToggle
+              value={(data.justify as string) || "start"}
+              options={[
+                { value: "start", label: "Start" },
+                { value: "center", label: "Center" },
+                { value: "end", label: "End" },
+                { value: "between", label: "Between" },
+              ]}
+              onChange={(v) => handleChange("justify", v)}
+              fullWidth
+            />
+          </PropertyRow>
+          <PropertyRow label="Align" stacked>
+            <PropertyToggle
+              value={(data.align as string) || "stretch"}
+              options={[
+                { value: "stretch", label: "Stretch" },
+                { value: "start", label: "Start" },
+                { value: "center", label: "Center" },
+                { value: "end", label: "End" },
+              ]}
+              onChange={(v) => handleChange("align", v)}
+              fullWidth
+            />
+          </PropertyRow>
+        </PropertySection>
+      )}
+
+      {/* Alignment — Stack only */}
+      {blockType === "stack-block" && (
+        <PropertySection title="Alignment">
+          <PropertyRow label="Align" stacked>
+            <PropertyToggle
+              value={(data.align as string) || "stretch"}
+              options={[
+                { value: "stretch", label: "Stretch" },
+                { value: "start", label: "Start" },
+                { value: "center", label: "Center" },
+                { value: "end", label: "End" },
+              ]}
+              onChange={(v) => handleChange("align", v)}
+              fullWidth
+            />
+          </PropertyRow>
+        </PropertySection>
+      )}
+
+      {/* Width — Container only */}
+      {blockType === "container-block" && (
+        <PropertySection title="Container">
+          <PropertyRow label="Width" stacked>
+            <PropertyToggle
+              value={(data.width as string) || "wide"}
+              options={[
+                { value: "narrow", label: "Narrow" },
+                { value: "wide", label: "Wide" },
+                { value: "full", label: "Full" },
+              ]}
+              onChange={(v) => handleChange("width", v)}
+              fullWidth
+            />
+          </PropertyRow>
+        </PropertySection>
+      )}
+
+      {/* Gap — all layout blocks */}
+      <PropertySection title="Spacing">
+        <PropertyRow label="Gap" stacked>
+          <PropertyToggle
+            value={(data.gap as string) || "md"}
+            options={[
+              { value: "none", label: "0" },
+              { value: "xs", label: "XS" },
+              { value: "sm", label: "SM" },
+              { value: "md", label: "MD" },
+              { value: "lg", label: "LG" },
+              { value: "xl", label: "XL" },
+              { value: "2xl", label: "2XL" },
+            ]}
+            onChange={(v) => handleChange("gap", v)}
+            fullWidth
+          />
+        </PropertyRow>
+      </PropertySection>
+    </>
+  );
+}
+
 function GenericBlockSettings({
   block,
   onChange: _onChange,
@@ -1408,6 +1576,7 @@ export {
   NewsletterBlockSettings,
   FeatureGridBlockSettings,
   FaqBlockSettings,
+  LayoutBlockSettings,
   GenericBlockSettings,
   BlockLinkSettings,
 };

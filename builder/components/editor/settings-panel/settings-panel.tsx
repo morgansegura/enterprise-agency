@@ -44,6 +44,7 @@ import {
   FeatureGridBlockSettings,
   FaqBlockSettings,
   GenericBlockSettings,
+  LayoutBlockSettings,
   BlockLinkSettings,
 } from "./block-settings";
 import { BlockStyleTab, ElementStyleEditor } from "./block-style-tab";
@@ -573,12 +574,14 @@ function BlockStyleSettings({
         return <FaqBlockSettings block={block} onChange={onChange} />;
       case "social-links-block":
       case "logo-bar-block":
+      case "social-links-block":
+        return <GenericBlockSettings block={block} onChange={onChange} />;
       case "columns-block":
       case "container-block":
       case "grid-block":
       case "flex-block":
       case "stack-block":
-        return <GenericBlockSettings block={block} onChange={onChange} />;
+        return <LayoutBlockSettings block={block} onChange={onChange} />;
       default:
         return <GenericBlockSettings block={block} onChange={onChange} />;
     }
