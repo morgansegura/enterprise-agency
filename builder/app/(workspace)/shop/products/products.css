@@ -1,11 +1,15 @@
 @reference "tailwindcss";
 
 /* ============================================================================
-   Products List
+   Products List — matches Orders page styling
    ============================================================================ */
 
 .products-page {
-  @apply flex-1 flex flex-col gap-3 p-4 bg-(--el-0) rounded-[3px] border border-(--border)/50 shadow-xs;
+  @apply flex-1 flex flex-col gap-3 bg-(--el-50) rounded-[3px] h-full;
+}
+
+.products-page-header {
+  @apply grid gap-2 bg-(--el-100) py-6 px-4;
 }
 
 /* Filters */
@@ -14,11 +18,11 @@
 }
 
 .products-search {
-  @apply relative flex-1 max-w-sm;
+  @apply relative flex-1 max-w-sm outline outline-(--el-0) rounded-md;
 }
 
 .products-search-icon {
-  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--el-300);
+  @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--el-400);
 }
 
 .products-search-input {
@@ -51,7 +55,7 @@
 }
 
 .products-table-row {
-  @apply hover:bg-(--el-50) transition-colors cursor-pointer;
+  @apply hover:bg-(--el-50) transition-colors duration-100 cursor-pointer;
 }
 
 .products-table-row td {
@@ -64,7 +68,7 @@
 }
 
 .products-thumbnail {
-  @apply w-10 h-10 rounded-md overflow-hidden bg-(--el-50) flex-shrink-0;
+  @apply w-10 h-10 rounded-md overflow-hidden bg-(--el-50) shrink-0;
   @apply flex items-center justify-center border border-(--border-subtle);
 }
 
@@ -134,7 +138,7 @@
 }
 
 .products-empty-icon {
-  @apply h-12 w-12 text-(--el-300) mb-4;
+  @apply h-12 w-12 text-(--el-400)/65 mb-4;
 }
 
 .products-empty h3 {
@@ -142,7 +146,7 @@
 }
 
 .products-empty p {
-  @apply text-[14px] text-(--el-400) mb-6;
+  @apply text-[14px] text-(--el-500) mb-6;
 }
 
 /* Skeleton */

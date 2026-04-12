@@ -86,11 +86,11 @@
 }
 
 .client-sidebar-link:hover {
-  @apply bg-(--accent-primary-subtle)/50 text-(--el-800);
+  @apply bg-(--el-100) text-(--el-800);
 }
 
 .client-sidebar-link[data-active="true"] {
-  @apply bg-(--accent-primary-subtle) text-(--accent-primary) font-medium;
+  @apply bg-(--el-200)/75 text-(--accent-primary) font-medium outline outline-(--el-0) inset-shadow-xs inset-shadow-black/10;
 }
 
 /* Jira-style left border indicator on active */
@@ -122,7 +122,8 @@
 }
 
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-link span {
+  .client-sidebar-link
+  span {
   @apply hidden;
 }
 
@@ -161,6 +162,7 @@
 }
 
 [data-slot="sidebar-desktop-wrapper"][data-collapsible="icon"]
-  .client-sidebar-action span {
+  .client-sidebar-action
+  span {
   @apply hidden;
 }

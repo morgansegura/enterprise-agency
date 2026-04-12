@@ -135,39 +135,41 @@ export default function ProductsPage() {
 
   return (
     <div className="products-page">
-      <PageHeader
-        title="Products"
-        icon={Package}
-        count={total}
-        singularName="product"
-        pluralName="products"
-        actionLabel="Add Product"
-        actionIcon={PlusCircle}
-        onAction={() => router.push("/shop/products/new")}
-      />
+      <div className="products-page-header">
+        <PageHeader
+          title="Products"
+          icon={Package}
+          count={total}
+          singularName="product"
+          pluralName="products"
+          actionLabel="Add Product"
+          actionIcon={PlusCircle}
+          onAction={() => router.push("/shop/products/new")}
+        />
 
-      {/* Filters */}
-      <div className="products-filters">
-        <div className="products-search">
-          <Search className="products-search-icon" />
-          <Input
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="products-search-input"
-          />
+        {/* Filters */}
+        <div className="products-filters">
+          <div className="products-search">
+            <Search className="products-search-icon" />
+            <Input
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="products-search-input"
+            />
+          </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="products-filter-select">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="products-filter-select">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="draft">Draft</SelectItem>
-            <SelectItem value="archived">Archived</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       {/* Table */}

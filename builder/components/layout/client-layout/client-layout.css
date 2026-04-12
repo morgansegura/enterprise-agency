@@ -11,7 +11,7 @@
 
 .client-layout-header {
   @apply flex h-11 shrink-0 items-center gap-2 px-4;
-  @apply bg-(--el-0) border-b border-(--border-default) justify-between;
+  @apply bg-(--el-0) border-b border-(--el-200) outline outline-(--el-0) justify-between;
 }
 
 .client-layout-header-left {

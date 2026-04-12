@@ -31,7 +31,7 @@
 
 /* Sidebar - Desktop Wrapper */
 [data-slot="sidebar-desktop-wrapper"] {
-  @apply hidden text-(--sidebar-foreground);
+  @apply hidden text-(--sidebar-foreground) pt-0;
 }
 
 @media (min-width: 768px) {
@@ -42,7 +42,7 @@
 
 /* Sidebar - Spacer (handles the gap) */
 [data-slot="sidebar-spacer"] {
-  @apply relative bg-transparent transition-[width] duration-200 ease-out w-(--sidebar-width);
+  @apply relative bg-transparent transition-[width] duration-200 ease-out w-(--sidebar-width) border-(--el-200);
 }
 
 /* Spacer collapses to icon width in icon mode */
@@ -78,7 +78,7 @@
 
 /* Sidebar - Fixed Container */
 [data-slot="sidebar-fixed-container"] {
-  @apply fixed z-10 py-2 hidden h-svh w-(--sidebar-width) transition-all duration-200 ease-out md:flex;
+  @apply fixed z-10 pb-2 hidden h-svh w-(--sidebar-width) transition-all duration-200 ease-out md:flex;
 }
 
 /* Icon mode collapsed width */
