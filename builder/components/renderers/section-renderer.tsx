@@ -96,12 +96,13 @@ export function SectionRenderer({
         getElementClass(section._key),
         sectionBackground,
         sectionAlign,
+        sectionSpacing,
+        sectionWidth,
       )}
       data-block-key={section._key}
       data-block-label={`Section ${sectionIndex + 1}`}
       data-element-type="section"
     >
-      <div className={cn(sectionSpacing, sectionWidth)}>
         {containers.map((container, containerIndex) => {
           // Skip Tailwind layout classes when container has custom CSS styles
           // (generated CSS from the style panel handles layout in that case)
@@ -159,7 +160,6 @@ export function SectionRenderer({
           </div>
           );
         })}
-      </div>
     </section>
   );
 }
