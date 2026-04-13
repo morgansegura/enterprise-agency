@@ -103,9 +103,16 @@ export function SectionRenderer({
     >
       <div className={cn(sectionSpacing, sectionWidth)}>
         {containers.map((container, containerIndex) => {
-          const _containerStyled = hasStyles(container.styles);
+          // Skip Tailwind layout classes when container has custom CSS styles
+          // (generated CSS from the style panel handles layout in that case)
+          const containerStyles = container.styles as Record<string, string> | undefined;
+          const hasCustomLayout =
+            containerStyles?.display ||
+            containerStyles?.flexDirection ||
+            containerStyles?.gap ||
+            containerStyles?.gridTemplateColumns;
 
-          // Build layout classes from container.layout
+          // Build layout classes from container.layout (only if no custom styles)
           const layout = container.layout as Record<string, unknown> | undefined;
           const layoutType = (layout?.type as string) || "stack";
           const layoutDirection = (layout?.direction as string) || "column";
@@ -114,11 +121,13 @@ export function SectionRenderer({
           const gapClasses: Record<string, string> = {
             xs: "gap-1", sm: "gap-2", md: "gap-4", lg: "gap-6", xl: "gap-8",
           };
-          const layoutClasses = layoutType === "flex"
-            ? `flex ${layoutDirection === "row" ? "flex-row" : "flex-col"} ${gapClasses[layoutGap] || "gap-4"}`
-            : layoutType === "grid"
-              ? `grid ${layout?.columns ? `grid-cols-${layout.columns}` : "grid-cols-2"} ${gapClasses[layoutGap] || "gap-4"}`
-              : `flex flex-col ${gapClasses[layoutGap] || "gap-4"}`;
+          const layoutClasses = hasCustomLayout
+            ? ""
+            : layoutType === "flex"
+              ? `flex ${layoutDirection === "row" ? "flex-row" : "flex-col"} ${gapClasses[layoutGap] || "gap-4"}`
+              : layoutType === "grid"
+                ? `grid ${layout?.columns ? `grid-cols-${layout.columns}` : "grid-cols-2"} ${gapClasses[layoutGap] || "gap-4"}`
+                : `flex flex-col ${gapClasses[layoutGap] || "gap-4"}`;
 
           return (
           <div

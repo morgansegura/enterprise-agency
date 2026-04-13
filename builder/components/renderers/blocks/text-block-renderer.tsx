@@ -82,7 +82,7 @@ export default function TextBlockRenderer({
       "data-slot": "text-block",
       "data-size": hasStyle("fontSize") ? undefined : size,
       "data-align": hasStyle("textAlign") ? undefined : align,
-      "data-variant": variant,
+      "data-variant": variant !== "default" ? variant : undefined,
       "data-weight": hasStyle("fontWeight") ? undefined : weight,
       "data-letter-spacing": hasStyle("letterSpacing") ? undefined : letterSpacing,
       "data-line-height": hasStyle("lineHeight") ? undefined : lineHeight,
@@ -94,7 +94,7 @@ export default function TextBlockRenderer({
       "data-columns": columns,
       "data-column-gap": columnGap,
       "data-opacity": hasStyle("opacity") ? undefined : opacityPreset,
-      "data-color": hasStyle("color") ? undefined : color,
+      "data-color": hasStyle("color") || !color || color === "default" ? undefined : color,
       "data-drop-cap": dropCap,
     };
 

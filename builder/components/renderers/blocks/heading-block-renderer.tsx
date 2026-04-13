@@ -109,7 +109,7 @@ export default function HeadingBlockRenderer({
     "data-white-space": hasStyle("whiteSpace") ? undefined : whiteSpace,
     "data-max-width": hasStyle("maxWidth") ? undefined : maxWidth,
     "data-opacity": hasStyle("opacity") ? undefined : getOpacityPreset(opacity),
-    "data-color": hasStyle("color") ? undefined : color,
+    "data-color": hasStyle("color") || !color || color === "default" ? undefined : color,
   };
 
   const filteredDataAttributes = Object.fromEntries(
