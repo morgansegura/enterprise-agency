@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Minus, Pin, PinOff, EyeOff, Layers } from "lucide-react";
-import { useToast } from "@/components/ui/toast";
+import { toast } from "sonner";
 import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 
 const headerSchema = z.object({
@@ -84,7 +84,6 @@ export default function NewHeaderPage() {
   const id = tenantId!;
   const router = useRouter();
   const createHeader = useCreateHeader(id);
-  const { toast } = useToast();
 
   const form = useForm<HeaderForm>({
     resolver: zodResolver(headerSchema),
@@ -109,17 +108,14 @@ export default function NewHeaderPage() {
       },
       {
         onSuccess: (header) => {
-          toast.success(
-            "Header created",
-            `"${data.name}" has been created successfully.`,
-          );
+          toast.success(`"${data.name}" created`);
           router.push(`/headers/${header.id}/edit`);
         },
         onError: (err) => {
           logger.error("Header creation failed", err as Error);
           const message =
             err instanceof Error ? err.message : "Failed to create header";
-          toast.error("Failed to create header", message);
+          toast.error(message);
         },
       },
     );

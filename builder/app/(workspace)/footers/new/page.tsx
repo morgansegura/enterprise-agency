@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Minus, Columns3, Layers, AlignCenter, LayoutList } from "lucide-react";
-import { useToast } from "@/components/ui/toast";
+import { toast } from "sonner";
 import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 
 import "./new-footer.css";
@@ -85,7 +85,7 @@ export default function NewFooterPage() {
   const id = tenantId!;
   const router = useRouter();
   const createFooter = useCreateFooter(id);
-  const { toast } = useToast();
+
 
   const form = useForm<FooterForm>({
     resolver: zodResolver(footerSchema),
@@ -109,16 +109,13 @@ export default function NewFooterPage() {
       },
       {
         onSuccess: (footer) => {
-          toast.success(
-            "Footer created",
-            `"${data.name}" has been created successfully.`,
-          );
+          toast.success(`"${data.name}" created`);
           router.push(`/footers/${footer.id}/edit`);
         },
         onError: (err) => {
           const message =
             err instanceof Error ? err.message : "Failed to create footer";
-          toast.error("Failed to create footer", message);
+          toast.error(message);
         },
       },
     );

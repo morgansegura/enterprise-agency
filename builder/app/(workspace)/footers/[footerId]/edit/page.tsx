@@ -24,7 +24,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { Save, Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/toast";
+import { toast } from "sonner";
 import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 import { useParams } from "next/navigation";
 
@@ -73,7 +73,6 @@ export default function EditFooterPage() {
   const id = tenantId!;
   const { footerId } = useParams<{ footerId: string }>();
   const router = useRouter();
-  const { toast } = useToast();
 
   const { data: footer, isLoading, error } = useFooter(id, footerId);
   const updateFooter = useUpdateFooter(id);
@@ -108,15 +107,12 @@ export default function EditFooterPage() {
       },
       {
         onSuccess: () => {
-          toast.success(
-            "Footer saved",
-            `"${name}" has been updated successfully.`,
-          );
+          toast.success(`"${name}" saved`);
         },
         onError: (err) => {
           const message =
             err instanceof Error ? err.message : "Failed to save footer";
-          toast.error("Failed to save footer", message);
+          toast.error(message);
         },
       },
     );
