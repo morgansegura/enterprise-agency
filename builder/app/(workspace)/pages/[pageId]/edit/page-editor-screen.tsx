@@ -633,6 +633,26 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
         rightPanel={
           <SettingsPanel
             sections={editor.sections}
+            pageSettings={{
+              title: localPage.title,
+              slug: localPage.slug,
+              seo: {
+                metaTitle: page?.seo?.metaTitle,
+                metaDescription: page?.seo?.metaDescription,
+              },
+              headerId: localPage.headerId,
+              footerId: localPage.footerId,
+              onTitleChange: (title) => setLocalPage((p) => ({ ...p, title })),
+              onSlugChange: (slug) => setLocalPage((p) => ({ ...p, slug })),
+              onSeoChange: (seo) => {
+                autoSave.save({ seo });
+              },
+              onHeaderChange: (headerId) =>
+                setLocalPage((p) => ({ ...p, headerId })),
+              onFooterChange: (footerId) =>
+                setLocalPage((p) => ({ ...p, footerId })),
+              tenantId: id,
+            }}
             onSectionChange={editor.handleSectionChange}
             onContainerChange={(sectionIndex, containerIndex, container) => {
               editor.setSections((prevSections) => {

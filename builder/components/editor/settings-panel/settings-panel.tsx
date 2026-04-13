@@ -3,10 +3,18 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { PropertySection, PropertyRow } from "./components";
 import {
   PanelRightOpen,
   Layers,
-  Plus,
 } from "lucide-react";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { useHeaders } from "@/lib/hooks/use-headers";
@@ -99,8 +107,14 @@ interface SettingsPanelProps {
   ) => void;
   // Page-level settings (shown when no element selected)
   pageSettings?: {
+    title: string;
+    slug: string;
+    seo?: { metaTitle?: string; metaDescription?: string };
     headerId: string | null;
     footerId: string | null;
+    onTitleChange: (title: string) => void;
+    onSlugChange: (slug: string) => void;
+    onSeoChange: (seo: { metaTitle?: string; metaDescription?: string }) => void;
     onHeaderChange: (id: string | null) => void;
     onFooterChange: (id: string | null) => void;
     tenantId: string;
@@ -142,7 +156,7 @@ export function SettingsPanel({
   const { rightPanelOpen, rightPanelWidth, selectedElement, toggleRightPanel } =
     useUIStore();
   const [panelTab, setPanelTab] = React.useState<
-    "style" | "settings" | "interactions"
+    "style" | "settings"
   >("style");
 
   // Get the selected element data
@@ -231,14 +245,6 @@ export function SettingsPanel({
               onClick={() => setPanelTab("settings")}
             >
               Settings
-            </button>
-            <button
-              type="button"
-              className="settings-panel-tab-btn"
-              data-active={panelTab === "interactions" || undefined}
-              onClick={() => setPanelTab("interactions")}
-            >
-              Interactions
             </button>
           </div>
         )}
@@ -463,32 +469,6 @@ export function SettingsPanel({
                   </>
                 )}
 
-                {panelTab === "interactions" && (
-                  <div className="settings-panel-interactions">
-                    <div className="settings-panel-interactions-section">
-                      <div className="settings-panel-interactions-header">
-                        <span>Element trigger</span>
-                        <button className="settings-panel-header-btn" title="Add trigger">
-                          <Plus className="size-3.5" />
-                        </button>
-                      </div>
-                      <div className="settings-panel-interactions-empty">
-                        <p>Select an element on the canvas, then add a trigger to animate it on hover, click, or scroll.</p>
-                      </div>
-                    </div>
-                    <div className="settings-panel-interactions-section">
-                      <div className="settings-panel-interactions-header">
-                        <span>Page trigger</span>
-                        <button className="settings-panel-header-btn" title="Add trigger">
-                          <Plus className="size-3.5" />
-                        </button>
-                      </div>
-                      <div className="settings-panel-interactions-empty">
-                        <p>Add a trigger for page-level events like load, scroll, or resize.</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             </>
           ) : (
@@ -597,14 +577,26 @@ function BlockStyleSettings({
 // =============================================================================
 
 function PageSettingsPanel({
+  title,
+  slug,
+  seo,
   headerId,
   footerId,
+  onTitleChange,
+  onSlugChange,
+  onSeoChange,
   onHeaderChange,
   onFooterChange,
   tenantId,
 }: {
+  title: string;
+  slug: string;
+  seo?: { metaTitle?: string; metaDescription?: string };
   headerId: string | null;
   footerId: string | null;
+  onTitleChange: (title: string) => void;
+  onSlugChange: (slug: string) => void;
+  onSeoChange: (seo: { metaTitle?: string; metaDescription?: string }) => void;
   onHeaderChange: (id: string | null) => void;
   onFooterChange: (id: string | null) => void;
   tenantId: string;
@@ -614,44 +606,96 @@ function PageSettingsPanel({
 
   return (
     <div className="settings-panel-page-controls">
-      <div className="settings-panel-page-field">
-        <label className="settings-panel-page-label">Header</label>
-        <select
-          className="settings-panel-page-select"
-          value={headerId || "default"}
-          onChange={(e) => onHeaderChange(e.target.value === "default" ? null : e.target.value === "none" ? "none" : e.target.value)}
-        >
-          <option value="default">Default Header</option>
-          <option value="none">No Header</option>
-          {(headers as Array<{ id: string; name: string }>).map((h) => (
-            <option key={h.id} value={h.id}>{h.name}</option>
-          ))}
-        </select>
-        {headerId && headerId !== "none" && (
-          <a href="/headers" className="settings-panel-page-link">
-            Edit headers →
-          </a>
-        )}
-      </div>
-      <div className="settings-panel-page-field">
-        <label className="settings-panel-page-label">Footer</label>
-        <select
-          className="settings-panel-page-select"
-          value={footerId || "default"}
-          onChange={(e) => onFooterChange(e.target.value === "default" ? null : e.target.value === "none" ? "none" : e.target.value)}
-        >
-          <option value="default">Default Footer</option>
-          <option value="none">No Footer</option>
-          {(footers as Array<{ id: string; name: string }>).map((f) => (
-            <option key={f.id} value={f.id}>{f.name}</option>
-          ))}
-        </select>
-        {footerId && footerId !== "none" && (
-          <a href="/footers" className="settings-panel-page-link">
-            Edit footers →
-          </a>
-        )}
-      </div>
+      {/* Page identity */}
+      <PropertySection title="Page">
+        <PropertyRow label="Title">
+          <Input
+            value={title}
+            onChange={(e) => onTitleChange(e.target.value)}
+            placeholder="Page title"
+            className="h-7 text-xs"
+          />
+        </PropertyRow>
+        <PropertyRow label="URL Slug">
+          <Input
+            value={slug}
+            onChange={(e) => onSlugChange(e.target.value)}
+            placeholder="page-slug"
+            className="h-7 text-xs"
+          />
+        </PropertyRow>
+      </PropertySection>
+
+      {/* SEO */}
+      <PropertySection title="SEO" defaultOpen={false}>
+        <PropertyRow label="Meta Title">
+          <Input
+            value={seo?.metaTitle || ""}
+            onChange={(e) =>
+              onSeoChange({ ...seo, metaTitle: e.target.value })
+            }
+            placeholder={title || "Page title"}
+            className="h-7 text-xs"
+          />
+        </PropertyRow>
+        <PropertyRow label="Meta Description">
+          <textarea
+            value={seo?.metaDescription || ""}
+            onChange={(e) =>
+              onSeoChange({ ...seo, metaDescription: e.target.value })
+            }
+            placeholder="Describe this page for search engines..."
+            rows={3}
+            className="w-full px-3 py-2 text-xs rounded-md border border-(--el-200) bg-(--el-0) resize-y"
+          />
+        </PropertyRow>
+      </PropertySection>
+
+      {/* Header / Footer */}
+      <PropertySection title="Layout" defaultOpen={false}>
+        <PropertyRow label="Header">
+          <Select
+            value={headerId || "default"}
+            onValueChange={(v) =>
+              onHeaderChange(v === "default" ? null : v)
+            }
+          >
+            <SelectTrigger className="h-8 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">Default Header</SelectItem>
+              <SelectItem value="none">No Header</SelectItem>
+              {(headers as Array<{ id: string; name: string }>).map((h) => (
+                <SelectItem key={h.id} value={h.id}>
+                  {h.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </PropertyRow>
+        <PropertyRow label="Footer">
+          <Select
+            value={footerId || "default"}
+            onValueChange={(v) =>
+              onFooterChange(v === "default" ? null : v)
+            }
+          >
+            <SelectTrigger className="h-8 text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">Default Footer</SelectItem>
+              <SelectItem value="none">No Footer</SelectItem>
+              {(footers as Array<{ id: string; name: string }>).map((f) => (
+                <SelectItem key={f.id} value={f.id}>
+                  {f.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </PropertyRow>
+      </PropertySection>
     </div>
   );
 }
