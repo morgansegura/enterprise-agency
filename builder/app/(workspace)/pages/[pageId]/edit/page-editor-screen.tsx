@@ -111,6 +111,26 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
     null,
   );
 
+  // Escape key deselects — shows Page Settings in the right panel
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        // Don't deselect if typing in an input
+        const target = e.target as HTMLElement;
+        if (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable
+        )
+          return;
+        setSelectedBlockKey(null);
+        clearSelection();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [clearSelection]);
+
   // Sync selection highlight to preview DOM
   React.useEffect(() => {
     const prev = document.querySelector("[data-block-key].is-preview-selected");

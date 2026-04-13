@@ -1030,12 +1030,14 @@ export function ElementStyleTab({
           <SliderInput
             value={s("borderRadius")}
             onChange={(v) => {
-              updateStyle("borderRadius", v);
-              // Clear per-corner values when setting uniform
-              updateStyle("borderTopLeftRadius", "");
-              updateStyle("borderTopRightRadius", "");
-              updateStyle("borderBottomRightRadius", "");
-              updateStyle("borderBottomLeftRadius", "");
+              // Batch update: set radius + clear per-corner values
+              updateStyles({
+                borderRadius: v,
+                borderTopLeftRadius: "",
+                borderTopRightRadius: "",
+                borderBottomRightRadius: "",
+                borderBottomLeftRadius: "",
+              });
             }}
             min={0}
             max={100}

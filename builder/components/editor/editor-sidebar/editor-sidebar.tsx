@@ -116,22 +116,7 @@ export function EditorSidebar({
     return () => window.removeEventListener("add-block", handleBlockAdded);
   }, []);
 
-  // Close panel when clicking outside the sidebar (on canvas, settings, etc.)
-  React.useEffect(() => {
-    if (activeTab === null) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(e.target as Node)
-      ) {
-        setActiveTab(null);
-      }
-    };
-    // Use capture so we detect clicks before they're stopped
-    document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
-  }, [activeTab]);
+  // Sidebar stays open until explicitly closed via rail icon toggle or X button
 
   const handleRailClick = (tab: SidebarTab) => {
     // Toggle: clicking same icon closes panel

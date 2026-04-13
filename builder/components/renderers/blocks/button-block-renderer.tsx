@@ -55,7 +55,7 @@ export default function ButtonBlockRenderer({
             onChange({ ...block, data: { ...block.data, text: newText } });
           }
         }}
-        style={{ cursor: "text", outline: "none" }}
+        style={{ outline: "none" }}
       >
         {text}
       </span>
