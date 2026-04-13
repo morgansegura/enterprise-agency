@@ -95,6 +95,7 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
       data-block-key={block._key}
       data-block-label={label}
       data-element-type="block"
+      style={{ minWidth: 0 }}
     >
       <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />
     </div>
