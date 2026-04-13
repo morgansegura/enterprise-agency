@@ -1,58 +1,51 @@
-// Section renderer for builder preview canvas
+/**
+ * Section Renderer for Builder Canvas
+ *
+ * CRITICAL: This renderer outputs the SAME HTML structure and data-attributes
+ * as the client's section/container components. Both apps share the same
+ * CSS (section.css, container.css) so the canvas matches the published site.
+ *
+ * The only additions are: data-block-key, data-element-type, and isEditing
+ * props for the editor overlay (selection, editing, block toolbar).
+ */
 import type { Section } from "@/lib/hooks/use-pages";
 import { cn } from "@/lib/utils";
 import { BlockRenderer } from "./block-renderer";
-import { hasStyles } from "@/lib/types/section";
 import { getElementClass } from "@enterprise/tokens";
 
 interface SectionRendererProps {
   section: Section;
   breakpoint?: "desktop" | "tablet" | "mobile";
-  onBlockChange?: (sectionIndex: number, containerIndex: number, blockIndex: number, updatedBlock: Section["containers"][0]["blocks"][0]) => void;
+  onBlockChange?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockIndex: number,
+    updatedBlock: Section["containers"][0]["blocks"][0],
+  ) => void;
   sectionIndex?: number;
   isEditing?: boolean;
 }
 
-// Match editor's SortableSection classes exactly
-const backgroundClasses: Record<string, string> = {
-  none: "",
-  white: "bg-white",
-  gray: "bg-gray-100",
-  dark: "bg-gray-900",
-  primary: "bg-(--primary)",
-  secondary: "bg-(--secondary)",
-};
-
-const spacingClasses: Record<string, string> = {
-  none: "",
-  xs: "py-2",
-  sm: "py-4",
-  md: "py-8",
-  lg: "py-12",
-  xl: "py-16",
-  "2xl": "py-24",
-};
-
-const widthClasses: Record<string, string> = {
-  narrow: "max-w-3xl mx-auto px-4",
-  wide: "max-w-7xl mx-auto px-4",
-  full: "w-full",
-};
-
-const alignClasses: Record<string, string> = {
-  left: "text-left",
-  center: "text-center",
-  right: "text-right",
-};
-
 /**
- * SectionRenderer - Renders a page section with its containers and blocks
- *
- * Applies section-level styling (background, spacing, width, alignment)
- * and renders all containers with their child blocks.
- *
- * Matches the editor's SortableSection component exactly for WYSIWYG parity.
+ * Normalize background to a data-background value.
+ * Matches client/components/section-renderer normalizeBackground().
  */
+function getDataBackground(
+  background: unknown,
+  hasStyleBg: boolean,
+): string | undefined {
+  if (hasStyleBg) return undefined; // Generated CSS handles it
+  if (!background || background === "none") return undefined;
+  if (typeof background === "string") return background;
+  if (typeof background === "object" && background !== null) {
+    const bg = background as Record<string, unknown>;
+    if (bg.type === "color" && typeof bg.color === "string") {
+      return bg.color;
+    }
+  }
+  return undefined;
+}
+
 export function SectionRenderer({
   section,
   breakpoint = "desktop",
@@ -60,83 +53,89 @@ export function SectionRenderer({
   sectionIndex = 0,
   isEditing,
 }: SectionRendererProps) {
-  const {
-    background = "none",
-    paddingY = "md",
-    width = "full",
-    align = "left",
-    containers = [],
-  } = section;
-
-  // Handle background - can be string or SectionBackground object
-  const bgValue =
-    typeof background === "string"
-      ? background
-      : background?.type === "color"
-        ? background.color
-        : "none";
-  const sectionBackground = backgroundClasses[bgValue || "none"] || "";
-  // Skip default spacing if custom padding is set via the style panel
-  // Use `!= null` so "0" still counts as custom
+  const containers = section.containers ?? [];
   const styles = section.styles as Record<string, string> | undefined;
+
+  // Skip legacy data-attribute presets when custom CSS styles exist
   const hasCustomPadding =
     styles?.paddingTop != null ||
     styles?.paddingBottom != null ||
     styles?.paddingLeft != null ||
     styles?.paddingRight != null;
-  const sectionSpacing = hasCustomPadding
-    ? ""
-    : spacingClasses[paddingY] || spacingClasses.md;
-  const sectionWidth = widthClasses[width] || widthClasses.full;
-  const sectionAlign = alignClasses[align] || "";
+
+  const hasStyleBg = !!styles?.backgroundColor;
+
+  // Legacy preset values (only used when no custom styles)
+  const paddingY = hasCustomPadding ? "none" : (section.paddingY as string) || "md";
+  const background = getDataBackground(section.background, hasStyleBg);
+  const width = (section.width as string) || "full";
+  const align = (section.align as string) || "left";
 
   return (
     <section
-      className={cn(
-        getElementClass(section._key),
-        sectionBackground,
-        sectionAlign,
-        sectionSpacing,
-        sectionWidth,
-      )}
+      className={cn("section", getElementClass(section._key))}
+      // Editor overlay attributes
       data-block-key={section._key}
       data-block-label={`Section ${sectionIndex + 1}`}
       data-element-type="section"
+      // Data-attributes — SAME as client Section component
+      data-padding-top={paddingY !== "none" ? paddingY : undefined}
+      data-padding-bottom={paddingY !== "none" ? paddingY : undefined}
+      data-background={background}
+      data-width={width !== "container" ? width : undefined}
+      data-align={align !== "left" ? align : undefined}
     >
-        {containers.map((container, containerIndex) => {
-          // Skip Tailwind layout classes when container has custom CSS styles
-          // (generated CSS from the style panel handles layout in that case)
-          const containerStyles = container.styles as Record<string, string> | undefined;
-          const hasCustomLayout =
-            containerStyles?.display ||
-            containerStyles?.flexDirection ||
-            containerStyles?.gap ||
-            containerStyles?.gridTemplateColumns;
+      {containers.map((container, containerIndex) => {
+        const containerStyles = container.styles as Record<string, string> | undefined;
+        const hasContainerLayout =
+          containerStyles?.display ||
+          containerStyles?.flexDirection ||
+          containerStyles?.gap ||
+          containerStyles?.gridTemplateColumns;
 
-          // Build layout classes from container.layout (only if no custom styles)
-          const layout = container.layout as Record<string, unknown> | undefined;
-          const layoutType = (layout?.type as string) || "stack";
-          const layoutDirection = (layout?.direction as string) || "column";
-          const layoutGap = (layout?.gap as string) || "md";
+        // Container layout from data (legacy preset system)
+        const layout = container.layout as Record<string, unknown> | undefined;
+        const layoutType = (layout?.type as string) || "stack";
+        const layoutGap = (layout?.gap as string) || "md";
 
-          const gapClasses: Record<string, string> = {
-            xs: "gap-1", sm: "gap-2", md: "gap-4", lg: "gap-6", xl: "gap-8",
-          };
-          const layoutClasses = hasCustomLayout
-            ? ""
-            : layoutType === "flex"
-              ? `flex ${layoutDirection === "row" ? "flex-row" : "flex-col"} ${gapClasses[layoutGap] || "gap-4"}`
-              : layoutType === "grid"
-                ? `grid ${layout?.columns ? `grid-cols-${layout.columns}` : "grid-cols-2"} ${gapClasses[layoutGap] || "gap-4"}`
-                : `flex flex-col ${gapClasses[layoutGap] || "gap-4"}`;
-
-          return (
+        return (
           <div
             key={container._key}
-            className={cn(getElementClass(container._key), layoutClasses)}
+            className={cn("container", getElementClass(container._key))}
+            // Editor overlay attributes
             data-block-key={container._key}
             data-block-label={`Container ${containerIndex + 1}`}
             data-element-type="container"
+            // Data-attributes — SAME as client Container component
+            // Only set when no custom CSS styles override
+            data-layout-type={!hasContainerLayout ? layoutType : undefined}
+            data-layout-direction={
+              !hasContainerLayout && layout?.direction
+                ? (layout.direction as string)
+                : undefined
+            }
+            data-layout-gap={!hasContainerLayout ? layoutGap : undefined}
+            data-layout-columns={
+              !hasContainerLayout && layout?.columns
+                ? String(layout.columns)
+                : undefined
+            }
+            data-layout-justify={
+              !hasContainerLayout && layout?.justify
+                ? (layout.justify as string)
+                : undefined
+            }
+            data-layout-align={
+              !hasContainerLayout && layout?.align
+                ? (layout.align as string)
+                : undefined
+            }
+            data-padding-x={
+              (container.paddingX as string) &&
+              (container.paddingX as string) !== "none"
+                ? (container.paddingX as string)
+                : undefined
+            }
           >
             {container.blocks?.map((block, blockIndex) => (
               <BlockRenderer
@@ -158,8 +157,8 @@ export function SectionRenderer({
               />
             ))}
           </div>
-          );
-        })}
+        );
+      })}
     </section>
   );
 }

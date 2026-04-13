@@ -10,8 +10,19 @@
 /* Element styles — CSS custom properties for Webflow-level control */
 @import "../../packages/tokens/src/css/element-styles.css";
 
-/* Client spacing tokens — needed for block gap/spacing CSS to work */
+/* Client tokens — imported for WYSIWYG parity between builder canvas and client output */
 @import "../../client/styles/tokens/spacing.css";
+@import "../../client/styles/tokens/section.css";
+@import "../../client/styles/tokens/colors.css";
+@import "../../client/styles/tokens/fonts.css";
+@import "../../client/styles/tokens/typography.css";
+@import "../../client/styles/tokens/radius.css";
+@import "../../client/styles/tokens/shadows.css";
+
+/* Client layout CSS — section and container data-attribute rules */
+@import "../../client/components/layout/container/container.css";
+@import "../../client/styles/components/section.css";
+@import "../../client/styles/components/rich-text.css";
 
 /* Block CSS — imported from client for WYSIWYG parity */
 @import "../../client/components/block/text-block/text-block.css";
