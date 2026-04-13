@@ -5,17 +5,17 @@
  * ======================================== */
 
 [data-slot="card-block"] {
-  @apply overflow-hidden rounded-lg border border-(--border) bg-(--card) text-(--card-foreground);
+  @apply w-full overflow-hidden rounded-lg border border-(--el-200) bg-(--el-0);
 }
 
 /* --- Variants --- */
 
-[data-slot="card-block"][data-variant="bordered"] {
-  @apply border-2;
+[data-slot="card-block"][data-variant="outline"] {
+  @apply border-2 border-(--el-300);
 }
 
-[data-slot="card-block"][data-variant="elevated"] {
-  @apply shadow-lg border;
+[data-slot="card-block"][data-variant="ghost"] {
+  @apply border-transparent bg-transparent;
 }
 
 /* --- Padding --- */
@@ -57,15 +57,15 @@
 }
 
 [data-slot="card-block-description"] {
-  @apply text-sm text-(--muted-foreground);
+  @apply text-sm opacity-70;
 }
 
 [data-slot="card-block-footer"] {
-  @apply text-xs text-(--muted-foreground) mt-1;
+  @apply text-xs opacity-60 mt-1;
 }
 
 [data-slot="card-block-link"] {
-  @apply text-sm text-(--primary) mt-2 inline-block;
+  @apply text-sm text-(--accent-primary) mt-2 inline-block;
 }
 
 [data-slot="card-block-link"]:hover {
