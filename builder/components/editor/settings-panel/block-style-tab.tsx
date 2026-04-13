@@ -561,7 +561,7 @@ export function ElementStyleTab({
       {/* ================================================================
        * SPACING
        * ================================================================ */}
-      <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
+      <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />} defaultOpen={false}>
         <SpacingEditor
           marginTop={s("marginTop")}
           marginRight={s("marginRight")}
@@ -727,6 +727,7 @@ export function ElementStyleTab({
       <PropertySection
         title={isBlock ? "Typography" : "Default Typography"}
         icon={<Type className="h-3.5 w-3.5" />}
+        defaultOpen={false}
       >
         <PropertyRow label="Font Family">
           <PropertySelect
