@@ -75,9 +75,9 @@ export default function HeadingBlockRenderer({
   const {
     text,
     level = "h2",
-    size = "2xl",
-    align = "left",
-    weight = "semibold",
+    size,
+    align,
+    weight,
     letterSpacing,
     lineHeight,
     fontStyle,

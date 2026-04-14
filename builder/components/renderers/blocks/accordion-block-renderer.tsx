@@ -26,7 +26,7 @@ export default function AccordionBlockRenderer({
   const {
     items = [],
     allowMultiple = false,
-    variant = "default",
+    variant,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

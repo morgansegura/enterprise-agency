@@ -6,101 +6,252 @@ import { useResolvedTenant } from "@/lib/hooks/use-resolved-tenant";
 import { useTenantTokens, useUpdateTenantTokens } from "@/lib/hooks";
 import { PageLayout } from "@/components/layout/page-layout";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Save } from "lucide-react";
-import type { TenantTokens } from "@/lib/hooks/use-tenant-tokens";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { ColorPicker } from "@/components/ui/color-picker";
+import { PropertyToggle } from "@/components/editor/settings-panel/components/property-toggle";
+import { PropertySelect } from "@/components/editor/settings-panel/components/property-select";
+import { Save, RotateCcw, Loader2 } from "lucide-react";
+import { applyTokensToDOM, clearTokensFromDOM } from "@/lib/tokens/apply-tokens";
 
+import "@/components/editor/settings-panel/settings-panel.css";
 import "./theme.css";
 
-// Color preset options
-const COLOR_PRESETS = [
-  { name: "Blue", primary: "#0052cc", accent: "#0065ff" },
-  { name: "Indigo", primary: "#4f46e5", accent: "#6366f1" },
-  { name: "Purple", primary: "#7c3aed", accent: "#8b5cf6" },
-  { name: "Pink", primary: "#db2777", accent: "#ec4899" },
-  { name: "Red", primary: "#dc2626", accent: "#ef4444" },
-  { name: "Orange", primary: "#ea580c", accent: "#f97316" },
-  { name: "Green", primary: "#16a34a", accent: "#22c55e" },
-  { name: "Teal", primary: "#0d9488", accent: "#14b8a6" },
-  { name: "Slate", primary: "#475569", accent: "#64748b" },
-];
+// =============================================================================
+// Constants
+// =============================================================================
 
-const RADIUS_OPTIONS = [
-  { label: "None", value: "0" },
-  { label: "Small", value: "0.25rem" },
-  { label: "Medium", value: "0.5rem" },
-  { label: "Large", value: "0.75rem" },
-  { label: "Full", value: "9999px" },
+const COLOR_PRESETS = [
+  {
+    name: "Blue",
+    primary: "#0052cc",
+    accent: "#0065ff",
+    bg: "#ffffff",
+    fg: "#172b4d",
+    border: "#dfe1e6",
+  },
+  {
+    name: "Indigo",
+    primary: "#4f46e5",
+    accent: "#6366f1",
+    bg: "#ffffff",
+    fg: "#1e1b4b",
+    border: "#e0e7ff",
+  },
+  {
+    name: "Purple",
+    primary: "#7c3aed",
+    accent: "#8b5cf6",
+    bg: "#ffffff",
+    fg: "#2e1065",
+    border: "#ede9fe",
+  },
+  {
+    name: "Pink",
+    primary: "#db2777",
+    accent: "#ec4899",
+    bg: "#ffffff",
+    fg: "#500724",
+    border: "#fce7f3",
+  },
+  {
+    name: "Red",
+    primary: "#dc2626",
+    accent: "#ef4444",
+    bg: "#ffffff",
+    fg: "#450a0a",
+    border: "#fee2e2",
+  },
+  {
+    name: "Orange",
+    primary: "#ea580c",
+    accent: "#f97316",
+    bg: "#ffffff",
+    fg: "#431407",
+    border: "#ffedd5",
+  },
+  {
+    name: "Green",
+    primary: "#16a34a",
+    accent: "#22c55e",
+    bg: "#ffffff",
+    fg: "#052e16",
+    border: "#dcfce7",
+  },
+  {
+    name: "Teal",
+    primary: "#0d9488",
+    accent: "#14b8a6",
+    bg: "#ffffff",
+    fg: "#042f2e",
+    border: "#ccfbf1",
+  },
+  {
+    name: "Slate",
+    primary: "#475569",
+    accent: "#64748b",
+    bg: "#ffffff",
+    fg: "#0f172a",
+    border: "#e2e8f0",
+  },
 ];
 
 const FONT_OPTIONS = [
-  { label: "System", value: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
-  { label: "Inter", value: "'Inter', sans-serif" },
-  { label: "Poppins", value: "'Poppins', sans-serif" },
-  { label: "DM Sans", value: "'DM Sans', sans-serif" },
-  { label: "Plus Jakarta", value: "'Plus Jakarta Sans', sans-serif" },
-  { label: "Outfit", value: "'Outfit', sans-serif" },
-  { label: "Space Grotesk", value: "'Space Grotesk', sans-serif" },
-  { label: "Playfair", value: "'Playfair Display', serif" },
-  { label: "Lora", value: "'Lora', serif" },
-  { label: "Merriweather", value: "'Merriweather', serif" },
+  { value: "system", label: "System Default" },
+  { value: "'Inter', sans-serif", label: "Inter" },
+  { value: "'Poppins', sans-serif", label: "Poppins" },
+  { value: "'DM Sans', sans-serif", label: "DM Sans" },
+  { value: "'Plus Jakarta Sans', sans-serif", label: "Plus Jakarta" },
+  { value: "'Outfit', sans-serif", label: "Outfit" },
+  { value: "'Space Grotesk', sans-serif", label: "Space Grotesk" },
+  { value: "'Playfair Display', serif", label: "Playfair" },
+  { value: "'Lora', serif", label: "Lora" },
+  { value: "'Merriweather', serif", label: "Merriweather" },
+  { value: "'Roboto', sans-serif", label: "Roboto" },
+  { value: "'Open Sans', sans-serif", label: "Open Sans" },
+  { value: "'Montserrat', sans-serif", label: "Montserrat" },
+  { value: "'Raleway', sans-serif", label: "Raleway" },
+  { value: "'Nunito', sans-serif", label: "Nunito" },
 ];
+
+// =============================================================================
+// Types
+// =============================================================================
+
+interface ThemeTokens {
+  colors?: {
+    primaryHex?: string;
+    accentHex?: string;
+    background?: string;
+    foreground?: string;
+    borderColor?: string;
+    linkColor?: string;
+    darkMode?: boolean;
+    darkBackground?: string;
+    darkForeground?: string;
+    darkBorderColor?: string;
+  };
+  fonts?: {
+    heading?: { family?: string };
+    body?: { family?: string };
+  };
+  spacing?: {
+    sectionPadding?: string;
+    contentGap?: string;
+    containerMaxWidth?: string;
+    containerPadding?: string;
+  };
+  borderRadius?: {
+    default?: string;
+  };
+  effects?: {
+    defaultShadow?: string;
+    borderWidth?: string;
+  };
+  baseFontSize?: string;
+  responsive?: {
+    tablet?: {
+      sectionPadding?: string;
+      headingScale?: string;
+      baseFontSize?: string;
+      containerMaxWidth?: string;
+    };
+    mobile?: {
+      sectionPadding?: string;
+      headingScale?: string;
+      baseFontSize?: string;
+      containerMaxWidth?: string;
+    };
+  };
+}
+
+// =============================================================================
+// Helpers
+// =============================================================================
+
+function get(obj: unknown, path: string, fallback: string): string;
+function get<T>(obj: unknown, path: string, fallback: T): T;
+function get<T>(obj: unknown, path: string, fallback: T): T {
+  const keys = path.split(".");
+  let val: unknown = obj;
+  for (const k of keys) {
+    if (val && typeof val === "object" && k in val) {
+      val = (val as Record<string, unknown>)[k];
+    } else {
+      return fallback;
+    }
+  }
+  return (val as T) ?? fallback;
+}
+
+function setNested(
+  obj: ThemeTokens,
+  path: string,
+  value: unknown,
+): ThemeTokens {
+  const keys = path.split(".");
+  const result = structuredClone(obj);
+  let current: Record<string, unknown> = result as Record<string, unknown>;
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (!current[keys[i]] || typeof current[keys[i]] !== "object") {
+      current[keys[i]] = {};
+    }
+    current = current[keys[i]] as Record<string, unknown>;
+  }
+  current[keys[keys.length - 1]] = value;
+  return result;
+}
+
+// =============================================================================
+// Component
+// =============================================================================
 
 export default function ThemePage() {
   const { tenantId: resolvedTenantId } = useResolvedTenant();
   const tenantId = resolvedTenantId!;
-  const { data: tokens, isLoading } = useTenantTokens(tenantId);
+  const { data: serverTokens, isLoading } = useTenantTokens(tenantId);
   const updateTokens = useUpdateTenantTokens();
 
-  const [localTokens, setLocalTokens] = React.useState<TenantTokens>({});
+  const [tokens, setTokens] = React.useState<ThemeTokens>({});
   const [isDirty, setIsDirty] = React.useState(false);
+  const [breakpoint, setBreakpoint] = React.useState<
+    "desktop" | "tablet" | "mobile"
+  >("desktop");
 
-  // Sync from server
+  // Sync from server on first load
+  const [initialized, setInitialized] = React.useState(false);
   React.useEffect(() => {
-    if (tokens) {
-      setLocalTokens(tokens);
+    if (serverTokens && !initialized) {
+      setTokens(serverTokens as ThemeTokens);
+      setInitialized(true);
     }
-  }, [tokens]);
+  }, [serverTokens, initialized]);
 
-  const handleColorChange = (field: string, value: string) => {
-    setLocalTokens((prev) => ({
-      ...prev,
-      colors: {
-        ...prev.colors,
-        [field]: value,
-      },
-    }));
+  const update = (path: string, value: unknown) => {
+    setTokens((prev) => setNested(prev, path, value));
     setIsDirty(true);
   };
 
-  const handleFontChange = (value: string) => {
-    setLocalTokens((prev) => ({
-      ...prev,
-      fonts: {
-        ...prev.fonts,
-        body: { family: value },
-      },
-    }));
-    setIsDirty(true);
+  const applyPreset = (preset: (typeof COLOR_PRESETS)[0]) => {
+    update("colors.primaryHex", preset.primary);
+    update("colors.accentHex", preset.accent);
+    update("colors.background", preset.bg);
+    update("colors.foreground", preset.fg);
+    update("colors.borderColor", preset.border);
+    update("colors.linkColor", preset.primary);
   };
 
-  const handleRadiusChange = (value: string) => {
-    setLocalTokens((prev) => ({
-      ...prev,
-      borderRadius: {
-        ...prev.borderRadius,
-        md: value,
-      },
-    }));
+  const resetToBlank = () => {
+    setTokens({});
+    clearTokensFromDOM();
     setIsDirty(true);
   };
 
   const handleSave = async () => {
     try {
-      await updateTokens.mutateAsync({
-        tenantId,
-        tokens: localTokens,
-      });
+      await updateTokens.mutateAsync({ tenantId, tokens: tokens as Record<string, unknown> });
+      applyTokensToDOM(tokens as Record<string, unknown>);
       setIsDirty(false);
       toast.success("Theme saved");
     } catch {
@@ -108,25 +259,96 @@ export default function ThemePage() {
     }
   };
 
-  // Get current values with fallbacks
-  const colors = (localTokens.colors ?? {}) as unknown as Record<string, unknown>;
-  const fonts = (localTokens.fonts ?? {}) as unknown as Record<string, unknown>;
-  const radii = (localTokens.borderRadius ?? {}) as unknown as Record<string, unknown>;
+  // Current values
+  const primary = get(tokens, "colors.primaryHex", "");
+  const accent = get(tokens, "colors.accentHex", "");
+  const bg = get(tokens, "colors.background", "");
+  const fg = get(tokens, "colors.foreground", "");
+  const borderColor = get(tokens, "colors.borderColor", "");
+  const linkColor = get(tokens, "colors.linkColor", "");
+  const headingFont = get(tokens, "fonts.heading.family", "");
+  const bodyFont = get(tokens, "fonts.body.family", "");
+  const baseFontSize = get(tokens, "baseFontSize", "");
+  const sectionPadding = get(tokens, "spacing.sectionPadding", "");
+  const contentGap = get(tokens, "spacing.contentGap", "");
+  const containerMaxWidth = get(tokens, "spacing.containerMaxWidth", "");
+  const containerPadding = get(tokens, "spacing.containerPadding", "");
+  const radius = get(tokens, "borderRadius.default", "");
+  const shadow = get(tokens, "effects.defaultShadow", "");
+  const borderWidth = get(tokens, "effects.borderWidth", "");
+  const darkMode = get(tokens, "colors.darkMode", false);
 
-  const primaryColor = (colors.primaryHex as string) || "#0052cc";
-  const accentColor = (colors.accentHex as string) || "#0065ff";
-  const bgColor = (colors.background as string) || "#ffffff";
-  const fgColor = (colors.foreground as string) || "#172b4d";
-  const bodyFont = (fonts.body as string) || FONT_OPTIONS[0].value;
-  const radius = (radii.md as string) || "0.5rem";
+  // Responsive
+  const rKey = breakpoint === "desktop" ? "" : breakpoint;
+  const rSectionPadding = rKey
+    ? get(tokens, `responsive.${rKey}.sectionPadding`, "")
+    : sectionPadding;
+  const rHeadingScale = rKey
+    ? get(tokens, `responsive.${rKey}.headingScale`, "")
+    : "";
+  const rBaseFontSize = rKey
+    ? get(tokens, `responsive.${rKey}.baseFontSize`, "")
+    : baseFontSize;
+  const rContainerMaxWidth = rKey
+    ? get(tokens, `responsive.${rKey}.containerMaxWidth`, "")
+    : containerMaxWidth;
+
+  // Load Google Fonts dynamically
+  React.useEffect(() => {
+    const fonts = [headingFont, bodyFont].filter(
+      (f) => f && f !== "system" && f !== "inherit",
+    );
+    for (const fontValue of fonts) {
+      // Extract family name from CSS value like "'Playfair Display', serif"
+      const family = fontValue.replace(/^'|'.*$/g, "");
+      if (!family) continue;
+      const linkId = `google-font-${family.replace(/\s+/g, "-")}`;
+      if (document.getElementById(linkId)) continue;
+      const link = document.createElement("link");
+      link.id = linkId;
+      link.rel = "stylesheet";
+      link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@300;400;500;600;700;800&display=swap`;
+      document.head.appendChild(link);
+    }
+  }, [headingFont, bodyFont]);
+
+  // Preview values (with visual fallbacks for the preview only)
+  const pBg = bg || "#ffffff";
+  const pFg = fg || "#1a1a1a";
+  const pPrimary = primary || "#3b82f6";
+  const pRadius = radius || "0.375rem";
+  const pShadow =
+    shadow === "sm"
+      ? "0 1px 2px rgba(0,0,0,0.05)"
+      : shadow === "md"
+        ? "0 4px 6px -1px rgba(0,0,0,0.1)"
+        : shadow === "lg"
+          ? "0 10px 15px -3px rgba(0,0,0,0.1)"
+          : "none";
+  const pBorderColor = borderColor || "#e5e7eb";
+  const pBorderWidth = borderWidth || "1px";
+  const pHeadingFont = headingFont || "inherit";
+  const pBodyFont = bodyFont || "inherit";
+  const pLinkColor = linkColor || pPrimary;
+  const pPadding =
+    sectionPadding === "sm"
+      ? "1rem"
+      : sectionPadding === "md"
+        ? "2rem"
+        : sectionPadding === "lg"
+          ? "3rem"
+          : sectionPadding === "xl"
+            ? "4rem"
+            : sectionPadding === "2xl"
+              ? "6rem"
+              : "2rem";
 
   if (isLoading) {
     return (
-      <PageLayout title="Theme" description="Loading theme settings...">
-        <div className="space-y-4 max-w-2xl">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-24 bg-(--el-100) rounded animate-pulse" />
-          ))}
+      <PageLayout title="Theme" description="Loading...">
+        <div className="flex items-center gap-2 p-8">
+          <Loader2 className="size-4 animate-spin" />
+          <span>Loading theme settings...</span>
         </div>
       </PageLayout>
     );
@@ -135,405 +357,513 @@ export default function ThemePage() {
   return (
     <PageLayout
       title="Theme"
-      description="Configure your site's colors, typography, and style"
+      description="Configure your site's design system"
+      noPadding
+      contentClassName="theme-content-reset"
       actions={
-        <Button onClick={handleSave} disabled={!isDirty || updateTokens.isPending}>
-          <Save className="size-4" />
-          {updateTokens.isPending ? "Saving..." : "Save Theme"}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={resetToBlank}
+            disabled={updateTokens.isPending}
+          >
+            <RotateCcw className="size-3.5" />
+            Reset to Blank
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={!isDirty || updateTokens.isPending}
+          >
+            {updateTokens.isPending ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : (
+              <Save className="size-3.5" />
+            )}
+            {updateTokens.isPending ? "Saving..." : "Save Theme"}
+          </Button>
+        </div>
       }
     >
-      <div className="theme-page">
-        {/* Color Presets */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Color Preset</h3>
-          <p className="theme-section-desc">
-            Quick-start with a color palette
-          </p>
-          <div className="theme-color-presets">
-            {COLOR_PRESETS.map((preset) => (
-              <button
-                key={preset.name}
-                type="button"
-                className="theme-color-preset"
-                data-active={primaryColor === preset.primary || undefined}
-                onClick={() => {
-                  handleColorChange("primaryHex", preset.primary);
-                  handleColorChange("accentHex", preset.accent);
-                }}
-                title={preset.name}
-              >
-                <div
-                  className="theme-color-preset-swatch"
-                  style={{ backgroundColor: preset.primary }}
-                />
-                <span className="theme-color-preset-label">{preset.name}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Custom Colors */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Colors</h3>
-          <div className="theme-color-grid">
-            <div className="theme-color-field">
-              <label className="theme-label">Primary</label>
-              <div className="theme-color-input-row">
-                <input
-                  type="color"
-                  value={primaryColor}
-                  onChange={(e) => handleColorChange("primaryHex", e.target.value)}
-                  className="theme-color-picker"
-                />
-                <Input
-                  value={primaryColor}
-                  onChange={(e) => handleColorChange("primaryHex", e.target.value)}
-                  className="theme-color-hex"
-                />
-              </div>
-            </div>
-            <div className="theme-color-field">
-              <label className="theme-label">Accent</label>
-              <div className="theme-color-input-row">
-                <input
-                  type="color"
-                  value={accentColor}
-                  onChange={(e) => handleColorChange("accentHex", e.target.value)}
-                  className="theme-color-picker"
-                />
-                <Input
-                  value={accentColor}
-                  onChange={(e) => handleColorChange("accentHex", e.target.value)}
-                  className="theme-color-hex"
-                />
-              </div>
-            </div>
-            <div className="theme-color-field">
-              <label className="theme-label">Background</label>
-              <div className="theme-color-input-row">
-                <input
-                  type="color"
-                  value={bgColor}
-                  onChange={(e) => handleColorChange("background", e.target.value)}
-                  className="theme-color-picker"
-                />
-                <Input
-                  value={bgColor}
-                  onChange={(e) => handleColorChange("background", e.target.value)}
-                  className="theme-color-hex"
-                />
-              </div>
-            </div>
-            <div className="theme-color-field">
-              <label className="theme-label">Text</label>
-              <div className="theme-color-input-row">
-                <input
-                  type="color"
-                  value={fgColor}
-                  onChange={(e) => handleColorChange("foreground", e.target.value)}
-                  className="theme-color-picker"
-                />
-                <Input
-                  value={fgColor}
-                  onChange={(e) => handleColorChange("foreground", e.target.value)}
-                  className="theme-color-hex"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Typography */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Typography</h3>
-          <div className="theme-font-grid">
-            <div className="theme-field">
-              <label className="theme-label">Heading Font</label>
-              <select
-                className="theme-select"
-                value={(fonts.heading as string) || FONT_OPTIONS[0].value}
-                onChange={(e) => {
-                  setLocalTokens((prev) => ({
-                    ...prev,
-                    fonts: { ...prev.fonts, heading: e.target.value },
-                  }));
-                  setIsDirty(true);
-                }}
-              >
-                {FONT_OPTIONS.map((font) => (
-                  <option key={font.label} value={font.value}>{font.label}</option>
-                ))}
-              </select>
-            </div>
-            <div className="theme-field">
-              <label className="theme-label">Body Font</label>
-              <select
-                className="theme-select"
-                value={bodyFont}
-                onChange={(e) => handleFontChange(e.target.value)}
-              >
-                {FONT_OPTIONS.map((font) => (
-                  <option key={font.label} value={font.value}>{font.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="theme-font-preview">
-            <p className="theme-font-preview-heading" style={{ fontFamily: (fonts.heading as string) || bodyFont }}>
-              Heading Font Preview
-            </p>
-            <p className="theme-font-preview-body" style={{ fontFamily: bodyFont }}>
-              Body font preview. This is how your paragraphs and content will look.
-            </p>
-          </div>
-        </section>
-
-        {/* Spacing & Layout */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Spacing & Layout</h3>
-          <div className="theme-color-grid">
-            <div className="theme-color-field">
-              <label className="theme-label">Section Padding</label>
-              <select
-                className="theme-select"
-                value={(radii.sectionPadding as string) || "lg"}
-                onChange={(e) => {
-                  setLocalTokens((prev) => ({
-                    ...prev,
-                    borderRadius: { ...prev.borderRadius, sectionPadding: e.target.value },
-                  }));
-                  setIsDirty(true);
-                }}
-              >
-                <option value="sm">Small (16px)</option>
-                <option value="md">Medium (32px)</option>
-                <option value="lg">Large (48px)</option>
-                <option value="xl">X-Large (64px)</option>
-              </select>
-            </div>
-            <div className="theme-color-field">
-              <label className="theme-label">Content Gap</label>
-              <select
-                className="theme-select"
-                value={(radii.contentGap as string) || "md"}
-                onChange={(e) => {
-                  setLocalTokens((prev) => ({
-                    ...prev,
-                    borderRadius: { ...prev.borderRadius, contentGap: e.target.value },
-                  }));
-                  setIsDirty(true);
-                }}
-              >
-                <option value="sm">Tight (8px)</option>
-                <option value="md">Default (16px)</option>
-                <option value="lg">Relaxed (24px)</option>
-                <option value="xl">Spacious (32px)</option>
-              </select>
-            </div>
-          </div>
-        </section>
-
-        {/* Borders */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Borders</h3>
-          <div className="theme-color-grid">
-            <div className="theme-color-field">
-              <label className="theme-label">Border Color</label>
-              <div className="theme-color-input-row">
-                <input
-                  type="color"
-                  value={(colors.borderColor as string) || "#dfe1e6"}
-                  onChange={(e) => handleColorChange("borderColor", e.target.value)}
-                  className="theme-color-picker"
-                />
-                <Input
-                  value={(colors.borderColor as string) || "#dfe1e6"}
-                  onChange={(e) => handleColorChange("borderColor", e.target.value)}
-                  className="theme-color-hex"
-                />
-              </div>
-            </div>
-            <div className="theme-color-field">
-              <label className="theme-label">Border Width</label>
-              <select
-                className="theme-select"
-                value={(radii.borderWidth as string) || "1px"}
-                onChange={(e) => {
-                  setLocalTokens((prev) => ({
-                    ...prev,
-                    borderRadius: { ...prev.borderRadius, borderWidth: e.target.value },
-                  }));
-                  setIsDirty(true);
-                }}
-              >
-                <option value="0">None</option>
-                <option value="1px">Thin (1px)</option>
-                <option value="2px">Medium (2px)</option>
-                <option value="3px">Thick (3px)</option>
-              </select>
-            </div>
-          </div>
-        </section>
-
-        {/* Border Radius */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Border Radius</h3>
-          <div className="theme-radius-options">
-            {RADIUS_OPTIONS.map((option) => (
-              <button
-                key={option.label}
-                type="button"
-                className="theme-radius-option"
-                data-active={radius === option.value || undefined}
-                onClick={() => handleRadiusChange(option.value)}
-              >
-                <div
-                  className="theme-radius-preview"
-                  style={{ borderRadius: option.value }}
-                />
-                <span>{option.label}</span>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Dark Mode */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Dark Mode</h3>
-          <p className="theme-section-desc">
-            Enable dark mode for your site
-          </p>
-          <div className="theme-radius-options">
-            <button
-              type="button"
-              className="theme-radius-option"
-              data-active={!(colors.darkMode as boolean) || undefined}
-              onClick={() => {
-                handleColorChange("darkMode", false as unknown as string);
-              }}
-            >
-              <div className="theme-radius-preview" style={{ background: "#ffffff" }} />
-              <span>Light</span>
-            </button>
-            <button
-              type="button"
-              className="theme-radius-option"
-              data-active={(colors.darkMode as boolean) || undefined}
-              onClick={() => {
-                handleColorChange("darkMode", true as unknown as string);
-              }}
-            >
-              <div className="theme-radius-preview" style={{ background: "#1b2638" }} />
-              <span>Dark</span>
-            </button>
-          </div>
-        </section>
-
-        {/* Global Defaults */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Global Defaults</h3>
-          <p className="theme-section-desc">
-            Default styles inherited by all blocks
-          </p>
-          <div className="theme-color-grid">
-            <div className="theme-color-field">
-              <label className="theme-label">Body Font Size</label>
-              <select
-                className="theme-select"
-                value={(colors.bodyFontSize as string) || "16px"}
-                onChange={(e) => {
-                  handleColorChange("bodyFontSize", e.target.value);
-                }}
-              >
-                <option value="14px">14px</option>
-                <option value="15px">15px</option>
-                <option value="16px">16px (default)</option>
-                <option value="17px">17px</option>
-                <option value="18px">18px</option>
-              </select>
-            </div>
-            <div className="theme-color-field">
-              <label className="theme-label">Container Max Width</label>
-              <select
-                className="theme-select"
-                value={(colors.containerMaxWidth as string) || "1200px"}
-                onChange={(e) => {
-                  handleColorChange("containerMaxWidth", e.target.value);
-                }}
-              >
-                <option value="960px">Narrow (960px)</option>
-                <option value="1080px">Medium (1080px)</option>
-                <option value="1200px">Default (1200px)</option>
-                <option value="1400px">Wide (1400px)</option>
-                <option value="100%">Full Width</option>
-              </select>
-            </div>
-            <div className="theme-color-field">
-              <label className="theme-label">Container Padding</label>
-              <select
-                className="theme-select"
-                value={(colors.containerPadding as string) || "24px"}
-                onChange={(e) => {
-                  handleColorChange("containerPadding", e.target.value);
-                }}
-              >
-                <option value="16px">Tight (16px)</option>
-                <option value="24px">Default (24px)</option>
-                <option value="32px">Relaxed (32px)</option>
-                <option value="48px">Spacious (48px)</option>
-              </select>
-            </div>
-            <div className="theme-color-field">
-              <label className="theme-label">Link Color</label>
-              <div className="theme-color-input-row">
-                <input
-                  type="color"
-                  value={(colors.linkColor as string) || primaryColor}
-                  onChange={(e) => handleColorChange("linkColor", e.target.value)}
-                  className="theme-color-picker"
-                />
-                <Input
-                  value={(colors.linkColor as string) || ""}
-                  onChange={(e) => handleColorChange("linkColor", e.target.value)}
-                  placeholder="Same as primary"
-                  className="theme-color-hex"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Preview */}
-        <section className="theme-section">
-          <h3 className="theme-section-title">Preview</h3>
-          <div
-            className="theme-preview-card"
-            style={{
-              backgroundColor: bgColor,
-              color: fgColor,
-              borderRadius: radius,
-              fontFamily: bodyFont,
-            }}
-          >
-            <h4 style={{ color: primaryColor }}>Your Website</h4>
-            <p>This is how your site content will look with these theme settings.</p>
-            <button
+      <div className="theme-layout">
+        {/* ================================================================
+         * LIVE PREVIEW
+         * ================================================================ */}
+        <div className="theme-canvas">
+          <div className="theme-canvas-inner">
+            <div
+              className="theme-preview"
               style={{
-                backgroundColor: primaryColor,
-                color: "#fff",
-                borderRadius: radius,
-                padding: "8px 16px",
-                border: "none",
-                fontFamily: bodyFont,
-                fontWeight: 600,
-                cursor: "pointer",
+                backgroundColor: pBg,
+                color: pFg,
+                fontFamily: pBodyFont,
+                fontSize: baseFontSize || undefined,
               }}
             >
-              Call to Action
-            </button>
+              <div
+                className="theme-preview-section"
+                style={{ padding: pPadding }}
+              >
+                <h2
+                  className="theme-preview-heading"
+                  style={{ fontFamily: pHeadingFont }}
+                >
+                  Your Website Heading
+                </h2>
+                <p className="theme-preview-body">
+                  This is a preview of how your site content will look with the
+                  current theme settings. Body text uses the selected font,
+                  size, and color. Everything updates in real-time.
+                </p>
+
+                <div className="theme-preview-row">
+                  <button
+                    type="button"
+                    className="theme-preview-button"
+                    style={{
+                      backgroundColor: pPrimary,
+                      borderRadius: pRadius,
+                    }}
+                  >
+                    Call to Action
+                  </button>
+                  <a
+                    className="theme-preview-link"
+                    style={{ color: pLinkColor }}
+                  >
+                    Learn more
+                  </a>
+                </div>
+
+                <div
+                  className="theme-preview-card"
+                  style={{
+                    borderColor: pBorderColor,
+                    borderWidth: pBorderWidth,
+                    borderStyle: "solid",
+                    borderRadius: pRadius,
+                    boxShadow: pShadow,
+                  }}
+                >
+                  <p
+                    className="theme-preview-card-title"
+                    style={{ fontFamily: pHeadingFont }}
+                  >
+                    Card Component
+                  </p>
+                  <p className="theme-preview-card-desc">
+                    Cards inherit border radius, shadow, and border settings
+                    from your theme.
+                  </p>
+                </div>
+
+                <hr
+                  className="theme-preview-divider"
+                  style={{
+                    borderColor: pBorderColor,
+                    borderWidth: `${pBorderWidth} 0 0 0`,
+                  }}
+                />
+
+                <p
+                  className="theme-preview-body"
+                  style={{ fontSize: "13px", opacity: 0.5 }}
+                >
+                  Footer text or caption preview
+                </p>
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+
+        {/* ================================================================
+         * SETTINGS SIDEBAR
+         * ================================================================ */}
+        <div className="theme-sidebar scrollbar-y">
+          {/* Presets */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Preset</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="theme-presets">
+                <button
+                  type="button"
+                  className="theme-preset-btn"
+                  data-active={Object.keys(tokens).length === 0 || undefined}
+                  onClick={resetToBlank}
+                >
+                  <div className="theme-preset-blank" />
+                  <span className="theme-preset-label">Blank</span>
+                </button>
+                {COLOR_PRESETS.map((preset) => (
+                  <button
+                    key={preset.name}
+                    type="button"
+                    className="theme-preset-btn"
+                    data-active={primary === preset.primary || undefined}
+                    onClick={() => applyPreset(preset)}
+                  >
+                    <div
+                      className="theme-preset-swatch"
+                      style={{ backgroundColor: preset.primary }}
+                    />
+                    <span className="theme-preset-label">{preset.name}</span>
+                  </button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Colors */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Colors</CardTitle>
+            </CardHeader>
+            <CardContent className="theme-field-group">
+              <div className="theme-field-grid">
+                <ColorPicker
+                  label="Primary"
+                  value={primary}
+                  onChange={(v) => update("colors.primaryHex", v)}
+                />
+                <ColorPicker
+                  label="Accent"
+                  value={accent}
+                  onChange={(v) => update("colors.accentHex", v)}
+                />
+                <ColorPicker
+                  label="Background"
+                  value={bg}
+                  onChange={(v) => update("colors.background", v)}
+                />
+                <ColorPicker
+                  label="Text"
+                  value={fg}
+                  onChange={(v) => update("colors.foreground", v)}
+                />
+                <ColorPicker
+                  label="Border"
+                  value={borderColor}
+                  onChange={(v) => update("colors.borderColor", v)}
+                />
+                <ColorPicker
+                  label="Link"
+                  value={linkColor}
+                  onChange={(v) => update("colors.linkColor", v)}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Typography */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Typography</CardTitle>
+            </CardHeader>
+            <CardContent className="theme-field-group">
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Heading Font</Label>
+                <PropertySelect
+                  value={headingFont}
+                  options={FONT_OPTIONS}
+                  onChange={(v) => update("fonts.heading.family", v)}
+                  placeholder="System default"
+                />
+              </div>
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Body Font</Label>
+                <PropertySelect
+                  value={bodyFont}
+                  options={FONT_OPTIONS}
+                  onChange={(v) => update("fonts.body.family", v)}
+                  placeholder="System default"
+                />
+              </div>
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Base Font Size</Label>
+                <PropertyToggle
+                  value={baseFontSize}
+                  options={[
+                    { value: "14px", label: "14" },
+                    { value: "15px", label: "15" },
+                    { value: "16px", label: "16" },
+                    { value: "17px", label: "17" },
+                    { value: "18px", label: "18" },
+                  ]}
+                  onChange={(v) => update("baseFontSize", v)}
+                  fullWidth
+                />
+              </div>
+              <div className="theme-font-preview">
+                <p
+                  className="theme-font-preview-heading"
+                  style={{ fontFamily: pHeadingFont }}
+                >
+                  Heading Font Preview
+                </p>
+                <p
+                  className="theme-font-preview-body"
+                  style={{ fontFamily: pBodyFont }}
+                >
+                  Body font preview. This is how your paragraphs and content
+                  will look.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Spacing & Layout */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Spacing & Layout</CardTitle>
+            </CardHeader>
+            <CardContent className="theme-field-group">
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Section Padding</Label>
+                <PropertyToggle
+                  value={sectionPadding}
+                  options={[
+                    { value: "none", label: "None" },
+                    { value: "sm", label: "S" },
+                    { value: "md", label: "M" },
+                    { value: "lg", label: "L" },
+                    { value: "xl", label: "XL" },
+                    { value: "2xl", label: "2XL" },
+                  ]}
+                  onChange={(v) => update("spacing.sectionPadding", v)}
+                  fullWidth
+                />
+              </div>
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Content Gap</Label>
+                <PropertyToggle
+                  value={contentGap}
+                  options={[
+                    { value: "sm", label: "S" },
+                    { value: "md", label: "M" },
+                    { value: "lg", label: "L" },
+                    { value: "xl", label: "XL" },
+                  ]}
+                  onChange={(v) => update("spacing.contentGap", v)}
+                  fullWidth
+                />
+              </div>
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Container Max Width</Label>
+                <PropertyToggle
+                  value={containerMaxWidth}
+                  options={[
+                    { value: "960px", label: "960" },
+                    { value: "1080px", label: "1080" },
+                    { value: "1200px", label: "1200" },
+                    { value: "1400px", label: "1400" },
+                    { value: "100%", label: "Full" },
+                  ]}
+                  onChange={(v) => update("spacing.containerMaxWidth", v)}
+                  fullWidth
+                />
+              </div>
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Container Padding</Label>
+                <PropertyToggle
+                  value={containerPadding}
+                  options={[
+                    { value: "sm", label: "S" },
+                    { value: "md", label: "M" },
+                    { value: "lg", label: "L" },
+                    { value: "xl", label: "XL" },
+                  ]}
+                  onChange={(v) => update("spacing.containerPadding", v)}
+                  fullWidth
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Borders & Effects */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Borders & Effects</CardTitle>
+            </CardHeader>
+            <CardContent className="theme-field-group">
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Border Radius</Label>
+                <PropertyToggle
+                  value={radius}
+                  options={[
+                    { value: "0", label: "None" },
+                    { value: "0.25rem", label: "S" },
+                    { value: "0.5rem", label: "M" },
+                    { value: "0.75rem", label: "L" },
+                    { value: "1rem", label: "XL" },
+                    { value: "9999px", label: "Full" },
+                  ]}
+                  onChange={(v) => update("borderRadius.default", v)}
+                  fullWidth
+                />
+              </div>
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Default Shadow</Label>
+                <PropertyToggle
+                  value={shadow}
+                  options={[
+                    { value: "none", label: "None" },
+                    { value: "sm", label: "S" },
+                    { value: "md", label: "M" },
+                    { value: "lg", label: "L" },
+                  ]}
+                  onChange={(v) => update("effects.defaultShadow", v)}
+                  fullWidth
+                />
+              </div>
+              <div className="theme-field-row">
+                <Label className="theme-field-label">Border Width</Label>
+                <PropertyToggle
+                  value={borderWidth}
+                  options={[
+                    { value: "0", label: "None" },
+                    { value: "1px", label: "1px" },
+                    { value: "2px", label: "2px" },
+                    { value: "3px", label: "3px" },
+                  ]}
+                  onChange={(v) => update("effects.borderWidth", v)}
+                  fullWidth
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Responsive Defaults */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Responsive</CardTitle>
+            </CardHeader>
+            <CardContent className="theme-field-group">
+              <PropertyToggle
+                value={breakpoint}
+                options={[
+                  { value: "desktop", label: "Desktop" },
+                  { value: "tablet", label: "Tablet" },
+                  { value: "mobile", label: "Mobile" },
+                ]}
+                onChange={(v) => {
+                  if (v) setBreakpoint(v as "desktop" | "tablet" | "mobile");
+                }}
+                fullWidth
+              />
+
+              {breakpoint === "desktop" ? (
+                <p className="text-[12px] text-(--el-400)">
+                  Desktop uses the main settings above. Select Tablet or Mobile
+                  to set responsive overrides.
+                </p>
+              ) : (
+                <div className="theme-responsive-overrides">
+                  <div className="theme-field-row">
+                    <Label className="theme-field-label">Section Padding</Label>
+                    <PropertyToggle
+                      value={rSectionPadding}
+                      options={[
+                        { value: "none", label: "None" },
+                        { value: "sm", label: "S" },
+                        { value: "md", label: "M" },
+                        { value: "lg", label: "L" },
+                        { value: "xl", label: "XL" },
+                      ]}
+                      onChange={(v) =>
+                        update(`responsive.${breakpoint}.sectionPadding`, v)
+                      }
+                      fullWidth
+                    />
+                  </div>
+                  <div className="theme-field-row">
+                    <Label className="theme-field-label">Heading Scale</Label>
+                    <PropertyToggle
+                      value={rHeadingScale}
+                      options={[
+                        { value: "same", label: "Same" },
+                        { value: "one-down", label: "-1" },
+                        { value: "two-down", label: "-2" },
+                      ]}
+                      onChange={(v) =>
+                        update(`responsive.${breakpoint}.headingScale`, v)
+                      }
+                      fullWidth
+                    />
+                  </div>
+                  <div className="theme-field-row">
+                    <Label className="theme-field-label">Base Font Size</Label>
+                    <PropertyToggle
+                      value={rBaseFontSize}
+                      options={[
+                        { value: "13px", label: "13" },
+                        { value: "14px", label: "14" },
+                        { value: "15px", label: "15" },
+                        { value: "16px", label: "16" },
+                      ]}
+                      onChange={(v) =>
+                        update(`responsive.${breakpoint}.baseFontSize`, v)
+                      }
+                      fullWidth
+                    />
+                  </div>
+                  <div className="theme-field-row">
+                    <Label className="theme-field-label">
+                      Container Max Width
+                    </Label>
+                    <PropertyToggle
+                      value={rContainerMaxWidth}
+                      options={[
+                        { value: "100%", label: "Full" },
+                        { value: "768px", label: "768" },
+                        { value: "640px", label: "640" },
+                      ]}
+                      onChange={(v) =>
+                        update(`responsive.${breakpoint}.containerMaxWidth`, v)
+                      }
+                      fullWidth
+                    />
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Dark Mode */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Dark Mode</CardTitle>
+            </CardHeader>
+            <CardContent className="theme-field-group">
+              <div className="flex items-center justify-between">
+                <Label>Enable dark mode</Label>
+                <Switch
+                  checked={darkMode}
+                  onCheckedChange={(v) => update("colors.darkMode", v)}
+                />
+              </div>
+              {darkMode && (
+                <div className="theme-field-grid">
+                  <ColorPicker
+                    label="Dark Background"
+                    value={get(tokens, "colors.darkBackground", "")}
+                    onChange={(v) => update("colors.darkBackground", v)}
+                  />
+                  <ColorPicker
+                    label="Dark Text"
+                    value={get(tokens, "colors.darkForeground", "")}
+                    onChange={(v) => update("colors.darkForeground", v)}
+                  />
+                  <ColorPicker
+                    label="Dark Border"
+                    value={get(tokens, "colors.darkBorderColor", "")}
+                    onChange={(v) => update("colors.darkBorderColor", v)}
+                  />
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </PageLayout>
   );

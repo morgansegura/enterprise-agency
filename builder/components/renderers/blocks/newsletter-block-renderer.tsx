@@ -22,13 +22,9 @@ export default function NewsletterBlockRenderer({
     description = "Get the latest updates delivered to your inbox.",
     placeholder = "Enter your email",
     buttonText = "Subscribe",
-    variant = "inline",
+    variant,
   } = data;
 
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const _hasStyle = (prop: string) => !!styles?.[prop];
   const elementClass = getElementClass(block._key);
 
   const update = (field: string, value: string) => {

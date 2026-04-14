@@ -1,9 +1,12 @@
 @reference "tailwindcss";
 
-/* Base heading — structural only, visual properties come from data-attributes */
+/* Base heading — theme defaults apply when no data-attributes are set */
 .heading {
   @apply relative;
   font-family: var(--font-heading);
+  font-size: var(--heading-default-size, 1.5rem);
+  font-weight: var(--heading-default-weight, 600);
+  color: inherit;
 }
 
 /* Sizes - using typography tokens (responsive) */

@@ -369,8 +369,9 @@ export function ElementStyleTab({
   const s = (property: keyof ElementStyles) =>
     (styles[property] as string) || "";
 
-  const displayVal = s("display") || "block";
-  const positionVal = s("position") || "static";
+  const displayVal = s("display");
+  const positionVal = s("position");
+  const isFlexOrGrid = displayVal === "flex" || displayVal === "grid";
 
   return (
     <PropertyAccordion>
@@ -401,7 +402,7 @@ export function ElementStyleTab({
           <>
             <PropertyRow label="Direction" stacked>
               <PropertyToggle
-                value={s("flexDirection") || "row"}
+                value={s("flexDirection")}
                 options={[
                   { value: "row", label: "→" },
                   { value: "column", label: "↓" },
@@ -414,7 +415,7 @@ export function ElementStyleTab({
             </PropertyRow>
             <PropertyRow label="Wrap" stacked>
               <PropertyToggle
-                value={s("flexWrap") || "nowrap"}
+                value={s("flexWrap")}
                 options={[
                   { value: "nowrap", label: "No wrap" },
                   { value: "wrap", label: "Wrap" },
@@ -426,7 +427,7 @@ export function ElementStyleTab({
             </PropertyRow>
             <PropertyRow label="Justify" stacked>
               <PropertyToggle
-                value={s("justifyContent") || "flex-start"}
+                value={s("justifyContent")}
                 options={[
                   { value: "flex-start", label: "Start" },
                   { value: "center", label: "Center" },
@@ -440,7 +441,7 @@ export function ElementStyleTab({
             </PropertyRow>
             <PropertyRow label="Align" stacked>
               <PropertyToggle
-                value={s("alignItems") || "stretch"}
+                value={s("alignItems")}
                 options={[
                   { value: "stretch", label: "Stretch" },
                   { value: "flex-start", label: "Start" },
@@ -468,7 +469,7 @@ export function ElementStyleTab({
           <>
             <PropertyRow label="Columns" stacked>
               <PropertyToggle
-                value={s("gridTemplateColumns") || "1fr 1fr"}
+                value={s("gridTemplateColumns")}
                 options={[
                   { value: "1fr", label: "1" },
                   { value: "1fr 1fr", label: "2" },
@@ -502,60 +503,64 @@ export function ElementStyleTab({
           </>
         )}
 
-        {/* Flex child */}
-        <PropertyRow label="Align Self" stacked>
-          <PropertyToggle
-            value={s("alignSelf") || "inherit"}
-            options={[
-              { value: "inherit", label: "Auto" },
-              { value: "flex-start", label: "Start" },
-              { value: "center", label: "Center" },
-              { value: "flex-end", label: "End" },
-              { value: "stretch", label: "Stretch" },
-            ]}
-            fullWidth
-            onChange={(v) => updateStyle("alignSelf", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Flex Grow" stacked>
-          <PropertyToggle
-            value={s("flexGrow") || "0"}
-            options={[
-              { value: "0", label: "0" },
-              { value: "1", label: "1" },
-              { value: "2", label: "2" },
-              { value: "3", label: "3" },
-            ]}
-            fullWidth
-            onChange={(v) => updateStyle("flexGrow", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Flex Shrink" stacked>
-          <PropertyToggle
-            value={s("flexShrink") || "1"}
-            options={[
-              { value: "0", label: "0" },
-              { value: "1", label: "1" },
-              { value: "2", label: "2" },
-            ]}
-            fullWidth
-            onChange={(v) => updateStyle("flexShrink", v)}
-          />
-        </PropertyRow>
-        <PropertyRow label="Flex Basis" stacked>
-          <PropertyToggle
-            value={s("flexBasis") || "auto"}
-            options={[
-              { value: "auto", label: "Auto" },
-              { value: "0", label: "0" },
-              { value: "25%", label: "25%" },
-              { value: "50%", label: "50%" },
-              { value: "100%", label: "100%" },
-            ]}
-            fullWidth
-            onChange={(v) => updateStyle("flexBasis", v)}
-          />
-        </PropertyRow>
+        {/* Flex child — only when display is flex or grid */}
+        {isFlexOrGrid && (
+          <>
+            <PropertyRow label="Align Self" stacked>
+              <PropertyToggle
+                value={s("alignSelf")}
+                options={[
+                  { value: "inherit", label: "Auto" },
+                  { value: "flex-start", label: "Start" },
+                  { value: "center", label: "Center" },
+                  { value: "flex-end", label: "End" },
+                  { value: "stretch", label: "Stretch" },
+                ]}
+                fullWidth
+                onChange={(v) => updateStyle("alignSelf", v)}
+              />
+            </PropertyRow>
+            <PropertyRow label="Flex Grow" stacked>
+              <PropertyToggle
+                value={s("flexGrow")}
+                options={[
+                  { value: "0", label: "0" },
+                  { value: "1", label: "1" },
+                  { value: "2", label: "2" },
+                  { value: "3", label: "3" },
+                ]}
+                fullWidth
+                onChange={(v) => updateStyle("flexGrow", v)}
+              />
+            </PropertyRow>
+            <PropertyRow label="Flex Shrink" stacked>
+              <PropertyToggle
+                value={s("flexShrink")}
+                options={[
+                  { value: "0", label: "0" },
+                  { value: "1", label: "1" },
+                  { value: "2", label: "2" },
+                ]}
+                fullWidth
+                onChange={(v) => updateStyle("flexShrink", v)}
+              />
+            </PropertyRow>
+            <PropertyRow label="Flex Basis" stacked>
+              <PropertyToggle
+                value={s("flexBasis")}
+                options={[
+                  { value: "auto", label: "Auto" },
+                  { value: "0", label: "0" },
+                  { value: "25%", label: "25%" },
+                  { value: "50%", label: "50%" },
+                  { value: "100%", label: "100%" },
+                ]}
+                fullWidth
+                onChange={(v) => updateStyle("flexBasis", v)}
+              />
+            </PropertyRow>
+          </>
+        )}
       </PropertySection>
 
       {/* ================================================================
@@ -606,7 +611,7 @@ export function ElementStyleTab({
         ))}
         <PropertyRow label="Aspect Ratio" stacked>
           <PropertyToggle
-            value={s("aspectRatio") || "auto"}
+            value={s("aspectRatio")}
             options={[
               { value: "auto", label: "Auto" },
               { value: "1/1", label: "1:1" },
@@ -621,7 +626,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Object Fit" stacked>
           <PropertyToggle
-            value={s("objectFit") || "inherit"}
+            value={s("objectFit")}
             options={[
               { value: "inherit", label: "Auto" },
               { value: "cover", label: "Cover" },
@@ -657,7 +662,7 @@ export function ElementStyleTab({
             fullWidth
           />
         </PropertyRow>
-        {positionVal !== "static" && (
+        {positionVal && positionVal !== "static" && (
           <>
             {(
               [
@@ -681,7 +686,7 @@ export function ElementStyleTab({
         )}
         <PropertyRow label="Z-Index" stacked>
           <PropertyToggle
-            value={s("zIndex") || "auto"}
+            value={s("zIndex")}
             options={[
               { value: "auto", label: "Auto" },
               { value: "0", label: "0" },
@@ -696,7 +701,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Overflow" stacked>
           <PropertyToggle
-            value={s("overflow") || "inherit"}
+            value={s("overflow")}
             options={[
               { value: "inherit", label: "Visible" },
               { value: "hidden", label: "Hidden" },
@@ -709,7 +714,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Float" stacked>
           <PropertyToggle
-            value={s("float") || "inherit"}
+            value={s("float")}
             options={[
               { value: "inherit", label: "None" },
               { value: "left", label: "Left" },
@@ -787,7 +792,7 @@ export function ElementStyleTab({
         />
         <PropertyRow label="Text Align" stacked>
           <PropertyToggle
-            value={s("textAlign") || "inherit"}
+            value={s("textAlign")}
             options={[
               { value: "inherit", label: "Inherit" },
               { value: "left", label: "Left" },
@@ -801,7 +806,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Font Style" stacked>
           <PropertyToggle
-            value={s("fontStyle") || "inherit"}
+            value={s("fontStyle")}
             options={[
               { value: "inherit", label: "Normal" },
               { value: "italic", label: "Italic" },
@@ -825,7 +830,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Text Transform" stacked>
           <PropertyToggle
-            value={s("textTransform") || "inherit"}
+            value={s("textTransform")}
             options={[
               { value: "inherit", label: "None" },
               { value: "uppercase", label: "AA" },
@@ -838,7 +843,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Letter Spacing" stacked>
           <PropertyToggle
-            value={s("letterSpacing") || "normal"}
+            value={s("letterSpacing")}
             options={[
               { value: "normal", label: "Normal" },
               { value: "-0.05em", label: "Tight" },
@@ -852,7 +857,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Word Spacing" stacked>
           <PropertyToggle
-            value={s("wordSpacing") || "normal"}
+            value={s("wordSpacing")}
             options={[
               { value: "normal", label: "Normal" },
               { value: "0.1em", label: "Wide" },
@@ -879,7 +884,7 @@ export function ElementStyleTab({
         />
         <PropertyRow label="Text Columns" stacked>
           <PropertyToggle
-            value={s("columns") || "auto"}
+            value={s("columns")}
             options={[
               { value: "auto", label: "Auto" },
               { value: "1", label: "1" },
@@ -893,7 +898,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="White Space" stacked>
           <PropertyToggle
-            value={s("whiteSpace") || "inherit"}
+            value={s("whiteSpace")}
             options={[
               { value: "inherit", label: "Normal" },
               { value: "nowrap", label: "No Wrap" },
@@ -938,7 +943,7 @@ export function ElementStyleTab({
         )}
         <PropertyRow label="Size" stacked>
           <PropertyToggle
-            value={s("backgroundSize") || "inherit"}
+            value={s("backgroundSize")}
             options={[
               { value: "inherit", label: "Auto" },
               { value: "cover", label: "Cover" },
@@ -951,7 +956,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Position" stacked>
           <PropertyToggle
-            value={s("backgroundPosition") || "inherit"}
+            value={s("backgroundPosition")}
             options={[
               { value: "inherit", label: "Center" },
               { value: "top", label: "Top" },
@@ -965,7 +970,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Repeat" stacked>
           <PropertyToggle
-            value={s("backgroundRepeat") || "inherit"}
+            value={s("backgroundRepeat")}
             options={[
               { value: "inherit", label: "Repeat" },
               { value: "no-repeat", label: "None" },
@@ -978,7 +983,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Attachment" stacked>
           <PropertyToggle
-            value={s("backgroundAttachment") || "inherit"}
+            value={s("backgroundAttachment")}
             options={[
               { value: "inherit", label: "Scroll" },
               { value: "fixed", label: "Fixed" },
@@ -1008,7 +1013,7 @@ export function ElementStyleTab({
         </PropertyRow>
         <PropertyRow label="Style" stacked>
           <PropertyToggle
-            value={s("borderStyle") || "inherit"}
+            value={s("borderStyle")}
             options={[
               { value: "inherit", label: "None" },
               { value: "solid", label: "Solid" },
@@ -1125,7 +1130,7 @@ export function ElementStyleTab({
         />
         <PropertyRow label="Blend Mode">
           <PropertySelect
-            value={s("mixBlendMode") || "inherit"}
+            value={s("mixBlendMode")}
             options={[
               { value: "inherit", label: "Normal" },
               { value: "multiply", label: "Multiply" },
@@ -1157,7 +1162,7 @@ export function ElementStyleTab({
           />
           <PropertyRow label="Origin">
             <PropertySelect
-              value={s("transformOrigin") || "inherit"}
+              value={s("transformOrigin")}
               options={[
                 { value: "inherit", label: "Center" },
                 { value: "top left", label: "Top Left" },
@@ -1186,7 +1191,7 @@ export function ElementStyleTab({
         >
           <PropertyRow label="Property">
             <PropertySelect
-              value={s("transitionProperty") || "inherit"}
+              value={s("transitionProperty")}
               options={[
                 { value: "inherit", label: "None" },
                 { value: "all", label: "All" },
@@ -1223,7 +1228,7 @@ export function ElementStyleTab({
           </PropertyRow>
           <PropertyRow label="Easing">
             <PropertySelect
-              value={s("transitionTimingFunction") || "inherit"}
+              value={s("transitionTimingFunction")}
               options={[
                 { value: "inherit", label: "Ease" },
                 { value: "linear", label: "Linear" },
@@ -1288,7 +1293,7 @@ export function ElementStyleTab({
           </PropertyRow>
           <PropertyRow label="Pointer Events" stacked>
             <PropertyToggle
-              value={s("pointerEvents") || "inherit"}
+              value={s("pointerEvents")}
               options={[
                 { value: "inherit", label: "Auto" },
                 { value: "none", label: "None" },
@@ -1299,7 +1304,7 @@ export function ElementStyleTab({
           </PropertyRow>
           <PropertyRow label="User Select" stacked>
             <PropertyToggle
-              value={s("userSelect") || "inherit"}
+              value={s("userSelect")}
               options={[
                 { value: "inherit", label: "Auto" },
                 { value: "none", label: "None" },

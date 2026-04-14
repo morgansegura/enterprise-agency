@@ -23,7 +23,7 @@ export default function RichTextBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as RichTextBlockData;
-  const { html, align = "left" } = data;
+  const { html, align } = data;
 
   const styles = (block as Record<string, unknown>).styles as
     | Record<string, string>

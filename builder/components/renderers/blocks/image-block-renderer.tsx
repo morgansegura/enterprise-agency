@@ -26,7 +26,7 @@ export default function ImageBlockRenderer({
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const data = block.data as unknown as ImageBlockData;
-  const { src, alt = "", caption, objectFit = "cover", href } = data;
+  const { src, alt = "", caption, objectFit, href } = data;
 
   const styles = (block as Record<string, unknown>).styles as
     | Record<string, string>

@@ -48,9 +48,9 @@ export default function SocialLinksBlockRenderer({
   const data = block.data as unknown as SocialLinksBlockData;
   const {
     links = [],
-    size = "md",
-    variant = "default",
-    align = "center",
+    size,
+    variant,
+    align,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

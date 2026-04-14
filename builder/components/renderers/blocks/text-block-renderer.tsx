@@ -53,9 +53,9 @@ export default function TextBlockRenderer({
   const {
     text,
     html,
-    size = "base",
-    align = "left",
-    variant = "default",
+    size,
+    align,
+    variant,
     weight,
     letterSpacing,
     lineHeight,

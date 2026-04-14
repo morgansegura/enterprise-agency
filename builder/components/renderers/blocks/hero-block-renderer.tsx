@@ -27,10 +27,10 @@ export default function HeroBlockRenderer({
     primaryCta,
     secondaryCta,
     image,
-    layout = "centered",
+    layout,
     overlay = false,
-    align = "center",
-    size = "lg",
+    align,
+    size,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

@@ -23,8 +23,8 @@ export default function CtaBlockRenderer({
     description,
     primaryCta,
     secondaryCta,
-    variant = "default",
-    align = "center",
+    variant,
+    align,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

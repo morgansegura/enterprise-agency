@@ -18,7 +18,7 @@ export default function ColumnsBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as ColumnsBlockData;
-  const { count = "2", gap = "md", responsive = true, blocks = [] } = data;
+  const { count, gap, responsive = true, blocks = [] } = data;
   const elementClass = getElementClass(block._key);
 
   return (

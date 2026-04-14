@@ -51,7 +51,9 @@ export function PropertyToggle({
             "property-toggle-btn",
             value === option.value && "property-toggle-btn--active",
           )}
-          onClick={() => onChange(option.value)}
+          onClick={() =>
+            onChange(value === option.value ? "" : option.value)
+          }
           title={iconOnly ? option.label : undefined}
         >
           {option.icon && (

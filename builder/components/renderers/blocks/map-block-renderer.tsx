@@ -29,7 +29,7 @@ export default function MapBlockRenderer({
   const {
     center,
     zoom: _zoom = 12,
-    height = "md",
+    height,
     marker = true,
     embedUrl,
   } = data;

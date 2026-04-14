@@ -1,8 +1,7 @@
 @reference "tailwindcss";
 
 .page-layout {
-  @apply flex flex-col gap-3 p-4 h-full min-h-0;
-  @apply bg-(--el-0) rounded-md shadow-xs border border-(--border-default)/50;
+  @apply flex flex-col h-full min-h-0 bg-(--el-0);
 }
 
 .page-layout-no-padding {
@@ -10,7 +9,7 @@
 }
 
 .page-layout-header {
-  @apply shrink-0;
+  @apply shrink-0 p-4 bg-(--el-50) border-b border-(--el-200);
 }
 
 .page-layout-toolbar {

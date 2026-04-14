@@ -28,7 +28,7 @@ export default function PricingBlockRenderer({
     tiers = [],
     heading,
     description,
-    variant = "default",
+    variant,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

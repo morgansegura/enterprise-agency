@@ -28,8 +28,8 @@ export default function CardBlockRenderer({
     imageAlt = "",
     link,
     href,
-    variant = "default",
-    padding = "md",
+    variant,
+    padding,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

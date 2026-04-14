@@ -18,8 +18,7 @@ function createDefaultContainer(): Container {
   return {
     _type: "container",
     _key: `container-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-    layout: { type: "stack", gap: "md" },
-    paddingX: "md",
+    layout: { type: "stack" },
     blocks: [],
   };
 }
@@ -28,9 +27,6 @@ export function createDefaultSection(): Section {
   return {
     _type: "section",
     _key: `section-${Date.now()}`,
-    width: "container",
-    paddingTop: "lg",
-    paddingBottom: "lg",
     containers: [createDefaultContainer()],
   };
 }

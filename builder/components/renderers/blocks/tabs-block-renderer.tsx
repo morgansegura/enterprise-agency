@@ -21,7 +21,7 @@ export default function TabsBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as TabsBlockData;
-  const { tabs = [], defaultTab = 0, variant = "default" } = data;
+  const { tabs = [], defaultTab = 0, variant } = data;
 
   const styles = (block as Record<string, unknown>).styles as
     | Record<string, string>

@@ -1,138 +1,158 @@
 @reference "tailwindcss";
 
-.theme-page {
-  @apply max-w-2xl space-y-8;
+/* =============================================================================
+   Theme Settings Page — Canvas + Sidebar Layout
+   ============================================================================= */
+
+/* Override page-layout-content + scrollbar-y so our layout controls scrolling */
+.page-layout-content.theme-content-reset {
+  overflow: hidden;
+  padding: 0;
+  margin-right: 0;
+  padding-right: 0;
+  padding-bottom: 0;
 }
 
-.theme-section {
-  @apply space-y-3;
+.theme-layout {
+  @apply flex h-full min-h-0;
 }
 
-.theme-section-title {
-  @apply text-[16px] font-semibold text-(--el-800);
+/* Left: Live preview canvas */
+.theme-canvas {
+  @apply flex-1 overflow-auto p-8 min-h-0;
 }
 
-.theme-section-desc {
-  @apply text-[14px] text-(--el-500);
+.theme-canvas-inner {
+  @apply mx-auto max-w-3xl;
 }
 
-/* Color presets */
-.theme-color-presets {
-  @apply flex flex-wrap gap-2;
+/* Right: Settings sidebar */
+.theme-sidebar {
+  @apply w-full max-w-90 shrink-0 overflow-y-auto border-l bg-(--el-50) border-(--el-200) px-4 space-y-3 min-h-0 pt-4 pb-16;
 }
 
-.theme-color-preset {
-  @apply flex flex-col items-center gap-1.5 p-2 rounded-md cursor-pointer;
+/* =============================================================================
+   Preset Themes
+   ============================================================================= */
+
+.theme-presets {
+  @apply flex flex-wrap gap-1.5;
+}
+
+.theme-preset-btn {
+  @apply flex flex-col items-center gap-1 p-1.5 rounded-md cursor-pointer;
   @apply bg-transparent border border-transparent;
   @apply transition-all duration-100;
 }
 
-.theme-color-preset:hover {
+.theme-preset-btn:hover {
   @apply border-(--border-default);
 }
 
-.theme-color-preset[data-active] {
+.theme-preset-btn[data-active] {
   @apply border-(--accent-primary) bg-(--accent-primary-subtle)/30;
 }
 
-.theme-color-preset-swatch {
-  @apply w-8 h-8 rounded-full;
+.theme-preset-swatch {
+  @apply w-6 h-6 rounded-full;
 }
 
-.theme-color-preset-label {
-  @apply text-[11px] font-medium text-(--el-500);
+.theme-preset-blank {
+  @apply w-6 h-6 rounded-full border-2 border-dashed border-(--el-300) bg-transparent;
 }
 
-/* Color inputs */
-.theme-color-grid {
-  @apply grid grid-cols-2 gap-4;
+.theme-preset-label {
+  @apply text-[10px] font-medium text-(--el-500);
 }
 
-.theme-color-field {
-  @apply flex flex-col gap-1.5;
+/* =============================================================================
+   Section Layout
+   ============================================================================= */
+
+.theme-field-group {
+  @apply space-y-3;
 }
 
-.theme-label {
-  @apply text-[12px] font-semibold text-(--el-800);
+.theme-field-row {
+  @apply flex flex-col gap-1;
 }
 
-.theme-color-input-row {
-  @apply flex items-center gap-2;
+.theme-field-label {
+  @apply text-[11px] font-semibold text-(--text-tertiary) uppercase tracking-wider;
 }
 
-.theme-color-picker {
-  @apply w-8 h-8 rounded-md border border-(--border-default) cursor-pointer;
-  @apply p-0 bg-transparent;
+.theme-field-grid {
+  @apply grid grid-cols-2 gap-3;
 }
 
-.theme-color-hex {
-  @apply flex-1 h-8 text-[13px] font-mono;
-}
-
-/* Font */
-.theme-font-grid {
-  @apply grid grid-cols-1 gap-4;
-}
-
-.theme-field {
-  @apply flex flex-col gap-1.5;
-}
-
-.theme-select {
-  @apply h-8 px-2.5 text-[14px] rounded-md;
-  @apply bg-(--el-0) border border-(--border-default) text-(--el-800);
-  @apply cursor-pointer outline-none;
-}
-
-.theme-select:focus {
-  @apply ring-1 ring-(--accent-primary);
-}
+/* =============================================================================
+   Font Preview
+   ============================================================================= */
 
 .theme-font-preview {
-  @apply p-4 bg-(--el-50) rounded-md border border-(--border-default) space-y-2;
+  @apply p-4 bg-(--el-50) rounded-md border border-(--border-default) space-y-1.5;
 }
 
 .theme-font-preview-heading {
-  @apply text-[20px] font-bold text-(--el-800);
+  @apply text-[18px] font-bold text-(--el-800);
 }
 
 .theme-font-preview-body {
-  @apply text-[14px] text-(--el-500);
+  @apply text-[13px] text-(--el-500) leading-relaxed;
 }
 
-/* Radius */
-.theme-radius-options {
-  @apply flex gap-3;
+/* =============================================================================
+   Live Preview Card
+   ============================================================================= */
+
+.theme-preview {
+  @apply rounded-lg border border-(--border-default) overflow-hidden;
 }
 
-.theme-radius-option {
-  @apply flex flex-col items-center gap-1.5 p-3 rounded-md cursor-pointer;
-  @apply bg-transparent border border-(--border-default);
-  @apply text-[12px] font-medium text-(--el-500);
-  @apply transition-all duration-100;
+.theme-preview-section {
+  @apply p-8 space-y-6;
 }
 
-.theme-radius-option:hover {
-  @apply border-(--el-300);
+.theme-preview-heading {
+  @apply text-[28px] font-bold leading-tight;
 }
 
-.theme-radius-option[data-active] {
-  @apply border-(--accent-primary) text-(--accent-primary) bg-(--accent-primary-subtle)/30;
+.theme-preview-body {
+  @apply text-[15px] leading-relaxed opacity-70;
 }
 
-.theme-radius-preview {
-  @apply w-10 h-10 bg-(--el-200) border border-(--el-300);
+.theme-preview-button {
+  @apply inline-flex items-center px-5 py-2.5 text-[14px] font-semibold text-white border-none cursor-default;
 }
 
-/* Preview */
 .theme-preview-card {
-  @apply p-6 border border-(--border-default) space-y-3;
+  @apply p-5 border space-y-2;
 }
 
-.theme-preview-card h4 {
-  @apply text-[18px] font-bold;
+.theme-preview-card-title {
+  @apply text-[16px] font-semibold;
 }
 
-.theme-preview-card p {
-  @apply text-[14px] opacity-70;
+.theme-preview-card-desc {
+  @apply text-[13px] opacity-60;
+}
+
+.theme-preview-link {
+  @apply text-[14px] font-medium underline;
+}
+
+.theme-preview-divider {
+  @apply border-t;
+}
+
+.theme-preview-row {
+  @apply flex items-center gap-4 flex-wrap;
+}
+
+/* =============================================================================
+   Responsive Breakpoint Toggle
+   ============================================================================= */
+
+.theme-responsive-overrides {
+  @apply space-y-3 pt-2;
 }

@@ -21,7 +21,7 @@ export default function IconBlockRenderer({
   const data = block.data as unknown as IconBlockData;
   const {
     icon = "Star",
-    size = "md",
+    size,
     color,
     text,
     label,

@@ -29,7 +29,7 @@ export default function FeatureGridBlockRenderer({
     description,
     features = [],
     columns = 3,
-    variant = "default",
+    variant,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

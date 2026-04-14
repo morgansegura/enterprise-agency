@@ -110,7 +110,7 @@ export function PageLayout({
       {/* Content */}
       <div
         className={cn(
-          "page-layout-content scrollbar-y",
+          "page-layout-content",
           maxWidth && maxWidthClasses[maxWidth],
           contentClassName,
         )}

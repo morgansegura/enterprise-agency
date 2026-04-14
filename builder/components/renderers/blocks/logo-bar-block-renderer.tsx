@@ -14,8 +14,8 @@ export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
   const {
     logos = [],
     heading,
-    variant = "default",
-    size = "md",
+    variant,
+    size,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

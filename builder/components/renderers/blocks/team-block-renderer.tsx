@@ -25,7 +25,7 @@ export default function TeamBlockRenderer({
   const {
     members = [],
     columns = 3,
-    variant = "default",
+    variant,
     showBio = false,
   } = data;
 

@@ -27,8 +27,8 @@ export default function ButtonBlockRenderer({
   const {
     text,
     href = "#",
-    variant = "default",
-    size = "default",
+    variant,
+    size,
     fullWidth = false,
     openInNewTab = false,
   } = data;

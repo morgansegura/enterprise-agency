@@ -24,7 +24,7 @@ export default function FlexBlockRenderer({
     direction = "row",
     justify,
     align,
-    gap = "md",
+    gap,
     wrap = false,
     blocks = [],
   } = data;

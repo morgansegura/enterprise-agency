@@ -24,9 +24,9 @@ export default function QuoteBlockRenderer({
     author,
     title,
     source,
-    size = "md",
-    align = "left",
-    variant = "default",
+    size,
+    align,
+    variant,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

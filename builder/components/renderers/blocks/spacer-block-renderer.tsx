@@ -11,7 +11,7 @@ export default function SpacerBlockRenderer({
   isEditing: _isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as SpacerBlockData;
-  const { height = "md" } = data;
+  const { height } = data;
 
   const styles = (block as Record<string, unknown>).styles as
     | Record<string, string>

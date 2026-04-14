@@ -21,8 +21,8 @@ export default function ListBlockRenderer({
   const {
     items = [],
     ordered = false,
-    style = "default",
-    spacing = "normal",
+    style,
+    spacing,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

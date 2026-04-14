@@ -15,10 +15,10 @@ export default function DividerBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as DividerBlockData;
   const {
-    style = "solid",
-    weight = "normal",
-    spacing = "md",
-    variant = "default",
+    style,
+    weight,
+    spacing,
+    variant,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as

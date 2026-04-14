@@ -701,6 +701,50 @@ export function applyTokensToDOM(tokens: TokensToApply): void {
   }
 
   // ========================================
+  // 15. Theme Defaults (section, container, block)
+  // ========================================
+  const any = tokens as Record<string, unknown>;
+
+  // Spacing & layout defaults
+  const spacing = any.spacing as Record<string, string> | undefined;
+  if (spacing) {
+    const paddingMap: Record<string, string> = {
+      none: "0", xs: "0.5rem", sm: "1rem", md: "2rem",
+      lg: "3rem", xl: "4rem", "2xl": "6rem",
+    };
+    const gapMap: Record<string, string> = {
+      sm: "0.5rem", md: "1rem", lg: "1.5rem", xl: "2rem",
+    };
+    if (spacing.sectionPadding) {
+      setVar("--section-default-padding", paddingMap[spacing.sectionPadding] || spacing.sectionPadding);
+    }
+    if (spacing.contentGap) {
+      setVar("--container-default-gap", gapMap[spacing.contentGap] || spacing.contentGap);
+    }
+    if (spacing.containerMaxWidth) {
+      setVar("--container-default-max-width", spacing.containerMaxWidth);
+    }
+    if (spacing.containerPadding) {
+      setVar("--container-default-padding", paddingMap[spacing.containerPadding] || spacing.containerPadding);
+    }
+  }
+
+  // Border & effects defaults
+  const effects = any.effects as Record<string, string> | undefined;
+  if (effects) {
+    if (effects.defaultShadow) setVar("--default-shadow", effects.defaultShadow);
+    if (effects.borderWidth) setVar("--default-border-width", effects.borderWidth);
+  }
+  const borderRadius = any.borderRadius as Record<string, string> | undefined;
+  if (borderRadius?.default) {
+    setVar("--default-radius", borderRadius.default);
+  }
+
+  // Typography defaults
+  const baseFontSize = any.baseFontSize as string | undefined;
+  if (baseFontSize) setVar("--base-font-size", baseFontSize);
+
+  // ========================================
   // 14. Load Google Fonts
   // ========================================
   if (tokens.fonts?.definitions || tokens.typographySettings?.fonts) {
