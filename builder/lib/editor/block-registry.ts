@@ -51,6 +51,9 @@ export interface BlockRegistration {
 
   /** Tier requirement (CONTENT_EDITOR or BUILDER) */
   tier?: "CONTENT_EDITOR" | "BUILDER";
+
+  /** Hide from block picker (still renders existing blocks) */
+  hidden?: boolean;
 }
 
 /**
@@ -97,6 +100,11 @@ class BlockRegistry {
    * Get all registered block types
    */
   getAll(): BlockRegistration[] {
+    return Array.from(this.registry.values()).filter((reg) => !reg.hidden);
+  }
+
+  /** Get all blocks including hidden (for rendering existing pages) */
+  getAllIncludingHidden(): BlockRegistration[] {
     return Array.from(this.registry.values());
   }
 
