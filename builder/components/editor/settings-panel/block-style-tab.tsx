@@ -399,7 +399,7 @@ export function ElementStyleTab({
           />
         </PropertyRow>
 
-        {/* Flex controls */}
+        {/* Flex-only: Direction & Wrap */}
         {(displayVal === "flex" || displayVal === "inline-flex") && (
           <>
             <PropertyRow label="Direction">
@@ -427,65 +427,71 @@ export function ElementStyleTab({
                 onChange={(v) => updateStyle("flexWrap", v)}
               />
             </PropertyRow>
-            <PropertyRow label="Justify">
-              <PropertySelect
-                value={s("justifyContent")}
-                options={[
-                  { value: "inherit", label: "Default" },
-                  { value: "flex-start", label: "Start" },
-                  { value: "center", label: "Center" },
-                  { value: "flex-end", label: "End" },
-                  { value: "space-between", label: "Space Between" },
-                  { value: "space-around", label: "Space Around" },
-                  { value: "space-evenly", label: "Space Evenly" },
-                ]}
-                onChange={(v) => updateStyle("justifyContent", v)}
-              />
-            </PropertyRow>
-            <PropertyRow label="Align Items">
-              <PropertySelect
-                value={s("alignItems")}
-                options={[
-                  { value: "inherit", label: "Default" },
-                  { value: "stretch", label: "Stretch" },
-                  { value: "flex-start", label: "Start" },
-                  { value: "center", label: "Center" },
-                  { value: "flex-end", label: "End" },
-                  { value: "baseline", label: "Baseline" },
-                ]}
-                onChange={(v) => updateStyle("alignItems", v)}
-              />
-            </PropertyRow>
-            <PropertyRow label="Gap">
-              <SliderInput
-                value={s("gap")}
-                onChange={(v) => updateStyle("gap", v)}
-                max={80}
-                placeholder=""
-              />
-            </PropertyRow>
           </>
         )}
 
-        {/* Grid controls */}
+        {/* Grid-only: Columns */}
+        {(displayVal === "grid" || displayVal === "inline-grid") && (
+          <PropertyRow label="Columns">
+            <PropertySelect
+              value={s("gridTemplateColumns")}
+              options={[
+                { value: "inherit", label: "Default" },
+                { value: "1fr", label: "1 Column" },
+                { value: "1fr 1fr", label: "2 Columns" },
+                { value: "1fr 1fr 1fr", label: "3 Columns" },
+                { value: "1fr 1fr 1fr 1fr", label: "4 Columns" },
+                { value: "1fr 1fr 1fr 1fr 1fr", label: "5 Columns" },
+                { value: "1fr 1fr 1fr 1fr 1fr 1fr", label: "6 Columns" },
+                { value: "repeat(auto-fit, minmax(250px, 1fr))", label: "Auto Fit" },
+              ]}
+              onChange={(v) => updateStyle("gridTemplateColumns", v)}
+            />
+          </PropertyRow>
+        )}
+
+        {/* Always visible: Justify, Align, Gap */}
+        <PropertyRow label="Justify Content">
+          <PropertySelect
+            value={s("justifyContent")}
+            options={[
+              { value: "inherit", label: "Default" },
+              { value: "flex-start", label: "Start" },
+              { value: "center", label: "Center" },
+              { value: "flex-end", label: "End" },
+              { value: "space-between", label: "Space Between" },
+              { value: "space-around", label: "Space Around" },
+              { value: "space-evenly", label: "Space Evenly" },
+            ]}
+            onChange={(v) => updateStyle("justifyContent", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Align Items">
+          <PropertySelect
+            value={s("alignItems")}
+            options={[
+              { value: "inherit", label: "Default" },
+              { value: "stretch", label: "Stretch" },
+              { value: "flex-start", label: "Start" },
+              { value: "center", label: "Center" },
+              { value: "flex-end", label: "End" },
+              { value: "baseline", label: "Baseline" },
+            ]}
+            onChange={(v) => updateStyle("alignItems", v)}
+          />
+        </PropertyRow>
+        <PropertyRow label="Gap">
+          <SliderInput
+            value={s("gap")}
+            onChange={(v) => updateStyle("gap", v)}
+            max={80}
+            placeholder=""
+          />
+        </PropertyRow>
+
+        {/* Grid-only: Row Gap & Column Gap */}
         {(displayVal === "grid" || displayVal === "inline-grid") && (
           <>
-            <PropertyRow label="Columns">
-              <PropertySelect
-                value={s("gridTemplateColumns")}
-                options={[
-                  { value: "inherit", label: "Default" },
-                  { value: "1fr", label: "1 Column" },
-                  { value: "1fr 1fr", label: "2 Columns" },
-                  { value: "1fr 1fr 1fr", label: "3 Columns" },
-                  { value: "1fr 1fr 1fr 1fr", label: "4 Columns" },
-                  { value: "1fr 1fr 1fr 1fr 1fr", label: "5 Columns" },
-                  { value: "1fr 1fr 1fr 1fr 1fr 1fr", label: "6 Columns" },
-                  { value: "repeat(auto-fit, minmax(250px, 1fr))", label: "Auto Fit" },
-                ]}
-                onChange={(v) => updateStyle("gridTemplateColumns", v)}
-              />
-            </PropertyRow>
             <PropertyRow label="Row Gap">
               <SliderInput
                 value={s("rowGap")}
