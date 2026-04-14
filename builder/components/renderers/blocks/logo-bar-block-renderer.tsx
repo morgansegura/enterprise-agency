@@ -25,7 +25,7 @@ export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
     return (
       <div
         data-slot="logo-bar-block"
-        data-variant={variant}
+        {...(variant ? { "data-variant": variant } : {})}
         data-size={hasStyle("width") ? undefined : size}
       >
         <p data-slot="logo-bar-block-empty">No logos added yet</p>
@@ -36,7 +36,7 @@ export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
   return (
     <div
       data-slot="logo-bar-block"
-      data-variant={variant}
+      {...(variant ? { "data-variant": variant } : {})}
       data-size={hasStyle("width") ? undefined : size}
     >
       {heading ? (

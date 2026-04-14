@@ -62,7 +62,7 @@ export default function NewsletterBlockRenderer({
       </p>
       <div
         data-slot="newsletter-block-form"
-        data-variant={variant}
+        {...(variant ? { "data-variant": variant } : {})}
         className={variant === "inline" ? "flex gap-2" : "space-y-2"}
       >
         <input

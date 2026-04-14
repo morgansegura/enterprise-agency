@@ -38,7 +38,7 @@ export default function TeamBlockRenderer({
     <div
       data-slot="team-block"
       data-columns={hasStyle("gridTemplateColumns") ? undefined : columns}
-      data-variant={variant}
+      {...(variant ? { "data-variant": variant } : {})}
     >
       {members.map((member, i) => (
         <div key={i} data-slot="team-block-member">

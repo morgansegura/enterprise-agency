@@ -40,8 +40,8 @@ export default function ButtonBlockRenderer({
     return (
       <span
         data-slot="button-block"
-        data-variant={variant}
-        data-size={hasStyle("fontSize") ? undefined : size}
+        {...(variant ? { "data-variant": variant } : {})}
+        {...(size && !hasStyle("fontSize") ? { "data-size": size } : {})}
         {...(fullWidth ? { "data-full-width": "" } : {})}
         contentEditable
         suppressContentEditableWarning
@@ -62,8 +62,8 @@ export default function ButtonBlockRenderer({
     <a
       href={href}
       data-slot="button-block"
-      data-variant={variant}
-      data-size={hasStyle("fontSize") ? undefined : size}
+      {...(variant ? { "data-variant": variant } : {})}
+      {...(size && !hasStyle("fontSize") ? { "data-size": size } : {})}
       {...(fullWidth ? { "data-full-width": "" } : {})}
       {...(openInNewTab
         ? { target: "_blank", rel: "noopener noreferrer" }

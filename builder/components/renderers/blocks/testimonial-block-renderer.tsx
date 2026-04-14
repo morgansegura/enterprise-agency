@@ -53,9 +53,9 @@ export default function TestimonialBlockRenderer({
   return (
     <div
       data-slot="testimonial-block"
-      data-layout={layout}
+      {...(layout ? { "data-layout": layout } : {})}
       data-columns={hasStyle("gridTemplateColumns") ? undefined : columns}
-      data-variant={variant}
+      {...(variant ? { "data-variant": variant } : {})}
     >
       {testimonials.map((t, i) => (
         <div key={i} data-slot="testimonial-block-card">

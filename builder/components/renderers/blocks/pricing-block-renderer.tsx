@@ -40,7 +40,7 @@ export default function PricingBlockRenderer({
   if (tiers.length === 0) return null;
 
   return (
-    <div data-slot="pricing-block" data-variant={variant}>
+    <div data-slot="pricing-block" {...(variant ? { "data-variant": variant } : {})}>
       {heading || description ? (
         <div data-slot="pricing-block-header">
           {heading || isEditing ? (

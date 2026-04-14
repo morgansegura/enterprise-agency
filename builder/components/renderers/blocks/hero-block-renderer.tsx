@@ -39,7 +39,7 @@ export default function HeroBlockRenderer({
   return (
     <section
       data-slot="hero-block"
-      data-layout={layout}
+      {...(layout ? { "data-layout": layout } : {})}
       data-align={hasStyle("textAlign") ? undefined : align}
       data-size={hasStyle("fontSize") ? undefined : size}
       data-overlay={overlay || undefined}

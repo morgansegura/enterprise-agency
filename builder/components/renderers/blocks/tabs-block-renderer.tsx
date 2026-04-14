@@ -35,7 +35,7 @@ export default function TabsBlockRenderer({
     return (
       <div
         data-slot="tabs-block"
-        data-variant={variant}
+        {...(variant ? { "data-variant": variant } : {})}
       >
         <p data-slot="tabs-block-empty">No tabs configured</p>
       </div>
@@ -45,7 +45,7 @@ export default function TabsBlockRenderer({
   return (
     <div
       data-slot="tabs-block"
-      data-variant={variant}
+      {...(variant ? { "data-variant": variant } : {})}
     >
       <div data-slot="tabs-block-list" role="tablist">
         {tabs.map((tab, index) => (

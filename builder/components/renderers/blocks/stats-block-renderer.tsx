@@ -49,8 +49,8 @@ export default function StatsBlockRenderer({
   return (
     <div
       data-slot="stats-block"
-      data-layout={layout}
-      data-variant={variant}
+      {...(layout ? { "data-layout": layout } : {})}
+      {...(variant ? { "data-variant": variant } : {})}
     >
       {stats.map((stat, index) => (
         <div key={index} data-slot="stats-block-item">

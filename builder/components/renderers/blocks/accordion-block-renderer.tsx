@@ -61,7 +61,7 @@ export default function AccordionBlockRenderer({
   return (
     <div
       data-slot="accordion-block"
-      data-variant={variant}
+      {...(variant ? { "data-variant": variant } : {})}
       data-allow-multiple={allowMultiple}
     >
       {items.map((item, index) => {

@@ -38,7 +38,7 @@ export default function CtaBlockRenderer({
   return (
     <section
       data-slot="cta-block"
-      data-variant={variant}
+      {...(variant ? { "data-variant": variant } : {})}
       data-align={hasStyle("textAlign") ? undefined : align}
     >
       <div data-slot="cta-block-content">

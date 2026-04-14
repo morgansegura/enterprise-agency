@@ -107,7 +107,7 @@ export default function FeatureGridBlockRenderer({
           <div
             key={i}
             data-slot="feature-grid-block-item"
-            data-variant={variant}
+            {...(variant ? { "data-variant": variant } : {})}
             className={cn(
               "p-5",
               variant === "card" &&

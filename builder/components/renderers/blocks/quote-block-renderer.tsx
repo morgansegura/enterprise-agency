@@ -41,7 +41,7 @@ export default function QuoteBlockRenderer({
   return (
     <blockquote
       data-slot="quote-block"
-      data-variant={variant}
+      {...(variant ? { "data-variant": variant } : {})}
       data-size={hasStyle("fontSize") ? undefined : size}
       data-align={hasStyle("textAlign") ? undefined : align}
     >

@@ -79,7 +79,7 @@ export default function SocialLinksBlockRenderer({
         <a
           key={i}
           data-slot="social-links-block-link"
-          data-variant={variant}
+          {...(variant ? { "data-variant": variant } : {})}
           href={link.url}
           target="_blank"
           rel="noopener noreferrer"

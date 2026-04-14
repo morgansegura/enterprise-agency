@@ -21,7 +21,7 @@ export default function ContainerBlockRenderer({
     <div
       data-slot="container-block"
       data-width={width}
-      data-spacing={spacing}
+      {...(spacing ? { "data-spacing": spacing } : {})}
       style={{
         minHeight: blocks.length === 0 && isEditing ? "60px" : undefined,
       }}

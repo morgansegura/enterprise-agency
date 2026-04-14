@@ -1,5 +1,9 @@
 @reference "tailwindcss";
 
+[data-slot="spacer-block"] {
+  height: var(--spacer-default-height, 2rem);
+}
+
 [data-slot="spacer-block"][data-height="xs"] {
   @apply h-2;
 }

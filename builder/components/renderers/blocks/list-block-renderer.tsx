@@ -46,7 +46,7 @@ export default function ListBlockRenderer({
   return (
     <Tag
       data-slot="list-block"
-      data-style={style}
+      {...(style ? { "data-style": style } : {})}
       data-spacing={hasStyle("gap") ? undefined : spacing}
     >
       {items.map((item, index) => (
