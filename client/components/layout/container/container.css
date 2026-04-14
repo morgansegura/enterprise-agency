@@ -6,13 +6,13 @@
  * ============================================================================= */
 
 .container {
-  @apply w-full relative;
+  @apply w-full relative flex flex-col;
   margin-left: auto;
   margin-right: auto;
-  max-width: var(--container-default-max-width, 100%);
-  padding-left: var(--container-default-padding, 0);
-  padding-right: var(--container-default-padding, 0);
-  gap: var(--container-default-gap, 0);
+  max-width: var(--container-default-max-width, 1200px);
+  padding-left: var(--container-default-padding, 1.5rem);
+  padding-right: var(--container-default-padding, 1.5rem);
+  gap: var(--container-default-gap, 1rem);
 }
 
 /* =============================================================================

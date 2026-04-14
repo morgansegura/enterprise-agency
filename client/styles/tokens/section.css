@@ -98,8 +98,8 @@
 .section {
   position: relative;
   width: 100%;
-  padding-top: var(--section-default-padding, 0);
-  padding-bottom: var(--section-default-padding, 0);
+  padding-top: var(--section-default-padding, 2rem);
+  padding-bottom: var(--section-default-padding, 2rem);
 }
 
 /* ==========================================

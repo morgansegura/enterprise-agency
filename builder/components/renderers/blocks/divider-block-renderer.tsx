@@ -28,8 +28,8 @@ export default function DividerBlockRenderer({
     <hr
       data-slot="divider-block"
       {...(style ? { "data-style": style } : {})}
-      data-weight={hasStyle("fontWeight") ? undefined : weight}
-      data-spacing={hasStyle("paddingTop") ? undefined : spacing}
+      {...(weight && !hasStyle("fontWeight") ? { "data-weight": weight } : {})}
+      {...(spacing && !hasStyle("paddingTop") ? { "data-spacing": spacing } : {})}
       {...(variant ? { "data-variant": variant } : {})}
     />
   );
