@@ -215,7 +215,8 @@
 
 .page-editor-canvas-content {
   @apply w-full min-h-full flex flex-col;
-  @apply bg-inherit;
+  background-color: var(--background, var(--theme-background, #ffffff));
+  color: var(--foreground, var(--theme-foreground, #0a0a0a));
 }
 
 /* =============================================================================
