@@ -95,7 +95,6 @@
 /* Box children get extra indent */
 [style*="padding-left: 3.5rem"] {
   @apply font-normal text-(--el-500);
-  @apply border-l-2 border-dashed border-(--el-200) ml-6;
 }
 
 /* Toggle button */

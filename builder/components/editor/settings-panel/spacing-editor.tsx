@@ -136,7 +136,7 @@ function SpacingGroup({
                 handleInputChange("Top", values.Top, e.target.value)
               }
               onKeyDown={(e) => handleKeyDown(e, "Top", values.Top)}
-              placeholder="0"
+              placeholder=""
               className="spacing-input"
             />
           </div>
@@ -150,7 +150,7 @@ function SpacingGroup({
                 handleInputChange("Bottom", values.Bottom, e.target.value)
               }
               onKeyDown={(e) => handleKeyDown(e, "Bottom", values.Bottom)}
-              placeholder="0"
+              placeholder=""
               className="spacing-input"
             />
           </div>
@@ -182,7 +182,7 @@ function SpacingGroup({
                 handleInputChange("Left", values.Left, e.target.value)
               }
               onKeyDown={(e) => handleKeyDown(e, "Left", values.Left)}
-              placeholder="0"
+              placeholder=""
               className="spacing-input"
             />
           </div>
@@ -196,7 +196,7 @@ function SpacingGroup({
                 handleInputChange("Right", values.Right, e.target.value)
               }
               onKeyDown={(e) => handleKeyDown(e, "Right", values.Right)}
-              placeholder="0"
+              placeholder=""
               className="spacing-input"
             />
           </div>

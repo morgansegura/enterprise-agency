@@ -3,15 +3,12 @@
 /* Box block — a container that holds child blocks.
    Used as cards, panels, grouped content.
    All visual styling comes from the styles object via generated CSS.
-   Base rules provide a clean starting point. */
+   The wrapper div gets the .e-key class with all styles.
+   The inner box-block div resets non-inheritable props so they
+   don't double-apply from the > * selector. */
 
-[data-slot="box-block"] {
-  @apply relative w-full flex flex-col;
-  color: inherit;
-}
-
-/* Legacy support — existing pages may use container-block slot */
+[data-slot="box-block"],
 [data-slot="container-block"] {
-  @apply relative w-full flex flex-col;
+  @apply relative w-full flex flex-col p-0 m-0 border-none rounded-none shadow-none bg-transparent;
   color: inherit;
 }

@@ -370,7 +370,7 @@ export function ElementStyleTab({
 
   const displayVal = s("display");
   const positionVal = s("position");
-  const isFlexOrGrid = displayVal === "flex" || displayVal === "grid";
+  const isFlexOrGrid = displayVal === "flex" || displayVal === "grid" || displayVal === "inline-flex" || displayVal === "inline-grid";
 
   return (
     <PropertyAccordion>
@@ -381,122 +381,127 @@ export function ElementStyleTab({
         title="Layout"
         icon={<Grid3X3 className="h-3.5 w-3.5" />}
       >
-        <PropertyRow label="Display" stacked>
-          <PropertyToggle
+        <PropertyRow label="Display">
+          <PropertySelect
             value={displayVal}
             options={[
+              { value: "inherit", label: "Default" },
               { value: "block", label: "Block" },
               { value: "flex", label: "Flex" },
               { value: "grid", label: "Grid" },
-              { value: "inline-block", label: "Inline" },
+              { value: "inline", label: "Inline" },
+              { value: "inline-block", label: "Inline Block" },
+              { value: "inline-flex", label: "Inline Flex" },
+              { value: "inline-grid", label: "Inline Grid" },
               { value: "none", label: "None" },
             ]}
             onChange={(v) => updateStyle("display", v)}
-            fullWidth
           />
         </PropertyRow>
 
         {/* Flex controls */}
-        {displayVal === "flex" && (
+        {(displayVal === "flex" || displayVal === "inline-flex") && (
           <>
-            <PropertyRow label="Direction" stacked>
-              <PropertyToggle
+            <PropertyRow label="Direction">
+              <PropertySelect
                 value={s("flexDirection")}
                 options={[
-                  { value: "row", label: "→" },
-                  { value: "column", label: "↓" },
-                  { value: "row-reverse", label: "←" },
-                  { value: "column-reverse", label: "↑" },
+                  { value: "inherit", label: "Default" },
+                  { value: "row", label: "Row" },
+                  { value: "column", label: "Column" },
+                  { value: "row-reverse", label: "Row Reverse" },
+                  { value: "column-reverse", label: "Column Reverse" },
                 ]}
                 onChange={(v) => updateStyle("flexDirection", v)}
-                fullWidth
               />
             </PropertyRow>
-            <PropertyRow label="Wrap" stacked>
-              <PropertyToggle
+            <PropertyRow label="Wrap">
+              <PropertySelect
                 value={s("flexWrap")}
                 options={[
-                  { value: "nowrap", label: "No wrap" },
+                  { value: "inherit", label: "Default" },
+                  { value: "nowrap", label: "No Wrap" },
                   { value: "wrap", label: "Wrap" },
-                  { value: "wrap-reverse", label: "Reverse" },
+                  { value: "wrap-reverse", label: "Wrap Reverse" },
                 ]}
                 onChange={(v) => updateStyle("flexWrap", v)}
-                fullWidth
               />
             </PropertyRow>
-            <PropertyRow label="Justify" stacked>
-              <PropertyToggle
+            <PropertyRow label="Justify">
+              <PropertySelect
                 value={s("justifyContent")}
                 options={[
+                  { value: "inherit", label: "Default" },
                   { value: "flex-start", label: "Start" },
                   { value: "center", label: "Center" },
                   { value: "flex-end", label: "End" },
-                  { value: "space-between", label: "Between" },
-                  { value: "space-around", label: "Around" },
+                  { value: "space-between", label: "Space Between" },
+                  { value: "space-around", label: "Space Around" },
+                  { value: "space-evenly", label: "Space Evenly" },
                 ]}
                 onChange={(v) => updateStyle("justifyContent", v)}
-                fullWidth
               />
             </PropertyRow>
-            <PropertyRow label="Align" stacked>
-              <PropertyToggle
+            <PropertyRow label="Align Items">
+              <PropertySelect
                 value={s("alignItems")}
                 options={[
+                  { value: "inherit", label: "Default" },
                   { value: "stretch", label: "Stretch" },
                   { value: "flex-start", label: "Start" },
                   { value: "center", label: "Center" },
                   { value: "flex-end", label: "End" },
-                  { value: "baseline", label: "Base" },
+                  { value: "baseline", label: "Baseline" },
                 ]}
                 onChange={(v) => updateStyle("alignItems", v)}
-                fullWidth
               />
             </PropertyRow>
-            <PropertyRow label="Gap" stacked>
+            <PropertyRow label="Gap">
               <SliderInput
                 value={s("gap")}
                 onChange={(v) => updateStyle("gap", v)}
                 max={80}
-                placeholder="0px"
+                placeholder=""
               />
             </PropertyRow>
           </>
         )}
 
         {/* Grid controls */}
-        {displayVal === "grid" && (
+        {(displayVal === "grid" || displayVal === "inline-grid") && (
           <>
-            <PropertyRow label="Columns" stacked>
-              <PropertyToggle
+            <PropertyRow label="Columns">
+              <PropertySelect
                 value={s("gridTemplateColumns")}
                 options={[
-                  { value: "1fr", label: "1" },
-                  { value: "1fr 1fr", label: "2" },
-                  { value: "1fr 1fr 1fr", label: "3" },
-                  { value: "1fr 1fr 1fr 1fr", label: "4" },
-                  { value: "1fr 1fr 1fr 1fr 1fr", label: "5" },
-                  { value: "1fr 1fr 1fr 1fr 1fr 1fr", label: "6" },
+                  { value: "inherit", label: "Default" },
+                  { value: "1fr", label: "1 Column" },
+                  { value: "1fr 1fr", label: "2 Columns" },
+                  { value: "1fr 1fr 1fr", label: "3 Columns" },
+                  { value: "1fr 1fr 1fr 1fr", label: "4 Columns" },
+                  { value: "1fr 1fr 1fr 1fr 1fr", label: "5 Columns" },
+                  { value: "1fr 1fr 1fr 1fr 1fr 1fr", label: "6 Columns" },
+                  { value: "repeat(auto-fit, minmax(250px, 1fr))", label: "Auto Fit" },
                 ]}
                 onChange={(v) => updateStyle("gridTemplateColumns", v)}
-                fullWidth
               />
             </PropertyRow>
             <PropertyRow label="Row Gap">
               <SliderInput
-                value={s("rowGap") || "0px"}
+                value={s("rowGap")}
                 onChange={(v) => updateStyle("rowGap", v)}
                 min={0}
                 max={80}
-                placeholder="0"
+                placeholder=""
               />
             </PropertyRow>
             <PropertyRow label="Column Gap">
               <SliderInput
-                value={s("columnGap") || "0px"}
+                value={s("columnGap")}
                 onChange={(v) => updateStyle("columnGap", v)}
                 min={0}
                 max={80}
-                placeholder="0"
+                placeholder=""
               />
             </PropertyRow>
           </>
@@ -505,8 +510,8 @@ export function ElementStyleTab({
         {/* Flex child — only when display is flex or grid */}
         {isFlexOrGrid && (
           <>
-            <PropertyRow label="Align Self" stacked>
-              <PropertyToggle
+            <PropertyRow label="Align Self">
+              <PropertySelect
                 value={s("alignSelf")}
                 options={[
                   { value: "inherit", label: "Auto" },
@@ -515,46 +520,47 @@ export function ElementStyleTab({
                   { value: "flex-end", label: "End" },
                   { value: "stretch", label: "Stretch" },
                 ]}
-                fullWidth
                 onChange={(v) => updateStyle("alignSelf", v)}
               />
             </PropertyRow>
-            <PropertyRow label="Flex Grow" stacked>
-              <PropertyToggle
+            <PropertyRow label="Flex Grow">
+              <PropertySelect
                 value={s("flexGrow")}
                 options={[
+                  { value: "inherit", label: "Default" },
                   { value: "0", label: "0" },
                   { value: "1", label: "1" },
                   { value: "2", label: "2" },
                   { value: "3", label: "3" },
                 ]}
-                fullWidth
                 onChange={(v) => updateStyle("flexGrow", v)}
               />
             </PropertyRow>
-            <PropertyRow label="Flex Shrink" stacked>
-              <PropertyToggle
+            <PropertyRow label="Flex Shrink">
+              <PropertySelect
                 value={s("flexShrink")}
                 options={[
+                  { value: "inherit", label: "Default" },
                   { value: "0", label: "0" },
                   { value: "1", label: "1" },
                   { value: "2", label: "2" },
                 ]}
-                fullWidth
                 onChange={(v) => updateStyle("flexShrink", v)}
               />
             </PropertyRow>
-            <PropertyRow label="Flex Basis" stacked>
-              <PropertyToggle
+            <PropertyRow label="Flex Basis">
+              <PropertySelect
                 value={s("flexBasis")}
                 options={[
                   { value: "auto", label: "Auto" },
                   { value: "0", label: "0" },
                   { value: "25%", label: "25%" },
+                  { value: "33.333%", label: "33%" },
                   { value: "50%", label: "50%" },
+                  { value: "66.666%", label: "66%" },
+                  { value: "75%", label: "75%" },
                   { value: "100%", label: "100%" },
                 ]}
-                fullWidth
                 onChange={(v) => updateStyle("flexBasis", v)}
               />
             </PropertyRow>
