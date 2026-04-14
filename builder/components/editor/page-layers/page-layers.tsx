@@ -86,8 +86,14 @@ const blockIcons: Record<string, React.ElementType> = {
   "checkout-block": CreditCard,
 };
 
+// Label overrides for renamed block types
+const LABEL_OVERRIDES: Record<string, string> = {
+  "container-block": "Box",
+};
+
 // Get a readable label from block data
 function getBlockLabel(block: Block): string {
+  if (LABEL_OVERRIDES[block._type]) return LABEL_OVERRIDES[block._type];
   const data = block.data as Record<string, unknown>;
   if (data?.text && typeof data.text === "string") {
     return data.text.slice(0, 40) || block._type.replace("-block", "");
@@ -422,8 +428,9 @@ export function PageLayers({
                           >
                             {blocks.map((block, blockIndex) => {
                               const Icon = blockIcons[block._type] || Box;
+                              const blockData = block.data as Record<string, unknown> | undefined;
                               const nestedBlocks =
-                                (block.blocks as Block[] | undefined) ?? [];
+                                ((block.blocks ?? blockData?.blocks) as Block[] | undefined) ?? [];
                               return (
                                 <React.Fragment key={block._key}>
                                   <SortableBlockItem id={block._key}>
