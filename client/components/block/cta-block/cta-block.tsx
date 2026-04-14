@@ -17,8 +17,8 @@ export function CtaBlock({ data }: CtaBlockProps) {
     description,
     primaryCta,
     secondaryCta,
-    variant = "default",
-    align = "center",
+    variant,
+    align,
   } = data;
 
   return (

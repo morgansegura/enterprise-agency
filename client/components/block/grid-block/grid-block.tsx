@@ -41,7 +41,7 @@ const gapClasses: Record<string, string> = {
  * Supports responsive overrides for columns and gap
  */
 export function GridBlock({ data, blocks, renderBlock }: GridBlockProps) {
-  const { columns, gap = "md", align, justify } = data;
+  const { columns, gap, align, justify } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

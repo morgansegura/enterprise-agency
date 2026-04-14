@@ -19,10 +19,10 @@ export function HeroBlock({ data }: HeroBlockProps) {
     primaryCta,
     secondaryCta,
     image,
-    layout = "centered",
-    overlay = false,
-    align = "center",
-    size = "md",
+    layout,
+    overlay,
+    align,
+    size,
   } = data;
 
   return (

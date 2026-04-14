@@ -10,7 +10,7 @@ type RichTextBlockProps = {
  * Renders rich HTML with typography styles from design tokens
  */
 export function RichTextBlock({ data }: RichTextBlockProps) {
-  const { html, align = "left" } = data;
+  const { html, align } = data;
 
   return (
     <div

@@ -11,7 +11,7 @@ interface FeatureGridBlockProps {
 }
 
 export function FeatureGridBlock({ data }: FeatureGridBlockProps) {
-  const { heading, description, features = [], columns = 3, variant = "default" } = data;
+  const { heading, description, features = [], columns, variant } = data;
 
   return (
     <div className="w-full">

@@ -13,7 +13,7 @@ type TabsBlockProps = {
  * Content block (leaf node) - cannot have children
  */
 export function TabsBlock({ data }: TabsBlockProps) {
-  const { tabs, defaultTab = 0, variant = "default" } = data;
+  const { tabs, defaultTab = 0, variant } = data;
   const [activeTab, setActiveTab] = useState(defaultTab);
 
   return (

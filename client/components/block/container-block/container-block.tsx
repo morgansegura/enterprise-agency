@@ -42,7 +42,7 @@ export function ContainerBlock({
   blocks,
   renderBlock,
 }: ContainerBlockProps) {
-  const { width = "wide", spacing = "none" } = data;
+  const { width, spacing } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

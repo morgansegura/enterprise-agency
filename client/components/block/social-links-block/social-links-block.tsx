@@ -18,13 +18,13 @@ const sizes = { sm: "size-8 text-sm", md: "size-10 text-base", lg: "size-12 text
 const aligns = { left: "justify-start", center: "justify-center", right: "justify-end" };
 
 export function SocialLinksBlock({ data }: SocialLinksBlockProps) {
-  const { links = [], size = "md", variant = "default", align = "center" } = data;
+  const { links = [], size, variant, align } = data;
 
   return (
-    <div className={cn("flex gap-2 flex-wrap", aligns[align])}>
+    <div className={cn("flex gap-2 flex-wrap", align && aligns[align])}>
       {links.map((link, i) => (
         <a key={i} href={link.url} target="_blank" rel="noopener noreferrer"
-          className={cn("flex items-center justify-center rounded-full transition-colors", sizes[size],
+          className={cn("flex items-center justify-center rounded-full transition-colors", size && sizes[size],
             variant === "filled" && "bg-foreground text-background hover:bg-primary",
             variant === "outline" && "border hover:border-primary hover:text-primary",
             variant === "default" && "text-muted-foreground hover:text-primary",

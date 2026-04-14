@@ -64,7 +64,7 @@ function generateResponsiveClasses(
  * Supports responsive overrides for size
  */
 export function IconBlock({ data }: IconBlockProps) {
-  const { icon, size = "md", color, text, position = "top" } = data;
+  const { icon, size, color, text, position } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

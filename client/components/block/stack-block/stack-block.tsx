@@ -30,7 +30,7 @@ const gapClasses: Record<string, string> = {
  * Supports responsive overrides for gap
  */
 export function StackBlock({ data, blocks, renderBlock }: StackBlockProps) {
-  const { gap = "md", align = "stretch" } = data;
+  const { gap, align } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

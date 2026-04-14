@@ -53,8 +53,10 @@ export default function CardBlockRenderer({
     <div
       className={elementClass}
       data-slot="card-block"
-      data-variant={variant}
-      data-padding={hasStyle("paddingTop") ? undefined : padding}
+      {...(variant ? { "data-variant": variant } : {})}
+      {...(!hasStyle("paddingTop") && padding
+        ? { "data-padding": padding }
+        : {})}
     >
       {imageSrc ? (
         <div data-slot="card-block-image">

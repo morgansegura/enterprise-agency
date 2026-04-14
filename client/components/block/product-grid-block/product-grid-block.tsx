@@ -36,11 +36,11 @@ export function ProductGridBlock({
   products = [],
 }: ProductGridBlockProps) {
   const {
-    columns = 4,
-    gap = "md",
+    columns,
+    gap,
     showPrice = true,
     showAddToCart = true,
-    variant = "default",
+    variant,
   } = data;
 
   const formatPrice = (price: number) => {
@@ -51,6 +51,7 @@ export function ProductGridBlock({
   };
 
   const getColumnsClass = () => {
+    if (!columns) return "";
     if (typeof columns === "number") {
       return `product-grid-cols-${columns}`;
     }

@@ -40,7 +40,7 @@ const gapClasses: Record<string, string> = {
  * Supports responsive overrides for direction and gap
  */
 export function FlexBlock({ data, blocks, renderBlock }: FlexBlockProps) {
-  const { direction = "row", wrap = false, gap = "md", align, justify } = data;
+  const { direction, wrap = false, gap, align, justify } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

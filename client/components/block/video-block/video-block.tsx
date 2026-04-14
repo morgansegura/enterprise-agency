@@ -68,7 +68,7 @@ export function VideoBlock({ data }: VideoBlockProps) {
   const {
     url,
     provider = "native",
-    aspectRatio = "16:9",
+    aspectRatio,
     autoplay = false,
     controls = true,
     muted = false,

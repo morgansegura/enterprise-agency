@@ -64,7 +64,7 @@ function generateResponsiveClasses(
  * Supports responsive overrides for aspectRatio
  */
 export function EmbedBlock({ data }: EmbedBlockProps) {
-  const { url, title, aspectRatio = "16:9", height } = data;
+  const { url, title, aspectRatio, height } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

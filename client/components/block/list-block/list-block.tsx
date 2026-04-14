@@ -66,8 +66,8 @@ export function ListBlock({ data }: ListBlockProps) {
   const {
     items,
     ordered = false,
-    style = "default",
-    spacing = "normal",
+    style,
+    spacing,
   } = data;
 
   const ListTag = ordered ? "ol" : "ul";

@@ -14,9 +14,9 @@ export function QuoteBlock({ data }: QuoteBlockProps) {
     text,
     author,
     title,
-    size = "md",
-    align = "left",
-    variant = "default",
+    size,
+    align,
+    variant,
   } = data;
 
   return (

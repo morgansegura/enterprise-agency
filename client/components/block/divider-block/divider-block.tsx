@@ -64,10 +64,10 @@ function generateResponsiveClasses(
  */
 export function DividerBlock({ data }: DividerBlockProps) {
   const {
-    style = "solid",
-    weight = "normal",
-    spacing = "md",
-    variant = "default",
+    style,
+    weight,
+    spacing,
+    variant,
   } = data;
 
   // Check if we have responsive overrides

@@ -10,7 +10,7 @@ type AccordionBlockProps = {
  * Content block (leaf node) - cannot have children
  */
 export function AccordionBlock({ data }: AccordionBlockProps) {
-  const { items, allowMultiple = false, variant = "default" } = data;
+  const { items, allowMultiple = false, variant } = data;
 
   return (
     <div

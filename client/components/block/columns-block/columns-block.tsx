@@ -18,7 +18,7 @@ type ColumnsBlockProps = {
  * Uses CSS grid for column layout with optional responsive stacking
  */
 export function ColumnsBlock({ data, blocks, renderBlock }: ColumnsBlockProps) {
-  const { count = "2", gap = "md", responsive = true } = data;
+  const { count, gap, responsive = true } = data;
 
   return (
     <div

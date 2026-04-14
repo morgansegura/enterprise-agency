@@ -13,8 +13,8 @@ export function LogoBarBlock({ data }: LogoBarBlockProps) {
   const {
     logos = [],
     heading,
-    variant = "default",
-    size = "md",
+    variant,
+    size,
   } = data;
 
   if (logos.length === 0) {

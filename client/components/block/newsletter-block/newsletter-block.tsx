@@ -9,7 +9,7 @@ interface NewsletterBlockProps {
 }
 
 export function NewsletterBlock({ data }: NewsletterBlockProps) {
-  const { heading = "Subscribe", description, placeholder = "Enter your email", buttonText = "Subscribe", variant = "inline" } = data;
+  const { heading = "Subscribe", description, placeholder = "Enter your email", buttonText = "Subscribe", variant } = data;
 
   return (
     <div className="max-w-md mx-auto text-center">

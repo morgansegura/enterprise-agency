@@ -33,9 +33,9 @@ export function ButtonBlock({ data }: ButtonBlockProps) {
     text,
     href,
     onClick,
-    variant = "default",
-    size = "default",
-    fullWidth = false,
+    variant,
+    size,
+    fullWidth,
   } = data;
 
   // Check if we have responsive overrides

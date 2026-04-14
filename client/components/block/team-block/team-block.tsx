@@ -12,8 +12,8 @@ type TeamBlockProps = {
 export function TeamBlock({ data }: TeamBlockProps) {
   const {
     members = [],
-    columns = 3,
-    variant = "default",
+    columns,
+    variant,
     showBio = false,
     showSocial = false,
   } = data;

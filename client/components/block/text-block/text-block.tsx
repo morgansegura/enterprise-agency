@@ -151,9 +151,9 @@ function renderTextContent(text: string): React.ReactNode {
  */
 export function TextBlock({ data }: TextBlockProps) {
   const {
-    size = "base",
-    align = "left",
-    variant = "default",
+    size,
+    align,
+    variant,
     weight,
     letterSpacing,
     lineHeight,

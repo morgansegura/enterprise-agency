@@ -67,7 +67,7 @@ function generateResponsiveClasses(
  * Supports responsive overrides for height
  */
 export function SpacerBlock({ data }: SpacerBlockProps) {
-  const { height = "md" } = data;
+  const { height } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

@@ -13,9 +13,9 @@ type TestimonialBlockProps = {
 export function TestimonialBlock({ data }: TestimonialBlockProps) {
   const {
     testimonials = [],
-    layout = "grid",
-    columns = 3,
-    variant = "default",
+    layout,
+    columns,
+    variant,
     showRating = false,
   } = data;
 

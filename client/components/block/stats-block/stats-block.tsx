@@ -12,8 +12,8 @@ type StatsBlockProps = {
 export function StatsBlock({ data }: StatsBlockProps) {
   const {
     stats = [],
-    layout = "horizontal",
-    variant = "default",
+    layout,
+    variant,
   } = data;
 
   if (stats.length === 0) {

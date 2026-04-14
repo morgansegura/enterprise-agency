@@ -15,7 +15,7 @@ type LogoBlockData = {
  * Can be dropped anywhere in the block editor (footer, privacy page, etc.)
  */
 export function LogoBlock({ data }: { data: LogoBlockData }) {
-  const { src, alt, href, size = "md", align = "left", openInNewTab } = data;
+  const { src, alt, href, size, align, openInNewTab } = data;
 
   if (!src) {
     return null;

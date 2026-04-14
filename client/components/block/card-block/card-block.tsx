@@ -16,8 +16,8 @@ export function CardBlock({ data }: CardBlockProps) {
     description,
     footer,
     link,
-    variant = "default",
-    padding = "md",
+    variant,
+    padding,
   } = data;
 
   const content = (

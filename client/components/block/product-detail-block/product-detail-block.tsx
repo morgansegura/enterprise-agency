@@ -59,7 +59,7 @@ type ProductDetailBlockProps = {
  */
 export function ProductDetailBlock({ data, product }: ProductDetailBlockProps) {
   const {
-    layout = "horizontal",
+    layout,
     showGallery = true,
     showVariants = true,
     showQuantity = true,

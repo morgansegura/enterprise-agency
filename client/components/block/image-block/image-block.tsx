@@ -24,7 +24,7 @@ const objectFitClasses: Record<string, string> = {
  * Supports responsive overrides for objectFit
  */
 export function ImageBlock({ data, priority = false }: ImageBlockProps) {
-  const { src, alt = "", caption, width, height, objectFit = "cover" } = data;
+  const { src, alt = "", caption, width, height, objectFit } = data;
 
   // Check if we have responsive overrides
   const hasOverrides = hasResponsiveOverrides(data as Record<string, unknown>);

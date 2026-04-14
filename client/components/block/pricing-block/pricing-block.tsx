@@ -14,7 +14,7 @@ export function PricingBlock({ data }: PricingBlockProps) {
     tiers = [],
     heading,
     description,
-    variant = "default",
+    variant,
   } = data;
 
   if (tiers.length === 0) {
