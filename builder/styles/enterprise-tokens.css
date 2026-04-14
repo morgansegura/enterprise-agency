@@ -80,8 +80,8 @@
   --surface-overlay: var(--el-0);
 
   --text-primary: var(--el-800);
-  --text-secondary: var(--el-500);
-  --text-tertiary: var(--el-400);
+  --text-secondary: var(--el-600);
+  --text-tertiary: var(--el-500);
   --text-disabled: var(--el-300);
   --text-inverse: var(--el-0);
 

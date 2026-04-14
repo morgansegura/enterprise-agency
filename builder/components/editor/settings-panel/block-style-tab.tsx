@@ -663,10 +663,11 @@ export function ElementStyleTab({
         icon={<MapPin className="h-3.5 w-3.5" />}
         defaultOpen={false}
       >
-        <PropertyRow label="Position" stacked>
-          <PropertyToggle
+        <PropertyRow label="Position">
+          <PropertySelect
             value={positionVal}
             options={[
+              { value: "inherit", label: "Default" },
               { value: "static", label: "Static" },
               { value: "relative", label: "Relative" },
               { value: "absolute", label: "Absolute" },
@@ -674,7 +675,6 @@ export function ElementStyleTab({
               { value: "sticky", label: "Sticky" },
             ]}
             onChange={(v) => updateStyle("position", v)}
-            fullWidth
           />
         </PropertyRow>
         {positionVal && positionVal !== "static" && (
@@ -699,44 +699,50 @@ export function ElementStyleTab({
             ))}
           </>
         )}
-        <PropertyRow label="Z-Index" stacked>
-          <PropertyToggle
+        <PropertyRow label="Z-Index">
+          <PropertySelect
             value={s("zIndex")}
             options={[
-              { value: "auto", label: "Auto" },
+              { value: "inherit", label: "Auto" },
               { value: "0", label: "0" },
+              { value: "1", label: "1" },
               { value: "10", label: "10" },
               { value: "20", label: "20" },
+              { value: "30", label: "30" },
+              { value: "40", label: "40" },
               { value: "50", label: "50" },
               { value: "100", label: "100" },
+              { value: "999", label: "999" },
             ]}
             onChange={(v) => updateStyle("zIndex", v)}
-            fullWidth
           />
         </PropertyRow>
-        <PropertyRow label="Overflow" stacked>
-          <PropertyToggle
-            value={s("overflow")}
+        <PropertyRow label="Overflow X">
+          <PropertySelect
+            value={s("overflowX")}
             options={[
-              { value: "inherit", label: "Visible" },
+              { value: "inherit", label: "Default" },
+              { value: "visible", label: "Visible" },
               { value: "hidden", label: "Hidden" },
               { value: "scroll", label: "Scroll" },
               { value: "auto", label: "Auto" },
+              { value: "clip", label: "Clip" },
             ]}
-            onChange={(v) => updateStyle("overflow", v)}
-            fullWidth
+            onChange={(v) => updateStyle("overflowX", v)}
           />
         </PropertyRow>
-        <PropertyRow label="Float" stacked>
-          <PropertyToggle
-            value={s("float")}
+        <PropertyRow label="Overflow Y">
+          <PropertySelect
+            value={s("overflowY")}
             options={[
-              { value: "inherit", label: "None" },
-              { value: "left", label: "Left" },
-              { value: "right", label: "Right" },
+              { value: "inherit", label: "Default" },
+              { value: "visible", label: "Visible" },
+              { value: "hidden", label: "Hidden" },
+              { value: "scroll", label: "Scroll" },
+              { value: "auto", label: "Auto" },
+              { value: "clip", label: "Clip" },
             ]}
-            onChange={(v) => updateStyle("float", v)}
-            fullWidth
+            onChange={(v) => updateStyle("overflowY", v)}
           />
         </PropertyRow>
       </PropertySection>
