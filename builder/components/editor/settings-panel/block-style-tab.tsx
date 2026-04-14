@@ -513,22 +513,26 @@ export function ElementStyleTab({
           </>
         )}
 
-        {/* Flex child — only when display is flex or grid */}
+        {/* Align Self — valid for both flex and grid children */}
         {isFlexOrGrid && (
+          <PropertyRow label="Align Self">
+            <PropertySelect
+              value={s("alignSelf")}
+              options={[
+                { value: "inherit", label: "Auto" },
+                { value: "flex-start", label: "Start" },
+                { value: "center", label: "Center" },
+                { value: "flex-end", label: "End" },
+                { value: "stretch", label: "Stretch" },
+              ]}
+              onChange={(v) => updateStyle("alignSelf", v)}
+            />
+          </PropertyRow>
+        )}
+
+        {/* Flex child — only for flex display */}
+        {(displayVal === "flex" || displayVal === "inline-flex") && (
           <>
-            <PropertyRow label="Align Self">
-              <PropertySelect
-                value={s("alignSelf")}
-                options={[
-                  { value: "inherit", label: "Auto" },
-                  { value: "flex-start", label: "Start" },
-                  { value: "center", label: "Center" },
-                  { value: "flex-end", label: "End" },
-                  { value: "stretch", label: "Stretch" },
-                ]}
-                onChange={(v) => updateStyle("alignSelf", v)}
-              />
-            </PropertyRow>
             <PropertyRow label="Flex Grow">
               <PropertySelect
                 value={s("flexGrow")}
