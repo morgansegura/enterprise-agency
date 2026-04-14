@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
@@ -14,6 +15,7 @@ export default function ContactFormBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as ContactFormBlockData;
   const {
@@ -33,8 +35,9 @@ export default function ContactFormBlockRenderer({
   const _hasStyle = (prop: string) => !!styles?.[prop];
   return (
     <div
+      {...editorProps}
+      className={cn("max-w-lg mx-auto", editorProps?.className)}
       data-slot="contact-form-block"
-      className="max-w-lg mx-auto"
     >
       {heading && (
         <h3

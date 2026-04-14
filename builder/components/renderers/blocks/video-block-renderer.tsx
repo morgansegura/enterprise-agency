@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
 interface VideoBlockData {
@@ -53,6 +55,7 @@ export default function VideoBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as VideoBlockData;
   const {
@@ -87,7 +90,8 @@ export default function VideoBlockRenderer({
     if (isEditing) {
       return (
         <div
-          className="flex flex-col items-center justify-center gap-3 bg-(--el-50) border border-dashed border-(--border-default) text-(--el-500) p-8 rounded-md aspect-video"
+          {...editorProps}
+          className={cn("flex flex-col items-center justify-center gap-3 bg-(--el-50) border border-dashed border-(--border-default) text-(--el-500) p-8 rounded-md aspect-video", editorProps?.className)}
           data-slot="video-block"
           onClick={(e) => e.stopPropagation()}
         >

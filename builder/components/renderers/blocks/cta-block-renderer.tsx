@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
@@ -15,6 +16,7 @@ export default function CtaBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as CtaBlockData;
   const {
@@ -37,6 +39,8 @@ export default function CtaBlockRenderer({
 
   return (
     <section
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="cta-block"
       {...(variant ? { "data-variant": variant } : {})}
       data-align={hasStyle("textAlign") ? undefined : align}

@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
 interface EmbedBlockData {
@@ -12,6 +14,7 @@ export default function EmbedBlockRenderer({
   block,
   onChange: _onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as EmbedBlockData;
   const { html, url, title, aspectRatio = "16:9", height } = data;
@@ -26,7 +29,8 @@ export default function EmbedBlockRenderer({
   if (!html && !url) {
     if (isEditing) {
       return (
-        <div data-slot="embed-block">
+        <div {...editorProps} className={cn(editorProps?.className)}
+ data-slot="embed-block">
           <div
             data-slot="embed-block-placeholder"
             onClick={() => {

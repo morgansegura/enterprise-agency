@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
 interface MapBlockData {
@@ -23,6 +25,7 @@ export default function MapBlockRenderer({
   block,
   onChange: _onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as MapBlockData;
   const {
@@ -42,6 +45,8 @@ export default function MapBlockRenderer({
   if (embedUrl) {
     return (
       <div
+        {...editorProps} className={cn(editorProps?.className)}
+
         data-slot="map-block"
         data-height={hasStyle("height") ? undefined : height}
       >

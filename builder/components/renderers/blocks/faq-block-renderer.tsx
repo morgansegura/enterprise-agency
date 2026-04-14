@@ -20,6 +20,7 @@ export default function FaqBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as FaqBlockData;
   const { heading, description, items = [] } = data;
@@ -47,7 +48,7 @@ export default function FaqBlockRenderer({
   };
 
   return (
-    <div data-slot="faq-block" className="max-w-2xl mx-auto">
+    <div {...editorProps} className={cn("max-w-2xl mx-auto", editorProps?.className)} data-slot="faq-block">
       {(heading || isEditing) && (
         <h3
           data-slot="faq-block-heading"

@@ -14,6 +14,13 @@ export interface BlockRendererProps<T extends Block = Block> {
   onChange?: (updatedBlock: T) => void;
   /** Whether the block is in editor mode (canvas editing) */
   isEditing?: boolean;
+  /** CSS class name for generated styles (.e-{key}) + editor attributes */
+  editorProps?: {
+    className?: string;
+    "data-block-key": string;
+    "data-block-label": string;
+    "data-element-type": string;
+  };
 }
 
 /**

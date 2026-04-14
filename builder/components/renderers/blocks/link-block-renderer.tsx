@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
@@ -12,6 +13,7 @@ export function LinkBlockRenderer({
   block,
   isEditing,
   onChange: _onChange,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as Record<string, unknown>;
   const href = (data.href as string) || "#";
@@ -20,6 +22,8 @@ export function LinkBlockRenderer({
   if (isEditing) {
     return (
       <div
+        {...editorProps} className={cn(editorProps?.className)}
+
         data-slot="link-block"
         data-editing="true"
         style={{

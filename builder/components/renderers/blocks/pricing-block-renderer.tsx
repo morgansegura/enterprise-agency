@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
 interface PricingTier {
@@ -21,6 +23,7 @@ export default function PricingBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as PricingBlockData;
   const {
@@ -40,7 +43,8 @@ export default function PricingBlockRenderer({
   if (tiers.length === 0) return null;
 
   return (
-    <div data-slot="pricing-block" {...(variant ? { "data-variant": variant } : {})}>
+    <div {...editorProps} className={cn(editorProps?.className)}
+ data-slot="pricing-block" {...(variant ? { "data-variant": variant } : {})}>
       {heading || description ? (
         <div data-slot="pricing-block-header">
           {heading || isEditing ? (

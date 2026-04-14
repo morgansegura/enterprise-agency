@@ -9,6 +9,7 @@ import { ColorMark } from "@/lib/editor/tiptap-color-mark";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
 import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
+import { cn } from "@/lib/utils";
 
 interface HeadingBlockData {
   text: string;
@@ -19,16 +20,19 @@ export default function HeadingBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as HeadingBlockData;
-  const {
-    text,
-    level = "h2",
-  } = data;
-
+  const { text, level = "h2" } = data;
   const Tag = level;
 
-  // TipTap editor for inline editing
+  // Merge editorProps className with "heading"
+  const rootProps = {
+    ...editorProps,
+    className: cn("heading", editorProps?.className),
+    "data-slot": "heading-block",
+  };
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -45,68 +49,45 @@ export default function HeadingBlockRenderer({
       }),
       Underline,
       ColorMark,
-      Placeholder.configure({
-        placeholder: "Type a heading...",
-      }),
+      Placeholder.configure({ placeholder: "Type a heading..." }),
     ],
     content: (data as { html?: string }).html || (text ? `<p>${text}</p>` : ""),
     immediatelyRender: false,
     editable: !!isEditing,
     onUpdate: ({ editor: e }) => {
       if (onChange) {
-        // Strip tags to get plain text for the heading
-        const newText = e.getText();
-        // But keep HTML for rich formatting (bold, italic, etc.)
-        const newHtml = e.getHTML();
         onChange({
           ...block,
-          data: {
-            ...block.data,
-            text: newText,
-            html: newHtml,
-          },
+          data: { ...block.data, text: e.getText(), html: e.getHTML() },
         });
       }
     },
   });
 
   useEffect(() => {
-    if (editor) {
-      editor.setEditable(!!isEditing);
-    }
+    if (editor) editor.setEditable(!!isEditing);
   }, [editor, isEditing]);
 
-  // Read-only — render HTML if available (for colored text, bold, etc.)
-  const html = (block.data as Record<string, unknown>).html as string | undefined;
+  const html = (block.data as Record<string, unknown>).html as
+    | string
+    | undefined;
+
   if (!isEditing || !editor) {
     if (html) {
       return (
         <Tag
-          className="heading"
-          data-slot="heading-block"
+          {...rootProps}
           dangerouslySetInnerHTML={{ __html: html.replace(/<\/?p>/g, "") }}
         />
       );
     }
-    return (
-      <Tag className="heading" data-slot="heading-block">
-        {text}
-      </Tag>
-    );
+    return <Tag {...rootProps}>{text}</Tag>;
   }
 
-  // Edit mode — TipTap inline editor styled as the heading
   return (
-    <Tag
-      className="heading"
-      data-slot="heading-block"
-      style={{ cursor: "text" }}
-    >
+    <Tag {...rootProps} style={{ cursor: "text" }}>
       {editor && <TextBubbleMenu editor={editor} />}
-      <EditorContent
-        editor={editor}
-        style={{ outline: "none" }}
-      />
+      <EditorContent editor={editor} style={{ outline: "none" }} />
     </Tag>
   );
 }

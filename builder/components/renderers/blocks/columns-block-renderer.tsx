@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
@@ -15,11 +17,14 @@ export default function ColumnsBlockRenderer({
   breakpoint,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as ColumnsBlockData;
   const { count, gap, responsive = true, blocks = [] } = data;
   return (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="columns-block"
       data-count={count}
       data-gap={gap}

@@ -8,6 +8,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { ColorMark } from "@/lib/editor/tiptap-color-mark";
 import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 
 interface TextBlockData {
@@ -20,6 +21,7 @@ export default function TextBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as TextBlockData;
   const { text, html } = data;
@@ -63,14 +65,19 @@ export default function TextBlockRenderer({
     if (html) {
       return (
         <div
-          className="text text-block prose prose-sm max-w-none"
+          {...editorProps}
+          className={cn("text text-block prose prose-sm max-w-none", editorProps?.className)}
           data-slot="text-block"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       );
     }
     return (
-      <p className="text" data-slot="text-block">
+      <p
+        {...editorProps}
+        className={cn("text", editorProps?.className)}
+        data-slot="text-block"
+      >
         {text || data.content}
       </p>
     );
@@ -79,7 +86,8 @@ export default function TextBlockRenderer({
   // Edit mode — TipTap
   return (
     <div
-      className="text text-block prose prose-sm max-w-none"
+      {...editorProps}
+      className={cn("text text-block prose prose-sm max-w-none", editorProps?.className)}
       data-slot="text-block"
       style={{ cursor: "text" }}
     >

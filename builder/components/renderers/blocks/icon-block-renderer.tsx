@@ -2,6 +2,7 @@
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import * as LucideIcons from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface IconBlockData {
   icon: string;
@@ -13,6 +14,7 @@ export default function IconBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as IconBlockData;
   const { icon = "Star", text, label } = data;
@@ -28,7 +30,7 @@ export default function IconBlockRenderer({
 
   if (!IconComponent) {
     return (
-      <div data-slot="icon-block">
+      <div {...editorProps} className={cn(editorProps?.className)} data-slot="icon-block">
         <span data-slot="icon-block-icon" aria-hidden="true">
           {icon}
         </span>
@@ -49,7 +51,7 @@ export default function IconBlockRenderer({
   const displayText = text || label;
 
   return (
-    <div data-slot="icon-block">
+    <div {...editorProps} className={cn(editorProps?.className)} data-slot="icon-block">
       <span data-slot="icon-block-icon" aria-hidden="true">
         <IconComponent />
       </span>

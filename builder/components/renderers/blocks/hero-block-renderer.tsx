@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
 interface HeroBlockData {
@@ -17,6 +19,7 @@ export default function HeroBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as HeroBlockData;
   const {
@@ -38,6 +41,8 @@ export default function HeroBlockRenderer({
   const hasStyle = (prop: string) => !!styles?.[prop];
   return (
     <section
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="hero-block"
       {...(layout ? { "data-layout": layout } : {})}
       data-align={hasStyle("textAlign") ? undefined : align}

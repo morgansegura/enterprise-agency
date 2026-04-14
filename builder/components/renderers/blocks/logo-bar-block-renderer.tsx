@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
@@ -8,7 +10,12 @@ interface LogoBarBlockData {
   size?: "sm" | "md" | "lg";
 }
 
-export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
+export default function LogoBarBlockRenderer({
+  block,
+  onChange,
+  isEditing,
+  editorProps,
+}: BlockRendererProps) {
   const data = block.data as unknown as LogoBarBlockData;
   const {
     logos = [],
@@ -24,6 +31,8 @@ export default function LogoBarBlockRenderer({ block }: BlockRendererProps) {
   if (logos.length === 0) {
     return (
       <div
+        {...editorProps} className={cn(editorProps?.className)}
+
         data-slot="logo-bar-block"
         {...(variant ? { "data-variant": variant } : {})}
         data-size={hasStyle("width") ? undefined : size}

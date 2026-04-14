@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
@@ -12,12 +14,15 @@ export default function ContainerBlockRenderer({
   breakpoint,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as BoxBlockData;
   const { blocks = [] } = data;
 
   return (
     <div
+      {...editorProps}
+      className={cn(editorProps?.className)}
       data-slot="box-block"
       style={{
         minHeight: blocks.length === 0 && isEditing ? "60px" : undefined,

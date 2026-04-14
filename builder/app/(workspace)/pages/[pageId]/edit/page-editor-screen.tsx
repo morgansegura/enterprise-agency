@@ -37,6 +37,8 @@ import { useIsBuilder } from "@/lib/hooks/use-tier";
 import { useTenant } from "@/lib/hooks/use-tenants";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
+import { useTenantTokens } from "@/lib/hooks/use-tenant-tokens";
+import { applyTokensToDOM } from "@/lib/tokens/apply-tokens";
 import { useEditorStore } from "@/lib/stores/editor-store";
 import { SaveToLibraryDialog } from "@/components/editor/library-picker/save-to-library-dialog";
 import { generatePageCSS } from "@enterprise/tokens";
@@ -63,6 +65,7 @@ interface PageEditorScreenProps {
 export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps) {
   const { data: page, isLoading, error } = usePage(id, pageId);
   const { data: _tenant } = useTenant(id);
+  const { data: tenantTokens } = useTenantTokens(id);
   const isBuilder = useIsBuilder(id);
   const updatePage = useUpdatePage(id);
   const publishPage = usePublishPage(id);
@@ -80,6 +83,13 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
     [page],
   );
   const editor = usePageEditor(initialSections);
+
+  // Apply tenant tokens to DOM (theme fonts, colors, etc.)
+  React.useEffect(() => {
+    if (tenantTokens && Object.keys(tenantTokens).length > 0) {
+      applyTokensToDOM(tenantTokens as Record<string, unknown>);
+    }
+  }, [tenantTokens]);
 
   // Breakpoint state for responsive preview
   const [breakpoint, setBreakpoint] = React.useState<Breakpoint>("desktop");

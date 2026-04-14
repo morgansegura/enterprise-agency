@@ -760,9 +760,9 @@ export function ElementStyleTab({
             value={s("fontFamily")}
             options={[
               { value: "inherit", label: "Inherit" },
-              { value: "var(--font-heading)", label: "Heading Font" },
-              { value: "var(--font-body)", label: "Body Font" },
-              { value: "var(--font-accent)", label: "Accent Font" },
+              { value: "var(--theme-font-heading)", label: "Heading Font" },
+              { value: "var(--theme-font-body)", label: "Body Font" },
+              { value: "var(--theme-font-accent)", label: "Accent Font" },
             ]}
             onChange={(v) => updateStyle("fontFamily", v)}
             placeholder="Inherit"

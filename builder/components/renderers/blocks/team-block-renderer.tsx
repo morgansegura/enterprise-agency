@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
@@ -19,6 +21,7 @@ export default function TeamBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as TeamBlockData;
   const {
@@ -36,6 +39,8 @@ export default function TeamBlockRenderer({
 
   return (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="team-block"
       data-columns={hasStyle("gridTemplateColumns") ? undefined : columns}
       {...(variant ? { "data-variant": variant } : {})}

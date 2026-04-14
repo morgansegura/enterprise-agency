@@ -3,6 +3,7 @@
 import * as React from "react";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AccordionItem {
   title: string;
@@ -20,6 +21,7 @@ export default function AccordionBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as AccordionBlockData;
   const {
@@ -59,6 +61,8 @@ export default function AccordionBlockRenderer({
 
   return (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="accordion-block"
       data-allow-multiple={allowMultiple}
     >

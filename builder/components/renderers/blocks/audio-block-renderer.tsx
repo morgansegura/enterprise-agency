@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
@@ -20,6 +21,7 @@ export default function AudioBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const params = useParams();
   const tenantId = params?.id as string;
@@ -86,7 +88,11 @@ export default function AudioBlockRenderer({
   }
 
   return (
-    <figure data-slot="audio-block">
+    <figure
+      {...editorProps}
+      className={cn(editorProps?.className)}
+      data-slot="audio-block"
+    >
       {title || artist ? (
         <div data-slot="audio-block-meta">
           {title ? <div data-slot="audio-block-title">{title}</div> : null}

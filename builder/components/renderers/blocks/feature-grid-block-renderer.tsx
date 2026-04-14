@@ -21,6 +21,7 @@ export default function FeatureGridBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as FeatureGridBlockData;
   const {
@@ -44,6 +45,8 @@ export default function FeatureGridBlockRenderer({
 
   return (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="feature-grid-block"
       data-variant={hasStyle("background") ? undefined : variant}
     >

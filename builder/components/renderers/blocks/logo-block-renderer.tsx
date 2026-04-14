@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
@@ -10,7 +12,12 @@ interface LogoBlockData {
   openInNewTab?: boolean;
 }
 
-export default function LogoBlockRenderer({ block }: BlockRendererProps) {
+export default function LogoBlockRenderer({
+  block,
+  onChange,
+  isEditing,
+  editorProps,
+}: BlockRendererProps) {
   const data = block.data as unknown as LogoBlockData;
   const {
     src,
@@ -28,6 +35,8 @@ export default function LogoBlockRenderer({ block }: BlockRendererProps) {
   if (!src) {
     return (
       <div
+        {...editorProps} className={cn(editorProps?.className)}
+
         data-slot="logo-block"
         data-align={hasStyle("textAlign") ? undefined : align}
       >

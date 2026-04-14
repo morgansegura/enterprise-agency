@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
@@ -17,6 +19,7 @@ export default function CardBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as CardBlockData;
   const {
@@ -49,6 +52,8 @@ export default function CardBlockRenderer({
 
   const content = (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="card-block"
       {...(variant ? { "data-variant": variant } : {})}
       {...(!hasStyle("paddingTop") && padding

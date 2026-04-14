@@ -1,9 +1,8 @@
 @reference "tailwindcss";
 
-/* Base heading — inherits all visual properties from parent */
+/* Base heading — inherit from parent (overrides Tailwind preflight * selector) */
 .heading {
-  @apply relative;
-  color: inherit;
+  @apply relative text-inherit font-[inherit] text-[length:inherit] font-[number:inherit];
 }
 
 /* Sizes - using typography tokens (responsive) */

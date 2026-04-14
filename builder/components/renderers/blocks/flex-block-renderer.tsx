@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
@@ -17,6 +19,7 @@ export default function FlexBlockRenderer({
   onChange,
   isEditing,
   breakpoint,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as FlexBlockData;
   const {
@@ -29,6 +32,8 @@ export default function FlexBlockRenderer({
   } = data;
   return (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="flex-block"
       data-direction={direction}
       data-wrap={wrap ? "wrap" : "nowrap"}

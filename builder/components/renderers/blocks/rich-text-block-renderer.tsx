@@ -8,6 +8,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { ColorMark } from "@/lib/editor/tiptap-color-mark";
 import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 
 interface RichTextBlockData {
@@ -18,6 +19,7 @@ export default function RichTextBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as RichTextBlockData;
   const { html } = data;
@@ -35,10 +37,7 @@ export default function RichTextBlockRenderer({
     editable: !!isEditing,
     onUpdate: ({ editor: e }) => {
       if (onChange) {
-        onChange({
-          ...block,
-          data: { ...block.data, html: e.getHTML() },
-        });
+        onChange({ ...block, data: { ...block.data, html: e.getHTML() } });
       }
     },
   });
@@ -50,7 +49,8 @@ export default function RichTextBlockRenderer({
   if (!isEditing || !editor) {
     return (
       <div
-        className="rich-text"
+        {...editorProps}
+        className={cn("rich-text", editorProps?.className)}
         data-slot="rich-text-block"
         dangerouslySetInnerHTML={{ __html: html }}
       />
@@ -58,7 +58,11 @@ export default function RichTextBlockRenderer({
   }
 
   return (
-    <div className="rich-text" data-slot="rich-text-block">
+    <div
+      {...editorProps}
+      className={cn("rich-text", editorProps?.className)}
+      data-slot="rich-text-block"
+    >
       <EditorContent editor={editor} />
       <TextBubbleMenu editor={editor} />
     </div>

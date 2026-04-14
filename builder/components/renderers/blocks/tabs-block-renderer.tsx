@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { cn } from "@/lib/utils";
 
 interface TabItem {
   label: string;
@@ -18,6 +19,7 @@ export default function TabsBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as TabsBlockData;
   const { tabs = [], defaultTab = 0 } = data;
@@ -27,6 +29,8 @@ export default function TabsBlockRenderer({
   if (tabs.length === 0) {
     return (
       <div
+        {...editorProps} className={cn(editorProps?.className)}
+
         data-slot="tabs-block"
 
       >

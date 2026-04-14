@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
@@ -14,11 +16,14 @@ export default function StackBlockRenderer({
   onChange,
   isEditing,
   breakpoint,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as StackBlockData;
   const { gap = "md", align = "stretch", blocks = [] } = data;
   return (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="stack-block"
       data-gap={gap}
       data-align={align}

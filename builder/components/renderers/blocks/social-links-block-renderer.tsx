@@ -43,6 +43,7 @@ export default function SocialLinksBlockRenderer({
   block,
   onChange: _onChange,
   isEditing: _isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as SocialLinksBlockData;
   const {
@@ -69,10 +70,12 @@ export default function SocialLinksBlockRenderer({
 
   return (
     <div
+      {...editorProps}
       {...filtered}
       className={cn(
         "flex gap-2 flex-wrap",
         alignClasses[align],
+        editorProps?.className,
       )}
     >
       {links.map((link, i) => (

@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
@@ -16,6 +18,7 @@ export default function GridBlockRenderer({
   onChange,
   isEditing,
   breakpoint,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as GridBlockData;
   const { columns, gap = "md", align, justify, blocks = [] } = data;
@@ -39,11 +42,12 @@ export default function GridBlockRenderer({
 
   return (
     <div
+      {...editorProps}
+      className={cn(columnClasses[colValue] || "grid-cols-2", editorProps?.className)}
       data-slot="grid-block"
       data-gap={gap}
       data-align={align}
       data-justify={justify}
-      className={columnClasses[colValue] || "grid-cols-2"}
       style={{
         minHeight: blocks.length === 0 && isEditing ? "60px" : undefined,
       }}

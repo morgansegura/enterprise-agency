@@ -1,3 +1,5 @@
+"use client";
+import { cn } from "@/lib/utils";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
 interface StatItem {
@@ -18,6 +20,7 @@ export default function StatsBlockRenderer({
   block,
   isEditing,
   onChange,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as StatsBlockData;
   const {
@@ -48,6 +51,8 @@ export default function StatsBlockRenderer({
 
   return (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="stats-block"
       {...(layout ? { "data-layout": layout } : {})}
       {...(variant ? { "data-variant": variant } : {})}

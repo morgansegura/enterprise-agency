@@ -1,6 +1,7 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { cn } from "@/lib/utils";
 
 interface QuoteBlockData {
   text: string;
@@ -12,6 +13,7 @@ export default function QuoteBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as QuoteBlockData;
   const { text, author, title } = data;
@@ -23,7 +25,7 @@ export default function QuoteBlockRenderer({
   };
 
   return (
-    <blockquote data-slot="quote-block">
+    <blockquote {...editorProps} className={cn(editorProps?.className)} data-slot="quote-block">
       <p
         data-slot="quote-block-text"
         contentEditable={!!isEditing}

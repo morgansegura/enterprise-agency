@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { ImageIcon, Upload } from "lucide-react";
 import { MediaLibraryPicker } from "@/components/ui/media-library/media-library-picker";
+import { cn } from "@/lib/utils";
 
 interface ImageBlockData {
   src: string;
@@ -19,6 +20,7 @@ export default function ImageBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const params = useParams();
   const tenantId = params?.id as string;
@@ -29,7 +31,7 @@ export default function ImageBlockRenderer({
   // Edit mode: show media library picker when no src
   if (!src && isEditing) {
     return (
-      <>
+      <div {...editorProps} className={cn(editorProps?.className)}>
         <div
           className="flex flex-col items-center justify-center gap-3 py-12 px-8 border-2 border-dashed border-(--border-default) rounded-md cursor-pointer transition-colors duration-100 hover:border-(--accent-primary) hover:bg-(--accent-primary-subtle)/30"
           onClick={() => setPickerOpen(true)}
@@ -63,13 +65,13 @@ export default function ImageBlockRenderer({
             setPickerOpen(false);
           }}
         />
-      </>
+      </div>
     );
   }
 
   if (!src) {
     return (
-      <div className="flex items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-8 rounded-md">
+      <div {...editorProps} className={cn("flex items-center justify-center gap-2 bg-(--el-100) text-(--el-500) p-8 rounded-md", editorProps?.className)}>
         <ImageIcon className="size-5" />
         <span className="text-[14px]">No image set</span>
       </div>
@@ -83,24 +85,22 @@ export default function ImageBlockRenderer({
   // In edit mode, click image to open media picker
   if (isEditing && onChange) {
     return (
-      <>
-        <figure data-slot="image-block">
-          <div
-            data-slot="image-block-wrapper"
-            className="relative group cursor-pointer"
-            onClick={() => setPickerOpen(true)}
-          >
-            {imageElement}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-100 flex items-center justify-center rounded-md">
-              <span className="opacity-0 group-hover:opacity-100 text-white text-[14px] font-medium bg-black/60 px-3 py-1.5 rounded-md transition-opacity duration-100">
-                Click to change
-              </span>
-            </div>
+      <figure {...editorProps} className={cn(editorProps?.className)} data-slot="image-block">
+        <div
+          data-slot="image-block-wrapper"
+          className="relative group cursor-pointer"
+          onClick={() => setPickerOpen(true)}
+        >
+          {imageElement}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-100 flex items-center justify-center rounded-md">
+            <span className="opacity-0 group-hover:opacity-100 text-white text-[14px] font-medium bg-black/60 px-3 py-1.5 rounded-md transition-opacity duration-100">
+              Click to change
+            </span>
           </div>
-          {caption ? (
-            <figcaption data-slot="image-block-caption">{caption}</figcaption>
-          ) : null}
-        </figure>
+        </div>
+        {caption ? (
+          <figcaption data-slot="image-block-caption">{caption}</figcaption>
+        ) : null}
         <MediaLibraryPicker
           tenantId={tenantId}
           open={pickerOpen}
@@ -119,7 +119,7 @@ export default function ImageBlockRenderer({
             setPickerOpen(false);
           }}
         />
-      </>
+      </figure>
     );
   }
 
@@ -133,7 +133,7 @@ export default function ImageBlockRenderer({
 
   if (caption) {
     return (
-      <figure data-slot="image-block">
+      <figure {...editorProps} className={cn(editorProps?.className)} data-slot="image-block">
         <div
           data-slot="image-block-wrapper"
         >
@@ -145,7 +145,7 @@ export default function ImageBlockRenderer({
   }
 
   return (
-    <figure data-slot="image-block">
+    <figure {...editorProps} className={cn(editorProps?.className)} data-slot="image-block">
       <div data-slot="image-block-wrapper">
         {content}
       </div>

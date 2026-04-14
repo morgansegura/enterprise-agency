@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images */
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
@@ -24,6 +25,7 @@ export default function TestimonialBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as TestimonialBlockData;
   const {
@@ -52,6 +54,8 @@ export default function TestimonialBlockRenderer({
 
   return (
     <div
+      {...editorProps} className={cn(editorProps?.className)}
+
       data-slot="testimonial-block"
       {...(layout ? { "data-layout": layout } : {})}
       data-columns={hasStyle("gridTemplateColumns") ? undefined : columns}

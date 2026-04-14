@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 
@@ -14,6 +15,7 @@ export default function NewsletterBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as NewsletterBlockData;
   const {
@@ -31,8 +33,9 @@ export default function NewsletterBlockRenderer({
 
   return (
     <div
+      {...editorProps}
+      className={cn("max-w-md mx-auto text-center", editorProps?.className)}
       data-slot="newsletter-block"
-      className="max-w-md mx-auto text-center"
     >
       <h3
         data-slot="newsletter-block-heading"

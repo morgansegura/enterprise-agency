@@ -9,6 +9,7 @@ import {
 } from "@/lib/renderer/block-renderer-registry";
 import { hasStyles } from "@/lib/types/section";
 import { getElementClass } from "@enterprise/tokens";
+import { cn } from "@/lib/utils";
 
 interface Props {
   block: Block;
@@ -17,22 +18,42 @@ interface Props {
   isEditing?: boolean;
 }
 
+const LABEL_OVERRIDES: Record<string, string> = {
+  "container-block": "Box",
+};
+
+function getBlockLabel(type: string): string {
+  return (
+    LABEL_OVERRIDES[type] ??
+    type
+      .replace("-block", "")
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase())
+  );
+}
+
 /**
- * BlockRenderer - Dynamically renders any block type
+ * BlockRenderer — no wrapper div.
  *
- * Uses the block renderer registry to lazy-load the appropriate
- * renderer component based on block._type
+ * Passes editorProps to each block renderer. The renderer spreads them
+ * on its own root element so generated CSS applies directly —
+ * no inheritance issues, no > * hacks, no preflight conflicts.
  */
-export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditing }: Props) {
+export function BlockRenderer({
+  block,
+  breakpoint = "desktop",
+  onChange,
+  isEditing,
+}: Props) {
   const [Component, setComponent] =
     React.useState<React.ComponentType<BlockRendererProps> | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let mounted = true;
-
-    // Normalize: ensure block type ends with "-block"
-    const blockType = block._type.endsWith("-block") ? block._type : `${block._type}-block`;
+    const blockType = block._type.endsWith("-block")
+      ? block._type
+      : `${block._type}-block`;
 
     blockRendererRegistry
       .loadRenderer(blockType)
@@ -55,7 +76,7 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
     return () => {
       mounted = false;
     };
-  }, [block._type]); // blockType is derived from block._type
+  }, [block._type]);
 
   if (error) {
     return (
@@ -69,46 +90,69 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
     return <div className="animate-pulse bg-(--el-100) h-12 rounded-md" />;
   }
 
-  const LABEL_OVERRIDES: Record<string, string> = {
-    "container-block": "Box",
-  };
-  const label = LABEL_OVERRIDES[block._type] ?? block._type
-    .replace("-block", "")
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-
+  // Build editor props — the renderer applies these on its root element
   const blockAny = block as Record<string, unknown>;
   const styles = blockAny.styles as Record<string, string> | undefined;
-  const stylesBefore = blockAny.stylesBefore as Record<string, string> | undefined;
-  const stylesAfter = blockAny.stylesAfter as Record<string, string> | undefined;
-  const responsive = blockAny._responsive as Record<string, unknown> | undefined;
-  const hasResponsive = responsive && (
-    hasStyles((responsive.tablet as Record<string, unknown>)?.styles as Record<string, string> | undefined) ||
-    hasStyles((responsive.mobile as Record<string, unknown>)?.styles as Record<string, string> | undefined)
-  );
-  const styled = hasStyles(styles) || hasStyles(stylesBefore) || hasStyles(stylesAfter) || hasResponsive;
+  const stylesBefore = blockAny.stylesBefore as
+    | Record<string, string>
+    | undefined;
+  const stylesAfter = blockAny.stylesAfter as
+    | Record<string, string>
+    | undefined;
+  const responsive = blockAny._responsive as
+    | Record<string, unknown>
+    | undefined;
+  const hasResponsive =
+    responsive &&
+    (hasStyles(
+      (responsive.tablet as Record<string, unknown>)?.styles as
+        | Record<string, string>
+        | undefined,
+    ) ||
+      hasStyles(
+        (responsive.mobile as Record<string, unknown>)?.styles as
+          | Record<string, string>
+          | undefined,
+      ));
+  const styled =
+    hasStyles(styles) ||
+    hasStyles(stylesBefore) ||
+    hasStyles(stylesAfter) ||
+    hasResponsive;
 
-  // Check if block has a link wrapper
-  const link = (block.data as Record<string, unknown>)?._link as Record<string, string> | undefined;
-  const hasLink = link?.href && !isEditing;
+  const editorProps = {
+    className: styled ? getElementClass(block._key) : undefined,
+    "data-block-key": block._key,
+    "data-block-label": getBlockLabel(block._type),
+    "data-element-type": "block" as const,
+  };
 
   const content = (
-    <div
-      className={styled ? getElementClass(block._key) : undefined}
-      data-block-key={block._key}
-      data-block-label={label}
-      data-element-type="block"
-    >
-      <Component block={block} breakpoint={breakpoint} onChange={onChange} isEditing={isEditing} />
-    </div>
+    <Component
+      block={block}
+      breakpoint={breakpoint}
+      onChange={onChange}
+      isEditing={isEditing}
+      editorProps={editorProps}
+    />
   );
 
+  // Link wrapper (read-only mode only)
+  const link = (block.data as Record<string, unknown>)?._link as
+    | Record<string, string>
+    | undefined;
+  const hasLink = link?.href && !isEditing;
+
   if (hasLink) {
-    const isExternal = link.href.startsWith("http") || link.target === "_blank";
+    const isExternal =
+      link.href.startsWith("http") || link.target === "_blank";
     const linkProps = {
       title: link.title || undefined,
       "aria-label": link.ariaLabel || undefined,
-      style: { textDecoration: "none", color: "inherit" } as React.CSSProperties,
+      style: {
+        textDecoration: "none",
+        color: "inherit",
+      } as React.CSSProperties,
     };
 
     if (isExternal) {
@@ -116,7 +160,11 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
         <a
           href={link.href}
           target={link.target || "_blank"}
-          rel={link.rel && link.rel !== "inherit" ? link.rel : "noopener noreferrer"}
+          rel={
+            link.rel && link.rel !== "inherit"
+              ? link.rel
+              : "noopener noreferrer"
+          }
           {...linkProps}
         >
           {content}
@@ -134,16 +182,12 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
   return content;
 }
 
-/**
- * Pre-load a block renderer for faster rendering
- */
+export { cn };
+
 export async function preloadBlockRenderer(type: string): Promise<void> {
   await blockRendererRegistry.loadRenderer(type);
 }
 
-/**
- * Check if a block type has a renderer registered
- */
 export function hasBlockRenderer(type: string): boolean {
   return blockRendererRegistry.has(type);
 }

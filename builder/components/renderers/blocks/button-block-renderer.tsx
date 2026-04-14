@@ -1,6 +1,7 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { cn } from "@/lib/utils";
 
 interface ButtonBlockData {
   text: string;
@@ -13,6 +14,7 @@ export default function ButtonBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as ButtonBlockData;
   const {
@@ -25,6 +27,8 @@ export default function ButtonBlockRenderer({
   if (isEditing) {
     return (
       <span
+        {...editorProps}
+        className={cn(editorProps?.className)}
         data-slot="button-block"
         {...(fullWidth ? { "data-full-width": "" } : {})}
         contentEditable
@@ -44,6 +48,8 @@ export default function ButtonBlockRenderer({
 
   return (
     <a
+      {...editorProps}
+      className={cn(editorProps?.className)}
       href={href}
       data-slot="button-block"
       {...(fullWidth ? { "data-full-width": "" } : {})}

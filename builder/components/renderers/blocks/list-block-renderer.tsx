@@ -1,4 +1,5 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
+import { cn } from "@/lib/utils";
 
 interface ListItem {
   text: string;
@@ -13,6 +14,7 @@ export default function ListBlockRenderer({
   block,
   onChange,
   isEditing,
+  editorProps,
 }: BlockRendererProps) {
   const data = block.data as unknown as ListBlockData;
   const { items = [], ordered = false } = data;
@@ -33,7 +35,7 @@ export default function ListBlockRenderer({
   };
 
   return (
-    <Tag data-slot="list-block">
+    <Tag {...editorProps} className={cn(editorProps?.className)} data-slot="list-block">
       {items.map((item, index) => (
         <li
           key={index}

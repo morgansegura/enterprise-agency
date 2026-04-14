@@ -1,9 +1,8 @@
 @reference "tailwindcss";
 
-/* Base text — inherits all visual properties from parent */
+/* Base text — inherit from parent (overrides Tailwind preflight * selector) */
 .text {
-  @apply relative;
-  color: inherit;
+  @apply relative text-inherit font-[inherit] text-[length:inherit] font-[number:inherit];
 }
 
 /* Sizes - using typography tokens (responsive) */

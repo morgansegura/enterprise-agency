@@ -748,14 +748,17 @@ export function applyTokensToDOM(tokens: TokensToApply): void {
   const fonts = any.fonts as Record<string, Record<string, string>> | undefined;
   if (fonts) {
     if (fonts.heading?.family && fonts.heading.family !== "system") {
+      setVar("--theme-font-heading", fonts.heading.family);
       setVar("--font-heading", fonts.heading.family);
       setVar("--font-primary", fonts.heading.family);
     }
     if (fonts.body?.family && fonts.body.family !== "system") {
+      setVar("--theme-font-body", fonts.body.family);
       setVar("--font-body", fonts.body.family);
       setVar("--font-secondary", fonts.body.family);
     }
     if (fonts.accent?.family && fonts.accent.family !== "system") {
+      setVar("--theme-font-accent", fonts.accent.family);
       setVar("--font-accent", fonts.accent.family);
     }
   }
