@@ -261,9 +261,7 @@ export default function ThemePage() {
   const bodyFont = get(tokens, "fonts.body.family", "");
   const baseFontSize = get(tokens, "baseFontSize", "");
   const sectionPadding = get(tokens, "spacing.sectionPadding", "");
-  const contentGap = get(tokens, "spacing.contentGap", "");
   const containerMaxWidth = get(tokens, "spacing.containerMaxWidth", "");
-  const containerPadding = get(tokens, "spacing.containerPadding", "");
   const radius = get(tokens, "borderRadius.default", "");
   const shadow = get(tokens, "effects.defaultShadow", "");
   const borderWidth = get(tokens, "effects.borderWidth", "");
@@ -608,74 +606,6 @@ export default function ThemePage() {
                   Body font preview. This is how your paragraphs and content
                   will look.
                 </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Spacing & Layout */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Spacing & Layout</CardTitle>
-            </CardHeader>
-            <CardContent className="theme-field-group">
-              <div className="theme-field-row">
-                <Label className="theme-field-label">Section Padding</Label>
-                <PropertyToggle
-                  value={sectionPadding}
-                  options={[
-                    { value: "none", label: "None" },
-                    { value: "sm", label: "S" },
-                    { value: "md", label: "M" },
-                    { value: "lg", label: "L" },
-                    { value: "xl", label: "XL" },
-                    { value: "2xl", label: "2XL" },
-                  ]}
-                  onChange={(v) => update("spacing.sectionPadding", v)}
-                  fullWidth
-                />
-              </div>
-              <div className="theme-field-row">
-                <Label className="theme-field-label">Content Gap</Label>
-                <PropertyToggle
-                  value={contentGap}
-                  options={[
-                    { value: "sm", label: "S" },
-                    { value: "md", label: "M" },
-                    { value: "lg", label: "L" },
-                    { value: "xl", label: "XL" },
-                  ]}
-                  onChange={(v) => update("spacing.contentGap", v)}
-                  fullWidth
-                />
-              </div>
-              <div className="theme-field-row">
-                <Label className="theme-field-label">Container Max Width</Label>
-                <PropertyToggle
-                  value={containerMaxWidth}
-                  options={[
-                    { value: "960px", label: "960" },
-                    { value: "1080px", label: "1080" },
-                    { value: "1200px", label: "1200" },
-                    { value: "1400px", label: "1400" },
-                    { value: "100%", label: "Full" },
-                  ]}
-                  onChange={(v) => update("spacing.containerMaxWidth", v)}
-                  fullWidth
-                />
-              </div>
-              <div className="theme-field-row">
-                <Label className="theme-field-label">Container Padding</Label>
-                <PropertyToggle
-                  value={containerPadding}
-                  options={[
-                    { value: "sm", label: "S" },
-                    { value: "md", label: "M" },
-                    { value: "lg", label: "L" },
-                    { value: "xl", label: "XL" },
-                  ]}
-                  onChange={(v) => update("spacing.containerPadding", v)}
-                  fullWidth
-                />
               </div>
             </CardContent>
           </Card>
