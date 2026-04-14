@@ -48,7 +48,7 @@ export function ResponsivePreview({
       <div
         className={cn(
           "transition-all duration-300 ease-in-out bg-theme-background",
-          isNarrow && "overflow-hidden",
+          isNarrow && "overflow-x-hidden",
         )}
         style={{
           width,
