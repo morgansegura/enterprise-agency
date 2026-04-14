@@ -392,6 +392,14 @@ function collectBlockRules(
   );
   if (responsive.tablet) collector.tablet.push(responsive.tablet);
   if (responsive.mobile) collector.mobile.push(responsive.mobile);
+
+  // Recurse into nested blocks (Box children)
+  const nestedBlocks = (block.data as Record<string, unknown>)?.blocks as Block[] | undefined;
+  if (nestedBlocks) {
+    for (const child of nestedBlocks) {
+      collectBlockRules(child, collector);
+    }
+  }
 }
 
 function collectContainerRules(
@@ -448,11 +456,12 @@ function collectSectionRules(
     ? stylesToDeclarations(section.styles)
     : "";
 
-  // Merge background + element styles into one rule
+  // Merge background + element styles into one rule (doubled specificity)
   const allDecls = [bgDecls, styleDecls].filter(Boolean).join("\n");
   if (allDecls) {
+    const cls = `.${CLASS_PREFIX}${section._key}`;
     collector.desktop.push(
-      `.${CLASS_PREFIX}${section._key} {\n${allDecls}\n}`,
+      `${cls}${cls} {\n${allDecls}\n}`,
     );
   }
 
