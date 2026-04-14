@@ -580,6 +580,15 @@ export default function ThemePage() {
                 />
               </div>
               <div className="theme-field-row">
+                <Label className="theme-field-label">Accent Font</Label>
+                <PropertySelect
+                  value={get(tokens, "fonts.accent.family", "")}
+                  options={FONT_OPTIONS}
+                  onChange={(v) => update("fonts.accent.family", v)}
+                  placeholder="System default"
+                />
+              </div>
+              <div className="theme-field-row">
                 <Label className="theme-field-label">Base Font Size</Label>
                 <PropertyToggle
                   value={baseFontSize}

@@ -30,7 +30,6 @@ import {
 } from "./components";
 import type { Block } from "@/lib/types/section";
 import type { ElementStyles } from "@enterprise/tokens";
-import { googleFonts } from "@/lib/fonts/google-fonts";
 import { useCurrentBreakpoint } from "@/lib/responsive/context";
 import { ShadowBuilder } from "@/components/editors/shadow-builder";
 import { TransformBuilder } from "@/components/editors/transform-builder";
@@ -329,7 +328,7 @@ export function ElementStyleEditor({
           </PropertyRow>
         </div>
       )}
-      <ElementStyleTab styles={currentStyles} onStyleChange={handleChange} />
+      <ElementStyleTab styles={currentStyles} onStyleChange={handleChange} elementType={elementType} />
     </>
   );
 }
@@ -739,13 +738,21 @@ export function ElementStyleTab({
             value={s("fontFamily")}
             options={[
               { value: "inherit", label: "Inherit" },
-              ...googleFonts.map((f) => ({
-                value: `'${f.family}', ${f.category}`,
-                label: f.family,
-              })),
+              { value: "var(--font-heading)", label: "Heading Font" },
+              { value: "var(--font-body)", label: "Body Font" },
+              { value: "var(--font-accent)", label: "Accent Font" },
             ]}
             onChange={(v) => updateStyle("fontFamily", v)}
+            placeholder="Inherit"
           />
+          <a
+            href="/theme"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-(--accent-primary) hover:underline mt-0.5"
+          >
+            Update fonts in Theme →
+          </a>
         </PropertyRow>
         <PropertyRow label="Font Weight">
           <PropertySelect

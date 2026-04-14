@@ -744,6 +744,22 @@ export function applyTokensToDOM(tokens: TokensToApply): void {
   const baseFontSize = any.baseFontSize as string | undefined;
   if (baseFontSize) setVar("--base-font-size", baseFontSize);
 
+  // Font roles (simple format from theme page)
+  const fonts = any.fonts as Record<string, Record<string, string>> | undefined;
+  if (fonts) {
+    if (fonts.heading?.family && fonts.heading.family !== "system") {
+      setVar("--font-heading", fonts.heading.family);
+      setVar("--font-primary", fonts.heading.family);
+    }
+    if (fonts.body?.family && fonts.body.family !== "system") {
+      setVar("--font-body", fonts.body.family);
+      setVar("--font-secondary", fonts.body.family);
+    }
+    if (fonts.accent?.family && fonts.accent.family !== "system") {
+      setVar("--font-accent", fonts.accent.family);
+    }
+  }
+
   // ========================================
   // 14. Load Google Fonts
   // ========================================
