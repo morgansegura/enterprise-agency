@@ -69,7 +69,10 @@ export function BlockRenderer({ block, breakpoint = "desktop", onChange, isEditi
     return <div className="animate-pulse bg-(--el-100) h-12 rounded-md" />;
   }
 
-  const label = block._type
+  const LABEL_OVERRIDES: Record<string, string> = {
+    "container-block": "Box",
+  };
+  const label = LABEL_OVERRIDES[block._type] ?? block._type
     .replace("-block", "")
     .replace(/-/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());

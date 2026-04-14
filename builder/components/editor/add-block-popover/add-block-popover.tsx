@@ -25,16 +25,9 @@ import {
   LayoutList,
   List,
   Star,
-  Users,
-  MessageSquare,
   MousePointer,
   Sparkles,
   Type,
-  Layout,
-  Megaphone,
-  DollarSign,
-  Grip,
-  BarChart3,
 } from "lucide-react";
 
 import "./add-block-popover.css";
@@ -47,8 +40,8 @@ const CATEGORIES = [
   { id: "text", label: "Text" },
   { id: "media", label: "Media" },
   { id: "interactive", label: "Interactive" },
+  { id: "layout", label: "Layout" },
   { id: "content", label: "Content" },
-  { id: "advanced", label: "Advanced" },
 ] as const;
 
 type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -62,7 +55,7 @@ interface BlockType {
 }
 
 const BLOCK_TYPES: BlockType[] = [
-  // Text blocks
+  // Text
   {
     id: "heading-block",
     label: "Heading",
@@ -99,7 +92,7 @@ const BLOCK_TYPES: BlockType[] = [
     category: "text",
   },
 
-  // Media blocks
+  // Media
   {
     id: "image-block",
     label: "Image",
@@ -137,23 +130,7 @@ const BLOCK_TYPES: BlockType[] = [
     category: "media",
   },
 
-  // Structural content blocks
-  {
-    id: "divider-block",
-    label: "Divider",
-    description: "Horizontal separator",
-    icon: <SeparatorHorizontal className="h-5 w-5" />,
-    category: "content",
-  },
-  {
-    id: "spacer-block",
-    label: "Spacer",
-    description: "Vertical spacing",
-    icon: <Box className="h-5 w-5" />,
-    category: "content",
-  },
-
-  // Interactive blocks
+  // Interactive
   {
     id: "button-block",
     label: "Button",
@@ -176,61 +153,28 @@ const BLOCK_TYPES: BlockType[] = [
     category: "interactive",
   },
 
-  // Content blocks
+  // Layout
   {
-    id: "hero-block",
-    label: "Hero",
-    description: "Landing page hero section",
-    icon: <Layout className="h-5 w-5" />,
-    category: "content",
-  },
-  {
-    id: "cta-block",
-    label: "CTA",
-    description: "Call-to-action banner",
-    icon: <Megaphone className="h-5 w-5" />,
-    category: "content",
-  },
-  {
-    id: "card-block",
-    label: "Card",
-    description: "Content card with image",
+    id: "container-block",
+    label: "Box",
+    description: "Container for grouping blocks (card, panel)",
     icon: <Square className="h-5 w-5" />,
+    category: "layout",
+  },
+
+  // Content
+  {
+    id: "divider-block",
+    label: "Divider",
+    description: "Horizontal separator",
+    icon: <SeparatorHorizontal className="h-5 w-5" />,
     category: "content",
   },
   {
-    id: "stats-block",
-    label: "Stats",
-    description: "Statistics and metrics",
-    icon: <BarChart3 className="h-5 w-5" />,
-    category: "content",
-  },
-  {
-    id: "testimonial-block",
-    label: "Testimonials",
-    description: "Customer reviews grid",
-    icon: <MessageSquare className="h-5 w-5" />,
-    category: "content",
-  },
-  {
-    id: "pricing-block",
-    label: "Pricing",
-    description: "Pricing table with tiers",
-    icon: <DollarSign className="h-5 w-5" />,
-    category: "content",
-  },
-  {
-    id: "team-block",
-    label: "Team",
-    description: "Team member grid",
-    icon: <Users className="h-5 w-5" />,
-    category: "content",
-  },
-  {
-    id: "logo-bar-block",
-    label: "Logo Bar",
-    description: "Client or partner logos",
-    icon: <Grip className="h-5 w-5" />,
+    id: "spacer-block",
+    label: "Spacer",
+    description: "Vertical spacing",
+    icon: <Box className="h-5 w-5" />,
     category: "content",
   },
   {
