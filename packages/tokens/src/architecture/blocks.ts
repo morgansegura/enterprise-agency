@@ -723,7 +723,7 @@ export type RootBlock =
 export function isContainerBlock(
   block: RootBlock,
 ): block is ShallowContainerBlock | DeepContainerBlock {
-  return "blocks" in block;
+  return "blocks" in block || !!(block.data as Record<string, unknown>)?.blocks;
 }
 
 /**

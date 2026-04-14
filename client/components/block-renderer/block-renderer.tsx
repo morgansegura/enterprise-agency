@@ -107,7 +107,7 @@ function renderBlock(block: RootBlock): React.ReactNode {
           <ContainerBlock
             key={block._key}
             data={block.data}
-            blocks={block.blocks}
+            blocks={block.blocks ?? (block.data as Record<string, unknown>)?.blocks as RootBlock[]}
             renderBlock={renderBlock}
           />
         );
