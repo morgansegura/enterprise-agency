@@ -37,6 +37,7 @@ import { useIsBuilder } from "@/lib/hooks/use-tier";
 import { useTenant } from "@/lib/hooks/use-tenants";
 import { usePreviewMode } from "@/lib/context/preview-mode-context";
 import { useUIStore } from "@/lib/stores/ui-store";
+import { useEditorStore } from "@/lib/stores/editor-store";
 import { SaveToLibraryDialog } from "@/components/editor/library-picker/save-to-library-dialog";
 import { generatePageCSS } from "@enterprise/tokens";
 import {
@@ -1002,6 +1003,40 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
               </button>
             </>
           )}
+          {contextMenu.elementType === "container" &&
+            contextMenu.containerIndex !== undefined && (
+              <>
+                <button
+                  type="button"
+                  className="canvas-context-menu-item"
+                  onClick={() => {
+                    editor.handleAddContainerToSection(contextMenu.sectionIndex);
+                    setContextMenu(null);
+                  }}
+                >
+                  Add Container
+                </button>
+                <div className="canvas-context-menu-divider" />
+                <button
+                  type="button"
+                  className="canvas-context-menu-item canvas-context-menu-item-danger"
+                  onClick={() => {
+                    const section = editor.sections[contextMenu.sectionIndex];
+                    const container =
+                      section?.containers?.[contextMenu.containerIndex!];
+                    if (section && container) {
+                      useEditorStore
+                        .getState()
+                        .deleteContainer(section._key, container._key);
+                    }
+                    setSelectedBlockKey(null);
+                    setContextMenu(null);
+                  }}
+                >
+                  Delete Container
+                </button>
+              </>
+            )}
           {contextMenu.elementType === "section" && (
             <>
               <button
