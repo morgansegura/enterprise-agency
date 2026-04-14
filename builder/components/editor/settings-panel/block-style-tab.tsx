@@ -849,30 +849,25 @@ export function ElementStyleTab({
           />
         </PropertyRow>
         <PropertyRow label="Letter Spacing" stacked>
-          <PropertyToggle
+          <SliderInput
             value={s("letterSpacing")}
-            options={[
-              { value: "normal", label: "Normal" },
-              { value: "-0.05em", label: "Tight" },
-              { value: "0.025em", label: "Wide" },
-              { value: "0.1em", label: "Wider" },
-              { value: "0.2em", label: "Widest" },
-            ]}
             onChange={(v) => updateStyle("letterSpacing", v)}
-            fullWidth
+            min={-5}
+            max={20}
+            step={0.5}
+            unit="px"
+            placeholder="normal"
           />
         </PropertyRow>
         <PropertyRow label="Word Spacing" stacked>
-          <PropertyToggle
+          <SliderInput
             value={s("wordSpacing")}
-            options={[
-              { value: "normal", label: "Normal" },
-              { value: "0.1em", label: "Wide" },
-              { value: "0.25em", label: "Wider" },
-              { value: "0.5em", label: "Widest" },
-            ]}
             onChange={(v) => updateStyle("wordSpacing", v)}
-            fullWidth
+            min={-5}
+            max={30}
+            step={0.5}
+            unit="px"
+            placeholder="normal"
           />
         </PropertyRow>
         <PropertyRow label="Text Indent" stacked>

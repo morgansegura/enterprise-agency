@@ -764,9 +764,23 @@ export function applyTokensToDOM(tokens: TokensToApply): void {
   // 14. Load Google Fonts
   // ========================================
   if (tokens.fonts?.definitions || tokens.typographySettings?.fonts) {
-    const fonts =
+    const fontDefs =
       tokens.typographySettings?.fonts || tokens.fonts?.definitions || [];
-    loadGoogleFonts(fonts);
+    loadGoogleFonts(fontDefs);
+  }
+
+  // Also load fonts from simple theme format (fonts.heading.family etc.)
+  if (fonts) {
+    const simpleFonts: Array<{ family: string; weights?: number[] }> = [];
+    for (const role of ["heading", "body", "accent"] as const) {
+      const family = fonts[role]?.family;
+      if (family && family !== "system") {
+        // Extract family name from CSS value like "'Playfair Display', serif"
+        const name = family.replace(/^'|',.*/g, "");
+        if (name) simpleFonts.push({ family: name, weights: [300, 400, 500, 600, 700, 800] });
+      }
+    }
+    if (simpleFonts.length > 0) loadGoogleFonts(simpleFonts);
   }
 }
 
