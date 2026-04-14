@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface EmbedBlockData {
   html?: string;
@@ -21,15 +20,13 @@ export default function EmbedBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   // Suppress unused-var lint — hasStyle is available for future style overrides
   void hasStyle;
 
   if (!html && !url) {
     if (isEditing) {
       return (
-        <div className={elementClass} data-slot="embed-block">
+        <div data-slot="embed-block">
           <div
             data-slot="embed-block-placeholder"
             onClick={() => {
@@ -47,7 +44,7 @@ export default function EmbedBlockRenderer({
       );
     }
     return (
-      <div className={elementClass} data-slot="embed-block">
+      <div data-slot="embed-block">
         <div data-slot="embed-block-placeholder">No embed code set</div>
       </div>
     );
@@ -56,7 +53,7 @@ export default function EmbedBlockRenderer({
   // If we have a URL, render as iframe (matching client)
   if (url) {
     return (
-      <div className={elementClass} data-slot="embed-block">
+      <div data-slot="embed-block">
         <div
           data-slot="embed-block-wrapper"
           data-aspect-ratio={aspectRatio}
@@ -75,7 +72,7 @@ export default function EmbedBlockRenderer({
 
   // If we have raw HTML, render it
   return (
-    <div className={elementClass} data-slot="embed-block">
+    <div data-slot="embed-block">
       <div
         data-slot="embed-block-wrapper"
         data-aspect-ratio={aspectRatio}

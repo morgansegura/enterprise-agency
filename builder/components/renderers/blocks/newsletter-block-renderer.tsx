@@ -1,7 +1,6 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface NewsletterBlockData {
   heading?: string;
@@ -25,8 +24,6 @@ export default function NewsletterBlockRenderer({
     variant,
   } = data;
 
-  const elementClass = getElementClass(block._key);
-
   const update = (field: string, value: string) => {
     if (onChange)
       onChange({ ...block, data: { ...block.data, [field]: value } });
@@ -35,7 +32,7 @@ export default function NewsletterBlockRenderer({
   return (
     <div
       data-slot="newsletter-block"
-      className={`max-w-md mx-auto text-center ${elementClass}`}
+      className="max-w-md mx-auto text-center"
     >
       <h3
         data-slot="newsletter-block-heading"

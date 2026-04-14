@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface StatItem {
   label: string;
@@ -32,8 +31,6 @@ export default function StatsBlockRenderer({
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
   void hasStyle;
-  const elementClass = getElementClass(block._key);
-
   // Update a single stat field on blur (canvas editing)
   const updateStatField = (
     index: number,
@@ -51,7 +48,6 @@ export default function StatsBlockRenderer({
 
   return (
     <div
-      className={elementClass}
       data-slot="stats-block"
       data-layout={layout}
       data-variant={variant}

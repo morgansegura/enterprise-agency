@@ -2,7 +2,6 @@
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images */
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface TestimonialItem {
   quote: string;
@@ -39,8 +38,6 @@ export default function TestimonialBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   const updateItem = (index: number, field: string, value: string) => {
     if (!onChange) return;
     const updated = [...testimonials];
@@ -55,7 +52,6 @@ export default function TestimonialBlockRenderer({
 
   return (
     <div
-      className={elementClass}
       data-slot="testimonial-block"
       data-layout={layout}
       data-columns={hasStyle("gridTemplateColumns") ? undefined : columns}

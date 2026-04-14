@@ -9,7 +9,6 @@ import { ColorMark } from "@/lib/editor/tiptap-color-mark";
 import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
-import { getElementClass } from "@enterprise/tokens";
 
 interface RichTextBlockData {
   html: string;
@@ -29,8 +28,6 @@ export default function RichTextBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -66,7 +63,7 @@ export default function RichTextBlockRenderer({
   if (!isEditing || !editor) {
     return (
       <div
-        className={`rich-text ${elementClass}`}
+        className="rich-text"
         data-align={hasStyle("textAlign") ? undefined : align}
         dangerouslySetInnerHTML={{ __html: html }}
       />
@@ -76,7 +73,7 @@ export default function RichTextBlockRenderer({
   // Edit mode -- TipTap inline editor on canvas
   return (
     <div
-      className={`rich-text ${elementClass}`}
+      className="rich-text"
       data-align={hasStyle("textAlign") ? undefined : align}
     >
       <EditorContent editor={editor} />

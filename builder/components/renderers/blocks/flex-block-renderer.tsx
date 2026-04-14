@@ -2,7 +2,6 @@ import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry"
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
 import { ContainerAddButton } from "./container-add-button";
-import { getElementClass } from "@enterprise/tokens";
 
 interface FlexBlockData {
   direction?: "row" | "row-reverse" | "column" | "column-reverse" | "col";
@@ -28,11 +27,8 @@ export default function FlexBlockRenderer({
     wrap = false,
     blocks = [],
   } = data;
-  const elementClass = getElementClass(block._key);
-
   return (
     <div
-      className={elementClass}
       data-slot="flex-block"
       data-direction={direction}
       data-wrap={wrap ? "wrap" : "nowrap"}

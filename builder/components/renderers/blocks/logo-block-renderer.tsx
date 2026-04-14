@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element -- dynamic CMS images with unknown dimensions */
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface LogoBlockData {
   src: string;
@@ -26,12 +25,9 @@ export default function LogoBlockRenderer({ block }: BlockRendererProps) {
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   if (!src) {
     return (
       <div
-        className={elementClass}
         data-slot="logo-block"
         data-align={hasStyle("textAlign") ? undefined : align}
       >
@@ -51,7 +47,6 @@ export default function LogoBlockRenderer({ block }: BlockRendererProps) {
 
   return (
     <div
-      className={elementClass}
       data-slot="logo-block"
       data-align={hasStyle("textAlign") ? undefined : align}
     >

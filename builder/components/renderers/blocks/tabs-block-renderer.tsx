@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface TabItem {
   label: string;
@@ -27,8 +26,6 @@ export default function TabsBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   // Suppress unused-var lint — hasStyle is available for future style overrides
   void hasStyle;
 
@@ -37,7 +34,6 @@ export default function TabsBlockRenderer({
   if (tabs.length === 0) {
     return (
       <div
-        className={elementClass}
         data-slot="tabs-block"
         data-variant={variant}
       >
@@ -48,7 +44,6 @@ export default function TabsBlockRenderer({
 
   return (
     <div
-      className={elementClass}
       data-slot="tabs-block"
       data-variant={variant}
     >

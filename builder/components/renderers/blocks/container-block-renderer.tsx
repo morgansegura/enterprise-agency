@@ -2,7 +2,6 @@ import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry"
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
 import { ContainerAddButton } from "./container-add-button";
-import { getElementClass } from "@enterprise/tokens";
 
 interface ContainerBlockData {
   width?: "narrow" | "wide" | "full";
@@ -18,11 +17,8 @@ export default function ContainerBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as ContainerBlockData;
   const { width = "wide", spacing = "none", blocks = [] } = data;
-  const elementClass = getElementClass(block._key);
-
   return (
     <div
-      className={elementClass}
       data-slot="container-block"
       data-width={width}
       data-spacing={spacing}

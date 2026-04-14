@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface MapBlockData {
   center: {
@@ -38,14 +37,11 @@ export default function MapBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   const resolvedHeight = heightMap[height];
 
   if (embedUrl) {
     return (
       <div
-        className={elementClass}
         data-slot="map-block"
         data-height={hasStyle("height") ? undefined : height}
       >
@@ -66,7 +62,6 @@ export default function MapBlockRenderer({
     if (isEditing) {
       return (
         <div
-          className={elementClass}
           data-slot="map-block"
           data-height={hasStyle("height") ? undefined : height}
         >
@@ -87,7 +82,7 @@ export default function MapBlockRenderer({
       );
     }
     return (
-      <div className={elementClass} data-slot="map-block-error">
+      <div data-slot="map-block-error">
         <p>Map location data is missing or invalid.</p>
       </div>
     );
@@ -101,7 +96,6 @@ export default function MapBlockRenderer({
 
   return (
     <div
-      className={elementClass}
       data-slot="map-block"
       data-height={hasStyle("height") ? undefined : height}
     >

@@ -1,7 +1,6 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface QuoteBlockData {
   text: string;
@@ -33,8 +32,6 @@ export default function QuoteBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   const updateField = (field: string, value: string) => {
     if (onChange) {
       onChange({ ...block, data: { ...block.data, [field]: value } });
@@ -43,7 +40,6 @@ export default function QuoteBlockRenderer({
 
   return (
     <blockquote
-      className={elementClass}
       data-slot="quote-block"
       data-variant={variant}
       data-size={hasStyle("fontSize") ? undefined : size}

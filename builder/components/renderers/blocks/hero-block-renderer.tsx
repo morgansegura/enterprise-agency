@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface HeroBlockData {
   heading: string;
@@ -37,11 +36,8 @@ export default function HeroBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   return (
     <section
-      className={elementClass}
       data-slot="hero-block"
       data-layout={layout}
       data-align={hasStyle("textAlign") ? undefined : align}

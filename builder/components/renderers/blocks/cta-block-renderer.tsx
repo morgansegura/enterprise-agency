@@ -1,7 +1,6 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface CtaBlockData {
   heading: string;
@@ -31,8 +30,6 @@ export default function CtaBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   const update = (field: string, value: unknown) => {
     if (onChange)
       onChange({ ...block, data: { ...block.data, [field]: value } });
@@ -40,7 +37,6 @@ export default function CtaBlockRenderer({
 
   return (
     <section
-      className={elementClass}
       data-slot="cta-block"
       data-variant={variant}
       data-align={hasStyle("textAlign") ? undefined : align}

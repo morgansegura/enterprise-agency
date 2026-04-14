@@ -1,7 +1,6 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface ButtonBlockData {
   text: string;
@@ -37,12 +36,9 @@ export default function ButtonBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   if (isEditing) {
     return (
       <span
-        className={elementClass}
         data-slot="button-block"
         data-variant={variant}
         data-size={hasStyle("fontSize") ? undefined : size}
@@ -65,7 +61,6 @@ export default function ButtonBlockRenderer({
   return (
     <a
       href={href}
-      className={elementClass}
       data-slot="button-block"
       data-variant={variant}
       data-size={hasStyle("fontSize") ? undefined : size}

@@ -2,7 +2,6 @@
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import * as LucideIcons from "lucide-react";
-import { getElementClass } from "@enterprise/tokens";
 
 interface IconBlockData {
   icon: string;
@@ -32,8 +31,6 @@ export default function IconBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   // Dynamically get the icon component
   const IconComponent = (
     LucideIcons as unknown as Record<string, LucideIcons.LucideIcon>
@@ -51,7 +48,6 @@ export default function IconBlockRenderer({
   if (!IconComponent) {
     return (
       <div
-        className={elementClass}
         data-slot="icon-block"
         data-size={hasStyle("fontSize") ? undefined : size}
       >
@@ -76,7 +72,6 @@ export default function IconBlockRenderer({
 
   return (
     <div
-      className={elementClass}
       data-slot="icon-block"
       data-size={hasStyle("fontSize") ? undefined : size}
       data-position={position}

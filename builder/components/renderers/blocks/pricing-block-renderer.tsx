@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface PricingTier {
   name: string;
@@ -35,15 +34,13 @@ export default function PricingBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   // Suppress unused-var lint — hasStyle is available for future style overrides
   void hasStyle;
 
   if (tiers.length === 0) return null;
 
   return (
-    <div className={elementClass} data-slot="pricing-block" data-variant={variant}>
+    <div data-slot="pricing-block" data-variant={variant}>
       {heading || description ? (
         <div data-slot="pricing-block-header">
           {heading || isEditing ? (

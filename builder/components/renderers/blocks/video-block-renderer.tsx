@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface VideoBlockData {
   url: string;
@@ -72,8 +71,6 @@ export default function VideoBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   const handleUrlChange = (newUrl: string) => {
     if (!onChange) return;
     onChange({
@@ -90,7 +87,7 @@ export default function VideoBlockRenderer({
     if (isEditing) {
       return (
         <div
-          className={`${elementClass} flex flex-col items-center justify-center gap-3 bg-(--el-50) border border-dashed border-(--border-default) text-(--el-500) p-8 rounded-md aspect-video`}
+          className="flex flex-col items-center justify-center gap-3 bg-(--el-50) border border-dashed border-(--border-default) text-(--el-500) p-8 rounded-md aspect-video"
           data-slot="video-block"
           onClick={(e) => e.stopPropagation()}
         >
@@ -121,7 +118,7 @@ export default function VideoBlockRenderer({
     }
     return (
       <div
-        className={`${elementClass} flex items-center justify-center bg-(--el-100) text-(--el-500) p-8 rounded-md aspect-video`}
+        className="flex items-center justify-center bg-(--el-100) text-(--el-500) p-8 rounded-md aspect-video"
         data-slot="video-block"
       >
         No video URL set
@@ -137,7 +134,7 @@ export default function VideoBlockRenderer({
     const videoId = getYouTubeId(url);
     if (!videoId) {
       return (
-        <figure className={elementClass} data-slot="video-block">
+        <figure data-slot="video-block">
           <div
             data-slot="video-block-wrapper"
             data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}
@@ -154,7 +151,7 @@ export default function VideoBlockRenderer({
     const videoId = getVimeoId(url);
     if (!videoId) {
       return (
-        <figure className={elementClass} data-slot="video-block">
+        <figure data-slot="video-block">
           <div
             data-slot="video-block-wrapper"
             data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}
@@ -170,7 +167,7 @@ export default function VideoBlockRenderer({
   }
 
   return (
-    <figure className={elementClass} data-slot="video-block">
+    <figure data-slot="video-block">
       <div
         data-slot="video-block-wrapper"
         data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}

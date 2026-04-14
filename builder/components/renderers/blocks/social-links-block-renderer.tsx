@@ -1,7 +1,6 @@
 "use client";
 
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 import { cn } from "@/lib/utils";
 
 interface SocialLink {
@@ -57,8 +56,6 @@ export default function SocialLinksBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   const dataAttributes: Record<string, string | undefined> = {
     "data-slot": "social-links-block",
     "data-size": hasStyle("fontSize") ? undefined : size,
@@ -76,7 +73,6 @@ export default function SocialLinksBlockRenderer({
       className={cn(
         "flex gap-2 flex-wrap",
         alignClasses[align],
-        elementClass,
       )}
     >
       {links.map((link, i) => (

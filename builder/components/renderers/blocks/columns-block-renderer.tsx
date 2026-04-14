@@ -2,7 +2,6 @@ import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry"
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
 import { ContainerAddButton } from "./container-add-button";
-import { getElementClass } from "@enterprise/tokens";
 
 interface ColumnsBlockData {
   count?: "2" | "3" | "4";
@@ -19,11 +18,8 @@ export default function ColumnsBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as ColumnsBlockData;
   const { count, gap, responsive = true, blocks = [] } = data;
-  const elementClass = getElementClass(block._key);
-
   return (
     <div
-      className={elementClass}
       data-slot="columns-block"
       data-count={count}
       data-gap={gap}

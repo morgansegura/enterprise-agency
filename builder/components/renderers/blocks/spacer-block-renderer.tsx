@@ -1,5 +1,4 @@
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
-import { getElementClass } from "@enterprise/tokens";
 
 interface SpacerBlockData {
   height?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
@@ -17,11 +16,8 @@ export default function SpacerBlockRenderer({
     | Record<string, string>
     | undefined;
   const hasStyle = (prop: string) => !!styles?.[prop];
-  const elementClass = getElementClass(block._key);
-
   return (
     <div
-      className={elementClass}
       data-slot="spacer-block"
       data-height={hasStyle("height") ? undefined : height}
     />

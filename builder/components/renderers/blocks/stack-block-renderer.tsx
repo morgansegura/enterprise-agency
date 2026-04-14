@@ -2,7 +2,6 @@ import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry"
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
 import { ContainerAddButton } from "./container-add-button";
-import { getElementClass } from "@enterprise/tokens";
 
 interface StackBlockData {
   gap?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
@@ -18,11 +17,8 @@ export default function StackBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as StackBlockData;
   const { gap = "md", align = "stretch", blocks = [] } = data;
-  const elementClass = getElementClass(block._key);
-
   return (
     <div
-      className={elementClass}
       data-slot="stack-block"
       data-gap={gap}
       data-align={align}

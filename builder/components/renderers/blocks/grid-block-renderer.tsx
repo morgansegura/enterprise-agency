@@ -2,7 +2,6 @@ import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry"
 import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
 import { ContainerAddButton } from "./container-add-button";
-import { getElementClass } from "@enterprise/tokens";
 
 interface GridBlockData {
   columns?: number | { desktop?: number; tablet?: number; mobile?: number };
@@ -20,8 +19,6 @@ export default function GridBlockRenderer({
 }: BlockRendererProps) {
   const data = block.data as unknown as GridBlockData;
   const { columns, gap = "md", align, justify, blocks = [] } = data;
-  const elementClass = getElementClass(block._key);
-
   const getBaseColValue = (): string => {
     if (typeof columns === "number") return String(columns);
     if (typeof columns === "object" && columns !== null) {
@@ -46,7 +43,7 @@ export default function GridBlockRenderer({
       data-gap={gap}
       data-align={align}
       data-justify={justify}
-      className={`${columnClasses[colValue] || "grid-cols-2"} ${elementClass}`}
+      className={columnClasses[colValue] || "grid-cols-2"}
       style={{
         minHeight: blocks.length === 0 && isEditing ? "60px" : undefined,
       }}

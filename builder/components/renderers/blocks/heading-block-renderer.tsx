@@ -9,7 +9,6 @@ import { ColorMark } from "@/lib/editor/tiptap-color-mark";
 import type { BlockRendererProps } from "@/lib/renderer/block-renderer-registry";
 import { useEffect } from "react";
 import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble-menu";
-import { getElementClass } from "@enterprise/tokens";
 
 interface HeadingBlockData {
   text: string;
@@ -116,9 +115,6 @@ export default function HeadingBlockRenderer({
     Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
   );
 
-  // Element class for generated CSS
-  const elementClass = getElementClass(block._key);
-
   // TipTap editor for inline editing
   const editor = useEditor({
     extensions: [
@@ -173,14 +169,14 @@ export default function HeadingBlockRenderer({
     if (html) {
       return (
         <Tag
-          className={`heading ${elementClass}`}
+          className="heading"
           {...filteredDataAttributes}
           dangerouslySetInnerHTML={{ __html: html.replace(/<\/?p>/g, "") }}
         />
       );
     }
     return (
-      <Tag className={`heading ${elementClass}`} {...filteredDataAttributes}>
+      <Tag className="heading" {...filteredDataAttributes}>
         {text}
       </Tag>
     );
@@ -189,7 +185,7 @@ export default function HeadingBlockRenderer({
   // Edit mode — TipTap inline editor styled as the heading
   return (
     <Tag
-      className={`heading ${elementClass}`}
+      className="heading"
       {...filteredDataAttributes}
       style={{ cursor: "text" }}
     >
