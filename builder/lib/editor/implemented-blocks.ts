@@ -403,7 +403,7 @@ const implementedBlocks: BlockRegistration[] = [
     isContainer: true,
     component: () =>
       import("@/components/blocks/container-block-editor").then((mod) => ({
-        default: mod.default as any,
+        default: mod.ContainerBlockEditor as any,
       })),
     createDefault: () => ({
       _key: `box-${Date.now()}`,

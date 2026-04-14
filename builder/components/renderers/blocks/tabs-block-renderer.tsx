@@ -20,14 +20,7 @@ export default function TabsBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as TabsBlockData;
-  const { tabs = [], defaultTab = 0, variant } = data;
-
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const hasStyle = (prop: string) => !!styles?.[prop];
-  // Suppress unused-var lint — hasStyle is available for future style overrides
-  void hasStyle;
+  const { tabs = [], defaultTab = 0 } = data;
 
   const [activeTab, setActiveTab] = React.useState(defaultTab);
 
@@ -35,7 +28,7 @@ export default function TabsBlockRenderer({
     return (
       <div
         data-slot="tabs-block"
-        {...(variant ? { "data-variant": variant } : {})}
+
       >
         <p data-slot="tabs-block-empty">No tabs configured</p>
       </div>
@@ -45,7 +38,6 @@ export default function TabsBlockRenderer({
   return (
     <div
       data-slot="tabs-block"
-      {...(variant ? { "data-variant": variant } : {})}
     >
       <div data-slot="tabs-block-list" role="tablist">
         {tabs.map((tab, index) => (

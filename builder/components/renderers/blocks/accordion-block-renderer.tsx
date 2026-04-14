@@ -25,7 +25,6 @@ export default function AccordionBlockRenderer({
   const {
     items = [],
     allowMultiple = false,
-    variant,
   } = data;
 
   const styles = (block as Record<string, unknown>).styles as
@@ -61,7 +60,6 @@ export default function AccordionBlockRenderer({
   return (
     <div
       data-slot="accordion-block"
-      {...(variant ? { "data-variant": variant } : {})}
       data-allow-multiple={allowMultiple}
     >
       {items.map((item, index) => {

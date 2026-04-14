@@ -12,8 +12,6 @@ import { useEffect } from "react";
 
 interface RichTextBlockData {
   html: string;
-  size?: "sm" | "md" | "lg";
-  align?: "left" | "center" | "right";
 }
 
 export default function RichTextBlockRenderer({
@@ -22,23 +20,15 @@ export default function RichTextBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as RichTextBlockData;
-  const { html, align } = data;
+  const { html } = data;
 
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const hasStyle = (prop: string) => !!styles?.[prop];
   const editor = useEditor({
     extensions: [
       StarterKit,
-      LinkExtension.configure({
-        openOnClick: false,
-      }),
+      LinkExtension.configure({ openOnClick: false }),
       Underline,
       ColorMark,
-      Placeholder.configure({
-        placeholder: "Start typing...",
-      }),
+      Placeholder.configure({ placeholder: "Start typing..." }),
     ],
     content: html,
     immediatelyRender: false,
@@ -54,28 +44,21 @@ export default function RichTextBlockRenderer({
   });
 
   useEffect(() => {
-    if (editor) {
-      editor.setEditable(!!isEditing);
-    }
+    if (editor) editor.setEditable(!!isEditing);
   }, [editor, isEditing]);
 
-  // Read-only -- static HTML (client site, preview mode)
   if (!isEditing || !editor) {
     return (
       <div
         className="rich-text"
-        data-align={hasStyle("textAlign") ? undefined : align}
+        data-slot="rich-text-block"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
   }
 
-  // Edit mode -- TipTap inline editor on canvas
   return (
-    <div
-      className="rich-text"
-      data-align={hasStyle("textAlign") ? undefined : align}
-    >
+    <div className="rich-text" data-slot="rich-text-block">
       <EditorContent editor={editor} />
       <TextBubbleMenu editor={editor} />
     </div>

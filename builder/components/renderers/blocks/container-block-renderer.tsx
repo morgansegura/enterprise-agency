@@ -3,9 +3,7 @@ import type { Block } from "@/lib/hooks/use-pages";
 import { BlockRenderer } from "../block-renderer";
 import { ContainerAddButton } from "./container-add-button";
 
-interface ContainerBlockData {
-  width?: "narrow" | "wide" | "full";
-  spacing?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+interface BoxBlockData {
   blocks?: Block[];
 }
 
@@ -15,13 +13,12 @@ export default function ContainerBlockRenderer({
   onChange,
   isEditing,
 }: BlockRendererProps) {
-  const data = block.data as unknown as ContainerBlockData;
-  const { width = "wide", spacing = "none", blocks = [] } = data;
+  const data = block.data as unknown as BoxBlockData;
+  const { blocks = [] } = data;
+
   return (
     <div
-      data-slot="container-block"
-      data-width={width}
-      {...(spacing ? { "data-spacing": spacing } : {})}
+      data-slot="box-block"
       style={{
         minHeight: blocks.length === 0 && isEditing ? "60px" : undefined,
       }}

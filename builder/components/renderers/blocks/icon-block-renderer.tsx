@@ -5,11 +5,8 @@ import * as LucideIcons from "lucide-react";
 
 interface IconBlockData {
   icon: string;
-  size?: "sm" | "md" | "lg" | "xl";
-  color?: string;
   text?: string;
   label?: string;
-  position?: "top" | "left" | "right" | "bottom";
 }
 
 export default function IconBlockRenderer({
@@ -18,39 +15,20 @@ export default function IconBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as IconBlockData;
-  const {
-    icon = "Star",
-    size,
-    color,
-    text,
-    label,
-    position = "top",
-  } = data;
+  const { icon = "Star", text, label } = data;
 
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const hasStyle = (prop: string) => !!styles?.[prop];
-  // Dynamically get the icon component
+  const updateField = (field: keyof IconBlockData, value: string) => {
+    if (!onChange) return;
+    onChange({ ...block, data: { ...block.data, [field]: value } });
+  };
+
   const IconComponent = (
     LucideIcons as unknown as Record<string, LucideIcons.LucideIcon>
   )[icon];
 
-  // Update a single field on blur (canvas editing)
-  const updateField = (field: keyof IconBlockData, value: string) => {
-    if (!onChange) return;
-    onChange({
-      ...block,
-      data: { ...block.data, [field]: value },
-    });
-  };
-
   if (!IconComponent) {
     return (
-      <div
-        data-slot="icon-block"
-        data-size={hasStyle("fontSize") ? undefined : size}
-      >
+      <div data-slot="icon-block">
         <span data-slot="icon-block-icon" aria-hidden="true">
           {icon}
         </span>
@@ -71,12 +49,7 @@ export default function IconBlockRenderer({
   const displayText = text || label;
 
   return (
-    <div
-      data-slot="icon-block"
-      data-size={hasStyle("fontSize") ? undefined : size}
-      data-position={position}
-      style={color && !hasStyle("color") ? { color } : undefined}
-    >
+    <div data-slot="icon-block">
       <span data-slot="icon-block-icon" aria-hidden="true">
         <IconComponent />
       </span>
@@ -87,9 +60,7 @@ export default function IconBlockRenderer({
           suppressContentEditableWarning
           onBlur={(e) => {
             const newText = e.currentTarget.textContent ?? "";
-            if (newText !== displayText) {
-              updateField("text", newText);
-            }
+            if (newText !== displayText) updateField("text", newText);
           }}
           style={isEditing ? { cursor: "text", outline: "none" } : undefined}
         >

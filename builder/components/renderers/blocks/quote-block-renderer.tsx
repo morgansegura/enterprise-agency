@@ -6,10 +6,6 @@ interface QuoteBlockData {
   text: string;
   author?: string;
   title?: string;
-  source?: string;
-  size?: "sm" | "md" | "lg";
-  align?: "left" | "center" | "right";
-  variant?: "default" | "bordered" | "highlighted";
 }
 
 export default function QuoteBlockRenderer({
@@ -18,20 +14,8 @@ export default function QuoteBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as QuoteBlockData;
-  const {
-    text,
-    author,
-    title,
-    source,
-    size,
-    align,
-    variant,
-  } = data;
+  const { text, author, title } = data;
 
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const hasStyle = (prop: string) => !!styles?.[prop];
   const updateField = (field: string, value: string) => {
     if (onChange) {
       onChange({ ...block, data: { ...block.data, [field]: value } });
@@ -39,12 +23,7 @@ export default function QuoteBlockRenderer({
   };
 
   return (
-    <blockquote
-      data-slot="quote-block"
-      {...(variant ? { "data-variant": variant } : {})}
-      data-size={hasStyle("fontSize") ? undefined : size}
-      data-align={hasStyle("textAlign") ? undefined : align}
-    >
+    <blockquote data-slot="quote-block">
       <p
         data-slot="quote-block-text"
         contentEditable={!!isEditing}
@@ -57,7 +36,7 @@ export default function QuoteBlockRenderer({
       >
         {text}
       </p>
-      {author || title || source || isEditing ? (
+      {author || title || isEditing ? (
         <footer data-slot="quote-block-footer">
           {(author || isEditing) ? (
             <cite

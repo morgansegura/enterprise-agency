@@ -7,8 +7,6 @@ interface ListItem {
 interface ListBlockData {
   items: ListItem[];
   ordered?: boolean;
-  style?: "default" | "check" | "arrow";
-  spacing?: "tight" | "normal" | "comfortable" | "relaxed";
 }
 
 export default function ListBlockRenderer({
@@ -17,17 +15,8 @@ export default function ListBlockRenderer({
   isEditing,
 }: BlockRendererProps) {
   const data = block.data as unknown as ListBlockData;
-  const {
-    items = [],
-    ordered = false,
-    style,
-    spacing,
-  } = data;
+  const { items = [], ordered = false } = data;
 
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const hasStyle = (prop: string) => !!styles?.[prop];
   const Tag = ordered ? "ol" : "ul";
 
   const handleItemBlur = (
@@ -44,11 +33,7 @@ export default function ListBlockRenderer({
   };
 
   return (
-    <Tag
-      data-slot="list-block"
-      {...(style ? { "data-style": style } : {})}
-      {...(spacing && !hasStyle("gap") ? { "data-spacing": spacing } : {})}
-    >
+    <Tag data-slot="list-block">
       {items.map((item, index) => (
         <li
           key={index}

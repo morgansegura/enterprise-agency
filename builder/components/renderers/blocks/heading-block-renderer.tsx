@@ -13,56 +13,6 @@ import { TextBubbleMenu } from "@/components/editor/text-bubble-menu/text-bubble
 interface HeadingBlockData {
   text: string;
   level?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  size?:
-    | "xs"
-    | "sm"
-    | "base"
-    | "lg"
-    | "xl"
-    | "2xl"
-    | "3xl"
-    | "4xl"
-    | "5xl"
-    | "6xl"
-    | "7xl"
-    | "8xl"
-    | "9xl";
-  align?: "left" | "center" | "right";
-  weight?:
-    | "thin"
-    | "extralight"
-    | "light"
-    | "normal"
-    | "medium"
-    | "semibold"
-    | "bold"
-    | "extrabold"
-    | "black";
-  letterSpacing?: "tighter" | "tight" | "normal" | "wide" | "wider" | "widest";
-  lineHeight?: "none" | "tight" | "snug" | "normal" | "relaxed" | "loose";
-  fontStyle?: "normal" | "italic";
-  textTransform?: "none" | "uppercase" | "lowercase" | "capitalize";
-  textDecoration?: "none" | "underline" | "line-through";
-  color?:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "muted"
-    | "accent"
-    | "destructive";
-  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "prose" | "none";
-  whiteSpace?: "normal" | "nowrap" | "pre-wrap";
-  opacity?: number;
-}
-
-function getOpacityPreset(opacity: number | undefined): string | undefined {
-  if (opacity === undefined) return undefined;
-  if (opacity <= 10) return "10";
-  if (opacity <= 25) return "25";
-  if (opacity <= 50) return "50";
-  if (opacity <= 75) return "75";
-  if (opacity <= 90) return "90";
-  return "100";
 }
 
 export default function HeadingBlockRenderer({
@@ -74,46 +24,9 @@ export default function HeadingBlockRenderer({
   const {
     text,
     level = "h2",
-    size,
-    align,
-    weight,
-    letterSpacing,
-    lineHeight,
-    fontStyle,
-    textTransform,
-    textDecoration,
-    color,
-    maxWidth,
-    whiteSpace,
-    opacity,
   } = data;
 
   const Tag = level;
-
-  // When block.styles has an explicit CSS property, skip the corresponding
-  // data-attribute so the generated CSS rule wins over token CSS.
-  const styles = (block as Record<string, unknown>).styles as Record<string, string> | undefined;
-  const hasStyle = (prop: string) => !!styles?.[prop];
-
-  const dataAttributes: Record<string, string | undefined> = {
-    "data-slot": "heading-block",
-    "data-size": hasStyle("fontSize") ? undefined : size,
-    "data-weight": hasStyle("fontWeight") ? undefined : weight,
-    "data-align": hasStyle("textAlign") ? undefined : align,
-    "data-letter-spacing": hasStyle("letterSpacing") ? undefined : letterSpacing,
-    "data-line-height": hasStyle("lineHeight") ? undefined : lineHeight,
-    "data-font-style": hasStyle("fontStyle") ? undefined : fontStyle,
-    "data-text-transform": hasStyle("textTransform") ? undefined : textTransform,
-    "data-text-decoration": hasStyle("textDecoration") ? undefined : textDecoration,
-    "data-white-space": hasStyle("whiteSpace") ? undefined : whiteSpace,
-    "data-max-width": hasStyle("maxWidth") ? undefined : maxWidth,
-    "data-opacity": hasStyle("opacity") ? undefined : getOpacityPreset(opacity),
-    "data-color": hasStyle("color") || !color || color === "default" ? undefined : color,
-  };
-
-  const filteredDataAttributes = Object.fromEntries(
-    Object.entries(dataAttributes).filter(([, v]) => v !== undefined),
-  );
 
   // TipTap editor for inline editing
   const editor = useEditor({
@@ -170,13 +83,13 @@ export default function HeadingBlockRenderer({
       return (
         <Tag
           className="heading"
-          {...filteredDataAttributes}
+          data-slot="heading-block"
           dangerouslySetInnerHTML={{ __html: html.replace(/<\/?p>/g, "") }}
         />
       );
     }
     return (
-      <Tag className="heading" {...filteredDataAttributes}>
+      <Tag className="heading" data-slot="heading-block">
         {text}
       </Tag>
     );
@@ -186,7 +99,7 @@ export default function HeadingBlockRenderer({
   return (
     <Tag
       className="heading"
-      {...filteredDataAttributes}
+      data-slot="heading-block"
       style={{ cursor: "text" }}
     >
       {editor && <TextBubbleMenu editor={editor} />}

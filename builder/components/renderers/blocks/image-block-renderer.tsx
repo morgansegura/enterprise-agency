@@ -25,12 +25,7 @@ export default function ImageBlockRenderer({
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const data = block.data as unknown as ImageBlockData;
-  const { src, alt = "", caption, objectFit, href } = data;
-
-  const styles = (block as Record<string, unknown>).styles as
-    | Record<string, string>
-    | undefined;
-  const hasStyle = (prop: string) => !!styles?.[prop];
+  const { src, alt = "", caption, href } = data;
   // Edit mode: show media library picker when no src
   if (!src && isEditing) {
     return (
@@ -92,7 +87,6 @@ export default function ImageBlockRenderer({
         <figure data-slot="image-block">
           <div
             data-slot="image-block-wrapper"
-            data-object-fit={hasStyle("objectFit") ? undefined : objectFit}
             className="relative group cursor-pointer"
             onClick={() => setPickerOpen(true)}
           >
@@ -142,7 +136,6 @@ export default function ImageBlockRenderer({
       <figure data-slot="image-block">
         <div
           data-slot="image-block-wrapper"
-          data-object-fit={hasStyle("objectFit") ? undefined : objectFit}
         >
           {content}
         </div>
@@ -153,10 +146,7 @@ export default function ImageBlockRenderer({
 
   return (
     <figure data-slot="image-block">
-      <div
-        data-slot="image-block-wrapper"
-        data-object-fit={hasStyle("objectFit") ? undefined : objectFit}
-      >
+      <div data-slot="image-block-wrapper">
         {content}
       </div>
     </figure>
