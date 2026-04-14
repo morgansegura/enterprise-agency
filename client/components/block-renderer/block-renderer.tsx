@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { RootBlock } from "@/lib/blocks";
 import { isContainerBlock } from "@/lib/blocks";
 import { hasStyles, getElementClass } from "@enterprise/tokens";
@@ -88,8 +89,20 @@ function withStyles(block: RootBlock, content: React.ReactNode, key?: string): R
 
   if (!styled) return content;
 
+  const cls = getElementClass((block as { _key: string })._key);
+
+  // Try to add className directly to the element instead of wrapping
+  if (React.isValidElement(content)) {
+    const existing = (content.props as Record<string, unknown>).className as string | undefined;
+    return React.cloneElement(content as React.ReactElement<Record<string, unknown>>, {
+      key: key ?? (block as { _key: string })._key,
+      className: existing ? `${existing} ${cls}` : cls,
+    });
+  }
+
+  // Fallback wrapper for non-element content
   return (
-    <div key={key ?? (block as { _key: string })._key} className={getElementClass((block as { _key: string })._key)}>
+    <div key={key ?? (block as { _key: string })._key} className={cls}>
       {content}
     </div>
   );
