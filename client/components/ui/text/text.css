@@ -1,9 +1,8 @@
 @reference "tailwindcss";
 
-/* Base text — inherits from parent, theme provides via CSS variables on :root */
+/* Base text — inherits all visual properties from parent */
 .text {
   @apply relative;
-  font-family: var(--font-body);
   color: inherit;
 }
 

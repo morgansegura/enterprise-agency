@@ -1,9 +1,8 @@
 @reference "tailwindcss";
 
-/* Base heading — inherits from parent, theme provides via CSS variables on :root */
+/* Base heading — inherits all visual properties from parent */
 .heading {
   @apply relative;
-  font-family: var(--font-heading);
   color: inherit;
 }
 
