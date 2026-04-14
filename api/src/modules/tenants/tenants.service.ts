@@ -712,7 +712,12 @@ export class TenantsService {
     }
 
     // Return empty object if no tokens are set
-    return tenant.designTokens || {};
+    // Unwrap legacy { tokens: { ... } } wrapper if present
+    const raw = tenant.designTokens as Record<string, unknown> | null;
+    if (raw && raw.tokens && typeof raw.tokens === "object") {
+      return raw.tokens;
+    }
+    return raw || {};
   }
 
   /**
@@ -735,7 +740,8 @@ export class TenantsService {
     const updated = await this.prisma.tenant.update({
       where: { id: tenantId },
       data: {
-        designTokens: tokensData as Prisma.InputJsonValue,
+        designTokens: (tokensData.tokens ??
+          tokensData) as Prisma.InputJsonValue,
       },
       select: {
         id: true,
