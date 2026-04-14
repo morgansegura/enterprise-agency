@@ -1,10 +1,9 @@
 @reference "tailwindcss";
 
-/* Base text — theme defaults apply when no data-attributes are set */
+/* Base text — inherits from parent, theme provides via CSS variables on :root */
 .text {
   @apply relative;
   font-family: var(--font-body);
-  font-size: var(--text-default-size, 1rem);
   color: inherit;
 }
 
