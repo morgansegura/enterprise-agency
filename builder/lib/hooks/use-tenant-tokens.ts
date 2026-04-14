@@ -28,6 +28,7 @@ export function useTenantTokens(tenantId: string) {
       }
     },
     enabled: !!tenantId,
+    staleTime: 0, // Always refetch — theme changes must be reflected immediately
   });
 }
 
