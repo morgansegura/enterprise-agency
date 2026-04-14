@@ -283,8 +283,8 @@
   content: attr(data-block-label);
   @apply absolute -top-3.75 left-0 z-100 px-1.5 py-0.75;
   @apply text-xs font-semibold tracking-wide text-white leading-none whitespace-nowrap;
-
   @apply rounded-t-[3px] pointer-events-none bg-pink-600;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 .page-editor-canvas-content
