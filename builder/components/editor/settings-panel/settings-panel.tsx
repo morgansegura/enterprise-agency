@@ -220,6 +220,35 @@ export function SettingsPanel({
 
   const selectedData = getSelectedData();
 
+  // Helper: write block changes, handling nested blocks inside Box
+  const handleBlockUpdate = React.useCallback(
+    (updated: Block) => {
+      if (!selectedElement || !selectedData) return;
+      const parentBlock = (selectedData as { parentBlock?: Block }).parentBlock;
+      if (parentBlock) {
+        const parentData = parentBlock.data as Record<string, unknown>;
+        const siblings = (parentData.blocks as Block[]) ?? [];
+        const updatedSiblings = siblings.map((b) =>
+          b._key === updated._key ? updated : b,
+        );
+        onBlockChange?.(
+          selectedElement.sectionIndex,
+          selectedElement.containerIndex!,
+          selectedElement.blockIndex!,
+          { ...parentBlock, data: { ...parentData, blocks: updatedSiblings } },
+        );
+      } else {
+        onBlockChange?.(
+          selectedElement.sectionIndex,
+          selectedElement.containerIndex!,
+          selectedElement.blockIndex!,
+          updated,
+        );
+      }
+    },
+    [selectedElement, selectedData, onBlockChange],
+  );
+
   return (
     <div
       className={cn("settings-panel-wrapper", !rightPanelOpen && "collapsed")}
@@ -389,14 +418,7 @@ export function SettingsPanel({
                     {selectedElement.type === "block" && (
                       <BlockStyleTab
                         block={selectedData.data as Block}
-                        onChange={(updated) =>
-                          onBlockChange?.(
-                            selectedElement.sectionIndex,
-                            selectedElement.containerIndex!,
-                            selectedElement.blockIndex!,
-                            updated,
-                          )
-                        }
+                        onChange={handleBlockUpdate}
                       />
                     )}
                     {(selectedElement.type === "header" ||
@@ -456,27 +478,13 @@ export function SettingsPanel({
                       <>
                         <BlockStyleSettings
                           block={selectedData.data as Block}
-                          onChange={(updated) =>
-                            onBlockChange?.(
-                              selectedElement.sectionIndex,
-                              selectedElement.containerIndex!,
-                              selectedElement.blockIndex!,
-                              updated,
-                            )
-                          }
+                          onChange={handleBlockUpdate}
                         />
                         {/* Link settings — available on every block except buttons (which have their own URL) */}
                         {(selectedData.data as Block)._type !== "button-block" && (
                           <BlockLinkSettings
                             block={selectedData.data as Block}
-                            onChange={(updated) =>
-                              onBlockChange?.(
-                                selectedElement.sectionIndex,
-                                selectedElement.containerIndex!,
-                                selectedElement.blockIndex!,
-                                updated,
-                              )
-                            }
+                            onChange={handleBlockUpdate}
                           />
                         )}
                       </>
