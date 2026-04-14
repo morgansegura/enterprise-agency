@@ -462,7 +462,7 @@ describe("generatePageCSS — specificity", () => {
     expect(css).toContain("font-size: 8px");
   });
 
-  it("includes the > * variant to target wrapped block elements", () => {
+  it("does NOT include > * — styles apply only to the element itself", () => {
     const css = generatePageCSS(
       buildPage([
         {
@@ -475,8 +475,8 @@ describe("generatePageCSS — specificity", () => {
         },
       ]) as never[],
     );
-    // Child selector for client withStyles wrapper pattern
-    expect(css).toContain(".e-b1.e-b1 > *");
+    expect(css).toContain(".e-b1.e-b1 {");
+    expect(css).not.toContain(".e-b1.e-b1 > *");
   });
 });
 

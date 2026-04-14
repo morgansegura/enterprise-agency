@@ -195,9 +195,24 @@ export function SettingsPanel({
     ) {
       const container = section.containers?.[selectedElement.containerIndex];
       const block = container?.blocks?.[selectedElement.blockIndex];
-      return block
-        ? { type: "block" as const, data: block, container, section }
-        : null;
+      if (!block) return null;
+
+      // If selected key matches this block, return it
+      if (block._key === selectedElement.key) {
+        return { type: "block" as const, data: block, container, section };
+      }
+
+      // Otherwise search inside nested blocks (Box children)
+      const nestedBlocks = (block.data as Record<string, unknown>)?.blocks as Block[] | undefined;
+      if (nestedBlocks) {
+        const nested = nestedBlocks.find((b) => b._key === selectedElement.key);
+        if (nested) {
+          return { type: "block" as const, data: nested, container, section, parentBlock: block };
+        }
+      }
+
+      // Fallback to the block at the index
+      return { type: "block" as const, data: block, container, section };
     }
 
     return null;

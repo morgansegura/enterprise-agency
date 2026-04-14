@@ -830,6 +830,18 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                         selectBlock(si, ci, bi, key);
                         return;
                       }
+                      // Search inside Box blocks (nested children)
+                      const nested = (blocks[bi].data as Record<string, unknown>)?.blocks as Array<{ _key: string }> | undefined;
+                      if (nested) {
+                        for (let ni = 0; ni < nested.length; ni++) {
+                          if (nested[ni]._key === key) {
+                            setSelectedBlockKey(key);
+                            // Select the parent Box — nested blocks edit via the Box
+                            selectBlock(si, ci, bi, key);
+                            return;
+                          }
+                        }
+                      }
                     }
                   }
                 }
