@@ -14,6 +14,7 @@ import { PropertyToggle } from "@/components/editor/settings-panel/components/pr
 import { PropertySelect } from "@/components/editor/settings-panel/components/property-select";
 import { Save, RotateCcw, Loader2 } from "lucide-react";
 import { applyTokensToDOM, clearTokensFromDOM } from "@/lib/tokens/apply-tokens";
+import { googleFonts } from "@/lib/fonts/google-fonts";
 
 import "@/components/editor/settings-panel/settings-panel.css";
 import "./theme.css";
@@ -99,20 +100,10 @@ const COLOR_PRESETS = [
 
 const FONT_OPTIONS = [
   { value: "system", label: "System Default" },
-  { value: "'Inter', sans-serif", label: "Inter" },
-  { value: "'Poppins', sans-serif", label: "Poppins" },
-  { value: "'DM Sans', sans-serif", label: "DM Sans" },
-  { value: "'Plus Jakarta Sans', sans-serif", label: "Plus Jakarta" },
-  { value: "'Outfit', sans-serif", label: "Outfit" },
-  { value: "'Space Grotesk', sans-serif", label: "Space Grotesk" },
-  { value: "'Playfair Display', serif", label: "Playfair" },
-  { value: "'Lora', serif", label: "Lora" },
-  { value: "'Merriweather', serif", label: "Merriweather" },
-  { value: "'Roboto', sans-serif", label: "Roboto" },
-  { value: "'Open Sans', sans-serif", label: "Open Sans" },
-  { value: "'Montserrat', sans-serif", label: "Montserrat" },
-  { value: "'Raleway', sans-serif", label: "Raleway" },
-  { value: "'Nunito', sans-serif", label: "Nunito" },
+  ...googleFonts.map((f) => ({
+    value: `'${f.family}', ${f.category}`,
+    label: f.family,
+  })),
 ];
 
 // =============================================================================
