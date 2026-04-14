@@ -87,7 +87,7 @@ export function HeadingBlock({ data }: HeadingBlockProps) {
       {(data as { html?: string }).html ? (
         <span
           dangerouslySetInnerHTML={{
-            __html: (data as { html?: string }).html!,
+            __html: (data as { html?: string }).html!.replace(/<\/?p>/g, ""),
           }}
         />
       ) : (
