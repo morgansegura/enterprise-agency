@@ -107,7 +107,7 @@ export function ContainerSettings({
       >
         <PropertyRow label="Display" stacked>
           <PropertyToggle
-            value={container.layout?.type || "stack"}
+            value={container.layout?.type || ""}
             options={DISPLAY_OPTIONS}
             onChange={(v) => handleLayoutChange("type", v)}
             fullWidth
@@ -118,7 +118,7 @@ export function ContainerSettings({
           <>
             <PropertyRow label="Direction" stacked>
               <PropertyToggle
-                value={container.layout?.direction || "column"}
+                value={container.layout?.direction || ""}
                 options={DIRECTION_OPTIONS}
                 onChange={(v) => handleLayoutChange("direction", v)}
                 fullWidth
@@ -126,14 +126,14 @@ export function ContainerSettings({
             </PropertyRow>
             <PropertyRow label="Justify">
               <PropertySelect
-                value={container.layout?.justify || "start"}
+                value={container.layout?.justify || ""}
                 options={JUSTIFY_OPTIONS}
                 onChange={(v) => handleLayoutChange("justify", v)}
               />
             </PropertyRow>
             <PropertyRow label="Align">
               <PropertySelect
-                value={container.layout?.align || "stretch"}
+                value={container.layout?.align || ""}
                 options={ALIGN_ITEMS_OPTIONS}
                 onChange={(v) => handleLayoutChange("align", v)}
               />
@@ -158,14 +158,14 @@ export function ContainerSettings({
 
         <PropertyRow label="Gap">
           <PropertySelect
-            value={container.layout?.gap || "md"}
+            value={container.layout?.gap || ""}
             options={SPACING_OPTIONS}
             onChange={(v) => handleLayoutChange("gap", v)}
           />
         </PropertyRow>
         <PropertyRow label="Max Width">
           <PropertySelect
-            value={container.maxWidth || "none"}
+            value={container.maxWidth || ""}
             options={CONTAINER_WIDTH_OPTIONS}
             onChange={(v) => handleChange("maxWidth", v)}
           />
@@ -176,14 +176,14 @@ export function ContainerSettings({
       <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
         <PropertyRow label="Padding X">
           <PropertySelect
-            value={container.paddingX || "none"}
+            value={container.paddingX || ""}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingX", v)}
           />
         </PropertyRow>
         <PropertyRow label="Padding Y">
           <PropertySelect
-            value={container.paddingY || "none"}
+            value={container.paddingY || ""}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingY", v)}
           />
@@ -198,7 +198,7 @@ export function ContainerSettings({
       >
         <PropertyRow label="Horizontal" stacked>
           <PropertyToggle
-            value={container.align || "left"}
+            value={container.align || ""}
             options={ALIGN_OPTIONS}
             onChange={(v) => handleChange("align", v)}
             fullWidth

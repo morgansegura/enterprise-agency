@@ -78,14 +78,14 @@ export function SectionSettings({
         >
           <PropertyRow label="Overflow X">
             <PropertySelect
-              value={section.overflowX || section.overflow || "visible"}
+              value={section.overflowX || section.overflow || ""}
               options={OVERFLOW_OPTIONS}
               onChange={(v) => handleChange("overflowX", v)}
             />
           </PropertyRow>
           <PropertyRow label="Overflow Y">
             <PropertySelect
-              value={section.overflowY || section.overflow || "visible"}
+              value={section.overflowY || section.overflow || ""}
               options={OVERFLOW_OPTIONS}
               onChange={(v) => handleChange("overflowY", v)}
             />
@@ -132,7 +132,7 @@ export function SectionSettings({
       >
         <PropertyRow label="Width" stacked>
           <PropertyToggle
-            value={section.width || "wide"}
+            value={section.width || ""}
             options={WIDTH_OPTIONS}
             onChange={(v) => handleChange("width", v)}
             fullWidth
@@ -140,7 +140,7 @@ export function SectionSettings({
         </PropertyRow>
         <PropertyRow label="Min Height">
           <PropertySelect
-            value={section.minHeight || "none"}
+            value={section.minHeight || ""}
             options={SECTION_MIN_HEIGHT_OPTIONS}
             onChange={(v) => handleChange("minHeight", v)}
           />
@@ -176,35 +176,35 @@ export function SectionSettings({
       <PropertySection title="Spacing" icon={<Move className="h-3.5 w-3.5" />}>
         <PropertyRow label="Padding Top">
           <PropertySelect
-            value={section.paddingTop || section.paddingY || "md"}
+            value={section.paddingTop || section.paddingY || ""}
             options={EXTENDED_SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingTop", v)}
           />
         </PropertyRow>
         <PropertyRow label="Padding Bottom">
           <PropertySelect
-            value={section.paddingBottom || section.paddingY || "md"}
+            value={section.paddingBottom || section.paddingY || ""}
             options={EXTENDED_SPACING_OPTIONS}
             onChange={(v) => handleChange("paddingBottom", v)}
           />
         </PropertyRow>
         <PropertyRow label="Margin Top">
           <PropertySelect
-            value={section.marginTop || "none"}
+            value={section.marginTop || ""}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("marginTop", v)}
           />
         </PropertyRow>
         <PropertyRow label="Margin Bottom">
           <PropertySelect
-            value={section.marginBottom || "none"}
+            value={section.marginBottom || ""}
             options={SPACING_OPTIONS}
             onChange={(v) => handleChange("marginBottom", v)}
           />
         </PropertyRow>
         <PropertyRow label="Gap Between Containers">
           <PropertySelect
-            value={section.gapY || "md"}
+            value={section.gapY || ""}
             options={SPACING_OPTIONS.slice(0, 7)}
             onChange={(v) => handleChange("gapY", v)}
           />
