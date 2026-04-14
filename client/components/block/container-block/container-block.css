@@ -9,6 +9,6 @@
 
 [data-slot="box-block"],
 [data-slot="container-block"] {
-  @apply relative w-full flex flex-col p-0 m-0 border-none rounded-none shadow-none bg-transparent;
+  @apply relative w-full flex flex-col;
   color: inherit;
 }

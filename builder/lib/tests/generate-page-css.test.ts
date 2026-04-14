@@ -462,7 +462,7 @@ describe("generatePageCSS — specificity", () => {
     expect(css).toContain("font-size: 8px");
   });
 
-  it("includes > * selector to target the block's inner element", () => {
+  it("applies styles directly to the element (no > * selector)", () => {
     const css = generatePageCSS(
       buildPage([
         {
@@ -475,8 +475,8 @@ describe("generatePageCSS — specificity", () => {
         },
       ]) as never[],
     );
-    expect(css).toContain(".e-b1.e-b1");
-    expect(css).toContain(".e-b1.e-b1 > *");
+    expect(css).toContain(".e-b1.e-b1 {");
+    expect(css).not.toContain("> *");
   });
 });
 

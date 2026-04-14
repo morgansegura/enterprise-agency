@@ -193,7 +193,7 @@ function buildRule(key: string, styles?: ElementStyles): string {
   const decls = stylesToDeclarations(styles);
   if (!decls) return "";
   const cls = `.${CLASS_PREFIX}${key}`;
-  return `${cls}${cls},\n${cls}${cls} > * {\n${decls}\n}`;
+  return `${cls}${cls} {\n${decls}\n}`;
 }
 
 /**
