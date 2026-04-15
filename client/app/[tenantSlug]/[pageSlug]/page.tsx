@@ -23,6 +23,61 @@ import type { FooterConfig } from "@/lib/footers/types";
 import { logger } from "@/lib/logger";
 import { notFound } from "next/navigation";
 
+/**
+ * Generate CSS custom properties from design tokens for SSR.
+ * Mirrors what applyTokensToDOM does on the builder client-side.
+ */
+function generateThemeCSS(tokens: Record<string, unknown>): string {
+  if (!tokens || Object.keys(tokens).length === 0) return "";
+
+  // Unwrap legacy { tokens: { ... } } wrapper
+  const data =
+    tokens.tokens && typeof tokens.tokens === "object"
+      ? (tokens.tokens as Record<string, unknown>)
+      : tokens;
+
+  const vars: string[] = [];
+
+  // Fonts
+  const fonts = data.fonts as
+    | Record<string, Record<string, string>>
+    | undefined;
+  if (fonts) {
+    if (fonts.heading?.family && fonts.heading.family !== "system") {
+      vars.push(`--theme-font-heading: ${fonts.heading.family}`);
+      vars.push(`--font-heading: ${fonts.heading.family}`);
+      vars.push(`--font-primary: ${fonts.heading.family}`);
+    }
+    if (fonts.body?.family && fonts.body.family !== "system") {
+      vars.push(`--theme-font-body: ${fonts.body.family}`);
+      vars.push(`--font-body: ${fonts.body.family}`);
+      vars.push(`--font-secondary: ${fonts.body.family}`);
+    }
+    if (fonts.accent?.family && fonts.accent.family !== "system") {
+      vars.push(`--theme-font-accent: ${fonts.accent.family}`);
+      vars.push(`--font-accent: ${fonts.accent.family}`);
+    }
+  }
+
+  // Colors
+  const colors = data.colors as Record<string, string> | undefined;
+  if (colors) {
+    if (colors.primaryHex) vars.push(`--primary: ${colors.primaryHex}`);
+    if (colors.accentHex) vars.push(`--accent: ${colors.accentHex}`);
+    if (colors.background) vars.push(`--background: ${colors.background}`);
+    if (colors.foreground) vars.push(`--foreground: ${colors.foreground}`);
+    if (colors.borderColor) vars.push(`--border: ${colors.borderColor}`);
+    if (colors.linkColor) vars.push(`--link: ${colors.linkColor}`);
+  }
+
+  // Border radius
+  const radius = data.borderRadius as Record<string, string> | undefined;
+  if (radius?.default) vars.push(`--default-radius: ${radius.default}`);
+
+  if (vars.length === 0) return "";
+  return `:root {\n  ${vars.join(";\n  ")};\n}`;
+}
+
 interface PageProps {
   params: Promise<{
     tenantSlug: string;
@@ -110,14 +165,17 @@ export default async function TenantPage({ params }: PageProps) {
   let apiConfig: SiteConfig;
   let pageTitle = "";
   let sections: TypedSection[] = [];
+  let designTokens: Record<string, unknown> = {};
 
   try {
-    const [config, apiPage] = await Promise.all([
+    const [config, apiPage, tokens] = await Promise.all([
       api.getConfig(),
       api.getPage(pageSlug),
+      api.getDesignTokens(),
     ]);
 
     apiConfig = config;
+    designTokens = tokens;
     pageTitle = apiPage.title;
 
     // Extract sections from page content
@@ -176,6 +234,9 @@ export default async function TenantPage({ params }: PageProps) {
   // Generate scoped CSS from section/container/block styles
   const pageCSS = generatePageCSS(sections as never[]);
 
+  // Generate theme CSS variables from design tokens
+  const themeCSS = generateThemeCSS(designTokens);
+
   return (
     <>
       <BreadcrumbSchema
@@ -184,6 +245,34 @@ export default async function TenantPage({ params }: PageProps) {
           { name: pageTitle, url: `${siteUrl}/${tenantSlug}/${pageSlug}` },
         ]}
       />
+      {/* Google Fonts for theme */}
+      {(() => {
+        const fontFamilies: string[] = [];
+        const fonts = (designTokens.tokens as Record<string, unknown>)?.fonts ?? designTokens.fonts;
+        if (fonts && typeof fonts === "object") {
+          const f = fonts as Record<string, Record<string, string>>;
+          for (const role of ["heading", "body", "accent"]) {
+            const family = f[role]?.family;
+            if (family && family !== "system") {
+              const name = family.replace(/^'|',.*/g, "");
+              if (name && !fontFamilies.includes(name)) fontFamilies.push(name);
+            }
+          }
+        }
+        return fontFamilies.map((family) => (
+          <link
+            key={family}
+            rel="stylesheet"
+            href={`https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@300;400;500;600;700;800&display=swap`}
+          />
+        ));
+      })()}
+      {themeCSS && (
+        <style
+          id="theme-styles"
+          dangerouslySetInnerHTML={{ __html: themeCSS }}
+        />
+      )}
       {pageCSS && (
         <style
           id="page-styles"

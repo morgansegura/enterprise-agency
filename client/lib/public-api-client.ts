@@ -247,6 +247,23 @@ export class PublicApiClient {
   }
 
   /**
+   * Get design tokens (theme settings)
+   * Cached for 10 minutes
+   */
+  async getDesignTokens(): Promise<Record<string, unknown>> {
+    try {
+      const res = await fetch(
+        `${this.baseUrl}/tokens`,
+        this.getFetchOptions(600),
+      );
+      if (!res.ok) return {};
+      return res.json();
+    } catch {
+      return {};
+    }
+  }
+
+  /**
    * Get a page by slug
    * In draft mode: fetches draft content with preview token
    * In normal mode: fetches published content with 1-minute cache
