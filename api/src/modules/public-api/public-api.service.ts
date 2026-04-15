@@ -120,7 +120,12 @@ export class PublicApiService {
     }
 
     // Return empty object if no tokens are set
-    return (tenant.designTokens as Record<string, unknown>) || {};
+    // Unwrap legacy { tokens: { ... } } wrapper if present
+    const raw = tenant.designTokens as Record<string, unknown> | null;
+    if (raw && raw.tokens && typeof raw.tokens === "object") {
+      return raw.tokens as Record<string, unknown>;
+    }
+    return raw || {};
   }
 
   /**

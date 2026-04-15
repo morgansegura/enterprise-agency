@@ -171,7 +171,7 @@ export default async function TenantPage({ params }: PageProps) {
     const [config, apiPage, tokens] = await Promise.all([
       api.getConfig(),
       api.getPage(pageSlug),
-      api.getDesignTokens(),
+      api.getTokens().catch(() => ({})),
     ]);
 
     apiConfig = config;

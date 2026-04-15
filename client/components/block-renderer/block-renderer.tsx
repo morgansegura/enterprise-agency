@@ -97,6 +97,18 @@ function withStyles(block: RootBlock, content: React.ReactNode, key?: string): R
 }
 
 /**
+ * Render a block with styles wrapper applied.
+ * Used as callback for container blocks so nested children get withStyles.
+ */
+function renderBlockWithStyles(block: RootBlock): React.ReactNode {
+  return withStyles(
+    block,
+    renderBlock(block),
+    (block as { _key: string })._key,
+  );
+}
+
+/**
  * Render a single block with proper type narrowing and recursive handling
  */
 function renderBlock(block: RootBlock): React.ReactNode {
@@ -109,7 +121,7 @@ function renderBlock(block: RootBlock): React.ReactNode {
             key={block._key}
             data={block.data}
             blocks={block.blocks ?? (block.data as Record<string, unknown>)?.blocks as RootBlock[]}
-            renderBlock={renderBlock}
+            renderBlock={renderBlockWithStyles}
           />
         );
 
@@ -119,7 +131,7 @@ function renderBlock(block: RootBlock): React.ReactNode {
             key={block._key}
             data={block.data}
             blocks={block.blocks}
-            renderBlock={renderBlock}
+            renderBlock={renderBlockWithStyles}
           />
         );
 
@@ -129,7 +141,7 @@ function renderBlock(block: RootBlock): React.ReactNode {
             key={block._key}
             data={block.data}
             blocks={block.blocks}
-            renderBlock={renderBlock}
+            renderBlock={renderBlockWithStyles}
           />
         );
 
@@ -139,7 +151,7 @@ function renderBlock(block: RootBlock): React.ReactNode {
             key={block._key}
             data={block.data}
             blocks={block.blocks}
-            renderBlock={renderBlock}
+            renderBlock={renderBlockWithStyles}
           />
         );
 
@@ -149,7 +161,7 @@ function renderBlock(block: RootBlock): React.ReactNode {
             key={block._key}
             data={block.data}
             blocks={block.blocks}
-            renderBlock={renderBlock}
+            renderBlock={renderBlockWithStyles}
           />
         );
     }
