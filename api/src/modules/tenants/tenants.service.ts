@@ -711,13 +711,16 @@ export class TenantsService {
       throw new NotFoundException("Tenant not found");
     }
 
-    // Return empty object if no tokens are set
-    // Unwrap legacy { tokens: { ... } } wrapper if present
-    const raw = tenant.designTokens as Record<string, unknown> | null;
-    if (raw && raw.tokens && typeof raw.tokens === "object") {
-      return raw.tokens;
+    // Unwrap recursively nested { tokens: { tokens: { ... } } } wrappers
+    let result = (tenant.designTokens as Record<string, unknown>) || {};
+    while (
+      result.tokens &&
+      typeof result.tokens === "object" &&
+      !result.fonts
+    ) {
+      result = result.tokens as Record<string, unknown>;
     }
-    return raw || {};
+    return result;
   }
 
   /**

@@ -119,13 +119,16 @@ export class PublicApiService {
       throw new NotFoundException(`Site is not active: ${tenantSlug}`);
     }
 
-    // Return empty object if no tokens are set
-    // Unwrap legacy { tokens: { ... } } wrapper if present
-    const raw = tenant.designTokens as Record<string, unknown> | null;
-    if (raw && raw.tokens && typeof raw.tokens === "object") {
-      return raw.tokens as Record<string, unknown>;
+    // Unwrap recursively nested { tokens: { tokens: { ... } } } wrappers
+    let result = (tenant.designTokens as Record<string, unknown>) || {};
+    while (
+      result.tokens &&
+      typeof result.tokens === "object" &&
+      !result.fonts
+    ) {
+      result = result.tokens as Record<string, unknown>;
     }
-    return raw || {};
+    return result;
   }
 
   /**
