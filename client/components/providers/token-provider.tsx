@@ -177,10 +177,10 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   };
   const newCSS = generateTenantCSS(newDesignTokens);
 
-  // Handle font configuration — merge with defaults to ensure roles always exist
+  // Handle font configuration — only use old format if definitions exist
   const fontConfig: FontConfig = {
-    definitions: fonts?.definitions || defaultFontConfig.definitions,
-    roles: fonts?.roles || defaultFontConfig.roles,
+    definitions: fonts?.definitions || [],
+    roles: fonts?.roles || {},
   };
   const googleFontsUrl = buildGoogleFontsUrl(fontConfig.definitions);
   const fontCSS = generateFontCSS(fontConfig);
