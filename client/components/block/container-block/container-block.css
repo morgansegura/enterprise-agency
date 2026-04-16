@@ -1,14 +1,10 @@
 @reference "tailwindcss";
 
-/* Box block — a container that holds child blocks.
-   Used as cards, panels, grouped content.
-   All visual styling comes from the styles object via generated CSS.
-   The wrapper div gets the .e-key class with all styles.
-   The inner box-block div resets non-inheritable props so they
-   don't double-apply from the > * selector. */
-
+/* Box block — inherits gap/padding/radius from .e-key wrapper */
 [data-slot="box-block"],
 [data-slot="container-block"] {
-  @apply relative w-full flex flex-col;
-  color: inherit;
+  @apply relative w-full flex flex-col text-inherit font-[inherit] text-[length:inherit] font-[number:inherit];
+  gap: inherit;
+  padding: inherit;
+  border-radius: inherit;
 }

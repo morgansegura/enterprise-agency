@@ -15,14 +15,12 @@
 
 /* ===== BASE RICH TEXT CONTAINER ===== */
 .rich-text {
-  /* Typography */
-  font-family: var(--font-body);
-  font-size: var(--text-size-base);
-  line-height: var(--line-height-relaxed);
+  /* Inherit from parent — generated CSS on wrapper provides overrides */
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
   color: inherit;
-
-  /* Max width for readability */
-  max-width: var(--rich-text-max-width);
 }
 
 /* ===== HEADINGS ===== */
@@ -32,9 +30,9 @@
 .rich-text h4,
 .rich-text h5,
 .rich-text h6 {
-  font-family: var(--font-heading);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-tight);
+  font-family: inherit;
+  font-weight: bold;
+  line-height: 1.25;
   color: inherit;
   margin-block-start: var(--rich-text-heading-spacing);
   margin-block-end: var(--spacing-block-sm);
