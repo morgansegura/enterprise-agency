@@ -48,7 +48,7 @@ export default function EmbedBlockRenderer({
       );
     }
     return (
-      <div data-slot="embed-block">
+      <div {...editorProps} className={cn(editorProps?.className)} data-slot="embed-block">
         <div data-slot="embed-block-placeholder">No embed code set</div>
       </div>
     );
@@ -57,7 +57,7 @@ export default function EmbedBlockRenderer({
   // If we have a URL, render as iframe (matching client)
   if (url) {
     return (
-      <div data-slot="embed-block">
+      <div {...editorProps} className={cn(editorProps?.className)} data-slot="embed-block">
         <div
           data-slot="embed-block-wrapper"
           data-aspect-ratio={aspectRatio}
@@ -76,7 +76,7 @@ export default function EmbedBlockRenderer({
 
   // If we have raw HTML, render it
   return (
-    <div data-slot="embed-block">
+    <div {...editorProps} className={cn(editorProps?.className)} data-slot="embed-block">
       <div
         data-slot="embed-block-wrapper"
         data-aspect-ratio={aspectRatio}

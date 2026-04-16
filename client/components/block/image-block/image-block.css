@@ -12,43 +12,7 @@
   @apply w-full h-auto;
 }
 
-/* Object fit variants */
-[data-slot="image-block-wrapper"][data-object-fit="contain"] [data-slot="image-block-image"] {
-  @apply object-contain;
-}
-
-[data-slot="image-block-wrapper"][data-object-fit="cover"] [data-slot="image-block-image"] {
-  @apply object-cover;
-}
-
-[data-slot="image-block-wrapper"][data-object-fit="fill"] [data-slot="image-block-image"] {
-  @apply object-fill;
-}
-
-[data-slot="image-block-wrapper"][data-object-fit="none"] [data-slot="image-block-image"] {
-  @apply object-none;
-}
-
 [data-slot="image-block-caption"] {
-  @apply mt-2 text-sm text-(--muted-foreground) text-center;
-}
-
-/* ==============================================
-   Responsive Class Overrides
-   These classes can be combined with Tailwind
-   responsive prefixes (md:, lg:) for per-breakpoint control
-   ============================================== */
-
-/* Object fit classes (for responsive override support) */
-.img-fit-contain [data-slot="image-block-image"] {
-  @apply object-contain;
-}
-.img-fit-cover [data-slot="image-block-image"] {
-  @apply object-cover;
-}
-.img-fit-fill [data-slot="image-block-image"] {
-  @apply object-fill;
-}
-.img-fit-none [data-slot="image-block-image"] {
-  @apply object-none;
+  @apply mt-2 text-sm text-center;
+  color: inherit;
 }

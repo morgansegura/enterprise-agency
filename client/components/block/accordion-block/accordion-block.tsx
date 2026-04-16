@@ -10,14 +10,10 @@ type AccordionBlockProps = {
  * Content block (leaf node) - cannot have children
  */
 export function AccordionBlock({ data }: AccordionBlockProps) {
-  const { items, allowMultiple = false, variant } = data;
+  const { items, allowMultiple = false } = data;
 
   return (
-    <div
-      data-slot="accordion-block"
-      data-variant={variant}
-      data-allow-multiple={allowMultiple}
-    >
+    <div data-slot="accordion-block" data-allow-multiple={allowMultiple}>
       {items.map((item, index) => (
         <details
           key={index}

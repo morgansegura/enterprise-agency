@@ -2,34 +2,18 @@
 
 [data-slot="quote-block"] {
   @apply border-l-4 border-(--primary) pl-6 py-2;
-}
-
-[data-slot="quote-block"][data-variant="bordered"] {
-  @apply border border-(--border) rounded-lg p-6;
-}
-
-[data-slot="quote-block"][data-variant="highlighted"] {
-  @apply border-l-4 border-(--primary) pl-6 py-2 bg-(--muted);
-}
-
-[data-slot="quote-block"][data-size="sm"] {
-  @apply text-sm;
-}
-
-[data-slot="quote-block"][data-size="lg"] {
-  @apply text-xl;
-}
-
-[data-slot="quote-block"][data-align="center"] {
-  @apply text-center;
-}
-
-[data-slot="quote-block"][data-align="right"] {
-  @apply text-right;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
 }
 
 [data-slot="quote-block-text"] {
-  @apply text-lg italic text-(--foreground) mb-4;
+  @apply italic mb-4;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
 }
 
 [data-slot="quote-block-footer"] {
@@ -37,9 +21,11 @@
 }
 
 [data-slot="quote-block-author"] {
-  @apply text-sm font-medium text-(--foreground);
+  @apply text-sm font-medium;
+  color: inherit;
 }
 
 [data-slot="quote-block-title"] {
-  @apply text-sm text-(--muted-foreground);
+  @apply text-sm;
+  color: inherit;
 }

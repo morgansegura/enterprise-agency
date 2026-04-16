@@ -10,22 +10,10 @@ type QuoteBlockProps = {
  * Content block (leaf node) - cannot have children
  */
 export function QuoteBlock({ data }: QuoteBlockProps) {
-  const {
-    text,
-    author,
-    title,
-    size,
-    align,
-    variant,
-  } = data;
+  const { text, author, title } = data;
 
   return (
-    <blockquote
-      data-slot="quote-block"
-      data-variant={variant}
-      data-size={size}
-      data-align={align}
-    >
+    <blockquote data-slot="quote-block">
       <p data-slot="quote-block-text">{text}</p>
       {author || title ? (
         <footer data-slot="quote-block-footer">

@@ -122,7 +122,8 @@ export default function VideoBlockRenderer({
     }
     return (
       <div
-        className="flex items-center justify-center bg-(--el-100) text-(--el-500) p-8 rounded-md aspect-video"
+        {...editorProps}
+        className={cn("flex items-center justify-center bg-(--el-100) text-(--el-500) p-8 rounded-md aspect-video", editorProps?.className)}
         data-slot="video-block"
       >
         No video URL set
@@ -138,7 +139,7 @@ export default function VideoBlockRenderer({
     const videoId = getYouTubeId(url);
     if (!videoId) {
       return (
-        <figure data-slot="video-block">
+        <figure {...editorProps} className={cn(editorProps?.className)} data-slot="video-block">
           <div
             data-slot="video-block-wrapper"
             data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}
@@ -155,7 +156,7 @@ export default function VideoBlockRenderer({
     const videoId = getVimeoId(url);
     if (!videoId) {
       return (
-        <figure data-slot="video-block">
+        <figure {...editorProps} className={cn(editorProps?.className)} data-slot="video-block">
           <div
             data-slot="video-block-wrapper"
             data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}
@@ -171,7 +172,7 @@ export default function VideoBlockRenderer({
   }
 
   return (
-    <figure data-slot="video-block">
+    <figure {...editorProps} className={cn(editorProps?.className)} data-slot="video-block">
       <div
         data-slot="video-block-wrapper"
         data-aspect-ratio={hasStyle("aspectRatio") ? undefined : aspectRatio}

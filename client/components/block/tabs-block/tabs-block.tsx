@@ -13,11 +13,11 @@ type TabsBlockProps = {
  * Content block (leaf node) - cannot have children
  */
 export function TabsBlock({ data }: TabsBlockProps) {
-  const { tabs, defaultTab = 0, variant } = data;
+  const { tabs, defaultTab = 0 } = data;
   const [activeTab, setActiveTab] = useState(defaultTab);
 
   return (
-    <div data-slot="tabs-block" data-variant={variant}>
+    <div data-slot="tabs-block">
       <div data-slot="tabs-block-list" role="tablist">
         {tabs.map((tab, index) => (
           <button

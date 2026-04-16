@@ -67,6 +67,8 @@ export default function MapBlockRenderer({
     if (isEditing) {
       return (
         <div
+          {...editorProps}
+          className={cn(editorProps?.className)}
           data-slot="map-block"
           data-height={hasStyle("height") ? undefined : height}
         >
@@ -87,7 +89,7 @@ export default function MapBlockRenderer({
       );
     }
     return (
-      <div data-slot="map-block-error">
+      <div {...editorProps} className={cn(editorProps?.className)} data-slot="map-block-error">
         <p>Map location data is missing or invalid.</p>
       </div>
     );
@@ -101,6 +103,8 @@ export default function MapBlockRenderer({
 
   return (
     <div
+      {...editorProps}
+      className={cn(editorProps?.className)}
       data-slot="map-block"
       data-height={hasStyle("height") ? undefined : height}
     >
