@@ -1,98 +1,31 @@
 import type { HeadingBlockData } from "@/lib/blocks";
-import { Heading } from "@/components/ui/heading";
 
 type HeadingBlockProps = {
   data: HeadingBlockData;
 };
 
-// Map opacity number to preset string
-function getOpacityPreset(opacity: number | undefined): string | undefined {
-  if (opacity === undefined) return undefined;
-  if (opacity <= 10) return "10";
-  if (opacity <= 25) return "25";
-  if (opacity <= 50) return "50";
-  if (opacity <= 75) return "75";
-  if (opacity <= 90) return "90";
-  return "100";
-}
-
 /**
- * HeadingBlock - Data adapter for Heading UI component
- *
- * Uses data-attributes for ALL styling (no CSS classes).
- * This ensures clean semantic output matching the builder.
- *
- * TODO: Add responsive support via data-size-md, data-size-lg attributes
+ * HeadingBlock — clean output, no data-attributes.
+ * All styling comes from generated CSS via .e-{key} wrapper.
  */
 export function HeadingBlock({ data }: HeadingBlockProps) {
-  const {
-    text,
-    level = "h2",
-    size,
-    align,
-    weight,
-    variant,
-    letterSpacing,
-    lineHeight,
-    fontStyle,
-    textTransform,
-    textDecoration,
-    color,
-    maxWidth,
-    whiteSpace,
-    opacity,
-  } = data;
+  const { text, level = "h2" } = data;
+  const Tag = level;
+  const html = (data as { html?: string }).html;
 
-  const opacityPreset = getOpacityPreset(opacity);
+  if (html) {
+    return (
+      <Tag
+        className="heading"
+        data-slot="heading-block"
+        dangerouslySetInnerHTML={{ __html: html.replace(/<\/?p>/g, "") }}
+      />
+    );
+  }
 
   return (
-    <Heading
-      as={level}
-      size={size}
-      align={align}
-      weight={weight}
-      variant={variant}
-      letterSpacing={letterSpacing}
-      lineHeight={lineHeight}
-      fontStyle={fontStyle}
-      textTransform={textTransform}
-      textDecoration={textDecoration}
-      color={
-        color as
-          | "default"
-          | "primary"
-          | "secondary"
-          | "muted"
-          | "accent"
-          | "destructive"
-          | undefined
-      }
-      maxWidth={
-        maxWidth as
-          | "xs"
-          | "sm"
-          | "md"
-          | "lg"
-          | "xl"
-          | "2xl"
-          | "prose"
-          | "none"
-          | undefined
-      }
-      whiteSpace={whiteSpace}
-      opacity={
-        opacityPreset as "10" | "25" | "50" | "75" | "90" | "100" | undefined
-      }
-    >
-      {(data as { html?: string }).html ? (
-        <span
-          dangerouslySetInnerHTML={{
-            __html: (data as { html?: string }).html!.replace(/<\/?p>/g, ""),
-          }}
-        />
-      ) : (
-        text
-      )}
-    </Heading>
+    <Tag className="heading" data-slot="heading-block">
+      {text}
+    </Tag>
   );
 }

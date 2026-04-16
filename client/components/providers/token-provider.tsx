@@ -180,7 +180,7 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   // Handle font configuration — only use old format if definitions exist
   const fontConfig: FontConfig = {
     definitions: fonts?.definitions || [],
-    roles: fonts?.roles || {},
+    roles: (fonts?.roles || {}) as FontConfig["roles"],
   };
   const googleFontsUrl = buildGoogleFontsUrl(fontConfig.definitions);
   const fontCSS = generateFontCSS(fontConfig);
