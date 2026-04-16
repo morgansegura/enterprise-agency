@@ -5,18 +5,15 @@ type RichTextBlockProps = {
 };
 
 /**
- * RichTextBlock - TipTap HTML content renderer
- * Content block (leaf node) - cannot have children
- * Renders rich HTML with typography styles from design tokens
+ * RichTextBlock — clean HTML output.
+ * All styling from generated CSS via .e-{key} wrapper.
  */
 export function RichTextBlock({ data }: RichTextBlockProps) {
-  const { html, align } = data;
-
   return (
     <div
       className="rich-text"
-      data-align={align}
-      dangerouslySetInnerHTML={{ __html: html }}
+      data-slot="rich-text-block"
+      dangerouslySetInnerHTML={{ __html: data.html }}
     />
   );
 }
