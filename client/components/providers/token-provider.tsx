@@ -227,11 +227,12 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
       {googleFontsUrl && (
         <link rel="stylesheet" href={googleFontsUrl} fetchPriority="high" />
       )}
-      {/* Theme fonts (simple format) */}
+      {/* Theme fonts (simple format) — only load if not already in googleFontsUrl */}
       {[sf.heading?.family, sf.body?.family, sf.accent?.family]
         .filter((f): f is string => !!f && f !== "system")
         .map((f) => f.replace(/^'|',.*/g, ""))
         .filter((f, i, arr) => f && arr.indexOf(f) === i)
+        .filter((f) => !googleFontsUrl?.includes(encodeURIComponent(f)))
         .map((family) => (
           <link
             key={family}
