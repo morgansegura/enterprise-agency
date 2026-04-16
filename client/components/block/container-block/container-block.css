@@ -1,10 +1,8 @@
 @reference "tailwindcss";
 
-/* Box block — inherits gap/padding/radius from .e-key wrapper */
+/* Box inner — only inherit gap for child spacing. Padding/border on wrapper only. */
 [data-slot="box-block"],
 [data-slot="container-block"] {
   @apply relative w-full flex flex-col text-inherit font-[inherit] text-[length:inherit] font-[number:inherit];
   gap: inherit;
-  padding: inherit;
-  border-radius: inherit;
 }

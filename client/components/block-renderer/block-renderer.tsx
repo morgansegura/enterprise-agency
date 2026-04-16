@@ -89,8 +89,19 @@ function withStyles(block: RootBlock, content: React.ReactNode, key?: string): R
 
   if (!styled) return content;
 
+  const cls = getElementClass((block as { _key: string })._key);
+  const k = key ?? (block as { _key: string })._key;
+
+  // For container blocks, merge class onto the component to avoid double wrapper
+  if (React.isValidElement(content) && isContainerBlock(block)) {
+    return React.cloneElement(content as React.ReactElement<Record<string, unknown>>, {
+      key: k,
+      className: cls,
+    });
+  }
+
   return (
-    <div key={key ?? (block as { _key: string })._key} className={getElementClass((block as { _key: string })._key)}>
+    <div key={k} className={cls}>
       {content}
     </div>
   );
