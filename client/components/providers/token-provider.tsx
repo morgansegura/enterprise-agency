@@ -191,17 +191,12 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   const sf = (simpleFonts.fonts || {}) as Record<string, Record<string, string>>;
   if (sf.heading?.family && sf.heading.family !== "system") {
     themeFontVars.push(`--theme-font-heading: ${sf.heading.family}`);
-    themeFontVars.push(`--font-heading: ${sf.heading.family}`);
-    themeFontVars.push(`--font-primary: ${sf.heading.family}`);
   }
   if (sf.body?.family && sf.body.family !== "system") {
     themeFontVars.push(`--theme-font-body: ${sf.body.family}`);
-    themeFontVars.push(`--font-body: ${sf.body.family}`);
-    themeFontVars.push(`--font-secondary: ${sf.body.family}`);
   }
   if (sf.accent?.family && sf.accent.family !== "system") {
     themeFontVars.push(`--theme-font-accent: ${sf.accent.family}`);
-    themeFontVars.push(`--font-accent: ${sf.accent.family}`);
   }
   const themeFontCSS = themeFontVars.length > 0
     ? `:root {\n  ${themeFontVars.join(";\n  ")};\n}`
