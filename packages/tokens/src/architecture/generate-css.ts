@@ -165,6 +165,7 @@ function stylesToDeclarations(styles: ElementStyles): string {
 
   for (const [key, value] of Object.entries(styles)) {
     if (value === undefined || value === "") continue;
+    if (value === "0" || value === "0px") continue; // Skip zero values — they're defaults
     if (key === "content") continue; // handled by pseudo-element
     if (key === "_responsive") continue;
 

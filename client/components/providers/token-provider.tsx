@@ -185,9 +185,31 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
   const googleFontsUrl = buildGoogleFontsUrl(fontConfig.definitions);
   const fontCSS = generateFontCSS(fontConfig);
 
+  // Generate theme font variables from simple format (fonts.heading.family etc.)
+  const themeFontVars: string[] = [];
+  const simpleFonts = tenantTokens as Record<string, unknown>;
+  const sf = (simpleFonts.fonts || {}) as Record<string, Record<string, string>>;
+  if (sf.heading?.family && sf.heading.family !== "system") {
+    themeFontVars.push(`--theme-font-heading: ${sf.heading.family}`);
+    themeFontVars.push(`--font-heading: ${sf.heading.family}`);
+    themeFontVars.push(`--font-primary: ${sf.heading.family}`);
+  }
+  if (sf.body?.family && sf.body.family !== "system") {
+    themeFontVars.push(`--theme-font-body: ${sf.body.family}`);
+    themeFontVars.push(`--font-body: ${sf.body.family}`);
+    themeFontVars.push(`--font-secondary: ${sf.body.family}`);
+  }
+  if (sf.accent?.family && sf.accent.family !== "system") {
+    themeFontVars.push(`--theme-font-accent: ${sf.accent.family}`);
+    themeFontVars.push(`--font-accent: ${sf.accent.family}`);
+  }
+  const themeFontCSS = themeFontVars.length > 0
+    ? `:root {\n  ${themeFontVars.join(";\n  ")};\n}`
+    : "";
+
   // Combine all CSS outputs
   // Semantic CSS comes last to override any defaults
-  const combinedCSS = `${newCSS}\n\n/* Font Variables */\n:root {\n  ${fontCSS}\n}\n\n${legacyCSS}\n\n/* Semantic Colors (Global Settings) */\n${semanticCSS}`;
+  const combinedCSS = `${newCSS}\n\n/* Font Variables */\n:root {\n  ${fontCSS}\n}\n\n${legacyCSS}\n\n/* Semantic Colors (Global Settings) */\n${semanticCSS}\n\n/* Theme Fonts */\n${themeFontCSS}`;
 
   // Inject CSS and Google Fonts into <head>
   // This ensures tokens and fonts are available before any component renders
@@ -205,6 +227,18 @@ export async function TokenProvider({ tenantSlug }: TokenProviderProps = {}) {
       {googleFontsUrl && (
         <link rel="stylesheet" href={googleFontsUrl} fetchPriority="high" />
       )}
+      {/* Theme fonts (simple format) */}
+      {[sf.heading?.family, sf.body?.family, sf.accent?.family]
+        .filter((f): f is string => !!f && f !== "system")
+        .map((f) => f.replace(/^'|',.*/g, ""))
+        .filter((f, i, arr) => f && arr.indexOf(f) === i)
+        .map((family) => (
+          <link
+            key={family}
+            rel="stylesheet"
+            href={`https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@300;400;500;600;700;800&display=swap`}
+          />
+        ))}
 
       {/* Design tokens CSS */}
       <style
