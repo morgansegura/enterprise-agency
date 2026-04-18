@@ -7,6 +7,25 @@ import { queryKeys } from "./query-keys";
 // Types
 // =============================================================================
 
+export interface AssetVariant {
+  key: string;
+  url: string;
+  width: number;
+  height: number;
+  sizeBytes: number;
+  format: "jpeg" | "webp" | "avif";
+}
+
+export interface AssetVariants {
+  thumbnail?: AssetVariant;
+  sm?: AssetVariant;
+  md?: AssetVariant;
+  lg?: AssetVariant;
+  xl?: AssetVariant;
+  webp?: Record<string, AssetVariant>;
+  avif?: Record<string, AssetVariant>;
+}
+
 export interface Asset {
   id: string;
   tenantId: string;
@@ -17,22 +36,64 @@ export interface Asset {
   fileType: string;
   mimeType?: string;
   sizeBytes?: number;
+  contentHash?: string;
+  perceptualHash?: string;
   width?: number;
   height?: number;
   aspectRatio?: string;
+  duration?: number;
   blurHash?: string;
+  dominantColor?: string;
+  palette?: string[];
+  exif?: Record<string, unknown>;
+  focalX?: number;
+  focalY?: number;
   url: string;
   thumbnailUrl?: string;
-  variants?: Record<string, string>;
+  variants?: AssetVariants;
+  storageProvider?: "local" | "r2" | "s3";
   title?: string;
   altText?: string;
   caption?: string;
   tags?: string[];
   usageContext?: string;
+  status?: "processing" | "ready" | "error";
+  processingError?: string;
   folderId?: string | null;
   folder?: { id: string; name: string; path: string } | null;
+  uploader?: {
+    id: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
+  } | null;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface AssetUsageSummary {
+  quotaBytes: number;
+  usedBytes: number;
+  unlimited: boolean;
+  counts: {
+    images: number;
+    videos: number;
+    documents: number;
+    audio: number;
+    total: number;
+  };
+}
+
+export interface AssetReference {
+  id: string;
+  slug: string;
+  title: string;
+  status: string;
+}
+
+export interface AssetReferences {
+  pages: AssetReference[];
+  posts: AssetReference[];
 }
 
 /** Server-side type filter — must match MediaType enum on the API */
@@ -108,10 +169,7 @@ export function useAssets(tenantId: string, filters?: AssetFilters) {
 /**
  * Returns the full paginated payload (items + total + page metadata).
  */
-export function useAssetsPaginated(
-  tenantId: string,
-  filters?: AssetFilters,
-) {
+export function useAssetsPaginated(tenantId: string, filters?: AssetFilters) {
   return useQuery<PaginatedAssets>({
     queryKey: [
       ...queryKeys.assets.list(
@@ -176,8 +234,7 @@ export function useUploadAsset(tenantId: string) {
       if (folderId) formData.append("folderId", folderId);
       if (usageContext) formData.append("usageContext", usageContext);
 
-      const apiUrl =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
       const url = `${apiUrl}/api/v1/tenants/${tenantId}/media/upload`;
 
       return new Promise<Asset>((resolve, reject) => {
@@ -340,10 +397,11 @@ export function useBulkMoveAssets(tenantId: string) {
       mediaIds: string[];
       folderId: string | null;
     }) =>
-      apiClient.post<{ successIds: string[]; failedIds: string[]; total: number }>(
-        `/tenants/${tenantId}/media/bulk/move`,
-        { mediaIds, folderId },
-      ),
+      apiClient.post<{
+        successIds: string[];
+        failedIds: string[];
+        total: number;
+      }>(`/tenants/${tenantId}/media/bulk/move`, { mediaIds, folderId }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.assets.byTenant(tenantId),
@@ -380,17 +438,12 @@ export function useBulkTagAssets(tenantId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      mediaIds,
-      tags,
-    }: {
-      mediaIds: string[];
-      tags: string[];
-    }) =>
-      apiClient.post<{ successIds: string[]; failedIds: string[]; total: number }>(
-        `/tenants/${tenantId}/media/bulk/tag`,
-        { mediaIds, tags },
-      ),
+    mutationFn: ({ mediaIds, tags }: { mediaIds: string[]; tags: string[] }) =>
+      apiClient.post<{
+        successIds: string[];
+        failedIds: string[];
+        total: number;
+      }>(`/tenants/${tenantId}/media/bulk/tag`, { mediaIds, tags }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.assets.byTenant(tenantId),
@@ -403,21 +456,46 @@ export function useBulkUntagAssets(tenantId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      mediaIds,
-      tags,
-    }: {
-      mediaIds: string[];
-      tags: string[];
-    }) =>
-      apiClient.post<{ successIds: string[]; failedIds: string[]; total: number }>(
-        `/tenants/${tenantId}/media/bulk/untag`,
-        { mediaIds, tags },
-      ),
+    mutationFn: ({ mediaIds, tags }: { mediaIds: string[]; tags: string[] }) =>
+      apiClient.post<{
+        successIds: string[];
+        failedIds: string[];
+        total: number;
+      }>(`/tenants/${tenantId}/media/bulk/untag`, { mediaIds, tags }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.assets.byTenant(tenantId),
       });
     },
+  });
+}
+
+// =============================================================================
+// Usage & References
+// =============================================================================
+
+export function useAssetUsage(tenantId: string) {
+  return useQuery<AssetUsageSummary>({
+    queryKey: [...queryKeys.assets.byTenant(tenantId), "usage"],
+    queryFn: () =>
+      apiClient.get<AssetUsageSummary>(
+        `/tenants/${tenantId}/media/usage/summary`,
+      ),
+    enabled: !!tenantId,
+  });
+}
+
+export function useAssetReferences(tenantId: string, assetId: string | null) {
+  return useQuery<AssetReferences>({
+    queryKey: [
+      ...queryKeys.assets.byTenant(tenantId),
+      "references",
+      assetId,
+    ],
+    queryFn: () =>
+      apiClient.get<AssetReferences>(
+        `/tenants/${tenantId}/media/${assetId}/references`,
+      ),
+    enabled: !!tenantId && !!assetId,
   });
 }

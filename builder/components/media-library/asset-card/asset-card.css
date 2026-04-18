@@ -1,0 +1,69 @@
+@reference "tailwindcss";
+
+[data-slot="asset-card"] {
+  @apply relative flex flex-col gap-2 p-2 rounded-md;
+  @apply border border-transparent bg-transparent text-left;
+  @apply transition-colors cursor-pointer;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent-500);
+}
+
+[data-slot="asset-card"]:hover {
+  @apply bg-(--el-50);
+}
+
+[data-slot="asset-card"][data-selected="true"] {
+  @apply bg-(--accent-50) border-(--accent-500);
+}
+
+[data-slot="asset-card"][data-active="true"] {
+  @apply ring-2 ring-(--accent-500);
+}
+
+[data-slot="asset-card"][data-status="processing"] {
+  @apply opacity-60;
+}
+
+[data-slot="asset-card"][data-status="error"] {
+  @apply opacity-80;
+}
+
+[data-slot="asset-card-preview"] {
+  @apply relative block aspect-square overflow-hidden rounded-sm;
+  @apply bg-(--el-50);
+}
+
+[data-slot="asset-card-duration"] {
+  @apply absolute bottom-1.5 right-1.5 z-10;
+  @apply rounded-sm bg-black/70 text-white;
+  @apply px-1.5 py-0.5 text-[10px] font-medium tabular-nums;
+}
+
+[data-slot="asset-card-check"] {
+  @apply absolute top-1.5 left-1.5 z-10;
+  @apply w-5 h-5 rounded-full flex items-center justify-center;
+  @apply bg-(--accent-500) text-white;
+}
+
+[data-slot="asset-card-check"] svg {
+  @apply w-3.5 h-3.5;
+}
+
+[data-slot="asset-card-meta"] {
+  @apply flex flex-col gap-0.5 min-w-0;
+}
+
+[data-slot="asset-card-name"] {
+  @apply text-xs font-medium text-(--el-900) truncate;
+}
+
+[data-slot="asset-card-sub"] {
+  @apply text-[11px] text-(--el-500) truncate tabular-nums;
+}
+
+[data-slot="asset-card"][data-density="compact"] [data-slot="asset-card-meta"] {
+  @apply hidden;
+}
+
+[data-slot="asset-card"][data-density="spacious"] [data-slot="asset-card-preview"] {
+  @apply aspect-[4/3];
+}

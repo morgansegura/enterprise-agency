@@ -1,0 +1,70 @@
+@reference "tailwindcss";
+
+[data-slot="media-toolbar"] {
+  @apply flex items-center gap-2 px-3 h-12;
+  @apply border-b border-(--el-200) bg-(--el-0);
+}
+
+[data-slot="media-toolbar-search"] {
+  @apply relative flex items-center flex-1 max-w-md;
+}
+
+[data-slot="media-toolbar-search"] > svg {
+  @apply absolute left-2.5 w-3.5 h-3.5 text-(--el-500) pointer-events-none;
+}
+
+[data-slot="media-toolbar-search"] input {
+  @apply pl-8 h-8 text-sm;
+}
+
+[data-slot="media-toolbar-filters"] {
+  @apply flex items-center gap-1;
+}
+
+[data-slot="media-toolbar-select"] {
+  @apply h-8 text-xs min-w-24;
+}
+
+[data-slot="media-toolbar-order"] {
+  @apply h-8 w-8 inline-flex items-center justify-center rounded-sm;
+  @apply border border-(--el-200) text-(--el-600);
+  @apply hover:bg-(--el-50) transition-colors;
+}
+
+[data-slot="media-toolbar-order"][data-order="asc"] svg {
+  @apply rotate-180;
+}
+
+[data-slot="media-toolbar-order"] svg {
+  @apply w-3.5 h-3.5 transition-transform;
+}
+
+[data-slot="media-toolbar-view"] {
+  @apply flex items-center gap-1 border-l border-(--el-200) pl-2 ml-1;
+}
+
+[data-slot="media-toolbar-view-btn"] {
+  @apply h-8 w-8 inline-flex items-center justify-center rounded-sm;
+  @apply text-(--el-500) transition-colors;
+  @apply hover:bg-(--el-100) hover:text-(--el-800);
+}
+
+[data-slot="media-toolbar-view-btn"][data-active="true"] {
+  @apply bg-(--accent-50) text-(--accent-700);
+}
+
+[data-slot="media-toolbar-view-btn"] svg {
+  @apply w-3.5 h-3.5;
+}
+
+[data-slot="media-toolbar-density"] {
+  @apply h-8 text-xs min-w-28 ml-1;
+}
+
+[data-slot="media-toolbar-count"] {
+  @apply ml-auto text-xs text-(--el-500) tabular-nums;
+}
+
+[data-slot="media-toolbar-upload"] {
+  @apply flex-shrink-0;
+}
