@@ -22,7 +22,7 @@
 }
 
 [data-slot="folder-tree-item"] {
-  @apply group flex items-center h-8 px-1 gap-1 relative;
+  @apply flex items-center h-8 px-1 gap-1 relative;
   @apply hover:bg-(--el-50) transition-colors cursor-pointer;
 }
 
@@ -82,9 +82,14 @@
 }
 
 [data-slot="folder-tree-menu"] {
-  @apply opacity-0 group-hover:opacity-100 transition-opacity;
+  @apply opacity-0 transition-opacity;
   @apply p-1 rounded-sm text-(--el-500);
   @apply hover:bg-(--el-100) hover:text-(--el-700);
+}
+
+[data-slot="folder-tree-item"]:hover [data-slot="folder-tree-menu"],
+[data-slot="folder-tree-item"]:focus-within [data-slot="folder-tree-menu"] {
+  @apply opacity-100;
 }
 
 [data-slot="folder-tree-menu"] svg {
