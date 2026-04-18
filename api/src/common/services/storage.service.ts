@@ -317,6 +317,36 @@ export class StorageService {
   }
 
   /**
+   * Generate a presigned PUT URL for direct client-side uploads.
+   * Only available for R2/S3 — throws on local provider.
+   */
+  async getPresignedUploadUrl(
+    key: string,
+    contentType: string,
+    expiresIn: number = 600,
+  ): Promise<string> {
+    if (this.provider === "local") {
+      throw new Error("Presigned uploads are not supported for local storage");
+    }
+    if (!this.s3Client) {
+      throw new Error("Cloud storage client not initialized");
+    }
+
+    const command = new PutObjectCommand({
+      Bucket: this.bucketName,
+      Key: key,
+      ContentType: contentType,
+      CacheControl: "public, max-age=31536000",
+    });
+
+    return getSignedUrl(this.s3Client, command, { expiresIn });
+  }
+
+  supportsPresignedUploads(): boolean {
+    return this.provider !== "local";
+  }
+
+  /**
    * Download file from storage as buffer
    */
   async download(key: string): Promise<Buffer> {

@@ -17,6 +17,7 @@ import {
   ImageProcessorService,
   ImageVariants,
 } from "@/common/services/image-processor.service";
+import { VideoProcessorService } from "@/common/services/video-processor.service";
 import {
   MediaQueryDto,
   UpdateMediaDto,
@@ -37,6 +38,7 @@ export class MediaService {
     private prisma: PrismaService,
     private storage: StorageService,
     private imageProcessor: ImageProcessorService,
+    private videoProcessor: VideoProcessorService,
     private audit: AuditLogService,
   ) {}
 
@@ -182,6 +184,7 @@ export class MediaService {
     let width: number | undefined;
     let height: number | undefined;
     let aspectRatio: string | undefined;
+    let duration: number | undefined;
     let blurHash: string | null = null;
     let dominantColor: string | null = null;
     let palette: string[] | null = null;
@@ -216,6 +219,17 @@ export class MediaService {
         processingError =
           err instanceof Error ? err.message : "Unknown processing error";
       }
+    } else if (fileType === "video") {
+      const processed = await this.videoProcessor.process(
+        buffer,
+        tenantId,
+        file.originalname,
+      );
+      width = processed.width ?? undefined;
+      height = processed.height ?? undefined;
+      aspectRatio = processed.aspectRatio ?? undefined;
+      duration = processed.duration ?? undefined;
+      thumbnailUrl = processed.thumbnailUrl;
     }
 
     const asset = await this.prisma.$transaction(async (tx) => {
@@ -234,6 +248,7 @@ export class MediaService {
           width,
           height,
           aspectRatio,
+          duration,
           blurHash,
           dominantColor,
           palette: (palette ?? undefined) as Prisma.InputJsonValue | undefined,
@@ -593,6 +608,271 @@ export class MediaService {
     });
 
     return { successIds, failedIds: [], total: assets.length };
+  }
+
+  // ============================================================================
+  // PRESIGNED UPLOADS (direct-to-cloud for large files)
+  // ============================================================================
+
+  /**
+   * Step 1: Reserve an asset record and return a presigned PUT URL.
+   * The client then uploads the file directly to R2/S3, then calls finalize.
+   */
+  async presign(
+    tenantId: string,
+    uploadedBy: string,
+    input: {
+      fileName: string;
+      mimeType: string;
+      fileSize: number;
+      folderId?: string;
+    },
+  ) {
+    if (!this.storage.supportsPresignedUploads()) {
+      throw new BadRequestException(
+        "Presigned uploads are not supported for local storage",
+      );
+    }
+    if (!this.storage.isValidFileType(input.mimeType)) {
+      throw new BadRequestException(`Unsupported file type: ${input.mimeType}`);
+    }
+    if (!this.storage.isValidFileSize(input.fileSize)) {
+      throw new PayloadTooLargeException(
+        `File exceeds maximum size (${this.storage.getMaxSizeMB()}MB)`,
+      );
+    }
+
+    await this.assertQuota(tenantId, input.fileSize);
+
+    const fileType = this.getFileType(input.mimeType);
+    const fileKey = this.storage.generateFileKey(tenantId, input.fileName);
+    const uploadUrl = await this.storage.getPresignedUploadUrl(
+      fileKey,
+      input.mimeType,
+    );
+
+    const asset = await this.prisma.asset.create({
+      data: {
+        tenantId,
+        uploadedBy,
+        fileKey,
+        fileName: input.fileName,
+        originalName: input.fileName,
+        fileType,
+        mimeType: input.mimeType,
+        sizeBytes: BigInt(input.fileSize),
+        storageProvider: this.storage.getProvider(),
+        url: this.storage.getPublicUrl(fileKey),
+        folderId: input.folderId,
+        status: "processing",
+      },
+    });
+
+    return {
+      assetId: asset.id,
+      uploadUrl,
+      fileKey,
+      expiresIn: 600,
+    };
+  }
+
+  /**
+   * Step 2: Client confirms the upload completed. Download from storage,
+   * run processing, update the asset to ready.
+   */
+  async finalize(tenantId: string, assetId: string) {
+    const asset = await this.prisma.asset.findFirst({
+      where: { id: assetId, tenantId, status: "processing" },
+    });
+    if (!asset) {
+      throw new NotFoundException("Pending asset not found");
+    }
+
+    let buffer: Buffer;
+    try {
+      buffer = await this.storage.download(asset.fileKey);
+    } catch (err) {
+      this.logger.error(
+        `finalize: download failed for ${asset.fileKey} — ${err instanceof Error ? err.message : String(err)}`,
+      );
+      await this.prisma.asset.update({
+        where: { id: asset.id },
+        data: {
+          status: "error",
+          processingError: "Upload was never completed",
+        },
+      });
+      throw new BadRequestException("Upload not found in storage");
+    }
+
+    const contentHash = crypto
+      .createHash("sha256")
+      .update(buffer)
+      .digest("hex");
+    const sizeBytes = buffer.length;
+
+    const duplicate = await this.prisma.asset.findFirst({
+      where: {
+        tenantId,
+        contentHash,
+        id: { not: asset.id },
+      },
+      include: {
+        folder: { select: { id: true, name: true, path: true } },
+      },
+    });
+    if (duplicate) {
+      await this.storage.delete(asset.fileKey).catch(() => undefined);
+      await this.prisma.asset.delete({ where: { id: asset.id } });
+      return this.serializeAsset(duplicate);
+    }
+
+    let width: number | undefined;
+    let height: number | undefined;
+    let aspectRatio: string | undefined;
+    let duration: number | undefined;
+    let blurHash: string | null = null;
+    let dominantColor: string | null = null;
+    let palette: string[] | null = null;
+    let exifData: Record<string, unknown> | null = null;
+    let thumbnailUrl: string | null = null;
+    let variants: ImageVariants | null = null;
+    let status = "ready";
+    let processingError: string | null = null;
+
+    if (asset.fileType === "image") {
+      try {
+        const processed = await this.imageProcessor.process(
+          buffer,
+          tenantId,
+          asset.fileName,
+          asset.mimeType || "image/jpeg",
+        );
+        width = processed.width || undefined;
+        height = processed.height || undefined;
+        aspectRatio = processed.aspectRatio;
+        blurHash = processed.blurHash;
+        dominantColor = processed.dominantColor;
+        palette = processed.palette;
+        exifData = processed.exif;
+        thumbnailUrl = processed.thumbnailUrl;
+        variants = processed.variants;
+      } catch (err) {
+        status = "error";
+        processingError =
+          err instanceof Error ? err.message : "Unknown processing error";
+      }
+    } else if (asset.fileType === "video") {
+      const processed = await this.videoProcessor.process(
+        buffer,
+        tenantId,
+        asset.fileName,
+      );
+      width = processed.width ?? undefined;
+      height = processed.height ?? undefined;
+      aspectRatio = processed.aspectRatio ?? undefined;
+      duration = processed.duration ?? undefined;
+      thumbnailUrl = processed.thumbnailUrl;
+    }
+
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const next = await tx.asset.update({
+        where: { id: asset.id },
+        data: {
+          sizeBytes: BigInt(sizeBytes),
+          contentHash,
+          width,
+          height,
+          aspectRatio,
+          duration,
+          blurHash,
+          dominantColor,
+          palette: (palette ?? undefined) as Prisma.InputJsonValue | undefined,
+          exif: (exifData ?? undefined) as Prisma.InputJsonValue | undefined,
+          thumbnailUrl,
+          variants: (variants ?? undefined) as
+            | Prisma.InputJsonValue
+            | undefined,
+          status,
+          processingError,
+        },
+        include: {
+          folder: { select: { id: true, name: true, path: true } },
+        },
+      });
+
+      await tx.tenant.update({
+        where: { id: tenantId },
+        data: {
+          storageUsedBytes: {
+            increment: BigInt(sizeBytes) - (asset.sizeBytes ?? BigInt(0)),
+          },
+        },
+      });
+
+      return next;
+    });
+
+    this.audit.log({
+      tenantId,
+      action: AuditAction.UPLOADED,
+      resourceType: "asset",
+      resourceId: updated.id,
+    });
+
+    return this.serializeAsset(updated);
+  }
+
+  // ============================================================================
+  // USAGE REFERENCES
+  // ============================================================================
+
+  /**
+   * Find pages and posts that reference this asset by URL or fileKey.
+   * Uses a text cast + ILIKE scan against JSONB content columns — acceptable
+   * for a detail-drawer lookup; a dedicated reference table would be needed
+   * for high-frequency queries.
+   */
+  async findReferences(tenantId: string, id: string) {
+    const asset = await this.prisma.asset.findFirst({
+      where: { id, tenantId },
+      select: { url: true, fileKey: true, thumbnailUrl: true },
+    });
+    if (!asset) throw new NotFoundException("Media not found");
+
+    const needles = [asset.url, asset.fileKey, asset.thumbnailUrl].filter(
+      (v): v is string => Boolean(v),
+    );
+
+    if (needles.length === 0) {
+      return { pages: [], posts: [] };
+    }
+
+    const likeClauses = needles
+      .map((_, i) => `content::text ILIKE $${i + 2}`)
+      .join(" OR ");
+
+    const pages = await this.prisma.$queryRawUnsafe<
+      Array<{ id: string; slug: string; title: string; status: string }>
+    >(
+      `SELECT id, slug, title, status FROM pages WHERE tenant_id = $1 AND (${likeClauses}) LIMIT 50`,
+      tenantId,
+      ...needles.map((n) => `%${n}%`),
+    );
+
+    const postLikeClauses = needles
+      .map((_, i) => `content::text ILIKE $${i + 2}`)
+      .join(" OR ");
+
+    const posts = await this.prisma.$queryRawUnsafe<
+      Array<{ id: string; slug: string; title: string; status: string }>
+    >(
+      `SELECT id, slug, title, status FROM posts WHERE tenant_id = $1 AND (${postLikeClauses}) LIMIT 50`,
+      tenantId,
+      ...needles.map((n) => `%${n}%`),
+    );
+
+    return { pages, posts };
   }
 
   // ============================================================================

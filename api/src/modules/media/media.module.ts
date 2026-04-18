@@ -6,6 +6,7 @@ import { FoldersService } from "./folders.service";
 import { PrismaService } from "@/common/services/prisma.service";
 import { StorageService } from "@/common/services/storage.service";
 import { ImageProcessorService } from "@/common/services/image-processor.service";
+import { VideoProcessorService } from "@/common/services/video-processor.service";
 import { AuditLogService } from "@/common/services/audit-log.service";
 
 @Module({
@@ -19,6 +20,7 @@ import { AuditLogService } from "@/common/services/audit-log.service";
     PrismaService,
     StorageService,
     ImageProcessorService,
+    VideoProcessorService,
     AuditLogService,
   ],
   exports: [MediaService, FoldersService],

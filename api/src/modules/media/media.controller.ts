@@ -22,6 +22,7 @@ import {
   BulkTagDto,
   CropMediaDto,
   UploadMediaDto,
+  PresignedUploadDto,
 } from "./dto";
 import { JwtAuthGuard } from "@/modules/auth/guards/jwt-auth.guard";
 import { TenantAccessGuard } from "@/common/guards/tenant-access.guard";
@@ -84,12 +85,48 @@ export class MediaController {
   }
 
   /**
+   * Presign a direct upload (R2/S3 only). Returns upload URL + reserved asset id.
+   */
+  @Post("presign")
+  @Permissions(Permission.MEDIA_UPLOAD)
+  async presign(
+    @CurrentTenant() tenantId: string,
+    @CurrentUser("id") userId: string,
+    @Body() dto: PresignedUploadDto,
+  ) {
+    return this.mediaService.presign(tenantId, userId, {
+      fileName: dto.fileName,
+      mimeType: dto.mimeType,
+      fileSize: dto.fileSize,
+      folderId: dto.folderId,
+    });
+  }
+
+  /**
+   * Confirm a presigned upload completed — server downloads and processes.
+   */
+  @Post(":id/finalize")
+  @Permissions(Permission.MEDIA_UPLOAD)
+  async finalize(@CurrentTenant() tenantId: string, @Param("id") id: string) {
+    return this.mediaService.finalize(tenantId, id);
+  }
+
+  /**
    * Get tenant storage usage
    */
   @Get("usage/summary")
   @Permissions(Permission.MEDIA_VIEW)
   async usage(@CurrentTenant() tenantId: string) {
     return this.mediaService.getUsage(tenantId);
+  }
+
+  /**
+   * Get pages/posts that reference this asset
+   */
+  @Get(":id/references")
+  @Permissions(Permission.MEDIA_VIEW)
+  async references(@CurrentTenant() tenantId: string, @Param("id") id: string) {
+    return this.mediaService.findReferences(tenantId, id);
   }
 
   // ============================================================================

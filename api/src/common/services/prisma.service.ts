@@ -110,6 +110,13 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
     return this.client.$queryRaw(query, ...values) as Promise<T>;
   }
 
+  $queryRawUnsafe<T = unknown>(
+    query: string,
+    ...values: unknown[]
+  ): Promise<T> {
+    return this.client.$queryRawUnsafe(query, ...values) as Promise<T>;
+  }
+
   // Expose transaction and other methods
   $transaction<T>(
     fn: (
