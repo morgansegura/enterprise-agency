@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { Prisma } from "@prisma";
 import { PrismaService } from "@/common/services/prisma.service";
+import { MediaEnricherService } from "@/common/services/media-enricher.service";
 import { PublicPageDto, PublicPagesListDto } from "./dto/public-page.dto";
 import { PublicPostDto, PublicPostsListDto } from "./dto/public-post.dto";
 import { PublicSiteConfigDto } from "./dto/public-site-config.dto";
@@ -20,7 +21,10 @@ import { PublicSiteConfigDto } from "./dto/public-site-config.dto";
 export class PublicApiService {
   private readonly logger = new Logger(PublicApiService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mediaEnricher: MediaEnricherService,
+  ) {}
 
   /**
    * Resolve tenant from domain
@@ -134,6 +138,16 @@ export class PublicApiService {
   /**
    * Get site configuration
    * GET /api/v1/public/:tenantSlug/config
+   *
+   * Serves the tenant-level JSONB config (headerConfig, footerConfig,
+   * menusConfig, logosConfig, themeConfig) that the client site renderer
+   * consumes. The builder edits Header/Footer/Menu tables via its own
+   * authenticated endpoints; those entities use a different shape (Section[]
+   * content) and will be wired into the public client once a section-based
+   * renderer lands on the client app.
+   *
+   * Until then, only the JSONB config shape is exposed here to keep the
+   * existing client renderer stable.
    */
   async getSiteConfig(tenantSlug: string): Promise<PublicSiteConfigDto> {
     const tenant = await this.prisma.tenant.findUnique({
@@ -321,11 +335,16 @@ export class PublicApiService {
       contentToServe = page.productionContent ?? page.content;
     }
 
+    const enrichedContent = (await this.mediaEnricher.enrich(
+      tenant.id,
+      contentToServe,
+    )) as Prisma.JsonValue;
+
     return {
       id: page.id,
       slug: page.slug,
       title: page.title,
-      content: contentToServe,
+      content: enrichedContent,
       metaTitle: page.metaTitle ?? undefined,
       metaDescription: page.metaDescription ?? undefined,
       template: page.template ?? undefined,
@@ -423,11 +442,16 @@ export class PublicApiService {
       return this.getDefaultComingSoonPage(tenantSlug);
     }
 
+    const enriched = (await this.mediaEnricher.enrich(
+      tenantId,
+      page.content,
+    )) as Prisma.JsonValue;
+
     return {
       id: page.id,
       slug: page.slug,
       title: page.title,
-      content: page.content,
+      content: enriched,
       metaTitle: page.metaTitle ?? undefined,
       metaDescription: page.metaDescription ?? undefined,
       template: page.template ?? undefined,

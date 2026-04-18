@@ -485,6 +485,45 @@ export function useAssetUsage(tenantId: string) {
   });
 }
 
+export interface LargestAsset {
+  id: string;
+  fileName: string;
+  fileType: string;
+  mimeType?: string;
+  sizeBytes: number | null;
+  url: string;
+  thumbnailUrl?: string | null;
+  width?: number | null;
+  height?: number | null;
+  createdAt: string;
+}
+
+export interface OrphanAsset extends LargestAsset {
+  fileKey: string;
+}
+
+export function useLargestAssets(tenantId: string, limit = 20) {
+  return useQuery<LargestAsset[]>({
+    queryKey: [...queryKeys.assets.byTenant(tenantId), "largest", limit],
+    queryFn: () =>
+      apiClient.get<LargestAsset[]>(
+        `/tenants/${tenantId}/media/usage/largest?limit=${limit}`,
+      ),
+    enabled: !!tenantId,
+  });
+}
+
+export function useOrphanAssets(tenantId: string, limit = 100) {
+  return useQuery<OrphanAsset[]>({
+    queryKey: [...queryKeys.assets.byTenant(tenantId), "orphans", limit],
+    queryFn: () =>
+      apiClient.get<OrphanAsset[]>(
+        `/tenants/${tenantId}/media/usage/orphans?limit=${limit}`,
+      ),
+    enabled: !!tenantId,
+  });
+}
+
 export function useAssetReferences(tenantId: string, assetId: string | null) {
   return useQuery<AssetReferences>({
     queryKey: [

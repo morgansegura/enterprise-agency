@@ -824,6 +824,96 @@ export class MediaService {
   }
 
   // ============================================================================
+  // STORAGE DASHBOARD QUERIES
+  // ============================================================================
+
+  /**
+   * Top-N largest assets for storage insight.
+   */
+  async getLargestAssets(tenantId: string, limit = 20) {
+    const assets = await this.prisma.asset.findMany({
+      where: { tenantId },
+      orderBy: { sizeBytes: "desc" },
+      take: limit,
+      select: {
+        id: true,
+        fileName: true,
+        fileType: true,
+        mimeType: true,
+        sizeBytes: true,
+        url: true,
+        thumbnailUrl: true,
+        width: true,
+        height: true,
+        createdAt: true,
+      },
+    });
+    return assets.map((a) => ({
+      ...a,
+      sizeBytes: a.sizeBytes ? Number(a.sizeBytes) : null,
+    }));
+  }
+
+  /**
+   * Assets not referenced by any page/post content — candidates for cleanup.
+   */
+  async getOrphanAssets(tenantId: string, limit = 100) {
+    const assets = await this.prisma.asset.findMany({
+      where: { tenantId },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        fileName: true,
+        fileType: true,
+        mimeType: true,
+        sizeBytes: true,
+        url: true,
+        thumbnailUrl: true,
+        fileKey: true,
+        createdAt: true,
+      },
+    });
+
+    if (assets.length === 0) return [];
+
+    const urls = assets.flatMap((a) =>
+      [a.url, a.fileKey, a.thumbnailUrl].filter((v): v is string => Boolean(v)),
+    );
+
+    if (urls.length === 0) return [];
+
+    const likeClauses = urls
+      .map((_, i) => `content::text ILIKE $${i + 2}`)
+      .join(" OR ");
+
+    const referencedUrlRows = await this.prisma
+      .$queryRawUnsafe<Array<{ url: string }>>(
+        `SELECT DISTINCT match.url FROM (
+         SELECT unnest(ARRAY[${urls.map((_, i) => `$${i + 2}`).join(",")}]) AS url
+       ) match
+       WHERE EXISTS (
+         SELECT 1 FROM pages WHERE tenant_id = $1 AND (${likeClauses})
+       )`,
+        tenantId,
+        ...urls.map((u) => `%${u}%`),
+      )
+      .catch(() => []);
+
+    const referenced = new Set<string>(
+      referencedUrlRows.map((r) => r.url).filter(Boolean),
+    );
+
+    const orphans = assets.filter(
+      (a) => !referenced.has(a.url) && !referenced.has(a.fileKey),
+    );
+
+    return orphans.slice(0, limit).map((a) => ({
+      ...a,
+      sizeBytes: a.sizeBytes ? Number(a.sizeBytes) : null,
+    }));
+  }
+
+  // ============================================================================
   // USAGE REFERENCES
   // ============================================================================
 

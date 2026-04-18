@@ -121,6 +121,36 @@ export class MediaController {
   }
 
   /**
+   * Top-N largest assets (storage insight)
+   */
+  @Get("usage/largest")
+  @Permissions(Permission.MEDIA_VIEW)
+  async largest(
+    @CurrentTenant() tenantId: string,
+    @Query("limit") limit?: string,
+  ) {
+    return this.mediaService.getLargestAssets(
+      tenantId,
+      limit ? Math.min(parseInt(limit, 10) || 20, 100) : 20,
+    );
+  }
+
+  /**
+   * Orphaned assets — not referenced by any page/post content
+   */
+  @Get("usage/orphans")
+  @Permissions(Permission.MEDIA_VIEW)
+  async orphans(
+    @CurrentTenant() tenantId: string,
+    @Query("limit") limit?: string,
+  ) {
+    return this.mediaService.getOrphanAssets(
+      tenantId,
+      limit ? Math.min(parseInt(limit, 10) || 100, 500) : 100,
+    );
+  }
+
+  /**
    * Get pages/posts that reference this asset
    */
   @Get(":id/references")

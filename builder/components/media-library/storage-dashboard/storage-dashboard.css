@@ -1,0 +1,146 @@
+@reference "tailwindcss";
+
+[data-slot="storage-dashboard"] {
+  @apply flex flex-col gap-6 p-6 h-full overflow-y-auto;
+}
+
+[data-slot="storage-dashboard-header"] h1 {
+  @apply text-xl font-semibold text-(--el-900);
+}
+
+[data-slot="storage-dashboard-header"] p {
+  @apply text-sm text-(--el-500) mt-1;
+}
+
+[data-slot="storage-dashboard-stats"] {
+  @apply grid gap-3;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+[data-slot="storage-stat"] {
+  @apply flex items-start gap-3 p-4 rounded-md;
+  @apply bg-(--el-0) border border-(--el-200);
+}
+
+[data-slot="storage-stat"][data-tone="primary"] {
+  @apply col-span-2;
+  grid-column: span 2 / span 2;
+}
+
+[data-slot="storage-stat-icon"] {
+  @apply w-9 h-9 rounded-md flex items-center justify-center flex-shrink-0;
+  @apply bg-(--accent-50) text-(--accent-600);
+}
+
+[data-slot="storage-stat-icon"] svg {
+  @apply w-4 h-4;
+}
+
+[data-slot="storage-stat-body"] {
+  @apply flex flex-col gap-1 flex-1 min-w-0;
+}
+
+[data-slot="storage-stat-label"] {
+  @apply text-[11px] uppercase tracking-wide font-medium text-(--el-500);
+}
+
+[data-slot="storage-stat-value"] {
+  @apply text-xl font-semibold text-(--el-900) tabular-nums;
+}
+
+[data-slot="storage-stat-value"] small {
+  @apply text-sm text-(--el-500) font-normal ml-1;
+}
+
+[data-slot="storage-stat-skeleton"] {
+  @apply h-6 w-24;
+}
+
+[data-slot="storage-stat-bar"] {
+  @apply h-1.5 w-full rounded-full bg-(--el-100) overflow-hidden mt-1;
+}
+
+[data-slot="storage-stat-fill"] {
+  @apply h-full bg-(--accent-500) block;
+}
+
+[data-slot="storage-stat-note"] {
+  @apply text-[11px] text-(--el-500);
+}
+
+[data-slot="storage-dashboard-panel"] {
+  @apply flex flex-col gap-3 p-4 rounded-md;
+  @apply bg-(--el-0) border border-(--el-200);
+}
+
+[data-slot="storage-dashboard-panel"] > header {
+  @apply flex items-start justify-between gap-3;
+}
+
+[data-slot="storage-dashboard-panel"] h2 {
+  @apply text-sm font-semibold text-(--el-900);
+}
+
+[data-slot="storage-dashboard-panel"] header p {
+  @apply text-xs text-(--el-500) mt-0.5;
+}
+
+[data-slot="storage-empty"] {
+  @apply flex items-center gap-2 p-4 rounded-sm;
+  @apply text-xs text-(--el-500) bg-(--el-50);
+}
+
+[data-slot="storage-empty"] svg {
+  @apply w-3.5 h-3.5 text-(--el-500);
+}
+
+[data-slot="storage-table"] {
+  @apply flex flex-col;
+}
+
+[data-slot="storage-table-head"],
+[data-slot="storage-table-row"] {
+  @apply grid items-center gap-3 px-2 h-10;
+  grid-template-columns: minmax(200px, 2fr) 100px 100px 120px;
+}
+
+[data-slot="storage-table-head"] {
+  @apply text-[11px] font-medium uppercase tracking-wide text-(--el-500);
+  @apply border-b border-(--el-200);
+}
+
+[data-slot="storage-table-row"] {
+  @apply text-xs text-(--el-700) border-b border-(--el-100);
+}
+
+[data-slot="storage-table-row"]:last-child {
+  @apply border-b-0;
+}
+
+[data-slot="storage-table-file"] {
+  @apply flex items-center gap-2 min-w-0;
+}
+
+[data-slot="storage-table-thumb"] {
+  @apply w-7 h-7 rounded-sm bg-(--el-100) overflow-hidden flex-shrink-0;
+}
+
+[data-slot="storage-table-thumb"] img {
+  @apply w-full h-full object-cover;
+}
+
+[data-slot="storage-table-name"] {
+  @apply truncate text-(--el-800) font-medium;
+}
+
+[data-slot="storage-table-size"] {
+  @apply tabular-nums;
+}
+
+[data-slot="storage-skeleton-rows"] {
+  @apply flex flex-col gap-1;
+}
+
+[data-slot="storage-skeleton-row"] {
+  @apply h-10 rounded-sm;
+}
