@@ -72,6 +72,10 @@
   @apply self-start;
 }
 
+[data-slot="asset-detail-hint"] {
+  @apply text-[11px] text-(--el-500);
+}
+
 [data-slot="asset-detail-props"] {
   @apply grid gap-x-3 gap-y-1 text-xs;
   grid-template-columns: auto 1fr;

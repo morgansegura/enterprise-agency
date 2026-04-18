@@ -102,6 +102,18 @@ export class UpdateMediaDto {
   @IsOptional()
   @IsString()
   usageContext?: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(1)
+  focalX?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(1)
+  focalY?: number;
 }
 
 export class MoveMediaDto {

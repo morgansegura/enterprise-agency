@@ -309,6 +309,8 @@ export class MediaService {
         caption: dto.caption,
         tags: dto.tags,
         usageContext: dto.usageContext,
+        focalX: dto.focalX,
+        focalY: dto.focalY,
       },
       include: {
         folder: { select: { id: true, name: true, path: true } },

@@ -36,6 +36,8 @@ export class MediaEnricherService {
         aspectRatio: true,
         blurHash: true,
         dominantColor: true,
+        focalX: true,
+        focalY: true,
         variants: true,
       },
     });
@@ -87,6 +89,8 @@ export class MediaEnricherService {
         blurHash?: string;
         dominantColor?: string;
         aspectRatio?: string;
+        focalX?: number;
+        focalY?: number;
       };
       const asset = typeof data.src === "string" ? byUrl.get(data.src) : null;
       if (asset) {
@@ -100,6 +104,8 @@ export class MediaEnricherService {
             blurHash: data.blurHash ?? asset.blurHash ?? undefined,
             dominantColor:
               data.dominantColor ?? asset.dominantColor ?? undefined,
+            focalX: data.focalX ?? asset.focalX ?? undefined,
+            focalY: data.focalY ?? asset.focalY ?? undefined,
             variants: data.variants ?? asset.variants ?? undefined,
           },
         };
@@ -125,5 +131,7 @@ interface AssetMetadata {
   aspectRatio: string | null;
   blurHash: string | null;
   dominantColor: string | null;
+  focalX: number | null;
+  focalY: number | null;
   variants: unknown;
 }

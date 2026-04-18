@@ -21,9 +21,23 @@ const SIZES_DEFAULT =
  * - Lazy-loaded by default; `priority` disables lazy loading for LCP images
  */
 export function ImageBlock({ data, priority = false }: ImageBlockProps) {
-  const { src, alt = "", caption, width, height, dominantColor } = data;
+  const {
+    src,
+    alt = "",
+    caption,
+    width,
+    height,
+    dominantColor,
+    focalX,
+    focalY,
+  } = data;
 
   if (!src || !alt) return null;
+
+  const objectPosition =
+    typeof focalX === "number" && typeof focalY === "number"
+      ? `${focalX * 100}% ${focalY * 100}%`
+      : undefined;
 
   const variants = data.variants;
   const hasVariants =
@@ -45,6 +59,7 @@ export function ImageBlock({ data, priority = false }: ImageBlockProps) {
             height={height}
             variants={variants}
             priority={priority}
+            objectPosition={objectPosition}
           />
         ) : (
           <NextImage
@@ -53,6 +68,7 @@ export function ImageBlock({ data, priority = false }: ImageBlockProps) {
             width={width || 1200}
             height={height || 630}
             priority={priority}
+            style={objectPosition ? { objectPosition } : undefined}
             data-slot="image-block-image"
           />
         )}
@@ -71,6 +87,7 @@ interface ResponsivePictureProps {
   height?: number;
   variants: ImageVariants;
   priority: boolean;
+  objectPosition?: string;
 }
 
 function ResponsivePicture({
@@ -80,6 +97,7 @@ function ResponsivePicture({
   height,
   variants,
   priority,
+  objectPosition,
 }: ResponsivePictureProps) {
   const jpegSrcSet = buildSrcSet(variants);
   const webpSrcSet = variants.webp ? buildSrcSetFromRecord(variants.webp) : null;
@@ -104,6 +122,7 @@ function ResponsivePicture({
         fetchPriority={priority ? "high" : "auto"}
         decoding="async"
         data-slot="image-block-image"
+        style={objectPosition ? { objectPosition } : undefined}
       />
     </picture>
   );

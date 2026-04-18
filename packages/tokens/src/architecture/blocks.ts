@@ -199,6 +199,9 @@ export type ImageBlockData = {
   blurHash?: string;
   dominantColor?: string;
   aspectRatio?: string;
+  /** Focal point (0..1) — drives CSS object-position for smart crops */
+  focalX?: number;
+  focalY?: number;
   /**
    * Responsive variants (per-size, per-format).
    * { sm, md, lg, xl } for JPEG; { webp: {...}, avif: {...} } for format-specific.

@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea/textarea";
 import { toast } from "sonner";
 import type { Asset } from "@/lib/hooks/use-assets";
 import { useAssetReferences } from "@/lib/hooks/use-assets";
+import { FocalPointPicker } from "../focal-point-picker";
 import {
   formatBytes,
   formatDimensions,
@@ -38,6 +39,8 @@ interface AssetDetailDrawerProps {
     altText?: string;
     caption?: string;
     tags?: string[];
+    focalX?: number;
+    focalY?: number;
   }) => void;
   onCrop?: (asset: Asset) => void;
   onDelete?: (asset: Asset) => void;
@@ -57,6 +60,9 @@ export function AssetDetailDrawer({
     caption: "",
     tags: "",
   });
+  const [focal, setFocal] = React.useState<{ x: number; y: number } | null>(
+    null,
+  );
 
   React.useEffect(() => {
     if (!asset) return;
@@ -66,6 +72,11 @@ export function AssetDetailDrawer({
       caption: asset.caption ?? "",
       tags: (asset.tags ?? []).join(", "),
     });
+    setFocal(
+      typeof asset.focalX === "number" && typeof asset.focalY === "number"
+        ? { x: asset.focalX, y: asset.focalY }
+        : null,
+    );
   }, [asset]);
 
   const references = useAssetReferences(tenantId, asset?.id ?? null);
@@ -81,7 +92,13 @@ export function AssetDetailDrawer({
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean),
+      focalX: focal?.x,
+      focalY: focal?.y,
     });
+  };
+
+  const handleFocalCommit = (value: { x: number; y: number }) => {
+    onSave({ focalX: value.x, focalY: value.y });
   };
 
   const copy = (value: string) => {
@@ -260,6 +277,22 @@ export function AssetDetailDrawer({
           ) : null}
         </dl>
       </section>
+
+      {isImage(asset) ? (
+        <section data-slot="asset-detail-section">
+          <h4>Focal point</h4>
+          <p data-slot="asset-detail-hint">
+            Click to set the focus area — smart crops will keep it centered.
+          </p>
+          <FocalPointPicker
+            src={asset.thumbnailUrl || asset.url}
+            alt={asset.altText || asset.fileName}
+            value={focal}
+            onChange={setFocal}
+            onCommit={handleFocalCommit}
+          />
+        </section>
+      ) : null}
 
       {asset.palette && asset.palette.length > 0 ? (
         <section data-slot="asset-detail-section">
