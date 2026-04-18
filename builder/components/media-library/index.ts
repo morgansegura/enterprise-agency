@@ -1,4 +1,5 @@
 export { MediaLibrary } from "./media-library";
+export { MediaPicker, type MediaPickerProps } from "./media-picker";
 export { AssetCard } from "./asset-card";
 export { AssetGrid, type GridDensity } from "./asset-grid";
 export { AssetList } from "./asset-list";

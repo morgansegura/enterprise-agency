@@ -1,0 +1,61 @@
+@reference "tailwindcss";
+
+[data-slot="media-picker"] {
+  @apply max-w-5xl w-[90vw] p-0 overflow-hidden flex flex-col;
+  max-height: 85vh;
+}
+
+[data-slot="media-picker"] > header {
+  @apply px-4 pt-4 pb-2;
+}
+
+[data-slot="media-picker-toolbar"] {
+  @apply flex items-center gap-2 px-4 py-2 border-b border-(--el-200);
+}
+
+[data-slot="media-picker-search"] {
+  @apply relative flex items-center flex-1;
+}
+
+[data-slot="media-picker-search"] > svg:first-child {
+  @apply absolute left-2.5 w-3.5 h-3.5 text-(--el-500) pointer-events-none;
+}
+
+[data-slot="media-picker-search"] input {
+  @apply pl-8 pr-8 h-8 text-sm;
+}
+
+[data-slot="media-picker-search-clear"] {
+  @apply absolute right-2 p-1 rounded-sm text-(--el-500);
+  @apply hover:bg-(--el-100);
+}
+
+[data-slot="media-picker-search-clear"] svg {
+  @apply w-3 h-3;
+}
+
+[data-slot="media-picker-body"] {
+  @apply flex-1 overflow-y-auto p-3 min-h-72;
+}
+
+[data-slot="media-picker-grid"] {
+  @apply grid gap-2;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+[data-slot="media-picker-skeleton"] {
+  @apply aspect-square rounded-md;
+}
+
+[data-slot="media-picker-footer"] {
+  @apply flex items-center justify-between gap-2 px-4 py-3;
+  @apply border-t border-(--el-200);
+}
+
+[data-slot="media-picker-footer"] > span {
+  @apply text-xs text-(--el-500) tabular-nums;
+}
+
+[data-slot="media-picker-footer"] > div {
+  @apply flex items-center gap-2;
+}

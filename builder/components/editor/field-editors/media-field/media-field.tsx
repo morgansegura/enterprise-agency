@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { MediaLibraryPicker } from "@/components/ui/media-library/media-library-picker";
 import { useTenantsStore } from "@/lib/stores/tenants-store";
-import type { Asset } from "@/lib/hooks/use-assets";
+import type { Asset, AssetVariants } from "@/lib/hooks/use-assets";
 import type { MediaFieldSchema } from "@/lib/schemas";
 
 import "./media-field.css";
@@ -20,6 +20,11 @@ export interface MediaValue {
   width?: number;
   height?: number;
   fileType?: string;
+  /** Optional metadata — enables responsive variants + CLS-free rendering */
+  aspectRatio?: string;
+  blurHash?: string;
+  dominantColor?: string;
+  variants?: AssetVariants;
 }
 
 export interface MediaFieldProps {
@@ -60,6 +65,10 @@ export function MediaField({
       width: asset.width,
       height: asset.height,
       fileType: asset.fileType,
+      aspectRatio: asset.aspectRatio,
+      blurHash: asset.blurHash,
+      dominantColor: asset.dominantColor,
+      variants: asset.variants,
     };
 
     if (schema.multiple) {
