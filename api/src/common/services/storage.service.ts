@@ -429,8 +429,24 @@ export class StorageService {
   /**
    * Validate file size
    */
-  isValidFileSize(size: number, maxSizeMB: number = 10): boolean {
-    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+  isValidFileSize(size: number, maxSizeMB?: number): boolean {
+    const limit = maxSizeMB ?? this.getMaxSizeMB();
+    const maxSizeBytes = limit * 1024 * 1024;
     return size <= maxSizeBytes;
+  }
+
+  /**
+   * Max file size in MB. Configured via MEDIA_MAX_SIZE_MB env var (default: 100).
+   */
+  getMaxSizeMB(): number {
+    const fromEnv = Number(process.env.MEDIA_MAX_SIZE_MB);
+    return Number.isFinite(fromEnv) && fromEnv > 0 ? fromEnv : 100;
+  }
+
+  /**
+   * Active storage provider ID.
+   */
+  getProvider(): "local" | "r2" | "s3" {
+    return this.provider;
   }
 }

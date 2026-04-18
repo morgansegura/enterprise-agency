@@ -2,14 +2,21 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  PayloadTooLargeException,
+  Logger,
 } from "@nestjs/common";
+import * as crypto from "crypto";
 import { PrismaService } from "@/common/services/prisma.service";
 import {
   AuditLogService,
   AuditAction,
 } from "@/common/services/audit-log.service";
 import { StorageService } from "@/common/services/storage.service";
-import * as sharp from "sharp";
+import { Prisma } from "@prisma";
+import {
+  ImageProcessorService,
+  ImageVariants,
+} from "@/common/services/image-processor.service";
 import {
   MediaQueryDto,
   UpdateMediaDto,
@@ -24,9 +31,12 @@ import {
 
 @Injectable()
 export class MediaService {
+  private readonly logger = new Logger(MediaService.name);
+
   constructor(
     private prisma: PrismaService,
     private storage: StorageService,
+    private imageProcessor: ImageProcessorService,
     private audit: AuditLogService,
   ) {}
 
@@ -34,9 +44,6 @@ export class MediaService {
   // QUERY OPERATIONS
   // ============================================================================
 
-  /**
-   * List media with filters, pagination, and sorting
-   */
   async list(tenantId: string, query: MediaQueryDto) {
     const {
       type,
@@ -64,6 +71,7 @@ export class MediaService {
         { fileName: { contains: search, mode: "insensitive" } },
         { title: { contains: search, mode: "insensitive" } },
         { altText: { contains: search, mode: "insensitive" } },
+        { caption: { contains: search, mode: "insensitive" } },
       ];
     }
 
@@ -96,9 +104,6 @@ export class MediaService {
     };
   }
 
-  /**
-   * Get a single media item by ID
-   */
   async findById(tenantId: string, id: string) {
     const asset = await this.prisma.asset.findFirst({
       where: { id, tenantId },
@@ -118,82 +123,144 @@ export class MediaService {
   }
 
   // ============================================================================
-  // UPLOAD OPERATIONS
+  // UPLOAD
   // ============================================================================
 
-  /**
-   * Upload a file with metadata
-   */
   async upload(
     file: Express.Multer.File,
     tenantId: string,
     uploadedBy: string,
     metadata?: UploadMediaDto,
   ) {
-    // Validate file
+    if (!file || !file.buffer) {
+      throw new BadRequestException("No file provided");
+    }
+
     if (!this.storage.isValidFileType(file.mimetype)) {
-      throw new BadRequestException("Invalid file type");
+      throw new BadRequestException(`Unsupported file type: ${file.mimetype}`);
     }
 
     if (!this.storage.isValidFileSize(file.size)) {
-      throw new BadRequestException("File size exceeds maximum allowed");
+      throw new PayloadTooLargeException(
+        `File exceeds maximum size (${this.storage.getMaxSizeMB()}MB)`,
+      );
     }
 
-    const fileKey = this.storage.generateFileKey(tenantId, file.originalname);
-    const fileType = this.getFileType(file.mimetype);
+    let buffer = file.buffer;
+    const mimeType = file.mimetype;
+    let sizeBytes = file.size;
 
-    // Process image-specific data
-    let width: number | undefined;
-    let height: number | undefined;
-    let aspectRatio: string | undefined;
-    let blurHash: string | undefined;
-    let thumbnailUrl: string | undefined;
-    let variants: Record<string, string> | undefined;
-
-    if (fileType === "image") {
-      const imageData = await this.processImage(file, tenantId);
-      width = imageData.width;
-      height = imageData.height;
-      aspectRatio = imageData.aspectRatio;
-      blurHash = imageData.blurHash;
-      thumbnailUrl = imageData.thumbnailUrl;
-      variants = imageData.variants;
+    // Sanitize SVGs before storing — strips <script>, event handlers, etc.
+    if (mimeType === "image/svg+xml") {
+      buffer = this.imageProcessor.sanitizeSvg(buffer);
+      sizeBytes = buffer.length;
     }
 
-    // Upload original file
-    const uploadResult = await this.storage.upload(
-      file.buffer,
-      fileKey,
-      file.mimetype,
-    );
+    // Content hash for dedup (sha256 of sanitized bytes)
+    const contentHash = crypto
+      .createHash("sha256")
+      .update(buffer)
+      .digest("hex");
 
-    // Create database record
-    const asset = await this.prisma.asset.create({
-      data: {
-        tenantId,
-        uploadedBy,
-        fileKey: uploadResult.key,
-        fileName: file.originalname,
-        originalName: file.originalname,
-        fileType,
-        mimeType: file.mimetype,
-        sizeBytes: BigInt(file.size),
-        width,
-        height,
-        aspectRatio,
-        blurHash,
-        url: uploadResult.url,
-        thumbnailUrl,
-        variants: variants ? variants : undefined,
-        title: metadata?.title,
-        altText: metadata?.altText,
-        folderId: metadata?.folderId,
-        usageContext: metadata?.usageContext,
-        status: "ready",
-      },
+    const existing = await this.prisma.asset.findFirst({
+      where: { tenantId, contentHash },
       include: {
         folder: { select: { id: true, name: true, path: true } },
       },
+    });
+    if (existing) {
+      return this.serializeAsset(existing);
+    }
+
+    await this.assertQuota(tenantId, sizeBytes);
+
+    const fileType = this.getFileType(mimeType);
+    const fileKey = this.storage.generateFileKey(tenantId, file.originalname);
+
+    const uploadResult = await this.storage.upload(buffer, fileKey, mimeType);
+
+    let width: number | undefined;
+    let height: number | undefined;
+    let aspectRatio: string | undefined;
+    let blurHash: string | null = null;
+    let dominantColor: string | null = null;
+    let palette: string[] | null = null;
+    let exifData: Record<string, unknown> | null = null;
+    let thumbnailUrl: string | null = null;
+    let variants: ImageVariants | null = null;
+    let status = "ready";
+    let processingError: string | null = null;
+
+    if (fileType === "image") {
+      try {
+        const processed = await this.imageProcessor.process(
+          buffer,
+          tenantId,
+          file.originalname,
+          mimeType,
+        );
+        width = processed.width || undefined;
+        height = processed.height || undefined;
+        aspectRatio = processed.aspectRatio;
+        blurHash = processed.blurHash;
+        dominantColor = processed.dominantColor;
+        palette = processed.palette;
+        exifData = processed.exif;
+        thumbnailUrl = processed.thumbnailUrl;
+        variants = processed.variants;
+      } catch (err) {
+        this.logger.error(
+          `Image processing failed for ${file.originalname} — ${err instanceof Error ? err.message : String(err)}`,
+        );
+        status = "error";
+        processingError =
+          err instanceof Error ? err.message : "Unknown processing error";
+      }
+    }
+
+    const asset = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.asset.create({
+        data: {
+          tenantId,
+          uploadedBy,
+          fileKey: uploadResult.key,
+          fileName: file.originalname,
+          originalName: file.originalname,
+          fileType,
+          mimeType,
+          sizeBytes: BigInt(sizeBytes),
+          contentHash,
+          storageProvider: this.storage.getProvider(),
+          width,
+          height,
+          aspectRatio,
+          blurHash,
+          dominantColor,
+          palette: (palette ?? undefined) as Prisma.InputJsonValue | undefined,
+          exif: (exifData ?? undefined) as Prisma.InputJsonValue | undefined,
+          url: uploadResult.url,
+          thumbnailUrl,
+          variants: (variants ?? undefined) as
+            | Prisma.InputJsonValue
+            | undefined,
+          title: metadata?.title,
+          altText: metadata?.altText,
+          folderId: metadata?.folderId,
+          usageContext: metadata?.usageContext,
+          status,
+          processingError,
+        },
+        include: {
+          folder: { select: { id: true, name: true, path: true } },
+        },
+      });
+
+      await tx.tenant.update({
+        where: { id: tenantId },
+        data: { storageUsedBytes: { increment: BigInt(sizeBytes) } },
+      });
+
+      return created;
     });
 
     this.audit.log({
@@ -207,12 +274,9 @@ export class MediaService {
   }
 
   // ============================================================================
-  // UPDATE OPERATIONS
+  // UPDATE
   // ============================================================================
 
-  /**
-   * Update media metadata
-   */
   async update(tenantId: string, id: string, dto: UpdateMediaDto) {
     const asset = await this.prisma.asset.findFirst({
       where: { id, tenantId },
@@ -246,9 +310,6 @@ export class MediaService {
     return this.serializeAsset(updated);
   }
 
-  /**
-   * Move media to a folder
-   */
   async move(tenantId: string, id: string, dto: MoveMediaDto) {
     const asset = await this.prisma.asset.findFirst({
       where: { id, tenantId },
@@ -258,7 +319,6 @@ export class MediaService {
       throw new NotFoundException("Media not found");
     }
 
-    // Validate folder if provided
     if (dto.folderId) {
       const folder = await this.prisma.mediaFolder.findFirst({
         where: { id: dto.folderId, tenantId },
@@ -286,9 +346,6 @@ export class MediaService {
     return this.serializeAsset(updated);
   }
 
-  /**
-   * Crop an image
-   */
   async crop(tenantId: string, id: string, dto: CropMediaDto) {
     const asset = await this.prisma.asset.findFirst({
       where: { id, tenantId },
@@ -302,58 +359,65 @@ export class MediaService {
       throw new BadRequestException("Only images can be cropped");
     }
 
-    // Download original image
     const originalBuffer = await this.storage.download(asset.fileKey);
+    const croppedBuffer = await this.imageProcessor.crop(originalBuffer, {
+      x: dto.x,
+      y: dto.y,
+      width: dto.width,
+      height: dto.height,
+    });
 
-    // Crop image
-    const croppedBuffer = await sharp(originalBuffer)
-      .extract({
-        left: Math.round(dto.x),
-        top: Math.round(dto.y),
-        width: Math.round(dto.width),
-        height: Math.round(dto.height),
-      })
-      .toBuffer();
-
-    // Generate new file key
     const newFileKey = this.storage.generateFileKey(tenantId, asset.fileName);
-
-    // Upload cropped image
     const uploadResult = await this.storage.upload(
       croppedBuffer,
       newFileKey,
       asset.mimeType || "image/jpeg",
     );
 
-    // Process new image for thumbnail and variants
-    const imageData = await this.processImageBuffer(
+    const processed = await this.imageProcessor.process(
       croppedBuffer,
       tenantId,
       asset.fileName,
       asset.mimeType || "image/jpeg",
     );
 
-    // Update record
-    const updated = await this.prisma.asset.update({
-      where: { id },
-      data: {
-        fileKey: uploadResult.key,
-        url: uploadResult.url,
-        width: dto.width,
-        height: dto.height,
-        aspectRatio: dto.aspectRatio || `${dto.width}:${dto.height}`,
-        thumbnailUrl: imageData.thumbnailUrl,
-        blurHash: imageData.blurHash,
-        variants: imageData.variants,
-        sizeBytes: BigInt(croppedBuffer.length),
-      },
-      include: {
-        folder: { select: { id: true, name: true, path: true } },
-      },
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const sizeDelta =
+        BigInt(croppedBuffer.length) - (asset.sizeBytes ?? BigInt(0));
+
+      const next = await tx.asset.update({
+        where: { id },
+        data: {
+          fileKey: uploadResult.key,
+          url: uploadResult.url,
+          width: dto.width,
+          height: dto.height,
+          aspectRatio: dto.aspectRatio || `${dto.width}:${dto.height}`,
+          thumbnailUrl: processed.thumbnailUrl,
+          blurHash: processed.blurHash,
+          dominantColor: processed.dominantColor,
+          palette: (processed.palette ?? undefined) as
+            | Prisma.InputJsonValue
+            | undefined,
+          variants: (processed.variants ?? undefined) as
+            | Prisma.InputJsonValue
+            | undefined,
+          sizeBytes: BigInt(croppedBuffer.length),
+        },
+        include: {
+          folder: { select: { id: true, name: true, path: true } },
+        },
+      });
+
+      await tx.tenant.update({
+        where: { id: tenantId },
+        data: { storageUsedBytes: { increment: sizeDelta } },
+      });
+
+      return next;
     });
 
-    // Delete old file
-    await this.storage.delete(asset.fileKey).catch(() => {});
+    await this.storage.delete(asset.fileKey).catch(() => undefined);
 
     this.audit.log({
       tenantId,
@@ -366,12 +430,9 @@ export class MediaService {
   }
 
   // ============================================================================
-  // DELETE OPERATIONS
+  // DELETE
   // ============================================================================
 
-  /**
-   * Delete a media item
-   */
   async delete(tenantId: string, id: string) {
     const asset = await this.prisma.asset.findFirst({
       where: { id, tenantId },
@@ -381,19 +442,17 @@ export class MediaService {
       throw new NotFoundException("Media not found");
     }
 
-    // Delete files from storage
-    await this.storage.delete(asset.fileKey).catch(() => {});
-    if (asset.thumbnailUrl) {
-      const thumbnailKey = this.storage.generateFileKey(
-        tenantId,
-        asset.fileName,
-        "thumbnails",
-      );
-      await this.storage.delete(thumbnailKey).catch(() => {});
-    }
+    await this.deleteAssetFiles(asset);
 
-    // Delete record
-    await this.prisma.asset.delete({ where: { id } });
+    await this.prisma.$transaction(async (tx) => {
+      await tx.asset.delete({ where: { id } });
+      if (asset.sizeBytes) {
+        await tx.tenant.update({
+          where: { id: tenantId },
+          data: { storageUsedBytes: { decrement: asset.sizeBytes } },
+        });
+      }
+    });
 
     this.audit.log({
       tenantId,
@@ -406,14 +465,10 @@ export class MediaService {
   }
 
   // ============================================================================
-  // BULK OPERATIONS
+  // BULK
   // ============================================================================
 
-  /**
-   * Bulk move media to a folder
-   */
   async bulkMove(tenantId: string, dto: BulkMoveDto) {
-    // Validate folder if provided
     if (dto.folderId) {
       const folder = await this.prisma.mediaFolder.findFirst({
         where: { id: dto.folderId, tenantId },
@@ -424,10 +479,7 @@ export class MediaService {
     }
 
     const result = await this.prisma.asset.updateMany({
-      where: {
-        id: { in: dto.mediaIds },
-        tenantId,
-      },
+      where: { id: { in: dto.mediaIds }, tenantId },
       data: { folderId: dto.folderId ?? null },
     });
 
@@ -445,31 +497,34 @@ export class MediaService {
     };
   }
 
-  /**
-   * Bulk delete media
-   */
   async bulkDelete(tenantId: string, dto: BulkDeleteDto) {
     const assets = await this.prisma.asset.findMany({
-      where: {
-        id: { in: dto.ids },
-        tenantId,
-      },
+      where: { id: { in: dto.ids }, tenantId },
     });
 
     const successIds: string[] = [];
     const failedIds: { id: string; error: string }[] = [];
+    let freedBytes = BigInt(0);
 
     for (const asset of assets) {
       try {
-        await this.storage.delete(asset.fileKey).catch(() => {});
+        await this.deleteAssetFiles(asset);
         await this.prisma.asset.delete({ where: { id: asset.id } });
+        if (asset.sizeBytes) freedBytes += asset.sizeBytes;
         successIds.push(asset.id);
-      } catch (error) {
+      } catch (err) {
         failedIds.push({
           id: asset.id,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: err instanceof Error ? err.message : "Unknown error",
         });
       }
+    }
+
+    if (freedBytes > BigInt(0)) {
+      await this.prisma.tenant.update({
+        where: { id: tenantId },
+        data: { storageUsedBytes: { decrement: freedBytes } },
+      });
     }
 
     this.audit.log({
@@ -482,15 +537,9 @@ export class MediaService {
     return { successIds, failedIds, total: assets.length };
   }
 
-  /**
-   * Bulk add tags to media
-   */
   async bulkTag(tenantId: string, dto: BulkTagDto) {
     const assets = await this.prisma.asset.findMany({
-      where: {
-        id: { in: dto.mediaIds },
-        tenantId,
-      },
+      where: { id: { in: dto.mediaIds }, tenantId },
     });
 
     const successIds: string[] = [];
@@ -515,15 +564,9 @@ export class MediaService {
     return { successIds, failedIds: [], total: assets.length };
   }
 
-  /**
-   * Bulk remove tags from media
-   */
   async bulkUntag(tenantId: string, dto: BulkTagDto) {
     const assets = await this.prisma.asset.findMany({
-      where: {
-        id: { in: dto.mediaIds },
-        tenantId,
-      },
+      where: { id: { in: dto.mediaIds }, tenantId },
     });
 
     const successIds: string[] = [];
@@ -553,76 +596,104 @@ export class MediaService {
   }
 
   // ============================================================================
+  // QUOTA / USAGE
+  // ============================================================================
+
+  async getUsage(tenantId: string) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+      select: { storageQuotaBytes: true, storageUsedBytes: true },
+    });
+    if (!tenant) throw new NotFoundException("Tenant not found");
+
+    const [imageCount, videoCount, documentCount, audioCount] =
+      await Promise.all([
+        this.prisma.asset.count({
+          where: { tenantId, fileType: "image" },
+        }),
+        this.prisma.asset.count({
+          where: { tenantId, fileType: "video" },
+        }),
+        this.prisma.asset.count({
+          where: { tenantId, fileType: "document" },
+        }),
+        this.prisma.asset.count({
+          where: { tenantId, fileType: "audio" },
+        }),
+      ]);
+
+    return {
+      quotaBytes: Number(tenant.storageQuotaBytes),
+      usedBytes: Number(tenant.storageUsedBytes),
+      unlimited: tenant.storageQuotaBytes === BigInt(0),
+      counts: {
+        images: imageCount,
+        videos: videoCount,
+        documents: documentCount,
+        audio: audioCount,
+        total: imageCount + videoCount + documentCount + audioCount,
+      },
+    };
+  }
+
+  // ============================================================================
   // HELPERS
   // ============================================================================
+
+  private async assertQuota(tenantId: string, addBytes: number) {
+    const tenant = await this.prisma.tenant.findUnique({
+      where: { id: tenantId },
+      select: { storageQuotaBytes: true, storageUsedBytes: true },
+    });
+    if (!tenant) throw new NotFoundException("Tenant not found");
+
+    if (tenant.storageQuotaBytes === BigInt(0)) return;
+
+    const next = tenant.storageUsedBytes + BigInt(addBytes);
+    if (next > tenant.storageQuotaBytes) {
+      throw new PayloadTooLargeException(
+        "Storage quota exceeded for this tenant",
+      );
+    }
+  }
+
+  private async deleteAssetFiles(asset: {
+    fileKey: string;
+    thumbnailUrl: string | null;
+    variants: unknown;
+  }) {
+    await this.storage.delete(asset.fileKey).catch(() => undefined);
+
+    const variants = asset.variants as ImageVariants | null;
+    if (!variants) return;
+
+    const keys = this.collectVariantKeys(variants);
+    await Promise.all(
+      keys.map((k) => this.storage.delete(k).catch(() => undefined)),
+    );
+  }
+
+  private collectVariantKeys(variants: ImageVariants): string[] {
+    const keys: string[] = [];
+    const push = (v?: { key?: string }) => {
+      if (v?.key) keys.push(v.key);
+    };
+
+    push(variants.thumbnail);
+    push(variants.sm);
+    push(variants.md);
+    push(variants.lg);
+    push(variants.xl);
+    for (const v of Object.values(variants.webp ?? {})) push(v);
+    for (const v of Object.values(variants.avif ?? {})) push(v);
+    return keys;
+  }
 
   private getFileType(mimeType: string): string {
     if (mimeType.startsWith("image/")) return "image";
     if (mimeType.startsWith("video/")) return "video";
     if (mimeType.startsWith("audio/")) return "audio";
     return "document";
-  }
-
-  private async processImage(file: Express.Multer.File, tenantId: string) {
-    return this.processImageBuffer(
-      file.buffer,
-      tenantId,
-      file.originalname,
-      file.mimetype,
-    );
-  }
-
-  private async processImageBuffer(
-    buffer: Buffer,
-    tenantId: string,
-    fileName: string,
-    _mimeType: string,
-  ) {
-    const metadata = await sharp(buffer).metadata();
-    const width = metadata.width || 0;
-    const height = metadata.height || 0;
-
-    // Calculate aspect ratio
-    const gcd = this.gcd(width, height);
-    const aspectRatio = `${width / gcd}:${height / gcd}`;
-
-    // Generate thumbnail
-    const thumbnailKey = this.storage.generateFileKey(
-      tenantId,
-      fileName,
-      "thumbnails",
-    );
-    const thumbnailBuffer = await sharp(buffer)
-      .resize(300, 300, { fit: "inside", withoutEnlargement: true })
-      .jpeg({ quality: 80 })
-      .toBuffer();
-
-    const thumbnailResult = await this.storage.upload(
-      thumbnailBuffer,
-      thumbnailKey,
-      "image/jpeg",
-    );
-
-    // TODO: Generate BlurHash (requires blurhash library)
-    // const blurHash = await this.generateBlurHash(buffer);
-    const blurHash = undefined;
-
-    // TODO: Generate responsive variants
-    // const variants = await this.generateVariants(buffer, tenantId, fileName);
-    const variants = undefined;
-
-    return {
-      width,
-      height,
-      aspectRatio,
-      blurHash,
-      thumbnailUrl: thumbnailResult.url,
-      variants,
-    };
-  }
-
-  private gcd(a: number, b: number): number {
-    return b === 0 ? a : this.gcd(b, a % b);
   }
 
   private serializeAsset(asset: {

@@ -30,6 +30,8 @@ export type AssetAvgAggregateOutputType = {
   sizeBytes: number | null
   width: number | null
   height: number | null
+  focalX: number | null
+  focalY: number | null
   duration: number | null
 }
 
@@ -37,6 +39,8 @@ export type AssetSumAggregateOutputType = {
   sizeBytes: bigint | null
   width: number | null
   height: number | null
+  focalX: number | null
+  focalY: number | null
   duration: number | null
 }
 
@@ -50,18 +54,25 @@ export type AssetMinAggregateOutputType = {
   fileType: string | null
   mimeType: string | null
   sizeBytes: bigint | null
+  contentHash: string | null
+  perceptualHash: string | null
   width: number | null
   height: number | null
   aspectRatio: string | null
   blurHash: string | null
+  dominantColor: string | null
+  focalX: number | null
+  focalY: number | null
   duration: number | null
   url: string | null
   thumbnailUrl: string | null
+  storageProvider: string | null
   title: string | null
   altText: string | null
   caption: string | null
   usageContext: string | null
   status: string | null
+  processingError: string | null
   folderId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -77,18 +88,25 @@ export type AssetMaxAggregateOutputType = {
   fileType: string | null
   mimeType: string | null
   sizeBytes: bigint | null
+  contentHash: string | null
+  perceptualHash: string | null
   width: number | null
   height: number | null
   aspectRatio: string | null
   blurHash: string | null
+  dominantColor: string | null
+  focalX: number | null
+  focalY: number | null
   duration: number | null
   url: string | null
   thumbnailUrl: string | null
+  storageProvider: string | null
   title: string | null
   altText: string | null
   caption: string | null
   usageContext: string | null
   status: string | null
+  processingError: string | null
   folderId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -104,20 +122,29 @@ export type AssetCountAggregateOutputType = {
   fileType: number
   mimeType: number
   sizeBytes: number
+  contentHash: number
+  perceptualHash: number
   width: number
   height: number
   aspectRatio: number
   blurHash: number
+  dominantColor: number
+  palette: number
+  exif: number
+  focalX: number
+  focalY: number
   duration: number
   url: number
   thumbnailUrl: number
   variants: number
+  storageProvider: number
   title: number
   altText: number
   caption: number
   tags: number
   usageContext: number
   status: number
+  processingError: number
   folderId: number
   createdAt: number
   updatedAt: number
@@ -129,6 +156,8 @@ export type AssetAvgAggregateInputType = {
   sizeBytes?: true
   width?: true
   height?: true
+  focalX?: true
+  focalY?: true
   duration?: true
 }
 
@@ -136,6 +165,8 @@ export type AssetSumAggregateInputType = {
   sizeBytes?: true
   width?: true
   height?: true
+  focalX?: true
+  focalY?: true
   duration?: true
 }
 
@@ -149,18 +180,25 @@ export type AssetMinAggregateInputType = {
   fileType?: true
   mimeType?: true
   sizeBytes?: true
+  contentHash?: true
+  perceptualHash?: true
   width?: true
   height?: true
   aspectRatio?: true
   blurHash?: true
+  dominantColor?: true
+  focalX?: true
+  focalY?: true
   duration?: true
   url?: true
   thumbnailUrl?: true
+  storageProvider?: true
   title?: true
   altText?: true
   caption?: true
   usageContext?: true
   status?: true
+  processingError?: true
   folderId?: true
   createdAt?: true
   updatedAt?: true
@@ -176,18 +214,25 @@ export type AssetMaxAggregateInputType = {
   fileType?: true
   mimeType?: true
   sizeBytes?: true
+  contentHash?: true
+  perceptualHash?: true
   width?: true
   height?: true
   aspectRatio?: true
   blurHash?: true
+  dominantColor?: true
+  focalX?: true
+  focalY?: true
   duration?: true
   url?: true
   thumbnailUrl?: true
+  storageProvider?: true
   title?: true
   altText?: true
   caption?: true
   usageContext?: true
   status?: true
+  processingError?: true
   folderId?: true
   createdAt?: true
   updatedAt?: true
@@ -203,20 +248,29 @@ export type AssetCountAggregateInputType = {
   fileType?: true
   mimeType?: true
   sizeBytes?: true
+  contentHash?: true
+  perceptualHash?: true
   width?: true
   height?: true
   aspectRatio?: true
   blurHash?: true
+  dominantColor?: true
+  palette?: true
+  exif?: true
+  focalX?: true
+  focalY?: true
   duration?: true
   url?: true
   thumbnailUrl?: true
   variants?: true
+  storageProvider?: true
   title?: true
   altText?: true
   caption?: true
   tags?: true
   usageContext?: true
   status?: true
+  processingError?: true
   folderId?: true
   createdAt?: true
   updatedAt?: true
@@ -319,20 +373,29 @@ export type AssetGroupByOutputType = {
   fileType: string
   mimeType: string | null
   sizeBytes: bigint | null
+  contentHash: string | null
+  perceptualHash: string | null
   width: number | null
   height: number | null
   aspectRatio: string | null
   blurHash: string | null
+  dominantColor: string | null
+  palette: runtime.JsonValue | null
+  exif: runtime.JsonValue | null
+  focalX: number | null
+  focalY: number | null
   duration: number | null
   url: string
   thumbnailUrl: string | null
   variants: runtime.JsonValue | null
+  storageProvider: string | null
   title: string | null
   altText: string | null
   caption: string | null
   tags: string[]
   usageContext: string | null
   status: string
+  processingError: string | null
   folderId: string | null
   createdAt: Date
   updatedAt: Date | null
@@ -371,20 +434,29 @@ export type AssetWhereInput = {
   fileType?: Prisma.StringFilter<"Asset"> | string
   mimeType?: Prisma.StringNullableFilter<"Asset"> | string | null
   sizeBytes?: Prisma.BigIntNullableFilter<"Asset"> | bigint | number | null
+  contentHash?: Prisma.StringNullableFilter<"Asset"> | string | null
+  perceptualHash?: Prisma.StringNullableFilter<"Asset"> | string | null
   width?: Prisma.IntNullableFilter<"Asset"> | number | null
   height?: Prisma.IntNullableFilter<"Asset"> | number | null
   aspectRatio?: Prisma.StringNullableFilter<"Asset"> | string | null
   blurHash?: Prisma.StringNullableFilter<"Asset"> | string | null
+  dominantColor?: Prisma.StringNullableFilter<"Asset"> | string | null
+  palette?: Prisma.JsonNullableFilter<"Asset">
+  exif?: Prisma.JsonNullableFilter<"Asset">
+  focalX?: Prisma.FloatNullableFilter<"Asset"> | number | null
+  focalY?: Prisma.FloatNullableFilter<"Asset"> | number | null
   duration?: Prisma.FloatNullableFilter<"Asset"> | number | null
   url?: Prisma.StringFilter<"Asset"> | string
   thumbnailUrl?: Prisma.StringNullableFilter<"Asset"> | string | null
   variants?: Prisma.JsonNullableFilter<"Asset">
+  storageProvider?: Prisma.StringNullableFilter<"Asset"> | string | null
   title?: Prisma.StringNullableFilter<"Asset"> | string | null
   altText?: Prisma.StringNullableFilter<"Asset"> | string | null
   caption?: Prisma.StringNullableFilter<"Asset"> | string | null
   tags?: Prisma.StringNullableListFilter<"Asset">
   usageContext?: Prisma.StringNullableFilter<"Asset"> | string | null
   status?: Prisma.StringFilter<"Asset"> | string
+  processingError?: Prisma.StringNullableFilter<"Asset"> | string | null
   folderId?: Prisma.StringNullableFilter<"Asset"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
@@ -404,20 +476,29 @@ export type AssetOrderByWithRelationInput = {
   fileType?: Prisma.SortOrder
   mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
   sizeBytes?: Prisma.SortOrderInput | Prisma.SortOrder
+  contentHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  perceptualHash?: Prisma.SortOrderInput | Prisma.SortOrder
   width?: Prisma.SortOrderInput | Prisma.SortOrder
   height?: Prisma.SortOrderInput | Prisma.SortOrder
   aspectRatio?: Prisma.SortOrderInput | Prisma.SortOrder
   blurHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  dominantColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  palette?: Prisma.SortOrderInput | Prisma.SortOrder
+  exif?: Prisma.SortOrderInput | Prisma.SortOrder
+  focalX?: Prisma.SortOrderInput | Prisma.SortOrder
+  focalY?: Prisma.SortOrderInput | Prisma.SortOrder
   duration?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   variants?: Prisma.SortOrderInput | Prisma.SortOrder
+  storageProvider?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   altText?: Prisma.SortOrderInput | Prisma.SortOrder
   caption?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
   usageContext?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  processingError?: Prisma.SortOrderInput | Prisma.SortOrder
   folderId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -440,20 +521,29 @@ export type AssetWhereUniqueInput = Prisma.AtLeast<{
   fileType?: Prisma.StringFilter<"Asset"> | string
   mimeType?: Prisma.StringNullableFilter<"Asset"> | string | null
   sizeBytes?: Prisma.BigIntNullableFilter<"Asset"> | bigint | number | null
+  contentHash?: Prisma.StringNullableFilter<"Asset"> | string | null
+  perceptualHash?: Prisma.StringNullableFilter<"Asset"> | string | null
   width?: Prisma.IntNullableFilter<"Asset"> | number | null
   height?: Prisma.IntNullableFilter<"Asset"> | number | null
   aspectRatio?: Prisma.StringNullableFilter<"Asset"> | string | null
   blurHash?: Prisma.StringNullableFilter<"Asset"> | string | null
+  dominantColor?: Prisma.StringNullableFilter<"Asset"> | string | null
+  palette?: Prisma.JsonNullableFilter<"Asset">
+  exif?: Prisma.JsonNullableFilter<"Asset">
+  focalX?: Prisma.FloatNullableFilter<"Asset"> | number | null
+  focalY?: Prisma.FloatNullableFilter<"Asset"> | number | null
   duration?: Prisma.FloatNullableFilter<"Asset"> | number | null
   url?: Prisma.StringFilter<"Asset"> | string
   thumbnailUrl?: Prisma.StringNullableFilter<"Asset"> | string | null
   variants?: Prisma.JsonNullableFilter<"Asset">
+  storageProvider?: Prisma.StringNullableFilter<"Asset"> | string | null
   title?: Prisma.StringNullableFilter<"Asset"> | string | null
   altText?: Prisma.StringNullableFilter<"Asset"> | string | null
   caption?: Prisma.StringNullableFilter<"Asset"> | string | null
   tags?: Prisma.StringNullableListFilter<"Asset">
   usageContext?: Prisma.StringNullableFilter<"Asset"> | string | null
   status?: Prisma.StringFilter<"Asset"> | string
+  processingError?: Prisma.StringNullableFilter<"Asset"> | string | null
   folderId?: Prisma.StringNullableFilter<"Asset"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
@@ -473,20 +563,29 @@ export type AssetOrderByWithAggregationInput = {
   fileType?: Prisma.SortOrder
   mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
   sizeBytes?: Prisma.SortOrderInput | Prisma.SortOrder
+  contentHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  perceptualHash?: Prisma.SortOrderInput | Prisma.SortOrder
   width?: Prisma.SortOrderInput | Prisma.SortOrder
   height?: Prisma.SortOrderInput | Prisma.SortOrder
   aspectRatio?: Prisma.SortOrderInput | Prisma.SortOrder
   blurHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  dominantColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  palette?: Prisma.SortOrderInput | Prisma.SortOrder
+  exif?: Prisma.SortOrderInput | Prisma.SortOrder
+  focalX?: Prisma.SortOrderInput | Prisma.SortOrder
+  focalY?: Prisma.SortOrderInput | Prisma.SortOrder
   duration?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   variants?: Prisma.SortOrderInput | Prisma.SortOrder
+  storageProvider?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   altText?: Prisma.SortOrderInput | Prisma.SortOrder
   caption?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
   usageContext?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  processingError?: Prisma.SortOrderInput | Prisma.SortOrder
   folderId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -510,20 +609,29 @@ export type AssetScalarWhereWithAggregatesInput = {
   fileType?: Prisma.StringWithAggregatesFilter<"Asset"> | string
   mimeType?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   sizeBytes?: Prisma.BigIntNullableWithAggregatesFilter<"Asset"> | bigint | number | null
+  contentHash?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
+  perceptualHash?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   width?: Prisma.IntNullableWithAggregatesFilter<"Asset"> | number | null
   height?: Prisma.IntNullableWithAggregatesFilter<"Asset"> | number | null
   aspectRatio?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   blurHash?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
+  dominantColor?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
+  palette?: Prisma.JsonNullableWithAggregatesFilter<"Asset">
+  exif?: Prisma.JsonNullableWithAggregatesFilter<"Asset">
+  focalX?: Prisma.FloatNullableWithAggregatesFilter<"Asset"> | number | null
+  focalY?: Prisma.FloatNullableWithAggregatesFilter<"Asset"> | number | null
   duration?: Prisma.FloatNullableWithAggregatesFilter<"Asset"> | number | null
   url?: Prisma.StringWithAggregatesFilter<"Asset"> | string
   thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   variants?: Prisma.JsonNullableWithAggregatesFilter<"Asset">
+  storageProvider?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   title?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   altText?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   caption?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   tags?: Prisma.StringNullableListFilter<"Asset">
   usageContext?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"Asset"> | string
+  processingError?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   folderId?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Asset"> | Date | string | null
@@ -537,20 +645,29 @@ export type AssetCreateInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
   tenant: Prisma.TenantCreateNestedOneWithoutAssetsInput
@@ -569,20 +686,29 @@ export type AssetUncheckedCreateInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   folderId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
@@ -597,20 +723,29 @@ export type AssetUpdateInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneRequiredWithoutAssetsNestedInput
@@ -629,20 +764,29 @@ export type AssetUncheckedUpdateInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -659,20 +803,29 @@ export type AssetCreateManyInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   folderId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
@@ -686,20 +839,29 @@ export type AssetUpdateManyMutationInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -714,20 +876,29 @@ export type AssetUncheckedUpdateManyInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -761,20 +932,29 @@ export type AssetCountOrderByAggregateInput = {
   fileType?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
   sizeBytes?: Prisma.SortOrder
+  contentHash?: Prisma.SortOrder
+  perceptualHash?: Prisma.SortOrder
   width?: Prisma.SortOrder
   height?: Prisma.SortOrder
   aspectRatio?: Prisma.SortOrder
   blurHash?: Prisma.SortOrder
+  dominantColor?: Prisma.SortOrder
+  palette?: Prisma.SortOrder
+  exif?: Prisma.SortOrder
+  focalX?: Prisma.SortOrder
+  focalY?: Prisma.SortOrder
   duration?: Prisma.SortOrder
   url?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
   variants?: Prisma.SortOrder
+  storageProvider?: Prisma.SortOrder
   title?: Prisma.SortOrder
   altText?: Prisma.SortOrder
   caption?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   usageContext?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  processingError?: Prisma.SortOrder
   folderId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -784,6 +964,8 @@ export type AssetAvgOrderByAggregateInput = {
   sizeBytes?: Prisma.SortOrder
   width?: Prisma.SortOrder
   height?: Prisma.SortOrder
+  focalX?: Prisma.SortOrder
+  focalY?: Prisma.SortOrder
   duration?: Prisma.SortOrder
 }
 
@@ -797,18 +979,25 @@ export type AssetMaxOrderByAggregateInput = {
   fileType?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
   sizeBytes?: Prisma.SortOrder
+  contentHash?: Prisma.SortOrder
+  perceptualHash?: Prisma.SortOrder
   width?: Prisma.SortOrder
   height?: Prisma.SortOrder
   aspectRatio?: Prisma.SortOrder
   blurHash?: Prisma.SortOrder
+  dominantColor?: Prisma.SortOrder
+  focalX?: Prisma.SortOrder
+  focalY?: Prisma.SortOrder
   duration?: Prisma.SortOrder
   url?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
+  storageProvider?: Prisma.SortOrder
   title?: Prisma.SortOrder
   altText?: Prisma.SortOrder
   caption?: Prisma.SortOrder
   usageContext?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  processingError?: Prisma.SortOrder
   folderId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -824,18 +1013,25 @@ export type AssetMinOrderByAggregateInput = {
   fileType?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
   sizeBytes?: Prisma.SortOrder
+  contentHash?: Prisma.SortOrder
+  perceptualHash?: Prisma.SortOrder
   width?: Prisma.SortOrder
   height?: Prisma.SortOrder
   aspectRatio?: Prisma.SortOrder
   blurHash?: Prisma.SortOrder
+  dominantColor?: Prisma.SortOrder
+  focalX?: Prisma.SortOrder
+  focalY?: Prisma.SortOrder
   duration?: Prisma.SortOrder
   url?: Prisma.SortOrder
   thumbnailUrl?: Prisma.SortOrder
+  storageProvider?: Prisma.SortOrder
   title?: Prisma.SortOrder
   altText?: Prisma.SortOrder
   caption?: Prisma.SortOrder
   usageContext?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  processingError?: Prisma.SortOrder
   folderId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -845,6 +1041,8 @@ export type AssetSumOrderByAggregateInput = {
   sizeBytes?: Prisma.SortOrder
   width?: Prisma.SortOrder
   height?: Prisma.SortOrder
+  focalX?: Prisma.SortOrder
+  focalY?: Prisma.SortOrder
   duration?: Prisma.SortOrder
 }
 
@@ -1036,20 +1234,29 @@ export type AssetCreateWithoutTenantInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
   uploader?: Prisma.UserCreateNestedOneWithoutUploadedAssetsInput
@@ -1066,20 +1273,29 @@ export type AssetUncheckedCreateWithoutTenantInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   folderId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
@@ -1125,20 +1341,29 @@ export type AssetScalarWhereInput = {
   fileType?: Prisma.StringFilter<"Asset"> | string
   mimeType?: Prisma.StringNullableFilter<"Asset"> | string | null
   sizeBytes?: Prisma.BigIntNullableFilter<"Asset"> | bigint | number | null
+  contentHash?: Prisma.StringNullableFilter<"Asset"> | string | null
+  perceptualHash?: Prisma.StringNullableFilter<"Asset"> | string | null
   width?: Prisma.IntNullableFilter<"Asset"> | number | null
   height?: Prisma.IntNullableFilter<"Asset"> | number | null
   aspectRatio?: Prisma.StringNullableFilter<"Asset"> | string | null
   blurHash?: Prisma.StringNullableFilter<"Asset"> | string | null
+  dominantColor?: Prisma.StringNullableFilter<"Asset"> | string | null
+  palette?: Prisma.JsonNullableFilter<"Asset">
+  exif?: Prisma.JsonNullableFilter<"Asset">
+  focalX?: Prisma.FloatNullableFilter<"Asset"> | number | null
+  focalY?: Prisma.FloatNullableFilter<"Asset"> | number | null
   duration?: Prisma.FloatNullableFilter<"Asset"> | number | null
   url?: Prisma.StringFilter<"Asset"> | string
   thumbnailUrl?: Prisma.StringNullableFilter<"Asset"> | string | null
   variants?: Prisma.JsonNullableFilter<"Asset">
+  storageProvider?: Prisma.StringNullableFilter<"Asset"> | string | null
   title?: Prisma.StringNullableFilter<"Asset"> | string | null
   altText?: Prisma.StringNullableFilter<"Asset"> | string | null
   caption?: Prisma.StringNullableFilter<"Asset"> | string | null
   tags?: Prisma.StringNullableListFilter<"Asset">
   usageContext?: Prisma.StringNullableFilter<"Asset"> | string | null
   status?: Prisma.StringFilter<"Asset"> | string
+  processingError?: Prisma.StringNullableFilter<"Asset"> | string | null
   folderId?: Prisma.StringNullableFilter<"Asset"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
@@ -1152,20 +1377,29 @@ export type AssetCreateWithoutUploaderInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
   tenant: Prisma.TenantCreateNestedOneWithoutAssetsInput
@@ -1182,20 +1416,29 @@ export type AssetUncheckedCreateWithoutUploaderInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   folderId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
@@ -1236,20 +1479,29 @@ export type AssetCreateWithoutFolderInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
   tenant: Prisma.TenantCreateNestedOneWithoutAssetsInput
@@ -1267,20 +1519,29 @@ export type AssetUncheckedCreateWithoutFolderInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
   featuredPosts?: Prisma.PostUncheckedCreateNestedManyWithoutFeaturedImageInput
@@ -1320,20 +1581,29 @@ export type AssetCreateWithoutFeaturedPostsInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
   tenant: Prisma.TenantCreateNestedOneWithoutAssetsInput
@@ -1351,20 +1621,29 @@ export type AssetUncheckedCreateWithoutFeaturedPostsInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   folderId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
@@ -1394,20 +1673,29 @@ export type AssetUpdateWithoutFeaturedPostsInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneRequiredWithoutAssetsNestedInput
@@ -1425,20 +1713,29 @@ export type AssetUncheckedUpdateWithoutFeaturedPostsInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1453,20 +1750,29 @@ export type AssetCreateManyTenantInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   folderId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
@@ -1480,20 +1786,29 @@ export type AssetUpdateWithoutTenantInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   uploader?: Prisma.UserUpdateOneWithoutUploadedAssetsNestedInput
@@ -1510,20 +1825,29 @@ export type AssetUncheckedUpdateWithoutTenantInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1539,20 +1863,29 @@ export type AssetUncheckedUpdateManyWithoutTenantInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1567,20 +1900,29 @@ export type AssetCreateManyUploaderInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   folderId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
@@ -1594,20 +1936,29 @@ export type AssetUpdateWithoutUploaderInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneRequiredWithoutAssetsNestedInput
@@ -1624,20 +1975,29 @@ export type AssetUncheckedUpdateWithoutUploaderInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1653,20 +2013,29 @@ export type AssetUncheckedUpdateManyWithoutUploaderInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1682,20 +2051,29 @@ export type AssetCreateManyFolderInput = {
   fileType: string
   mimeType?: string | null
   sizeBytes?: bigint | number | null
+  contentHash?: string | null
+  perceptualHash?: string | null
   width?: number | null
   height?: number | null
   aspectRatio?: string | null
   blurHash?: string | null
+  dominantColor?: string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: number | null
+  focalY?: number | null
   duration?: number | null
   url: string
   thumbnailUrl?: string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: string | null
   title?: string | null
   altText?: string | null
   caption?: string | null
   tags?: Prisma.AssetCreatetagsInput | string[]
   usageContext?: string | null
   status?: string
+  processingError?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
 }
@@ -1708,20 +2086,29 @@ export type AssetUpdateWithoutFolderInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneRequiredWithoutAssetsNestedInput
@@ -1739,20 +2126,29 @@ export type AssetUncheckedUpdateWithoutFolderInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   featuredPosts?: Prisma.PostUncheckedUpdateManyWithoutFeaturedImageNestedInput
@@ -1768,20 +2164,29 @@ export type AssetUncheckedUpdateManyWithoutFolderInput = {
   fileType?: Prisma.StringFieldUpdateOperationsInput | string
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  contentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  perceptualHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   aspectRatio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blurHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dominantColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  palette?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  exif?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  focalX?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  focalY?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   duration?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   url?: Prisma.StringFieldUpdateOperationsInput | string
   thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   variants?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  storageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   altText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.AssetUpdatetagsInput | string[]
   usageContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  processingError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1827,20 +2232,29 @@ export type AssetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   fileType?: boolean
   mimeType?: boolean
   sizeBytes?: boolean
+  contentHash?: boolean
+  perceptualHash?: boolean
   width?: boolean
   height?: boolean
   aspectRatio?: boolean
   blurHash?: boolean
+  dominantColor?: boolean
+  palette?: boolean
+  exif?: boolean
+  focalX?: boolean
+  focalY?: boolean
   duration?: boolean
   url?: boolean
   thumbnailUrl?: boolean
   variants?: boolean
+  storageProvider?: boolean
   title?: boolean
   altText?: boolean
   caption?: boolean
   tags?: boolean
   usageContext?: boolean
   status?: boolean
+  processingError?: boolean
   folderId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1861,20 +2275,29 @@ export type AssetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   fileType?: boolean
   mimeType?: boolean
   sizeBytes?: boolean
+  contentHash?: boolean
+  perceptualHash?: boolean
   width?: boolean
   height?: boolean
   aspectRatio?: boolean
   blurHash?: boolean
+  dominantColor?: boolean
+  palette?: boolean
+  exif?: boolean
+  focalX?: boolean
+  focalY?: boolean
   duration?: boolean
   url?: boolean
   thumbnailUrl?: boolean
   variants?: boolean
+  storageProvider?: boolean
   title?: boolean
   altText?: boolean
   caption?: boolean
   tags?: boolean
   usageContext?: boolean
   status?: boolean
+  processingError?: boolean
   folderId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1893,20 +2316,29 @@ export type AssetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   fileType?: boolean
   mimeType?: boolean
   sizeBytes?: boolean
+  contentHash?: boolean
+  perceptualHash?: boolean
   width?: boolean
   height?: boolean
   aspectRatio?: boolean
   blurHash?: boolean
+  dominantColor?: boolean
+  palette?: boolean
+  exif?: boolean
+  focalX?: boolean
+  focalY?: boolean
   duration?: boolean
   url?: boolean
   thumbnailUrl?: boolean
   variants?: boolean
+  storageProvider?: boolean
   title?: boolean
   altText?: boolean
   caption?: boolean
   tags?: boolean
   usageContext?: boolean
   status?: boolean
+  processingError?: boolean
   folderId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1925,26 +2357,35 @@ export type AssetSelectScalar = {
   fileType?: boolean
   mimeType?: boolean
   sizeBytes?: boolean
+  contentHash?: boolean
+  perceptualHash?: boolean
   width?: boolean
   height?: boolean
   aspectRatio?: boolean
   blurHash?: boolean
+  dominantColor?: boolean
+  palette?: boolean
+  exif?: boolean
+  focalX?: boolean
+  focalY?: boolean
   duration?: boolean
   url?: boolean
   thumbnailUrl?: boolean
   variants?: boolean
+  storageProvider?: boolean
   title?: boolean
   altText?: boolean
   caption?: boolean
   tags?: boolean
   usageContext?: boolean
   status?: boolean
+  processingError?: boolean
   folderId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AssetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "uploadedBy" | "fileKey" | "fileName" | "originalName" | "fileType" | "mimeType" | "sizeBytes" | "width" | "height" | "aspectRatio" | "blurHash" | "duration" | "url" | "thumbnailUrl" | "variants" | "title" | "altText" | "caption" | "tags" | "usageContext" | "status" | "folderId" | "createdAt" | "updatedAt", ExtArgs["result"]["asset"]>
+export type AssetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "uploadedBy" | "fileKey" | "fileName" | "originalName" | "fileType" | "mimeType" | "sizeBytes" | "contentHash" | "perceptualHash" | "width" | "height" | "aspectRatio" | "blurHash" | "dominantColor" | "palette" | "exif" | "focalX" | "focalY" | "duration" | "url" | "thumbnailUrl" | "variants" | "storageProvider" | "title" | "altText" | "caption" | "tags" | "usageContext" | "status" | "processingError" | "folderId" | "createdAt" | "updatedAt", ExtArgs["result"]["asset"]>
 export type AssetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   uploader?: boolean | Prisma.Asset$uploaderArgs<ExtArgs>
@@ -1981,20 +2422,29 @@ export type $AssetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     fileType: string
     mimeType: string | null
     sizeBytes: bigint | null
+    contentHash: string | null
+    perceptualHash: string | null
     width: number | null
     height: number | null
     aspectRatio: string | null
     blurHash: string | null
+    dominantColor: string | null
+    palette: runtime.JsonValue | null
+    exif: runtime.JsonValue | null
+    focalX: number | null
+    focalY: number | null
     duration: number | null
     url: string
     thumbnailUrl: string | null
     variants: runtime.JsonValue | null
+    storageProvider: string | null
     title: string | null
     altText: string | null
     caption: string | null
     tags: string[]
     usageContext: string | null
     status: string
+    processingError: string | null
     folderId: string | null
     createdAt: Date
     updatedAt: Date | null
@@ -2434,20 +2884,29 @@ export interface AssetFieldRefs {
   readonly fileType: Prisma.FieldRef<"Asset", 'String'>
   readonly mimeType: Prisma.FieldRef<"Asset", 'String'>
   readonly sizeBytes: Prisma.FieldRef<"Asset", 'BigInt'>
+  readonly contentHash: Prisma.FieldRef<"Asset", 'String'>
+  readonly perceptualHash: Prisma.FieldRef<"Asset", 'String'>
   readonly width: Prisma.FieldRef<"Asset", 'Int'>
   readonly height: Prisma.FieldRef<"Asset", 'Int'>
   readonly aspectRatio: Prisma.FieldRef<"Asset", 'String'>
   readonly blurHash: Prisma.FieldRef<"Asset", 'String'>
+  readonly dominantColor: Prisma.FieldRef<"Asset", 'String'>
+  readonly palette: Prisma.FieldRef<"Asset", 'Json'>
+  readonly exif: Prisma.FieldRef<"Asset", 'Json'>
+  readonly focalX: Prisma.FieldRef<"Asset", 'Float'>
+  readonly focalY: Prisma.FieldRef<"Asset", 'Float'>
   readonly duration: Prisma.FieldRef<"Asset", 'Float'>
   readonly url: Prisma.FieldRef<"Asset", 'String'>
   readonly thumbnailUrl: Prisma.FieldRef<"Asset", 'String'>
   readonly variants: Prisma.FieldRef<"Asset", 'Json'>
+  readonly storageProvider: Prisma.FieldRef<"Asset", 'String'>
   readonly title: Prisma.FieldRef<"Asset", 'String'>
   readonly altText: Prisma.FieldRef<"Asset", 'String'>
   readonly caption: Prisma.FieldRef<"Asset", 'String'>
   readonly tags: Prisma.FieldRef<"Asset", 'String[]'>
   readonly usageContext: Prisma.FieldRef<"Asset", 'String'>
   readonly status: Prisma.FieldRef<"Asset", 'String'>
+  readonly processingError: Prisma.FieldRef<"Asset", 'String'>
   readonly folderId: Prisma.FieldRef<"Asset", 'String'>
   readonly createdAt: Prisma.FieldRef<"Asset", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Asset", 'DateTime'>

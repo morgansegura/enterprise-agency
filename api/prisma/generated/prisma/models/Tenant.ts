@@ -20,8 +20,20 @@ export type TenantModel = runtime.Types.Result.DefaultSelection<Prisma.$TenantPa
 
 export type AggregateTenant = {
   _count: TenantCountAggregateOutputType | null
+  _avg: TenantAvgAggregateOutputType | null
+  _sum: TenantSumAggregateOutputType | null
   _min: TenantMinAggregateOutputType | null
   _max: TenantMaxAggregateOutputType | null
+}
+
+export type TenantAvgAggregateOutputType = {
+  storageQuotaBytes: number | null
+  storageUsedBytes: number | null
+}
+
+export type TenantSumAggregateOutputType = {
+  storageQuotaBytes: bigint | null
+  storageUsedBytes: bigint | null
 }
 
 export type TenantMinAggregateOutputType = {
@@ -38,6 +50,8 @@ export type TenantMinAggregateOutputType = {
   tenantType: $Enums.TenantType | null
   clientType: $Enums.ClientType | null
   tier: $Enums.TenantTier | null
+  storageQuotaBytes: bigint | null
+  storageUsedBytes: bigint | null
   paymentProvider: string | null
   logoUrl: string | null
   metaDescription: string | null
@@ -61,6 +75,8 @@ export type TenantMaxAggregateOutputType = {
   tenantType: $Enums.TenantType | null
   clientType: $Enums.ClientType | null
   tier: $Enums.TenantTier | null
+  storageQuotaBytes: bigint | null
+  storageUsedBytes: bigint | null
   paymentProvider: string | null
   logoUrl: string | null
   metaDescription: string | null
@@ -92,6 +108,8 @@ export type TenantCountAggregateOutputType = {
   menusConfig: number
   logosConfig: number
   planLimits: number
+  storageQuotaBytes: number
+  storageUsedBytes: number
   paymentConfig: number
   paymentProvider: number
   logoUrl: number
@@ -103,6 +121,16 @@ export type TenantCountAggregateOutputType = {
   _all: number
 }
 
+
+export type TenantAvgAggregateInputType = {
+  storageQuotaBytes?: true
+  storageUsedBytes?: true
+}
+
+export type TenantSumAggregateInputType = {
+  storageQuotaBytes?: true
+  storageUsedBytes?: true
+}
 
 export type TenantMinAggregateInputType = {
   id?: true
@@ -118,6 +146,8 @@ export type TenantMinAggregateInputType = {
   tenantType?: true
   clientType?: true
   tier?: true
+  storageQuotaBytes?: true
+  storageUsedBytes?: true
   paymentProvider?: true
   logoUrl?: true
   metaDescription?: true
@@ -141,6 +171,8 @@ export type TenantMaxAggregateInputType = {
   tenantType?: true
   clientType?: true
   tier?: true
+  storageQuotaBytes?: true
+  storageUsedBytes?: true
   paymentProvider?: true
   logoUrl?: true
   metaDescription?: true
@@ -172,6 +204,8 @@ export type TenantCountAggregateInputType = {
   menusConfig?: true
   logosConfig?: true
   planLimits?: true
+  storageQuotaBytes?: true
+  storageUsedBytes?: true
   paymentConfig?: true
   paymentProvider?: true
   logoUrl?: true
@@ -221,6 +255,18 @@ export type TenantAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: TenantAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: TenantSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: TenantMinAggregateInputType
@@ -251,6 +297,8 @@ export type TenantGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: TenantCountAggregateInputType | true
+  _avg?: TenantAvgAggregateInputType
+  _sum?: TenantSumAggregateInputType
   _min?: TenantMinAggregateInputType
   _max?: TenantMaxAggregateInputType
 }
@@ -277,6 +325,8 @@ export type TenantGroupByOutputType = {
   menusConfig: runtime.JsonValue | null
   logosConfig: runtime.JsonValue | null
   planLimits: runtime.JsonValue
+  storageQuotaBytes: bigint
+  storageUsedBytes: bigint
   paymentConfig: runtime.JsonValue | null
   paymentProvider: string | null
   logoUrl: string | null
@@ -286,6 +336,8 @@ export type TenantGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: TenantCountAggregateOutputType | null
+  _avg: TenantAvgAggregateOutputType | null
+  _sum: TenantSumAggregateOutputType | null
   _min: TenantMinAggregateOutputType | null
   _max: TenantMaxAggregateOutputType | null
 }
@@ -330,6 +382,8 @@ export type TenantWhereInput = {
   menusConfig?: Prisma.JsonNullableFilter<"Tenant">
   logosConfig?: Prisma.JsonNullableFilter<"Tenant">
   planLimits?: Prisma.JsonFilter<"Tenant">
+  storageQuotaBytes?: Prisma.BigIntFilter<"Tenant"> | bigint | number
+  storageUsedBytes?: Prisma.BigIntFilter<"Tenant"> | bigint | number
   paymentConfig?: Prisma.JsonNullableFilter<"Tenant">
   paymentProvider?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
@@ -384,6 +438,8 @@ export type TenantOrderByWithRelationInput = {
   menusConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   logosConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   planLimits?: Prisma.SortOrder
+  storageQuotaBytes?: Prisma.SortOrder
+  storageUsedBytes?: Prisma.SortOrder
   paymentConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentProvider?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -441,6 +497,8 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   menusConfig?: Prisma.JsonNullableFilter<"Tenant">
   logosConfig?: Prisma.JsonNullableFilter<"Tenant">
   planLimits?: Prisma.JsonFilter<"Tenant">
+  storageQuotaBytes?: Prisma.BigIntFilter<"Tenant"> | bigint | number
+  storageUsedBytes?: Prisma.BigIntFilter<"Tenant"> | bigint | number
   paymentConfig?: Prisma.JsonNullableFilter<"Tenant">
   paymentProvider?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
@@ -495,6 +553,8 @@ export type TenantOrderByWithAggregationInput = {
   menusConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   logosConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   planLimits?: Prisma.SortOrder
+  storageQuotaBytes?: Prisma.SortOrder
+  storageUsedBytes?: Prisma.SortOrder
   paymentConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentProvider?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -504,8 +564,10 @@ export type TenantOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TenantCountOrderByAggregateInput
+  _avg?: Prisma.TenantAvgOrderByAggregateInput
   _max?: Prisma.TenantMaxOrderByAggregateInput
   _min?: Prisma.TenantMinOrderByAggregateInput
+  _sum?: Prisma.TenantSumOrderByAggregateInput
 }
 
 export type TenantScalarWhereWithAggregatesInput = {
@@ -533,6 +595,8 @@ export type TenantScalarWhereWithAggregatesInput = {
   menusConfig?: Prisma.JsonNullableWithAggregatesFilter<"Tenant">
   logosConfig?: Prisma.JsonNullableWithAggregatesFilter<"Tenant">
   planLimits?: Prisma.JsonWithAggregatesFilter<"Tenant">
+  storageQuotaBytes?: Prisma.BigIntWithAggregatesFilter<"Tenant"> | bigint | number
+  storageUsedBytes?: Prisma.BigIntWithAggregatesFilter<"Tenant"> | bigint | number
   paymentConfig?: Prisma.JsonNullableWithAggregatesFilter<"Tenant">
   paymentProvider?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
@@ -564,6 +628,8 @@ export type TenantCreateInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -618,6 +684,8 @@ export type TenantUncheckedCreateInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -670,6 +738,8 @@ export type TenantUpdateInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -724,6 +794,8 @@ export type TenantUncheckedUpdateInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -777,6 +849,8 @@ export type TenantCreateManyInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -808,6 +882,8 @@ export type TenantUpdateManyMutationInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -840,6 +916,8 @@ export type TenantUncheckedUpdateManyInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -887,6 +965,8 @@ export type TenantCountOrderByAggregateInput = {
   menusConfig?: Prisma.SortOrder
   logosConfig?: Prisma.SortOrder
   planLimits?: Prisma.SortOrder
+  storageQuotaBytes?: Prisma.SortOrder
+  storageUsedBytes?: Prisma.SortOrder
   paymentConfig?: Prisma.SortOrder
   paymentProvider?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
@@ -895,6 +975,11 @@ export type TenantCountOrderByAggregateInput = {
   contactPhone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type TenantAvgOrderByAggregateInput = {
+  storageQuotaBytes?: Prisma.SortOrder
+  storageUsedBytes?: Prisma.SortOrder
 }
 
 export type TenantMaxOrderByAggregateInput = {
@@ -911,6 +996,8 @@ export type TenantMaxOrderByAggregateInput = {
   tenantType?: Prisma.SortOrder
   clientType?: Prisma.SortOrder
   tier?: Prisma.SortOrder
+  storageQuotaBytes?: Prisma.SortOrder
+  storageUsedBytes?: Prisma.SortOrder
   paymentProvider?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
@@ -934,6 +1021,8 @@ export type TenantMinOrderByAggregateInput = {
   tenantType?: Prisma.SortOrder
   clientType?: Prisma.SortOrder
   tier?: Prisma.SortOrder
+  storageQuotaBytes?: Prisma.SortOrder
+  storageUsedBytes?: Prisma.SortOrder
   paymentProvider?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
@@ -941,6 +1030,11 @@ export type TenantMinOrderByAggregateInput = {
   contactPhone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type TenantSumOrderByAggregateInput = {
+  storageQuotaBytes?: Prisma.SortOrder
+  storageUsedBytes?: Prisma.SortOrder
 }
 
 export type TenantScalarRelationFilter = {
@@ -990,6 +1084,14 @@ export type NullableEnumClientTypeFieldUpdateOperationsInput = {
 
 export type EnumTenantTierFieldUpdateOperationsInput = {
   set?: $Enums.TenantTier
+}
+
+export type BigIntFieldUpdateOperationsInput = {
+  set?: bigint | number
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -1337,6 +1439,8 @@ export type TenantCreateWithoutChildrenInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -1390,6 +1494,8 @@ export type TenantUncheckedCreateWithoutChildrenInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -1446,6 +1552,8 @@ export type TenantCreateWithoutParentInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -1498,6 +1606,8 @@ export type TenantUncheckedCreateWithoutParentInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -1571,6 +1681,8 @@ export type TenantUpdateWithoutChildrenInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1624,6 +1736,8 @@ export type TenantUncheckedUpdateWithoutChildrenInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1695,6 +1809,8 @@ export type TenantScalarWhereInput = {
   menusConfig?: Prisma.JsonNullableFilter<"Tenant">
   logosConfig?: Prisma.JsonNullableFilter<"Tenant">
   planLimits?: Prisma.JsonFilter<"Tenant">
+  storageQuotaBytes?: Prisma.BigIntFilter<"Tenant"> | bigint | number
+  storageUsedBytes?: Prisma.BigIntFilter<"Tenant"> | bigint | number
   paymentConfig?: Prisma.JsonNullableFilter<"Tenant">
   paymentProvider?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
@@ -1726,6 +1842,8 @@ export type TenantCreateWithoutDomainsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -1779,6 +1897,8 @@ export type TenantUncheckedCreateWithoutDomainsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -1846,6 +1966,8 @@ export type TenantUpdateWithoutDomainsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1899,6 +2021,8 @@ export type TenantUncheckedUpdateWithoutDomainsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1950,6 +2074,8 @@ export type TenantCreateWithoutTenantUsersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2003,6 +2129,8 @@ export type TenantUncheckedCreateWithoutTenantUsersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2070,6 +2198,8 @@ export type TenantUpdateWithoutTenantUsersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2123,6 +2253,8 @@ export type TenantUncheckedUpdateWithoutTenantUsersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2174,6 +2306,8 @@ export type TenantCreateWithoutProjectAssignmentsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2227,6 +2361,8 @@ export type TenantUncheckedCreateWithoutProjectAssignmentsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2294,6 +2430,8 @@ export type TenantUpdateWithoutProjectAssignmentsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2347,6 +2485,8 @@ export type TenantUncheckedUpdateWithoutProjectAssignmentsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2398,6 +2538,8 @@ export type TenantCreateWithoutAssetsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2451,6 +2593,8 @@ export type TenantUncheckedCreateWithoutAssetsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2518,6 +2662,8 @@ export type TenantUpdateWithoutAssetsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2571,6 +2717,8 @@ export type TenantUncheckedUpdateWithoutAssetsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2622,6 +2770,8 @@ export type TenantCreateWithoutMediaFoldersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2675,6 +2825,8 @@ export type TenantUncheckedCreateWithoutMediaFoldersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2742,6 +2894,8 @@ export type TenantUpdateWithoutMediaFoldersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2795,6 +2949,8 @@ export type TenantUncheckedUpdateWithoutMediaFoldersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2846,6 +3002,8 @@ export type TenantCreateWithoutLibraryComponentsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2899,6 +3057,8 @@ export type TenantUncheckedCreateWithoutLibraryComponentsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -2966,6 +3126,8 @@ export type TenantUpdateWithoutLibraryComponentsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3019,6 +3181,8 @@ export type TenantUncheckedUpdateWithoutLibraryComponentsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3070,6 +3234,8 @@ export type TenantCreateWithoutMenusInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -3123,6 +3289,8 @@ export type TenantUncheckedCreateWithoutMenusInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -3190,6 +3358,8 @@ export type TenantUpdateWithoutMenusInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3243,6 +3413,8 @@ export type TenantUncheckedUpdateWithoutMenusInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3294,6 +3466,8 @@ export type TenantCreateWithoutHeadersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -3347,6 +3521,8 @@ export type TenantUncheckedCreateWithoutHeadersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -3414,6 +3590,8 @@ export type TenantUpdateWithoutHeadersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3467,6 +3645,8 @@ export type TenantUncheckedUpdateWithoutHeadersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3518,6 +3698,8 @@ export type TenantCreateWithoutFootersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -3571,6 +3753,8 @@ export type TenantUncheckedCreateWithoutFootersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -3638,6 +3822,8 @@ export type TenantUpdateWithoutFootersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3691,6 +3877,8 @@ export type TenantUncheckedUpdateWithoutFootersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3742,6 +3930,8 @@ export type TenantCreateWithoutPagesInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -3795,6 +3985,8 @@ export type TenantUncheckedCreateWithoutPagesInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -3862,6 +4054,8 @@ export type TenantUpdateWithoutPagesInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3915,6 +4109,8 @@ export type TenantUncheckedUpdateWithoutPagesInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3966,6 +4162,8 @@ export type TenantCreateWithoutPostsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4019,6 +4217,8 @@ export type TenantUncheckedCreateWithoutPostsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4086,6 +4286,8 @@ export type TenantUpdateWithoutPostsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4139,6 +4341,8 @@ export type TenantUncheckedUpdateWithoutPostsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4190,6 +4394,8 @@ export type TenantCreateWithoutPreviewTokensInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4243,6 +4449,8 @@ export type TenantUncheckedCreateWithoutPreviewTokensInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4310,6 +4518,8 @@ export type TenantUpdateWithoutPreviewTokensInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4363,6 +4573,8 @@ export type TenantUncheckedUpdateWithoutPreviewTokensInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4414,6 +4626,8 @@ export type TenantCreateWithoutAuditLogsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4467,6 +4681,8 @@ export type TenantUncheckedCreateWithoutAuditLogsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4534,6 +4750,8 @@ export type TenantUpdateWithoutAuditLogsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4587,6 +4805,8 @@ export type TenantUncheckedUpdateWithoutAuditLogsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4638,6 +4858,8 @@ export type TenantCreateWithoutTenantUsageInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4691,6 +4913,8 @@ export type TenantUncheckedCreateWithoutTenantUsageInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4758,6 +4982,8 @@ export type TenantUpdateWithoutTenantUsageInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4811,6 +5037,8 @@ export type TenantUncheckedUpdateWithoutTenantUsageInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4862,6 +5090,8 @@ export type TenantCreateWithoutWebhooksInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4915,6 +5145,8 @@ export type TenantUncheckedCreateWithoutWebhooksInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -4982,6 +5214,8 @@ export type TenantUpdateWithoutWebhooksInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5035,6 +5269,8 @@ export type TenantUncheckedUpdateWithoutWebhooksInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5086,6 +5322,8 @@ export type TenantCreateWithoutProductCategoriesInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -5139,6 +5377,8 @@ export type TenantUncheckedCreateWithoutProductCategoriesInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -5206,6 +5446,8 @@ export type TenantUpdateWithoutProductCategoriesInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5259,6 +5501,8 @@ export type TenantUncheckedUpdateWithoutProductCategoriesInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5310,6 +5554,8 @@ export type TenantCreateWithoutProductsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -5363,6 +5609,8 @@ export type TenantUncheckedCreateWithoutProductsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -5430,6 +5678,8 @@ export type TenantUpdateWithoutProductsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5483,6 +5733,8 @@ export type TenantUncheckedUpdateWithoutProductsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5534,6 +5786,8 @@ export type TenantCreateWithoutCustomersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -5587,6 +5841,8 @@ export type TenantUncheckedCreateWithoutCustomersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -5654,6 +5910,8 @@ export type TenantUpdateWithoutCustomersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5707,6 +5965,8 @@ export type TenantUncheckedUpdateWithoutCustomersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5758,6 +6018,8 @@ export type TenantCreateWithoutOrdersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -5811,6 +6073,8 @@ export type TenantUncheckedCreateWithoutOrdersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -5878,6 +6142,8 @@ export type TenantUpdateWithoutOrdersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5931,6 +6197,8 @@ export type TenantUncheckedUpdateWithoutOrdersInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5982,6 +6250,8 @@ export type TenantCreateWithoutRedirectsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -6035,6 +6305,8 @@ export type TenantUncheckedCreateWithoutRedirectsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -6102,6 +6374,8 @@ export type TenantUpdateWithoutRedirectsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6155,6 +6429,8 @@ export type TenantUncheckedUpdateWithoutRedirectsInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6206,6 +6482,8 @@ export type TenantCreateManyParentInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: bigint | number
+  storageUsedBytes?: bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: string | null
   logoUrl?: string | null
@@ -6237,6 +6515,8 @@ export type TenantUpdateWithoutParentInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6289,6 +6569,8 @@ export type TenantUncheckedUpdateWithoutParentInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6341,6 +6623,8 @@ export type TenantUncheckedUpdateManyWithoutParentInput = {
   menusConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   logosConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   planLimits?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  storageQuotaBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   paymentConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   paymentProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -6584,6 +6868,8 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   menusConfig?: boolean
   logosConfig?: boolean
   planLimits?: boolean
+  storageQuotaBytes?: boolean
+  storageUsedBytes?: boolean
   paymentConfig?: boolean
   paymentProvider?: boolean
   logoUrl?: boolean
@@ -6639,6 +6925,8 @@ export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   menusConfig?: boolean
   logosConfig?: boolean
   planLimits?: boolean
+  storageQuotaBytes?: boolean
+  storageUsedBytes?: boolean
   paymentConfig?: boolean
   paymentProvider?: boolean
   logoUrl?: boolean
@@ -6672,6 +6960,8 @@ export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   menusConfig?: boolean
   logosConfig?: boolean
   planLimits?: boolean
+  storageQuotaBytes?: boolean
+  storageUsedBytes?: boolean
   paymentConfig?: boolean
   paymentProvider?: boolean
   logoUrl?: boolean
@@ -6705,6 +6995,8 @@ export type TenantSelectScalar = {
   menusConfig?: boolean
   logosConfig?: boolean
   planLimits?: boolean
+  storageQuotaBytes?: boolean
+  storageUsedBytes?: boolean
   paymentConfig?: boolean
   paymentProvider?: boolean
   logoUrl?: boolean
@@ -6715,7 +7007,7 @@ export type TenantSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "businessName" | "businessType" | "status" | "isPrimaryTenant" | "isTemplate" | "templateName" | "templateDescription" | "parentTenantId" | "tenantType" | "clientType" | "enabledFeatures" | "tier" | "designTokens" | "themeConfig" | "headerConfig" | "footerConfig" | "menusConfig" | "logosConfig" | "planLimits" | "paymentConfig" | "paymentProvider" | "logoUrl" | "metaDescription" | "contactEmail" | "contactPhone" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
+export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "businessName" | "businessType" | "status" | "isPrimaryTenant" | "isTemplate" | "templateName" | "templateDescription" | "parentTenantId" | "tenantType" | "clientType" | "enabledFeatures" | "tier" | "designTokens" | "themeConfig" | "headerConfig" | "footerConfig" | "menusConfig" | "logosConfig" | "planLimits" | "storageQuotaBytes" | "storageUsedBytes" | "paymentConfig" | "paymentProvider" | "logoUrl" | "metaDescription" | "contactEmail" | "contactPhone" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   domains?: boolean | Prisma.Tenant$domainsArgs<ExtArgs>
   tenantUsers?: boolean | Prisma.Tenant$tenantUsersArgs<ExtArgs>
@@ -6796,6 +7088,8 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     menusConfig: runtime.JsonValue | null
     logosConfig: runtime.JsonValue | null
     planLimits: runtime.JsonValue
+    storageQuotaBytes: bigint
+    storageUsedBytes: bigint
     paymentConfig: runtime.JsonValue | null
     paymentProvider: string | null
     logoUrl: string | null
@@ -7270,6 +7564,8 @@ export interface TenantFieldRefs {
   readonly menusConfig: Prisma.FieldRef<"Tenant", 'Json'>
   readonly logosConfig: Prisma.FieldRef<"Tenant", 'Json'>
   readonly planLimits: Prisma.FieldRef<"Tenant", 'Json'>
+  readonly storageQuotaBytes: Prisma.FieldRef<"Tenant", 'BigInt'>
+  readonly storageUsedBytes: Prisma.FieldRef<"Tenant", 'BigInt'>
   readonly paymentConfig: Prisma.FieldRef<"Tenant", 'Json'>
   readonly paymentProvider: Prisma.FieldRef<"Tenant", 'String'>
   readonly logoUrl: Prisma.FieldRef<"Tenant", 'String'>

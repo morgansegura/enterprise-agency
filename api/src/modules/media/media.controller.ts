@@ -67,7 +67,13 @@ export class MediaController {
    */
   @Post("upload")
   @Permissions(Permission.MEDIA_UPLOAD)
-  @UseInterceptors(FileInterceptor("file"))
+  @UseInterceptors(
+    FileInterceptor("file", {
+      limits: {
+        fileSize: (Number(process.env.MEDIA_MAX_SIZE_MB) || 100) * 1024 * 1024,
+      },
+    }),
+  )
   async upload(
     @CurrentTenant() tenantId: string,
     @CurrentUser("id") userId: string,
@@ -75,6 +81,15 @@ export class MediaController {
     @Body() metadata: UploadMediaDto,
   ) {
     return this.mediaService.upload(file, tenantId, userId, metadata);
+  }
+
+  /**
+   * Get tenant storage usage
+   */
+  @Get("usage/summary")
+  @Permissions(Permission.MEDIA_VIEW)
+  async usage(@CurrentTenant() tenantId: string) {
+    return this.mediaService.getUsage(tenantId);
   }
 
   // ============================================================================

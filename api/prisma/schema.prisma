@@ -75,6 +75,10 @@ model Tenant {
   // Plan & limits (JSONB)
   planLimits Json @default("{}") @map("plan_limits") @db.JsonB
 
+  // Storage quota (bytes). 0 = unlimited. Updated atomically on asset upload/delete.
+  storageQuotaBytes BigInt @default(0) @map("storage_quota_bytes")
+  storageUsedBytes  BigInt @default(0) @map("storage_used_bytes")
+
   // Payment provider configuration (JSONB for flexibility)
   // Stores Stripe, Square, or other provider configs
   // Structure: { stripe?: { publishableKey, secretKey, webhookSecret }, square?: { applicationId, accessToken, locationId } }
@@ -342,11 +346,27 @@ model Asset {
   mimeType     String? @map("mime_type") @db.VarChar(100)
   sizeBytes    BigInt? @map("size_bytes")
 
+  // Dedup: sha256 of original bytes, scoped per tenant
+  contentHash    String? @map("content_hash") @db.VarChar(64)
+  // Perceptual hash (pHash) for near-duplicate detection — optional
+  perceptualHash String? @map("perceptual_hash") @db.VarChar(32)
+
   // Image-specific
   width       Int?
   height      Int?
   aspectRatio String? @map("aspect_ratio") @db.VarChar(20)
   blurHash    String? @map("blur_hash") @db.VarChar(100)
+
+  // Dominant color (hex) and extracted palette (array of hex)
+  dominantColor String? @map("dominant_color") @db.VarChar(9)
+  palette       Json?   @db.JsonB
+
+  // EXIF metadata (camera, settings, stripped of GPS by default)
+  exif Json? @db.JsonB
+
+  // Focal point (0–1) for smart cropping
+  focalX Float? @map("focal_x")
+  focalY Float? @map("focal_y")
 
   // Video/Audio-specific
   duration Float? // Duration in seconds
@@ -358,15 +378,19 @@ model Asset {
   // Responsive variants (JSON: { sm, md, lg, xl, webp, avif })
   variants Json? @db.JsonB
 
+  // Storage provider that owns fileKey ("local" | "r2" | "s3")
+  storageProvider String? @map("storage_provider") @db.VarChar(20)
+
   // Metadata
-  title        String? @db.VarChar(255)
-  altText      String? @map("alt_text") @db.Text
-  caption      String? @db.Text
+  title        String?  @db.VarChar(255)
+  altText      String?  @map("alt_text") @db.Text
+  caption      String?  @db.Text
   tags         String[] @default([])
-  usageContext String? @map("usage_context") @db.VarChar(50)
+  usageContext String?  @map("usage_context") @db.VarChar(50)
 
   // Processing status
-  status String @default("ready") @db.VarChar(20) // processing, ready, error
+  status         String  @default("ready") @db.VarChar(20) // processing, ready, error
+  processingError String? @map("processing_error") @db.Text
 
   // Organization
   folderId String? @map("folder_id")
@@ -384,6 +408,7 @@ model Asset {
   @@index([tenantId, fileType], map: "idx_assets_type")
   @@index([tenantId, usageContext], map: "idx_assets_usage")
   @@index([tenantId, folderId], map: "idx_assets_folder")
+  @@index([tenantId, contentHash], map: "idx_assets_content_hash")
   @@index([uploadedBy], map: "idx_assets_uploader")
   @@map("assets")
 }
@@ -491,8 +516,10 @@ model Menu {
   items Json @default("[]") @db.JsonB
 
   // Styling options (JSONB)
-  // Structure: { spacing, alignment, fontSize, fontWeight, textTransform, hoverStyle, hoverAnimation, hoverColor, dropdownTrigger, dropdownAnimation, dropdownShadow, dropdownRadius, dropdownBackground, activeStyle, activeColor }
   style Json @default("{}") @db.JsonB
+
+  // Library scope — TENANT (per-tenant reuse) or GLOBAL (platform template)
+  scope ComponentScope @default(TENANT)
 
   // Default flag
   isDefault Boolean @default(false) @map("is_default")
@@ -507,6 +534,7 @@ model Menu {
 
   @@unique([tenantId, slug], map: "uq_menus_tenant_slug")
   @@index([tenantId], map: "idx_menus_tenant")
+  @@index([scope], map: "idx_menus_scope")
   @@map("menus")
 }
 
@@ -515,10 +543,12 @@ model Menu {
 // ============================================================================
 
 enum HeaderBehavior {
-  STATIC // Scrolls with page
+  STATIC // Scrolls with page (relative)
   FIXED // Always at top, content scrolls under
   STICKY // Sticks to top on scroll
-  SCROLL_HIDE // Hides on scroll down, shows on scroll up
+  SCROLL_AWAY // Hides on scroll down, stays hidden
+  SCROLL_RETURN // Hides on scroll down, returns on scroll up
+  SCROLL_HIDE // Legacy: alias for SCROLL_RETURN
   TRANSPARENT // Starts transparent, becomes solid on scroll
 }
 
@@ -537,25 +567,30 @@ model Header {
   // Animation
   animation String @default("none") @db.VarChar(20) // none, fade, slide, blur
 
-  // Layout zones (JSONB) - what's in each zone
-  // Structure: { logo: { position, size, ... }, navigation: { menuId, position }, actions: { items: [...] } }
+  // Content — Section[] (same shape as Page.sections). Authoritative source.
+  // Each section is a normal Section with containers/blocks.
+  sections Json @default("[]") @db.JsonB
+
+  // LEGACY: zone-based layout. Kept for migration only; reads ignore this
+  // when `sections` is non-empty. Scheduled for removal.
   zones Json @default("{}") @db.JsonB
 
-  // Styling (JSONB)
-  // Structure: { backgroundColor, textColor, height, padding, shadow, blur, borderBottom }
+  // Styling (JSONB) — wrapper-level overrides (backdrop, blur, etc.)
   style Json @default("{}") @db.JsonB
 
   // Transparent state styling (when behavior is TRANSPARENT)
   transparentStyle Json? @map("transparent_style") @db.JsonB
 
-  // Menu reference
+  // LEGACY: Menu reference. Headers now contain Menu blocks in sections.
   menuId String? @map("menu_id")
 
-  // Default flag
+  // Library scope — TENANT (per-tenant reuse) or GLOBAL (platform template)
+  scope ComponentScope @default(TENANT)
+
+  // Default flag — one default header per tenant
   isDefault Boolean @default(false) @map("is_default")
 
   // Mobile menu configuration (JSONB)
-  // Structure: { type, breakpoint, animation, trigger: { openIcon, closeIcon, ... }, ... }
   mobileMenu Json? @default("{}") @map("mobile_menu") @db.JsonB
 
   // Timestamps
@@ -569,6 +604,7 @@ model Header {
 
   @@unique([tenantId, slug], map: "uq_headers_tenant_slug")
   @@index([tenantId], map: "idx_headers_tenant")
+  @@index([scope], map: "idx_headers_scope")
   @@map("headers")
 }
 
@@ -587,14 +623,20 @@ model Footer {
   // Layout type
   layout String @default("simple") @db.VarChar(20) // simple, columns, mega
 
-  // Content zones (JSONB)
-  // Structure: { columns: [{ title, links: [], content? }], bottom: { copyright, links: [] }, social: [...] }
+  // Content — Section[] (same shape as Page.sections). Authoritative source.
+  sections Json @default("[]") @db.JsonB
+
+  // LEGACY: zone-based layout. Kept for migration only; reads ignore this
+  // when `sections` is non-empty. Scheduled for removal.
   zones Json @default("{}") @db.JsonB
 
-  // Styling (JSONB)
+  // Styling (JSONB) — wrapper-level overrides
   style Json @default("{}") @db.JsonB
 
-  // Default flag
+  // Library scope — TENANT (per-tenant reuse) or GLOBAL (platform template)
+  scope ComponentScope @default(TENANT)
+
+  // Default flag — one default footer per tenant
   isDefault Boolean @default(false) @map("is_default")
 
   // Timestamps
@@ -607,6 +649,7 @@ model Footer {
 
   @@unique([tenantId, slug], map: "uq_footers_tenant_slug")
   @@index([tenantId], map: "idx_footers_tenant")
+  @@index([scope], map: "idx_footers_scope")
   @@map("footers")
 }
 

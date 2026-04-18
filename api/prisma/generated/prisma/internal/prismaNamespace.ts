@@ -2639,6 +2639,8 @@ export const TenantScalarFieldEnum = {
   menusConfig: 'menusConfig',
   logosConfig: 'logosConfig',
   planLimits: 'planLimits',
+  storageQuotaBytes: 'storageQuotaBytes',
+  storageUsedBytes: 'storageUsedBytes',
   paymentConfig: 'paymentConfig',
   paymentProvider: 'paymentProvider',
   logoUrl: 'logoUrl',
@@ -2762,20 +2764,29 @@ export const AssetScalarFieldEnum = {
   fileType: 'fileType',
   mimeType: 'mimeType',
   sizeBytes: 'sizeBytes',
+  contentHash: 'contentHash',
+  perceptualHash: 'perceptualHash',
   width: 'width',
   height: 'height',
   aspectRatio: 'aspectRatio',
   blurHash: 'blurHash',
+  dominantColor: 'dominantColor',
+  palette: 'palette',
+  exif: 'exif',
+  focalX: 'focalX',
+  focalY: 'focalY',
   duration: 'duration',
   url: 'url',
   thumbnailUrl: 'thumbnailUrl',
   variants: 'variants',
+  storageProvider: 'storageProvider',
   title: 'title',
   altText: 'altText',
   caption: 'caption',
   tags: 'tags',
   usageContext: 'usageContext',
   status: 'status',
+  processingError: 'processingError',
   folderId: 'folderId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2828,6 +2839,7 @@ export const MenuScalarFieldEnum = {
   type: 'type',
   items: 'items',
   style: 'style',
+  scope: 'scope',
   isDefault: 'isDefault',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2844,10 +2856,12 @@ export const HeaderScalarFieldEnum = {
   behavior: 'behavior',
   scrollThreshold: 'scrollThreshold',
   animation: 'animation',
+  sections: 'sections',
   zones: 'zones',
   style: 'style',
   transparentStyle: 'transparentStyle',
   menuId: 'menuId',
+  scope: 'scope',
   isDefault: 'isDefault',
   mobileMenu: 'mobileMenu',
   createdAt: 'createdAt',
@@ -2863,8 +2877,10 @@ export const FooterScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   layout: 'layout',
+  sections: 'sections',
   zones: 'zones',
   style: 'style',
+  scope: 'scope',
   isDefault: 'isDefault',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -3337,6 +3353,20 @@ export type ListEnumTenantTierFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt[]'
+ */
+export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -3361,20 +3391,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
- * Reference to a field of type 'BigInt'
- */
-export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
-    
-
-
-/**
- * Reference to a field of type 'BigInt[]'
- */
-export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
