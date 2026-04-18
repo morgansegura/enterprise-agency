@@ -1,0 +1,44 @@
+@reference "tailwindcss";
+
+/* =============================================================================
+   Container Add Button — Empty state (dashed drop-zone)
+   ============================================================================= */
+
+.container-add-empty {
+  @apply relative flex items-center justify-center;
+  @apply w-full min-h-20 rounded-md;
+  @apply border-2 border-dashed border-(--accent-primary)/40;
+  @apply bg-(--accent-primary)/5;
+  @apply transition-colors duration-150 cursor-pointer;
+}
+
+.container-add-empty:hover {
+  @apply border-(--accent-primary)/70 bg-(--accent-primary)/10;
+}
+
+.container-add-empty-fab {
+  @apply inline-flex items-center justify-center;
+  @apply size-8 rounded-full;
+  @apply bg-(--accent-primary) text-(--primary-foreground);
+  @apply shadow-sm;
+  @apply transition-transform duration-150;
+}
+
+.container-add-empty:hover .container-add-empty-fab {
+  @apply scale-110;
+}
+
+/* =============================================================================
+   Container Add Button — Inline "+" (when container already has blocks)
+   ============================================================================= */
+
+.container-add-inline {
+  @apply flex items-center justify-center w-full py-1.5 rounded-md;
+  @apply border border-dashed border-(--el-300) bg-transparent;
+  @apply text-(--el-500) cursor-pointer;
+  @apply transition-colors duration-100;
+}
+
+.container-add-inline:hover {
+  @apply border-(--accent-primary) text-(--accent-primary) bg-(--accent-primary)/5;
+}

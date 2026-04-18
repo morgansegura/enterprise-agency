@@ -84,20 +84,52 @@ export function PostEditorScreen({
   );
 
   // UI Store for block selection in sidebar
-  const { selectBlock } = useUIStore();
+  const { selectBlock, selectedElement } = useUIStore();
 
-  // Listen for block additions from BlocksLibrary
+  // Listen for block additions from BlocksLibrary (left sidebar).
+  // Insert target: the currently-selected container; fallback to the last
+  // container in the last section so a user with no explicit selection still
+  // gets a sensible append.
   React.useEffect(() => {
     const handleAddBlock = (event: Event) => {
       const customEvent = event as CustomEvent<{
         blockId: string;
         blockType: string;
       }>;
-      editor.handleAddBlockToContainer(0, 0, customEvent.detail.blockType);
+      if (!customEvent.detail?.blockType) return;
+
+      const sections = editor.sections;
+      let targetSection = 0;
+      let targetContainer = 0;
+
+      if (
+        selectedElement &&
+        selectedElement.sectionIndex >= 0 &&
+        selectedElement.sectionIndex < sections.length
+      ) {
+        targetSection = selectedElement.sectionIndex;
+        const containers = sections[targetSection]?.containers ?? [];
+        targetContainer =
+          typeof selectedElement.containerIndex === "number" &&
+          selectedElement.containerIndex >= 0 &&
+          selectedElement.containerIndex < containers.length
+            ? selectedElement.containerIndex
+            : Math.max(0, containers.length - 1);
+      } else if (sections.length > 0) {
+        targetSection = sections.length - 1;
+        const containers = sections[targetSection]?.containers ?? [];
+        targetContainer = Math.max(0, containers.length - 1);
+      }
+
+      editor.handleAddBlockToContainer(
+        targetSection,
+        targetContainer,
+        customEvent.detail.blockType,
+      );
     };
     window.addEventListener("add-block", handleAddBlock);
     return () => window.removeEventListener("add-block", handleAddBlock);
-  }, [editor]);
+  }, [editor, selectedElement]);
 
   if (isLoading) {
     return (

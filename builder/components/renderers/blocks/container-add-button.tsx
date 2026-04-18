@@ -4,6 +4,7 @@ import { AddBlockPopover } from "@/components/editor/add-block-popover/add-block
 import { blockRegistry } from "@/lib/editor/block-registry";
 import { Plus } from "lucide-react";
 import type { Block } from "@/lib/hooks/use-pages";
+import "./container-add-button.css";
 
 interface ContainerAddButtonProps {
   block: Block;
@@ -13,8 +14,15 @@ interface ContainerAddButtonProps {
 }
 
 /**
- * Shared "Add block inside container" button.
- * Used by Stack, Flex, Grid, Columns block renderers.
+ * Shared "Add block inside container" trigger.
+ *
+ * Two visual states:
+ * - **Empty**: full-width dashed drop-zone with a centered circular "+" button.
+ * - **Non-empty**: compact inline "+" row.
+ *
+ * In both cases, clicking opens the shared AddBlockPopover modal to pick the
+ * block type. The block is inserted into *this* container — no events, no
+ * cross-container side effects.
  */
 export function ContainerAddButton({
   block,
@@ -37,21 +45,33 @@ export function ContainerAddButton({
       ...block,
       data: { ...block.data, blocks: [...blocks, newBlock] },
     });
-    window.dispatchEvent(new Event("add-block"));
   };
+
+  const isEmpty = blocks.length === 0;
 
   return (
     <AddBlockPopover onAddBlock={handleAdd}>
-      <button
-        type="button"
-        className="flex items-center justify-center w-full py-2 border border-dashed border-(--el-300) rounded-md text-(--el-400) hover:border-(--accent-primary) hover:text-(--accent-primary) transition-colors cursor-pointer bg-transparent"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Plus className="size-3.5 mr-1" />
-        <span className="text-[11px] font-medium">
-          {blocks.length === 0 ? "Add block" : "+"}
-        </span>
-      </button>
+      {isEmpty ? (
+        <button
+          type="button"
+          className="container-add-empty"
+          onClick={(e) => e.stopPropagation()}
+          aria-label="Add first block"
+        >
+          <span className="container-add-empty-fab">
+            <Plus className="size-4" />
+          </span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="container-add-inline"
+          onClick={(e) => e.stopPropagation()}
+          aria-label="Add block"
+        >
+          <Plus className="size-3" />
+        </button>
+      )}
     </AddBlockPopover>
   );
 }
