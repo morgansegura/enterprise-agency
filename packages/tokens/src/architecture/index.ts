@@ -67,6 +67,8 @@ export {
   type TextBlockData,
   type RichTextBlockData,
   type ImageBlockData,
+  type ImageVariant,
+  type ImageVariants,
   type ButtonBlockData,
   type CardImageData,
   type CardLinkData,
@@ -118,7 +120,12 @@ export {
 } from "./blocks";
 
 // Element styles utilities
-export { stylesToCSSVars, allStylesToCSSVars, hasStyles, mergeStyles } from "./element-styles";
+export {
+  stylesToCSSVars,
+  allStylesToCSSVars,
+  hasStyles,
+  mergeStyles,
+} from "./element-styles";
 
 // CSS generator
 export {

@@ -8,8 +8,12 @@
   @apply relative overflow-hidden rounded-lg;
 }
 
+[data-slot="image-block-picture"] {
+  @apply block w-full;
+}
+
 [data-slot="image-block-image"] {
-  @apply w-full h-auto;
+  @apply block w-full h-auto;
 }
 
 [data-slot="image-block-caption"] {

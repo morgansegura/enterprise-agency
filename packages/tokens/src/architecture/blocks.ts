@@ -194,6 +194,32 @@ export type ImageBlockData = {
   width?: number;
   height?: number;
   objectFit?: "contain" | "cover" | "fill" | "none";
+  /** Optional asset metadata — enables variants, BlurHash, dominant-color background */
+  assetId?: string;
+  blurHash?: string;
+  dominantColor?: string;
+  aspectRatio?: string;
+  /**
+   * Responsive variants (per-size, per-format).
+   * { sm, md, lg, xl } for JPEG; { webp: {...}, avif: {...} } for format-specific.
+   */
+  variants?: ImageVariants;
+};
+
+/** Variant structure for responsive/modern-format delivery */
+export type ImageVariant = {
+  url: string;
+  width: number;
+  height: number;
+};
+
+export type ImageVariants = {
+  sm?: ImageVariant;
+  md?: ImageVariant;
+  lg?: ImageVariant;
+  xl?: ImageVariant;
+  webp?: Record<string, ImageVariant>;
+  avif?: Record<string, ImageVariant>;
 };
 
 /** Button block data */

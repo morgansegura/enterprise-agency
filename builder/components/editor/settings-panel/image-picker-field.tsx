@@ -7,11 +7,14 @@ import { useParams } from "next/navigation";
 import { Image as ImageIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MediaLibraryPicker } from "@/components/ui/media-library/media-library-picker";
+import type { Asset } from "@/lib/hooks/use-assets";
 import "./image-picker-field.css";
 
 interface ImagePickerFieldProps {
   value: string;
   onChange: (url: string) => void;
+  /** Optional: receive the full asset so callers can capture variants/blurHash/etc. */
+  onSelectAsset?: (asset: Asset) => void;
   label?: string;
   /** Filter: "image" | "audio" | "video" */
   fileType?: "image" | "audio" | "video" | "document";
@@ -24,6 +27,7 @@ interface ImagePickerFieldProps {
 export function ImagePickerField({
   value,
   onChange,
+  onSelectAsset,
   label,
   fileType = "image",
 }: ImagePickerFieldProps) {
@@ -83,6 +87,7 @@ export function ImagePickerField({
         onOpenChange={setOpen}
         onSelect={(asset) => {
           onChange(asset.url);
+          onSelectAsset?.(asset as Asset);
           setOpen(false);
         }}
         fileType={fileType}

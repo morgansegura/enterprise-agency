@@ -17,6 +17,8 @@ export {
   type TextBlockData,
   type RichTextBlockData,
   type ImageBlockData,
+  type ImageVariant,
+  type ImageVariants,
   type ButtonBlockData,
   type CardBlockData,
   type VideoBlockData,
