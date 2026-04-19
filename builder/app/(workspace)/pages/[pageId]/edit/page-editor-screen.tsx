@@ -952,6 +952,7 @@ export function PageEditorScreen({
                   });
                 }}
                 onAddBlock={editor.handleAddBlockToContainer}
+                onAddBlockToBox={editor.handleAddBlockToBox}
                 onDeleteBlock={editor.handleBlockDelete}
                 onDuplicateBlock={editor.handleBlockDuplicate}
                 onMoveBlockUp={editor.handleBlockMoveUp}

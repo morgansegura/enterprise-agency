@@ -74,7 +74,9 @@ export function usePageEditor(initialSections: Section[]) {
   const storeRedo = useEditorStore((s) => s.redo);
 
   // History reactivity for canUndo/canRedo
-  const historyVersion = useEditorHistory((h) => h.past.length + h.future.length);
+  const historyVersion = useEditorHistory(
+    (h) => h.past.length + h.future.length,
+  );
   const canUndo = useEditorHistory((h) => h.past.length > 0);
   const canRedo = useEditorHistory((h) => h.future.length > 0);
   // historyVersion subscription forces re-render when history changes
@@ -87,11 +89,9 @@ export function usePageEditor(initialSections: Section[]) {
   React.useEffect(() => {
     if (!serverLoadedRef.current) {
       const isFromServer =
-        initialSections.some(
-          (s) => s._key && !s._key.startsWith("section-"),
-        ) ||
-        initialSections.some(
-          (s) => s.containers?.some((c) => (c.blocks?.length ?? 0) > 0),
+        initialSections.some((s) => s._key && !s._key.startsWith("section-")) ||
+        initialSections.some((s) =>
+          s.containers?.some((c) => (c.blocks?.length ?? 0) > 0),
         );
 
       // Always sync to store on mount; mark loaded once we have real server data
@@ -326,6 +326,44 @@ export function usePageEditor(initialSections: Section[]) {
     [getKeys, storeAddBlock],
   );
 
+  // Append a block into a Box block's `data.blocks` (Box = container-block
+  // renderer that accepts nested blocks). Updates the Box in place via
+  // `updateBlock` rather than the container-level `addBlock` store action.
+  const handleAddBlockToBox = React.useCallback(
+    (
+      sectionIndex: number,
+      containerIndex: number,
+      blockIndex: number,
+      blockType: string,
+    ) => {
+      const { sectionKey, containerKey, blockKey } = getKeys(
+        sectionIndex,
+        containerIndex,
+        blockIndex,
+      );
+      if (!sectionKey || !containerKey || !blockKey) return;
+      const boxBlock = useEditorStore
+        .getState()
+        .getBlock(sectionKey, containerKey, blockKey);
+      if (!boxBlock) return;
+      const existing =
+        ((boxBlock.data as Record<string, unknown>)?.blocks as
+          | Block[]
+          | undefined) ?? [];
+      const newBlock = createDefaultBlock(blockType);
+      const updated: Block = {
+        ...boxBlock,
+        data: {
+          ...(boxBlock.data as Record<string, unknown>),
+          blocks: [...existing, newBlock],
+        },
+      };
+      storeUpdateBlock(sectionKey, containerKey, blockKey, updated);
+      toast.success("Block added!");
+    },
+    [getKeys, storeUpdateBlock],
+  );
+
   // --- Section operations ---
 
   const handleSectionChange = React.useCallback(
@@ -421,6 +459,7 @@ export function usePageEditor(initialSections: Section[]) {
     handleBlockMoveDown,
     handleBlockReorder,
     handleAddBlockToContainer,
+    handleAddBlockToBox,
     // Section operations
     handleSectionChange,
     handleSectionDelete,
