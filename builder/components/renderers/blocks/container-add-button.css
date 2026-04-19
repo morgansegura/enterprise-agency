@@ -1,44 +1,59 @@
 @reference "tailwindcss";
 
 /* =============================================================================
-   Container Add Button — Empty state (dashed drop-zone)
-   ============================================================================= */
+ * Layer overlay chip — label + "+" FAB grouped in the top-right corner
+ * of a selected/hovered section or container. Replaces the pseudo-element
+ * label so we can sit a real interactive button next to it.
+ * ============================================================================= */
 
-.container-add-empty {
-  @apply relative flex items-center justify-center;
-  @apply w-full min-h-20 rounded-md;
-  @apply border-2 border-dashed border-(--accent-primary)/40;
-  @apply bg-(--accent-primary)/5;
-  @apply transition-colors duration-150 cursor-pointer;
+/* The chip MUST be absolutely positioned so toggling its visibility never
+ * shifts the host element's size. `!important` defeats token CSS rules
+ * that force `position: relative; z-index: 2` on direct children of
+ * `.section-container` — without this the chip joins flex flow and
+ * grows/shrinks the container as it shows/hides. */
+.layer-overlay-chip {
+  position: absolute !important;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  gap: 0.375rem;
+  pointer-events: none;
 }
 
-.container-add-empty:hover {
-  @apply border-(--accent-primary)/70 bg-(--accent-primary)/10;
+/* Show the chip only when the owning section / container / box is directly
+ * hovered or selected. Ancestor hover does NOT trigger the chip — only one
+ * overlay at a time. */
+[data-element-type="section"].is-preview-selected > .layer-overlay-chip,
+[data-element-type="section"].is-preview-hovered > .layer-overlay-chip,
+[data-element-type="container"].is-preview-selected > .layer-overlay-chip,
+[data-element-type="container"].is-preview-hovered > .layer-overlay-chip,
+[data-slot="box-block"].is-preview-selected > .layer-overlay-chip,
+[data-slot="box-block"].is-preview-hovered > .layer-overlay-chip {
+  display: flex !important;
 }
 
-.container-add-empty-fab {
-  @apply inline-flex items-center justify-center;
-  @apply size-8 rounded-full;
-  @apply bg-(--accent-primary) text-(--primary-foreground);
-  @apply shadow-sm;
+.layer-overlay-chip > * {
+  @apply pointer-events-auto;
+}
+
+.layer-overlay-label {
+  @apply px-2 py-1 rounded-md;
+  @apply text-sm font-semibold text-white leading-none whitespace-nowrap;
+  @apply bg-(--accent-primary);
+}
+
+.layer-overlay-fab {
+  @apply inline-flex items-center justify-center w-5 h-5 rounded-full;
+  @apply bg-(--accent-primary) text-white cursor-pointer;
   @apply transition-transform duration-150;
 }
 
-.container-add-empty:hover .container-add-empty-fab {
+.layer-overlay-fab:hover {
   @apply scale-110;
 }
 
-/* =============================================================================
-   Container Add Button — Inline "+" (when container already has blocks)
-   ============================================================================= */
-
-.container-add-inline {
-  @apply flex items-center justify-center w-full py-1.5 rounded-md;
-  @apply border border-dashed border-(--el-300) bg-transparent;
-  @apply text-(--el-500) cursor-pointer;
-  @apply transition-colors duration-100;
-}
-
-.container-add-inline:hover {
-  @apply border-(--accent-primary) text-(--accent-primary) bg-(--accent-primary)/5;
+.layer-overlay-fab > svg {
+  @apply w-3 h-3;
 }

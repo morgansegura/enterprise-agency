@@ -15,6 +15,8 @@
 import type { Section } from "@/lib/hooks/use-pages";
 import { cn } from "@/lib/utils";
 import { BlockRenderer } from "./block-renderer";
+import { LayerOverlayChip } from "./blocks/layer-overlay-chip";
+import { BuilderInteractiveShell } from "./blocks/builder-interactive-shell";
 import { getElementClass } from "@enterprise/tokens";
 
 interface SectionRendererProps {
@@ -25,6 +27,12 @@ interface SectionRendererProps {
     containerIndex: number,
     blockIndex: number,
     updatedBlock: Section["containers"][0]["blocks"][0],
+  ) => void;
+  /** Renders an in-canvas "+" FAB inside each container that opens the block picker. */
+  onAddBlockToContainer?: (
+    sectionIndex: number,
+    containerIndex: number,
+    blockType: string,
   ) => void;
   sectionIndex?: number;
   isEditing?: boolean;
@@ -94,6 +102,7 @@ export function SectionRenderer({
   section,
   breakpoint = "desktop",
   onBlockChange,
+  onAddBlockToContainer,
   sectionIndex = 0,
   isEditing,
 }: SectionRendererProps) {
@@ -128,13 +137,9 @@ export function SectionRenderer({
 
   // Margin
   const marginTop =
-    styles?.marginTop != null
-      ? undefined
-      : prop(sectionAny, "marginTop");
+    styles?.marginTop != null ? undefined : prop(sectionAny, "marginTop");
   const marginBottom =
-    styles?.marginBottom != null
-      ? undefined
-      : prop(sectionAny, "marginBottom");
+    styles?.marginBottom != null ? undefined : prop(sectionAny, "marginBottom");
 
   // Gap between containers
   const gapY = prop(sectionAny, "gapY");
@@ -160,7 +165,9 @@ export function SectionRenderer({
 
   // Min height & vertical align
   const minHeight = prop(sectionAny, "minHeight");
-  const verticalAlign = minHeight ? prop(sectionAny, "verticalAlign") : undefined;
+  const verticalAlign = minHeight
+    ? prop(sectionAny, "verticalAlign")
+    : undefined;
 
   // Overflow
   const overflowX = prop(sectionAny, "overflowX");
@@ -172,13 +179,17 @@ export function SectionRenderer({
     ? { borderColor }
     : undefined;
 
-  return (
+  const sectionLabel =
+    section.displayName?.trim() || `Section ${sectionIndex + 1}`;
+
+  const sectionContent = (
     <section
       className={cn("section", getElementClass(section._key))}
-      // Editor overlay attributes (builder-only)
-      data-block-key={section._key}
-      data-block-label={`Section ${sectionIndex + 1}`}
-      data-element-type="section"
+      // In edit mode the builder overlay attrs live on the outer shell
+      // (see return below) so the user's <section> is not styled by them.
+      data-block-key={isEditing ? undefined : section._key}
+      data-block-label={isEditing ? undefined : sectionLabel}
+      data-element-type={isEditing ? undefined : "section"}
       // Data-attributes — SAME as client Section component
       data-padding-top={paddingTop}
       data-padding-bottom={paddingBottom}
@@ -200,8 +211,28 @@ export function SectionRenderer({
       data-overflow-y={overflowY}
       style={sectionStyle}
     >
+      {isEditing ? (
+        <LayerOverlayChip
+          label={
+            section.displayName?.trim() || `Section ${sectionIndex + 1}`
+          }
+          onAddBlock={
+            onAddBlockToContainer && containers.length > 0
+              ? (blockType) =>
+                  onAddBlockToContainer(
+                    sectionIndex,
+                    containers.length - 1,
+                    blockType,
+                  )
+              : undefined
+          }
+          pickerTitle="Add a block to this section"
+        />
+      ) : null}
       {containers.map((container, containerIndex) => {
-        const containerStyles = container.styles as Record<string, string> | undefined;
+        const containerStyles = container.styles as
+          | Record<string, string>
+          | undefined;
         const containerAny = container as unknown as Record<string, unknown>;
 
         // When custom CSS styles exist, skip legacy data-attributes
@@ -212,14 +243,20 @@ export function SectionRenderer({
           containerStyles?.gridTemplateColumns;
 
         // Container layout from data (legacy preset system)
-        const layout = containerAny.layout as Record<string, unknown> | undefined;
+        const layout = containerAny.layout as
+          | Record<string, unknown>
+          | undefined;
 
         // Container border color (inline style)
         const cBorderColor = containerAny.borderColor as string | undefined;
         const cBackground = containerAny.background as string | undefined;
         const containerStyle: React.CSSProperties = {};
         if (cBorderColor) containerStyle.borderColor = cBorderColor;
-        if (cBackground && cBackground !== "transparent" && cBackground !== "none") {
+        if (
+          cBackground &&
+          cBackground !== "transparent" &&
+          cBackground !== "none"
+        ) {
           containerStyle.backgroundColor = cBackground;
         }
 
@@ -233,10 +270,10 @@ export function SectionRenderer({
         return (
           <div
             key={container._key}
-            className={cn("container", getElementClass(container._key))}
+            className={cn("section-container", getElementClass(container._key))}
             // Editor overlay attributes (builder-only)
             data-block-key={container._key}
-            data-block-label={`Container ${containerIndex + 1}`}
+            data-block-label={container.displayName?.trim() || `Container ${containerIndex + 1}`}
             data-element-type="container"
             // Layout — SAME as client Container component
             data-layout-type={
@@ -245,13 +282,19 @@ export function SectionRenderer({
                 : undefined
             }
             data-layout-direction={
-              !hasContainerLayout ? (layout?.direction as string) || undefined : undefined
+              !hasContainerLayout
+                ? (layout?.direction as string) || undefined
+                : undefined
             }
             data-layout-wrap={
-              !hasContainerLayout ? (layout?.wrap as string) || undefined : undefined
+              !hasContainerLayout && layout?.wrap !== undefined
+                ? String(layout.wrap)
+                : undefined
             }
             data-layout-gap={
-              !hasContainerLayout ? (layout?.gap as string) || undefined : undefined
+              !hasContainerLayout
+                ? (layout?.gap as string) || undefined
+                : undefined
             }
             data-layout-columns={
               !hasContainerLayout && layout?.columns
@@ -264,10 +307,14 @@ export function SectionRenderer({
                 : undefined
             }
             data-layout-justify={
-              !hasContainerLayout ? (layout?.justify as string) || undefined : undefined
+              !hasContainerLayout
+                ? (layout?.justify as string) || undefined
+                : undefined
             }
             data-layout-align={
-              !hasContainerLayout ? (layout?.align as string) || undefined : undefined
+              !hasContainerLayout
+                ? (layout?.align as string) || undefined
+                : undefined
             }
             // Size
             data-max-width={prop(containerAny, "maxWidth")}
@@ -312,9 +359,62 @@ export function SectionRenderer({
                 }
               />
             ))}
+            {isEditing ? (
+              <LayerOverlayChip
+                label={
+                  container.displayName?.trim() ||
+                  `Container ${containerIndex + 1}`
+                }
+                onAddBlock={
+                  onAddBlockToContainer
+                    ? (blockType) =>
+                        onAddBlockToContainer(
+                          sectionIndex,
+                          containerIndex,
+                          blockType,
+                        )
+                    : undefined
+                }
+                pickerTitle="Add a block to this container"
+              />
+            ) : null}
           </div>
         );
       })}
     </section>
   );
+
+  // In edit mode, wrap the section in a builder-only shell that owns the
+  // outline + overlay chip. This keeps the user's <section> element free
+  // of builder styling — their ::before/::after gradient overlays, z-index
+  // rules, and background images can't collide with ours.
+  if (isEditing) {
+    return (
+      <BuilderInteractiveShell
+        blockKey={section._key}
+        label={sectionLabel}
+        elementType="section"
+        chip={
+          <LayerOverlayChip
+            label={sectionLabel}
+            onAddBlock={
+              onAddBlockToContainer && containers.length > 0
+                ? (blockType) =>
+                    onAddBlockToContainer(
+                      sectionIndex,
+                      containers.length - 1,
+                      blockType,
+                    )
+                : undefined
+            }
+            pickerTitle="Add a block to this section"
+          />
+        }
+      >
+        {sectionContent}
+      </BuilderInteractiveShell>
+    );
+  }
+
+  return sectionContent;
 }

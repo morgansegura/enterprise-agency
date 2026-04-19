@@ -29,6 +29,7 @@ import { EditableFooter } from "@/components/editor/editable-footer";
 import { ResponsivePreview } from "@/components/editor/responsive-preview";
 import { type Breakpoint } from "@/components/editor/breakpoint-selector";
 import { logger } from "@/lib/logger";
+import { AddBlockPopover } from "@/components/editor/add-block-popover/add-block-popover";
 import { toast } from "sonner";
 import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -46,12 +47,16 @@ import {
   useHeader,
   useDefaultHeader,
   useUpdateHeader,
+  useCreateHeader,
 } from "@/lib/hooks/use-headers";
 import {
   useFooter,
   useDefaultFooter,
   useUpdateFooter,
+  useCreateFooter,
 } from "@/lib/hooks/use-footers";
+import { createDefaultHeader } from "@/lib/defaults";
+import { createDefaultFooter } from "@/lib/defaults";
 
 // =============================================================================
 // Page Editor
@@ -62,7 +67,10 @@ interface PageEditorScreenProps {
   pageId: string;
 }
 
-export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps) {
+export function PageEditorScreen({
+  tenantId: id,
+  pageId,
+}: PageEditorScreenProps) {
   const { data: page, isLoading, error } = usePage(id, pageId);
   const { data: _tenant } = useTenant(id);
   const { data: tenantTokens } = useTenantTokens(id);
@@ -135,7 +143,12 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
     }
   }, [selectedBlockKey]);
 
-  // Sync hover highlight to preview DOM
+  // Sync hover highlight to preview DOM. Only the directly hovered element
+  // receives `.is-preview-hovered` — ancestors are intentionally untouched.
+  // Walking the tree to tag ancestors forces style invalidation on every
+  // parent section/container on each mouse move, which repaints their
+  // compositor layers (notably any section with an `::after` gradient
+  // overlay and `isolation: isolate`) and produces a visible flicker.
   React.useEffect(() => {
     const prev = document.querySelector("[data-block-key].is-preview-hovered");
     prev?.classList.remove("is-preview-hovered");
@@ -171,6 +184,8 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
     selectSection,
     selectContainer,
     selectedElement,
+    setSelectedElement,
+    setRightPanelOpen,
     clearSelection,
   } = useUIStore();
 
@@ -256,7 +271,13 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
         selectSection(si, key);
       }
     },
-    [editor.sections, selectBlock, selectSection, selectContainer, clearSelection],
+    [
+      editor.sections,
+      selectBlock,
+      selectSection,
+      selectContainer,
+      clearSelection,
+    ],
   );
 
   // Local page state for editing
@@ -276,14 +297,20 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
     pageId,
     debounceMs: 3000,
     onSaveSuccess: () => {
-      toast("Saved", {
+      toast.success("Saved", {
         duration: 1500,
         id: "auto-save",
         position: "bottom-right",
       });
     },
-    onSaveError: (error) => {
-      toast.error(`Failed to save: ${error.message}`);
+    onSaveError: (error: unknown) => {
+      const msg =
+        error instanceof Error
+          ? error.message
+          : typeof error === "string"
+            ? error
+            : "Unknown error";
+      toast.error(`Failed to save: ${msg}`);
     },
   });
 
@@ -316,6 +343,7 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
       ? defaultHeader
       : specificHeader || defaultHeader;
   const updateHeader = useUpdateHeader(id);
+  const createHeader = useCreateHeader(id);
 
   const { data: specificFooter } = useFooter(
     id,
@@ -329,6 +357,74 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
       ? defaultFooter
       : specificFooter || defaultFooter;
   const updateFooter = useUpdateFooter(id);
+  const createFooter = useCreateFooter(id);
+
+  // ---------------------------------------------------------------------------
+  // Local state for header/footer sections — same pattern as page body.
+  // Changes are instant (local state), then debounce-saved to the API.
+  // This prevents 403s and race conditions from breaking the UI.
+  // ---------------------------------------------------------------------------
+  const [localHeaderSections, setLocalHeaderSections] = React.useState<
+    Section[]
+  >([]);
+  const [localFooterSections, setLocalFooterSections] = React.useState<
+    Section[]
+  >([]);
+
+  // Sync from API on initial load / refetch
+  React.useEffect(() => {
+    if (activeHeader?.sections) {
+      const s = activeHeader.sections as Section[];
+      if (Array.isArray(s) && s.length > 0 && s[0]?._type === "section") {
+        setLocalHeaderSections(s);
+      }
+    }
+  }, [activeHeader?.sections]);
+
+  React.useEffect(() => {
+    if (activeFooter?.sections) {
+      const s = activeFooter.sections as Section[];
+      if (Array.isArray(s) && s.length > 0 && s[0]?._type === "section") {
+        setLocalFooterSections(s);
+      }
+    }
+  }, [activeFooter?.sections]);
+
+  // Debounced save for header sections
+  const headerSaveTimer = React.useRef<NodeJS.Timeout | null>(null);
+  const saveHeaderSections = React.useCallback(
+    (sections: Section[]) => {
+      setLocalHeaderSections(sections);
+      if (headerSaveTimer.current) clearTimeout(headerSaveTimer.current);
+      headerSaveTimer.current = setTimeout(() => {
+        if (activeHeader) {
+          updateHeader.mutate({
+            id: activeHeader.id,
+            data: { sections },
+          });
+        }
+      }, 2000);
+    },
+    [activeHeader, updateHeader],
+  );
+
+  // Debounced save for footer sections
+  const footerSaveTimer = React.useRef<NodeJS.Timeout | null>(null);
+  const saveFooterSections = React.useCallback(
+    (sections: Section[]) => {
+      setLocalFooterSections(sections);
+      if (footerSaveTimer.current) clearTimeout(footerSaveTimer.current);
+      footerSaveTimer.current = setTimeout(() => {
+        if (activeFooter) {
+          updateFooter.mutate({
+            id: activeFooter.id,
+            data: { sections },
+          });
+        }
+      }, 2000);
+    },
+    [activeFooter, updateFooter],
+  );
 
   // Set page context for header display
   React.useEffect(() => {
@@ -372,8 +468,15 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [buildSavePayload]);
 
-  // Trigger debounced auto-save on content changes
+  // Trigger debounced auto-save on content changes.
+  //
+  // Safety invariant: autosave MUST NOT overwrite a non-empty page with
+  // zero sections unless the user explicitly cleared the page. We track
+  // whether we've ever seen non-empty sections for this page (from the
+  // server load or from in-session edits); once true, we refuse to save
+  // a 0-section payload and log a warning instead.
   const saveCountRef = React.useRef(0);
+  const hasSeenContentRef = React.useRef(false);
   React.useEffect(() => {
     saveCountRef.current++;
     if (saveCountRef.current <= 2) {
@@ -381,6 +484,15 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
       return;
     }
     const payload = buildSavePayload();
+    if (payload.sections.length > 0) {
+      hasSeenContentRef.current = true;
+    } else if (hasSeenContentRef.current) {
+      logger.warn(
+        "autosave: refusing to overwrite non-empty page with 0 sections. " +
+          "If you meant to clear the page, remove sections from the layers panel.",
+      );
+      return;
+    }
     saveRef.current(payload);
   }, [buildSavePayload]);
 
@@ -440,7 +552,11 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
         containers: template.section.containers.map((container, ci) => ({
           _type: "container" as const,
           _key: `template-container-${ts}-${ci}`,
-          layout: container.layout || { type: "stack", direction: "column", gap: "md" },
+          layout: container.layout || {
+            type: "stack",
+            direction: "column",
+            gap: "md",
+          },
           blocks: container.blocks.map((block, bi) => ({
             _type: block._type,
             _key: `template-block-${ts}-${ci}-${bi}`,
@@ -456,7 +572,11 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
       ]);
     };
     window.addEventListener("add-section-template", handleAddSectionTemplate);
-    return () => window.removeEventListener("add-section-template", handleAddSectionTemplate);
+    return () =>
+      window.removeEventListener(
+        "add-section-template",
+        handleAddSectionTemplate,
+      );
   }, [editor]);
 
   // --- Early returns ---
@@ -620,6 +740,142 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
             layersPanel={
               <PageLayers
                 sections={editor.sections}
+                hasHeader={true}
+                headerSections={localHeaderSections}
+                headerLabel={activeHeader?.name ?? "Header"}
+                hasFooter={true}
+                footerSections={localFooterSections}
+                footerLabel={activeFooter?.name ?? "Footer"}
+                onAddHeaderSection={() => {
+                  const newContainer = {
+                    _type: "container" as const,
+                    _key: `container-${Date.now().toString(36)}`,
+                    layout: {
+                      type: "flex" as const,
+                      direction: "row" as const,
+                      justify: "between" as const,
+                      align: "center" as const,
+                      gap: "md" as const,
+                    },
+                    maxWidth: "xl" as const,
+                    paddingX: "md" as const,
+                    blocks: [],
+                  };
+                  const existing = localHeaderSections[0];
+                  const section =
+                    existing && existing._type === "section"
+                      ? existing
+                      : {
+                          _type: "section" as const,
+                          _key: `section-${Date.now().toString(36)}`,
+                          as: "div" as const,
+                          width: "full" as const,
+                          containers: [],
+                        };
+                  const updated = [{
+                    ...section,
+                    containers: [...(section.containers ?? []), newContainer],
+                  }];
+                  saveHeaderSections(updated);
+                  if (!activeHeader) {
+                    const defaults = createDefaultHeader({
+                      isDefault: true,
+                    });
+                    createHeader.mutate(
+                      {
+                        ...defaults,
+                        sections: [{
+                          _type: "section",
+                          _key: `section-${Date.now().toString(36)}`,
+                          as: "div",
+                          width: "full",
+                          containers: [newContainer],
+                        }],
+                      },
+                      {
+                        onSuccess: (h) =>
+                          handlePageChange("headerId", h.id),
+                      },
+                    );
+                  }
+                }}
+                onAddFooterSection={() => {
+                  const newContainer = {
+                    _type: "container" as const,
+                    _key: `container-${Date.now().toString(36)}`,
+                    layout: {
+                      type: "flex" as const,
+                      direction: "row" as const,
+                      justify: "between" as const,
+                      align: "center" as const,
+                      gap: "md" as const,
+                    },
+                    maxWidth: "xl" as const,
+                    paddingX: "md" as const,
+                    blocks: [],
+                  };
+                  const existing = localFooterSections[0];
+                  const section =
+                    existing && existing._type === "section"
+                      ? existing
+                      : {
+                          _type: "section" as const,
+                          _key: `section-${Date.now().toString(36)}`,
+                          as: "div" as const,
+                          width: "full" as const,
+                          containers: [],
+                        };
+                  const updated = [{
+                    ...section,
+                    containers: [...(section.containers ?? []), newContainer],
+                  }];
+                  saveFooterSections(updated);
+                  if (!activeFooter) {
+                    const defaults = createDefaultFooter({
+                      isDefault: true,
+                    });
+                    createFooter.mutate(
+                      {
+                        ...defaults,
+                        sections: [{
+                          _type: "section",
+                          _key: `section-${Date.now().toString(36)}`,
+                          as: "div",
+                          width: "full",
+                          containers: [newContainer],
+                        }],
+                      },
+                      {
+                        onSuccess: (f) =>
+                          handlePageChange("footerId", f.id),
+                      },
+                    );
+                  }
+                }}
+                onUpdateHeaderSections={saveHeaderSections}
+                onUpdateFooterSections={saveFooterSections}
+                onSelectHeader={() => {
+                  if (activeHeader) {
+                    setSelectedBlockKey(null);
+                    setSelectedElement({
+                      type: "header",
+                      key: activeHeader.id,
+                      sectionIndex: -1,
+                    });
+                    setRightPanelOpen(true);
+                  }
+                }}
+                onSelectFooter={() => {
+                  if (activeFooter) {
+                    setSelectedBlockKey(null);
+                    setSelectedElement({
+                      type: "footer",
+                      key: activeFooter.id,
+                      sectionIndex: -1,
+                    });
+                    setRightPanelOpen(true);
+                  }
+                }}
                 selectedKey={selectedBlockKey}
                 hoveredKey={hoveredBlockKey}
                 onSelectSection={(sectionIndex, key) => {
@@ -644,13 +900,111 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                   editor.handleAddSectionAt(editor.sections.length)
                 }
                 onDeleteSection={editor.handleSectionDelete}
+                onDuplicateSection={editor.handleSectionDuplicate}
+                onMoveSectionUp={editor.handleSectionMoveUp}
+                onMoveSectionDown={editor.handleSectionMoveDown}
                 onAddContainer={editor.handleAddContainerToSection}
+                onDuplicateContainer={(si, ci) => {
+                  editor.setSections((prev) => {
+                    const u = [...prev];
+                    const cs = [...(u[si].containers ?? [])];
+                    const clone = JSON.parse(JSON.stringify(cs[ci]));
+                    clone._key = `container-${Date.now().toString(36)}`;
+                    cs.splice(ci + 1, 0, clone);
+                    u[si] = { ...u[si], containers: cs };
+                    return u;
+                  });
+                }}
+                onDeleteContainer={(si, ci) => {
+                  editor.setSections((prev) => {
+                    const u = [...prev];
+                    u[si] = {
+                      ...u[si],
+                      containers: (u[si].containers ?? []).filter(
+                        (_, i) => i !== ci,
+                      ),
+                    };
+                    return u;
+                  });
+                }}
+                onMoveContainerUp={(si, ci) => {
+                  if (ci === 0) return;
+                  editor.setSections((prev) => {
+                    const u = [...prev];
+                    const cs = [...(u[si].containers ?? [])];
+                    [cs[ci - 1], cs[ci]] = [cs[ci], cs[ci - 1]];
+                    u[si] = { ...u[si], containers: cs };
+                    return u;
+                  });
+                }}
+                onMoveContainerDown={(si, ci) => {
+                  const cs = editor.sections[si]?.containers ?? [];
+                  if (ci >= cs.length - 1) return;
+                  editor.setSections((prev) => {
+                    const u = [...prev];
+                    const containers = [...(u[si].containers ?? [])];
+                    [containers[ci + 1], containers[ci]] = [
+                      containers[ci],
+                      containers[ci + 1],
+                    ];
+                    u[si] = { ...u[si], containers };
+                    return u;
+                  });
+                }}
                 onAddBlock={editor.handleAddBlockToContainer}
                 onDeleteBlock={editor.handleBlockDelete}
                 onDuplicateBlock={editor.handleBlockDuplicate}
                 onMoveBlockUp={editor.handleBlockMoveUp}
                 onMoveBlockDown={editor.handleBlockMoveDown}
                 onBlockReorder={editor.handleBlockReorder}
+                onRenameSection={(sectionIndex, displayName) => {
+                  const section = editor.sections[sectionIndex];
+                  if (section)
+                    editor.handleSectionChange(sectionIndex, {
+                      ...section,
+                      displayName,
+                    });
+                }}
+                onRenameContainer={(si, ci, displayName) => {
+                  editor.setSections((prev) => {
+                    const updated = [...prev];
+                    const containers = [...(updated[si].containers ?? [])];
+                    containers[ci] = {
+                      ...containers[ci],
+                      displayName,
+                    };
+                    updated[si] = {
+                      ...updated[si],
+                      containers,
+                    };
+                    return updated;
+                  });
+                }}
+                onRenameBlock={(si, ci, bi, displayName) => {
+                  const block =
+                    editor.sections[si]?.containers?.[ci]?.blocks?.[bi];
+                  if (block)
+                    editor.handleBlockChange(si, ci, bi, {
+                      ...block,
+                      displayName,
+                    });
+                }}
+                onRenameHeader={(name) => {
+                  if (activeHeader) {
+                    updateHeader.mutate({
+                      id: activeHeader.id,
+                      data: { name },
+                    });
+                  }
+                }}
+                onRenameFooter={(name) => {
+                  if (activeFooter) {
+                    updateFooter.mutate({
+                      id: activeFooter.id,
+                      data: { name },
+                    });
+                  }
+                }}
               />
             }
             blocksPanel={<BlocksLibrary />}
@@ -704,6 +1058,8 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
             onSectionDuplicate={editor.handleSectionDuplicate}
             onSectionDelete={editor.handleSectionDelete}
             onContainerDelete={(sectionIndex, containerIndex) => {
+              const cs = editor.sections[sectionIndex]?.containers ?? [];
+              if (cs.length <= 1) return; // Always keep at least one
               editor.setSections((prevSections) => {
                 const updated = [...prevSections];
                 const containers = [
@@ -722,21 +1078,29 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
             onBlockMoveDown={editor.handleBlockMoveDown}
             onBlockDuplicate={editor.handleBlockDuplicate}
             onBlockDelete={editor.handleBlockDelete}
-            headerData={(activeHeader as unknown as Record<string, unknown>) ?? null}
+            headerData={
+              (activeHeader as unknown as Record<string, unknown>) ?? null
+            }
             onHeaderDataChange={(data) => {
               if (activeHeader) {
+                const { style, zones, behavior, animation, mobileMenu } =
+                  data as unknown as typeof activeHeader;
                 updateHeader.mutate({
                   id: activeHeader.id,
-                  data: { style: data.style },
+                  data: { style, zones, behavior, animation, mobileMenu },
                 });
               }
             }}
-            footerData={(activeFooter as unknown as Record<string, unknown>) ?? null}
+            footerData={
+              (activeFooter as unknown as Record<string, unknown>) ?? null
+            }
             onFooterDataChange={(data) => {
               if (activeFooter) {
+                const { style, zones, layout, socialLinks, copyright } =
+                  data as unknown as typeof activeFooter;
                 updateFooter.mutate({
                   id: activeFooter.id,
-                  data: { style: data.style },
+                  data: { style, zones, layout, socialLinks, copyright },
                 });
               }
             }}
@@ -841,7 +1205,9 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                         return;
                       }
                       // Search inside Box blocks (nested children)
-                      const nested = (blocks[bi].data as Record<string, unknown>)?.blocks as Array<{ _key: string }> | undefined;
+                      const nested = (
+                        blocks[bi].data as Record<string, unknown>
+                      )?.blocks as Array<{ _key: string }> | undefined;
                       if (nested) {
                         for (let ni = 0; ni < nested.length; ni++) {
                           if (nested[ni]._key === key) {
@@ -870,6 +1236,20 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
               <EditableHeader
                 tenantId={id}
                 headerId={localPage.headerId}
+                overrideSections={localHeaderSections}
+                onBlockChange={(si, ci, bi, updatedBlock) => {
+                  const sections = [...localHeaderSections];
+                  const section = { ...sections[si] };
+                  const containers = [...(section.containers ?? [])];
+                  const container = { ...containers[ci] };
+                  const blocks = [...(container.blocks ?? [])];
+                  blocks[bi] = updatedBlock as Section["containers"][0]["blocks"][0];
+                  container.blocks = blocks;
+                  containers[ci] = container;
+                  section.containers = containers;
+                  sections[si] = section;
+                  saveHeaderSections(sections);
+                }}
                 onHeaderChange={(headerId) =>
                   handlePageChange("headerId", headerId)
                 }
@@ -905,19 +1285,18 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                     >
                       Add starter content
                     </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
+                    <AddBlockPopover
+                      onAddBlock={(blockType) => {
                         if (editor.sections.length === 0) {
                           editor.handleAddSectionAt(0);
                         }
                         setTimeout(() => {
-                          editor.handleAddBlockToContainer(0, 0, "heading");
+                          editor.handleAddBlockToContainer(0, 0, blockType);
                         }, 0);
                       }}
                     >
-                      Add empty block
-                    </Button>
+                      <Button variant="outline">Choose block…</Button>
+                    </AddBlockPopover>
                   </div>
                 </div>
               ) : (
@@ -942,12 +1321,37 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                       updatedBlock as Section["containers"][0]["blocks"][0],
                     );
                   }}
+                  onAddBlockToContainer={(
+                    sectionIndex,
+                    containerIndex,
+                    blockType,
+                  ) =>
+                    editor.handleAddBlockToContainer(
+                      sectionIndex,
+                      containerIndex,
+                      blockType,
+                    )
+                  }
                   breakpoint={breakpoint}
                 />
               )}
               <EditableFooter
                 tenantId={id}
                 footerId={localPage.footerId}
+                overrideSections={localFooterSections}
+                onBlockChange={(si, ci, bi, updatedBlock) => {
+                  const sections = [...localFooterSections];
+                  const section = { ...sections[si] };
+                  const containers = [...(section.containers ?? [])];
+                  const container = { ...containers[ci] };
+                  const blocks = [...(container.blocks ?? [])];
+                  blocks[bi] = updatedBlock as Section["containers"][0]["blocks"][0];
+                  container.blocks = blocks;
+                  containers[ci] = container;
+                  section.containers = containers;
+                  sections[si] = section;
+                  saveFooterSections(sections);
+                }}
                 onFooterChange={(footerId) =>
                   handlePageChange("footerId", footerId)
                 }
@@ -1032,7 +1436,9 @@ export function PageEditorScreen({ tenantId: id, pageId }: PageEditorScreenProps
                   type="button"
                   className="canvas-context-menu-item"
                   onClick={() => {
-                    editor.handleAddContainerToSection(contextMenu.sectionIndex);
+                    editor.handleAddContainerToSection(
+                      contextMenu.sectionIndex,
+                    );
                     setContextMenu(null);
                   }}
                 >

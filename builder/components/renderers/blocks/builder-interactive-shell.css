@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+/* Builder-only wrapper around a user-styled element. Must be a real
+ * positioned block so absolutely-positioned overlays (the label chip,
+ * "+" FAB) anchor to the section/container they belong to instead of
+ * escaping to the canvas root.
+ *
+ * `display: contents` was used here previously, but that removes the
+ * wrapper's layout box entirely, which broke chip positioning for every
+ * section past the first (the chip fell back to the canvas's positioned
+ * ancestor). A plain block with `position: relative` is layout-neutral
+ * for block-level children (sections) while still providing an anchor. */
+.builder-interactive-shell {
+  @apply relative block w-full;
+}

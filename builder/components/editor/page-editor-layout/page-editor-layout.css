@@ -210,11 +210,11 @@
 
 .page-editor-canvas {
   @apply flex-1 flex flex-col relative overflow-y-auto min-h-0;
-  @apply bg-(--el-100);
+  @apply bg-(--el-50) border-10 border-(--el-100)/50 border-dashed;
 }
 
 .page-editor-canvas-content {
-  @apply w-full min-h-full flex flex-col;
+  @apply w-full min-h-full flex flex-col relative transition-[outline] duration-300 ease-out;
   background-color: var(--background, var(--theme-background, #ffffff));
   color: var(--foreground, var(--theme-foreground, #0a0a0a));
 }
@@ -225,27 +225,42 @@
 
 /* ---------------------------------------------------------------------------
  * Selection colors per element type:
- *   Section  = blue    (#3b82f6)
- *   Container = teal   (#14b8a6)
- *   Block    = fuchsia  (#8b5cf6)
+ *   Section   = --accent-primary   (blue)
+ *   Container = --accent-secondary (violet)
+ *   Block     = --accent-tertiary  (teal)
  * --------------------------------------------------------------------------- */
 
 .page-editor-canvas-content [data-block-key]:hover {
   @apply cursor-pointer;
 }
 
-/* Selected outline — color varies by element type, always inset to avoid clipping */
+/* Pre-apply `position: relative` to every selectable element so the
+ * hover/selected rule (which adds `relative`) doesn't flip position
+ * from static and cause neighbors in flex/grid layouts to shift.
+ *
+ * Sections use the BuilderInteractiveShell wrapper (already relative);
+ * containers and blocks are pre-set here so crossing the hover boundary
+ * between a block and its container's padding doesn't reflow. */
+.page-editor-canvas-content [data-element-type="block"],
+.page-editor-canvas-content [data-element-type="container"] {
+  position: relative;
+}
+
+/* Selected outline. outline-offset: 0 (not inset) so a descendant with
+ * z-index: 2 (e.g. our overlay-stacking rule on .section-container)
+ * can't paint over it. The outline sits flush with the element's border
+ * edge, outside the content area. */
 .page-editor-canvas-content [data-block-key].is-preview-selected {
-  @apply outline-2 outline-solid relative -outline-offset-2 outline-pink-600;
+  @apply outline-2 outline-solid relative outline-offset-0 outline-(--accent-primary);
 }
 
 .page-editor-canvas-content [data-element-type="section"].is-preview-selected {
-  @apply outline-pink-600;
+  @apply outline-(--accent-primary);
 }
 
 .page-editor-canvas-content
   [data-element-type="container"].is-preview-selected {
-  @apply outline-pink-600;
+  @apply outline-(--accent-primary);
 }
 
 /* ---------------------------------------------------------------------------
@@ -253,52 +268,54 @@
  * --------------------------------------------------------------------------- */
 
 .page-editor-canvas-content.show-layout [data-element-type="section"] {
-  @apply outline-2 outline-dashed -outline-offset-2 outline-pink-600;
+  @apply outline-2 outline-dashed -outline-offset-2 outline-(--accent-primary);
 }
 
 .page-editor-canvas-content.show-layout [data-element-type="container"] {
-  @apply outline-2 outline-dashed -outline-offset-2 outline-pink-600;
+  @apply outline-2 outline-dashed -outline-offset-2 outline-(--accent-primary);
 }
 
 .page-editor-canvas-content.show-layout [data-element-type="block"] {
-  @apply outline-2 outline-dashed -outline-offset-2 outline-pink-600;
+  @apply outline-2 outline-dashed -outline-offset-2 outline-(--accent-primary);
 }
 
-/* Hover outline — subtler, same color scheme, inset */
+/* Hover outline — only the directly hovered element is outlined. Ancestors
+ * still carry `.is-preview-ancestor-hovered` so overlay chips (e.g. the
+ * container "+" FAB in container-add-button.css) can react, but they do
+ * not paint an outline — the user asked for one overlay at a time. */
 .page-editor-canvas-content [data-block-key].is-preview-hovered {
-  @apply outline-2 outline-solid relative -outline-offset-2 outline-pink-600;
+  @apply outline-2 outline-solid relative outline-offset-0 outline-(--accent-primary);
 }
 
 .page-editor-canvas-content [data-element-type="section"].is-preview-hovered {
-  @apply outline-pink-600;
+  @apply outline-(--accent-primary);
 }
 
-.page-editor-canvas-content [data-element-type="container"].is-preview-hovered {
-  @apply outline-pink-600;
+.page-editor-canvas-content
+  [data-element-type="container"].is-preview-hovered {
+  @apply outline-(--accent-primary);
 }
 
-/* Selection label — colored badge per element type */
-.page-editor-canvas-content [data-block-key].is-preview-selected::before,
-.page-editor-canvas-content [data-block-key].is-preview-hovered::before {
+/* Selection label — small badge pinned top-right, color-coded. Scoped to
+ * regular blocks only (via `data-element-type="block"`). Sections,
+ * containers, and Box use real DOM overlay chips, not pseudo-elements,
+ * so we do NOT set `content: none` on their `::before` — doing so would
+ * toggle the user's own `::before` (e.g. a gradient overlay) in and out
+ * of existence on hover, reflowing flex containers. */
+.page-editor-canvas-content
+  [data-element-type="block"][data-block-key]:not([data-block-label="Box"]).is-preview-selected::before,
+.page-editor-canvas-content
+  [data-element-type="block"][data-block-key]:not([data-block-label="Box"]).is-preview-hovered::before {
   content: attr(data-block-label);
-  @apply absolute -top-3.75 left-0 z-100 px-1.5 py-0.75;
-  @apply text-xs font-semibold tracking-wide text-white leading-none whitespace-nowrap;
-  @apply rounded-t-[3px] pointer-events-none bg-pink-600;
-  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
-}
-
-.page-editor-canvas-content
-  [data-element-type="section"].is-preview-selected::before,
-.page-editor-canvas-content
-  [data-element-type="section"].is-preview-hovered::before {
-  @apply bg-pink-600;
-}
-
-.page-editor-canvas-content
-  [data-element-type="container"].is-preview-selected::before,
-.page-editor-canvas-content
-  [data-element-type="container"].is-preview-hovered::before {
-  @apply bg-pink-600;
+  @apply absolute -top-4 right-0 z-100 px-1 py-0.75;
+  @apply text-sm font-semibold text-white leading-none whitespace-nowrap;
+  @apply rounded-t-md pointer-events-none bg-(--accent-primary);
+  border-radius: none !important;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 /* Suppress TipTap/ProseMirror focus ring inside canvas — selection outline is enough */
