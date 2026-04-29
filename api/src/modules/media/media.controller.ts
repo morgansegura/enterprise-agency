@@ -79,8 +79,20 @@ export class MediaController {
     @CurrentTenant() tenantId: string,
     @CurrentUser("id") userId: string,
     @UploadedFile() file: Express.Multer.File,
-    @Body() metadata: UploadMediaDto,
+    @Body() raw: Record<string, string>,
   ) {
+    // Multipart form fields arrive as strings; the global ValidationPipe with
+    // forbidNonWhitelisted rejects unknown fields, so we sanitize manually
+    // and pass a plain object to the service instead of a validated DTO.
+    const metadata: UploadMediaDto = {
+      title: raw?.title || undefined,
+      altText: raw?.altText || undefined,
+      folderId:
+        typeof raw?.folderId === "string" && raw.folderId.trim() !== ""
+          ? raw.folderId
+          : undefined,
+      usageContext: raw?.usageContext || undefined,
+    };
     return this.mediaService.upload(file, tenantId, userId, metadata);
   }
 

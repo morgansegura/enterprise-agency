@@ -28,6 +28,19 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         ? exception.message
         : "Internal server error";
 
+    // Pull ValidationPipe's per-field error messages out of the response body
+    // so we log what actually failed instead of just "Bad Request Exception".
+    let details: unknown = undefined;
+    if (exception instanceof HttpException) {
+      const body = exception.getResponse();
+      if (typeof body === "object" && body !== null) {
+        const bodyAny = body as Record<string, unknown>;
+        if (Array.isArray(bodyAny.message)) {
+          details = bodyAny.message;
+        }
+      }
+    }
+
     if (this.isProduction && status === HttpStatus.INTERNAL_SERVER_ERROR) {
       message = "An unexpected error occurred. Please try again later.";
     }
@@ -39,7 +52,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       );
     } else if (status >= 400) {
       this.logger.warn(
-        `[${request.method}] ${request.url} - ${status} - ${message}`,
+        `[${request.method}] ${request.url} - ${status} - ${message}${
+          details ? ` — ${JSON.stringify(details)}` : ""
+        }`,
       );
     }
 
@@ -47,6 +62,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       error: {
         statusCode: status,
         message,
+        ...(details ? { details } : {}),
         timestamp: new Date().toISOString(),
         ...(this.isProduction ? {} : { path: request.url }),
       },

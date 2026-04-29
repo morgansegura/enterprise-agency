@@ -56,13 +56,18 @@ export class TenantMiddleware implements NestMiddleware {
     const tenantFromQuery =
       typeof rawTenantQuery === "string" ? rawTenantQuery : undefined;
 
-    // Determine tenant identifier
+    // Determine tenant identifier. Reject stringified nullish values — these
+    // come from a client that serialized `undefined`/`null` into the header
+    // (e.g., `x-tenant-id: undefined`). Treat them as "no identifier" instead
+    // of a lookup attempt that will always 400.
+    const isSentinel = (v: string | undefined): boolean =>
+      v === "undefined" || v === "null" || v === "";
     let tenantIdentifier: string | null = null;
 
-    if (tenantFromHeader) {
+    if (tenantFromHeader && !isSentinel(tenantFromHeader)) {
       // Priority 1: x-tenant-id header (for builder/admin panel)
       tenantIdentifier = tenantFromHeader;
-    } else if (tenantFromQuery) {
+    } else if (tenantFromQuery && !isSentinel(tenantFromQuery)) {
       // Priority 2: Query parameter
       tenantIdentifier = tenantFromQuery;
     } else if (

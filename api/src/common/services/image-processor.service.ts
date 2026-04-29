@@ -156,9 +156,10 @@ export class ImageProcessorService {
         .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
         .toBuffer({ resolveWithObject: true });
 
+      const jpegName = fileName.replace(/\.[^.]+$/, ".jpg");
       const key = this.storage.generateFileKey(
         tenantId,
-        fileName,
+        jpegName,
         "thumbnails",
       );
       const upload = await this.storage.upload(
@@ -257,9 +258,12 @@ export class ImageProcessorService {
       .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
       .toBuffer({ resolveWithObject: true });
 
+    // Variant bytes are always JPEG — force .jpg so the file key matches
+    // the content type served to the browser.
+    const jpegName = fileName.replace(/\.[^.]+$/, ".jpg");
     const key = this.storage.generateFileKey(
       tenantId,
-      fileName,
+      jpegName,
       `variants/${label}`,
     );
     const upload = await this.storage.upload(processed.data, key, "image/jpeg");

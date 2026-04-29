@@ -698,8 +698,13 @@ export class TenantsService {
    * Get tenant design tokens
    */
   async getDesignTokens(tenantId: string) {
+    // Accept UUID or slug so builder callers don't have to resolve the id first.
+    const isUuid =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        tenantId,
+      );
     const tenant = await this.prisma.tenant.findUnique({
-      where: { id: tenantId },
+      where: isUuid ? { id: tenantId } : { slug: tenantId },
       select: {
         id: true,
         slug: true,
