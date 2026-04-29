@@ -739,14 +739,6 @@ export type TenantUsageUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.TenantUsageScalarWhereInput | Prisma.TenantUsageScalarWhereInput[]
 }
 
-export type BigIntFieldUpdateOperationsInput = {
-  set?: bigint | number
-  increment?: bigint | number
-  decrement?: bigint | number
-  multiply?: bigint | number
-  divide?: bigint | number
-}
-
 export type DecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string

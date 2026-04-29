@@ -96,6 +96,11 @@ class ContainerDto {
   @IsString()
   _key: string;
 
+  /** User-assigned label for the Layers panel / breadcrumb. */
+  @IsOptional()
+  @IsString()
+  displayName?: string;
+
   @IsOptional()
   @ValidateNested()
   @Type(() => ContainerLayoutDto)
@@ -185,6 +190,16 @@ class ContainerDto {
   @IsObject()
   styles?: Record<string, string>;
 
+  /** ::before pseudo-element styles */
+  @IsOptional()
+  @IsObject()
+  stylesBefore?: Record<string, string>;
+
+  /** ::after pseudo-element styles */
+  @IsOptional()
+  @IsObject()
+  stylesAfter?: Record<string, string>;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ContentBlockDto)
@@ -236,6 +251,11 @@ export class SectionDto {
 
   @IsString()
   _key: string;
+
+  /** User-assigned label for the Layers panel / breadcrumb. */
+  @IsOptional()
+  @IsString()
+  displayName?: string;
 
   // Semantic HTML element
   @IsOptional()
@@ -366,6 +386,16 @@ export class SectionDto {
   @IsOptional()
   @IsObject()
   styles?: Record<string, string>;
+
+  /** ::before pseudo-element styles */
+  @IsOptional()
+  @IsObject()
+  stylesBefore?: Record<string, string>;
+
+  /** ::after pseudo-element styles */
+  @IsOptional()
+  @IsObject()
+  stylesAfter?: Record<string, string>;
 
   // Legacy: Container settings (single inner wrapper)
   // @deprecated Use containers array instead

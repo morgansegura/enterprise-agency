@@ -30,6 +30,7 @@ export type MenuMinAggregateOutputType = {
   name: string | null
   slug: string | null
   type: string | null
+  scope: $Enums.ComponentScope | null
   isDefault: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -41,6 +42,7 @@ export type MenuMaxAggregateOutputType = {
   name: string | null
   slug: string | null
   type: string | null
+  scope: $Enums.ComponentScope | null
   isDefault: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -54,6 +56,7 @@ export type MenuCountAggregateOutputType = {
   type: number
   items: number
   style: number
+  scope: number
   isDefault: number
   createdAt: number
   updatedAt: number
@@ -67,6 +70,7 @@ export type MenuMinAggregateInputType = {
   name?: true
   slug?: true
   type?: true
+  scope?: true
   isDefault?: true
   createdAt?: true
   updatedAt?: true
@@ -78,6 +82,7 @@ export type MenuMaxAggregateInputType = {
   name?: true
   slug?: true
   type?: true
+  scope?: true
   isDefault?: true
   createdAt?: true
   updatedAt?: true
@@ -91,6 +96,7 @@ export type MenuCountAggregateInputType = {
   type?: true
   items?: true
   style?: true
+  scope?: true
   isDefault?: true
   createdAt?: true
   updatedAt?: true
@@ -177,6 +183,7 @@ export type MenuGroupByOutputType = {
   type: string
   items: runtime.JsonValue
   style: runtime.JsonValue
+  scope: $Enums.ComponentScope
   isDefault: boolean
   createdAt: Date
   updatedAt: Date
@@ -211,6 +218,7 @@ export type MenuWhereInput = {
   type?: Prisma.StringFilter<"Menu"> | string
   items?: Prisma.JsonFilter<"Menu">
   style?: Prisma.JsonFilter<"Menu">
+  scope?: Prisma.EnumComponentScopeFilter<"Menu"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Menu"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Menu"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Menu"> | Date | string
@@ -226,6 +234,7 @@ export type MenuOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   items?: Prisma.SortOrder
   style?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -245,6 +254,7 @@ export type MenuWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.StringFilter<"Menu"> | string
   items?: Prisma.JsonFilter<"Menu">
   style?: Prisma.JsonFilter<"Menu">
+  scope?: Prisma.EnumComponentScopeFilter<"Menu"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Menu"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Menu"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Menu"> | Date | string
@@ -260,6 +270,7 @@ export type MenuOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   items?: Prisma.SortOrder
   style?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -279,6 +290,7 @@ export type MenuScalarWhereWithAggregatesInput = {
   type?: Prisma.StringWithAggregatesFilter<"Menu"> | string
   items?: Prisma.JsonWithAggregatesFilter<"Menu">
   style?: Prisma.JsonWithAggregatesFilter<"Menu">
+  scope?: Prisma.EnumComponentScopeWithAggregatesFilter<"Menu"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolWithAggregatesFilter<"Menu"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Menu"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Menu"> | Date | string
@@ -291,6 +303,7 @@ export type MenuCreateInput = {
   type?: string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -306,6 +319,7 @@ export type MenuUncheckedCreateInput = {
   type?: string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -319,6 +333,7 @@ export type MenuUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -334,6 +349,7 @@ export type MenuUncheckedUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -348,6 +364,7 @@ export type MenuCreateManyInput = {
   type?: string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -360,6 +377,7 @@ export type MenuUpdateManyMutationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -373,6 +391,7 @@ export type MenuUncheckedUpdateManyInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -401,6 +420,7 @@ export type MenuCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   items?: Prisma.SortOrder
   style?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -412,6 +432,7 @@ export type MenuMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -423,6 +444,7 @@ export type MenuMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -498,6 +520,7 @@ export type MenuCreateWithoutTenantInput = {
   type?: string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -511,6 +534,7 @@ export type MenuUncheckedCreateWithoutTenantInput = {
   type?: string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -554,6 +578,7 @@ export type MenuScalarWhereInput = {
   type?: Prisma.StringFilter<"Menu"> | string
   items?: Prisma.JsonFilter<"Menu">
   style?: Prisma.JsonFilter<"Menu">
+  scope?: Prisma.EnumComponentScopeFilter<"Menu"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Menu"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Menu"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Menu"> | Date | string
@@ -566,6 +591,7 @@ export type MenuCreateWithoutHeadersInput = {
   type?: string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -580,6 +606,7 @@ export type MenuUncheckedCreateWithoutHeadersInput = {
   type?: string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -608,6 +635,7 @@ export type MenuUpdateWithoutHeadersInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -622,6 +650,7 @@ export type MenuUncheckedUpdateWithoutHeadersInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -634,6 +663,7 @@ export type MenuCreateManyTenantInput = {
   type?: string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -646,6 +676,7 @@ export type MenuUpdateWithoutTenantInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -659,6 +690,7 @@ export type MenuUncheckedUpdateWithoutTenantInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -672,6 +704,7 @@ export type MenuUncheckedUpdateManyWithoutTenantInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   items?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -716,6 +749,7 @@ export type MenuSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   type?: boolean
   items?: boolean
   style?: boolean
+  scope?: boolean
   isDefault?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -732,6 +766,7 @@ export type MenuSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   items?: boolean
   style?: boolean
+  scope?: boolean
   isDefault?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -746,6 +781,7 @@ export type MenuSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   items?: boolean
   style?: boolean
+  scope?: boolean
   isDefault?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -760,12 +796,13 @@ export type MenuSelectScalar = {
   type?: boolean
   items?: boolean
   style?: boolean
+  scope?: boolean
   isDefault?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MenuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "slug" | "type" | "items" | "style" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["menu"]>
+export type MenuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "slug" | "type" | "items" | "style" | "scope" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["menu"]>
 export type MenuInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   headers?: boolean | Prisma.Menu$headersArgs<ExtArgs>
@@ -792,6 +829,7 @@ export type $MenuPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     type: string
     items: runtime.JsonValue
     style: runtime.JsonValue
+    scope: $Enums.ComponentScope
     isDefault: boolean
     createdAt: Date
     updatedAt: Date
@@ -1227,6 +1265,7 @@ export interface MenuFieldRefs {
   readonly type: Prisma.FieldRef<"Menu", 'String'>
   readonly items: Prisma.FieldRef<"Menu", 'Json'>
   readonly style: Prisma.FieldRef<"Menu", 'Json'>
+  readonly scope: Prisma.FieldRef<"Menu", 'ComponentScope'>
   readonly isDefault: Prisma.FieldRef<"Menu", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Menu", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Menu", 'DateTime'>

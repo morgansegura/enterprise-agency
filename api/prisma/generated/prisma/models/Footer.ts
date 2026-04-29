@@ -30,6 +30,7 @@ export type FooterMinAggregateOutputType = {
   name: string | null
   slug: string | null
   layout: string | null
+  scope: $Enums.ComponentScope | null
   isDefault: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -41,6 +42,7 @@ export type FooterMaxAggregateOutputType = {
   name: string | null
   slug: string | null
   layout: string | null
+  scope: $Enums.ComponentScope | null
   isDefault: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,8 +54,10 @@ export type FooterCountAggregateOutputType = {
   name: number
   slug: number
   layout: number
+  sections: number
   zones: number
   style: number
+  scope: number
   isDefault: number
   createdAt: number
   updatedAt: number
@@ -67,6 +71,7 @@ export type FooterMinAggregateInputType = {
   name?: true
   slug?: true
   layout?: true
+  scope?: true
   isDefault?: true
   createdAt?: true
   updatedAt?: true
@@ -78,6 +83,7 @@ export type FooterMaxAggregateInputType = {
   name?: true
   slug?: true
   layout?: true
+  scope?: true
   isDefault?: true
   createdAt?: true
   updatedAt?: true
@@ -89,8 +95,10 @@ export type FooterCountAggregateInputType = {
   name?: true
   slug?: true
   layout?: true
+  sections?: true
   zones?: true
   style?: true
+  scope?: true
   isDefault?: true
   createdAt?: true
   updatedAt?: true
@@ -175,8 +183,10 @@ export type FooterGroupByOutputType = {
   name: string
   slug: string
   layout: string
+  sections: runtime.JsonValue
   zones: runtime.JsonValue
   style: runtime.JsonValue
+  scope: $Enums.ComponentScope
   isDefault: boolean
   createdAt: Date
   updatedAt: Date
@@ -209,8 +219,10 @@ export type FooterWhereInput = {
   name?: Prisma.StringFilter<"Footer"> | string
   slug?: Prisma.StringFilter<"Footer"> | string
   layout?: Prisma.StringFilter<"Footer"> | string
+  sections?: Prisma.JsonFilter<"Footer">
   zones?: Prisma.JsonFilter<"Footer">
   style?: Prisma.JsonFilter<"Footer">
+  scope?: Prisma.EnumComponentScopeFilter<"Footer"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Footer"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Footer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Footer"> | Date | string
@@ -224,8 +236,10 @@ export type FooterOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   layout?: Prisma.SortOrder
+  sections?: Prisma.SortOrder
   zones?: Prisma.SortOrder
   style?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -243,8 +257,10 @@ export type FooterWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Footer"> | string
   slug?: Prisma.StringFilter<"Footer"> | string
   layout?: Prisma.StringFilter<"Footer"> | string
+  sections?: Prisma.JsonFilter<"Footer">
   zones?: Prisma.JsonFilter<"Footer">
   style?: Prisma.JsonFilter<"Footer">
+  scope?: Prisma.EnumComponentScopeFilter<"Footer"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Footer"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Footer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Footer"> | Date | string
@@ -258,8 +274,10 @@ export type FooterOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   layout?: Prisma.SortOrder
+  sections?: Prisma.SortOrder
   zones?: Prisma.SortOrder
   style?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -277,8 +295,10 @@ export type FooterScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Footer"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Footer"> | string
   layout?: Prisma.StringWithAggregatesFilter<"Footer"> | string
+  sections?: Prisma.JsonWithAggregatesFilter<"Footer">
   zones?: Prisma.JsonWithAggregatesFilter<"Footer">
   style?: Prisma.JsonWithAggregatesFilter<"Footer">
+  scope?: Prisma.EnumComponentScopeWithAggregatesFilter<"Footer"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolWithAggregatesFilter<"Footer"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Footer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Footer"> | Date | string
@@ -289,8 +309,10 @@ export type FooterCreateInput = {
   name: string
   slug: string
   layout?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -304,8 +326,10 @@ export type FooterUncheckedCreateInput = {
   name: string
   slug: string
   layout?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -317,8 +341,10 @@ export type FooterUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -332,8 +358,10 @@ export type FooterUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -346,8 +374,10 @@ export type FooterCreateManyInput = {
   name: string
   slug: string
   layout?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -358,8 +388,10 @@ export type FooterUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -371,8 +403,10 @@ export type FooterUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -399,8 +433,10 @@ export type FooterCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   layout?: Prisma.SortOrder
+  sections?: Prisma.SortOrder
   zones?: Prisma.SortOrder
   style?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -412,6 +448,7 @@ export type FooterMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   layout?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -423,6 +460,7 @@ export type FooterMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   layout?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -496,8 +534,10 @@ export type FooterCreateWithoutTenantInput = {
   name: string
   slug: string
   layout?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -509,8 +549,10 @@ export type FooterUncheckedCreateWithoutTenantInput = {
   name: string
   slug: string
   layout?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -552,8 +594,10 @@ export type FooterScalarWhereInput = {
   name?: Prisma.StringFilter<"Footer"> | string
   slug?: Prisma.StringFilter<"Footer"> | string
   layout?: Prisma.StringFilter<"Footer"> | string
+  sections?: Prisma.JsonFilter<"Footer">
   zones?: Prisma.JsonFilter<"Footer">
   style?: Prisma.JsonFilter<"Footer">
+  scope?: Prisma.EnumComponentScopeFilter<"Footer"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Footer"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Footer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Footer"> | Date | string
@@ -564,8 +608,10 @@ export type FooterCreateWithoutPagesInput = {
   name: string
   slug: string
   layout?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -578,8 +624,10 @@ export type FooterUncheckedCreateWithoutPagesInput = {
   name: string
   slug: string
   layout?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -606,8 +654,10 @@ export type FooterUpdateWithoutPagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -620,8 +670,10 @@ export type FooterUncheckedUpdateWithoutPagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -632,8 +684,10 @@ export type FooterCreateManyTenantInput = {
   name: string
   slug: string
   layout?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -644,8 +698,10 @@ export type FooterUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -657,8 +713,10 @@ export type FooterUncheckedUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -670,8 +728,10 @@ export type FooterUncheckedUpdateManyWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   layout?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -714,8 +774,10 @@ export type FooterSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name?: boolean
   slug?: boolean
   layout?: boolean
+  sections?: boolean
   zones?: boolean
   style?: boolean
+  scope?: boolean
   isDefault?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -730,8 +792,10 @@ export type FooterSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   name?: boolean
   slug?: boolean
   layout?: boolean
+  sections?: boolean
   zones?: boolean
   style?: boolean
+  scope?: boolean
   isDefault?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -744,8 +808,10 @@ export type FooterSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   name?: boolean
   slug?: boolean
   layout?: boolean
+  sections?: boolean
   zones?: boolean
   style?: boolean
+  scope?: boolean
   isDefault?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -758,14 +824,16 @@ export type FooterSelectScalar = {
   name?: boolean
   slug?: boolean
   layout?: boolean
+  sections?: boolean
   zones?: boolean
   style?: boolean
+  scope?: boolean
   isDefault?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FooterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "slug" | "layout" | "zones" | "style" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["footer"]>
+export type FooterOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "slug" | "layout" | "sections" | "zones" | "style" | "scope" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["footer"]>
 export type FooterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   pages?: boolean | Prisma.Footer$pagesArgs<ExtArgs>
@@ -790,8 +858,10 @@ export type $FooterPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     name: string
     slug: string
     layout: string
+    sections: runtime.JsonValue
     zones: runtime.JsonValue
     style: runtime.JsonValue
+    scope: $Enums.ComponentScope
     isDefault: boolean
     createdAt: Date
     updatedAt: Date
@@ -1225,8 +1295,10 @@ export interface FooterFieldRefs {
   readonly name: Prisma.FieldRef<"Footer", 'String'>
   readonly slug: Prisma.FieldRef<"Footer", 'String'>
   readonly layout: Prisma.FieldRef<"Footer", 'String'>
+  readonly sections: Prisma.FieldRef<"Footer", 'Json'>
   readonly zones: Prisma.FieldRef<"Footer", 'Json'>
   readonly style: Prisma.FieldRef<"Footer", 'Json'>
+  readonly scope: Prisma.FieldRef<"Footer", 'ComponentScope'>
   readonly isDefault: Prisma.FieldRef<"Footer", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Footer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Footer", 'DateTime'>

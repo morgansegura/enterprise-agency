@@ -203,6 +203,11 @@ export enum MenuType {
   MEGA = "mega",
 }
 
+export enum ComponentScope {
+  TENANT = "TENANT",
+  GLOBAL = "GLOBAL",
+}
+
 export class CreateMenuDto {
   @ApiProperty({ description: "Menu name" })
   @IsString()
@@ -239,6 +244,15 @@ export class CreateMenuDto {
   @ValidateNested()
   @Type(() => MenuStyleDto)
   style?: MenuStyleDto;
+
+  @ApiPropertyOptional({
+    description: "Library scope — TENANT (per-tenant) or GLOBAL (platform)",
+    enum: ComponentScope,
+    default: ComponentScope.TENANT,
+  })
+  @IsOptional()
+  @IsEnum(ComponentScope)
+  scope?: ComponentScope;
 
   @ApiPropertyOptional({
     description: "Set as default menu for this tenant",

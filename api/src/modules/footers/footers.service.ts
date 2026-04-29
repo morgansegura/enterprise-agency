@@ -51,8 +51,10 @@ export class FootersService {
         name: dto.name,
         slug: dto.slug,
         layout: dto.layout || "SIMPLE",
+        sections: (dto.sections || []) as unknown as Prisma.InputJsonValue,
         zones: (dto.zones || {}) as unknown as Prisma.InputJsonValue,
         style: (dto.style || {}) as unknown as Prisma.InputJsonValue,
+        scope: dto.scope || "TENANT",
         isDefault: dto.isDefault || false,
       },
     });
@@ -156,6 +158,14 @@ export class FootersService {
         ...(dto.name && { name: dto.name }),
         ...(dto.slug && { slug: dto.slug }),
         ...(dto.layout && { layout: dto.layout }),
+        ...(dto.sections &&
+          Array.isArray(dto.sections) &&
+          dto.sections.length > 0 &&
+          dto.sections[0] &&
+          typeof dto.sections[0] === "object" &&
+          (dto.sections[0] as Record<string, unknown>)._type === "section" && {
+            sections: dto.sections as unknown as Prisma.InputJsonValue,
+          }),
         ...(dto.zones !== undefined && {
           zones: dto.zones as unknown as Prisma.InputJsonValue,
         }),

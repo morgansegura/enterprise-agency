@@ -2,12 +2,18 @@ import {
   IsString,
   IsOptional,
   IsBoolean,
+  IsEnum,
   IsObject,
   IsArray,
   ValidateNested,
 } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
+
+export enum ComponentScope {
+  TENANT = "TENANT",
+  GLOBAL = "GLOBAL",
+}
 
 // Footer zone content
 export class FooterZoneDto {
@@ -244,7 +250,17 @@ export class CreateFooterDto {
   @IsString()
   layout?: "SIMPLE" | "COLUMNS" | "STACKED" | "MINIMAL" | "CENTERED";
 
-  @ApiPropertyOptional({ description: "Footer zones configuration" })
+  @ApiPropertyOptional({
+    description: "Footer content as Section[] — same shape as Page.sections",
+    type: "array",
+  })
+  @IsOptional()
+  @IsArray()
+  sections?: Record<string, unknown>[];
+
+  @ApiPropertyOptional({
+    description: "Legacy zone-based layout (use `sections` instead)",
+  })
   @IsOptional()
   @IsObject()
   zones?: FooterZonesDto;
@@ -270,6 +286,15 @@ export class CreateFooterDto {
   @IsOptional()
   @IsString()
   menuId?: string;
+
+  @ApiPropertyOptional({
+    description: "Library scope — TENANT (per-tenant) or GLOBAL (platform)",
+    enum: ComponentScope,
+    default: ComponentScope.TENANT,
+  })
+  @IsOptional()
+  @IsEnum(ComponentScope)
+  scope?: ComponentScope;
 
   @ApiPropertyOptional({
     description: "Set as default footer for this tenant",

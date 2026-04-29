@@ -4,6 +4,7 @@ import {
   IsBoolean,
   IsEnum,
   IsObject,
+  IsArray,
   IsInt,
   Min,
   Max,
@@ -14,8 +15,15 @@ export enum HeaderBehavior {
   STATIC = "STATIC",
   FIXED = "FIXED",
   STICKY = "STICKY",
-  SCROLL_HIDE = "SCROLL_HIDE",
+  SCROLL_AWAY = "SCROLL_AWAY",
+  SCROLL_RETURN = "SCROLL_RETURN",
+  SCROLL_HIDE = "SCROLL_HIDE", // legacy alias for SCROLL_RETURN
   TRANSPARENT = "TRANSPARENT",
+}
+
+export enum ComponentScope {
+  TENANT = "TENANT",
+  GLOBAL = "GLOBAL",
 }
 
 // Header zone content - can contain menu, logo, buttons, search, etc.
@@ -413,7 +421,17 @@ export class CreateHeaderDto {
   @IsString()
   animation?: "none" | "fade" | "slide" | "scale";
 
-  @ApiPropertyOptional({ description: "Header zones configuration" })
+  @ApiPropertyOptional({
+    description: "Header content as Section[] — same shape as Page.sections",
+    type: "array",
+  })
+  @IsOptional()
+  @IsArray()
+  sections?: Record<string, unknown>[];
+
+  @ApiPropertyOptional({
+    description: "Legacy zone-based layout (use `sections` instead)",
+  })
   @IsOptional()
   @IsObject()
   zones?: HeaderZonesDto;
@@ -437,6 +455,15 @@ export class CreateHeaderDto {
   @IsOptional()
   @IsString()
   menuId?: string;
+
+  @ApiPropertyOptional({
+    description: "Library scope — TENANT (per-tenant) or GLOBAL (platform)",
+    enum: ComponentScope,
+    default: ComponentScope.TENANT,
+  })
+  @IsOptional()
+  @IsEnum(ComponentScope)
+  scope?: ComponentScope;
 
   @ApiPropertyOptional({
     description: "Set as default header for this tenant",

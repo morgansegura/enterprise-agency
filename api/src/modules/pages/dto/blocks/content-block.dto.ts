@@ -46,6 +46,8 @@ const BLOCK_TYPES = [
   "feature-grid-block",
   "social-links-block",
   "faq-block",
+  // Navigation blocks
+  "menu-block",
   // Container blocks
   "grid-block",
   "flex-block",
@@ -66,6 +68,11 @@ export class ContentBlockDto {
 
   @IsEnum(BLOCK_TYPES)
   _type: string;
+
+  /** User-assigned label for the Layers panel / breadcrumb. */
+  @IsOptional()
+  @IsString()
+  displayName?: string;
 
   @IsObject()
   data: Record<string, unknown>;

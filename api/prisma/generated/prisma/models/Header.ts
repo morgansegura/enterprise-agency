@@ -43,6 +43,7 @@ export type HeaderMinAggregateOutputType = {
   scrollThreshold: number | null
   animation: string | null
   menuId: string | null
+  scope: $Enums.ComponentScope | null
   isDefault: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -57,6 +58,7 @@ export type HeaderMaxAggregateOutputType = {
   scrollThreshold: number | null
   animation: string | null
   menuId: string | null
+  scope: $Enums.ComponentScope | null
   isDefault: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -70,10 +72,12 @@ export type HeaderCountAggregateOutputType = {
   behavior: number
   scrollThreshold: number
   animation: number
+  sections: number
   zones: number
   style: number
   transparentStyle: number
   menuId: number
+  scope: number
   isDefault: number
   mobileMenu: number
   createdAt: number
@@ -99,6 +103,7 @@ export type HeaderMinAggregateInputType = {
   scrollThreshold?: true
   animation?: true
   menuId?: true
+  scope?: true
   isDefault?: true
   createdAt?: true
   updatedAt?: true
@@ -113,6 +118,7 @@ export type HeaderMaxAggregateInputType = {
   scrollThreshold?: true
   animation?: true
   menuId?: true
+  scope?: true
   isDefault?: true
   createdAt?: true
   updatedAt?: true
@@ -126,10 +132,12 @@ export type HeaderCountAggregateInputType = {
   behavior?: true
   scrollThreshold?: true
   animation?: true
+  sections?: true
   zones?: true
   style?: true
   transparentStyle?: true
   menuId?: true
+  scope?: true
   isDefault?: true
   mobileMenu?: true
   createdAt?: true
@@ -231,10 +239,12 @@ export type HeaderGroupByOutputType = {
   behavior: $Enums.HeaderBehavior
   scrollThreshold: number | null
   animation: string
+  sections: runtime.JsonValue
   zones: runtime.JsonValue
   style: runtime.JsonValue
   transparentStyle: runtime.JsonValue | null
   menuId: string | null
+  scope: $Enums.ComponentScope
   isDefault: boolean
   mobileMenu: runtime.JsonValue | null
   createdAt: Date
@@ -272,10 +282,12 @@ export type HeaderWhereInput = {
   behavior?: Prisma.EnumHeaderBehaviorFilter<"Header"> | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.IntNullableFilter<"Header"> | number | null
   animation?: Prisma.StringFilter<"Header"> | string
+  sections?: Prisma.JsonFilter<"Header">
   zones?: Prisma.JsonFilter<"Header">
   style?: Prisma.JsonFilter<"Header">
   transparentStyle?: Prisma.JsonNullableFilter<"Header">
   menuId?: Prisma.StringNullableFilter<"Header"> | string | null
+  scope?: Prisma.EnumComponentScopeFilter<"Header"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Header"> | boolean
   mobileMenu?: Prisma.JsonNullableFilter<"Header">
   createdAt?: Prisma.DateTimeFilter<"Header"> | Date | string
@@ -293,10 +305,12 @@ export type HeaderOrderByWithRelationInput = {
   behavior?: Prisma.SortOrder
   scrollThreshold?: Prisma.SortOrderInput | Prisma.SortOrder
   animation?: Prisma.SortOrder
+  sections?: Prisma.SortOrder
   zones?: Prisma.SortOrder
   style?: Prisma.SortOrder
   transparentStyle?: Prisma.SortOrderInput | Prisma.SortOrder
   menuId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   mobileMenu?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -318,10 +332,12 @@ export type HeaderWhereUniqueInput = Prisma.AtLeast<{
   behavior?: Prisma.EnumHeaderBehaviorFilter<"Header"> | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.IntNullableFilter<"Header"> | number | null
   animation?: Prisma.StringFilter<"Header"> | string
+  sections?: Prisma.JsonFilter<"Header">
   zones?: Prisma.JsonFilter<"Header">
   style?: Prisma.JsonFilter<"Header">
   transparentStyle?: Prisma.JsonNullableFilter<"Header">
   menuId?: Prisma.StringNullableFilter<"Header"> | string | null
+  scope?: Prisma.EnumComponentScopeFilter<"Header"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Header"> | boolean
   mobileMenu?: Prisma.JsonNullableFilter<"Header">
   createdAt?: Prisma.DateTimeFilter<"Header"> | Date | string
@@ -339,10 +355,12 @@ export type HeaderOrderByWithAggregationInput = {
   behavior?: Prisma.SortOrder
   scrollThreshold?: Prisma.SortOrderInput | Prisma.SortOrder
   animation?: Prisma.SortOrder
+  sections?: Prisma.SortOrder
   zones?: Prisma.SortOrder
   style?: Prisma.SortOrder
   transparentStyle?: Prisma.SortOrderInput | Prisma.SortOrder
   menuId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   mobileMenu?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -365,10 +383,12 @@ export type HeaderScalarWhereWithAggregatesInput = {
   behavior?: Prisma.EnumHeaderBehaviorWithAggregatesFilter<"Header"> | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.IntNullableWithAggregatesFilter<"Header"> | number | null
   animation?: Prisma.StringWithAggregatesFilter<"Header"> | string
+  sections?: Prisma.JsonWithAggregatesFilter<"Header">
   zones?: Prisma.JsonWithAggregatesFilter<"Header">
   style?: Prisma.JsonWithAggregatesFilter<"Header">
   transparentStyle?: Prisma.JsonNullableWithAggregatesFilter<"Header">
   menuId?: Prisma.StringNullableWithAggregatesFilter<"Header"> | string | null
+  scope?: Prisma.EnumComponentScopeWithAggregatesFilter<"Header"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolWithAggregatesFilter<"Header"> | boolean
   mobileMenu?: Prisma.JsonNullableWithAggregatesFilter<"Header">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Header"> | Date | string
@@ -382,9 +402,11 @@ export type HeaderCreateInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -402,10 +424,12 @@ export type HeaderUncheckedCreateInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: string | null
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -420,9 +444,11 @@ export type HeaderUpdateInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -440,10 +466,12 @@ export type HeaderUncheckedUpdateInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -459,10 +487,12 @@ export type HeaderCreateManyInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: string | null
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -476,9 +506,11 @@ export type HeaderUpdateManyMutationInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -493,10 +525,12 @@ export type HeaderUncheckedUpdateManyInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -526,10 +560,12 @@ export type HeaderCountOrderByAggregateInput = {
   behavior?: Prisma.SortOrder
   scrollThreshold?: Prisma.SortOrder
   animation?: Prisma.SortOrder
+  sections?: Prisma.SortOrder
   zones?: Prisma.SortOrder
   style?: Prisma.SortOrder
   transparentStyle?: Prisma.SortOrder
   menuId?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   mobileMenu?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -549,6 +585,7 @@ export type HeaderMaxOrderByAggregateInput = {
   scrollThreshold?: Prisma.SortOrder
   animation?: Prisma.SortOrder
   menuId?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -563,6 +600,7 @@ export type HeaderMinOrderByAggregateInput = {
   scrollThreshold?: Prisma.SortOrder
   animation?: Prisma.SortOrder
   menuId?: Prisma.SortOrder
+  scope?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -688,9 +726,11 @@ export type HeaderCreateWithoutTenantInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -706,10 +746,12 @@ export type HeaderUncheckedCreateWithoutTenantInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: string | null
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -754,10 +796,12 @@ export type HeaderScalarWhereInput = {
   behavior?: Prisma.EnumHeaderBehaviorFilter<"Header"> | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.IntNullableFilter<"Header"> | number | null
   animation?: Prisma.StringFilter<"Header"> | string
+  sections?: Prisma.JsonFilter<"Header">
   zones?: Prisma.JsonFilter<"Header">
   style?: Prisma.JsonFilter<"Header">
   transparentStyle?: Prisma.JsonNullableFilter<"Header">
   menuId?: Prisma.StringNullableFilter<"Header"> | string | null
+  scope?: Prisma.EnumComponentScopeFilter<"Header"> | $Enums.ComponentScope
   isDefault?: Prisma.BoolFilter<"Header"> | boolean
   mobileMenu?: Prisma.JsonNullableFilter<"Header">
   createdAt?: Prisma.DateTimeFilter<"Header"> | Date | string
@@ -771,9 +815,11 @@ export type HeaderCreateWithoutMenuInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -790,9 +836,11 @@ export type HeaderUncheckedCreateWithoutMenuInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -833,9 +881,11 @@ export type HeaderCreateWithoutPagesInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -852,10 +902,12 @@ export type HeaderUncheckedCreateWithoutPagesInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: string | null
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -885,9 +937,11 @@ export type HeaderUpdateWithoutPagesInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -904,10 +958,12 @@ export type HeaderUncheckedUpdateWithoutPagesInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -921,10 +977,12 @@ export type HeaderCreateManyTenantInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: string | null
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -938,9 +996,11 @@ export type HeaderUpdateWithoutTenantInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -956,10 +1016,12 @@ export type HeaderUncheckedUpdateWithoutTenantInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -974,10 +1036,12 @@ export type HeaderUncheckedUpdateManyWithoutTenantInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   menuId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -992,9 +1056,11 @@ export type HeaderCreateManyMenuInput = {
   behavior?: $Enums.HeaderBehavior
   scrollThreshold?: number | null
   animation?: string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: $Enums.ComponentScope
   isDefault?: boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1008,9 +1074,11 @@ export type HeaderUpdateWithoutMenuInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1027,9 +1095,11 @@ export type HeaderUncheckedUpdateWithoutMenuInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1045,9 +1115,11 @@ export type HeaderUncheckedUpdateManyWithoutMenuInput = {
   behavior?: Prisma.EnumHeaderBehaviorFieldUpdateOperationsInput | $Enums.HeaderBehavior
   scrollThreshold?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   animation?: Prisma.StringFieldUpdateOperationsInput | string
+  sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   zones?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   style?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   transparentStyle?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  scope?: Prisma.EnumComponentScopeFieldUpdateOperationsInput | $Enums.ComponentScope
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mobileMenu?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1093,10 +1165,12 @@ export type HeaderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   behavior?: boolean
   scrollThreshold?: boolean
   animation?: boolean
+  sections?: boolean
   zones?: boolean
   style?: boolean
   transparentStyle?: boolean
   menuId?: boolean
+  scope?: boolean
   isDefault?: boolean
   mobileMenu?: boolean
   createdAt?: boolean
@@ -1115,10 +1189,12 @@ export type HeaderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   behavior?: boolean
   scrollThreshold?: boolean
   animation?: boolean
+  sections?: boolean
   zones?: boolean
   style?: boolean
   transparentStyle?: boolean
   menuId?: boolean
+  scope?: boolean
   isDefault?: boolean
   mobileMenu?: boolean
   createdAt?: boolean
@@ -1135,10 +1211,12 @@ export type HeaderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   behavior?: boolean
   scrollThreshold?: boolean
   animation?: boolean
+  sections?: boolean
   zones?: boolean
   style?: boolean
   transparentStyle?: boolean
   menuId?: boolean
+  scope?: boolean
   isDefault?: boolean
   mobileMenu?: boolean
   createdAt?: boolean
@@ -1155,17 +1233,19 @@ export type HeaderSelectScalar = {
   behavior?: boolean
   scrollThreshold?: boolean
   animation?: boolean
+  sections?: boolean
   zones?: boolean
   style?: boolean
   transparentStyle?: boolean
   menuId?: boolean
+  scope?: boolean
   isDefault?: boolean
   mobileMenu?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type HeaderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "slug" | "behavior" | "scrollThreshold" | "animation" | "zones" | "style" | "transparentStyle" | "menuId" | "isDefault" | "mobileMenu" | "createdAt" | "updatedAt", ExtArgs["result"]["header"]>
+export type HeaderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "slug" | "behavior" | "scrollThreshold" | "animation" | "sections" | "zones" | "style" | "transparentStyle" | "menuId" | "scope" | "isDefault" | "mobileMenu" | "createdAt" | "updatedAt", ExtArgs["result"]["header"]>
 export type HeaderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   menu?: boolean | Prisma.Header$menuArgs<ExtArgs>
@@ -1196,10 +1276,12 @@ export type $HeaderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     behavior: $Enums.HeaderBehavior
     scrollThreshold: number | null
     animation: string
+    sections: runtime.JsonValue
     zones: runtime.JsonValue
     style: runtime.JsonValue
     transparentStyle: runtime.JsonValue | null
     menuId: string | null
+    scope: $Enums.ComponentScope
     isDefault: boolean
     mobileMenu: runtime.JsonValue | null
     createdAt: Date
@@ -1637,10 +1719,12 @@ export interface HeaderFieldRefs {
   readonly behavior: Prisma.FieldRef<"Header", 'HeaderBehavior'>
   readonly scrollThreshold: Prisma.FieldRef<"Header", 'Int'>
   readonly animation: Prisma.FieldRef<"Header", 'String'>
+  readonly sections: Prisma.FieldRef<"Header", 'Json'>
   readonly zones: Prisma.FieldRef<"Header", 'Json'>
   readonly style: Prisma.FieldRef<"Header", 'Json'>
   readonly transparentStyle: Prisma.FieldRef<"Header", 'Json'>
   readonly menuId: Prisma.FieldRef<"Header", 'String'>
+  readonly scope: Prisma.FieldRef<"Header", 'ComponentScope'>
   readonly isDefault: Prisma.FieldRef<"Header", 'Boolean'>
   readonly mobileMenu: Prisma.FieldRef<"Header", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Header", 'DateTime'>
