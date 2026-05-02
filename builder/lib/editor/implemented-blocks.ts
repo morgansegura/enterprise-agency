@@ -358,8 +358,16 @@ const implementedBlocks: BlockRegistration[] = [
       _type: "accordion-block",
       data: {
         items: [
-          { title: "First item", content: "Content here...", defaultOpen: false },
-          { title: "Second item", content: "Content here...", defaultOpen: false },
+          {
+            title: "First item",
+            content: "Content here...",
+            defaultOpen: false,
+          },
+          {
+            title: "Second item",
+            content: "Content here...",
+            defaultOpen: false,
+          },
         ],
         allowMultiple: false,
       },
@@ -451,8 +459,8 @@ const implementedBlocks: BlockRegistration[] = [
     icon: "Share2",
     description: "Social media link icons",
     component: () =>
-      import("@/components/blocks/contact-form-block-editor").then((mod) => ({
-        default: mod.ContactFormBlockEditor as any,
+      import("@/components/blocks/social-links-block-editor").then((mod) => ({
+        default: mod.SocialLinksBlockEditor as any,
       })),
     createDefault: () => ({
       _key: `social-links-${Date.now()}`,
@@ -465,6 +473,58 @@ const implementedBlocks: BlockRegistration[] = [
         ],
       },
     }),
+  },
+
+  // ========================================================================
+  // Navigation blocks — usable in headers, footers, sidebars, anywhere
+  // ========================================================================
+  {
+    type: "menu-block",
+    displayName: "Menu",
+    category: "content",
+    icon: "Menu",
+    description:
+      "Nav menu from Menus library — dropdowns, mega menus, animations",
+    component: () =>
+      import("@/components/blocks/menu-block-editor").then((mod) => ({
+        default: mod.MenuBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `menu-${Date.now()}`,
+      _type: "menu-block",
+      data: {
+        variant: "default",
+        style: "horizontal",
+        dropdownTrigger: "hover",
+        dropdownAnimation: "slide",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
+  },
+
+  {
+    type: "newsletter-block",
+    displayName: "Newsletter",
+    category: "specialized",
+    icon: "Mail",
+    description: "Email signup form with submission handling",
+    component: () =>
+      import("@/components/blocks/newsletter-block-editor").then((mod) => ({
+        default: mod.NewsletterBlockEditor as any,
+      })),
+    createDefault: () => ({
+      _key: `newsletter-${Date.now()}`,
+      _type: "newsletter-block",
+      data: {
+        heading: "Join our newsletter",
+        description: "Get weekly updates in your inbox.",
+        placeholder: "your@email.com",
+        buttonText: "Subscribe",
+        successMessage: "Thanks! Please check your inbox.",
+        layout: "inline",
+      },
+    }),
+    tier: "CONTENT_EDITOR",
   },
 ];
 

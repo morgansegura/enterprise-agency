@@ -94,8 +94,7 @@ const implementedRenderers: BlockRendererRegistration[] = [
   },
   {
     type: "cta-block",
-    component: () =>
-      import("@/components/renderers/blocks/cta-block-renderer"),
+    component: () => import("@/components/renderers/blocks/cta-block-renderer"),
   },
   {
     type: "testimonial-block",
@@ -203,6 +202,11 @@ const implementedRenderers: BlockRendererRegistration[] = [
       import("@/components/renderers/blocks/newsletter-block-renderer"),
   },
   {
+    type: "menu-block",
+    component: () =>
+      import("@/components/renderers/blocks/menu-block-renderer"),
+  },
+  {
     type: "feature-grid-block",
     component: () =>
       import("@/components/renderers/blocks/feature-grid-block-renderer"),
@@ -214,8 +218,7 @@ const implementedRenderers: BlockRendererRegistration[] = [
   },
   {
     type: "faq-block",
-    component: () =>
-      import("@/components/renderers/blocks/faq-block-renderer"),
+    component: () => import("@/components/renderers/blocks/faq-block-renderer"),
   },
 ];
 
