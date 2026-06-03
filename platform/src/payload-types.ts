@@ -226,18 +226,6 @@ export interface Page {
           }
       )[]
     | null;
-  /**
-   * Visual builder (Puck) layout. When set, it renders instead of the blocks above. Edit at /builder/<id>.
-   */
-  puckData?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
   meta?: {
     /**
      * Overrides the page title in search/social.
@@ -889,7 +877,6 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
-  puckData?: T;
   meta?:
     | T
     | {

@@ -27,38 +27,6 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    livePreview: {
-      // Resolve the page's tenant and preview on that tenant's own domain.
-      url: async ({ data, req }) => {
-        const tenantRef = data?.tenant as
-          | { id?: number | string; domain?: string }
-          | number
-          | string
-          | null
-          | undefined
-        let host = 'localhost:4010'
-        if (tenantRef && typeof tenantRef === 'object' && tenantRef.domain) {
-          host = String(tenantRef.domain)
-        } else {
-          const tenantId = tenantRef && typeof tenantRef === 'object' ? tenantRef.id : tenantRef
-          if (tenantId && req?.payload) {
-            try {
-              const tenant = await req.payload.findByID({
-                collection: 'tenants',
-                id: tenantId,
-                depth: 0,
-              })
-              if (tenant?.domain) host = String(tenant.domain)
-            } catch {
-              // fall back to default host
-            }
-          }
-        }
-        const protocol = host.includes('localhost') ? 'http' : 'https'
-        return `${protocol}://${host}/${String(data?.slug ?? '')}`
-      },
-      collections: ['pages'],
-    },
   },
   collections: [Pages, Products, Posts, Staff, Tenants, SiteSettings, Menus, Users, Media],
   editor: lexicalEditor(),

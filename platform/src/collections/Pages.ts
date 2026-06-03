@@ -25,18 +25,6 @@ export const Pages: CollectionConfig = {
   fields: [
     { name: 'title', type: 'text', required: true },
     {
-      name: 'editInBuilder',
-      type: 'ui',
-      admin: {
-        position: 'sidebar',
-        components: {
-          Field: {
-            path: '@/components/admin/edit-in-builder#EditInBuilderButton',
-          },
-        },
-      },
-    },
-    {
       name: 'slug',
       type: 'text',
       required: true,
@@ -47,14 +35,6 @@ export const Pages: CollectionConfig = {
       name: 'layout',
       type: 'blocks',
       blocks: [Hero, Content, RichTextBlock, CallToAction, Features, ImageBlock],
-    },
-    {
-      name: 'puckData',
-      type: 'json',
-      admin: {
-        description:
-          'Visual builder (Puck) layout. When set, it renders instead of the blocks above. Edit at /builder/<id>.',
-      },
     },
     {
       name: 'meta',
