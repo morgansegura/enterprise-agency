@@ -1,8 +1,0 @@
-@reference "tailwindcss";
-
-/* Box inner — only inherit gap for child spacing. Padding/border on wrapper only. */
-[data-slot="box-block"],
-[data-slot="container-block"] {
-  @apply relative w-full flex flex-col text-inherit font-[inherit] text-[length:inherit] font-[number:inherit];
-  gap: inherit;
-}

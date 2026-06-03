@@ -1,6 +1,0 @@
-@reference "tailwindcss";
-
-[data-slot="divider-block"] {
-  @apply border-0 border-t border-(--border);
-  color: inherit;
-}

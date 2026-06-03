@@ -1,5 +1,0 @@
-@reference "tailwindcss";
-
-.logo {
-  @apply relative;
-}

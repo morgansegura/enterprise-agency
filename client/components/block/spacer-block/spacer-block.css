@@ -1,5 +1,0 @@
-@reference "tailwindcss";
-
-[data-slot="spacer-block"] {
-  height: var(--spacer-default-height, 2rem);
-}

@@ -1,9 +1,0 @@
-@reference "tailwindcss";
-
-/* =============================================================================
- * Clients List Page
- * ============================================================================= */
-
-.clients-page {
-  @apply flex flex-col gap-3 p-4 bg-(--el-0) rounded-md border border-(--border)/50 shadow-xs h-full;
-}

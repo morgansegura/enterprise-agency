@@ -1,4 +1,0 @@
-@reference "tailwindcss";
-
-/* Styles for auth-layout are defined in components/auth/auth-form.css */
-/* This file exists for the AuthLayout component import but defers to auth-form.css */

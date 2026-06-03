@@ -1,8 +1,0 @@
-@reference "tailwindcss";
-
-/* Base text — inherit all visual properties from parent.
-   Overrides Tailwind preflight * { font-family } selector.
-   All styling comes from generated CSS via .e-{key} class. */
-.text {
-  @apply relative text-inherit font-[inherit] text-[length:inherit] font-[number:inherit];
-}
