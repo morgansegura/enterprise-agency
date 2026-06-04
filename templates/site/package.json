@@ -1,0 +1,31 @@
+{
+  "name": "{{SITE_NAME}}",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p {{PORT}}",
+    "build": "next build",
+    "start": "next start -p {{PORT}}",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "generate": "node scripts/generate.js"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "next": "16.2.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^22.10.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "16.2.6",
+    "tailwindcss": "^4",
+    "typescript": "^5.7.3"
+  }
+}

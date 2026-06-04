@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* Brand tokens. Overridden per environment from the CMS tenant theme later.
+   @theme maps them to Tailwind utilities (bg-primary, text-secondary, …). */
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-primary: #1a3f56;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #ac8365;
+  --color-secondary-foreground: #ffffff;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-border: #e2e8f0;
+
+  --font-sans: var(--font-base), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-base), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Optional max-width container; apply where a section needs constrained width. */
+.contain {
+  max-width: 80rem;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 1024px) {
+  .contain {
+    padding-inline: 2rem;
+  }
+}
