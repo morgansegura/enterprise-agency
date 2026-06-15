@@ -1,10 +1,10 @@
 @reference "tailwindcss";
 
 .rich-text {
-  @apply text-base leading-relaxed text-foreground;
+  @apply text-base leading-relaxed text-(--foreground);
 }
 .rich-text :where(h2, h3, h4) {
-  @apply font-heading font-bold tracking-tight;
+  @apply font-(family-name:--font-heading) font-bold tracking-tight;
 }
 .rich-text h2 {
   @apply mt-8 mb-3 text-3xl;
@@ -19,7 +19,7 @@
   @apply my-4;
 }
 .rich-text a {
-  @apply text-primary underline underline-offset-4 hover:no-underline;
+  @apply text-(--primary) underline underline-offset-4 hover:no-underline;
 }
 .rich-text :where(ul, ol) {
   @apply my-4 pl-6;
@@ -34,7 +34,7 @@
   @apply my-1;
 }
 .rich-text blockquote {
-  @apply my-4 border-l-2 pl-4 text-muted-foreground italic;
+  @apply my-4 border-l-2 pl-4 text-(--muted-foreground) italic;
 }
 .rich-text img {
   @apply my-6 rounded-lg;

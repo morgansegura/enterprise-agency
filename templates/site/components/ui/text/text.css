@@ -13,8 +13,8 @@
   @apply text-lg;
 }
 .text-tone-default {
-  @apply text-foreground;
+  @apply text-(--foreground);
 }
 .text-tone-muted {
-  @apply text-muted-foreground;
+  @apply text-(--muted-foreground);
 }

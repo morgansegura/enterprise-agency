@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .heading {
-  @apply font-heading font-bold tracking-tight text-balance;
+  @apply font-(family-name:--font-heading) font-bold tracking-tight text-balance;
 }
 .heading-xl {
   @apply text-5xl md:text-6xl;
