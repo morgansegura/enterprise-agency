@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.eyebrow {
+  @apply text-sm font-semibold tracking-widest text-secondary uppercase;
+}
