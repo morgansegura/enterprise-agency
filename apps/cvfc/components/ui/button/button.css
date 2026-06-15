@@ -1,0 +1,46 @@
+@reference "tailwindcss";
+
+.button {
+  @apply inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap;
+  @apply rounded-md text-sm font-medium outline-none transition-all;
+  @apply focus-visible:ring-2 focus-visible:ring-(--ring)/50;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+}
+.button svg {
+  @apply pointer-events-none size-4 shrink-0;
+}
+
+/* Variants */
+.button-default {
+  @apply bg-(--primary) text-(--primary-foreground) shadow-xs hover:bg-(--primary)/90;
+}
+.button-secondary {
+  @apply bg-(--secondary) text-(--secondary-foreground) shadow-xs hover:bg-(--secondary)/80;
+}
+.button-outline {
+  @apply border bg-(--background) shadow-xs;
+  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
+}
+.button-ghost {
+  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
+}
+.button-destructive {
+  @apply bg-(--destructive) text-white shadow-xs hover:bg-(--destructive)/90;
+}
+.button-link {
+  @apply text-(--primary) underline-offset-4 hover:underline;
+}
+
+/* Sizes */
+.button-size-default {
+  @apply h-9 px-4 py-2;
+}
+.button-size-sm {
+  @apply h-8 gap-1.5 px-3;
+}
+.button-size-lg {
+  @apply h-10 px-6;
+}
+.button-size-icon {
+  @apply size-9;
+}

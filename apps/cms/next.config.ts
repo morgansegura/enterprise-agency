@@ -7,6 +7,10 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  // Headless CMS — no homepage. Send the bare root to the admin.
+  async redirects() {
+    return [{ source: '/', destination: '/admin', permanent: false }]
+  },
   experimental: {
     // Image uploads go through a server action; default limit is 1MB.
     serverActions: {

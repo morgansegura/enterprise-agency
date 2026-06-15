@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./tokens.css";
+@import "./animations.css";
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    @apply border-(--border);
+  }
+  body {
+    @apply bg-(--background) text-(--foreground) antialiased;
+    @apply font-(family-name:--font-sans);
+  }
+}
+
+/* Optional max-width container; apply where a section needs constrained width. */
+.contain {
+  @apply mx-auto w-full max-w-7xl px-4 lg:px-8;
+}

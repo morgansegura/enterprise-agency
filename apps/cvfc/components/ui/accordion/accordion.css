@@ -1,0 +1,27 @@
+@reference "tailwindcss";
+
+.accordion-item {
+  @apply border-b last:border-b-0;
+}
+.accordion-header {
+  @apply flex;
+}
+.accordion-trigger {
+  @apply flex flex-1 items-start justify-between gap-4 py-4 text-left;
+  @apply text-sm font-medium outline-none transition-all hover:underline;
+  @apply focus-visible:ring-2 focus-visible:ring-(--ring)/50;
+  @apply disabled:pointer-events-none disabled:opacity-50;
+}
+.accordion-chevron {
+  @apply pointer-events-none size-4 shrink-0 translate-y-0.5;
+  @apply text-(--muted-foreground) transition-transform duration-200;
+}
+.accordion-trigger[data-state="open"] .accordion-chevron {
+  @apply rotate-180;
+}
+.accordion-content {
+  @apply overflow-hidden text-sm;
+}
+.accordion-content-inner {
+  @apply pt-0 pb-4;
+}
