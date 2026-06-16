@@ -77,7 +77,15 @@ export default buildConfig({
     ...(process.env.R2_BUCKET
       ? [
           s3Storage({
-            collections: { media: true },
+            collections: {
+              media: {
+                // Serve straight from the R2 public (CDN) URL instead of
+                // proxying bytes through the CMS.
+                disablePayloadAccessControl: true,
+                generateFileURL: ({ filename, prefix }) =>
+                  `${process.env.R2_PUBLIC_URL}/${prefix ? `${prefix}/` : ''}${filename}`,
+              },
+            },
             bucket: process.env.R2_BUCKET,
             config: {
               endpoint: process.env.R2_ENDPOINT,

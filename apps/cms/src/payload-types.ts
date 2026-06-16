@@ -150,11 +150,40 @@ export interface Page {
   layout?:
     | (
         | {
-            eyebrow?: string | null;
-            heading: string;
-            subheading?: string | null;
-            align?: ('left' | 'center') | null;
-            background?: ('none' | 'muted' | 'brand') | null;
+            /**
+             * One slide = a static hero. Two or more = an auto-advancing carousel.
+             */
+            slides?:
+              | {
+                  /**
+                   * Slide background image — served from the media CDN.
+                   */
+                  image: number | Media;
+                  /**
+                   * Optional alt override. Defaults to the media item's own alt text.
+                   */
+                  alt?: string | null;
+                  eyebrow?: string | null;
+                  /**
+                   * Line breaks become separate heading lines.
+                   */
+                  heading: string;
+                  tagline?: string | null;
+                  cta?: {
+                    kind?: ('none' | 'link' | 'evaluation') | null;
+                    label?: string | null;
+                    /**
+                     * e.g. /programs or #pathway
+                     */
+                    href?: string | null;
+                  };
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Milliseconds between slides (carousel only).
+             */
+            autoPlayDelay?: number | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'hero';
@@ -812,11 +841,24 @@ export interface PagesSelect<T extends boolean = true> {
         hero?:
           | T
           | {
-              eyebrow?: T;
-              heading?: T;
-              subheading?: T;
-              align?: T;
-              background?: T;
+              slides?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    eyebrow?: T;
+                    heading?: T;
+                    tagline?: T;
+                    cta?:
+                      | T
+                      | {
+                          kind?: T;
+                          label?: T;
+                          href?: T;
+                        };
+                    id?: T;
+                  };
+              autoPlayDelay?: T;
               id?: T;
               blockName?: T;
             };
