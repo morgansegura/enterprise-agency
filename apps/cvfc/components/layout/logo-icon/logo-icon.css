@@ -1,0 +1,38 @@
+@reference "tailwindcss";
+
+.logo,
+.logo-icon,
+.logo-text {
+  @apply flex 
+  relative;
+
+  .logo-color-1 {
+    @apply fill-white;
+  }
+
+  .logo-color-2 {
+    @apply fill-[#141d45];
+  }
+
+  .logo-color-3 {
+    @apply fill-(--color-gold-bright)
+    isolate;
+  }
+
+  .logo-color-4 {
+    @apply fill-sky-600;
+  }
+}
+
+.logo {
+  @apply flex
+  gap-2
+  items-center;
+}
+
+.logo-icon {
+  @apply border-2
+    border-white
+    overflow-hidden
+    rounded-full;
+}

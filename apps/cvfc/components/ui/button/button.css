@@ -1,46 +1,70 @@
 @reference "tailwindcss";
 
 .button {
-  @apply inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap;
-  @apply rounded-md text-sm font-medium outline-none transition-all;
-  @apply focus-visible:ring-2 focus-visible:ring-(--ring)/50;
-  @apply disabled:pointer-events-none disabled:opacity-50;
-}
-.button svg {
-  @apply pointer-events-none size-4 shrink-0;
+  @apply inline-flex font-(family-name:--font-heading) shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4;
+  @apply focus-visible:border-(--ring) focus-visible:ring-3 focus-visible:ring-(--ring)/50;
+  @apply aria-invalid:border-(--destructive) aria-invalid:ring-3 aria-invalid:ring-(--destructive)/20;
+  @apply dark:aria-invalid:border-(--destructive)/50 dark:aria-invalid:ring-(--destructive)/40;
 }
 
-/* Variants */
 .button-default {
-  @apply bg-(--primary) text-(--primary-foreground) shadow-xs hover:bg-(--primary)/90;
-}
-.button-secondary {
-  @apply bg-(--secondary) text-(--secondary-foreground) shadow-xs hover:bg-(--secondary)/80;
-}
-.button-outline {
-  @apply border bg-(--background) shadow-xs;
-  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
-}
-.button-ghost {
-  @apply hover:bg-(--accent) hover:text-(--accent-foreground);
-}
-.button-destructive {
-  @apply bg-(--destructive) text-white shadow-xs hover:bg-(--destructive)/90;
-}
-.button-link {
-  @apply text-(--primary) underline-offset-4 hover:underline;
+  @apply bg-(--color-gold) text-white [a]:hover:bg-(--color-gold-bright)/80;
 }
 
-/* Sizes */
+.button-outline {
+  @apply border-2 border-(--color-gold-bright) text-(--color-gold) hover:text-(--color-midnight-bright) hover:border-(--color-midnight-bright) hover:bg-white;
+  @apply aria-expanded:bg-white aria-expanded:text-(--color-gold);
+}
+
+.button-secondary {
+  @apply bg-(--color-midnight) text-white hover:bg-(--color-midnight)/80;
+  @apply aria-expanded:bg-(--color-midnight) aria-expanded:text-white;
+}
+
+/* .button-ghost {
+  @apply hover:bg-(--muted) hover:text-(--foreground);
+  @apply aria-expanded:bg-(--muted) aria-expanded:text-(--foreground);
+  @apply dark:hover:bg-(--muted)/50;
+} */
+
+.button-destructive {
+  @apply bg-(--destructive)/10 text-(--destructive) hover:bg-(--destructive)/20;
+  @apply focus-visible:border-(--destructive)/40 focus-visible:ring-(--destructive)/20;
+  @apply dark:bg-(--destructive)/20 dark:hover:bg-(--destructive)/30 dark:focus-visible:ring-(--destructive)/40;
+}
+
+.button-link {
+  @apply text-sky-600 underline-offset-4 hover:underline;
+}
+
 .button-size-default {
-  @apply h-9 px-4 py-2;
+  @apply h-12 gap-2 px-4 has-data-[icon=inline-end]:pr-3.5 has-data-[icon=inline-start]:pl-3.5;
 }
+
+.button-size-xs {
+  @apply h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3;
+}
+
 .button-size-sm {
-  @apply h-8 gap-1.5 px-3;
+  @apply h-7 gap-1 rounded-lg px-5 py-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5;
 }
+
 .button-size-lg {
-  @apply h-10 px-6;
+  @apply h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2;
 }
-.button-size-icon {
+
+.button-icon-default {
+  @apply size-8;
+}
+
+.button-icon-xs {
+  @apply size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3;
+}
+
+.button-icon-sm {
+  @apply size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg;
+}
+
+.button-icon-lg {
   @apply size-9;
 }

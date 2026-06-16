@@ -1,17 +1,5 @@
 @reference "tailwindcss";
 
 .landing-screen {
-  @apply flex min-h-screen items-center;
-}
-
-.landing-screen-hero {
-  @apply flex flex-col items-center text-center;
-}
-
-.landing-screen-sub {
-  @apply mt-4 max-w-xl;
-}
-
-.landing-screen-actions {
-  @apply mt-8 flex flex-wrap items-center justify-center gap-3;
+  @apply block;
 }

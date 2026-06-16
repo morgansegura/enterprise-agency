@@ -1,0 +1,16 @@
+@reference "tailwindcss";
+
+.toggle-group {
+  @apply grid w-full grid-cols-3 gap-2;
+}
+
+.toggle-group-item {
+  @apply cursor-pointer rounded-lg border border-(--color-midnight)/15 bg-white px-3 py-3 text-center outline-none transition-all;
+  @apply font-(family-name:--font-heading) text-sm font-bold text-(--color-midnight);
+  @apply hover:border-(--color-gold) hover:text-(--color-gold);
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold)/40;
+}
+
+.toggle-group-item[data-state="on"] {
+  @apply border-(--color-gold) bg-(--color-gold)/10 text-(--color-gold);
+}

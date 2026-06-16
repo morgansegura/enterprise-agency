@@ -1,0 +1,36 @@
+@reference "tailwindcss";
+
+.drawer-backdrop {
+  @apply fixed inset-0 z-40 bg-black/50 backdrop-blur-sm;
+  @apply transition-opacity duration-300 ease-out;
+}
+
+.drawer-backdrop[data-starting-style],
+.drawer-backdrop[data-ending-style] {
+  @apply opacity-0;
+}
+
+.drawer {
+  @apply fixed inset-y-0 z-50 flex w-[min(22rem,90vw)] max-w-full flex-col bg-white text-(--color-midnight);
+  @apply shadow-xl;
+  @apply transition-transform duration-300 ease-out;
+  @apply focus-visible:outline-none;
+}
+
+.drawer-right {
+  @apply right-0;
+}
+
+.drawer-left {
+  @apply left-0;
+}
+
+.drawer-right[data-starting-style],
+.drawer-right[data-ending-style] {
+  @apply translate-x-full;
+}
+
+.drawer-left[data-starting-style],
+.drawer-left[data-ending-style] {
+  @apply -translate-x-full;
+}

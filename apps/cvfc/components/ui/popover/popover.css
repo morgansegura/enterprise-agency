@@ -1,6 +1,14 @@
 @reference "tailwindcss";
 
-.popover-content {
-  @apply z-50 w-72 origin-(--radix-popover-content-transform-origin);
-  @apply rounded-md border bg-(--background) p-4 text-sm shadow-md outline-none;
+.popover {
+  @apply z-50 w-[min(22rem,90vw)] rounded-xl bg-white p-4 text-(--color-midnight);
+  @apply shadow-[0_10px_40px_-12px_rgba(6,28,72,0.25)];
+  @apply font-sans text-sm leading-relaxed;
+  @apply focus-visible:outline-none;
+  @apply transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)];
+}
+
+.popover[data-starting-style],
+.popover[data-ending-style] {
+  @apply opacity-0 translate-y-3;
 }

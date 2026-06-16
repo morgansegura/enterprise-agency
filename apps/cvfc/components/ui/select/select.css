@@ -1,0 +1,52 @@
+@reference "tailwindcss";
+
+.select-trigger {
+  @apply flex h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-(--color-midnight)/15 bg-white px-3 outline-none transition-colors;
+  @apply text-sm text-(--color-midnight);
+  @apply hover:border-(--color-gold)/50;
+  @apply focus-visible:border-(--color-gold) focus-visible:ring-2 focus-visible:ring-(--color-gold)/30;
+  @apply data-[placeholder]:text-(--color-midnight)/50;
+  @apply disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.select-trigger-icon {
+  @apply size-3 shrink-0 text-(--color-midnight)/55 transition-transform duration-200;
+}
+
+.select-trigger[data-state="open"] .select-trigger-icon {
+  @apply rotate-180 text-(--color-gold);
+}
+
+.select-content {
+  @apply z-50 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg border border-(--color-midnight)/10 bg-white;
+  @apply shadow-[0_10px_30px_-12px_rgba(6,28,72,0.25)];
+  @apply transition-[opacity,transform] duration-200 ease-out;
+}
+
+.select-content[data-state="open"] {
+  @apply opacity-100;
+}
+
+.select-content[data-state="closed"] {
+  @apply opacity-0;
+}
+
+.select-viewport {
+  @apply max-h-[14rem] overflow-y-auto p-1;
+}
+
+.select-viewport-popper {
+  @apply w-full;
+}
+
+.select-item {
+  @apply relative flex cursor-pointer select-none items-center gap-2 rounded-md py-2 pl-8 pr-3 outline-none transition-colors;
+  @apply text-sm text-(--color-midnight);
+  @apply data-[highlighted]:bg-(--color-gold)/10 data-[highlighted]:text-(--color-gold);
+  @apply data-[state=checked]:font-bold data-[state=checked]:text-(--color-gold);
+  @apply data-[disabled]:pointer-events-none data-[disabled]:opacity-50;
+}
+
+.select-item-indicator {
+  @apply absolute left-2 flex size-4 items-center justify-center text-(--color-gold);
+}

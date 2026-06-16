@@ -1,0 +1,125 @@
+@reference "tailwindcss";
+
+.evaluation-cta-trigger {
+  @apply inline-flex cursor-pointer items-center justify-center gap-2 px-5 py-2.5 outline-none transition-colors rounded-md;
+  @apply font-(family-name:--font-heading) text-sm font-semibold uppercase tracking-[0.125em];
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold-bright)/60 focus-visible:ring-offset-2 transition-colors duration-300 ease-out border-2;
+}
+
+.evaluation-cta-trigger[data-variant="default"] {
+  @apply bg-(--color-gold) border-(--color-gold) text-white hover:bg-(--color-gold-bright) hover:border-(--color-gold-bright);
+}
+
+.evaluation-cta-trigger[data-variant="secondary"] {
+  @apply bg-(--color-midnight) border-(--color-midnight) text-white hover:bg-(--color-midnight)/85;
+}
+
+.evaluation-cta-trigger[data-variant="outline"] {
+  @apply border-2 border-(--color-gold-bright) bg-transparent text-(--color-gold) hover:bg-white;
+}
+
+.evaluation-cta-modal {
+  @apply flex flex-col gap-6 p-6 md:p-8;
+}
+
+.evaluation-cta-header {
+  @apply flex flex-col gap-1 pb-4 border-b;
+}
+
+.evaluation-cta-eyebrow {
+  @apply flex items-center gap-3 text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold) mb-1.5;
+}
+
+.evaluation-cta-eyebrow-rule {
+  @apply inline-block h-px w-8 bg-(--color-gold);
+}
+
+.evaluation-cta-title {
+  @apply font-(family-name:--font-heading) text-2xl font-bold leading-tight;
+}
+
+.evaluation-cta-subtitle {
+  @apply text-sm text-(--color-midnight)/80;
+}
+
+.evaluation-cta-body {
+  @apply flex flex-col gap-5;
+}
+
+.evaluation-cta-field {
+  @apply flex flex-col gap-2;
+}
+
+.evaluation-cta-label {
+  @apply text-[11px] font-bold uppercase;
+}
+
+.evaluation-cta-tracks {
+  @apply grid grid-cols-3 gap-2 mb-1;
+}
+
+.evaluation-cta-track {
+  @apply cursor-pointer rounded-lg border border-(--color-midnight)/15 bg-white px-3 py-3 text-center outline-none transition-all;
+  @apply font-(family-name:--font-heading) text-sm font-bold text-(--color-midnight);
+  @apply hover:border-(--color-gold) hover:text-(--color-gold);
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold)/40;
+  @apply aria-pressed:border-(--color-gold) aria-pressed:bg-(--color-gold)/10 aria-pressed:text-(--color-gold);
+}
+
+.evaluation-cta-select {
+  @apply h-11 cursor-pointer rounded-lg border border-(--color-midnight)/15 bg-white px-3 outline-none transition-colors;
+  @apply text-sm text-(--color-midnight);
+  @apply hover:border-(--color-gold)/50;
+  @apply focus-visible:border-(--color-gold) focus-visible:ring-2 focus-visible:ring-(--color-gold)/30;
+}
+
+.evaluation-cta-result {
+  @apply flex flex-col gap-2 rounded-xl border border-(--color-gold)/40 bg-(--color-gold)/8 p-5;
+}
+
+.evaluation-cta-result[data-kind="year-round"] {
+  @apply border-(--color-midnight)/15 bg-(--color-bone);
+}
+
+.evaluation-cta-result-eyebrow {
+  @apply text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.evaluation-cta-result-label {
+  @apply font-(family-name:--font-heading) text-lg font-bold leading-tight;
+}
+
+.evaluation-cta-result-window {
+  @apply text-xs font-medium text-(--color-midnight)/75;
+}
+
+.evaluation-cta-result-description {
+  @apply text-sm leading-relaxed text-(--color-midnight)/85;
+}
+
+.evaluation-cta-continue {
+  @apply mt-3 inline-flex items-center justify-center gap-2 rounded-full bg-(--color-gold) px-5 py-3 outline-none transition-all;
+  @apply font-(family-name:--font-heading) text-sm font-bold uppercase tracking-wider text-white;
+  @apply shadow-[0_8px_24px_-12px_rgba(160,134,41,0.7)];
+  @apply hover:brightness-110 hover:-translate-y-px;
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold)/50 focus-visible:ring-offset-2;
+}
+
+.evaluation-cta-footer {
+  @apply flex flex-col gap-3 border-t pt-4;
+}
+
+.evaluation-cta-note {
+  @apply text-xs text-(--color-midnight)/80 bg-(--color-midnight-bright)/10 rounded-xl p-4;
+
+  strong {
+    @apply block mb-1 font-bold;
+  }
+}
+
+.evaluation-cta-cancel {
+  @apply self-end cursor-pointer rounded-md px-3 py-1.5 outline-none transition-colors;
+  @apply text-xs font-bold uppercase  text-(--color-midnight)/60;
+  @apply hover:text-(--color-midnight) hover:bg-(--color-midnight)/5;
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-midnight)/20;
+}

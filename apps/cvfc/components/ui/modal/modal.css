@@ -1,0 +1,34 @@
+@reference "tailwindcss";
+
+.modal-backdrop {
+  @apply fixed inset-0 z-40 bg-(--color-ink)/65 backdrop-blur-sm;
+  @apply transition-opacity duration-300 ease-out;
+}
+
+.modal-backdrop[data-starting-style],
+.modal-backdrop[data-ending-style] {
+  @apply opacity-0;
+}
+
+.modal {
+  @apply fixed left-1/2 top-1/2 z-50;
+  @apply flex max-h-[min(48rem,90vh)] w-[min(32rem,92vw)] flex-col overflow-y-auto;
+  @apply rounded-2xl bg-white shadow-[0_24px_60px_-20px_rgba(10,14,42,0.55)];
+  @apply transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)];
+  @apply focus-visible:outline-none;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal[data-starting-style],
+.modal[data-ending-style] {
+  opacity: 0;
+  transform: translate(-50%, calc(-50% + 12px)) scale(0.97);
+}
+
+.modal-sm {
+  @apply w-[min(24rem,92vw)];
+}
+
+.modal-lg {
+  @apply w-[min(48rem,92vw)];
+}

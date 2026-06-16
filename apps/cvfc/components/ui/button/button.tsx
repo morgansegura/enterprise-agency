@@ -1,53 +1,66 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
+import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
 import "./button.css";
 
-// shadcn Button, stripped to named classes — all styling lives in button.css.
 const buttonVariants = cva("button", {
   variants: {
     variant: {
       default: "button-default",
-      secondary: "button-secondary",
       outline: "button-outline",
+      secondary: "button-secondary",
       ghost: "button-ghost",
       destructive: "button-destructive",
       link: "button-link",
     },
     size: {
       default: "button-size-default",
+      xs: "button-size-xs",
       sm: "button-size-sm",
       lg: "button-size-lg",
-      icon: "button-size-icon",
+      icon: "button-icon-default",
+      "icon-xs": "button-icon-xs",
+      "icon-sm": "button-icon-sm",
+      "icon-lg": "button-icon-lg",
     },
   },
-  defaultVariants: { variant: "default", size: "default" },
+  defaultVariants: {
+    variant: "default",
+    size: "default",
+  },
 });
-
-type ButtonProps = React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  };
 
 function Button({
   className,
-  variant,
-  size,
-  asChild = false,
+  variant = "default",
+  size = "default",
+  render,
+  nativeButton,
   ...props
-}: ButtonProps) {
-  const Comp = asChild ? Slot : "button";
+}: Omit<ButtonPrimitive.Props, "size"> & VariantProps<typeof buttonVariants>) {
+  // Base UI warns about lost semantics when `render` swaps in a non-<button>
+  // element (e.g. <a>) — infer nativeButton={false} in that case.
+  const inferredNativeButton =
+    nativeButton ??
+    (!render ||
+      (React.isValidElement(render) &&
+        (render as React.ReactElement).type === "button"));
+
   return (
-    <Comp
+    <ButtonPrimitive
       data-slot="button"
-      className={cn(buttonVariants({ variant, size }), className)}
+      className={cn(
+        "group/button",
+        buttonVariants({ variant, size, className }),
+      )}
+      render={render}
+      nativeButton={inferredNativeButton}
       {...props}
     />
   );
 }
 
 export { Button, buttonVariants };
-export type { ButtonProps };

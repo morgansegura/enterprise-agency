@@ -1,0 +1,141 @@
+@reference "tailwindcss";
+
+.hero-carousel {
+  @apply relative w-full overflow-hidden bg-(--color-ink) text-white;
+  @apply h-[clamp(38rem,90vh,56rem)];
+}
+
+.hero-carousel-viewport {
+  @apply absolute inset-0;
+}
+
+.hero-carousel-track {
+  @apply relative h-full w-full z-0;
+}
+
+.hero-carousel-slide {
+  @apply absolute inset-0 bg-cover bg-center;
+  @apply transition-opacity duration-700 ease-out;
+}
+
+.hero-carousel-slide-inactive {
+  @apply pointer-events-none opacity-0 z-0;
+}
+
+.hero-carousel-slide-active {
+  @apply opacity-100 z-10;
+}
+
+.hero-carousel-slide-overlay {
+  @apply pointer-events-none absolute inset-0 z-0;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 28, 72, 0.55) 0%,
+    rgba(6, 28, 72, 0.15) 38%,
+    rgba(6, 28, 72, 0.55) 70%,
+    rgba(6, 28, 72, 0.92) 100%
+  );
+}
+
+.hero-carousel-slide-content {
+  @apply absolute inset-x-0 bottom-0 z-20 mx-auto flex flex-col items-start gap-6 px-4 pb-20 sm:pb-24 md:pb-28;
+}
+
+.hero-carousel-slide-eyebrow {
+  @apply flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-white text-shadow-sm  pointer-events-none select-none;
+}
+.hero-carousel-slide-eyebrow-text {
+  @apply bg-(--color-ink) px-1 py-0.5;
+}
+
+.hero-carousel-slide-eyebrow-rule {
+  @apply inline-block h-px w-10 bg-white/60;
+}
+
+.hero-carousel-slide-heading {
+  @apply font-(family-name:--font-heading) font-bold uppercase text-white;
+  @apply text-[clamp(2.25rem,7.5vw,6.5rem)] leading-[0.95] tracking-[-0.02em] pointer-events-none select-none;
+  text-wrap: balance;
+  text-shadow: 0 4px 30px rgba(6, 28, 72, 0.45);
+}
+
+.hero-carousel-slide-heading-line {
+  @apply block pointer-events-none;
+}
+
+.hero-carousel-slide-tagline {
+  @apply max-w-2xl text-base sm:text-lg text-white;
+  @apply leading-[1.6] pointer-events-none select-none;
+  text-shadow: 0 2px 16px rgba(6, 28, 72, 0.5);
+}
+
+.hero-carousel-slide-cta {
+  @apply inline-flex items-center gap-3 rounded-md bg-(--color-gold) px-6 py-3 outline-none transition-all duration-300 ease-out;
+  @apply font-(family-name:--font-heading) text-sm font-semibold uppercase tracking-widest text-white;
+  @apply shadow-[0_8px_28px_-10px_rgba(160,134,41,0.7)];
+  @apply hover:shadow-[0_12px_32px_-8px_rgba(160,134,41,0.85)];
+  @apply focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-ink);
+}
+
+.hero-carousel-slide-cta-arrow {
+  @apply text-base transition-transform duration-300 ease-out;
+}
+
+.hero-carousel-slide-cta:hover .hero-carousel-slide-cta-arrow {
+  @apply translate-x-1;
+}
+
+.hero-carousel-masthead {
+  @apply w-full left-4 right-0 flex flex-col;
+  @apply pointer-events-none absolute top-6 z-30;
+  @apply text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-white text-shadow-2xs;
+  @apply md:flex-row md:items-center  md:gap-3 md:left-8 md:translate-x-0;
+}
+
+.hero-carousel-masthead-rule {
+  @apply hidden md:inline-block h-px w-6 bg-white;
+}
+
+.hero-carousel-indicator {
+  @apply absolute bottom-8 right-4 z-30 flex items-center gap-4 sm:right-8;
+}
+
+.hero-carousel-indicator-mark {
+  @apply hidden size-7 text-(--color-gold-bright) opacity-90 sm:block;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+.hero-carousel-indicator-track {
+  @apply flex items-center gap-2;
+}
+
+.hero-carousel-indicator-dot {
+  @apply relative h-px w-8 cursor-pointer overflow-hidden bg-white/35 outline-none transition-all duration-300 ease-out;
+  @apply hover:bg-white/55;
+  @apply focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-ink);
+}
+
+.hero-carousel-indicator-dot[data-active="true"] {
+  @apply w-12 bg-white;
+}
+
+.hero-carousel-indicator-fill {
+  @apply absolute inset-0 origin-left scale-x-0 bg-(--color-gold-bright);
+}
+
+.hero-carousel-indicator-count {
+  @apply font-(family-name:--font-heading) text-xs font-bold tabular-nums uppercase tracking-(--tracking-eyebrow) text-white;
+}
+
+.hero-carousel-indicator-slash {
+  @apply mx-1 text-white/40;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel-slide,
+  .hero-carousel-slide-cta,
+  .hero-carousel-slide-cta-arrow,
+  .hero-carousel-indicator-dot {
+    @apply transition-none;
+  }
+}

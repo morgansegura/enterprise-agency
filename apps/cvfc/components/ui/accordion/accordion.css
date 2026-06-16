@@ -1,27 +1,79 @@
 @reference "tailwindcss";
 
-.accordion-item {
-  @apply border-b last:border-b-0;
+.accordion {
+  @apply flex w-full flex-col;
 }
+
+.accordion-item {
+  @apply border-b border-(--color-midnight)/10 last:border-b-0;
+}
+
 .accordion-header {
   @apply flex;
 }
+
 .accordion-trigger {
-  @apply flex flex-1 items-start justify-between gap-4 py-4 text-left;
-  @apply text-sm font-medium outline-none transition-all hover:underline;
-  @apply focus-visible:ring-2 focus-visible:ring-(--ring)/50;
-  @apply disabled:pointer-events-none disabled:opacity-50;
+  @apply flex flex-1 cursor-pointer items-center justify-between gap-3 py-4 text-left outline-none transition-colors;
+  @apply font-(family-name:--font-heading) text-base font-bold text-(--color-midnight);
+  @apply rounded-sm focus-visible:ring-2 focus-visible:ring-(--color-gold-bright)/40;
 }
-.accordion-chevron {
-  @apply pointer-events-none size-4 shrink-0 translate-y-0.5;
-  @apply text-(--muted-foreground) transition-transform duration-200;
+
+.accordion-trigger[data-state="open"] {
+  @apply text-(--color-gold);
 }
-.accordion-trigger[data-state="open"] .accordion-chevron {
-  @apply rotate-180;
+
+.accordion-trigger-label {
+  @apply flex-1 mr-2;
 }
+
+.accordion-trigger-icon {
+  @apply size-4 shrink-0 text-(--color-midnight) transition-transform duration-200;
+}
+
+.accordion-trigger[data-state="open"] .accordion-trigger-icon {
+  @apply text-(--color-gold) rotate-180;
+}
+
 .accordion-content {
-  @apply overflow-hidden text-sm;
+  @apply overflow-hidden;
 }
+
+.accordion-content[data-state="open"] {
+  animation: accordion-down 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accordion-content[data-state="closed"] {
+  animation: accordion-up 200ms ease-out;
+}
+
 .accordion-content-inner {
-  @apply pt-0 pb-4;
+  @apply pb-4;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-content[data-state="open"],
+  .accordion-content[data-state="closed"] {
+    animation: none;
+  }
+  .accordion-trigger-icon {
+    @apply transition-none;
+  }
 }

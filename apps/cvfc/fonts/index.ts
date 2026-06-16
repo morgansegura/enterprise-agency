@@ -1,9 +1,12 @@
-import { Inter } from "next/font/google";
+import { Geist, Google_Sans_Flex } from "next/font/google";
 
-/** Base font, exposed as the `--font-base` CSS var (consumed in globals.css).
- *  Swap or add a heading font per site. */
-export const fontBase = Inter({
-  subsets: ["latin"],
+export const fontBase = Geist({
   variable: "--font-base",
-  display: "swap",
+  subsets: ["latin"],
+});
+
+export const fontHeading = Google_Sans_Flex({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });

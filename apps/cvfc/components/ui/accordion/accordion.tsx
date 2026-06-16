@@ -2,16 +2,23 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDownIcon } from "lucide-react";
+import { FaAngleDown } from "react-icons/fa6";
 
 import { cn } from "@/lib/utils";
 
 import "./accordion.css";
 
-function Accordion(
-  props: React.ComponentProps<typeof AccordionPrimitive.Root>,
-) {
-  return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
+function Accordion({
+  className,
+  ...props
+}: React.ComponentProps<typeof AccordionPrimitive.Root>) {
+  return (
+    <AccordionPrimitive.Root
+      data-slot="accordion"
+      className={cn("accordion", className)}
+      {...props}
+    />
+  );
 }
 
 function AccordionItem({
@@ -39,8 +46,12 @@ function AccordionTrigger({
         className={cn("accordion-trigger", className)}
         {...props}
       >
-        {children}
-        <ChevronDownIcon className="accordion-chevron" />
+        <span className="accordion-trigger-label">{children}</span>
+        <FaAngleDown
+          aria-hidden="true"
+          className="accordion-trigger-icon"
+          data-slot="accordion-trigger-icon"
+        />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
@@ -54,8 +65,7 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      // height animation stays inline (keyframe-driven, can't @apply)
-      className="accordion-content data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      className="accordion-content"
       {...props}
     >
       <div className={cn("accordion-content-inner", className)}>{children}</div>
