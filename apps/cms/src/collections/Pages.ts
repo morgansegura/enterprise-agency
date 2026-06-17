@@ -22,7 +22,7 @@ async function previewUrl(doc: PageDoc | undefined, req: PayloadRequest): Promis
   const secret = process.env.PREVIEW_SECRET || 'preview-dev'
   const path = doc?.slug && doc.slug !== 'home' ? `/${doc.slug}` : '/'
 
-  let base = process.env.FRONTEND_URL || 'http://localhost:4011'
+  let base = (process.env.FRONTEND_URL || 'http://localhost:4011').replace(/\/+$/, '')
   if (process.env.NODE_ENV === 'production') {
     let domain: string | null | undefined
     const t = doc?.tenant
