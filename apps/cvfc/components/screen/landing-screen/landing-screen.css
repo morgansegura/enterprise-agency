@@ -1,5 +1,18 @@
 @reference "tailwindcss";
 
 .landing-screen {
-  @apply block;
+  @apply relative pt-15;
+}
+
+.journey-heading-block {
+  @apply mx-auto flex flex-col items-center gap-5 px-4 pt-16 pb-4 text-center md:pt-20;
+}
+
+.journey-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.05] tracking-tight;
+  text-wrap: balance;
+}
+
+.journey-description {
+  @apply max-w-3xl text-base leading-relaxed text-(--color-midnight)/80;
 }

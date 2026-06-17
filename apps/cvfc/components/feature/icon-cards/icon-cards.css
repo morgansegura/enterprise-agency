@@ -1,0 +1,93 @@
+@reference "tailwindcss";
+
+.icon-cards {
+  @apply relative py-20 md:py-24 border-t border-(--color-gold-bright)/30;
+}
+
+.icon-cards[data-bg="bone"] {
+  @apply bg-linear-to-r from-white via-(--color-bone)/30 to-white;
+}
+
+.icon-cards[data-bg="white"] {
+  @apply bg-white;
+}
+
+.icon-cards-inner {
+  @apply mx-auto flex flex-col gap-12 px-4;
+}
+
+.icon-cards-heading-block {
+  @apply flex flex-col items-center gap-5 text-center;
+}
+
+.icon-cards-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.05] tracking-tight;
+  text-wrap: balance;
+}
+
+.icon-cards-description {
+  @apply max-w-2xl text-base leading-relaxed text-(--color-midnight)/80;
+}
+
+.icon-cards-grid {
+  @apply flex flex-wrap justify-center gap-4;
+}
+
+.icon-cards-grid > * {
+  @apply basis-full sm:basis-[calc(50%-0.5rem)];
+}
+
+.icon-cards-grid[data-cols="3"] > * {
+  @apply lg:basis-[calc((100%-2rem)/3)];
+}
+
+.icon-cards-grid[data-cols="4"] > * {
+  @apply lg:basis-[calc((100%-3rem)/4)];
+}
+
+.icon-card {
+  @apply relative flex flex-col gap-2 rounded-2xl border border-(--color-gold-bright)/30 bg-white p-7 pt-8;
+}
+
+.icon-card-link {
+  @apply outline-none transition-colors duration-300 ease-out;
+  @apply hover:border-(--color-gold);
+  @apply focus-visible:border-(--color-gold);
+}
+
+.icon-card-arrow {
+  @apply mt-6 inline-flex items-center gap-3 self-end pt-2 text-[11px] font-bold uppercase tracking-widest text-(--color-gold);
+}
+
+.icon-card-number {
+  @apply absolute z-2 bg-white p-2 rounded-full right-3 top-3 font-(family-name:--font-heading) text-5xl font-bold leading-none tracking-tight text-(--color-gold-bright)/35 tabular-nums;
+}
+
+.icon-card-icon-wrap {
+  @apply relative flex items-center justify-center pb-3 mb-2;
+
+  &:before {
+    @apply content-[''] absolute bg-white/50 blur w-40 rounded-full h-40 z-1;
+  }
+
+  &:after {
+    @apply content-[''] absolute -top-3 bottom-0 -inset-x-3 rounded-2xl z-0;
+    @apply bg-linear-to-b from-white to-(--color-gold-bright)/10;
+  }
+
+  svg {
+    @apply size-40 fill-(--color-midnight)/75 z-1;
+  }
+}
+
+.icon-card-title {
+  @apply font-(family-name:--font-heading) text-xl font-bold;
+}
+
+.icon-card-description {
+  @apply text-sm leading-[1.65] font-medium text-(--color-midnight-bright);
+}
+
+.icon-cards-cta-row {
+  @apply flex items-center justify-center pt-2;
+}

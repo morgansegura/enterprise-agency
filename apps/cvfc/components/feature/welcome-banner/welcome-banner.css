@@ -1,0 +1,106 @@
+@reference "tailwindcss";
+
+.welcome-banner {
+  @apply relative isolate overflow-hidden bg-white;
+  @apply py-12;
+  @apply opacity-0 translate-y-4 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)];
+}
+
+.welcome-banner[data-revealed="true"] {
+  @apply opacity-100 translate-y-0;
+}
+
+.welcome-banner-inner {
+  @apply mx-auto grid grid-cols-1 items-center gap-12 px-4;
+  @apply md:grid-cols-12 md:gap-16;
+}
+
+.welcome-banner-figure {
+  @apply md:col-span-5 border-b pb-8 md:border-b-0 md:pb-0;
+}
+
+.welcome-banner-figure-frame {
+  @apply relative aspect-4/5 w-full overflow-hidden rounded-3xl;
+  /* @apply shadow-[0_24px_60px_-24px_rgba(10,14,42,0.45)]; */
+
+  &::after {
+    @apply content-[''] pointer-events-none absolute inset-0 ring-1 ring-inset ring-(--color-ink)/10;
+  }
+}
+
+.welcome-banner-image {
+  @apply size-full object-cover transition-transform duration-1200 ease-out;
+  filter: saturate(0.92) contrast(1.04) brightness(0.96);
+}
+
+.welcome-banner[data-revealed="true"] .welcome-banner-image {
+  @apply scale-[1.03];
+}
+
+.welcome-banner-figure-tint {
+  @apply pointer-events-none absolute inset-0 mix-blend-multiply;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 28, 72, 0) 0%,
+    rgba(6, 28, 72, 0) 60%,
+    rgba(6, 28, 72, 0.45) 100%
+  );
+}
+
+.welcome-banner-figure-mark {
+  @apply absolute bottom-5 left-5 size-12 opacity-95;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+}
+
+.welcome-banner-figure-caption {
+  @apply mt-5 flex flex-wrap items-center gap-3 text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold) px-4;
+}
+
+.welcome-banner-figure-dot {
+  @apply inline-block size-1 rounded-full bg-(--color-gold)/55;
+}
+
+.welcome-banner-content {
+  @apply md:col-span-7 md:pl-4;
+}
+
+.welcome-banner-eyebrow {
+  @apply mb-7 flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.welcome-banner-heading {
+  @apply font-(family-name:--font-heading) font-medium leading-[1.04];
+  @apply text-[clamp(2.25rem,4.5vw,3.75rem)] text-balance;
+}
+
+.welcome-banner-body {
+  @apply flex flex-col gap-3 mt-4 max-w-[60ch] text-(--color-midnight)/90;
+  @apply text-base md:text-[1.0625rem] leading-[1.78];
+}
+
+.welcome-banner-stats {
+  @apply mt-8 flex gap-4;
+
+  div {
+    @apply flex flex-col gap-2 border rounded-xl border-(--color-gold-bright)/30 p-4 basis-1/3;
+  }
+
+  dt {
+    @apply text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+  }
+
+  dd {
+    @apply font-(family-name:--font-heading) text-2xl font-bold leading-none tracking-tight;
+    @apply md:text-3xl;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-banner,
+  .welcome-banner-image {
+    @apply transition-none;
+  }
+  .welcome-banner[data-revealed="true"] .welcome-banner-image {
+    @apply scale-100;
+  }
+}

@@ -1,0 +1,99 @@
+@reference "tailwindcss";
+
+.portrait-grid {
+  @apply relative py-20 md:py-24;
+}
+
+.portrait-grid[data-bg="bone"] {
+  @apply bg-(--color-bone);
+}
+
+.portrait-grid[data-bg="white"] {
+  @apply bg-white;
+}
+
+.portrait-grid[data-bg="midnight"] {
+  @apply bg-(--color-midnight) text-white;
+}
+
+.portrait-grid-inner {
+  @apply mx-auto flex flex-col gap-12 px-4;
+}
+
+.portrait-grid-heading-block {
+  @apply flex flex-col items-center gap-5 text-center;
+}
+
+.portrait-grid-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight;
+  text-wrap: balance;
+}
+
+.portrait-grid-description {
+  @apply max-w-2xl text-base leading-relaxed;
+}
+
+.portrait-grid[data-bg="midnight"] .portrait-grid-description {
+  @apply text-white/85;
+}
+
+.portrait-grid[data-bg="bone"] .portrait-grid-description,
+.portrait-grid[data-bg="white"] .portrait-grid-description {
+  @apply text-(--color-midnight)/80;
+}
+
+.portrait-grid-list {
+  @apply grid grid-cols-2 gap-3 md:gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+}
+
+.portrait-card {
+  @apply flex flex-col gap-4 rounded-2xl border border-(--color-gold-bright)/30 bg-white p-4;
+}
+
+.portrait-grid[data-bg="midnight"] .portrait-card {
+  @apply bg-white/5;
+}
+
+.portrait-card-photo {
+  @apply relative flex aspect-[4/5] w-full items-center justify-center overflow-hidden rounded-xl bg-(--color-midnight)/5;
+}
+
+.portrait-grid[data-bg="midnight"] .portrait-card-photo {
+  @apply bg-white/10;
+}
+
+.portrait-card-image {
+  @apply size-full object-cover;
+}
+
+.portrait-card-fallback {
+  @apply size-2/3 opacity-70 border-transparent;
+}
+
+.portrait-card-content {
+  @apply flex flex-col gap-1 px-1 pb-1;
+}
+
+.portrait-card-name {
+  @apply font-(family-name:--font-heading) text-base font-bold leading-tight text-(--color-midnight);
+}
+
+.portrait-grid[data-bg="midnight"] .portrait-card-name {
+  @apply text-white;
+}
+
+.portrait-card-role {
+  @apply text-xs leading-snug text-(--color-midnight)/70;
+}
+
+.portrait-grid[data-bg="midnight"] .portrait-card-role {
+  @apply text-white/65;
+}
+
+.portrait-card-credential {
+  @apply text-[11px] font-bold uppercase tracking-wide leading-tight text-(--color-gold);
+}
+
+.portrait-grid-cta-row {
+  @apply flex items-center justify-center pt-2;
+}

@@ -1,0 +1,89 @@
+@reference "tailwindcss";
+
+.callout {
+  @apply relative;
+}
+
+.callout[data-variant="midnight"] {
+  @apply bg-(--color-midnight) text-white;
+  @apply bg-linear-to-bl from-(--color-midnight-bright) via-(--color-midnight) to-(--color-midnight-bright);
+}
+
+.callout[data-variant="midnight-bright"] {
+  @apply bg-(--color-midnight)/90 text-white;
+}
+
+.callout[data-variant="bone"] {
+  @apply border-y border-(--color-gold-bright)/30;
+  @apply bg-linear-to-br from-(--color-bone) via-white to-(--color-bone);
+}
+
+.callout[data-variant="gold"] {
+  @apply text-white;
+  @apply bg-linear-to-b from-(--color-gold) via-(--color-gold) to-(--color-gold-bright)/80;
+}
+
+.callout-inner {
+  @apply mx-auto px-8 py-14 md:py-20 rounded-3xl flex items-center justify-center gap-8 lg:gap-12;
+}
+
+.callout-inner-icon {
+  @apply hidden lg:flex items-center justify-center;
+
+  svg {
+    @apply w-50 h-50;
+  }
+}
+
+.callout-content {
+  @apply flex flex-col gap-4;
+}
+
+.callout-eyebrow {
+  @apply flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold-bright);
+}
+
+.callout-eyebrow .eyebrow-rule {
+  @apply bg-(--color-gold-bright);
+}
+
+.callout[data-variant="gold"] .callout-eyebrow,
+.callout[data-variant="gold"] .callout-eyebrow .eyebrow-rule {
+  @apply text-white bg-white;
+}
+
+.callout[data-variant="gold"] .callout-eyebrow {
+  @apply bg-transparent;
+}
+
+.callout-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(1.75rem,3.6vw,2.75rem)] font-semibold tracking-tight leading-[1.05] md:col-span-5 text-balance max-w-3xl;
+}
+
+.callout-body {
+  @apply text-base leading-[1.75] md:col-span-5 md:text-[1.0625rem] max-w-2xl;
+}
+
+.callout[data-variant="midnight"] .callout-body {
+  @apply text-white/90;
+}
+
+.callout[data-variant="bone"] .callout-body {
+  @apply text-(--color-midnight)/85;
+}
+
+.callout-body strong {
+  @apply font-bold;
+}
+
+.callout[data-variant="midnight"] .callout-body strong {
+  @apply text-(--color-gold-bright);
+}
+
+.callout-eyebrow {
+  @apply md:col-span-12;
+}
+
+.callout-cta-row {
+  @apply md:col-span-12 pt-2;
+}

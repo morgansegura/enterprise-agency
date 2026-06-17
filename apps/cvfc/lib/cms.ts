@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { draftMode } from "next/headers";
 
 import type { TMenuItem } from "@/lib/menu";
 import { site } from "@/site.config";
@@ -11,10 +12,13 @@ const cmsStr = (v: unknown): string | undefined =>
  * to this site's tenant. Returns null/[] on failure so the FE renders gracefully
  * when the CMS is offline. Cached per-request via React `cache`.
  */
-async function cmsFetch<T>(path: string): Promise<T | null> {
+async function cmsFetch<T>(path: string, draft = false): Promise<T | null> {
   try {
     const res = await fetch(`${site.cmsUrl}/api${path}`, {
-      next: { revalidate: 60 },
+      // Draft/preview reads must always be fresh; published reads cache 60s.
+      ...(draft
+        ? { cache: "no-store" as const }
+        : { next: { revalidate: 60 } }),
       // Fail fast: if the CMS is slow or wedged, abort and let callers fall
       // back rather than hanging on undici's multi-minute default timeout.
       signal: AbortSignal.timeout(3000),
@@ -43,11 +47,18 @@ export const getTenant = cache(async (): Promise<Tenant | null> => {
 });
 
 /** Generic tenant-scoped collection query. `query` is extra REST params. */
-export async function cmsFind<T>(collection: string, query = ""): Promise<T[]> {
+export async function cmsFind<T>(
+  collection: string,
+  query = "",
+  draft = false,
+): Promise<T[]> {
   const tenant = await getTenant();
   const scope = tenant ? `where[tenant][equals]=${tenant.id}` : "";
   const params = [scope, query].filter(Boolean).join("&");
-  const data = await cmsFetch<{ docs?: T[] }>(`/${collection}?${params}`);
+  const data = await cmsFetch<{ docs?: T[] }>(
+    `/${collection}?${params}`,
+    draft,
+  );
   return data?.docs ?? [];
 }
 
@@ -62,11 +73,18 @@ export type Page = {
   layout?: PageBlock[];
 };
 
-/** A published page for this tenant, by slug, with its layout blocks. */
+/**
+ * A page for this tenant by slug, with its layout blocks. Reads draft mode
+ * itself — when the editor preview is active, returns the latest draft; for
+ * everyone else, the published version. Callers never thread a preview flag.
+ */
 export const getPage = cache(async (slug: string): Promise<Page | null> => {
+  const { isEnabled: draft } = await draftMode();
+  const draftParam = draft ? "&draft=true" : "";
   const pages = await cmsFind<Page>(
     "pages",
-    `where[slug][equals]=${encodeURIComponent(slug)}&depth=2&limit=1`,
+    `where[slug][equals]=${encodeURIComponent(slug)}&depth=2&limit=1${draftParam}`,
+    draft,
   );
   return pages[0] ?? null;
 });

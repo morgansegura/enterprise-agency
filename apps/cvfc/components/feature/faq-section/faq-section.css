@@ -1,0 +1,81 @@
+@reference "tailwindcss";
+
+.faq-section {
+  @apply relative py-20 md:py-24;
+  @apply bg-linear-to-b from-(--color-bone) via-white to-(--color-bone);
+}
+
+.faq-section-inner {
+  @apply mx-auto flex max-w-4xl flex-col gap-10 px-4;
+}
+
+.faq-section-heading-block {
+  @apply flex flex-col items-center gap-4 text-center;
+}
+
+.faq-section-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-balance;
+}
+
+.faq-section-description {
+  @apply max-w-3xl text-base leading-relaxed text-(--color-midnight)/80;
+}
+
+.faq-section-accordion {
+  @apply rounded-xl border border-(--color-gold-bright)/20;
+
+  .accordion-item {
+    @apply px-4 border-(--color-gold-bright)/20 transition-colors duration-300 ease-out;
+
+    &:first-of-type {
+      @apply rounded-t-xl;
+    }
+    &:hover {
+      @apply bg-white;
+    }
+  }
+
+  .accordion-item[data-state="open"] {
+    @apply bg-white;
+  }
+
+  .accordion-trigger {
+    @apply py-5 text-base sm:text-lg font-semibold font-(family-name:--font-heading);
+  }
+
+  .accordion-trigger[data-state="open"] {
+    @apply text-inherit;
+  }
+
+  .accordion-trigger-icon {
+    @apply text-(--color-gold-bright);
+  }
+
+  .accordion-trigger[data-state="open"] .accordion-trigger-icon {
+    @apply text-(--color-gold);
+  }
+
+  .accordion-content-inner {
+    @apply pb-5;
+  }
+}
+
+.faq-section-answer {
+  @apply text-base border-t pt-4 px-2 border-(--color-gold-bright)/10;
+}
+
+.faq-section-cta-row {
+  @apply flex items-center justify-center pt-2;
+}
+
+.faq-section-cta-icon-left {
+  @apply size-4 text-white;
+}
+
+.faq-section-cta-arrow {
+  @apply text-base transition-transform;
+}
+
+.faq-section-cta:hover .faq-section-cta-arrow {
+  @apply translate-x-1;
+}

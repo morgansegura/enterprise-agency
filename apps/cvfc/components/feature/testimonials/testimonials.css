@@ -1,0 +1,77 @@
+@reference "tailwindcss";
+
+.testimonials {
+  @apply relative bg-(--color-midnight)/90 py-16 md:py-20;
+
+  .testimonials-inner {
+    @apply flex flex-col gap-10 lg:gap-12;
+  }
+
+  .testimonials-heading-block {
+    @apply flex flex-col items-center gap-4 text-center text-white;
+  }
+
+  .testimonials-heading {
+    @apply font-(family-name:--font-heading) text-3xl font-medium  md:text-4xl;
+
+    span {
+      @apply inline-flex border-b-2 border-(--color-gold) pb-2;
+    }
+  }
+
+  .testimonials-description {
+    @apply max-w-3xl text-base text-white md:text-lg;
+  }
+
+  .testimonials-track {
+    @apply -mx-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none];
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .testimonials-slider {
+    @apply grid auto-cols-max grid-flow-col gap-4;
+  }
+
+  .testimonials-card {
+    @apply flex w-[min(28rem,85vw)] gap-3 rounded-2xl bg-white px-6 py-10 shadow-[0_8px_32px_-12px_rgba(6,28,72,0.35)];
+  }
+
+  .testimonials-avatar {
+    @apply flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-full border border-(--color-gold)/30 bg-white;
+  }
+
+  .testimonials-avatar-image {
+    @apply size-full object-cover;
+  }
+
+  .testimonials-avatar-fallback {
+    @apply size-14;
+  }
+
+  .testimonials-content {
+    @apply flex flex-1 flex-col justify-center gap-3;
+  }
+
+  .testimonials-quote {
+    @apply text-sm leading-relaxed text-(--color-midnight) md:text-base;
+  }
+
+  .testimonials-author {
+    @apply flex flex-wrap gap-2;
+
+    small {
+      @apply text-xs font-bold uppercase tracking-widest text-(--color-midnight) last:text-(--color-gold);
+    }
+  }
+
+  .testimonials-progress {
+    @apply relative mx-4 h-0.5 overflow-hidden bg-white/25 rounded-sm;
+  }
+
+  .testimonials-progress-fill {
+    @apply absolute inset-y-0 left-0 w-full origin-left bg-(--color-gold) transition-transform duration-150 ease-out;
+  }
+}

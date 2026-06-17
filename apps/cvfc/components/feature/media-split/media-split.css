@@ -1,0 +1,86 @@
+@reference "tailwindcss";
+
+.media-split {
+  @apply relative py-16 md:py-20;
+}
+
+.media-split[data-bg="bone"] {
+  @apply bg-(--color-bone);
+}
+
+.media-split[data-bg="white"] {
+  @apply bg-white;
+}
+
+.media-split-inner {
+  @apply mx-auto grid grid-cols-1 items-center gap-10 px-4;
+  @apply md:flex md:flex-row md:items-center;
+  @apply lg:grid lg:grid-cols-12 lg:gap-14;
+}
+
+.media-split[data-reverse="true"] .media-split-inner {
+  @apply md:flex-row-reverse;
+}
+
+/* Stacked layout: image on top, content below — full width, single column. */
+.media-split[data-layout="stack"] .media-split-inner {
+  @apply mx-auto flex max-w-3xl flex-col items-start gap-8 px-4 lg:gap-10;
+}
+
+.media-split-figure {
+  @apply relative w-full;
+  @apply md:w-80 md:shrink-0;
+  @apply lg:w-auto lg:col-span-5;
+}
+
+.media-split[data-reverse="true"] .media-split-figure {
+  @apply lg:order-2;
+}
+
+.media-split[data-layout="stack"] .media-split-image {
+  @apply aspect-video;
+}
+
+.media-split-image {
+  @apply w-full rounded-2xl object-cover;
+  @apply aspect-4/3 md:aspect-1.5/2 lg:aspect-square;
+}
+
+.media-split-tags {
+  @apply absolute bottom-4 left-4 flex flex-wrap items-center gap-2 pr-4;
+}
+
+.media-split-tag {
+  @apply rounded-full bg-(--color-ink) px-3 py-1.5 text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-sky-200 backdrop-blur-sm;
+}
+
+.media-split-content {
+  @apply md:flex-1 md:min-w-0;
+  @apply lg:col-span-6 lg:px-2;
+}
+
+.media-split[data-reverse="true"] .media-split-content {
+  @apply lg:order-1;
+}
+
+.media-split-eyebrow {
+  @apply mb-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.media-split-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(1.75rem,3.6vw,2.75rem)] font-semibold leading-[1.08] tracking-tight;
+  text-wrap: balance;
+}
+
+.media-split-body {
+  @apply mt-5 max-w-[58ch] space-y-4 text-base leading-[1.75] text-(--color-midnight)/85 md:text-[1.0625rem];
+}
+
+.media-split-body strong,
+.media-split-body b {
+  @apply font-bold text-(--color-midnight);
+}
+
+.media-split-buttons {
+  @apply mt-7 flex flex-wrap items-center gap-3;
+}

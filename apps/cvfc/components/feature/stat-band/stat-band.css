@@ -1,0 +1,146 @@
+@reference "tailwindcss";
+
+.stat-band {
+  @apply relative py-20 md:py-24;
+}
+
+.stat-band[data-variant="midnight"] {
+  @apply bg-(--color-midnight)/95 text-white;
+}
+
+.stat-band[data-variant="bone"] {
+  @apply bg-(--color-bone);
+}
+
+.stat-band-inner {
+  @apply mx-auto flex flex-col gap-12 px-4;
+}
+
+.stat-band-heading-block {
+  @apply flex flex-col items-center gap-5 text-center;
+
+  .eyebrow-full {
+    @apply text-sky-400;
+    &:before,
+    &:after {
+      @apply bg-sky-400;
+    }
+  }
+}
+
+.stat-band-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4.2vw,3.25rem)] font-medium leading-[1.05] tracking-tight;
+  text-wrap: balance;
+}
+
+.stat-band-description {
+  @apply max-w-2xl text-base leading-relaxed;
+}
+
+.stat-band[data-variant="midnight"] .stat-band-description {
+  @apply text-white/85;
+}
+
+.stat-band[data-variant="bone"] .stat-band-description {
+  @apply text-(--color-midnight)/80;
+}
+
+.stat-band-grid {
+  @apply grid grid-cols-2 gap-8 border-y py-10 sm:gap-10 lg:grid-cols-4;
+}
+
+.stat-band[data-variant="midnight"] .stat-band-grid {
+  @apply border-(--color-gold-bright)/30;
+}
+
+.stat-band[data-variant="bone"] .stat-band-grid {
+  @apply border-(--color-gold)/30;
+}
+
+.stat-band-stat {
+  @apply flex flex-col items-center gap-2 text-center;
+}
+
+.stat-band-stat-label {
+  @apply text-[10px] font-bold uppercase tracking-(--tracking-eyebrow);
+}
+
+.stat-band[data-variant="midnight"] .stat-band-stat-label {
+  @apply text-(--color-gold-bright);
+}
+
+.stat-band[data-variant="bone"] .stat-band-stat-label {
+  @apply text-(--color-gold);
+}
+
+.stat-band-stat-value {
+  @apply font-(family-name:--font-heading) text-[clamp(2.75rem,5.5vw,4.5rem)] font-bold leading-none tracking-tight tabular-nums;
+}
+
+.stat-band[data-variant="midnight"] .stat-band-stat-value {
+  @apply text-white;
+}
+
+.stat-band[data-variant="bone"] .stat-band-stat-value {
+  @apply text-(--color-midnight);
+}
+
+.stat-band-highlights {
+  @apply flex flex-wrap justify-center gap-4;
+}
+
+.stat-band-highlights > * {
+  @apply basis-full sm:basis-[calc(50%-0.5rem)] lg:basis-[calc((100%-2rem)/3)];
+}
+
+.stat-band-highlight {
+  @apply flex flex-col gap-2 rounded-2xl p-6;
+}
+
+.stat-band[data-variant="midnight"] .stat-band-highlight {
+  @apply border border-(--color-gold-bright)/30 bg-white/5;
+}
+
+.stat-band[data-variant="bone"] .stat-band-highlight {
+  @apply border border-(--color-gold-bright)/30 bg-white;
+}
+
+.stat-band-highlight-tag {
+  @apply self-start rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-(--tracking-eyebrow);
+}
+
+.stat-band[data-variant="midnight"] .stat-band-highlight-tag {
+  @apply bg-(--color-gold) text-white;
+}
+
+.stat-band[data-variant="bone"] .stat-band-highlight-tag {
+  @apply bg-(--color-gold)/15 text-(--color-gold);
+}
+
+.stat-band-highlight-title {
+  @apply font-(family-name:--font-heading) text-lg font-bold leading-tight;
+}
+
+.stat-band-highlight-body {
+  @apply text-sm leading-relaxed;
+}
+
+.stat-band[data-variant="midnight"] .stat-band-highlight-body {
+  @apply text-white/75;
+}
+
+.stat-band[data-variant="bone"] .stat-band-highlight-body {
+  @apply text-(--color-midnight)/75;
+}
+
+.stat-band-footnote {
+  @apply mx-auto max-w-3xl text-center text-sm leading-relaxed;
+}
+
+.stat-band[data-variant="midnight"] .stat-band-footnote {
+  @apply text-white/70;
+}
+
+.stat-band[data-variant="bone"] .stat-band-footnote {
+  @apply text-(--color-midnight)/70;
+}
