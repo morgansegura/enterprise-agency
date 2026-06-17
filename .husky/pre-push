@@ -11,32 +11,23 @@ fi
 
 CHANGED_FILES=$(git diff --name-only "$REMOTE_REF"...HEAD 2>/dev/null || git diff --name-only HEAD~10...HEAD)
 
-API_FILES=$(echo "$CHANGED_FILES" | grep "^api/.*\.ts$" || true)
-BUILDER_FILES=$(echo "$CHANGED_FILES" | grep "^builder/.*\.tsx\?$" || true)
-CLIENT_FILES=$(echo "$CHANGED_FILES" | grep "^client/.*\.tsx\?$" || true)
+CMS_FILES=$(echo "$CHANGED_FILES" | grep "^apps/cms/.*\.tsx\?$" || true)
+CVFC_FILES=$(echo "$CHANGED_FILES" | grep "^apps/cvfc/.*\.tsx\?$" || true)
 
 FAILED=0
 
-if [ -n "$API_FILES" ]; then
-  echo "API changes detected - running lint & typecheck..."
-  cd api && pnpm lint && pnpm typecheck || FAILED=1
-  cd ..
+if [ -n "$CMS_FILES" ]; then
+  echo "CMS changes detected - running typecheck..."
+  (cd apps/cms && bunx tsc --noEmit) || FAILED=1
 fi
 
-if [ -n "$BUILDER_FILES" ]; then
-  echo "Builder changes detected - running lint & typecheck..."
-  cd builder && pnpm lint && pnpm typecheck || FAILED=1
-  cd ..
+if [ -n "$CVFC_FILES" ]; then
+  echo "cvfc changes detected - running lint & typecheck..."
+  (cd apps/cvfc && bun run lint && bunx tsc --noEmit) || FAILED=1
 fi
 
-if [ -n "$CLIENT_FILES" ]; then
-  echo "Client changes detected - running lint & typecheck..."
-  cd client && pnpm lint && pnpm typecheck || FAILED=1
-  cd ..
-fi
-
-if [ -z "$API_FILES" ] && [ -z "$BUILDER_FILES" ] && [ -z "$CLIENT_FILES" ]; then
-  echo "No TypeScript changes detected, skipping verification"
+if [ -z "$CMS_FILES" ] && [ -z "$CVFC_FILES" ]; then
+  echo "No app TypeScript changes detected, skipping verification"
 fi
 
 if [ "$FAILED" -eq 1 ]; then
