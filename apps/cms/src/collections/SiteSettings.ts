@@ -23,6 +23,50 @@ export const SiteSettings: CollectionConfig = {
       admin: { description: 'Menu shown in the footer.' },
     },
     {
+      name: 'footer',
+      type: 'group',
+      label: 'Footer',
+      fields: [
+        {
+          name: 'tagline',
+          type: 'text',
+          admin: {
+            description:
+              'Short line under the logo, e.g. "Creating champions on the field, and leaders in life."',
+          },
+        },
+        {
+          name: 'values',
+          type: 'array',
+          labels: { singular: 'Value', plural: 'Values' },
+          admin: { description: 'Word marks, e.g. Passion · Unity · Respect.' },
+          fields: [{ name: 'value', type: 'text', required: true }],
+        },
+        {
+          name: 'copyrightName',
+          type: 'text',
+          admin: { description: 'Name in the © line (defaults to the site name).' },
+        },
+        {
+          name: 'social',
+          type: 'array',
+          labels: { singular: 'Social link', plural: 'Social links' },
+          fields: [
+            {
+              name: 'platform',
+              type: 'select',
+              required: true,
+              options: ['facebook', 'instagram', 'x', 'youtube', 'tiktok', 'linkedin'].map((v) => ({
+                label: v,
+                value: v,
+              })),
+            },
+            { name: 'url', type: 'text', required: true },
+          ],
+        },
+      ],
+    },
+    {
       name: 'seo',
       type: 'group',
       label: 'SEO defaults',

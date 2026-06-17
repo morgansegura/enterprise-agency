@@ -440,6 +440,32 @@ export interface SiteSetting {
    * Menu shown in the footer.
    */
   footerMenu?: (number | null) | Menu;
+  footer?: {
+    /**
+     * Short line under the logo, e.g. "Creating champions on the field, and leaders in life."
+     */
+    tagline?: string | null;
+    /**
+     * Word marks, e.g. Passion · Unity · Respect.
+     */
+    values?:
+      | {
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Name in the © line (defaults to the site name).
+     */
+    copyrightName?: string | null;
+    social?:
+      | {
+          platform: 'facebook' | 'instagram' | 'x' | 'youtube' | 'tiktok' | 'linkedin';
+          url: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   seo?: {
     /**
      * Default meta description (~155 chars).
@@ -486,8 +512,32 @@ export interface Menu {
   name: string;
   items?:
     | {
-        label: string;
-        href: string;
+        label?: string | null;
+        /**
+         * Footer column heading (leave blank for plain links).
+         */
+        heading?: string | null;
+        /**
+         * e.g. /programs
+         */
+        href?: string | null;
+        /**
+         * Sub-text shown in header dropdowns.
+         */
+        description?: string | null;
+        target?: ('' | '_blank') | null;
+        /**
+         * Dropdown links / footer column links.
+         */
+        children?:
+          | {
+              label?: string | null;
+              href?: string | null;
+              description?: string | null;
+              target?: ('' | '_blank') | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1019,6 +1069,25 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   headerMenu?: T;
   footerText?: T;
   footerMenu?: T;
+  footer?:
+    | T
+    | {
+        tagline?: T;
+        values?:
+          | T
+          | {
+              value?: T;
+              id?: T;
+            };
+        copyrightName?: T;
+        social?:
+          | T
+          | {
+              platform?: T;
+              url?: T;
+              id?: T;
+            };
+      };
   seo?:
     | T
     | {
@@ -1052,7 +1121,19 @@ export interface MenusSelect<T extends boolean = true> {
     | T
     | {
         label?: T;
+        heading?: T;
         href?: T;
+        description?: T;
+        target?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              description?: T;
+              target?: T;
+              id?: T;
+            };
         id?: T;
       };
   updatedAt?: T;
