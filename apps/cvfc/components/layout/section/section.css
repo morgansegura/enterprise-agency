@@ -1,0 +1,43 @@
+@reference "tailwindcss";
+
+.section {
+  @apply relative;
+}
+
+.section[data-bg="bone"] {
+  @apply bg-(--color-bone) text-(--color-ink);
+}
+
+.section[data-bg="white"] {
+  @apply bg-white text-(--color-ink);
+}
+
+.section[data-bg="midnight"] {
+  @apply bg-(--color-midnight) text-white;
+}
+
+.section[data-bg="ink"] {
+  @apply bg-(--color-ink) text-white;
+}
+
+.section[data-size="compact"] {
+  @apply py-12 md:py-16;
+}
+
+.section[data-size="default"] {
+  @apply py-16 md:py-20;
+}
+
+.section[data-size="loose"] {
+  @apply py-24 md:py-32;
+}
+
+.section[data-size="flush"] {
+  @apply py-0;
+}
+
+/** Top padding only — use when the section that follows already
+    has its own top padding and you don't want a double gap. */
+.section[data-size="intro"] {
+  @apply pt-16 md:pt-20 pb-0;
+}

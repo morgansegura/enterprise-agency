@@ -85,17 +85,6 @@
   @apply translate-x-1;
 }
 
-.hero-carousel-masthead {
-  @apply w-full left-4 right-0 flex flex-col;
-  @apply pointer-events-none absolute top-6 z-30;
-  @apply text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-white text-shadow-2xs;
-  @apply md:flex-row md:items-center  md:gap-3 md:left-8 md:translate-x-0;
-}
-
-.hero-carousel-masthead-rule {
-  @apply hidden md:inline-block h-px w-6 bg-white;
-}
-
 .hero-carousel-indicator {
   @apply absolute bottom-8 right-4 z-30 flex items-center gap-4 sm:right-8;
 }

@@ -1,0 +1,39 @@
+@reference "tailwindcss";
+
+.header {
+  @apply fixed inset-x-0 top-0 z-40 bg-white;
+  @apply border-b border-(--color-gold-bright)/25;
+  @apply transition-transform duration-300 ease-out;
+  @apply h-(--header-height,4rem);
+}
+
+.header[data-visible="false"] {
+  @apply -translate-y-full;
+}
+
+.header-container {
+  @apply mx-auto flex h-full items-center justify-between gap-4 px-3 md:px-4;
+}
+
+.header-logo {
+  @apply flex items-center outline-none;
+
+  span {
+    @apply font-(family-name:--font-heading) font-semibold uppercase pl-2 tracking-wide text-(--color-midnight) text-sm sm:text-base;
+  }
+
+  svg {
+    @apply h-12 sm:h-14;
+  }
+}
+
+.header-actions {
+  @apply flex items-center gap-1;
+}
+
+.header-cta.evaluation-cta-trigger {
+  @apply inline-flex text-xs rounded-sm;
+
+  @apply font-(family-name:--font-heading) font-semibold;
+  @apply px-1.5 h-7 text-xs md:px-3 md:h-9;
+}

@@ -1,6 +1,10 @@
 import { cache } from "react";
 
+import type { TMenuItem } from "@/lib/menu";
 import { site } from "@/site.config";
+
+const cmsStr = (v: unknown): string | undefined =>
+  typeof v === "string" && v.trim() !== "" ? v : undefined;
 
 /**
  * Thin typed client to the central Payload CMS over HTTP. Every call is scoped
@@ -102,4 +106,48 @@ export function mediaAlt(value: MediaValue): string | undefined {
   return value && typeof value === "object" && typeof value.alt === "string"
     ? value.alt
     : undefined;
+}
+
+export type MenuDoc = { name?: string; items?: Array<Record<string, unknown>> };
+
+export type SiteSettings = {
+  headerMenu?: MenuDoc | number | null;
+  footerMenu?: MenuDoc | number | null;
+  footer?: {
+    tagline?: string | null;
+    values?: Array<{ value?: string | null }> | null;
+    copyrightName?: string | null;
+    social?: Array<{ platform?: string | null; url?: string | null }> | null;
+  } | null;
+};
+
+/** This tenant's SiteSettings, with header/footer menus populated (depth=2). */
+export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {
+  const docs = await cmsFind<SiteSettings>("siteSettings", "depth=2&limit=1");
+  return docs[0] ?? null;
+});
+
+/** Map a populated CMS menu into the FE `TMenuItem[]` shape (or undefined). */
+export function toMenuItems(menu: unknown): TMenuItem[] | undefined {
+  const rows = (menu as MenuDoc | null | undefined)?.items;
+  if (!Array.isArray(rows) || rows.length === 0) return undefined;
+  return rows.map((r): TMenuItem => {
+    const children = r.children as Array<Record<string, unknown>> | undefined;
+    return {
+      label: cmsStr(r.label),
+      heading: cmsStr(r.heading),
+      description: cmsStr(r.description),
+      href: cmsStr(r.href),
+      target: cmsStr(r.target),
+      items:
+        Array.isArray(children) && children.length > 0
+          ? children.map((c) => ({
+              label: cmsStr(c.label),
+              href: cmsStr(c.href),
+              description: cmsStr(c.description),
+              target: cmsStr(c.target),
+            }))
+          : undefined,
+    };
+  });
 }

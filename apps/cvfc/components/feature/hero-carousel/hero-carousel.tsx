@@ -134,12 +134,6 @@ export function HeroCarousel({
         </div>
       </div>
 
-      <div className="hero-carousel-masthead" aria-hidden="true">
-        <span>Chula Vista, California</span>
-        <span className="hero-carousel-masthead-rule" />
-        <span>Established 1982</span>
-      </div>
-
       {slides.length > 1 ? (
         <div
           className="hero-carousel-indicator"
