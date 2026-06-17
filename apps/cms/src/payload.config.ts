@@ -35,6 +35,10 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
+    // Auto-push schema only in local dev. In production the headless server
+    // must never block on an interactive schema prompt — the schema is applied
+    // ahead of time (locally / via migrations), so prod just connects and serves.
+    push: process.env.NODE_ENV !== 'production',
     pool: {
       connectionString: process.env.DATABASE_URI || '',
       ssl: { rejectUnauthorized: false },
