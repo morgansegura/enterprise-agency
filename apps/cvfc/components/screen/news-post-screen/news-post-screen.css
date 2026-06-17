@@ -1,0 +1,128 @@
+@reference "tailwindcss";
+
+/* ==================== HEADER ==================== */
+
+.news-post-header {
+  @apply mx-auto flex max-w-3xl flex-col gap-6;
+}
+
+.news-post-eyebrow {
+  @apply flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.news-post-title {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4.6vw,3.5rem)] font-semibold leading-[1.05] tracking-tight text-(--color-ink);
+  text-wrap: balance;
+}
+
+/* ==================== HERO IMAGE ==================== */
+
+.news-post-image-wrap {
+  @apply mx-auto mb-10 aspect-video w-full max-w-5xl overflow-hidden rounded-2xl border border-(--color-gold-bright)/30 bg-(--color-bone) md:mb-16 lg:mb-20;
+}
+
+.news-post-image {
+  @apply h-full w-full object-cover;
+}
+
+/* ==================== BODY (HTML PROSE) ==================== */
+
+.news-post-body {
+  @apply mx-auto max-w-3xl text-base leading-[1.8] text-(--color-midnight)/90 md:text-[1.0625rem];
+}
+
+.news-post-body p {
+  @apply my-5;
+}
+
+.news-post-body p:first-child {
+  @apply mt-0;
+}
+
+.news-post-body p:last-child {
+  @apply mb-0;
+}
+
+.news-post-body strong,
+.news-post-body b {
+  @apply font-bold text-(--color-midnight);
+}
+
+.news-post-body em,
+.news-post-body i {
+  @apply italic;
+}
+
+.news-post-body a {
+  @apply font-medium text-(--color-gold) underline decoration-(--color-gold-bright)/40 underline-offset-4 transition-colors duration-200;
+}
+
+.news-post-body a:hover {
+  @apply text-(--color-gold-bright) decoration-(--color-gold);
+}
+
+.news-post-body h2,
+.news-post-body h3,
+.news-post-body h4 {
+  @apply mt-10 mb-4 font-(family-name:--font-heading) font-bold leading-tight text-(--color-ink);
+}
+
+.news-post-body h2 {
+  @apply text-2xl md:text-3xl;
+}
+
+.news-post-body h3 {
+  @apply text-xl md:text-2xl;
+}
+
+.news-post-body h4 {
+  @apply text-lg md:text-xl;
+}
+
+.news-post-body ul,
+.news-post-body ol {
+  @apply my-5 list-outside space-y-2 pl-6;
+}
+
+.news-post-body ul {
+  @apply list-disc;
+}
+
+.news-post-body ol {
+  @apply list-decimal;
+}
+
+.news-post-body blockquote {
+  @apply my-6 border-l-4 border-(--color-gold) bg-(--color-bone) py-4 pl-5 pr-3 italic text-(--color-midnight)/85;
+}
+
+.news-post-body sup,
+.news-post-body sub {
+  @apply text-xs;
+}
+
+/* ==================== RELATED ==================== */
+
+.news-related-head {
+  @apply mx-auto flex max-w-3xl flex-col gap-4 text-center;
+}
+
+.news-related-eyebrow {
+  @apply mx-auto flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.news-related-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-tight tracking-tight text-(--color-ink);
+}
+
+.news-related-grid {
+  @apply mt-10 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.news-related-item {
+  @apply h-full;
+}
+
+.news-related-cta {
+  @apply mt-10 flex justify-center;
+}

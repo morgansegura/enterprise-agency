@@ -1,0 +1,71 @@
+@reference "tailwindcss";
+
+.heading-block {
+  @apply flex flex-col gap-4;
+}
+
+.heading-block[data-align="center"] {
+  @apply items-center text-center;
+}
+
+.heading-block[data-align="left"] {
+  @apply items-start text-left;
+}
+
+/* ==================== EYEBROW ==================== */
+
+.heading-block-eyebrow {
+  @apply text-[11px] font-bold uppercase tracking-(--tracking-eyebrow);
+}
+
+/* full = uses the global .eyebrow-full pattern (flanking gold rules) */
+.heading-block-eyebrow[data-style="full"] {
+  @apply relative flex items-center gap-3 text-(--color-gold);
+}
+.heading-block-eyebrow[data-style="full"] > span {
+  @apply relative;
+}
+.heading-block-eyebrow[data-style="full"] > span:before,
+.heading-block-eyebrow[data-style="full"] > span:after {
+  @apply content-[''] absolute top-1/2 h-px w-10 bg-(--color-gold);
+}
+.heading-block-eyebrow[data-style="full"] > span:before {
+  @apply -left-12;
+}
+.heading-block-eyebrow[data-style="full"] > span:after {
+  @apply -right-11;
+}
+
+/* rule = single leading rule (used inside cards / left-aligned blocks) */
+.heading-block-eyebrow[data-style="rule"] {
+  @apply flex items-center gap-3 text-(--color-gold);
+}
+
+/* plain = no rules, just uppercase tracked text */
+.heading-block-eyebrow[data-style="plain"] {
+  @apply text-(--color-gold);
+}
+
+/* ==================== HEADING ==================== */
+
+.heading-block-heading {
+  @apply font-(family-name:--font-heading) font-semibold leading-[1.05] tracking-tight text-balance;
+}
+
+.heading-block-heading[data-size="display"] {
+  @apply max-w-5xl text-[clamp(2.5rem,6vw,4.75rem)];
+}
+
+.heading-block-heading[data-size="section"] {
+  @apply max-w-4xl text-[clamp(2rem,4.2vw,3.25rem)];
+}
+
+.heading-block-heading[data-size="compact"] {
+  @apply max-w-3xl text-[clamp(1.5rem,3vw,2.25rem)];
+}
+
+/* ==================== DESCRIPTION ==================== */
+
+.heading-block-description {
+  @apply max-w-2xl space-y-4 text-base leading-relaxed text-(--color-midnight)/80 md:text-lg;
+}

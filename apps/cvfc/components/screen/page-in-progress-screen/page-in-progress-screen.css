@@ -1,0 +1,26 @@
+@reference "tailwindcss";
+
+.page-in-progress-screen {
+  @apply relative bg-(--color-bone) min-h-[60vh];
+}
+
+.page-in-progress-hero {
+  @apply py-24 md:py-32;
+}
+
+.page-in-progress-hero-inner {
+  @apply mx-auto flex flex-col items-center gap-6 px-4 text-center;
+}
+
+.page-in-progress-title {
+  @apply font-(family-name:--font-heading) text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight;
+  text-wrap: balance;
+}
+
+.page-in-progress-description {
+  @apply max-w-2xl text-base leading-relaxed text-(--color-midnight)/80 md:text-lg;
+}
+
+.page-in-progress-actions {
+  @apply mt-4 flex flex-wrap items-center justify-center gap-3;
+}

@@ -1,0 +1,35 @@
+@reference "tailwindcss";
+
+.featured-voice {
+  @apply relative mx-auto flex max-w-3xl flex-col items-start gap-7;
+}
+
+.featured-voice-eyebrow {
+  @apply flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.featured-voice-mark {
+  @apply pointer-events-none select-none font-(family-name:--font-heading) leading-none text-(--color-gold-bright)/35;
+  font-size: clamp(5rem, 9vw, 7.5rem);
+  margin-bottom: -0.5em;
+}
+
+.featured-voice-quote {
+  @apply font-(family-name:--font-heading) text-[clamp(1.75rem,3.6vw,2.75rem)] font-semibold leading-[1.15] tracking-tight text-balance text-(--color-ink);
+}
+
+.featured-voice-longform {
+  @apply max-w-2xl text-base leading-relaxed text-(--color-midnight)/80 md:text-lg;
+}
+
+.featured-voice-attribution {
+  @apply mt-2 flex flex-col gap-0.5 border-t border-(--color-gold-bright)/30 pt-5;
+}
+
+.featured-voice-author {
+  @apply font-(family-name:--font-heading) text-base font-bold text-(--color-ink);
+}
+
+.featured-voice-context {
+  @apply text-sm font-medium text-(--color-midnight)/65;
+}

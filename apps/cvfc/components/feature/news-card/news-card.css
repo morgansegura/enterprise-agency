@@ -1,0 +1,43 @@
+@reference "tailwindcss";
+
+.news-card {
+  @apply flex h-full;
+}
+
+.news-card-link {
+  @apply flex h-full w-full flex-col overflow-hidden rounded-2xl border border-(--color-gold-bright)/30 bg-white outline-none transition-colors duration-300 ease-out;
+  @apply hover:border-(--color-gold);
+  @apply focus-visible:border-(--color-gold);
+}
+
+.news-card-image-wrap {
+  @apply relative flex aspect-video w-full items-center justify-center overflow-hidden bg-(--color-bone);
+}
+
+.news-card-image-wrap[data-fallback="true"] {
+  @apply bg-linear-to-bl from-(--color-gold) via-50% via-(--color-gold-bright)/75 to-(--color-gold);
+}
+
+.news-card-image {
+  @apply h-full w-full object-cover;
+}
+
+.news-card-image-fallback-logo {
+  @apply h-32 w-32 md:h-40 md:w-40;
+}
+
+.news-card-body {
+  @apply flex flex-1 flex-col gap-3 p-5 md:p-6;
+}
+
+.news-card-title {
+  @apply font-(family-name:--font-heading) text-lg font-bold leading-snug tracking-tight text-(--color-ink) md:text-xl text-balance;
+}
+
+.news-card-excerpt {
+  @apply text-sm leading-relaxed text-(--color-midnight)/75 line-clamp-3;
+}
+
+.news-card-read {
+  @apply mt-auto pt-2 text-[11px] font-bold uppercase tracking-widest text-(--color-gold);
+}

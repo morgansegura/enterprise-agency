@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.news-list {
+  @apply flex flex-col gap-10;
+}
+
+.news-list-grid {
+  @apply grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.news-list-item {
+  @apply h-full;
+}
+
+.news-list-sentinel {
+  @apply h-px w-full;
+}

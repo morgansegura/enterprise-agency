@@ -1,0 +1,48 @@
+@reference "tailwindcss";
+
+/* ==================== FEATURED / LATEST ==================== */
+
+.news-featured {
+  @apply grid grid-cols-1 items-center gap-8 outline-none lg:grid-cols-12 lg:gap-12;
+}
+
+.news-featured-image-wrap {
+  @apply relative aspect-4/3 w-full overflow-hidden rounded-2xl border border-(--color-gold-bright)/30 bg-(--color-bone) transition-colors duration-300 ease-out lg:col-span-7;
+  @apply group-hover:border-(--color-gold);
+  @apply group-focus-visible:border-(--color-gold);
+}
+
+.news-featured-image {
+  @apply h-full w-full object-cover;
+}
+
+.news-featured-body {
+  @apply flex flex-col gap-5 lg:col-span-5 lg:px-2;
+}
+
+.news-featured-eyebrow {
+  @apply flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.news-featured-title {
+  @apply font-(family-name:--font-heading) text-[clamp(1.75rem,3.6vw,2.75rem)] font-semibold leading-[1.1] tracking-tight text-(--color-ink);
+  text-wrap: balance;
+}
+
+.news-featured-excerpt {
+  @apply max-w-2xl text-base leading-relaxed text-(--color-midnight)/85 md:text-[1.0625rem];
+}
+
+.news-featured-read {
+  @apply mt-2 text-xs font-bold uppercase tracking-widest text-(--color-gold);
+}
+
+/* ==================== GRID ==================== */
+
+.news-grid {
+  @apply mt-10 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.news-grid-item {
+  @apply h-full;
+}

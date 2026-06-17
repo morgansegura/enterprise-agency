@@ -1,0 +1,45 @@
+@reference "tailwindcss";
+
+.faq-screen-accordion {
+  @apply mx-auto mt-8 max-w-3xl rounded-2xl border border-(--color-gold-bright)/30 bg-white;
+
+  .accordion-item {
+    @apply px-5 border-(--color-gold-bright)/20 transition-colors duration-300 ease-out;
+
+    &:first-of-type {
+      @apply rounded-t-2xl;
+    }
+
+    &:last-of-type {
+      @apply rounded-b-2xl border-b-0;
+    }
+
+    &:hover {
+      @apply bg-(--color-bone)/40;
+    }
+  }
+
+  .accordion-item[data-state="open"] {
+    @apply bg-(--color-bone)/40;
+  }
+
+  .accordion-trigger {
+    @apply py-5 text-base font-(family-name:--font-heading) font-bold leading-snug text-(--color-ink) sm:text-lg;
+  }
+
+  .accordion-trigger-icon {
+    @apply text-(--color-gold-bright);
+  }
+
+  .accordion-trigger[data-state="open"] .accordion-trigger-icon {
+    @apply text-(--color-gold);
+  }
+
+  .accordion-content-inner {
+    @apply pb-5;
+  }
+}
+
+.faq-screen-answer {
+  @apply border-t border-(--color-gold-bright)/15 px-2 pt-4 text-base leading-relaxed text-(--color-midnight)/85;
+}

@@ -1,0 +1,32 @@
+@reference "tailwindcss";
+
+.coaching-staff-screen {
+  @apply relative bg-(--color-bone);
+}
+
+/* ==================== ROSTER NOTE ==================== */
+
+.coaching-staff-roster-note {
+  @apply relative bg-white py-20 md:py-24;
+}
+
+.coaching-staff-roster-note-inner {
+  @apply mx-auto flex max-w-3xl flex-col items-center gap-5 px-4 text-center;
+}
+
+.coaching-staff-roster-note-eyebrow {
+  @apply flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.coaching-staff-roster-note-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4vw,3rem)] font-bold leading-tight tracking-tight;
+  text-wrap: balance;
+}
+
+.coaching-staff-roster-note-body {
+  @apply max-w-2xl text-base leading-relaxed text-(--color-midnight)/80;
+}
+
+.coaching-staff-roster-note-actions {
+  @apply mt-2;
+}

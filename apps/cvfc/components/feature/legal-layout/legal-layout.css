@@ -1,0 +1,119 @@
+@reference "tailwindcss";
+
+.legal-layout {
+  @apply relative;
+}
+
+.legal-layout-meta {
+  @apply text-sm text-(--color-midnight)/70;
+}
+
+.legal-layout-meta strong {
+  @apply font-semibold text-(--color-midnight);
+}
+
+.legal-layout-article {
+  @apply mx-auto grid max-w-6xl gap-12 px-4 lg:grid-cols-[18rem_1fr] lg:gap-16;
+}
+
+/* ==================== INTRO ==================== */
+
+.legal-layout-intro {
+  @apply lg:col-span-2 max-w-2xl text-base leading-relaxed text-(--color-midnight)/85 md:text-lg mx-auto;
+}
+
+.legal-layout-intro p + p {
+  @apply mt-4;
+}
+
+/* ==================== TOC ==================== */
+
+.legal-layout-toc {
+  @apply self-start border-l-2 border-(--color-gold-bright)/30 p-5;
+  @apply lg:sticky lg:top-[calc(var(--header-height)+1rem)];
+}
+
+.legal-layout-toc-label {
+  @apply mb-3 ml-1 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.legal-layout-toc-list {
+  @apply flex list-decimal flex-col gap-2 pl-5 text-sm;
+}
+
+.legal-layout-toc-list a {
+  @apply text-(--color-midnight)/80 underline-offset-4 transition-colors duration-300 ease-out hover:text-(--color-gold) hover:underline font-semibold;
+}
+
+/* ==================== SECTIONS ==================== */
+
+.legal-layout-sections {
+  @apply flex flex-col gap-12;
+}
+
+.legal-layout-section {
+  @apply scroll-mt-[calc(var(--header-height)+1.5rem)];
+}
+
+.legal-layout-section + .legal-layout-section {
+  @apply border-t border-(--color-gold-bright)/30 pt-12;
+}
+
+.legal-layout-section-heading {
+  @apply mb-4 flex items-baseline gap-3 font-(family-name:--font-heading) text-2xl font-semibold leading-tight tracking-tight text-(--color-ink) md:text-3xl;
+  text-wrap: balance;
+}
+
+.legal-layout-section-number {
+  @apply font-(family-name:--font-heading) text-3xl font-bold text-(--color-gold-bright)/40;
+}
+
+/* ==================== BODY PROSE ==================== */
+
+.legal-layout-section-body {
+  @apply text-base leading-[1.75] text-(--color-midnight)/85;
+}
+
+.legal-layout-section-body p + p {
+  @apply mt-4;
+}
+
+.legal-layout-section-body strong {
+  @apply font-semibold text-(--color-ink);
+}
+
+.legal-layout-section-body a {
+  @apply font-medium text-(--color-gold) underline-offset-4 hover:underline;
+}
+
+.legal-layout-section-body ul,
+.legal-layout-section-body ol {
+  @apply mt-4 flex flex-col gap-2 pl-5;
+}
+
+.legal-layout-section-body ul {
+  @apply list-disc marker:text-(--color-gold);
+}
+
+.legal-layout-section-body ol {
+  @apply list-decimal marker:text-(--color-gold);
+}
+
+.legal-layout-section-body h3 {
+  @apply mt-6 mb-2 font-(family-name:--font-heading) text-lg font-semibold text-(--color-ink);
+}
+
+/* ==================== FOOTNOTE ==================== */
+
+.legal-layout-footnote {
+  @apply mt-8 rounded-2xl border border-(--color-gold-bright)/30 bg-white p-6 text-sm leading-relaxed text-(--color-midnight)/90;
+  @apply lg:col-start-2;
+}
+
+.legal-layout-footnote a {
+  @apply font-semibold text-(--color-gold) underline-offset-4 hover:underline;
+}
+
+.legal-layout-footnote-address {
+  @apply mt-2 text-xs text-(--color-midnight)/80;
+}

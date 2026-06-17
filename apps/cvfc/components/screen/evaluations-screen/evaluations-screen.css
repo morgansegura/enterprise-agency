@@ -1,0 +1,182 @@
+@reference "tailwindcss";
+
+.evaluations-screen {
+  @apply relative bg-(--color-bone);
+}
+
+/* ==================== EXPLAINER ==================== */
+
+.evaluations-explainer {
+  @apply relative bg-(--color-bone) py-20 md:py-24;
+}
+
+.evaluations-explainer-inner {
+  @apply mx-auto grid max-w-6xl gap-6 px-4 md:grid-cols-2 md:gap-8;
+}
+
+.evaluations-explainer-card {
+  @apply relative flex flex-col gap-5 overflow-hidden rounded-2xl border border-(--color-gold-bright)/30 bg-white p-8 md:p-10;
+}
+
+.evaluations-explainer-card:before {
+  content: "";
+  @apply pointer-events-none absolute inset-x-0 top-0 h-1 bg-(--color-gold);
+}
+
+.evaluations-explainer-card:nth-child(2):before {
+  @apply bg-(--color-midnight);
+}
+
+.evaluations-explainer-tag {
+  @apply self-start rounded-full bg-(--color-gold)/15 px-3 py-1 text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.evaluations-explainer-tag[data-accent="true"] {
+  @apply bg-(--color-midnight)/10 text-(--color-midnight);
+}
+
+.evaluations-explainer-title {
+  @apply font-(family-name:--font-heading) text-3xl font-bold leading-tight tracking-tight  md:text-4xl;
+}
+
+.evaluations-explainer-body {
+  @apply text-base leading-relaxed text-(--color-midnight)/80;
+}
+
+.evaluations-explainer-list {
+  @apply mt-1 flex flex-col gap-2 text-sm text-(--color-midnight)/75;
+}
+
+.evaluations-explainer-list li {
+  @apply relative pl-5;
+}
+
+.evaluations-explainer-list li:before {
+  content: "";
+  @apply absolute left-0 top-2 h-1.5 w-1.5 rounded-full bg-(--color-gold);
+}
+
+/* ==================== PROGRAMS ==================== */
+
+.evaluations-programs {
+  @apply relative bg-white py-20 md:py-24;
+}
+
+.evaluations-programs-inner {
+  @apply mx-auto flex max-w-6xl flex-col gap-12 px-4;
+}
+
+.evaluations-programs-header {
+  @apply flex flex-col items-center gap-4 text-center;
+}
+
+.evaluations-programs-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4vw,3rem)] font-medium leading-tight tracking-tight;
+  text-wrap: balance;
+}
+
+.evaluations-programs-description {
+  @apply max-w-2xl text-base leading-relaxed text-(--color-midnight)/75;
+}
+
+.evaluations-programs-grid {
+  @apply grid gap-6 lg:grid-cols-3;
+}
+
+.evaluations-track-card {
+  @apply flex flex-col gap-6 rounded-2xl border border-(--color-gold-bright)/30 bg-(--color-bone) p-7;
+}
+
+.evaluations-track-card-header {
+  @apply flex flex-col gap-2;
+}
+
+.evaluations-track-card-title {
+  @apply font-(family-name:--font-heading) text-2xl font-bold leading-tight;
+}
+
+.evaluations-track-card-blurb {
+  @apply text-sm leading-relaxed text-(--color-midnight)/75;
+}
+
+.evaluations-track-card-list {
+  @apply flex flex-col gap-3;
+}
+
+.evaluations-program-row {
+  @apply flex items-center justify-between gap-4 rounded-xl border border-(--color-gold-bright)/30 bg-white px-4 py-3 outline-none transition-colors duration-300 ease-out;
+  @apply hover:border-(--color-gold);
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold)/60 focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bone);
+}
+
+.evaluations-program-row-text {
+  @apply flex flex-col gap-0.5;
+}
+
+.evaluations-program-row-label {
+  @apply text-sm font-semibold;
+}
+
+.evaluations-program-row-meta {
+  @apply text-[11px] uppercase tracking-(--tracking-eyebrow) text-(--color-midnight)/60;
+}
+
+.evaluations-program-row-link {
+  @apply inline-flex shrink-0 items-center gap-1.5 text-xs font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold) transition-transform duration-200 ease-out;
+}
+
+.evaluations-program-row:hover .evaluations-program-row-link {
+  @apply text-(--color-midnight);
+}
+
+.evaluations-track-card-empty {
+  @apply flex flex-col items-start gap-4 rounded-xl border border-(--color-gold-bright)/30 bg-white p-5 text-sm leading-relaxed text-(--color-midnight)/80;
+}
+
+/* ==================== STEPS ==================== */
+
+.evaluations-steps {
+  @apply relative bg-(--color-midnight)/90 py-20 text-white md:py-24;
+}
+
+.evaluations-steps-inner {
+  @apply mx-auto flex max-w-6xl flex-col gap-12 px-4;
+}
+
+.evaluations-steps-header {
+  @apply flex flex-col items-center gap-4 text-center;
+}
+
+.evaluations-steps .eyebrow-full {
+  @apply text-(--color-gold-bright);
+}
+
+.evaluations-steps .eyebrow-full:before,
+.evaluations-steps .eyebrow-full:after {
+  @apply bg-(--color-gold-bright);
+}
+
+.evaluations-steps-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(2rem,4vw,3rem)] font-semibold leading-tight tracking-tight;
+  text-wrap: balance;
+}
+
+.evaluations-steps-list {
+  @apply grid gap-6 md:grid-cols-3;
+}
+
+.evaluations-step {
+  @apply relative flex flex-col gap-3 rounded-2xl bg-white/5 p-7 ring-1 ring-inset ring-white/10;
+}
+
+.evaluations-step-number {
+  @apply font-(family-name:--font-heading) text-5xl font-bold leading-none text-(--color-gold-bright);
+}
+
+.evaluations-step-title {
+  @apply font-(family-name:--font-heading) text-xl font-bold leading-tight;
+}
+
+.evaluations-step-body {
+  @apply text-sm leading-relaxed text-white/75;
+}
