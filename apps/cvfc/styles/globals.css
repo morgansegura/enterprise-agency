@@ -2,6 +2,9 @@
 @import "tw-animate-css";
 @import "./shadcn-base.css";
 
+/* Scan the shared @wf/ui primitives so Tailwind generates their utilities. */
+@source "../../../packages/ui/src";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

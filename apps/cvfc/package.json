@@ -12,6 +12,7 @@
     "generate": "node scripts/generate.js"
   },
   "dependencies": {
+    "@wf/ui": "workspace:*",
     "@base-ui/react": "^1.4.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-dialog": "^1.1.6",

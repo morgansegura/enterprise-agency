@@ -1,7 +1,3 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-/** Merge class names; resolves Tailwind conflicts. */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+// `cn` now lives in the shared @wf/ui library; re-export so existing
+// `@/lib/utils` imports across the site keep working unchanged.
+export { cn } from "@wf/ui";

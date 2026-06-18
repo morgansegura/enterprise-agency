@@ -1,3 +1,3 @@
-// @wf/ui — minimal shared UI primitives (starting point, customized per site).
-// Primitives are moved in one at a time. Intentionally empty until then.
-export {};
+// @wf/ui — minimal shared UI primitives (a per-site starting point).
+export { cn } from "./lib/cn";
+export { Button, buttonVariants } from "./button";
