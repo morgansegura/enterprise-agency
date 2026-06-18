@@ -13,6 +13,7 @@
     "prepare": "husky",
     "pre-commit": "lint-staged",
     "new-site": "node scripts/new-site.mjs",
+    "gen:block": "node scripts/generate-block.mjs",
     "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,css,md}\""
   },

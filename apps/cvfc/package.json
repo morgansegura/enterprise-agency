@@ -9,7 +9,11 @@
     "start": "next start -p 4011",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "generate": "node scripts/generate.js"
+    "generate": "node scripts/generate.js",
+    "gen:component": "node scripts/generate.js component",
+    "gen:feature": "node scripts/generate.js feature",
+    "gen:screen": "node scripts/generate.js screen",
+    "gen:page": "node scripts/generate.js page"
   },
   "dependencies": {
     "@wf/ui": "workspace:*",

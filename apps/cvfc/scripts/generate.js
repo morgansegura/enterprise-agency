@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-/* eslint-disable @typescript-eslint/no-require-imports */
 // Scaffold components / screens / pages in the WF conventions:
 //   node scripts/generate.js component <group>/<name>
+//   node scripts/generate.js feature <name>          (a components/feature/<name> block)
 //   node scripts/generate.js screen <name>
 //   node scripts/generate.js page <route>            (thin page → imports a screen)
-const fs = require("fs");
-const path = require("path");
+// For a CMS-connected section (Payload block + registration + feature + binding),
+// use the repo-root `bun run gen:block <name>` instead.
+import fs from "node:fs";
+import path from "node:path";
 
 const c = {
   reset: "\x1b[0m",
@@ -66,13 +68,17 @@ function page(route) {
 
 const [kind, arg] = process.argv.slice(2);
 if (!kind || !arg) {
-  log("usage: generate <component|screen|page> <name|group/name|route>", "red");
+  log(
+    "usage: generate <component|feature|screen|page> <name|group/name|route>",
+    "red",
+  );
   process.exit(1);
 }
 if (kind === "component") {
   const [group, name] = arg.includes("/") ? arg.split("/") : ["ui", arg];
   component(name, group);
-} else if (kind === "screen") screen(arg);
+} else if (kind === "feature") component(arg, "feature");
+else if (kind === "screen") screen(arg);
 else if (kind === "page") page(arg);
 else {
   log(`unknown kind: ${kind}`, "red");
