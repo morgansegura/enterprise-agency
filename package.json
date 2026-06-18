@@ -21,6 +21,13 @@
       "prettier --write"
     ]
   },
+  "//overrides": "Keep all @payloadcms packages on one version — a duplicate @payloadcms/ui breaks React context (useUploadHandlers must be used within UploadHandlersProvider).",
+  "overrides": {
+    "@payloadcms/ui": "3.85.0",
+    "@payloadcms/translations": "3.85.0",
+    "@payloadcms/storage-s3": "3.85.0",
+    "@payloadcms/plugin-cloud-storage": "3.85.0"
+  },
   "devDependencies": {
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
