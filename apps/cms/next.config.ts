@@ -34,7 +34,9 @@ const nextConfig: NextConfig = {
     return webpackConfig
   },
   turbopack: {
-    root: path.resolve(dirname),
+    // Workspace root — deps (incl. next) are hoisted to the repo-root
+    // node_modules, so Turbopack's root must include it, not just apps/cms.
+    root: path.resolve(dirname, '..', '..'),
   },
 }
 
