@@ -1,0 +1,37 @@
+/* Component-level styles + tokens for this site. Add per-component knobs here
+   (e.g. --button-height, --hero-overlay) and shared component utility classes. */
+@reference "tailwindcss";
+
+@layer base {
+  .bg-grain {
+    @apply pointer-events-none absolute inset-0 -z-10 opacity-[0.04];
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      var(--color-ink) 1px,
+      transparent 0
+    );
+    background-size: 4px 4px;
+  }
+
+  .eyebrow-rule {
+    @apply inline-block h-px w-10 bg-(--color-gold);
+  }
+
+  .eyebrow-full {
+    @apply relative flex items-center gap-3 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+
+    &:before,
+    &:after {
+      @apply content-[''] absolute bottom-auto top-1/2 translate-y-1/2 h-px;
+      @apply bg-(--color-gold) w-10;
+    }
+
+    &:before {
+      @apply -left-12;
+    }
+
+    &:after {
+      @apply -right-11;
+    }
+  }
+}

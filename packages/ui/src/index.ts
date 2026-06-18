@@ -24,3 +24,4 @@ export {
   SelectItem,
 } from "./select";
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+export { Image, type ImageProps } from "./image";

@@ -1,0 +1,18 @@
+@reference "tailwindcss";
+
+.image {
+  @apply relative block h-full w-full overflow-hidden;
+}
+
+.image-img {
+  @apply absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out;
+}
+
+.image[data-state="loading"] .image-img,
+.image[data-state="error"] .image-img {
+  @apply opacity-0;
+}
+
+.image-fallback {
+  @apply pointer-events-none absolute inset-0 flex items-center justify-center;
+}
