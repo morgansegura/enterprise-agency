@@ -1,25 +1,31 @@
-export { Button, buttonVariants } from "@wf/ui";
+// Shared primitives come from the @wf/ui library; Image stays local (its
+// fallback renders this site's LogoIcon).
 export {
+  Button,
+  buttonVariants,
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "./accordion";
-export { Drawer, DrawerTrigger, DrawerClose, DrawerContent } from "./drawer";
-export { Image } from "./image";
-export { Modal, ModalTrigger, ModalClose, ModalContent } from "./modal";
-export {
+  Drawer,
+  DrawerTrigger,
+  DrawerClose,
+  DrawerContent,
+  Modal,
+  ModalTrigger,
+  ModalClose,
+  ModalContent,
   Popover,
   PopoverTrigger,
   PopoverClose,
   PopoverContent,
-} from "./popover";
-export {
   Select,
   SelectGroup,
   SelectValue,
   SelectTrigger,
   SelectContent,
   SelectItem,
-} from "./select";
-export { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@wf/ui";
+export { Image } from "./image";
