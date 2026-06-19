@@ -1,14 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
-import {
-  revalidatePosts,
-  revalidatePostsAfterDelete,
-} from '../hooks/revalidate-posts'
+import { revalidatePosts, revalidatePostsAfterDelete } from '../hooks/revalidate-posts'
 
 /** Blog posts → /blog and /blog/[slug] (Article schema + RSS). */
 export const Posts: CollectionConfig = {
   slug: 'posts',
-  versions: { drafts: true, maxPerDoc: 50 },
+  versions: { drafts: { schedulePublish: true }, maxPerDoc: 50 },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'publishedAt'],
@@ -33,5 +30,51 @@ export const Posts: CollectionConfig = {
     { name: 'publishedAt', type: 'date' },
     { name: 'author', type: 'text' },
     { name: 'content', type: 'richText' },
+    {
+      name: 'meta',
+      type: 'group',
+      label: 'SEO',
+      fields: [
+        {
+          name: 'seoHealth',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: '@/components/admin/seo-health#SeoHealthField',
+            },
+          },
+        },
+        {
+          name: 'title',
+          type: 'text',
+          admin: { description: 'Overrides the post title in search/social.' },
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          admin: {
+            description: 'Meta description (~155 chars). Falls back to excerpt.',
+          },
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description: 'Social share image (1200×630). Falls back to cover.',
+          },
+        },
+        {
+          name: 'noindex',
+          type: 'checkbox',
+          label: 'Hide from search engines (noindex)',
+          defaultValue: false,
+          admin: {
+            description:
+              'When on, this post sends a noindex robots tag and is dropped from the sitemap.',
+          },
+        },
+      ],
+    },
   ],
 }

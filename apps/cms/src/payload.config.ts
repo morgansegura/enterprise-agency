@@ -51,6 +51,13 @@ export default buildConfig({
     },
   }),
   sharp,
+  // Jobs queue — powers scheduled publish/unpublish (drafts.schedulePublish).
+  // autoRun only on the live server (a single persistent instance); local dev
+  // shares the same DB, so gating to production avoids two runners racing.
+  jobs: {
+    autoRun: [{ cron: '* * * * *', allQueues: true }],
+    shouldAutoRun: async () => process.env.NODE_ENV === 'production',
+  },
   plugins: [
     // Form builder runs first so its `forms` collection exists for multi-tenant
     // to scope below.

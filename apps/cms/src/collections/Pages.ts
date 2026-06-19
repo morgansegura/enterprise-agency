@@ -64,7 +64,7 @@ async function previewUrl(doc: PageDoc | undefined, req: PayloadRequest): Promis
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
-  versions: { drafts: true, maxPerDoc: 100 },
+  versions: { drafts: { schedulePublish: true }, maxPerDoc: 100 },
   admin: {
     useAsTitle: 'title',
     // "Preview" button (opens the draft in a tab) + Live Preview (in-editor iframe).
