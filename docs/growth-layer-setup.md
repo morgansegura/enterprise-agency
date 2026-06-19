@@ -112,10 +112,20 @@ Every `page.tsx` exports `metadata` (or `generateMetadata` for dynamic
 routes) with a route-specific `title` + `description` and a relative
 `alternates.canonical`. The layout's `metadataBase` resolves it.
 
-### 10. Analytics + consent — _Wave 2 (TODO)_
+### 10. Analytics + consent — _Wave 2 (done)_
 
-GTM/GA4 + Google **Consent Mode v2** default-deny + cookie banner/modal built
-on `@wf/ui` (Modal/Switch). Container IDs via env.
+- `components/analytics/consent-defaults.tsx` — Consent Mode v2 **default-deny**
+  (raw inline `<head>` script; runs before GTM).
+- `components/analytics/gtm.tsx` — GTM loader + `<noscript>`, gated on
+  `NEXT_PUBLIC_GTM_ID` (unset → analytics off, but ready).
+- `lib/consent-config.ts` — **the per-client editable surface**: banner/modal
+  copy + categories + policy link. Architected to move into CMS
+  `SiteSettings.consent` per tenant (different clients, different legal needs).
+- `lib/cookie-consent.ts` — versioned localStorage via `useSyncExternalStore`;
+  maps choices → `gtag('consent','update')`.
+- `components/cookie-consent/` — Provider + Banner (accept/reject/customize) +
+  Preferences modal (base-ui `Switch`) + footer re-open trigger. Wired in
+  `app/layout.tsx` and the footer.
 
 ### 11. PageSpeed / CWV — _Wave 3 (TODO)_
 
@@ -135,6 +145,8 @@ These are the steps a person must do by hand for each deploy:
      domain is wired, use the `*.vercel.app` URL). **Single source of truth.**
    - `CMS_URL` — the Payload base, e.g. `https://cms.example.com`.
    - `PREVIEW_SECRET` — **must exactly match** the CMS's `PREVIEW_SECRET`.
+   - `NEXT_PUBLIC_GTM_ID` _(optional)_ — GTM container id. Until it's set, no
+     analytics load (Consent Mode + banner are still active).
    - Note: `NEXT_PUBLIC_SITE_URL` is intentionally **not** used.
    - The same `SITE_URL` for Prod + Preview is fine — previews emit the prod
      canonical on purpose (and stay `noindex` via the robots gate).

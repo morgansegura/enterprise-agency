@@ -2,6 +2,12 @@ import type { Metadata, Viewport } from "next";
 
 import { Header, Footer } from "@/components/layout";
 import { JsonLd } from "@/components/seo";
+import {
+  ConsentDefaults,
+  GoogleTagManager,
+  GoogleTagManagerNoscript,
+} from "@/components/analytics";
+import { CookieConsentProvider } from "@/components/cookie-consent";
 import { getSiteSettings, toMenuItems } from "@/lib/cms";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import { siteConfig } from "@/lib/site-config";
@@ -77,17 +83,24 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${fontBase.variable} ${fontHeading.variable}`}>
+      <head>
+        <ConsentDefaults />
+      </head>
       <body>
+        <GoogleTagManagerNoscript />
+        <GoogleTagManager />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
-        <Header items={headerItems} />
-        {children}
-        <Footer
-          items={toMenuItems(settings?.footerMenu)}
-          tagline={footer?.tagline ?? undefined}
-          values={footerValues}
-          copyrightName={footer?.copyrightName ?? undefined}
-          social={footerSocial}
-        />
+        <CookieConsentProvider>
+          <Header items={headerItems} />
+          {children}
+          <Footer
+            items={toMenuItems(settings?.footerMenu)}
+            tagline={footer?.tagline ?? undefined}
+            values={footerValues}
+            copyrightName={footer?.copyrightName ?? undefined}
+            social={footerSocial}
+          />
+        </CookieConsentProvider>
       </body>
     </html>
   );

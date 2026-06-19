@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Icon } from "@/components/icon";
 import { LogoIcon } from "@/components/layout";
+import { CookiePreferencesTrigger } from "@/components/cookie-consent";
 import { FOOTER_NAV, SOCIAL_MEDIA, type TMenuItem } from "@/lib/menu";
 import { cn } from "@/lib/utils";
 
@@ -108,6 +109,7 @@ export function Footer({
         <p>
           Copyright &copy; {year} {copyrightName ?? DEFAULT_COPYRIGHT}
         </p>
+        <CookiePreferencesTrigger />
         <div className="social-links">{socialMediaList()}</div>
       </div>
     </footer>

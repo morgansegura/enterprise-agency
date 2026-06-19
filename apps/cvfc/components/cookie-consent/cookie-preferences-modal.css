@@ -1,0 +1,46 @@
+@reference "tailwindcss";
+
+.cookie-prefs {
+  @apply flex flex-col gap-5;
+}
+
+.cookie-prefs-header {
+  @apply flex flex-col gap-1;
+}
+
+.cookie-prefs-title {
+  @apply text-lg font-semibold text-(--foreground);
+}
+
+.cookie-prefs-description {
+  @apply text-sm text-(--foreground)/70;
+}
+
+.cookie-prefs-list {
+  @apply flex flex-col divide-y divide-(--border);
+}
+
+.cookie-prefs-item {
+  @apply flex items-start justify-between gap-4 py-4;
+}
+
+.cookie-prefs-item-label {
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.cookie-prefs-item-desc {
+  @apply mt-1 text-sm text-(--foreground)/70;
+}
+
+.cookie-prefs-actions {
+  @apply flex flex-wrap justify-end gap-2;
+}
+
+/* base-ui Switch sets data-checked on Root + Thumb when on. */
+.cookie-switch {
+  @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border border-(--border) bg-(--border) transition-colors data-[checked]:bg-(--primary) disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.cookie-switch-thumb {
+  @apply pointer-events-none absolute left-0.5 top-0.5 size-5 rounded-full bg-white shadow transition-transform data-[checked]:translate-x-5;
+}

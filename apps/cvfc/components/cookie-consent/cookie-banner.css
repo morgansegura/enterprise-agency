@@ -1,0 +1,29 @@
+@reference "tailwindcss";
+
+.cookie-banner {
+  @apply fixed inset-x-0 bottom-0 z-50 p-4;
+}
+
+.cookie-banner-inner {
+  @apply mx-auto flex max-w-5xl flex-col gap-4 rounded-(--radius) border border-(--border) bg-(--background) p-5 shadow-lg md:flex-row md:items-center md:justify-between;
+}
+
+.cookie-banner-text {
+  @apply flex flex-col gap-1;
+}
+
+.cookie-banner-title {
+  @apply text-sm font-semibold text-(--foreground);
+}
+
+.cookie-banner-body {
+  @apply text-sm text-(--foreground)/70;
+}
+
+.cookie-banner-link {
+  @apply font-medium text-(--primary) underline underline-offset-2;
+}
+
+.cookie-banner-actions {
+  @apply flex shrink-0 flex-wrap items-center gap-2;
+}
