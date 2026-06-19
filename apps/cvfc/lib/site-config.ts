@@ -1,11 +1,11 @@
 /**
  * Single source of truth for site-level metadata, branding, and contact.
  *
- * Override `url` via NEXT_PUBLIC_SITE_URL in Vercel env vars when the
- * production domain is wired up.
+ * `url` comes from `site.config.ts` (env `SITE_URL`) so canonical, schema,
+ * sitemap, and robots all resolve to one base — no drift.
  */
 
-const PRODUCTION_URL = "https://www.chulavistafc.com";
+import { site } from "@/site.config";
 
 export const siteConfig = {
   name: "Chula Vista FC",
@@ -17,7 +17,7 @@ export const siteConfig = {
     "Chula Vista FC is a youth soccer club in the South Bay of San Diego, California. Founded in 1982, CVFC develops players through MLS NEXT, Elite Academy, DPL, NPL, and the Southwest Premier League — guided by passion, unity, respect, and attitude.",
   shortDescription:
     "South Bay youth soccer club since 1982 — MLS NEXT, Elite Academy, DPL, NPL.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? PRODUCTION_URL,
+  url: site.url,
   locale: "en_US",
   foundingDate: "1982",
   /** Federal Tax ID — public via IRS Pub 78, ProPublica, Candid. Surfaced on /support for donor verification. */

@@ -1,14 +1,62 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import { Header, Footer } from "@/components/layout";
+import { JsonLd } from "@/components/seo";
 import { getSiteSettings, toMenuItems } from "@/lib/cms";
+import { organizationSchema, websiteSchema } from "@/lib/schema";
+import { siteConfig } from "@/lib/site-config";
 import { fontBase, fontHeading } from "@/fonts";
-import { site } from "@/site.config";
 import "@/styles/globals.css";
 
+const isProd = process.env.VERCEL_ENV
+  ? process.env.VERCEL_ENV === "production"
+  : process.env.NODE_ENV === "production";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: { default: site.name, template: `%s — ${site.name}` },
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    template: `%s — ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  applicationName: siteConfig.name,
+  keywords: [...siteConfig.keywords],
+  authors: [{ name: siteConfig.legalName, url: siteConfig.url }],
+  creator: siteConfig.legalName,
+  publisher: siteConfig.legalName,
+  category: "sports",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: siteConfig.name,
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    locale: siteConfig.locale,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteConfig.shortDescription,
+  },
+  robots: isProd
+    ? {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+          "max-video-preview": -1,
+        },
+      }
+    : { index: false, follow: false },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#061c48",
+  colorScheme: "light",
 };
 
 export default async function RootLayout({
@@ -30,6 +78,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${fontBase.variable} ${fontHeading.variable}`}>
       <body>
+        <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <Header items={headerItems} />
         {children}
         <Footer
