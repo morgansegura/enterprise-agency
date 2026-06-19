@@ -4,7 +4,9 @@ const nextConfig: NextConfig = {
   // Compile the shared @wf/ui package's TS/CSS source as part of this app.
   transpilePackages: ["@wf/ui"],
   images: {
-    // CMS-served media (Payload). Tighten to the real CMS host in production.
+    // Modern formats first — smaller payloads, better LCP.
+    formats: ["image/avif", "image/webp"],
+    // CMS-served media (Payload) + external sources. Tighten to real hosts later.
     remotePatterns: [
       { protocol: "http", hostname: "localhost" },
       { protocol: "https", hostname: "**" },

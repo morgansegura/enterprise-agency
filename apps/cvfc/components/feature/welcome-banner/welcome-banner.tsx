@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { LogoIcon } from "@/components/layout";
 import { useReveal } from "@/lib/hooks/use-reveal";
 import { cn } from "@/lib/utils";
@@ -47,11 +49,11 @@ export function WelcomeBanner({
       <div className="welcome-banner-inner contain">
         <figure className="welcome-banner-figure">
           <div className="welcome-banner-figure-frame">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={image.src}
               alt={image.alt}
-              loading="lazy"
+              fill
+              sizes="(min-width: 768px) 45vw, 100vw"
               className="welcome-banner-image"
             />
             <div className="welcome-banner-figure-tint" aria-hidden="true" />

@@ -18,6 +18,10 @@
   @apply transition-opacity duration-700 ease-out;
 }
 
+.hero-carousel-slide-image {
+  @apply pointer-events-none select-none object-cover;
+}
+
 .hero-carousel-slide-inactive {
   @apply pointer-events-none opacity-0 z-0;
 }

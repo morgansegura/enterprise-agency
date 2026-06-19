@@ -127,11 +127,16 @@ routes) with a route-specific `title` + `description` and a relative
   Preferences modal (base-ui `Switch`) + footer re-open trigger. Wired in
   `app/layout.tsx` and the footer.
 
-### 11. PageSpeed / CWV — _Wave 3 (TODO)_
+### 11. PageSpeed / CWV — _Wave 3 (in progress)_
 
-Swap raw `<img>` / CSS background images for `next/image`; font
-`display: swap` + preload; audit LCP/INP/CLS. Targets: LCP < 2.5s,
-INP < 200ms, CLS < 0.1.
+- `next.config.ts` → `images.formats: ["image/avif","image/webp"]`.
+- **LCP:** hero slide background → `next/image` with `fill` + `priority` on the
+  first slide (auto-preloads the LCP image); welcome-banner `<img>` →
+  `next/image fill`.
+- Fonts are already optimal via `next/font` (self-hosted, `display:swap`).
+- _Remaining:_ convert the other below-the-fold raw images (media-split,
+  portrait-grid, news cards) to `next/image`; run PageSpeed Insights.
+- Targets: LCP < 2.5s, INP < 200ms, CLS < 0.1.
 
 ---
 

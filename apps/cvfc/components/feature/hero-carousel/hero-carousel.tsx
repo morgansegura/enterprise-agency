@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
@@ -194,8 +195,15 @@ function Slide({ slide, index, selectedIndex }: SlideProps) {
           ? "hero-carousel-slide-active"
           : "hero-carousel-slide-inactive",
       )}
-      style={{ backgroundImage: `url(${slide.image.src})` }}
     >
+      <Image
+        src={slide.image.src}
+        alt={slide.image.alt}
+        fill
+        priority={index === 0}
+        sizes="100vw"
+        className="hero-carousel-slide-image"
+      />
       <div className="hero-carousel-slide-overlay" aria-hidden="true" />
       <div className="hero-carousel-slide-content contain">
         {slide.eyebrow ? (
