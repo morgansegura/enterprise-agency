@@ -268,6 +268,10 @@ export interface Page {
      * Social share image (1200×630).
      */
     image?: (number | null) | Media;
+    /**
+     * When on, this page sends a noindex robots tag and is dropped from the sitemap.
+     */
+    noindex?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -975,6 +979,7 @@ export interface PagesSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
+        noindex?: T;
       };
   updatedAt?: T;
   createdAt?: T;

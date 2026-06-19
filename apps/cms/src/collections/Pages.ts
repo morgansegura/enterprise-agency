@@ -75,6 +75,15 @@ export const Pages: CollectionConfig = {
       label: 'SEO',
       fields: [
         {
+          name: 'seoHealth',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: '@/components/admin/seo-health#SeoHealthField',
+            },
+          },
+        },
+        {
           name: 'title',
           type: 'text',
           admin: { description: 'Overrides the page title in search/social.' },
@@ -89,6 +98,16 @@ export const Pages: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           admin: { description: 'Social share image (1200×630).' },
+        },
+        {
+          name: 'noindex',
+          type: 'checkbox',
+          label: 'Hide from search engines (noindex)',
+          defaultValue: false,
+          admin: {
+            description:
+              'When on, this page sends a noindex robots tag and is dropped from the sitemap.',
+          },
         },
       ],
     },
