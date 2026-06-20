@@ -12,7 +12,7 @@ import { FaqSection } from "@/components/feature/faq-section";
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { getFeaturedCoaches } from "@/data/coaches";
 import { getPage } from "@/lib/cms";
-import { heroSlidesFromPage } from "@/lib/cms-blocks";
+import { heroSlidesFromPage, welcomeBannerFromPage } from "@/lib/cms-blocks";
 
 type LandingScreenProps = {
   className?: string;
@@ -22,12 +22,13 @@ export async function LandingScreen({ className }: LandingScreenProps) {
   const featuredCoaches = getFeaturedCoaches();
   const page = await getPage("home");
   const heroSlides = heroSlidesFromPage(page);
+  const welcome = welcomeBannerFromPage(page);
 
   return (
     <>
       <main className={cn("landing-screen", className)}>
         <HeroCarousel slides={heroSlides} />
-        <WelcomeBanner headingAs="h2" />
+        <WelcomeBanner headingAs="h2" {...welcome} />
 
         <IconCards
           eyebrow="Our Values"

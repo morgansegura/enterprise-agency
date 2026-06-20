@@ -61,3 +61,31 @@ export function heroSlidesFromPage(page: Page | null): HeroSlide[] | undefined {
 
   return slides.length ? slides : undefined;
 }
+
+export type WelcomeBannerOverrides = {
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  image?: { src: string; alt: string };
+};
+
+/**
+ * The CMS `welcomeBanner` block → WelcomeBanner prop overrides. Returns
+ * `undefined` when the block is absent; individual empty fields fall through to
+ * the feature's own defaults.
+ */
+export function welcomeBannerFromPage(
+  page: Page | null,
+): WelcomeBannerOverrides | undefined {
+  const b = blockOf(page, "welcomeBanner");
+  if (!b) return undefined;
+  const src = mediaUrl(b.image as MediaValue);
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading),
+    body: str(b.body),
+    image: src
+      ? { src, alt: mediaAlt(b.image as MediaValue) ?? str(b.heading) ?? "" }
+      : undefined,
+  };
+}

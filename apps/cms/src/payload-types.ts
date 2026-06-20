@@ -197,6 +197,18 @@ export interface Page {
             blockType: 'hero';
           }
         | {
+            eyebrow?: string | null;
+            heading?: string | null;
+            body?: string | null;
+            /**
+             * Framed image. Falls back to the default when empty.
+             */
+            image?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'welcomeBanner';
+          }
+        | {
             heading?: string | null;
             body?: string | null;
             align?: ('left' | 'center') | null;
@@ -1065,6 +1077,16 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               autoPlayDelay?: T;
+              id?: T;
+              blockName?: T;
+            };
+        welcomeBanner?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              body?: T;
+              image?: T;
               id?: T;
               blockName?: T;
             };

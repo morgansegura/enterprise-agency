@@ -1,6 +1,7 @@
 import type { CollectionConfig, PayloadRequest } from 'payload'
 
 import { Hero } from '../blocks/Hero'
+import { WelcomeBanner } from '../blocks/WelcomeBanner'
 import { Content } from '../blocks/Content'
 import { RichTextBlock } from '../blocks/RichText'
 import { CallToAction } from '../blocks/CallToAction'
@@ -92,7 +93,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [Hero, Content, RichTextBlock, CallToAction, Features, ImageBlock],
+      blocks: [Hero, WelcomeBanner, Content, RichTextBlock, CallToAction, Features, ImageBlock],
     },
     {
       name: 'meta',
