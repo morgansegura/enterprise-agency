@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { type Facility } from "@/data/facilities";
 import { cn } from "@/lib/utils";
 
@@ -34,11 +36,11 @@ export function FieldGrid({ className, fields }: FieldGridProps) {
               </p>
               <span className="field-grid-card-cta">Open in Maps →</span>
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={field.image?.src ?? FIELD_PLACEHOLDER_IMAGE}
               alt={field.image?.alt ?? `${field.name} field`}
-              loading="lazy"
+              width={112}
+              height={112}
               className="field-grid-card-photo"
             />
           </a>

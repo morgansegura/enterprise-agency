@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui";
@@ -54,11 +55,11 @@ export function MediaSplit({
     >
       <div className="media-split-inner contain">
         <figure className="media-split-figure">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={image.src}
             alt={image.alt}
-            loading="lazy"
+            fill
+            sizes="(min-width: 1024px) 42vw, (min-width: 768px) 320px, 100vw"
             className="media-split-image"
           />
           {tags && tags.length > 0 ? (

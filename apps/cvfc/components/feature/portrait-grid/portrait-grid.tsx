@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui";
@@ -61,11 +62,11 @@ export function PortraitGrid({
             <li key={p.id} className="portrait-card">
               <div className="portrait-card-photo">
                 {p.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={p.image.src}
                     alt={p.image.alt}
-                    loading="lazy"
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
                     className="portrait-card-image"
                   />
                 ) : (

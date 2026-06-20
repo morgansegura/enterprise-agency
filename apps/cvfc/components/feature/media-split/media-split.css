@@ -28,7 +28,8 @@
 }
 
 .media-split-figure {
-  @apply relative w-full;
+  @apply relative w-full overflow-hidden rounded-2xl;
+  @apply aspect-4/3 md:aspect-1.5/2 lg:aspect-square;
   @apply md:w-80 md:shrink-0;
   @apply lg:w-auto lg:col-span-5;
 }
@@ -37,13 +38,12 @@
   @apply lg:order-2;
 }
 
-.media-split[data-layout="stack"] .media-split-image {
+.media-split[data-layout="stack"] .media-split-figure {
   @apply aspect-video;
 }
 
 .media-split-image {
-  @apply w-full rounded-2xl object-cover;
-  @apply aspect-4/3 md:aspect-1.5/2 lg:aspect-square;
+  @apply object-cover;
 }
 
 .media-split-tags {
