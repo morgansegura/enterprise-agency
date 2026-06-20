@@ -18,6 +18,8 @@ import config from '../payload.config'
 import { FAQ_ENTRIES } from '../../../cvfc/data/faq'
 import { TESTIMONIALS } from '../../../cvfc/data/testimonials'
 import { getFeaturedCoaches } from '../../../cvfc/data/coaches'
+import { NEWS_POSTS, getActiveNews } from '../../../cvfc/data/news'
+import { htmlToLexical } from './html-to-lexical'
 
 const WELCOME_BODY =
   "Since 1982, Chula Vista FC has been dedicated and driven by a passion for developing players as athletes and as people. We're committed to providing the highest level of training, mentorship, and opportunity so every player can reach their full potential in the game and in life. Our passion lies in helping athletes grow, fostering a love for playing beautiful football, and creating opportunities for every player to reach their highest potential."
@@ -739,10 +741,50 @@ async function seed() {
     PAGE_META['about/who-we-are'],
   )
 
+  // --- blog: migrate cvfc news into the Posts collection (verbatim) ---
+  const posts = getActiveNews(NEWS_POSTS)
+  for (const post of posts) {
+    const found = await payload.find({
+      collection: 'posts',
+      where: {
+        and: [{ slug: { equals: post.slug } }, { tenant: { equals: tenant.id } }],
+      },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+    const data = {
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt,
+      author: 'Chula Vista FC',
+      publishedAt: post.date,
+      content: htmlToLexical(post.body) as never,
+      _status: 'published' as const,
+    }
+    if (found.docs[0]) {
+      await payload.update({
+        collection: 'posts',
+        id: found.docs[0].id,
+        data,
+        depth: 0,
+        overrideAccess: true,
+      })
+    } else {
+      await payload.create({
+        collection: 'posts',
+        data: { ...data, tenant: tenant.id },
+        depth: 0,
+        overrideAccess: true,
+      })
+    }
+  }
+
   console.log(
     `✓ Seeded cvfc home — full landing (${homeLayout.length} blocks${hero ? ', hero preserved' : ''}).`,
   )
   console.log('✓ Seeded cvfc /programs, /about, /about/who-we-are (with SEO meta).')
+  console.log(`✓ Seeded ${posts.length} blog posts into the Posts collection.`)
   process.exit(0)
 }
 
