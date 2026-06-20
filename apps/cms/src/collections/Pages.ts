@@ -5,6 +5,8 @@ import { WelcomeBanner } from '../blocks/WelcomeBanner'
 import { FaqSectionBlock } from '../blocks/FaqSection'
 import { TestimonialsBlock } from '../blocks/TestimonialsSection'
 import { MediaSplit } from '../blocks/MediaSplit'
+import { IconCardsBlock } from '../blocks/IconCards'
+import { CalloutBlock } from '../blocks/Callout'
 import { Content } from '../blocks/Content'
 import { RichTextBlock } from '../blocks/RichText'
 import { CallToAction } from '../blocks/CallToAction'
@@ -102,6 +104,8 @@ export const Pages: CollectionConfig = {
         FaqSectionBlock,
         TestimonialsBlock,
         MediaSplit,
+        IconCardsBlock,
+        CalloutBlock,
         Content,
         RichTextBlock,
         CallToAction,

@@ -1,7 +1,13 @@
 import type { ReactNode } from "react";
 
 import { MediaSplit } from "@/components/feature/media-split";
-import { mediaSplitFromBlock } from "@/lib/cms-blocks";
+import { IconCards } from "@/components/feature/icon-cards";
+import { Callout } from "@/components/feature/callout";
+import {
+  mediaSplitFromBlock,
+  iconCardsFromBlock,
+  calloutFromBlock,
+} from "@/lib/cms-blocks";
 import type { PageBlock } from "@/lib/cms";
 
 /**
@@ -13,6 +19,10 @@ const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
   mediaSplit: (block, key) => (
     <MediaSplit key={key} {...mediaSplitFromBlock(block)} />
   ),
+  iconCards: (block, key) => (
+    <IconCards key={key} {...iconCardsFromBlock(block)} />
+  ),
+  callout: (block, key) => <Callout key={key} {...calloutFromBlock(block)} />,
 };
 
 export function Blocks({

@@ -281,6 +281,45 @@ export interface Page {
             blockType: 'mediaSplit';
           }
         | {
+            eyebrow?: string | null;
+            heading?: string | null;
+            description?: string | null;
+            background?: ('bone' | 'white') | null;
+            cards?:
+              | {
+                  iconToken?: string | null;
+                  title: string;
+                  description?: string | null;
+                  href?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+              variant?: ('default' | 'secondary' | 'outline') | null;
+              iconToken?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'iconCards';
+          }
+        | {
+            eyebrow?: string | null;
+            heading: string;
+            body?: string | null;
+            variant?: ('midnight' | 'bone' | 'gold' | 'midnight-bright') | null;
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+              variant?: ('default' | 'secondary' | 'outline') | null;
+              iconToken?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'callout';
+          }
+        | {
             heading?: string | null;
             body?: string | null;
             align?: ('left' | 'center') | null;
@@ -1221,6 +1260,51 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     iconToken?: T;
                     id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        iconCards?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+              background?: T;
+              cards?:
+                | T
+                | {
+                    iconToken?: T;
+                    title?: T;
+                    description?: T;
+                    href?: T;
+                    id?: T;
+                  };
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    variant?: T;
+                    iconToken?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        callout?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              body?: T;
+              variant?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    variant?: T;
+                    iconToken?: T;
                   };
               id?: T;
               blockName?: T;

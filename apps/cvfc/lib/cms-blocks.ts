@@ -226,3 +226,73 @@ export function mediaSplitFromBlock(b: PageBlock) {
     buttons: buttons.length ? buttons : undefined,
   };
 }
+
+type RawGroupCta = {
+  label?: string;
+  href?: string;
+  variant?: string;
+  iconToken?: string;
+};
+
+function ctaFromGroup(raw: unknown) {
+  const c = raw as RawGroupCta | undefined;
+  const label = str(c?.label);
+  const href = str(c?.href);
+  if (!label || !href) return undefined;
+  return {
+    label,
+    href,
+    variant: (str(c?.variant) ?? "secondary") as
+      | "default"
+      | "secondary"
+      | "outline",
+    iconToken: str(c?.iconToken),
+  };
+}
+
+/** A single CMS `iconCards` block → IconCards props (used by the renderer). */
+export function iconCardsFromBlock(b: PageBlock) {
+  const cards = Array.isArray(b.cards)
+    ? (
+        b.cards as {
+          id?: string;
+          iconToken?: string;
+          title?: string;
+          description?: string;
+          href?: string;
+        }[]
+      )
+        .map((c, i) => ({
+          id: str(c.id) ?? String(i),
+          iconToken: str(c.iconToken),
+          title: str(c.title) ?? "",
+          description: str(c.description) ?? "",
+          href: str(c.href),
+        }))
+        .filter((c) => c.title)
+    : [];
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading) ?? "",
+    description: str(b.description),
+    background: str(b.background) === "white" ? ("white" as const) : undefined,
+    cards: cards.length ? cards : undefined,
+    cta: ctaFromGroup(b.cta),
+  };
+}
+
+/** A single CMS `callout` block → Callout props (used by the renderer). */
+export function calloutFromBlock(b: PageBlock) {
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading) ?? "",
+    body: str(b.body) ?? "",
+    variant: str(b.variant) as
+      | "midnight"
+      | "bone"
+      | "gold"
+      | "midnight-bright"
+      | undefined,
+    cta: ctaFromGroup(b.cta),
+  };
+}
