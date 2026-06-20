@@ -12,6 +12,8 @@ import { Testimonials } from "@/components/feature/testimonials";
 import { FaqSection } from "@/components/feature/faq-section";
 import { PageHero } from "@/components/feature/page-hero";
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
+import { Heading } from "@/components/feature/heading";
+import { Section } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import {
@@ -25,6 +27,7 @@ import {
   testimonialsFromBlock,
   faqFromBlock,
   pageHeroFromBlock,
+  headingSectionFromBlock,
   type PageHeroAction,
 } from "@/lib/cms-blocks";
 import type { PageBlock } from "@/lib/cms";
@@ -70,6 +73,39 @@ const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
         {...rest}
         actions={<PageHeroActions actions={actions} />}
       />
+    );
+  },
+  headingSection: (block, key) => {
+    const h = headingSectionFromBlock(block);
+    return (
+      <Section key={key} bg={h.background} size={h.size}>
+        <Heading
+          eyebrow={h.eyebrow}
+          heading={h.heading}
+          headingSize={h.headingSize}
+          align={h.align}
+          description={
+            h.paragraphs.length ? (
+              <>
+                {h.paragraphs.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </>
+            ) : undefined
+          }
+        />
+        {h.cta ? (
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button variant={h.cta.variant} render={<Link href={h.cta.href} />}>
+              {h.cta.iconToken ? (
+                <Icon token={h.cta.iconToken as never} aria-hidden="true" />
+              ) : null}
+              <span>{h.cta.label}</span>
+              <Icon token="ri:arrow-right" aria-hidden="true" />
+            </Button>
+          </div>
+        ) : null}
+      </Section>
     );
   },
   welcomeBanner: (block, key) => (

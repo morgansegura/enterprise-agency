@@ -220,12 +220,37 @@ export interface Page {
           }
         | {
             eyebrow?: string | null;
+            heading: string;
+            /**
+             * Separate paragraphs with a blank line.
+             */
+            body?: string | null;
+            background?: ('bone' | 'white' | 'transparent' | 'midnight') | null;
+            size?: ('compact' | 'default' | 'loose') | null;
+            headingSize?: ('display' | 'section' | 'compact') | null;
+            align?: ('center' | 'left') | null;
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+              variant?: ('default' | 'secondary' | 'outline') | null;
+              iconToken?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'headingSection';
+          }
+        | {
+            eyebrow?: string | null;
             heading?: string | null;
             body?: string | null;
             /**
              * Framed image. Falls back to the default when empty.
              */
             image?: (number | null) | Media;
+            /**
+             * External image URL — used when no upload is set.
+             */
+            imageUrl?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'welcomeBanner';
@@ -1290,6 +1315,27 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        headingSection?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              body?: T;
+              background?: T;
+              size?: T;
+              headingSize?: T;
+              align?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    variant?: T;
+                    iconToken?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         welcomeBanner?:
           | T
           | {
@@ -1297,6 +1343,7 @@ export interface PagesSelect<T extends boolean = true> {
               heading?: T;
               body?: T;
               image?: T;
+              imageUrl?: T;
               id?: T;
               blockName?: T;
             };

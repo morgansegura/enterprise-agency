@@ -18,5 +18,10 @@ export const WelcomeBanner: Block = {
       relationTo: 'media',
       admin: { description: 'Framed image. Falls back to the default when empty.' },
     },
+    {
+      name: 'imageUrl',
+      type: 'text',
+      admin: { description: 'External image URL — used when no upload is set.' },
+    },
   ],
 }

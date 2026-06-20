@@ -71,17 +71,19 @@ seeding image-heavy pages (landing media-splits/portrait-grid, facilities, etc.)
 
 ## Status (cvfc)
 
-| Page                                                                                  | Screen converted  | Seeded                                     | SEO meta | Notes                                                       |
-| ------------------------------------------------------------------------------------- | ----------------- | ------------------------------------------ | -------- | ----------------------------------------------------------- |
-| `/` (home/landing)                                                                    | ✅ renderer wired | ✅ FULL layout (14 blocks, hero preserved) | ✅       | images via imageUrl escape-hatch; rich bodies plain for now |
-| `/programs`                                                                           | ✅                | ✅ pageHero+iconCards+callout              | ✅       | media-splits pending (add via imageUrl)                     |
-| `/about`                                                                              | ✅                | ✅ pageHero+iconCards+callout              | ✅       | complete                                                    |
-| programs detail (foundations, boys/girls/gk, coaching-opps)                           | —                 | —                                          | —        | need headingSection + rich-text                             |
-| about subpages (who-we-are, coaching-staff, administrators, facilities, testimonials) | —                 | —                                          | —        | need headingSection + staff/admin/field/testimonial blocks  |
-| `/news`                                                                               | —                 | —                                          | —        | needs newsList + headingSection                             |
-| `/support`, `/sponsor`, `/partnerships`                                               | —                 | —                                          | —        | need headingSection                                         |
-| `/evaluations`                                                                        | stays static      | —                                          | —        | bespoke programs grid (not block-able)                      |
-| legal pages                                                                           | stays static      | —                                          | —        | LegalLayout                                                 |
+| Page                                                                      | Screen converted  | Seeded                                                                                      | SEO meta | Notes                                                       |
+| ------------------------------------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------- |
+| `/` (home/landing)                                                        | ✅ renderer wired | ✅ FULL layout (14 blocks, hero preserved)                                                  | ✅       | images via imageUrl escape-hatch; rich bodies plain for now |
+| `/programs`                                                               | ✅                | ✅ pageHero+iconCards+callout                                                               | ✅       | media-splits pending (add via imageUrl)                     |
+| `/about`                                                                  | ✅                | ✅ pageHero+iconCards+callout                                                               | ✅       | complete                                                    |
+| `/about/who-we-are`                                                       | ✅                | ✅ FULL (pageHero, welcomeBanner, iconCards, mediaSplit, headingSection, statBand, callout) | ✅       | first headingSection page; bodies plain (rich-text later)   |
+| programs detail (foundations, boys/girls/gk)                              | —                 | —                                                                                           | —        | pure → headingSection ready; need content seed              |
+| coaching-opportunities, support, evaluations                              | partial/static    | —                                                                                           | —        | bespoke sections (req grid, donation tiers, programs grid)  |
+| about subpages (coaching-staff, administrators, facilities, testimonials) | —                 | —                                                                                           | —        | need staff/admin/field/testimonial blocks                   |
+| `/news`                                                                   | —                 | —                                                                                           | —        | needs newsList + headingSection                             |
+| `/support`, `/sponsor`, `/partnerships`                                   | —                 | —                                                                                           | —        | need headingSection                                         |
+| `/evaluations`                                                            | stays static      | —                                                                                           | —        | bespoke programs grid (not block-able)                      |
+| legal pages                                                               | stays static      | —                                                                                           | —        | LegalLayout                                                 |
 
 ## Gotchas
 

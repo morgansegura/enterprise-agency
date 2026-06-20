@@ -338,6 +338,51 @@ export function pageHeroFromBlock(b: PageBlock) {
   };
 }
 
+export type HeadingSectionData = {
+  eyebrow?: string;
+  heading: string;
+  paragraphs: string[];
+  background: "bone" | "white" | "transparent" | "midnight";
+  size: "compact" | "default" | "loose";
+  headingSize: "display" | "section" | "compact";
+  align: "center" | "left";
+  cta?: {
+    label: string;
+    href: string;
+    variant: "default" | "secondary" | "outline";
+    iconToken?: string;
+  };
+};
+
+const oneOf = <T extends string>(v: unknown, allowed: T[], fallback: T): T =>
+  allowed.includes(v as T) ? (v as T) : fallback;
+
+/** A single CMS `headingSection` block → Section+Heading props (renderer). */
+export function headingSectionFromBlock(b: PageBlock): HeadingSectionData {
+  const paragraphs = (str(b.body) ?? "")
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading) ?? "",
+    paragraphs,
+    background: oneOf(
+      b.background,
+      ["bone", "white", "transparent", "midnight"],
+      "bone",
+    ),
+    size: oneOf(b.size, ["compact", "default", "loose"], "default"),
+    headingSize: oneOf(
+      b.headingSize,
+      ["display", "section", "compact"],
+      "section",
+    ),
+    align: str(b.align) === "left" ? "left" : "center",
+    cta: ctaFromGroup(b.cta),
+  };
+}
+
 // --- block-based mappers for the full-page renderer (single-instance sections) ---
 
 export function heroFromBlock(b: PageBlock) {
@@ -369,7 +414,7 @@ export function heroFromBlock(b: PageBlock) {
 }
 
 export function welcomeFromBlock(b: PageBlock) {
-  const src = mediaUrl(b.image as MediaValue);
+  const src = mediaUrl(b.image as MediaValue) ?? str(b.imageUrl);
   return {
     headingAs: "h2" as const,
     eyebrow: str(b.eyebrow),

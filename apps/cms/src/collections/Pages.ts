@@ -2,6 +2,7 @@ import type { CollectionConfig, PayloadRequest } from 'payload'
 
 import { Hero } from '../blocks/Hero'
 import { PageHeroBlock } from '../blocks/PageHero'
+import { HeadingSectionBlock } from '../blocks/HeadingSection'
 import { WelcomeBanner } from '../blocks/WelcomeBanner'
 import { FaqSectionBlock } from '../blocks/FaqSection'
 import { TestimonialsBlock } from '../blocks/TestimonialsSection'
@@ -104,6 +105,7 @@ export const Pages: CollectionConfig = {
       blocks: [
         Hero,
         PageHeroBlock,
+        HeadingSectionBlock,
         WelcomeBanner,
         FaqSectionBlock,
         TestimonialsBlock,
