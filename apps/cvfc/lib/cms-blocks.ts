@@ -1,4 +1,5 @@
 import type { HeroSlide } from "@/components/feature/hero-carousel";
+import type { FaqEntry } from "@/data/faq";
 import {
   blockOf,
   mediaAlt,
@@ -87,5 +88,49 @@ export function welcomeBannerFromPage(
     image: src
       ? { src, alt: mediaAlt(b.image as MediaValue) ?? str(b.heading) ?? "" }
       : undefined,
+  };
+}
+
+export type FaqSectionOverrides = {
+  heading?: string;
+  description?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  entries?: FaqEntry[];
+};
+
+type RawFaq = {
+  id?: string;
+  category?: string;
+  question?: string;
+  answer?: string;
+};
+
+/**
+ * The CMS `faqSection` block → FaqSection prop overrides. Empty entries fall
+ * through to the feature's built-in FAQ defaults.
+ */
+export function faqSectionFromPage(
+  page: Page | null,
+): FaqSectionOverrides | undefined {
+  const b = blockOf(page, "faqSection");
+  if (!b) return undefined;
+  const raw = Array.isArray(b.entries) ? (b.entries as RawFaq[]) : [];
+  const entries = raw
+    .map(
+      (e, i): FaqEntry => ({
+        id: str(e.id) ?? `cms-faq-${i}`,
+        category: (str(e.category) ?? "About the Club") as FaqEntry["category"],
+        question: str(e.question) ?? "",
+        answer: str(e.answer) ?? "",
+      }),
+    )
+    .filter((e) => e.question && e.answer);
+  return {
+    heading: str(b.heading),
+    description: str(b.description),
+    ctaLabel: str(b.ctaLabel),
+    ctaHref: str(b.ctaHref),
+    entries: entries.length ? entries : undefined,
   };
 }

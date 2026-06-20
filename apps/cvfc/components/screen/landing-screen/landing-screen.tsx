@@ -12,7 +12,11 @@ import { FaqSection } from "@/components/feature/faq-section";
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { getFeaturedCoaches } from "@/data/coaches";
 import { getPage } from "@/lib/cms";
-import { heroSlidesFromPage, welcomeBannerFromPage } from "@/lib/cms-blocks";
+import {
+  heroSlidesFromPage,
+  welcomeBannerFromPage,
+  faqSectionFromPage,
+} from "@/lib/cms-blocks";
 
 type LandingScreenProps = {
   className?: string;
@@ -23,6 +27,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
   const page = await getPage("home");
   const heroSlides = heroSlidesFromPage(page);
   const welcome = welcomeBannerFromPage(page);
+  const faq = faqSectionFromPage(page);
 
   return (
     <>
@@ -295,7 +300,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
         />
 
         <Testimonials />
-        <FaqSection />
+        <FaqSection {...faq} />
 
         <Callout
           eyebrow="Take the First Step"

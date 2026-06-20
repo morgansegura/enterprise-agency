@@ -210,6 +210,29 @@ export interface Page {
           }
         | {
             heading?: string | null;
+            description?: string | null;
+            /**
+             * Highest-intent questions first.
+             */
+            entries?:
+              | {
+                  category?: string | null;
+                  question: string;
+                  answer: string;
+                  id?: string | null;
+                }[]
+              | null;
+            ctaLabel?: string | null;
+            /**
+             * e.g. /faq
+             */
+            ctaHref?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faqSection';
+          }
+        | {
+            heading?: string | null;
             body?: string | null;
             align?: ('left' | 'center') | null;
             id?: string | null;
@@ -1087,6 +1110,24 @@ export interface PagesSelect<T extends boolean = true> {
               heading?: T;
               body?: T;
               image?: T;
+              id?: T;
+              blockName?: T;
+            };
+        faqSection?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              entries?:
+                | T
+                | {
+                    category?: T;
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              ctaLabel?: T;
+              ctaHref?: T;
               id?: T;
               blockName?: T;
             };
