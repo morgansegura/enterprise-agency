@@ -66,11 +66,18 @@ export type PageBlock = { id?: string; blockType?: string } & Record<
   string,
   unknown
 >;
+export type PageMeta = {
+  title?: string | null;
+  description?: string | null;
+  image?: MediaValue;
+  noindex?: boolean | null;
+};
 export type Page = {
   id: string | number;
   title?: string;
   slug?: string;
   layout?: PageBlock[];
+  meta?: PageMeta | null;
 };
 
 /**

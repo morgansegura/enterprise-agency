@@ -8,6 +8,8 @@ import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { breadcrumbSchema } from "@/lib/schema";
+import { Blocks } from "@/components/blocks";
+import { getPage } from "@/lib/cms";
 
 const ABOUT_CARDS: IconCardEntry[] = [
   {
@@ -68,7 +70,8 @@ const ABOUT_CARDS: IconCardEntry[] = [
   },
 ];
 
-export function AboutScreen() {
+export async function AboutScreen() {
+  const page = await getPage("about");
   return (
     <>
       <JsonLd
@@ -80,47 +83,60 @@ export function AboutScreen() {
         ]}
       />
       <main>
-        <PageHero
-          eyebrow="About Chula Vista FC"
-          heading="44 years. One community. One crest."
-          description="Since 1982, CVFC has been a hometown soccer club for South Bay families — coaches who stay, players who grow, and a 501(c)(3) nonprofit where every dollar goes back to the kids on the field."
-          actions={
-            <>
-              <EvaluationCTA variant="default" label="Request an Evaluation" />
-              <Button
-                variant="outline"
-                render={<Link href="/about/who-we-are" />}
-              >
-                <span>Read our story</span>
-                <Icon token="ri:arrow-right" aria-hidden="true" />
-              </Button>
-            </>
-          }
-        />
+        {page?.layout?.length ? (
+          <Blocks layout={page.layout} />
+        ) : (
+          <>
+            <PageHero
+              eyebrow="About Chula Vista FC"
+              heading="44 years. One community. One crest."
+              description="Since 1982, CVFC has been a hometown soccer club for South Bay families — coaches who stay, players who grow, and a 501(c)(3) nonprofit where every dollar goes back to the kids on the field."
+              actions={
+                <>
+                  <EvaluationCTA
+                    variant="default"
+                    label="Request an Evaluation"
+                  />
+                  <Button
+                    variant="outline"
+                    render={<Link href="/about/who-we-are" />}
+                  >
+                    <span>Read our story</span>
+                    <Icon token="ri:arrow-right" aria-hidden="true" />
+                  </Button>
+                </>
+              }
+            />
 
-        <IconCards
-          eyebrow="Inside the Club"
-          heading="Get to know CVFC."
-          description="Five places to start — the story, the people, the fields, and the voices that make Chula Vista FC."
-          cards={ABOUT_CARDS}
-          background="bone"
-        />
+            <IconCards
+              eyebrow="Inside the Club"
+              heading="Get to know CVFC."
+              description="Five places to start — the story, the people, the fields, and the voices that make Chula Vista FC."
+              cards={ABOUT_CARDS}
+              background="bone"
+            />
 
-        <Callout
-          eyebrow="Come See For Yourself"
-          heading="Walk a CVFC field this week."
-          variant="bone"
-          body={
-            <>
-              Reading about a club is one thing. Stepping onto a training pitch
-              and meeting a coach is another. Submit an evaluation request and
-              we&rsquo;ll be in touch within 48 hours — in English or Spanish.
-            </>
-          }
-          ctaSlot={
-            <EvaluationCTA label="Request an Evaluation" variant="default" />
-          }
-        />
+            <Callout
+              eyebrow="Come See For Yourself"
+              heading="Walk a CVFC field this week."
+              variant="bone"
+              body={
+                <>
+                  Reading about a club is one thing. Stepping onto a training
+                  pitch and meeting a coach is another. Submit an evaluation
+                  request and we&rsquo;ll be in touch within 48 hours — in
+                  English or Spanish.
+                </>
+              }
+              ctaSlot={
+                <EvaluationCTA
+                  label="Request an Evaluation"
+                  variant="default"
+                />
+              }
+            />
+          </>
+        )}
       </main>
     </>
   );
