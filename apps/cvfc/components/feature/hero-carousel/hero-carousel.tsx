@@ -78,12 +78,19 @@ export function HeroCarousel({
 }: HeroCarouselProps) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [isPaused, setIsPaused] = React.useState(false);
+  // Mount a slide's image only once it's been shown — keeps the initial load to
+  // just the LCP image (slide 0) so its preload gets fetchpriority cleanly and
+  // mobile fetches one hero image instead of three.
+  const [loaded, setLoaded] = React.useState<ReadonlySet<number>>(
+    () => new Set([0]),
+  );
 
   const goTo = React.useCallback(
-    (index: number) =>
-      setSelectedIndex(
-        ((index % slides.length) + slides.length) % slides.length,
-      ),
+    (index: number) => {
+      const i = ((index % slides.length) + slides.length) % slides.length;
+      setSelectedIndex(i);
+      setLoaded((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
+    },
     [slides.length],
   );
 
@@ -91,10 +98,10 @@ export function HeroCarousel({
   React.useEffect(() => {
     if (!autoPlayDelay || slides.length < 2) return;
     const interval = setInterval(() => {
-      if (!isPaused) setSelectedIndex((prev) => (prev + 1) % slides.length);
+      if (!isPaused) goTo(selectedIndex + 1);
     }, autoPlayDelay);
     return () => clearInterval(interval);
-  }, [autoPlayDelay, isPaused, slides.length]);
+  }, [autoPlayDelay, isPaused, slides.length, selectedIndex, goTo]);
 
   // Pointer/touch swipe — one handler covers mouse drag and touch.
   const dragStartX = React.useRef<number | null>(null);
@@ -130,6 +137,7 @@ export function HeroCarousel({
               slide={slide}
               index={index}
               selectedIndex={selectedIndex}
+              shouldLoad={loaded.has(index)}
             />
           ))}
         </div>
@@ -176,9 +184,10 @@ type SlideProps = {
   slide: HeroSlide;
   index: number;
   selectedIndex: number;
+  shouldLoad: boolean;
 };
 
-function Slide({ slide, index, selectedIndex }: SlideProps) {
+function Slide({ slide, index, selectedIndex, shouldLoad }: SlideProps) {
   const isActive = index === selectedIndex;
   const lines = slide.heading.split("\n");
 
@@ -196,14 +205,16 @@ function Slide({ slide, index, selectedIndex }: SlideProps) {
           : "hero-carousel-slide-inactive",
       )}
     >
-      <Image
-        src={slide.image.src}
-        alt={slide.image.alt}
-        fill
-        priority={index === 0}
-        sizes="100vw"
-        className="hero-carousel-slide-image"
-      />
+      {shouldLoad ? (
+        <Image
+          src={slide.image.src}
+          alt={slide.image.alt}
+          fill
+          priority={index === 0}
+          sizes="100vw"
+          className="hero-carousel-slide-image"
+        />
+      ) : null}
       <div className="hero-carousel-slide-overlay" aria-hidden="true" />
       <div className="hero-carousel-slide-content contain">
         {slide.eyebrow ? (

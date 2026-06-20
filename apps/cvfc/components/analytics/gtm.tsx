@@ -1,19 +1,56 @@
-import Script from "next/script";
+"use client";
+
+import { useEffect } from "react";
+
+declare global {
+  interface Window {
+    __gtmLoaded?: boolean;
+  }
+}
 
 /**
- * Google Tag Manager — loads only when `NEXT_PUBLIC_GTM_ID` is set, so the site
- * ships analytics-ready but inert until a container is configured per tenant.
- * GTM respects the Consent Mode defaults set by <ConsentDefaults />.
+ * Google Tag Manager — loaded only when `NEXT_PUBLIC_GTM_ID` is set, and
+ * **deferred off the critical path**: it injects on the first user interaction
+ * or after a short idle, so GTM/GA's ~hundreds of KB of JS don't block initial
+ * render / LCP. Consent Mode defaults (set inline in <head>) are already in
+ * place, so no analytics fire before consent regardless of when GTM loads.
  */
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 export function GoogleTagManager() {
-  if (!GTM_ID) return null;
-  return (
-    <Script id="gtm-loader" strategy="afterInteractive">
-      {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
-    </Script>
-  );
+  useEffect(() => {
+    if (!GTM_ID || window.__gtmLoaded) return;
+
+    const load = () => {
+      if (window.__gtmLoaded) return;
+      window.__gtmLoaded = true;
+      const w = window;
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+      document.head.appendChild(s);
+      cleanup();
+    };
+
+    const events = ["scroll", "mousemove", "touchstart", "keydown", "click"];
+    const cleanup = () => {
+      events.forEach((e) => window.removeEventListener(e, load));
+    };
+    events.forEach((e) =>
+      window.addEventListener(e, load, { once: true, passive: true }),
+    );
+    // Fallback so analytics still fire for no-interaction sessions.
+    const idle = window.setTimeout(load, 4000);
+
+    return () => {
+      window.clearTimeout(idle);
+      cleanup();
+    };
+  }, []);
+
+  return null;
 }
 
 /** GTM <noscript> fallback — render right after <body> opens. */
