@@ -4,6 +4,7 @@ import { Hero } from '../blocks/Hero'
 import { WelcomeBanner } from '../blocks/WelcomeBanner'
 import { FaqSectionBlock } from '../blocks/FaqSection'
 import { TestimonialsBlock } from '../blocks/TestimonialsSection'
+import { MediaSplit } from '../blocks/MediaSplit'
 import { Content } from '../blocks/Content'
 import { RichTextBlock } from '../blocks/RichText'
 import { CallToAction } from '../blocks/CallToAction'
@@ -100,6 +101,7 @@ export const Pages: CollectionConfig = {
         WelcomeBanner,
         FaqSectionBlock,
         TestimonialsBlock,
+        MediaSplit,
         Content,
         RichTextBlock,
         CallToAction,

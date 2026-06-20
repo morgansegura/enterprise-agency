@@ -7,6 +7,7 @@ import {
   mediaUrl,
   type MediaValue,
   type Page,
+  type PageBlock,
 } from "@/lib/cms";
 
 /**
@@ -180,5 +181,48 @@ export function testimonialsFromPage(
     heading: str(b.heading),
     description: str(b.description),
     testimonials: testimonials.length ? testimonials : undefined,
+  };
+}
+
+type RawMediaButton = {
+  label?: string;
+  href?: string;
+  variant?: string;
+  iconToken?: string;
+};
+
+/** A single CMS `mediaSplit` block → MediaSplit props (used by the renderer). */
+export function mediaSplitFromBlock(b: PageBlock) {
+  const src = mediaUrl(b.image as MediaValue);
+  const tags = Array.isArray(b.tags)
+    ? (b.tags as { label?: string }[])
+        .map((t) => str(t.label))
+        .filter((t): t is string => Boolean(t))
+    : [];
+  const buttons = Array.isArray(b.buttons)
+    ? (b.buttons as RawMediaButton[])
+        .map((bt) => ({
+          label: str(bt.label) ?? "",
+          href: str(bt.href) ?? "#",
+          variant: (str(bt.variant) ?? "secondary") as
+            | "default"
+            | "secondary"
+            | "outline",
+          iconToken: str(bt.iconToken),
+        }))
+        .filter((bt) => bt.label)
+    : [];
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading) ?? "",
+    body: str(b.body) ?? "",
+    image: {
+      src: src ?? "",
+      alt: str(b.imageAlt) ?? mediaAlt(b.image as MediaValue) ?? "",
+    },
+    tags: tags.length ? tags : undefined,
+    background: str(b.background) === "white" ? ("white" as const) : undefined,
+    reverse: Boolean(b.reverse),
+    buttons: buttons.length ? buttons : undefined,
   };
 }

@@ -248,6 +248,39 @@ export interface Page {
             blockType: 'testimonialsSection';
           }
         | {
+            eyebrow?: string | null;
+            heading: string;
+            body?: string | null;
+            /**
+             * Served from the media CDN.
+             */
+            image?: (number | null) | Media;
+            imageAlt?: string | null;
+            tags?:
+              | {
+                  label: string;
+                  id?: string | null;
+                }[]
+              | null;
+            background?: ('bone' | 'white') | null;
+            /**
+             * Flip image/content sides.
+             */
+            reverse?: boolean | null;
+            buttons?:
+              | {
+                  label: string;
+                  href: string;
+                  variant?: ('default' | 'secondary' | 'outline') | null;
+                  iconToken?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'mediaSplit';
+          }
+        | {
             heading?: string | null;
             body?: string | null;
             align?: ('left' | 'center') | null;
@@ -1159,6 +1192,34 @@ export interface PagesSelect<T extends boolean = true> {
                     author?: T;
                     role?: T;
                     image?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        mediaSplit?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              body?: T;
+              image?: T;
+              imageAlt?: T;
+              tags?:
+                | T
+                | {
+                    label?: T;
+                    id?: T;
+                  };
+              background?: T;
+              reverse?: T;
+              buttons?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    variant?: T;
+                    iconToken?: T;
                     id?: T;
                   };
               id?: T;

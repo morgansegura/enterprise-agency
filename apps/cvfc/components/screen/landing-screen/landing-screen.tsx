@@ -11,6 +11,7 @@ import { Testimonials } from "@/components/feature/testimonials";
 import { FaqSection } from "@/components/feature/faq-section";
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { getFeaturedCoaches } from "@/data/coaches";
+import { Blocks } from "@/components/blocks";
 import { getPage } from "@/lib/cms";
 import {
   heroSlidesFromPage,
@@ -30,6 +31,8 @@ export async function LandingScreen({ className }: LandingScreenProps) {
   const welcome = welcomeBannerFromPage(page);
   const faq = faqSectionFromPage(page);
   const testimonials = testimonialsFromPage(page);
+  const hasCmsMediaSplits =
+    page?.layout?.some((b) => b.blockType === "mediaSplit") ?? false;
 
   return (
     <>
@@ -95,129 +98,135 @@ export async function LandingScreen({ className }: LandingScreenProps) {
           }}
         />
 
-        <MediaSplit
-          eyebrow="Player Development"
-          heading="Foundations of the Game"
-          body="From our Mini Maestros to CVFC Youth teams, Chula Vista FC builds a strong foundation for future success. Our youngest players learn the game through fun, engaging, and skill-focused sessions, while developing the confidence, discipline, and technique needed to thrive as they progress through our development pathway."
-          image={{
-            src: "https://chulavistafc.com/wp-content/uploads/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg",
-            alt: "Mini Maestros training",
-          }}
-          tags={["Mini Maestros", "CVFC Youth", "Ages 4–9"]}
-          buttons={[
-            {
-              label: "More about Foundations",
-              href: "/programs/foundations",
-              variant: "secondary",
-              iconToken: "ri:soccer-ball",
-            },
-          ]}
-        />
+        {hasCmsMediaSplits ? (
+          <Blocks layout={page?.layout} only={["mediaSplit"]} />
+        ) : (
+          <>
+            <MediaSplit
+              eyebrow="Player Development"
+              heading="Foundations of the Game"
+              body="From our Mini Maestros to CVFC Youth teams, Chula Vista FC builds a strong foundation for future success. Our youngest players learn the game through fun, engaging, and skill-focused sessions, while developing the confidence, discipline, and technique needed to thrive as they progress through our development pathway."
+              image={{
+                src: "https://chulavistafc.com/wp-content/uploads/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg",
+                alt: "Mini Maestros training",
+              }}
+              tags={["Mini Maestros", "CVFC Youth", "Ages 4–9"]}
+              buttons={[
+                {
+                  label: "More about Foundations",
+                  href: "/programs/foundations",
+                  variant: "secondary",
+                  iconToken: "ri:soccer-ball",
+                },
+              ]}
+            />
 
-        <MediaSplit
-          eyebrow="Goalkeeper Pathway"
-          heading="Goalkeeper Pathway"
-          background="white"
-          reverse
-          body="From the youngest age groups to elite competition, our goalkeeper pathway provides specialized training at every stage. Players develop technical skills, tactical awareness, and mental resilience under expert guidance. The goal is clear — prepare keepers to excel at the highest levels of club, college, and professional play."
-          image={{
-            src: "https://chulavistafc.com/wp-content/uploads/2023/11/Goalkeepers-pic.jpg",
-            alt: "CVFC goalkeepers in training",
-          }}
-          tags={["Specialty Training", "All Ages", "College/Pro Pathway"]}
-          buttons={[
-            {
-              label: "Request an Evaluation",
-              href: "/evaluations",
-              variant: "outline",
-              iconToken: "ri:badge",
-            },
-            {
-              label: "Goalkeepers",
-              href: "/programs/goalkeeper-pathway",
-              variant: "secondary",
-              iconToken: "ri:soccer-ball",
-            },
-          ]}
-        />
+            <MediaSplit
+              eyebrow="Goalkeeper Pathway"
+              heading="Goalkeeper Pathway"
+              background="white"
+              reverse
+              body="From the youngest age groups to elite competition, our goalkeeper pathway provides specialized training at every stage. Players develop technical skills, tactical awareness, and mental resilience under expert guidance. The goal is clear — prepare keepers to excel at the highest levels of club, college, and professional play."
+              image={{
+                src: "https://chulavistafc.com/wp-content/uploads/2023/11/Goalkeepers-pic.jpg",
+                alt: "CVFC goalkeepers in training",
+              }}
+              tags={["Specialty Training", "All Ages", "College/Pro Pathway"]}
+              buttons={[
+                {
+                  label: "Request an Evaluation",
+                  href: "/evaluations",
+                  variant: "outline",
+                  iconToken: "ri:badge",
+                },
+                {
+                  label: "Goalkeepers",
+                  href: "/programs/goalkeeper-pathway",
+                  variant: "secondary",
+                  iconToken: "ri:soccer-ball",
+                },
+              ]}
+            />
 
-        <MediaSplit
-          eyebrow="Girls Competitive Pathway"
-          heading="Girls Competitive Pathway"
-          body={
-            <>
-              Chula Vista FC is proud to offer elite opportunities for our
-              female athletes, including <strong>NPL</strong> and{" "}
-              <strong>DPL</strong> competition, with{" "}
-              <strong>Girl&rsquo;s Academy (GA)</strong> and{" "}
-              <strong>GA Aspire</strong> coming soon. We also compete in the{" "}
-              <strong>SoCal League Flight system</strong>, giving players the
-              perfect level of competition to match their development. These
-              top-tier leagues and pathways ensure our players receive the
-              highest level of training, competition, and exposure — helping
-              them reach their full potential on and off the field.
-            </>
-          }
-          image={{
-            src: "https://chulavistafc.com/wp-content/uploads/2024/02/IMG_6349.jpg",
-            alt: "CVFC girls competitive player",
-          }}
-          tags={["SoCal Flight", "NPL", "DPL", "GA Aspire", "GA"]}
-          buttons={[
-            {
-              label: "Request an Evaluation",
-              href: "/evaluations",
-              variant: "outline",
-              iconToken: "ri:badge",
-            },
-            {
-              label: "Girl's Pathway",
-              href: "/programs/girls-competitive-pathway",
-              variant: "secondary",
-              iconToken: "ri:soccer-ball",
-            },
-          ]}
-        />
+            <MediaSplit
+              eyebrow="Girls Competitive Pathway"
+              heading="Girls Competitive Pathway"
+              body={
+                <>
+                  Chula Vista FC is proud to offer elite opportunities for our
+                  female athletes, including <strong>NPL</strong> and{" "}
+                  <strong>DPL</strong> competition, with{" "}
+                  <strong>Girl&rsquo;s Academy (GA)</strong> and{" "}
+                  <strong>GA Aspire</strong> coming soon. We also compete in the{" "}
+                  <strong>SoCal League Flight system</strong>, giving players
+                  the perfect level of competition to match their development.
+                  These top-tier leagues and pathways ensure our players receive
+                  the highest level of training, competition, and exposure —
+                  helping them reach their full potential on and off the field.
+                </>
+              }
+              image={{
+                src: "https://chulavistafc.com/wp-content/uploads/2024/02/IMG_6349.jpg",
+                alt: "CVFC girls competitive player",
+              }}
+              tags={["SoCal Flight", "NPL", "DPL", "GA Aspire", "GA"]}
+              buttons={[
+                {
+                  label: "Request an Evaluation",
+                  href: "/evaluations",
+                  variant: "outline",
+                  iconToken: "ri:badge",
+                },
+                {
+                  label: "Girl's Pathway",
+                  href: "/programs/girls-competitive-pathway",
+                  variant: "secondary",
+                  iconToken: "ri:soccer-ball",
+                },
+              ]}
+            />
 
-        <MediaSplit
-          eyebrow="Boys Competitive Pathway"
-          heading="Boys Competitive Pathway"
-          background="white"
-          reverse
-          body={
-            <>
-              Chula Vista FC offers one of the strongest competitive pathways
-              for boys in Southern California, featuring{" "}
-              <strong>MLS NEXT</strong> and <strong>MLS NEXT 2</strong>, along
-              with <strong>Elite Academy (EA)</strong> and <strong>EA 2</strong>
-              . We also compete in the{" "}
-              <strong>SoCal League Flight system</strong>, providing the right
-              level of competition for every stage of development. These
-              platforms give our players elite training, top-level competition,
-              and national exposure — preparing them to excel at the highest
-              levels of the game.
-            </>
-          }
-          image={{
-            src: "https://chulavistafc.com/wp-content/uploads/2024/05/IMG_0867.jpg",
-            alt: "CVFC boys competitive team",
-          }}
-          tags={["SoCal Flight", "EA 2", "EA", "MLS NEXT 2", "MLS NEXT"]}
-          buttons={[
-            {
-              label: "Request an Evaluation",
-              href: "/evaluations",
-              variant: "outline",
-              iconToken: "ri:badge",
-            },
-            {
-              label: "Boy's Pathway",
-              href: "/programs/boys-competitive-pathway",
-              variant: "secondary",
-              iconToken: "ri:soccer-ball",
-            },
-          ]}
-        />
+            <MediaSplit
+              eyebrow="Boys Competitive Pathway"
+              heading="Boys Competitive Pathway"
+              background="white"
+              reverse
+              body={
+                <>
+                  Chula Vista FC offers one of the strongest competitive
+                  pathways for boys in Southern California, featuring{" "}
+                  <strong>MLS NEXT</strong> and <strong>MLS NEXT 2</strong>,
+                  along with <strong>Elite Academy (EA)</strong> and{" "}
+                  <strong>EA 2</strong>. We also compete in the{" "}
+                  <strong>SoCal League Flight system</strong>, providing the
+                  right level of competition for every stage of development.
+                  These platforms give our players elite training, top-level
+                  competition, and national exposure — preparing them to excel
+                  at the highest levels of the game.
+                </>
+              }
+              image={{
+                src: "https://chulavistafc.com/wp-content/uploads/2024/05/IMG_0867.jpg",
+                alt: "CVFC boys competitive team",
+              }}
+              tags={["SoCal Flight", "EA 2", "EA", "MLS NEXT 2", "MLS NEXT"]}
+              buttons={[
+                {
+                  label: "Request an Evaluation",
+                  href: "/evaluations",
+                  variant: "outline",
+                  iconToken: "ri:badge",
+                },
+                {
+                  label: "Boy's Pathway",
+                  href: "/programs/boys-competitive-pathway",
+                  variant: "secondary",
+                  iconToken: "ri:soccer-ball",
+                },
+              ]}
+            />
+          </>
+        )}
 
         <StatBand
           eyebrow="By the Numbers"
