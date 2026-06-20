@@ -21,7 +21,7 @@
 }
 
 .cookie-banner-link {
-  @apply font-medium text-(--primary) underline underline-offset-2;
+  @apply font-medium text-(--color-gold) underline underline-offset-2;
 }
 
 .cookie-banner-actions {

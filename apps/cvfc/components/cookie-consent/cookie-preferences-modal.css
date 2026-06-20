@@ -38,7 +38,7 @@
 
 /* base-ui Switch sets data-checked on Root + Thumb when on. */
 .cookie-switch {
-  @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border border-(--border) bg-(--border) transition-colors data-[checked]:bg-(--primary) disabled:cursor-not-allowed disabled:opacity-60;
+  @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full bg-(--color-midnight)/15 transition-colors data-[checked]:bg-(--color-midnight) data-[disabled]:cursor-not-allowed data-[disabled]:opacity-45;
 }
 
 .cookie-switch-thumb {
