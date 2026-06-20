@@ -197,6 +197,28 @@ export interface Page {
             blockType: 'hero';
           }
         | {
+            eyebrow: string;
+            heading: string;
+            description?: string | null;
+            background?: ('white' | 'bone') | null;
+            actions?:
+              | {
+                  kind?: ('link' | 'evaluation') | null;
+                  label: string;
+                  /**
+                   * Destination URL (for Link actions).
+                   */
+                  href?: string | null;
+                  variant?: ('default' | 'secondary' | 'outline') | null;
+                  iconToken?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pageHero';
+          }
+        | {
             eyebrow?: string | null;
             heading?: string | null;
             body?: string | null;
@@ -1237,6 +1259,26 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               autoPlayDelay?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pageHero?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+              background?: T;
+              actions?:
+                | T
+                | {
+                    kind?: T;
+                    label?: T;
+                    href?: T;
+                    variant?: T;
+                    iconToken?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };

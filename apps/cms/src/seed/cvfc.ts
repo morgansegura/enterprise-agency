@@ -23,6 +23,74 @@ const WELCOME_BODY =
 
 const MANAGED = new Set(['welcomeBanner', 'faqSection', 'testimonialsSection'])
 
+/**
+ * The /programs page layout. Image-bearing sections (mediaSplit) are added once
+ * the photos are uploaded in the CMS — these three blocks need no uploads, so
+ * the page renders cleanly straight from the seed.
+ */
+const PROGRAMS_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Programs & Pathways',
+    heading: 'From first touch to college and pro.',
+    description:
+      'CVFC offers a clear, structured pathway from Mini Maestros at age 4 through MLS NEXT, Elite Academy, NPL, and DPL. Every stage builds technical skill, tactical understanding, and character — preparing players for top leagues, college programs, and beyond.',
+    background: 'white',
+    actions: [
+      { kind: 'evaluation', label: 'Request an Evaluation', variant: 'default' },
+      {
+        kind: 'link',
+        label: 'Learn About Tryouts',
+        href: '/evaluations',
+        variant: 'outline',
+        iconToken: 'ri:badge',
+      },
+    ],
+  },
+  {
+    blockType: 'iconCards',
+    eyebrow: 'The Pathway',
+    heading: 'Strategic Development Pathway',
+    description:
+      'Our goal is simple — to prepare and train every athlete to advance, building the skills, mindset, and passion needed to move up and succeed at each stage of the game.',
+    background: 'bone',
+    cards: [
+      {
+        iconToken: 'custom:soccer-ball',
+        title: 'Foundations of the Game',
+        description:
+          'Where players begin their journey in programs like Mini Maestros and CVFC Youth. We focus on technical skills, coordination, and a love for the game, building the right attitude for future growth.',
+      },
+      {
+        iconToken: 'custom:soccer-field',
+        title: 'Growth and Development',
+        description:
+          'As players advance, training becomes more focused on tactical awareness, teamwork, and respect for the game. Our development stages prepare athletes for competitive play while keeping training fun and engaging.',
+      },
+      {
+        iconToken: 'custom:medal',
+        title: 'Competitive Readiness',
+        description:
+          'Players enter leagues that match their level, from the SoCal League Flight system to advanced programs like DPL, NPL, EA, and MLS NEXT. Here, unity and team culture drive performance and prepare athletes for higher challenges.',
+      },
+      {
+        iconToken: 'custom:mountain-peak',
+        title: 'Striving for Excellence',
+        description:
+          'For those ready to take the next step, this is where dreams become reality. Players showcase their talent where it matters most — in front of college recruiters and professional academy scouts.',
+      },
+    ],
+  },
+  {
+    blockType: 'callout',
+    eyebrow: 'Take the First Step',
+    heading: 'Ready to play for Chula Vista?',
+    variant: 'bone',
+    body: "Choose your player's date of birth and gender, complete the registration, and a CVFC coach will be in touch with your tryout invitation.",
+    cta: { label: 'Request an Evaluation', href: '/evaluations', variant: 'default' },
+  },
+]
+
 async function seed() {
   const payload = await getPayload({ config })
 
@@ -93,8 +161,45 @@ async function seed() {
     overrideAccess: true,
   })
 
+  // --- /programs page (find-or-create) ---
+  const programsExisting = await payload.find({
+    collection: 'pages',
+    where: {
+      and: [{ slug: { equals: 'programs' } }, { tenant: { equals: tenant.id } }],
+    },
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  })
+  const programsPage = programsExisting.docs[0]
+  if (programsPage) {
+    await payload.update({
+      collection: 'pages',
+      id: programsPage.id,
+      data: { layout: PROGRAMS_LAYOUT as never, _status: 'published' },
+      depth: 0,
+      overrideAccess: true,
+    })
+  } else {
+    await payload.create({
+      collection: 'pages',
+      data: {
+        title: 'Programs & Pathways',
+        slug: 'programs',
+        tenant: tenant.id,
+        layout: PROGRAMS_LAYOUT as never,
+        _status: 'published',
+      },
+      depth: 0,
+      overrideAccess: true,
+    })
+  }
+
   console.log(
-    `✓ Seeded cvfc home — welcomeBanner, faqSection (${faqSection.entries.length} Q&As), testimonialsSection (${testimonialsSection.testimonials.length}). Preserved ${kept.length} other block(s). Upload images in the CMS.`,
+    `✓ Seeded cvfc home — welcomeBanner, faqSection (${faqSection.entries.length} Q&As), testimonialsSection (${testimonialsSection.testimonials.length}). Preserved ${kept.length} other block(s).`,
+  )
+  console.log(
+    `✓ Seeded cvfc /programs — pageHero, iconCards (4), callout. Add media-splits after uploading their photos.`,
   )
   process.exit(0)
 }

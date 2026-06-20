@@ -297,6 +297,47 @@ export function calloutFromBlock(b: PageBlock) {
   };
 }
 
+export type PageHeroAction = {
+  kind: "link" | "evaluation";
+  label: string;
+  href?: string;
+  variant: "default" | "secondary" | "outline";
+  iconToken?: string;
+};
+
+type RawHeroAction = {
+  kind?: string;
+  label?: string;
+  href?: string;
+  variant?: string;
+  iconToken?: string;
+};
+
+/** A single CMS `pageHero` block → PageHero props (used by the renderer). */
+export function pageHeroFromBlock(b: PageBlock) {
+  const actions = (
+    Array.isArray(b.actions) ? (b.actions as RawHeroAction[]) : []
+  )
+    .map(
+      (a): PageHeroAction => ({
+        kind: a.kind === "evaluation" ? "evaluation" : "link",
+        label: str(a.label) ?? "",
+        href: str(a.href),
+        variant: (str(a.variant) ?? "default") as PageHeroAction["variant"],
+        iconToken: str(a.iconToken),
+      }),
+    )
+    .filter((a) => a.label && (a.kind === "evaluation" || a.href));
+  return {
+    eyebrow: str(b.eyebrow) ?? "",
+    heading: str(b.heading) ?? "",
+    description: str(b.description),
+    background:
+      str(b.background) === "bone" ? ("bone" as const) : ("white" as const),
+    actions,
+  };
+}
+
 // --- block-based mappers for the full-page renderer (single-instance sections) ---
 
 export function heroFromBlock(b: PageBlock) {

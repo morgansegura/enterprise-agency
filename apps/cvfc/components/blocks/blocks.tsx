@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 import { HeroCarousel } from "@/components/feature/hero-carousel";
 import { WelcomeBanner } from "@/components/feature/welcome-banner";
@@ -9,6 +10,10 @@ import { StatBand } from "@/components/feature/stat-band";
 import { PortraitGrid } from "@/components/feature/portrait-grid";
 import { Testimonials } from "@/components/feature/testimonials";
 import { FaqSection } from "@/components/feature/faq-section";
+import { PageHero } from "@/components/feature/page-hero";
+import { EvaluationCTA } from "@/components/feature/evaluation-cta";
+import { Button } from "@/components/ui";
+import { Icon } from "@/components/icon";
 import {
   heroFromBlock,
   welcomeFromBlock,
@@ -19,8 +24,36 @@ import {
   portraitGridFromBlock,
   testimonialsFromBlock,
   faqFromBlock,
+  pageHeroFromBlock,
+  type PageHeroAction,
 } from "@/lib/cms-blocks";
 import type { PageBlock } from "@/lib/cms";
+
+/** Builds the PageHero `actions` slot from CMS action rows. */
+function PageHeroActions({ actions }: { actions: PageHeroAction[] }) {
+  if (!actions.length) return null;
+  return (
+    <>
+      {actions.map((a, i) =>
+        a.kind === "evaluation" ? (
+          <EvaluationCTA key={i} variant={a.variant} label={a.label} />
+        ) : (
+          <Button
+            key={i}
+            variant={a.variant}
+            render={<Link href={a.href ?? "#"} />}
+          >
+            {a.iconToken ? (
+              <Icon token={a.iconToken as never} aria-hidden="true" />
+            ) : null}
+            <span>{a.label}</span>
+            <Icon token="ri:arrow-right" aria-hidden="true" />
+          </Button>
+        ),
+      )}
+    </>
+  );
+}
 
 /**
  * Renders CMS layout blocks in order via a registry — for repeating sections
@@ -29,6 +62,16 @@ import type { PageBlock } from "@/lib/cms";
  */
 const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
   hero: (block, key) => <HeroCarousel key={key} {...heroFromBlock(block)} />,
+  pageHero: (block, key) => {
+    const { actions, ...rest } = pageHeroFromBlock(block);
+    return (
+      <PageHero
+        key={key}
+        {...rest}
+        actions={<PageHeroActions actions={actions} />}
+      />
+    );
+  },
   welcomeBanner: (block, key) => (
     <WelcomeBanner key={key} {...welcomeFromBlock(block)} />
   ),
