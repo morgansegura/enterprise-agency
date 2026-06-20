@@ -1,17 +1,13 @@
-import React from 'react'
-
-/** Admin icon — the compact mark (collapsed nav). Agency brand. */
+/** Admin nav icon — the Web & Funnel helmet mark. */
 export function Icon() {
   return (
-    <span
-      style={{
-        fontSize: '1.4rem',
-        fontWeight: 800,
-        letterSpacing: '-0.02em',
-        color: 'var(--theme-elevation-1000)',
-      }}
-    >
-      W<span style={{ color: '#c9a227' }}>&amp;</span>F
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/web-and-funnel-icon.svg"
+      alt="Web & Funnel"
+      width={28}
+      height={28}
+      style={{ display: 'block' }}
+    />
   )
 }
