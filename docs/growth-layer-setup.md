@@ -127,16 +127,36 @@ routes) with a route-specific `title` + `description` and a relative
   Preferences modal (base-ui `Switch`) + footer re-open trigger. Wired in
   `app/layout.tsx` and the footer.
 
-### 11. PageSpeed / CWV — _Wave 3 (in progress)_
+### 11. PageSpeed / CWV — _done (cvfc: 99 mobile / 98 desktop Performance)_
 
-- `next.config.ts` → `images.formats: ["image/avif","image/webp"]`.
-- **LCP:** hero slide background → `next/image` with `fill` + `priority` on the
-  first slide (auto-preloads the LCP image); welcome-banner `<img>` →
-  `next/image fill`.
-- Fonts are already optimal via `next/font` (self-hosted, `display:swap`).
-- _Remaining:_ convert the other below-the-fold raw images (media-split,
-  portrait-grid, news cards) to `next/image`; run PageSpeed Insights.
-- Targets: LCP < 2.5s, INP < 200ms, CLS < 0.1.
+The high-impact levers (these moved cvfc from 63→99 mobile — apply to every site):
+
+- **Defer GTM off the critical path** — load GTM on first interaction or ~4s
+  idle (not `afterInteractive`). Analytics JS (~hundreds of KB) is the single
+  biggest mobile-Performance hit once a GTM ID is set; deferring recovers it.
+  Consent Mode defaults already block pre-consent firing regardless of timing.
+- **Single prioritized LCP image** — hero carousels mount **only the active
+  slide's image** (`priority` on slide 0); deferring the other slides gives the
+  LCP image a clean `fetchpriority=high` preload and cuts mobile payload 3×.
+- `next.config.ts` → `images.formats: ["image/avif","image/webp"]`; all images
+  (hero, welcome, media-split, portrait-grid, field-grid) on `next/image`.
+- Fonts already optimal via `next/font` (self-hosted, `display:swap`).
+- **CDN images**: serve content images from R2 (edge CDN), not a slow external
+  host through the optimizer — kills cross-origin LCP latency. Happens naturally
+  once the hero is CMS-driven.
+- Targets met: LCP, INP, CLS all green; CLS 0.
+
+### 12. Agentic Browsing (2026 Lighthouse category)
+
+- `llms.txt` must follow the **llmstxt.org spec**: `# H1` + `> blockquote`
+  summary + `##` sections containing **markdown link lists**
+  (`- [name](url): notes`). Prose-only sections fail the audit. (cvfc: 2/3 → 3/3.)
+
+### 13. Accessibility note
+
+- Brand gold (`#a08629`) fails WCAG AA contrast as small text on white and as
+  white-on-gold buttons (~3.4:1). Per client, decide: navy text on gold buttons
+  (passes), and a deeper gold or navy for small gold text. Lighthouse flags it.
 
 ---
 
