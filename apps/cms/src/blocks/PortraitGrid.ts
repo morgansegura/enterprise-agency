@@ -26,6 +26,11 @@ export const PortraitGridBlock: Block = {
         { name: 'role', type: 'text' },
         { name: 'credential', type: 'text' },
         { name: 'image', type: 'upload', relationTo: 'media' },
+        {
+          name: 'imageUrl',
+          type: 'text',
+          admin: { description: 'External image URL — used when no upload is set.' },
+        },
       ],
     },
     {

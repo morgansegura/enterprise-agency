@@ -193,7 +193,7 @@ type RawMediaButton = {
 
 /** A single CMS `mediaSplit` block → MediaSplit props (used by the renderer). */
 export function mediaSplitFromBlock(b: PageBlock) {
-  const src = mediaUrl(b.image as MediaValue);
+  const src = mediaUrl(b.image as MediaValue) ?? str(b.imageUrl);
   const tags = Array.isArray(b.tags)
     ? (b.tags as { label?: string }[])
         .map((t) => str(t.label))
@@ -466,11 +466,12 @@ export function portraitGridFromBlock(b: PageBlock) {
           role?: string;
           credential?: string;
           image?: MediaValue;
+          imageUrl?: string;
         }[])
       : []
   )
     .map((p, i) => {
-      const src = mediaUrl(p.image);
+      const src = mediaUrl(p.image) ?? str(p.imageUrl);
       return {
         id: String(i),
         name: str(p.name) ?? "",

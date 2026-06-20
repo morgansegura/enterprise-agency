@@ -274,9 +274,13 @@ export interface Page {
             heading: string;
             body?: string | null;
             /**
-             * Served from the media CDN.
+             * Served from the media CDN. Takes priority over Image URL.
              */
             image?: (number | null) | Media;
+            /**
+             * External image URL — used when no upload is set (migration/seed). Prefer an upload for new content.
+             */
+            imageUrl?: string | null;
             imageAlt?: string | null;
             tags?:
               | {
@@ -377,6 +381,10 @@ export interface Page {
                   role?: string | null;
                   credential?: string | null;
                   image?: (number | null) | Media;
+                  /**
+                   * External image URL — used when no upload is set.
+                   */
+                  imageUrl?: string | null;
                   id?: string | null;
                 }[]
               | null;
@@ -1334,6 +1342,7 @@ export interface PagesSelect<T extends boolean = true> {
               heading?: T;
               body?: T;
               image?: T;
+              imageUrl?: T;
               imageAlt?: T;
               tags?:
                 | T
@@ -1440,6 +1449,7 @@ export interface PagesSelect<T extends boolean = true> {
                     role?: T;
                     credential?: T;
                     image?: T;
+                    imageUrl?: T;
                     id?: T;
                   };
               cta?:

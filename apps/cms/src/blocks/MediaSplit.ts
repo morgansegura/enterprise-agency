@@ -16,7 +16,15 @@ export const MediaSplit: Block = {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      admin: { description: 'Served from the media CDN.' },
+      admin: { description: 'Served from the media CDN. Takes priority over Image URL.' },
+    },
+    {
+      name: 'imageUrl',
+      type: 'text',
+      admin: {
+        description:
+          'External image URL — used when no upload is set (migration/seed). Prefer an upload for new content.',
+      },
     },
     { name: 'imageAlt', type: 'text' },
     {
