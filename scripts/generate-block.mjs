@@ -3,7 +3,8 @@
 //   • Payload block schema      → apps/cms/src/blocks/<Name>.ts
 //   • register it               → apps/cms/src/collections/Pages.ts (layout.blocks)
 //   • typed FE feature          → apps/<tenant>/components/feature/<name>/
-//   • binding hint              → printed for the screen
+//   • FE mapper                 → apps/<tenant>/lib/cms-blocks.ts (fallback-safe)
+//   • bind + seed hints         → printed for the screen
 //
 //   bun run gen:block <name> [tenant=cvfc]
 import fs from "node:fs";
@@ -144,13 +145,48 @@ write(
   `export { ${P}, type ${P}Props } from "./${k}";\n`,
 );
 
-// 4) Binding hint
+// 4) FE mapper in lib/cms-blocks.ts (fallback-safe: empty CMS → feature defaults)
+const cmsBlocksFile = path.join(ROOT, "apps", tenant, "lib/cms-blocks.ts");
+const mapperFn = `
+export function ${slug}FromPage(page: Page | null) {
+  const b = blockOf(page, "${slug}");
+  if (!b) return undefined;
+  return {
+    heading: str(b.heading),
+    body: str(b.body),
+  };
+}
+`;
+if (fs.existsSync(cmsBlocksFile)) {
+  const existing = fs.readFileSync(cmsBlocksFile, "utf8");
+  if (existing.includes(`${slug}FromPage`)) {
+    log(`• ${slug}FromPage already in cms-blocks.ts`, "dim");
+  } else {
+    fs.writeFileSync(cmsBlocksFile, `${existing.trimEnd()}\n${mapperFn}`);
+    log(`✓ added ${slug}FromPage mapper to lib/cms-blocks.ts`, "green");
+  }
+} else {
+  write(
+    cmsBlocksFile,
+    `import { blockOf, type Page } from "@/lib/cms";
+
+const str = (v: unknown): string | undefined =>
+  typeof v === "string" && v.trim() !== "" ? v : undefined;
+${mapperFn}`,
+  );
+}
+
+// 5) Next steps
 log(`\nNext steps:`, "cyan");
+log(`  1. bun --cwd apps/cms run generate:types`, "dim");
 log(
-  `  1. bun --cwd apps/cms run generate:types   (sync the new block's types)`,
+  `  2. Flesh out fields in apps/cms/src/blocks/${P}.ts + the ${slug}FromPage mapper`,
   "dim",
 );
-log(`  2. Flesh out fields in apps/cms/src/blocks/${P}.ts`, "dim");
-log(`  3. Bind it in the screen:`, "dim");
-log(`       const ${slug} = blockOf(page, "${slug}");`, "dim");
-log(`       <${P} heading={${slug}?.heading} body={${slug}?.body} />`, "dim");
+log(`  3. Bind in the screen (async server component):`, "dim");
+log(`       const ${slug} = ${slug}FromPage(page);`, "dim");
+log(`       <${P} {...${slug}} />`, "dim");
+log(
+  `  4. Seed content: add a ${slug} block to apps/cms/src/seed/${tenant}.ts`,
+  "dim",
+);
