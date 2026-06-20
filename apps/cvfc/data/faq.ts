@@ -91,12 +91,11 @@ export const FAQ_ENTRIES: FaqEntry[] = [
       "Yes. CVFC was founded by and for South Bay families and operates fully in both English and Spanish. Coaches, evaluators, and administrative staff serve players and parents in either language.",
   },
   {
-    id: "vs-surf-albion",
+    id: "what-makes-cvfc-different",
     category: "About the Club",
-    question:
-      "How does CVFC compare to bigger national clubs like Surf or Albion?",
+    question: "What makes Chula Vista FC different?",
     answer:
-      "Surf operates 4 California branches and is the top ECNL club in San Diego. Albion runs 30+ branches across the United States. CVFC is one community-rooted club that has been in Chula Vista continuously since 1982, with MLS NEXT and Elite Academy access at far lower cost (~$800–$2,000 vs Surf $8,000+). Same coaches across years. 501(c)(3) nonprofit — every dollar reinvested. Different model, different fit.",
+      "Chula Vista FC is one community-rooted club that has developed players in Chula Vista continuously since 1982 — not a branch of a national chain. We offer a complete pathway under one roof: from Mini Maestros (ages 4–9) to MLS NEXT, Elite Academy, DPL, and NPL, with the same coaches guiding players year over year. As a 501(c)(3) nonprofit we keep elite development accessible — competitive programs run roughly $800–$2,000 per year with need-based financial aid — and everything operates in English and Spanish. The model works: our alumni have signed professional contracts and earned college roster spots, and our teams have won State Cup and competed nationally.",
   },
   {
     id: "how-old-is-cvfc",
