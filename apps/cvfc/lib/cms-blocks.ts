@@ -296,3 +296,155 @@ export function calloutFromBlock(b: PageBlock) {
     cta: ctaFromGroup(b.cta),
   };
 }
+
+// --- block-based mappers for the full-page renderer (single-instance sections) ---
+
+export function heroFromBlock(b: PageBlock) {
+  const raw = Array.isArray(b.slides) ? (b.slides as RawSlide[]) : [];
+  const slides = raw
+    .map((s, i): HeroSlide => {
+      const kind = s.cta?.kind;
+      const label = str(s.cta?.label);
+      const href = str(s.cta?.href);
+      return {
+        id: str(s.id) ?? `cms-hero-${i}`,
+        image: {
+          src: mediaUrl(s.image) ?? "",
+          alt: str(s.alt) ?? mediaAlt(s.image) ?? "",
+        },
+        eyebrow: str(s.eyebrow),
+        heading: str(s.heading) ?? "",
+        tagline: str(s.tagline),
+        cta:
+          kind === "link" && label && href
+            ? { kind: "link", label, href }
+            : kind === "evaluation" && label
+              ? { kind: "evaluation", label }
+              : undefined,
+      };
+    })
+    .filter((s) => s.image.src && s.heading);
+  return { slides: slides.length ? slides : undefined };
+}
+
+export function welcomeFromBlock(b: PageBlock) {
+  const src = mediaUrl(b.image as MediaValue);
+  return {
+    headingAs: "h2" as const,
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading),
+    body: str(b.body),
+    image: src
+      ? { src, alt: mediaAlt(b.image as MediaValue) ?? str(b.heading) ?? "" }
+      : undefined,
+  };
+}
+
+export function faqFromBlock(b: PageBlock) {
+  const raw = Array.isArray(b.entries) ? (b.entries as RawFaq[]) : [];
+  const entries = raw
+    .map(
+      (e, i): FaqEntry => ({
+        id: str(e.id) ?? `cms-faq-${i}`,
+        category: (str(e.category) ?? "About the Club") as FaqEntry["category"],
+        question: str(e.question) ?? "",
+        answer: str(e.answer) ?? "",
+      }),
+    )
+    .filter((e) => e.question && e.answer);
+  return {
+    heading: str(b.heading),
+    description: str(b.description),
+    ctaLabel: str(b.ctaLabel),
+    ctaHref: str(b.ctaHref),
+    entries: entries.length ? entries : undefined,
+  };
+}
+
+export function testimonialsFromBlock(b: PageBlock) {
+  const raw = Array.isArray(b.testimonials)
+    ? (b.testimonials as RawTestimonial[])
+    : [];
+  const items = raw
+    .map((t, i): Testimonial => {
+      const src = mediaUrl(t.image);
+      return {
+        id: str(t.id) ?? `cms-t-${i}`,
+        quote: str(t.quote) ?? "",
+        author: str(t.author) ?? "",
+        role: str(t.role),
+        image: src
+          ? { src, alt: mediaAlt(t.image) ?? str(t.author) ?? "" }
+          : undefined,
+      };
+    })
+    .filter((t) => t.quote && t.author);
+  return {
+    heading: str(b.heading),
+    description: str(b.description),
+    testimonials: items.length ? items : undefined,
+  };
+}
+
+export function statBandFromBlock(b: PageBlock) {
+  const stats = (
+    Array.isArray(b.stats)
+      ? (b.stats as { value?: string; label?: string }[])
+      : []
+  ).map((s, i) => ({
+    id: String(i),
+    value: str(s.value) ?? "",
+    label: str(s.label) ?? "",
+  }));
+  const highlights = (
+    Array.isArray(b.highlights)
+      ? (b.highlights as { tag?: string; title?: string; body?: string }[])
+      : []
+  ).map((h, i) => ({
+    id: String(i),
+    tag: str(h.tag) ?? "",
+    title: str(h.title) ?? "",
+    body: str(h.body),
+  }));
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading),
+    description: str(b.description),
+    variant: str(b.variant) === "bone" ? ("bone" as const) : undefined,
+    stats,
+    highlights: highlights.length ? highlights : undefined,
+    footnote: str(b.footnote),
+  };
+}
+
+export function portraitGridFromBlock(b: PageBlock) {
+  const people = (
+    Array.isArray(b.people)
+      ? (b.people as {
+          name?: string;
+          role?: string;
+          credential?: string;
+          image?: MediaValue;
+        }[])
+      : []
+  )
+    .map((p, i) => {
+      const src = mediaUrl(p.image);
+      return {
+        id: String(i),
+        name: str(p.name) ?? "",
+        role: str(p.role) ?? "",
+        credential: str(p.credential),
+        image: src ? { src, alt: str(p.name) ?? "" } : undefined,
+      };
+    })
+    .filter((p) => p.name);
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading) ?? "",
+    description: str(b.description),
+    background: str(b.background) === "white" ? ("white" as const) : undefined,
+    people,
+    cta: ctaFromGroup(b.cta),
+  };
+}
