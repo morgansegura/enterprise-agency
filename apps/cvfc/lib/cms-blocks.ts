@@ -1,4 +1,5 @@
 import type { HeroSlide } from "@/components/feature/hero-carousel";
+import type { Testimonial } from "@/components/feature/testimonials";
 import type { FaqEntry } from "@/data/faq";
 import {
   blockOf,
@@ -132,5 +133,52 @@ export function faqSectionFromPage(
     ctaLabel: str(b.ctaLabel),
     ctaHref: str(b.ctaHref),
     entries: entries.length ? entries : undefined,
+  };
+}
+
+export type TestimonialsOverrides = {
+  heading?: string;
+  description?: string;
+  testimonials?: Testimonial[];
+};
+
+type RawTestimonial = {
+  id?: string;
+  quote?: string;
+  author?: string;
+  role?: string;
+  image?: MediaValue;
+};
+
+/**
+ * The CMS `testimonialsSection` block → Testimonials prop overrides. Empty list
+ * falls through to the feature's built-in defaults.
+ */
+export function testimonialsFromPage(
+  page: Page | null,
+): TestimonialsOverrides | undefined {
+  const b = blockOf(page, "testimonialsSection");
+  if (!b) return undefined;
+  const raw = Array.isArray(b.testimonials)
+    ? (b.testimonials as RawTestimonial[])
+    : [];
+  const testimonials = raw
+    .map((t, i): Testimonial => {
+      const src = mediaUrl(t.image);
+      return {
+        id: str(t.id) ?? `cms-testimonial-${i}`,
+        quote: str(t.quote) ?? "",
+        author: str(t.author) ?? "",
+        role: str(t.role),
+        image: src
+          ? { src, alt: mediaAlt(t.image) ?? str(t.author) ?? "" }
+          : undefined,
+      };
+    })
+    .filter((t) => t.quote && t.author);
+  return {
+    heading: str(b.heading),
+    description: str(b.description),
+    testimonials: testimonials.length ? testimonials : undefined,
   };
 }

@@ -16,6 +16,7 @@ import {
   heroSlidesFromPage,
   welcomeBannerFromPage,
   faqSectionFromPage,
+  testimonialsFromPage,
 } from "@/lib/cms-blocks";
 
 type LandingScreenProps = {
@@ -28,6 +29,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
   const heroSlides = heroSlidesFromPage(page);
   const welcome = welcomeBannerFromPage(page);
   const faq = faqSectionFromPage(page);
+  const testimonials = testimonialsFromPage(page);
 
   return (
     <>
@@ -299,7 +301,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
           background="white"
         />
 
-        <Testimonials />
+        <Testimonials {...testimonials} />
         <FaqSection {...faq} />
 
         <Callout

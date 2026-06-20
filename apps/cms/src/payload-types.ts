@@ -233,6 +233,22 @@ export interface Page {
           }
         | {
             heading?: string | null;
+            description?: string | null;
+            testimonials?:
+              | {
+                  quote: string;
+                  author: string;
+                  role?: string | null;
+                  image?: (number | null) | Media;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'testimonialsSection';
+          }
+        | {
+            heading?: string | null;
             body?: string | null;
             align?: ('left' | 'center') | null;
             id?: string | null;
@@ -1128,6 +1144,23 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               ctaLabel?: T;
               ctaHref?: T;
+              id?: T;
+              blockName?: T;
+            };
+        testimonialsSection?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              testimonials?:
+                | T
+                | {
+                    quote?: T;
+                    author?: T;
+                    role?: T;
+                    image?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };

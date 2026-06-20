@@ -3,6 +3,7 @@ import type { CollectionConfig, PayloadRequest } from 'payload'
 import { Hero } from '../blocks/Hero'
 import { WelcomeBanner } from '../blocks/WelcomeBanner'
 import { FaqSectionBlock } from '../blocks/FaqSection'
+import { TestimonialsBlock } from '../blocks/TestimonialsSection'
 import { Content } from '../blocks/Content'
 import { RichTextBlock } from '../blocks/RichText'
 import { CallToAction } from '../blocks/CallToAction'
@@ -98,6 +99,7 @@ export const Pages: CollectionConfig = {
         Hero,
         WelcomeBanner,
         FaqSectionBlock,
+        TestimonialsBlock,
         Content,
         RichTextBlock,
         CallToAction,
