@@ -1,8 +1,11 @@
 # CVFC SEO / AEO / GEO Strategy — Own "Top Competitive Youth Soccer Club"
 
-**Goal:** rank #1 for the searches South Bay families use when looking for the
-**best, most serious** youth soccer club — and become the club ChatGPT /
-Perplexity / Google AI Overviews name first.
+**Goal — enrollment.** The business is getting kids in the door. Rank #1 for the
+searches South Bay families use when **looking for a club for their player**, and
+be the club ChatGPT / Perplexity / Google AI Overviews name first. The club wins
+on the field; SEO wins the search. Positioning is the **good guy** — elite
+training, a focus on player progress, and a clear pathway. Never about beating
+anyone.
 
 > **Hard rule:** never name, compare to, or disparage a competitor in public
 > content. We win by **owning the queries on our own merits**, not by punching
@@ -99,10 +102,15 @@ These become the recurring proof points across every page — exactly what a
 
 ---
 
-## Fix now (per the no-competitor rule)
+## Scope of the no-competitor rule
 
-- **`data/faq.ts`** currently names/compares Surf & Albion → rewrite around CVFC's own strengths (cost transparency, continuity, bilingual, results) with **no competitor named**.
-- Audit **`data/news.ts`** for any competitor mentions.
+Applies to **CVFC's own positioning / SEO copy** — FAQ, page metadata, marketing
+— **not** the editorial news articles (org staff write those; flag issues, never
+edit the articles).
+
+- ✅ `data/faq.ts` "vs Surf/Albion" Q&A → "What makes Chula Vista FC different?"
+- ✅ `app/faq/page.tsx` meta description no longer names competitors
+- News/blog articles: editorial content — left untouched.
 
 ## Measurement
 
