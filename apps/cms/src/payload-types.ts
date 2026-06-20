@@ -320,6 +320,55 @@ export interface Page {
             blockType: 'callout';
           }
         | {
+            eyebrow?: string | null;
+            heading?: string | null;
+            description?: string | null;
+            variant?: ('midnight' | 'bone') | null;
+            stats?:
+              | {
+                  value: string;
+                  label: string;
+                  id?: string | null;
+                }[]
+              | null;
+            highlights?:
+              | {
+                  tag?: string | null;
+                  title: string;
+                  body?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            footnote?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'statBand';
+          }
+        | {
+            eyebrow?: string | null;
+            heading?: string | null;
+            description?: string | null;
+            background?: ('bone' | 'white') | null;
+            people?:
+              | {
+                  name: string;
+                  role?: string | null;
+                  credential?: string | null;
+                  image?: (number | null) | Media;
+                  id?: string | null;
+                }[]
+              | null;
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+              variant?: ('default' | 'secondary' | 'outline') | null;
+              iconToken?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'portraitGrid';
+          }
+        | {
             heading?: string | null;
             body?: string | null;
             align?: ('left' | 'center') | null;
@@ -1298,6 +1347,59 @@ export interface PagesSelect<T extends boolean = true> {
               heading?: T;
               body?: T;
               variant?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    variant?: T;
+                    iconToken?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        statBand?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+              variant?: T;
+              stats?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    id?: T;
+                  };
+              highlights?:
+                | T
+                | {
+                    tag?: T;
+                    title?: T;
+                    body?: T;
+                    id?: T;
+                  };
+              footnote?: T;
+              id?: T;
+              blockName?: T;
+            };
+        portraitGrid?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+              background?: T;
+              people?:
+                | T
+                | {
+                    name?: T;
+                    role?: T;
+                    credential?: T;
+                    image?: T;
+                    id?: T;
+                  };
               cta?:
                 | T
                 | {

@@ -7,6 +7,8 @@ import { TestimonialsBlock } from '../blocks/TestimonialsSection'
 import { MediaSplit } from '../blocks/MediaSplit'
 import { IconCardsBlock } from '../blocks/IconCards'
 import { CalloutBlock } from '../blocks/Callout'
+import { StatBandBlock } from '../blocks/StatBand'
+import { PortraitGridBlock } from '../blocks/PortraitGrid'
 import { Content } from '../blocks/Content'
 import { RichTextBlock } from '../blocks/RichText'
 import { CallToAction } from '../blocks/CallToAction'
@@ -106,6 +108,8 @@ export const Pages: CollectionConfig = {
         MediaSplit,
         IconCardsBlock,
         CalloutBlock,
+        StatBandBlock,
+        PortraitGridBlock,
         Content,
         RichTextBlock,
         CallToAction,
