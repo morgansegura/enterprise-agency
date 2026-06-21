@@ -90,7 +90,12 @@ const PROGRAMS_LAYOUT = [
     heading: 'Ready to play for Chula Vista?',
     variant: 'bone',
     body: "Choose your player's date of birth and gender, complete the registration, and a CVFC coach will be in touch with your tryout invitation.",
-    cta: { label: 'Request an Evaluation', href: '/evaluations', variant: 'default' },
+    cta: {
+      kind: 'evaluation',
+      label: 'Request an Evaluation',
+      href: '/evaluations',
+      variant: 'default',
+    },
   },
 ]
 
@@ -178,7 +183,12 @@ const ABOUT_LAYOUT = [
     heading: 'Walk a CVFC field this week.',
     variant: 'bone',
     body: "Reading about a club is one thing. Stepping onto a training pitch and meeting a coach is another. Submit an evaluation request and we'll be in touch within 48 hours — in English or Spanish.",
-    cta: { label: 'Request an Evaluation', href: '/evaluations', variant: 'default' },
+    cta: {
+      kind: 'evaluation',
+      label: 'Request an Evaluation',
+      href: '/evaluations',
+      variant: 'default',
+    },
   },
 ]
 
@@ -473,7 +483,12 @@ const LANDING_BLOCKS = [
     heading: 'Ready to play for Chula Vista?',
     variant: 'bone',
     body: "Whether you're new to the area, switching from another club, or ready to level up — we'd love to meet your player. CVFC has been here since 1982, with a full pathway from Mini Maestros to MLS NEXT, Elite Academy, DPL, and NPL. Request an evaluation and a coach will follow up within 48 hours.",
-    cta: { label: 'Request an Evaluation', href: '/evaluations', variant: 'default' },
+    cta: {
+      kind: 'evaluation',
+      label: 'Request an Evaluation',
+      href: '/evaluations',
+      variant: 'default',
+    },
   },
 ]
 
@@ -493,7 +508,7 @@ const WHO_WE_ARE_LAYOUT = [
     eyebrow: 'Since 1982',
     heading: 'Built by the community, for the community.',
     imageUrl: '/media/image/image-cvfc-founders.png',
-    body: "Established in 1982, Chula Vista FC has been in the upper echelon of clubs in the South Bay area for over 40 years. As a member of the MLS Next League and Elite Academy League, we offer the highest standards and level of play at the youth level in San Diego under our core values of attitude, unity, respect, and passion. Since the club's beginnings, many changes have been made to foster and improve the development of players while maintaining a strong culture of local community identity. The goal for us is clear — to provide its members with value and for Chula Vista FC to continue functioning as one of the most professional clubs in the United States.",
+    body: "Established in 1982, Chula Vista FC has been in the upper echelon of clubs in the South Bay area for over 40 years. As a member of the MLS Next League and Elite Academy League, we offer the highest standards and level of play at the youth level in San Diego under our core values of attitude, unity, respect, and passion.\n\nSince the club's beginnings, many changes have been made to foster and improve the development of players while maintaining a strong culture of local community identity. The goal for us is clear — to provide its members with value and for Chula Vista FC to continue functioning as one of the most professional clubs in the United States.",
   },
   {
     blockType: 'iconCards',
@@ -528,7 +543,7 @@ const WHO_WE_ARE_LAYOUT = [
     blockType: 'mediaSplit',
     eyebrow: 'The Mission',
     heading: 'The work is the same for every player who walks in.',
-    body: "That's the work — and it has been since 1982. Chula Vista FC was founded in the South Bay and we're still rooted here, but the gate has always been open. Families come to us from across San Diego County, the Imperial Valley, the border region, and beyond. We measure players by what they're willing to do, not where they're coming from. Recent partnerships extend that reach: in 2025, San Diego FC partnered with Chula Vista FC to help grow the beautiful game across the region. In 2024, CVFC joined a campaign to improve soccer fields throughout Chula Vista — investing in the infrastructure the next generation of players will share.",
+    body: "That's the work — and it has been since 1982. Chula Vista FC was founded in the South Bay and we're still rooted here, but the gate has always been open. Families come to us from across San Diego County, the Imperial Valley, the border region, and beyond. We measure players by what they're willing to do, not where they're coming from.\n\nRecent partnerships extend that reach: in 2025, San Diego FC partnered with Chula Vista FC to help grow the beautiful game across the region. In 2024, CVFC joined a campaign to improve soccer fields throughout Chula Vista — investing in the infrastructure the next generation of players will share.",
     imageUrl: `${PHOTO}/2024/05/IMG_0867.jpg`,
     imageAlt: 'Chula Vista FC players in competition',
     tags: [
@@ -620,7 +635,12 @@ const WHO_WE_ARE_LAYOUT = [
     heading: "Join the South Bay's premier youth soccer club.",
     variant: 'bone',
     body: 'Whether your player is just getting started in Mini Maestros or ready to compete in MLS NEXT, the path begins with a conversation. Request an evaluation and a CVFC coach will be in touch.',
-    cta: { label: 'Request an Evaluation', href: '/evaluations', variant: 'default' },
+    cta: {
+      kind: 'evaluation',
+      label: 'Request an Evaluation',
+      href: '/evaluations',
+      variant: 'default',
+    },
   },
 ]
 
@@ -629,6 +649,7 @@ const EVAL_HERO_ACTIONS = [
   { kind: 'link', label: 'Learn About Tryouts', href: '/evaluations', variant: 'outline' },
 ]
 const EVAL_CALLOUT_CTA = {
+  kind: 'evaluation',
   label: 'Request an Evaluation',
   href: '/evaluations',
   variant: 'default',
@@ -655,7 +676,7 @@ const FOUNDATIONS_LAYOUT = [
     blockType: 'mediaSplit',
     eyebrow: 'Player Development',
     heading: 'Technique is #1.',
-    body: "Foundations players come to us as four-year-olds and leave at nine ready for competitive tryouts. The job in those years isn't winning — it's ball mastery, dribbling, shooting, and 1v1 attacking and defending. Build the skills first, and confidence follows. Our Foundations program is COED, runs Monday through Wednesday with matches on Saturdays, and rotates new technical content every week. New families are welcome year-round.",
+    body: "Foundations players come to us as four-year-olds and leave at nine ready for competitive tryouts. The job in those years isn't winning — it's ball mastery, dribbling, shooting, and 1v1 attacking and defending. Build the skills first, and confidence follows.\n\nOur Foundations program is COED, runs Monday through Wednesday with matches on Saturdays, and rotates new technical content every week. New families are welcome year-round.",
     imageUrl: `${PHOTO}/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg`,
     imageAlt: 'Mini Maestros training',
     tags: [{ label: 'Ages 4–9' }, { label: 'Mini Maestros' }, { label: 'CVFC Youth' }],
@@ -732,7 +753,7 @@ const GOALKEEPER_LAYOUT = [
     blockType: 'mediaSplit',
     eyebrow: 'Why a Specialty Pathway',
     heading: 'The position demands its own curriculum.',
-    body: "A keeper's development happens differently than an outfield player's. Footwork, handling, distribution, shot-stopping technique, decision-making in the box, and the mental game all need their own time on the training ground — not just whatever's left over at the end of a team session. Our goalkeepers train alongside their pathway team (Foundations, Boys, Girls, MLS NEXT, DPL, etc.) but get dedicated GK sessions led by goalkeeping specialists. That's how a CVFC keeper develops the technical foundation, tactical awareness, and mental resilience to excel at club, college, and professional levels.",
+    body: "A keeper's development happens differently than an outfield player's. Footwork, handling, distribution, shot-stopping technique, decision-making in the box, and the mental game all need their own time on the training ground — not just whatever's left over at the end of a team session.\n\nOur goalkeepers train alongside their pathway team (Foundations, Boys, Girls, MLS NEXT, DPL, etc.) but get dedicated GK sessions led by goalkeeping specialists. That's how a CVFC keeper develops the technical foundation, tactical awareness, and mental resilience to excel at club, college, and professional levels.",
     imageUrl: `${PHOTO}/2023/11/Goalkeepers-pic.jpg`,
     imageAlt: 'CVFC goalkeepers in training',
     tags: [{ label: 'All Ages' }, { label: 'MLS NEXT GK Coach' }, { label: 'College Pathway' }],
@@ -810,7 +831,7 @@ const BOYS_LAYOUT = [
     blockType: 'mediaSplit',
     eyebrow: 'The Top of the Ladder',
     heading: 'Inside MLS NEXT.',
-    body: 'Chula Vista FC is a proud member of the MLS NEXT League, where our top-flight boys’ teams are provided with a purpose-driven path to professional play and college athletics. MLS NEXT clubs combined have produced more than 90 percent of the U.S. Youth National Team players in 2019 — establishing it as the top destination for the best young players in North America. Players are scouted through the MLS NEXT Showcases held throughout the season and challenged by the best teams in the country. Coaches commit to a high-intensity regimen that focuses on player identification, environment, personal growth, and community.',
+    body: 'Chula Vista FC is a proud member of the MLS NEXT League, where our top-flight boys’ teams are provided with a purpose-driven path to professional play and college athletics. MLS NEXT clubs combined have produced more than 90 percent of the U.S. Youth National Team players in 2019 — establishing it as the top destination for the best young players in North America.\n\nPlayers are scouted through the MLS NEXT Showcases held throughout the season and challenged by the best teams in the country. Coaches commit to a high-intensity regimen that focuses on player identification, environment, personal growth, and community.',
     imageUrl: `${PHOTO}/2024/05/IMG_0867.jpg`,
     imageAlt: 'CVFC boys MLS NEXT player',
     tags: [
@@ -940,7 +961,7 @@ const GIRLS_LAYOUT = [
     eyebrow: 'Inside the DPL',
     heading: 'The Development Player League.',
     reverse: true,
-    body: "The Development Player League is a prestigious club-vs-club platform specifically designed to elevate girls' soccer. CVFC was accepted into the DPL in April 2025 — a standards-driven national league that gives players a structured, reputable environment for long-term growth. DPL emphasizes both athletic and personal growth. It extends beyond soccer skills to life lessons, community, and collegiate opportunities — and it pits CVFC players against the elite clubs of Southern California, who are among the nation's best.",
+    body: "The Development Player League is a prestigious club-vs-club platform specifically designed to elevate girls' soccer. CVFC was accepted into the DPL in April 2025 — a standards-driven national league that gives players a structured, reputable environment for long-term growth.\n\nDPL emphasizes both athletic and personal growth. It extends beyond soccer skills to life lessons, community, and collegiate opportunities — and it pits CVFC players against the elite clubs of Southern California, who are among the nation's best.",
     imageUrl: `${PHOTO}/2024/02/IMG_6349.jpg`,
     imageAlt: 'CVFC girls competitive player',
     tags: [{ label: 'DPL' }, { label: 'NPL' }, { label: 'Birth Years 2007–2013' }],

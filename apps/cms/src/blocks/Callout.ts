@@ -24,8 +24,21 @@ export const CalloutBlock: Block = {
       type: 'group',
       label: 'Call to action',
       fields: [
+        {
+          name: 'kind',
+          type: 'select',
+          defaultValue: 'link',
+          options: [
+            { label: 'Link', value: 'link' },
+            { label: 'Evaluation Modal', value: 'evaluation' },
+          ],
+        },
         { name: 'label', type: 'text' },
-        { name: 'href', type: 'text' },
+        {
+          name: 'href',
+          type: 'text',
+          admin: { condition: (_data, sibling) => sibling?.kind !== 'evaluation' },
+        },
         {
           name: 'variant',
           type: 'select',

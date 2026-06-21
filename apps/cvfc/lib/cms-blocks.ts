@@ -281,8 +281,27 @@ export function iconCardsFromBlock(b: PageBlock) {
   };
 }
 
-/** A single CMS `callout` block → Callout props (used by the renderer). */
+/** A single CMS `callout` block → Callout props (used by the renderer). The cta
+ *  carries a `kind` ("link" | "evaluation") so the renderer can open the
+ *  evaluation modal instead of navigating. */
 export function calloutFromBlock(b: PageBlock) {
+  const raw = b.cta as (RawGroupCta & { kind?: string }) | undefined;
+  const label = str(raw?.label);
+  const cta = label
+    ? {
+        kind:
+          raw?.kind === "evaluation"
+            ? ("evaluation" as const)
+            : ("link" as const),
+        label,
+        href: str(raw?.href),
+        variant: (str(raw?.variant) ?? "default") as
+          | "default"
+          | "secondary"
+          | "outline",
+        iconToken: str(raw?.iconToken),
+      }
+    : undefined;
   return {
     eyebrow: str(b.eyebrow),
     heading: str(b.heading) ?? "",
@@ -293,7 +312,7 @@ export function calloutFromBlock(b: PageBlock) {
       | "gold"
       | "midnight-bright"
       | undefined,
-    cta: ctaFromGroup(b.cta),
+    cta,
   };
 }
 

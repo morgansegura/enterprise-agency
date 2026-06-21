@@ -12,10 +12,14 @@ const nextConfig: NextConfig = {
   images: {
     // Modern formats first — smaller payloads, better LCP.
     formats: ["image/avif", "image/webp"],
-    // CMS-served media (Payload) + external sources. Tighten to real hosts later.
+    // Allow-listed image hosts (don't expose the optimizer as an open proxy):
+    // CMS media (R2 CDN + the Payload host) + the legacy WordPress source.
     remotePatterns: [
+      { protocol: "https", hostname: "**.r2.dev" },
+      { protocol: "https", hostname: "**.r2.cloudflarestorage.com" },
+      { protocol: "https", hostname: "webandfunnel.onrender.com" },
+      { protocol: "https", hostname: "chulavistafc.com" },
       { protocol: "http", hostname: "localhost" },
-      { protocol: "https", hostname: "**" },
     ],
   },
 };

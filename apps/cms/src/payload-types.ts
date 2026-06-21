@@ -365,6 +365,7 @@ export interface Page {
             body?: string | null;
             variant?: ('midnight' | 'bone' | 'gold' | 'midnight-bright') | null;
             cta?: {
+              kind?: ('link' | 'evaluation') | null;
               label?: string | null;
               href?: string | null;
               variant?: ('default' | 'secondary' | 'outline') | null;
@@ -1585,6 +1586,7 @@ export interface PagesSelect<T extends boolean = true> {
               cta?:
                 | T
                 | {
+                    kind?: T;
                     label?: T;
                     href?: T;
                     variant?: T;

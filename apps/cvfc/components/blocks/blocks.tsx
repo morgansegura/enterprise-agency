@@ -58,6 +58,23 @@ function PageHeroActions({ actions }: { actions: PageHeroAction[] }) {
   );
 }
 
+/** Split a CMS textarea body into <p> paragraphs (blank-line separated). */
+function richBody(text?: string): ReactNode {
+  if (!text) return undefined;
+  const paras = text
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (paras.length <= 1) return text;
+  return (
+    <>
+      {paras.map((p, i) => (
+        <p key={i}>{p}</p>
+      ))}
+    </>
+  );
+}
+
 /**
  * Renders CMS layout blocks in order via a registry — for repeating sections
  * (e.g. multiple media-splits) that block-type lookup can't handle. Each entry
@@ -108,19 +125,46 @@ const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
       </Section>
     );
   },
-  welcomeBanner: (block, key) => (
-    <WelcomeBanner key={key} {...welcomeFromBlock(block)} />
-  ),
+  welcomeBanner: (block, key) => {
+    const { body, ...rest } = welcomeFromBlock(block);
+    return <WelcomeBanner key={key} {...rest} body={richBody(body)} />;
+  },
   iconCards: (block, key) => (
     <IconCards key={key} {...iconCardsFromBlock(block)} />
   ),
-  callout: (block, key) => <Callout key={key} {...calloutFromBlock(block)} />,
-  mediaSplit: (block, key) => (
-    <MediaSplit key={key} {...mediaSplitFromBlock(block)} />
-  ),
-  statBand: (block, key) => (
-    <StatBand key={key} {...statBandFromBlock(block)} />
-  ),
+  callout: (block, key) => {
+    const { body, cta, ...rest } = calloutFromBlock(block);
+    const ctaSlot =
+      cta?.kind === "evaluation" ? (
+        <EvaluationCTA label={cta.label} variant={cta.variant} />
+      ) : undefined;
+    const linkCta =
+      cta?.kind === "link"
+        ? {
+            label: cta.label,
+            href: cta.href ?? "#",
+            variant: cta.variant,
+            iconToken: cta.iconToken,
+          }
+        : undefined;
+    return (
+      <Callout
+        key={key}
+        {...rest}
+        body={richBody(body)}
+        cta={linkCta}
+        ctaSlot={ctaSlot}
+      />
+    );
+  },
+  mediaSplit: (block, key) => {
+    const { body, ...rest } = mediaSplitFromBlock(block);
+    return <MediaSplit key={key} {...rest} body={richBody(body)} />;
+  },
+  statBand: (block, key) => {
+    const { footnote, ...rest } = statBandFromBlock(block);
+    return <StatBand key={key} {...rest} footnote={richBody(footnote)} />;
+  },
   portraitGrid: (block, key) => (
     <PortraitGrid key={key} {...portraitGridFromBlock(block)} />
   ),
