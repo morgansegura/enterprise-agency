@@ -7,10 +7,19 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { AdminDirectory } from "@/components/feature/admin-directory";
 import { Heading } from "@/components/feature/heading";
 import { ADMINISTRATORS, getActiveAdministrators } from "@/data/administrators";
+import { getStaff } from "@/lib/cms";
+import { staffToAdmin } from "@/lib/cms-staff";
 import { siteConfig } from "@/lib/site-config";
 
-export function AdministratorsScreen() {
-  const active = getActiveAdministrators(ADMINISTRATORS);
+export async function AdministratorsScreen() {
+  // Use the CMS Staff collection once it serves the rich fields (title present);
+  // otherwise fall back to the static roster.
+  const cms = (await getStaff("Administrators"))
+    .map(staffToAdmin)
+    .filter((a) => a.title);
+  const active = cms.length
+    ? getActiveAdministrators(cms)
+    : getActiveAdministrators(ADMINISTRATORS);
 
   const personSchemas = active.map((a) => ({
     "@context": "https://schema.org",

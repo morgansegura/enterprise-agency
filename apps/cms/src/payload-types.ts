@@ -696,20 +696,68 @@ export interface Staff {
   tenant?: (number | null) | Tenant;
   name: string;
   /**
-   * e.g. Head Coach
+   * Display title, e.g. "Academy Director · Head Coach, B2010 MLS NEXT".
    */
-  role?: string | null;
+  title?: string | null;
   /**
-   * Section / filter label, e.g. "Coaching Staff" or "Administrators". Blocks can show one group or all.
+   * Which directory this person appears in: "Coaching Staff" or "Administrators".
    */
   group?: string | null;
-  photo?: (number | null) | Media;
+  /**
+   * For administrators, e.g. "Executive" or "Technical".
+   */
+  department?: string | null;
+  /**
+   * Coaching-staff filter tags.
+   */
+  pathway?: ('boys' | 'girls' | 'goalkeeper' | 'foundations')[] | null;
+  programs?:
+    | (
+        | 'mls-next-homegrown'
+        | 'mls-next'
+        | 'mls-next-academy'
+        | 'elite-academy'
+        | 'ea-2'
+        | 'dpl'
+        | 'socal-flight'
+        | 'mini-maestros'
+      )[]
+    | null;
+  /**
+   * e.g. "B2010 MLS NEXT".
+   */
+  team?: string | null;
+  credentials?: string[] | null;
+  achievements?: string[] | null;
   bio?: string | null;
+  photo?: (number | null) | Media;
+  /**
+   * External image URL — used when no upload is set (migration/seed).
+   */
+  imageUrl?: string | null;
   email?: string | null;
+  phone?: string | null;
+  /**
+   * Show in the homepage coaching grid.
+   */
+  isFeatured?: boolean | null;
+  joinedYear?: number | null;
+  /**
+   * Departed people are hidden from public pages.
+   */
+  status?: ('active' | 'on-leave' | 'departed') | null;
+  /**
+   * Deprecated — use Title.
+   */
+  role?: string | null;
   /**
    * Lower numbers sort first.
    */
   order?: number | null;
+  /**
+   * Stable source id for idempotent seeding. Do not change.
+   */
+  key?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1625,12 +1673,25 @@ export interface PostsSelect<T extends boolean = true> {
 export interface StaffSelect<T extends boolean = true> {
   tenant?: T;
   name?: T;
-  role?: T;
+  title?: T;
   group?: T;
-  photo?: T;
+  department?: T;
+  pathway?: T;
+  programs?: T;
+  team?: T;
+  credentials?: T;
+  achievements?: T;
   bio?: T;
+  photo?: T;
+  imageUrl?: T;
   email?: T;
+  phone?: T;
+  isFeatured?: T;
+  joinedYear?: T;
+  status?: T;
+  role?: T;
   order?: T;
+  key?: T;
   updatedAt?: T;
   createdAt?: T;
 }

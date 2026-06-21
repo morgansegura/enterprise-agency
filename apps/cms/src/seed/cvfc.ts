@@ -17,7 +17,8 @@ import { getPayload } from 'payload'
 import config from '../payload.config'
 import { FAQ_ENTRIES } from '../../../cvfc/data/faq'
 import { TESTIMONIALS } from '../../../cvfc/data/testimonials'
-import { getFeaturedCoaches } from '../../../cvfc/data/coaches'
+import { COACHES, getActiveCoaches, getFeaturedCoaches } from '../../../cvfc/data/coaches'
+import { ADMINISTRATORS, getActiveAdministrators } from '../../../cvfc/data/administrators'
 import { NEWS_POSTS, getActiveNews } from '../../../cvfc/data/news'
 import { htmlToLexical } from './html-to-lexical'
 
@@ -1236,6 +1237,78 @@ async function seed() {
     }
   }
 
+  // --- people: migrate coaches + administrators into the Staff collection ---
+  const upsertStaff = async (key: string, group: string, data: Record<string, unknown>) => {
+    const found = await payload.find({
+      collection: 'staff',
+      where: {
+        and: [
+          { key: { equals: key } },
+          { group: { equals: group } },
+          { tenant: { equals: tenant.id } },
+        ],
+      },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+    const payloadData = { ...data, key, group } as never
+    if (found.docs[0]) {
+      await payload.update({
+        collection: 'staff',
+        id: found.docs[0].id,
+        data: payloadData,
+        depth: 0,
+        overrideAccess: true,
+      })
+    } else {
+      await payload.create({
+        collection: 'staff',
+        data: { ...(payloadData as object), tenant: tenant.id } as never,
+        depth: 0,
+        overrideAccess: true,
+      })
+    }
+  }
+
+  const coaches = getActiveCoaches(COACHES)
+  for (const [i, c] of coaches.entries()) {
+    await upsertStaff(c.id, 'Coaching Staff', {
+      name: c.name,
+      title: c.title,
+      pathway: c.pathway,
+      programs: c.programs,
+      team: c.team,
+      credentials: c.credentials ?? [],
+      achievements: c.achievements ?? [],
+      bio: c.bio,
+      imageUrl: c.image?.src,
+      email: c.contact?.email,
+      phone: c.contact?.phone,
+      isFeatured: Boolean(c.isFeatured),
+      joinedYear: c.joinedYear,
+      status: c.status ?? 'active',
+      order: i,
+    })
+  }
+
+  const admins = getActiveAdministrators(ADMINISTRATORS)
+  for (const [i, a] of admins.entries()) {
+    await upsertStaff(a.id, 'Administrators', {
+      name: a.name,
+      title: a.title,
+      department: a.department,
+      credentials: a.credentials ?? [],
+      bio: a.bio,
+      imageUrl: a.image?.src,
+      email: a.contact?.email,
+      phone: a.contact?.phone,
+      joinedYear: a.joinedYear,
+      status: a.status ?? 'active',
+      order: i,
+    })
+  }
+
   console.log(
     `✓ Seeded cvfc home — full landing (${homeLayout.length} blocks${hero ? ', hero preserved' : ''}).`,
   )
@@ -1243,6 +1316,9 @@ async function seed() {
     '✓ Seeded cvfc pages: /programs, /about, /about/who-we-are, /programs/{foundations,goalkeeper-pathway,boys-competitive-pathway,girls-competitive-pathway} (with SEO meta).',
   )
   console.log(`✓ Seeded ${posts.length} blog posts into the Posts collection.`)
+  console.log(
+    `✓ Seeded ${coaches.length} coaches + ${admins.length} administrators into the Staff collection.`,
+  )
   process.exit(0)
 }
 

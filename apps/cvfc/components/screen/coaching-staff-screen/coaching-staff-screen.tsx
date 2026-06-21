@@ -8,6 +8,8 @@ import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { PageHero } from "@/components/feature/page-hero";
 import { StaffDirectory } from "@/components/feature/staff-directory";
 import { COACHES, getActiveCoaches } from "@/data/coaches";
+import { getStaff } from "@/lib/cms";
+import { staffToCoach } from "@/lib/cms-staff";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
@@ -17,8 +19,17 @@ type CoachingStaffScreenProps = {
   className?: string;
 };
 
-export function CoachingStaffScreen({ className }: CoachingStaffScreenProps) {
-  const activeCoaches = getActiveCoaches(COACHES);
+export async function CoachingStaffScreen({
+  className,
+}: CoachingStaffScreenProps) {
+  // Use the CMS Staff collection once it actually serves the rich fields
+  // (title present); otherwise fall back to the static roster.
+  const cms = (await getStaff("Coaching Staff"))
+    .map(staffToCoach)
+    .filter((c) => c.title);
+  const activeCoaches = cms.length
+    ? getActiveCoaches(cms)
+    : getActiveCoaches(COACHES);
   const personSchemas = activeCoaches.map((p) => ({
     "@context": "https://schema.org",
     "@type": "Person",

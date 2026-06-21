@@ -101,6 +101,41 @@ export function blockOf(page: Page | null, type: string): PageBlock | null {
   return page?.layout?.find((b) => b.blockType === type) ?? null;
 }
 
+/** A person in the Staff collection (coaches + administrators). */
+export type StaffDoc = {
+  id: string | number;
+  key?: string | null;
+  name?: string;
+  title?: string | null;
+  group?: string | null;
+  department?: string | null;
+  pathway?: string[] | null;
+  programs?: string[] | null;
+  team?: string | null;
+  credentials?: string[] | null;
+  achievements?: string[] | null;
+  bio?: string | null;
+  photo?: MediaValue;
+  imageUrl?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  isFeatured?: boolean | null;
+  joinedYear?: number | null;
+  status?: string | null;
+  order?: number | null;
+};
+
+/** People for this tenant, optionally filtered by `group`, sorted by `order`. */
+export const getStaff = cache(async (group?: string): Promise<StaffDoc[]> => {
+  const groupParam = group
+    ? `&where[group][equals]=${encodeURIComponent(group)}`
+    : "";
+  return cmsFind<StaffDoc>(
+    "staff",
+    `depth=1&limit=200&sort=order${groupParam}`,
+  );
+});
+
 /** A Payload `upload` field value: a populated media doc, a URL string, an id, or null. */
 export type MediaValue =
   | { url?: string | null; alt?: string | null }
