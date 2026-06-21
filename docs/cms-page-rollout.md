@@ -93,3 +93,32 @@ seeding image-heavy pages (landing media-splits/portrait-grid, facilities, etc.)
   strips blocks it doesn't have registered → API looks "empty".
 - PageSpeed: keep `experimental.inlineCss` + font `display:swap`/`preload` (see
   `project_pagespeed_inlinecss_lever`).
+
+## Done so far
+
+CMS-driven + seeded (8 pages): `/` (full 14-block landing, hero preserved),
+`/programs`, `/about`, `/about/who-we-are`, and the 4 programs detail pages
+(foundations, goalkeeper-pathway, boys-, girls-competitive-pathway). All with
+per-page SEO meta (green panels). Blocks built: `pageHero`, `headingSection`,
+`imageUrl` hatch on mediaSplit/portraitGrid/welcomeBanner. **Blog: 45 news
+articles migrated into the `Posts` collection** (HTML→lexical converter).
+
+## Remaining: directory data → CMS collections (enterprise decision)
+
+Decided: directory data lives in **collections** (single source, edit-once),
+not page-block arrays. Next epic (do with fresh context — it's foundational and
+writes schema to the shared prod DB):
+
+1. **People collection** — expand `Staff` (currently minimal) to cvfc's `Coach`
+   model (role/pathway/programs/birthYears/credentials/achievements/contact/
+   isFeatured/joinedYear/image). Seed coaches→Staff (idempotent). Add
+   `getStaff(group?)` + Staff→Coach mapper to `lib/cms`. Rewire coaching-staff +
+   administrators screens (async fetch, static fallback) + landing portraitGrid.
+   NOTE: `StaffDirectory` filters (`COACH_FILTERS`/`filterCoaches`) run on
+   pathway/programs/role — capture those or simplify filtering to `group`.
+2. **News** — point `/news` + `/news/[slug]` at the seeded `Posts` collection
+   (replace `data/news.ts` reads); Article schema + RSS.
+3. **Testimonials collection** — reusable across landing + testimonials page.
+4. **facilities** — `fieldGrid` block (+ mediaSplit/headingSection); page-specific.
+5. Bespoke pages stay static/partial: support (donation tiers), sponsor,
+   partnerships, coaching-opportunities (requirements grid), evaluations.
