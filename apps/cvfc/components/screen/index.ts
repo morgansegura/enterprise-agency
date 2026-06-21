@@ -23,4 +23,3 @@ export { CookiePolicyScreen } from "./cookie-policy-screen";
 export { FoundationsScreen } from "./foundations-screen";
 export { CoachingStaffScreen } from "./coaching-staff-screen";
 export { GoalkeeperPathwayScreen } from "./goalkeeper-pathway-screen";
-export { ShowcaseScreen } from "./showcase-screen";
