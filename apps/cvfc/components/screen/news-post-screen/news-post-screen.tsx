@@ -7,6 +7,8 @@ import { Icon } from "@/components/icon";
 import { NewsCard } from "@/components/feature/news-card";
 import { JsonLd } from "@/components/seo";
 import { NEWS_POSTS, getActiveNews, getPostBySlug } from "@/data/news";
+import { getCmsPostBySlug, getCmsPosts } from "@/lib/cms";
+import { cmsPostToNewsPost } from "@/lib/cms-news";
 import { breadcrumbSchema, newsArticleSchema } from "@/lib/schema";
 
 import "./news-post-screen.css";
@@ -15,13 +17,18 @@ type NewsPostScreenProps = {
   slug: string;
 };
 
-export function NewsPostScreen({ slug }: NewsPostScreenProps) {
-  const post = getPostBySlug(NEWS_POSTS, slug);
+export async function NewsPostScreen({ slug }: NewsPostScreenProps) {
+  const cmsPost = await getCmsPostBySlug(slug);
+  const post = cmsPost
+    ? cmsPostToNewsPost(cmsPost)
+    : getPostBySlug(NEWS_POSTS, slug);
   if (!post) notFound();
 
-  const related = getActiveNews(NEWS_POSTS)
-    .filter((p) => p.slug !== post.slug)
-    .slice(0, 3);
+  const cmsAll = (await getCmsPosts())
+    .map(cmsPostToNewsPost)
+    .filter((p) => p.title);
+  const pool = cmsAll.length ? cmsAll : getActiveNews(NEWS_POSTS);
+  const related = pool.filter((p) => p.slug !== post.slug).slice(0, 3);
 
   return (
     <>

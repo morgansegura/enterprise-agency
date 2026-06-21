@@ -136,6 +136,34 @@ export const getStaff = cache(async (group?: string): Promise<StaffDoc[]> => {
   );
 });
 
+/** A blog post in the Posts collection. */
+export type PostDoc = {
+  id: string | number;
+  slug?: string;
+  title?: string;
+  excerpt?: string | null;
+  coverImage?: MediaValue;
+  publishedAt?: string | null;
+  author?: string | null;
+  content?: unknown;
+};
+
+/** All published posts for this tenant, newest first. */
+export const getCmsPosts = cache(async (): Promise<PostDoc[]> => {
+  return cmsFind<PostDoc>("posts", "depth=1&limit=200&sort=-publishedAt");
+});
+
+/** A single post by slug (or null). */
+export const getCmsPostBySlug = cache(
+  async (slug: string): Promise<PostDoc | null> => {
+    const docs = await cmsFind<PostDoc>(
+      "posts",
+      `where[slug][equals]=${encodeURIComponent(slug)}&depth=1&limit=1`,
+    );
+    return docs[0] ?? null;
+  },
+);
+
 /** A Payload `upload` field value: a populated media doc, a URL string, an id, or null. */
 export type MediaValue =
   | { url?: string | null; alt?: string | null }

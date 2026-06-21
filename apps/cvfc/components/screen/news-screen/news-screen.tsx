@@ -6,11 +6,16 @@ import { Heading } from "@/components/feature/heading";
 import { NewsList } from "@/components/feature/news-list";
 import { PageHero } from "@/components/feature/page-hero";
 import { NEWS_POSTS, getActiveNews } from "@/data/news";
+import { getCmsPosts } from "@/lib/cms";
+import { cmsPostToNewsPost } from "@/lib/cms-news";
 
 import "./news-screen.css";
 
-export function NewsScreen() {
-  const all = getActiveNews(NEWS_POSTS);
+export async function NewsScreen() {
+  const cms = (await getCmsPosts())
+    .map(cmsPostToNewsPost)
+    .filter((p) => p.title);
+  const all = cms.length ? cms : getActiveNews(NEWS_POSTS);
   const [featured, ...rest] = all;
 
   return (

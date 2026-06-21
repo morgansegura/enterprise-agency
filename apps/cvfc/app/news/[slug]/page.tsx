@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { NewsPostScreen } from "@/components/screen/news-post-screen";
 import { NEWS_POSTS, getActiveNews, getPostBySlug } from "@/data/news";
+import { getCmsPostBySlug, getCmsPosts } from "@/lib/cms";
+import { cmsPostToNewsPost } from "@/lib/cms-news";
 
 type RouteParams = {
   slug: string;
 };
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
-  return getActiveNews(NEWS_POSTS).map((p) => ({ slug: p.slug }));
+  const cms = (await getCmsPosts())
+    .map((p) => p.slug)
+    .filter((s): s is string => Boolean(s));
+  const staticSlugs = getActiveNews(NEWS_POSTS).map((p) => p.slug);
+  return [...new Set([...cms, ...staticSlugs])].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -18,7 +23,8 @@ export async function generateMetadata({
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(NEWS_POSTS, slug);
+  const cms = await getCmsPostBySlug(slug);
+  const post = cms ? cmsPostToNewsPost(cms) : getPostBySlug(NEWS_POSTS, slug);
   if (!post) return { title: "Story not found" };
   return {
     title: post.title,
@@ -39,7 +45,5 @@ export default async function Page({
   params: Promise<RouteParams>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(NEWS_POSTS, slug);
-  if (!post) notFound();
   return <NewsPostScreen slug={slug} />;
 }
