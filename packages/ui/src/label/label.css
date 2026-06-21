@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+
+.label {
+  @apply inline-flex items-center gap-2 text-sm leading-none font-medium text-(--foreground) select-none;
+  @apply peer-disabled:cursor-not-allowed peer-disabled:opacity-50;
+}

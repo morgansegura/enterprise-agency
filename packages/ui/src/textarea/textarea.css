@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.textarea {
+  @apply flex min-h-24 w-full rounded-(--radius) border border-(--input) bg-(--background) px-3.5 py-2.5 text-sm text-(--foreground) transition-colors outline-none;
+  @apply placeholder:text-(--muted-foreground);
+  @apply focus-visible:border-(--ring) focus-visible:ring-3 focus-visible:ring-(--ring)/30;
+  @apply aria-invalid:border-(--destructive) aria-invalid:ring-(--destructive)/20 disabled:cursor-not-allowed disabled:opacity-50;
+}

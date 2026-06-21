@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Switch } from "@base-ui/react/switch";
 
-import { Button, Modal, ModalContent } from "@wf/ui";
+import { Button, Modal, ModalContent, Switch } from "@wf/ui";
 
 import { consentConfig } from "@/lib/consent-config";
 import {
@@ -75,15 +74,12 @@ function PrefsForm({ onDone }: { onDone: () => void }) {
                 <p className="cookie-prefs-item-label">{cat.label}</p>
                 <p className="cookie-prefs-item-desc">{cat.description}</p>
               </div>
-              <Switch.Root
-                className="cookie-switch"
+              <Switch
                 checked={valueOf(cat.id)}
                 disabled={cat.required}
                 onCheckedChange={(checked) => setter?.(checked)}
                 aria-label={cat.label}
-              >
-                <Switch.Thumb className="cookie-switch-thumb" />
-              </Switch.Root>
+              />
             </li>
           );
         })}

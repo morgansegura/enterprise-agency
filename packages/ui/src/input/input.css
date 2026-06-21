@@ -1,0 +1,8 @@
+@reference "tailwindcss";
+
+.input {
+  @apply flex h-12 w-full rounded-(--radius) border border-(--input) bg-(--background) px-3.5 py-2 text-sm text-(--foreground) transition-colors outline-none;
+  @apply placeholder:text-(--muted-foreground) file:border-0 file:bg-transparent file:text-sm file:font-medium;
+  @apply focus-visible:border-(--ring) focus-visible:ring-3 focus-visible:ring-(--ring)/30;
+  @apply aria-invalid:border-(--destructive) aria-invalid:ring-(--destructive)/20 disabled:cursor-not-allowed disabled:opacity-50;
+}

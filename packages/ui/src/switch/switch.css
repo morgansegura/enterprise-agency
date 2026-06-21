@@ -1,0 +1,10 @@
+@reference "tailwindcss";
+
+.switch {
+  @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full bg-(--border) transition-colors outline-none data-[checked]:bg-(--primary) data-[disabled]:cursor-not-allowed data-[disabled]:opacity-45;
+  @apply focus-visible:ring-3 focus-visible:ring-(--ring)/40;
+}
+
+.switch-thumb {
+  @apply pointer-events-none absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform data-[checked]:translate-x-5;
+}

@@ -23,3 +23,13 @@
 .showcase-block-label {
   @apply sticky top-(--header-height) z-20 bg-(--color-gold) px-4 py-1.5 text-xs font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-midnight);
 }
+
+.showcase-primitives {
+  @apply flex flex-col gap-6 py-10;
+}
+.showcase-primitives-row {
+  @apply flex flex-wrap items-center gap-4;
+}
+.showcase-primitives-field {
+  @apply flex max-w-sm flex-col gap-2;
+}

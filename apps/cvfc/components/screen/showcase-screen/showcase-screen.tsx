@@ -8,6 +8,19 @@ import { StatBand } from "@/components/feature/stat-band";
 import { PortraitGrid } from "@/components/feature/portrait-grid";
 import { Testimonials } from "@/components/feature/testimonials";
 import { FaqSection } from "@/components/feature/faq-section";
+import {
+  Button,
+  Input,
+  Textarea,
+  Label,
+  Checkbox,
+  Switch,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui";
 
 import "./showcase-screen.css";
 
@@ -46,6 +59,41 @@ export function ShowcaseScreen() {
           and theme them to compose any page.
         </p>
       </header>
+
+      <Block name="UI Primitives">
+        <div className="contain showcase-primitives">
+          <div className="showcase-primitives-row">
+            <Button>Default</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+          </div>
+          <div className="showcase-primitives-row">
+            <span>
+              <Switch defaultChecked aria-label="Sample switch" />
+            </span>
+            <Label>
+              <Checkbox defaultChecked aria-label="Sample checkbox" /> Checkbox
+            </Label>
+          </div>
+          <div className="showcase-primitives-field">
+            <Label htmlFor="sc-input">Input</Label>
+            <Input id="sc-input" placeholder="Type something…" />
+          </div>
+          <div className="showcase-primitives-field">
+            <Label htmlFor="sc-textarea">Textarea</Label>
+            <Textarea id="sc-textarea" placeholder="A few words…" />
+          </div>
+          <Card className="max-w-sm">
+            <CardHeader>
+              <CardTitle>Card</CardTitle>
+              <CardDescription>
+                A surface for grouped content — header, body, footer.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>Drop anything inside.</CardContent>
+          </Card>
+        </div>
+      </Block>
 
       <Block name="Page Hero">
         <PageHero
