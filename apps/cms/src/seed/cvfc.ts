@@ -622,6 +622,418 @@ const WHO_WE_ARE_LAYOUT = [
   },
 ]
 
+const EVAL_HERO_ACTIONS = [
+  { kind: 'evaluation', label: 'Request an Evaluation', variant: 'default' },
+  { kind: 'link', label: 'Learn About Tryouts', href: '/evaluations', variant: 'outline' },
+]
+const EVAL_CALLOUT_CTA = {
+  label: 'Request an Evaluation',
+  href: '/evaluations',
+  variant: 'default',
+}
+const STAFF_CTA = {
+  label: 'Meet the Coaching Staff',
+  href: '/about/coaching-staff',
+  variant: 'secondary',
+  iconToken: 'ri:soccer-ball',
+}
+
+/** /programs/foundations */
+const FOUNDATIONS_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Foundations',
+    heading: 'Soccer starts here.',
+    description:
+      'Foundations is where every CVFC pathway begins — Mini Maestros and CVFC Youth for ages 4 through 9. Technique first, fun first. The skills that carry a player through MLS NEXT, college, and the rest of life all start in this tier.',
+    background: 'white',
+    actions: EVAL_HERO_ACTIONS,
+  },
+  {
+    blockType: 'mediaSplit',
+    eyebrow: 'Player Development',
+    heading: 'Technique is #1.',
+    body: "Foundations players come to us as four-year-olds and leave at nine ready for competitive tryouts. The job in those years isn't winning — it's ball mastery, dribbling, shooting, and 1v1 attacking and defending. Build the skills first, and confidence follows. Our Foundations program is COED, runs Monday through Wednesday with matches on Saturdays, and rotates new technical content every week. New families are welcome year-round.",
+    imageUrl: `${PHOTO}/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg`,
+    imageAlt: 'Mini Maestros training',
+    tags: [{ label: 'Ages 4–9' }, { label: 'Mini Maestros' }, { label: 'CVFC Youth' }],
+  },
+  {
+    blockType: 'iconCards',
+    eyebrow: 'The Foundations Tier',
+    heading: 'From first touch to first competitive year.',
+    description: 'Four divisions, one progression. Each step prepares players for the next.',
+    background: 'white',
+    cards: [
+      {
+        iconToken: 'custom:soccer-ball',
+        title: 'Super Juniors',
+        description:
+          'Ages 4–5 (born 2021–2022). First introduction to the ball, coordination, and the joy of the game.',
+      },
+      {
+        iconToken: 'custom:cleats',
+        title: 'Juniors',
+        description:
+          'Age 6 (born 2020). Ball mastery and 1v1 confidence. Saturday matches start to feel like real soccer.',
+      },
+      {
+        iconToken: 'custom:soccer-field',
+        title: 'U8 Mini Maestros',
+        description:
+          'Ages 7–8 (born 2018–2019). Technical content rotates weekly. Players begin learning shape, spacing, and decision-making.',
+      },
+      {
+        iconToken: 'custom:bullseye',
+        title: 'CVFC Youth (U9)',
+        description:
+          'Age 9 (born 2017). The bridge into competitive play. Ready to try out for boys, girls, or goalkeeper pathways at U10.',
+      },
+    ],
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'The Pathway',
+    heading: 'Where Foundations leads.',
+    background: 'bone',
+    headingSize: 'section',
+    body: "At U10, Foundations players try out for one of three competitive pathways: Boys (MLS NEXT, MLS NEXT Academy, Elite Academy, EA II, SoCal Flight), Girls (DPL, NPL, GA Aspire, SoCal Flight), or the Goalkeeper pathway. Every competitive pathway leads to college recruiting visibility, and a few alumni go on to sign professional contracts with MLS clubs and Liga MX academies.\n\nMost of our Foundations players won't turn pro. That was never the point. They'll learn how to compete, how to lose and come back, how to lead a teammate, and how to keep showing up — skills that matter long after the last whistle blows.",
+    cta: {
+      label: 'Explore the Pathway',
+      href: '/programs',
+      variant: 'secondary',
+      iconToken: 'ri:soccer-ball',
+    },
+  },
+  {
+    blockType: 'callout',
+    eyebrow: 'Get Started',
+    heading: 'Bring your player out.',
+    variant: 'bone',
+    body: "Foundations welcomes new families year-round. Choose your player's pathway and birth year, and a CVFC coach will be in touch with the next step.",
+    cta: EVAL_CALLOUT_CTA,
+  },
+]
+
+/** /programs/goalkeeper-pathway */
+const GOALKEEPER_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Goalkeeper Pathway',
+    heading: 'Specialized training for the most specialized position.',
+    description:
+      'Goalkeeper is a different sport. Chula Vista FC has a dedicated goalkeeping staff — including a former Mexican Third Division goalkeeper, a Cal Poly San Luis Obispo scholarship alumnus, and an MLS NEXT goalkeeping coach — running specialty sessions at every age.',
+    background: 'white',
+    actions: EVAL_HERO_ACTIONS,
+  },
+  {
+    blockType: 'mediaSplit',
+    eyebrow: 'Why a Specialty Pathway',
+    heading: 'The position demands its own curriculum.',
+    body: "A keeper's development happens differently than an outfield player's. Footwork, handling, distribution, shot-stopping technique, decision-making in the box, and the mental game all need their own time on the training ground — not just whatever's left over at the end of a team session. Our goalkeepers train alongside their pathway team (Foundations, Boys, Girls, MLS NEXT, DPL, etc.) but get dedicated GK sessions led by goalkeeping specialists. That's how a CVFC keeper develops the technical foundation, tactical awareness, and mental resilience to excel at club, college, and professional levels.",
+    imageUrl: `${PHOTO}/2023/11/Goalkeepers-pic.jpg`,
+    imageAlt: 'CVFC goalkeepers in training',
+    tags: [{ label: 'All Ages' }, { label: 'MLS NEXT GK Coach' }, { label: 'College Pathway' }],
+  },
+  {
+    blockType: 'iconCards',
+    eyebrow: 'What GK Training Builds',
+    heading: 'The four pillars of a CVFC keeper.',
+    description:
+      'Specialty training is technical, tactical, mental, and physical — all four developed in parallel from first touch through senior soccer.',
+    background: 'white',
+    cards: [
+      {
+        iconToken: 'custom:cleats',
+        title: 'Technical Foundation',
+        description:
+          'Handling, footwork, set position, diving, crossing, and distribution. The fundamentals every keeper rebuilds at every age.',
+      },
+      {
+        iconToken: 'custom:soccer-field',
+        title: 'Tactical Awareness',
+        description:
+          'Reading the game, organizing the back line, decision-making in the box, and playing out from the back in the modern style.',
+      },
+      {
+        iconToken: 'custom:bullseye',
+        title: 'Mental Resilience',
+        description:
+          'The keeper position is mostly mental. Confidence after a mistake, focus through long stretches, and the willingness to be the loudest voice on the field.',
+      },
+      {
+        iconToken: 'custom:speed-bike',
+        title: 'Athletic Development',
+        description:
+          'Explosive power, reaction speed, and the conditioning to perform 90 minutes from first whistle to last.',
+      },
+    ],
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'The Goalkeeping Staff',
+    heading: 'Coached by professionals.',
+    background: 'bone',
+    headingSize: 'section',
+    body: "CVFC's goalkeeping staff includes Ricardo Villalva, our MLS NEXT goalkeeper coach who played in Mexico's third division with Alebrijes de Oaxaca; Carlos Arce, a former Xolos U15 keeper who earned a full scholarship to Cal Poly San Luis Obispo (coached by former US National Team head coach Steve Sampson); and Victor Duran, who works with our developing keepers across the pathway.\n\nA few of our keepers will sign with college programs. Some may push toward professional environments. Most won't — and that's honest. What every CVFC keeper does take with them is composure under pressure, decisiveness, and the kind of mental toughness that pays off in every part of life after the game.",
+    cta: {
+      label: 'Meet the Goalkeeping Staff',
+      href: '/about/coaching-staff',
+      variant: 'secondary',
+      iconToken: 'ri:soccer-ball',
+    },
+  },
+  {
+    blockType: 'callout',
+    eyebrow: 'Get Started',
+    heading: 'Bring your keeper out for a session.',
+    variant: 'bone',
+    body: "Goalkeepers tryout alongside their pathway team. Choose your player's pathway and birth year, and our goalkeeping staff will be in touch.",
+    cta: EVAL_CALLOUT_CTA,
+  },
+]
+
+/** /programs/boys-competitive-pathway */
+const BOYS_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Boys Competitive Pathway',
+    heading: 'MLS NEXT, Elite Academy, and a real pathway.',
+    description:
+      'The boys pathway at Chula Vista FC runs from U10 through U19 across MLS NEXT, MLS NEXT Academy, Elite Academy, EA II, and the SoCal Flight system. One club, every level — built so players can climb without ever changing crests.',
+    background: 'white',
+    actions: EVAL_HERO_ACTIONS,
+  },
+  {
+    blockType: 'mediaSplit',
+    eyebrow: 'The Top of the Ladder',
+    heading: 'Inside MLS NEXT.',
+    body: 'Chula Vista FC is a proud member of the MLS NEXT League, where our top-flight boys’ teams are provided with a purpose-driven path to professional play and college athletics. MLS NEXT clubs combined have produced more than 90 percent of the U.S. Youth National Team players in 2019 — establishing it as the top destination for the best young players in North America. Players are scouted through the MLS NEXT Showcases held throughout the season and challenged by the best teams in the country. Coaches commit to a high-intensity regimen that focuses on player identification, environment, personal growth, and community.',
+    imageUrl: `${PHOTO}/2024/05/IMG_0867.jpg`,
+    imageAlt: 'CVFC boys MLS NEXT player',
+    tags: [
+      { label: 'MLS NEXT' },
+      { label: 'Birth Years 2007–2013' },
+      { label: 'Showcase Scouting' },
+    ],
+  },
+  {
+    blockType: 'iconCards',
+    eyebrow: 'The Boys Pathway',
+    heading: 'Boys leagues, by tier.',
+    description:
+      "Whether your player is just starting competitive soccer or aiming at MLS, there's a tier that matches their level — and a coach already developing players above and below it.",
+    background: 'white',
+    cards: [
+      {
+        iconToken: 'custom:trophy',
+        title: 'MLS NEXT',
+        description:
+          'Top-flight competition across the U.S. Showcase scouting, national-tier opponents, and the most direct line to MLS academies and college recruiters.',
+      },
+      {
+        iconToken: 'custom:medal',
+        title: 'MLS NEXT Academy',
+        description:
+          'Sub-MLS-NEXT competitive tier within the same player development environment. A clear next step on the way up.',
+      },
+      {
+        iconToken: 'custom:soccer-ball',
+        title: 'Elite Academy (EA)',
+        description:
+          'High-level alternative to MLS NEXT for players who want top competition without the full MLS NEXT travel commitment.',
+      },
+      {
+        iconToken: 'custom:soccer-field',
+        title: 'Elite Academy II',
+        description:
+          'CVFC joined Elite Academy 2 for the 2024–25 season — adding a second EA tier so more players can compete at the elite level.',
+      },
+      {
+        iconToken: 'custom:racing-flags',
+        title: 'SoCal Flight System',
+        description:
+          'Regional competition tiered by ability so every team plays opponents at the right level. The right rung for steady, measurable development.',
+      },
+      {
+        iconToken: 'custom:torch',
+        title: 'First Team',
+        description:
+          "CVFC's adult First Team has won the Southwest Premier League and qualified for the Lamar Hunt US Open Cup. A real ceiling for senior players.",
+      },
+    ],
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside MLS NEXT Academy',
+    heading: 'MLS NEXT Academy',
+    background: 'bone',
+    headingSize: 'section',
+    body: "MLS NEXT Academy is the next-tier roster within the same MLS NEXT environment — same coaching standards, same curriculum, same training environment as MLS NEXT, with competition tuned for players still climbing toward the top tier.\n\nCVFC's MLS NEXT Academy program covers birth years 2007–2013 and gives players a clear, internal pathway to the top MLS NEXT roster as they develop.",
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside Elite Academy',
+    heading: 'Elite Academy (EA) — top competition, regional commitment.',
+    background: 'white',
+    headingSize: 'section',
+    body: "Elite Academy is a high-level alternative to MLS NEXT for players who want top competition without the full MLS NEXT national-travel commitment. EA matches CVFC up with the strongest clubs in Southern California in a competitive structure that still produces college and academy-bound players.\n\nCVFC's EA program covers birth years 2005–2013 and is led by coaches with experience at the U.S. Youth National Team level and beyond.",
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside Elite Academy II',
+    heading: 'Elite Academy II',
+    background: 'bone',
+    headingSize: 'section',
+    body: 'Chula Vista FC joined Elite Academy 2 (EA II) for the 2024–25 season, adding a second EA roster tier so more players can compete in the elite environment. EA II pairs with the main EA program to create internal competition, push-up opportunities, and a more developmental structure for players still building toward the top tier.',
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside SoCal Flight',
+    heading: 'SoCal Flight System',
+    background: 'white',
+    headingSize: 'section',
+    body: "The SoCal Flight system tiers regional boys competition by ability, so every team plays opponents at the level that pushes them without overwhelming them. For CVFC, Flight is where developing teams build the foundation to step up to EA or MLS NEXT when they're ready.\n\nFlight matches are local or regional, schedules are predictable, and the competitive environment is real without the travel commitment of national-tier leagues.",
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside the First Team',
+    heading: 'The senior ceiling — Southwest Premier League and beyond.',
+    background: 'bone',
+    headingSize: 'section',
+    body: "CVFC's adult First Team competes in the Southwest Premier League, where it has lifted the SWPL trophy. The First Team has also advanced through the qualifying rounds of the Lamar Hunt US Open Cup and reached NISA semifinals — a real adult ceiling for senior players who want to stay competitive after the youth pathway.\n\nFor players moving from U19 toward college, the First Team is also a training environment they can learn from even before they're old enough to play in it.",
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'The Pathway Story',
+    heading: 'From U10 to MLS, FC Dallas, and Liga MX.',
+    background: 'bone',
+    headingSize: 'section',
+    body: "Recent CVFC alumni have signed with MLS Colorado Rapids, FC Dallas, Austin FC, Atlas FC Academy, Club Tijuana, Club Rayados de Monterrey, and Barça Academy Arizona, and have represented the US National Team and the Mexican National Team. That's the ceiling — and it's real. The pathway works.\n\nBut most players who come through MLS NEXT, EA, or the SoCal Flight system don't turn pro. That was never the only point. They learn how to compete, how to lose and come back, how to lead a teammate, and how to keep showing up — skills that matter in college, in careers, and in everything that comes after.",
+    cta: STAFF_CTA,
+  },
+  {
+    blockType: 'callout',
+    eyebrow: 'Take the Step',
+    heading: 'Tryouts open year-round.',
+    variant: 'bone',
+    body: 'Whether your player is moving up from Foundations or coming in from another club, the path begins the same way. Choose their birth year and a CVFC coach will be in touch with the next step.',
+    cta: EVAL_CALLOUT_CTA,
+  },
+]
+
+/** /programs/girls-competitive-pathway */
+const GIRLS_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Girls Competitive Pathway',
+    heading: 'GA, DPL, NPL, and a pathway built for the next generation.',
+    description:
+      'The girls pathway at Chula Vista FC runs from U10 through U19 across DPL, NPL, and the SoCal Flight system, with applications submitted for GA and GA Aspire. One club, every level — built so players can climb without ever changing crests.',
+    background: 'white',
+    actions: EVAL_HERO_ACTIONS,
+  },
+  {
+    blockType: 'mediaSplit',
+    eyebrow: 'Inside the DPL',
+    heading: 'The Development Player League.',
+    reverse: true,
+    body: "The Development Player League is a prestigious club-vs-club platform specifically designed to elevate girls' soccer. CVFC was accepted into the DPL in April 2025 — a standards-driven national league that gives players a structured, reputable environment for long-term growth. DPL emphasizes both athletic and personal growth. It extends beyond soccer skills to life lessons, community, and collegiate opportunities — and it pits CVFC players against the elite clubs of Southern California, who are among the nation's best.",
+    imageUrl: `${PHOTO}/2024/02/IMG_6349.jpg`,
+    imageAlt: 'CVFC girls competitive player',
+    tags: [{ label: 'DPL' }, { label: 'NPL' }, { label: 'Birth Years 2007–2013' }],
+  },
+  {
+    blockType: 'iconCards',
+    eyebrow: 'The Girls Pathway',
+    heading: 'Girls leagues, by tier.',
+    description:
+      'From Girls Academy down through SoCal Flight — leagues ordered by competitive level, so players can find the right rung now and a clear way up.',
+    background: 'white',
+    cards: [
+      {
+        iconToken: 'custom:trophy',
+        title: 'Girls Academy (GA)',
+        description:
+          'The top of the girls pathway — the Girls Academy League, the highest national-tier environment for elite female players. CVFC has applied for GA acceptance.',
+      },
+      {
+        iconToken: 'custom:medal',
+        title: 'GA Aspire',
+        description:
+          'The pre-Girls Academy environment that develops the next generation of GA players at the highest competitive level. CVFC has applied for GA Aspire acceptance.',
+      },
+      {
+        iconToken: 'custom:soccer-ball',
+        title: 'DPL',
+        description:
+          "The Development Player League — a prestigious club-vs-club platform specifically designed to elevate girls' soccer. CVFC accepted in April 2025.",
+      },
+      {
+        iconToken: 'custom:torch',
+        title: 'NPL',
+        description:
+          'National Premier Leagues — top-tier regional competition with national playoff visibility for girls who play at the highest club level.',
+      },
+      {
+        iconToken: 'custom:racing-flags',
+        title: 'SoCal Flight System',
+        description:
+          'Regional girls competition tiered by ability, so every team plays opponents at the right level. The right rung for steady, measurable progress.',
+      },
+    ],
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside Girls Academy',
+    heading: 'Girls Academy (GA)',
+    background: 'bone',
+    headingSize: 'section',
+    body: 'The Girls Academy League (GA) sits at the top of the girls competitive pathway — a national-tier environment built for the most committed female athletes, with full-year development, top opponents from across the country, and direct visibility for college recruiters and youth national team scouts.\n\nCVFC has applied for GA acceptance. Once placed, GA will sit above GA Aspire, DPL, NPL, and the SoCal Flight system in the girls competitive structure.',
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside GA Aspire',
+    heading: 'GA Aspire',
+    background: 'white',
+    headingSize: 'section',
+    body: "GA Aspire is the pre-Girls Academy environment that prepares the next generation of GA-level players. It pairs the daily standards of the top tier with a developmental focus, so players who aren't yet on a GA roster can train, compete, and grow toward it.\n\nCVFC has applied for GA Aspire acceptance. Once placed, GA Aspire will sit between GA and DPL in the girls competitive structure.",
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside the NPL',
+    heading: 'National Premier League',
+    background: 'bone',
+    headingSize: 'section',
+    body: "The National Premier League (NPL) is one of the highest levels of regional girls soccer in the U.S., with national playoff visibility for top regional finishers. It's built for players who want the rigor of a national-tier league while staying rooted in regional competition.\n\nCVFC NPL teams compete against the strongest clubs in Southern California and have a real path to the NPL Showcase and national playoff stages.",
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'Inside SoCal Flight',
+    heading: 'SoCal Flight System',
+    background: 'white',
+    headingSize: 'section',
+    body: "The SoCal Flight system tiers regional girls competition by ability, so every team plays opponents at the level that pushes them without overwhelming them. For CVFC, Flight is where developing teams build the foundation to step up to NPL or DPL when they're ready.\n\nFlight matches are local or regional, season schedules are predictable, and the competitive environment is real without the travel commitment of national-tier leagues.",
+  },
+  {
+    blockType: 'headingSection',
+    eyebrow: 'The Pathway Story',
+    heading: 'Built for college soccer — and what comes after.',
+    background: 'bone',
+    headingSize: 'section',
+    body: "The girls pathway is built around two real outcomes: college recruiting visibility for the players who want it, and life skills that carry every player forward whether soccer stays in the picture or not. DPL events, NPL playoffs, and Flight competition put players in front of college coaches at every level. Daily training builds the work ethic, leadership, and resilience that matter long after.\n\nMost CVFC girls won't play professionally — there's no honest pathway in youth soccer that pretends otherwise. But every player leaves better than she came: stronger, sharper, more accountable, more capable of leading a team.",
+    cta: STAFF_CTA,
+  },
+  {
+    blockType: 'callout',
+    eyebrow: 'Take the Step',
+    heading: 'Bring her out for a tryout.',
+    variant: 'bone',
+    body: 'CVFC accepts evaluations year-round across DPL, NPL, and the SoCal Flight system, with applications submitted for GA and GA Aspire. Choose her birth year and a CVFC coach will be in touch with the next step.',
+    cta: EVAL_CALLOUT_CTA,
+  },
+]
+
 /** Per-page SEO meta (title 30–60 chars, description ~120–160) for the CMS panel. */
 const PAGE_META: Record<string, { title: string; description: string }> = {
   home: {
@@ -643,6 +1055,26 @@ const PAGE_META: Record<string, { title: string; description: string }> = {
     title: 'Who We Are — Chula Vista FC Since 1982',
     description:
       'Chula Vista FC has developed South Bay players since 1982 — boys and girls, Mini Maestros to MLS NEXT, coached by alumni who came up through the club.',
+  },
+  'programs/foundations': {
+    title: 'Foundations — CVFC Youth Soccer, Ages 4–9',
+    description:
+      "Mini Maestros and CVFC Youth for ages 4–9 at Chula Vista FC — technique-first development that begins every player's pathway toward competitive soccer.",
+  },
+  'programs/goalkeeper-pathway': {
+    title: 'Goalkeeper Pathway — Chula Vista FC',
+    description:
+      "Specialized goalkeeper training at every age, led by CVFC's dedicated GK staff — technical, tactical, mental, and athletic development for keepers.",
+  },
+  'programs/boys-competitive-pathway': {
+    title: 'Boys Competitive Pathway — Chula Vista FC',
+    description:
+      "CVFC's boys pathway from U10 to U19 — MLS NEXT, MLS NEXT Academy, Elite Academy, EA II, and SoCal Flight, with alumni in MLS and Liga MX.",
+  },
+  'programs/girls-competitive-pathway': {
+    title: 'Girls Competitive Pathway — Chula Vista FC',
+    description:
+      "CVFC's girls pathway from U10 to U19 — DPL, NPL, and SoCal Flight, with GA and GA Aspire applications submitted. Built for college visibility.",
   },
 }
 
@@ -740,6 +1172,30 @@ async function seed() {
     WHO_WE_ARE_LAYOUT,
     PAGE_META['about/who-we-are'],
   )
+  await upsertPage(
+    'programs/foundations',
+    'Foundations',
+    FOUNDATIONS_LAYOUT,
+    PAGE_META['programs/foundations'],
+  )
+  await upsertPage(
+    'programs/goalkeeper-pathway',
+    'Goalkeeper Pathway',
+    GOALKEEPER_LAYOUT,
+    PAGE_META['programs/goalkeeper-pathway'],
+  )
+  await upsertPage(
+    'programs/boys-competitive-pathway',
+    'Boys Competitive Pathway',
+    BOYS_LAYOUT,
+    PAGE_META['programs/boys-competitive-pathway'],
+  )
+  await upsertPage(
+    'programs/girls-competitive-pathway',
+    'Girls Competitive Pathway',
+    GIRLS_LAYOUT,
+    PAGE_META['programs/girls-competitive-pathway'],
+  )
 
   // --- blog: migrate cvfc news into the Posts collection (verbatim) ---
   const posts = getActiveNews(NEWS_POSTS)
@@ -783,7 +1239,9 @@ async function seed() {
   console.log(
     `✓ Seeded cvfc home — full landing (${homeLayout.length} blocks${hero ? ', hero preserved' : ''}).`,
   )
-  console.log('✓ Seeded cvfc /programs, /about, /about/who-we-are (with SEO meta).')
+  console.log(
+    '✓ Seeded cvfc pages: /programs, /about, /about/who-we-are, /programs/{foundations,goalkeeper-pathway,boys-competitive-pathway,girls-competitive-pathway} (with SEO meta).',
+  )
   console.log(`✓ Seeded ${posts.length} blog posts into the Posts collection.`)
   process.exit(0)
 }

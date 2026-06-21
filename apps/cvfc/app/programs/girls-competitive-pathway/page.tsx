@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
 
 import { GirlsCompetitivePathwayScreen } from "@/components/screen/girls-competitive-pathway-screen";
+import { metadataForPage } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Girls Competitive Pathway — DPL, NPL & GA Aspire",
-  description:
-    "Chula Vista FC's girls competitive pathway: DPL (Development Player League), NPL, GA Aspire (coming), and SoCal Flight. Birth years 2007–2013. The South Bay's premier girls' soccer development environment.",
-  alternates: { canonical: "/programs/girls-competitive-pathway" },
-  openGraph: {
-    title: "Girls Competitive Pathway — Chula Vista FC",
+export function generateMetadata(): Promise<Metadata> {
+  return metadataForPage({
+    slug: "programs/girls-competitive-pathway",
+    path: "/programs/girls-competitive-pathway",
+    title: "Girls Competitive Pathway — DPL, NPL & GA Aspire",
     description:
-      "DPL, NPL, GA Aspire, SoCal Flight — the girls pathway in Chula Vista, San Diego, and the South Bay.",
-    url: "/programs/girls-competitive-pathway",
-    type: "website",
-  },
-};
+      "Chula Vista FC's girls competitive pathway: DPL (Development Player League), NPL, GA Aspire (coming), and SoCal Flight. Birth years 2007–2013. The South Bay's premier girls' soccer development environment.",
+  });
+}
 
 export default function Page() {
   return <GirlsCompetitivePathwayScreen />;
