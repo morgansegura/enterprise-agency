@@ -1,10 +1,18 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
+import dynamic from "next/dynamic";
 
 import { useConsent } from "@/lib/cookie-consent";
 import { CookieBanner } from "./cookie-banner";
-import { CookiePreferencesModal } from "./cookie-preferences-modal";
+
+// Lazy: the radix Dialog/Switch in the preferences modal only loads on "Customize"
+// (or the footer trigger), keeping it out of the initial JS bundle.
+const CookiePreferencesModal = dynamic(
+  () =>
+    import("./cookie-preferences-modal").then((m) => m.CookiePreferencesModal),
+  { ssr: false },
+);
 
 type CookieConsentContextValue = { openPreferences: () => void };
 
@@ -30,17 +38,22 @@ export function CookieConsentProvider({
 }) {
   const consent = useConsent();
   const [prefsOpen, setPrefsOpen] = useState(false);
+  // Mount the (lazy) modal only after it's first requested.
+  const [prefsMounted, setPrefsMounted] = useState(false);
   const decided = consent !== null;
 
+  const open = () => {
+    setPrefsMounted(true);
+    setPrefsOpen(true);
+  };
+
   return (
-    <CookieConsentContext.Provider
-      value={{ openPreferences: () => setPrefsOpen(true) }}
-    >
+    <CookieConsentContext.Provider value={{ openPreferences: open }}>
       {children}
-      {!decided ? (
-        <CookieBanner onCustomize={() => setPrefsOpen(true)} />
+      {!decided ? <CookieBanner onCustomize={open} /> : null}
+      {prefsMounted ? (
+        <CookiePreferencesModal open={prefsOpen} onOpenChange={setPrefsOpen} />
       ) : null}
-      <CookiePreferencesModal open={prefsOpen} onOpenChange={setPrefsOpen} />
     </CookieConsentContext.Provider>
   );
 }
