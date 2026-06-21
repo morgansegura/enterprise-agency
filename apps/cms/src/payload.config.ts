@@ -17,6 +17,8 @@ import { Menus } from './collections/Menus'
 import { Products } from './collections/Products'
 import { Posts } from './collections/Posts'
 import { Staff } from './collections/Staff'
+import { Testimonials } from './collections/Testimonials'
+import { Facilities } from './collections/Facilities'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,7 +36,19 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Pages, Products, Posts, Staff, Tenants, SiteSettings, Menus, Users, Media],
+  collections: [
+    Pages,
+    Products,
+    Posts,
+    Staff,
+    Testimonials,
+    Facilities,
+    Tenants,
+    SiteSettings,
+    Menus,
+    Users,
+    Media,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -78,6 +92,8 @@ export default buildConfig({
         products: {},
         posts: {},
         staff: {},
+        testimonials: {},
+        facilities: {},
         siteSettings: { isGlobal: true },
         menus: {},
         forms: {},

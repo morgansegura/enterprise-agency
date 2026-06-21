@@ -20,6 +20,7 @@ import { TESTIMONIALS } from '../../../cvfc/data/testimonials'
 import { COACHES, getActiveCoaches, getFeaturedCoaches } from '../../../cvfc/data/coaches'
 import { ADMINISTRATORS, getActiveAdministrators } from '../../../cvfc/data/administrators'
 import { NEWS_POSTS, getActiveNews } from '../../../cvfc/data/news'
+import { FACILITIES } from '../../../cvfc/data/facilities'
 import { htmlToLexical } from './html-to-lexical'
 
 const WELCOME_BODY =
@@ -1309,6 +1310,65 @@ async function seed() {
     })
   }
 
+  // --- testimonials + facilities → their collections (idempotent by key) ---
+  const upsertByKey = async (collection: string, key: string, data: Record<string, unknown>) => {
+    const found = await payload.find({
+      collection: collection as never,
+      where: { and: [{ key: { equals: key } }, { tenant: { equals: tenant.id } }] },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+    const d = { ...data, key } as never
+    if (found.docs[0]) {
+      await payload.update({
+        collection: collection as never,
+        id: found.docs[0].id,
+        data: d,
+        depth: 0,
+        overrideAccess: true,
+      })
+    } else {
+      await payload.create({
+        collection: collection as never,
+        data: { ...(d as object), tenant: tenant.id } as never,
+        depth: 0,
+        overrideAccess: true,
+      })
+    }
+  }
+
+  for (const [i, t] of TESTIMONIALS.entries()) {
+    await upsertByKey('testimonials', t.id, {
+      quote: t.quote,
+      author: t.author,
+      role: t.role,
+      context: t.context,
+      longform: t.longform,
+      featured: Boolean(t.featured),
+      imageUrl: t.image?.src,
+      status: t.status ?? 'active',
+      order: i,
+    })
+  }
+
+  for (const [i, f] of FACILITIES.entries()) {
+    await upsertByKey('facilities', f.id, {
+      name: f.name,
+      tier: f.tier,
+      role: f.role,
+      roleLabel: f.roleLabel,
+      address: f.address,
+      description: f.description,
+      uses: f.uses ?? [],
+      features: f.features ?? [],
+      imageUrl: f.image?.src,
+      mapsUrl: f.mapsUrl,
+      status: f.status ?? 'active',
+      order: i,
+    })
+  }
+
   console.log(
     `✓ Seeded cvfc home — full landing (${homeLayout.length} blocks${hero ? ', hero preserved' : ''}).`,
   )
@@ -1318,6 +1378,9 @@ async function seed() {
   console.log(`✓ Seeded ${posts.length} blog posts into the Posts collection.`)
   console.log(
     `✓ Seeded ${coaches.length} coaches + ${admins.length} administrators into the Staff collection.`,
+  )
+  console.log(
+    `✓ Seeded ${TESTIMONIALS.length} testimonials + ${FACILITIES.length} facilities into their collections.`,
   )
   process.exit(0)
 }

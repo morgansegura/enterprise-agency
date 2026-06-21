@@ -164,6 +164,59 @@ export const getCmsPostBySlug = cache(
   },
 );
 
+/** A testimonial in the Testimonials collection. */
+export type TestimonialDoc = {
+  id: string | number;
+  key?: string | null;
+  quote?: string;
+  author?: string;
+  role?: string | null;
+  context?: string | null;
+  longform?: string | null;
+  featured?: boolean | null;
+  photo?: MediaValue;
+  imageUrl?: string | null;
+  status?: string | null;
+  order?: number | null;
+};
+
+/** All testimonials for this tenant, sorted by `order`. */
+export const getTestimonials = cache(async (): Promise<TestimonialDoc[]> => {
+  return cmsFind<TestimonialDoc>(
+    "testimonials",
+    "depth=1&limit=200&sort=order",
+  );
+});
+
+/** A facility in the Facilities collection. */
+export type FacilityDoc = {
+  id: string | number;
+  key?: string | null;
+  name?: string;
+  tier?: string | null;
+  role?: string | null;
+  roleLabel?: string | null;
+  address?: {
+    street?: string | null;
+    city?: string | null;
+    state?: string | null;
+    zip?: string | null;
+  } | null;
+  description?: string | null;
+  uses?: string[] | null;
+  features?: string[] | null;
+  photo?: MediaValue;
+  imageUrl?: string | null;
+  mapsUrl?: string | null;
+  status?: string | null;
+  order?: number | null;
+};
+
+/** All facilities for this tenant, sorted by `order`. */
+export const getFacilities = cache(async (): Promise<FacilityDoc[]> => {
+  return cmsFind<FacilityDoc>("facilities", "depth=1&limit=200&sort=order");
+});
+
 /** A Payload `upload` field value: a populated media doc, a URL string, an id, or null. */
 export type MediaValue =
   | { url?: string | null; alt?: string | null }

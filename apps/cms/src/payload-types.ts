@@ -71,6 +71,8 @@ export interface Config {
     products: Product;
     posts: Post;
     staff: Staff;
+    testimonials: Testimonial;
+    facilities: Facility;
     tenants: Tenant;
     siteSettings: SiteSetting;
     menus: Menu;
@@ -90,6 +92,8 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     staff: StaffSelect<false> | StaffSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    facilities: FacilitiesSelect<false> | FacilitiesSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     menus: MenusSelect<false> | MenusSelect<true>;
@@ -763,6 +767,83 @@ export interface Staff {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  quote: string;
+  author: string;
+  role?: ('Parent' | 'Player' | 'Alumnus' | 'Coach') | null;
+  /**
+   * e.g. "Parent of B2011 MLS NEXT".
+   */
+  context?: string | null;
+  /**
+   * Longer body for featured entries.
+   */
+  longform?: string | null;
+  featured?: boolean | null;
+  photo?: (number | null) | Media;
+  /**
+   * External image URL — used when no upload.
+   */
+  imageUrl?: string | null;
+  status?: ('active' | 'archived') | null;
+  order?: number | null;
+  /**
+   * Stable source id for seeding.
+   */
+  key?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "facilities".
+ */
+export interface Facility {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  /**
+   * Featured → media-split row; Park → compact grid card.
+   */
+  tier?: ('featured' | 'park') | null;
+  /**
+   * Source role tag.
+   */
+  role?: string | null;
+  /**
+   * e.g. "Primary Training Ground".
+   */
+  roleLabel?: string | null;
+  address?: {
+    street?: string | null;
+    city?: string | null;
+    state?: string | null;
+    zip?: string | null;
+  };
+  description?: string | null;
+  uses?: string[] | null;
+  features?: string[] | null;
+  photo?: (number | null) | Media;
+  /**
+   * External image URL — used when no upload.
+   */
+  imageUrl?: string | null;
+  mapsUrl?: string | null;
+  status?: ('active' | 'archived') | null;
+  order?: number | null;
+  /**
+   * Stable source id for seeding.
+   */
+  key?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "siteSettings".
  */
 export interface SiteSetting {
@@ -1239,6 +1320,14 @@ export interface PayloadLockedDocument {
         value: number | Staff;
       } | null)
     | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'facilities';
+        value: number | Facility;
+      } | null)
+    | ({
         relationTo: 'tenants';
         value: number | Tenant;
       } | null)
@@ -1690,6 +1779,56 @@ export interface StaffSelect<T extends boolean = true> {
   joinedYear?: T;
   status?: T;
   role?: T;
+  order?: T;
+  key?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  tenant?: T;
+  quote?: T;
+  author?: T;
+  role?: T;
+  context?: T;
+  longform?: T;
+  featured?: T;
+  photo?: T;
+  imageUrl?: T;
+  status?: T;
+  order?: T;
+  key?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "facilities_select".
+ */
+export interface FacilitiesSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  tier?: T;
+  role?: T;
+  roleLabel?: T;
+  address?:
+    | T
+    | {
+        street?: T;
+        city?: T;
+        state?: T;
+        zip?: T;
+      };
+  description?: T;
+  uses?: T;
+  features?: T;
+  photo?: T;
+  imageUrl?: T;
+  mapsUrl?: T;
+  status?: T;
   order?: T;
   key?: T;
   updatedAt?: T;

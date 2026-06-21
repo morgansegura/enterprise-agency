@@ -15,6 +15,8 @@ import {
   getParkFacilities,
   type Facility,
 } from "@/data/facilities";
+import { getFacilities } from "@/lib/cms";
+import { cmsToFacility } from "@/lib/cms-content";
 
 function formatAddressLine(facility: Facility) {
   const { street, city, state, zip } = facility.address;
@@ -95,9 +97,11 @@ function FeaturedFacilityRow({
   );
 }
 
-export function FacilitiesScreen() {
-  const featured = getFeaturedFacilities(FACILITIES);
-  const parks = getParkFacilities(FACILITIES);
+export async function FacilitiesScreen() {
+  const cms = (await getFacilities()).map(cmsToFacility).filter((f) => f.name);
+  const source = cms.length ? cms : FACILITIES;
+  const featured = getFeaturedFacilities(source);
+  const parks = getParkFacilities(source);
 
   return (
     <>

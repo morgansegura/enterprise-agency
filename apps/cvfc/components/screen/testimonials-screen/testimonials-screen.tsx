@@ -9,6 +9,8 @@ import {
   getActiveTestimonials,
   getFeaturedTestimonials,
 } from "@/data/testimonials";
+import { getTestimonials } from "@/lib/cms";
+import { cmsToTestimonial } from "@/lib/cms-content";
 
 import "./testimonials-screen.css";
 
@@ -19,9 +21,13 @@ const ROLE_TAG = {
   Coach: "Coach",
 } as const;
 
-export function TestimonialsScreen() {
-  const all = getActiveTestimonials(TESTIMONIALS);
-  const featured = getFeaturedTestimonials(TESTIMONIALS);
+export async function TestimonialsScreen() {
+  const cms = (await getTestimonials())
+    .map(cmsToTestimonial)
+    .filter((t) => t.quote);
+  const source = cms.length ? cms : TESTIMONIALS;
+  const all = getActiveTestimonials(source);
+  const featured = getFeaturedTestimonials(source);
   const wall = all.filter((t) => !t.featured);
 
   return (
