@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.showcase-screen {
+  @apply flex flex-col;
+}
+
+.showcase-header {
+  @apply py-16 text-center md:py-24;
+}
+
+.showcase-title {
+  @apply mt-4 text-4xl font-bold text-(--color-midnight) md:text-5xl;
+}
+
+.showcase-intro {
+  @apply mx-auto mt-4 max-w-2xl text-(--color-midnight)/70;
+}
+
+.showcase-block {
+  @apply relative border-t-2 border-(--color-gold)/30;
+}
+
+.showcase-block-label {
+  @apply sticky top-(--header-height) z-20 bg-(--color-gold) px-4 py-1.5 text-xs font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-midnight);
+}

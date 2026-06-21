@@ -143,6 +143,7 @@ export type PostDoc = {
   title?: string;
   excerpt?: string | null;
   coverImage?: MediaValue;
+  coverImageUrl?: string | null;
   publishedAt?: string | null;
   author?: string | null;
   content?: unknown;

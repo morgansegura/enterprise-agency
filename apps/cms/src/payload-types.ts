@@ -653,6 +653,10 @@ export interface Post {
   slug: string;
   excerpt?: string | null;
   coverImage?: (number | null) | Media;
+  /**
+   * External/asset image URL — used when no upload is set.
+   */
+  coverImageUrl?: string | null;
   publishedAt?: string | null;
   author?: string | null;
   content?: {
@@ -1742,6 +1746,7 @@ export interface PostsSelect<T extends boolean = true> {
   slug?: T;
   excerpt?: T;
   coverImage?: T;
+  coverImageUrl?: T;
   publishedAt?: T;
   author?: T;
   content?: T;

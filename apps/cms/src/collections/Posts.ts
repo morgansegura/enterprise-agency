@@ -27,6 +27,11 @@ export const Posts: CollectionConfig = {
     },
     { name: 'excerpt', type: 'textarea' },
     { name: 'coverImage', type: 'upload', relationTo: 'media' },
+    {
+      name: 'coverImageUrl',
+      type: 'text',
+      admin: { description: 'External/asset image URL — used when no upload is set.' },
+    },
     { name: 'publishedAt', type: 'date' },
     { name: 'author', type: 'text' },
     { name: 'content', type: 'richText' },

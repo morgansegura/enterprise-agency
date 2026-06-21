@@ -1238,6 +1238,7 @@ async function seed() {
       excerpt: post.excerpt,
       author: 'Chula Vista FC',
       publishedAt: post.date,
+      coverImageUrl: post.image?.src,
       content: htmlToLexical(post.body) as never,
       _status: 'published' as const,
     }

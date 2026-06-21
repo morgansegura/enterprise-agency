@@ -4,7 +4,7 @@ import { lexicalToHtml } from "@/lib/lexical-to-html";
 
 /** Map a CMS `posts` doc → the FE `NewsPost` shape (body serialized from lexical). */
 export function cmsPostToNewsPost(d: PostDoc): NewsPost {
-  const img = mediaUrl(d.coverImage);
+  const img = mediaUrl(d.coverImage) ?? d.coverImageUrl ?? undefined;
   return {
     id: String(d.id),
     slug: d.slug ?? "",

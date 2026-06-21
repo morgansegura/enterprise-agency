@@ -106,19 +106,47 @@ articles migrated into the `Posts` collection** (HTML→lexical converter).
 ## Remaining: directory data → CMS collections (enterprise decision)
 
 Decided: directory data lives in **collections** (single source, edit-once),
-not page-block arrays. Next epic (do with fresh context — it's foundational and
-writes schema to the shared prod DB):
+not page-block arrays.
 
-1. **People collection** — expand `Staff` (currently minimal) to cvfc's `Coach`
-   model (role/pathway/programs/birthYears/credentials/achievements/contact/
-   isFeatured/joinedYear/image). Seed coaches→Staff (idempotent). Add
-   `getStaff(group?)` + Staff→Coach mapper to `lib/cms`. Rewire coaching-staff +
-   administrators screens (async fetch, static fallback) + landing portraitGrid.
-   NOTE: `StaffDirectory` filters (`COACH_FILTERS`/`filterCoaches`) run on
-   pathway/programs/role — capture those or simplify filtering to `group`.
-2. **News** — point `/news` + `/news/[slug]` at the seeded `Posts` collection
-   (replace `data/news.ts` reads); Article schema + RSS.
-3. **Testimonials collection** — reusable across landing + testimonials page.
-4. **facilities** — `fieldGrid` block (+ mediaSplit/headingSection); page-specific.
-5. Bespoke pages stay static/partial: support (donation tiers), sponsor,
-   partnerships, coaching-opportunities (requirements grid), evaluations.
+**STATUS: cvfc migration complete.** All content pages render from Pages blocks;
+all directory data lives in collections — **Staff** (coaches+admins, feeds
+coaching-staff/administrators + landing portraits), **Posts** (news/blog, rendered
+via the lexical→HTML serializer in `lib/lexical-to-html`), **Testimonials**,
+**Facilities**. Each screen reads its collection with a static-data fallback.
+Bespoke pages stay static by design: support (donation tiers), sponsor,
+partnerships, coaching-opportunities (requirements grid), evaluations.
+
+## Seed toolkit — `apps/cms/src/seed/helpers.ts`
+
+A new site's seed is now mostly its content + a few calls (no bespoke script):
+
+```ts
+const tenant = await getTenantBySlug(payload, "<tenant>");
+// pages: blocks + per-page SEO meta
+await upsertPage(
+  payload,
+  tenant.id,
+  "about",
+  "About",
+  ABOUT_LAYOUT,
+  META.about,
+);
+// directory data: migrate a data/*.ts array into a keyed collection (idempotent)
+await migrateCollection(
+  payload,
+  tenant.id,
+  "staff",
+  coaches,
+  (c) => c.id,
+  (c, i) => ({ name: c.name, title: c.title, /* … */ order: i }),
+  () => [{ group: { equals: "Coaching Staff" } }],
+); // optional extra key scope
+```
+
+- **`upsertPage`** — find-or-create a Pages doc by (slug, tenant), publishes.
+- **`upsertByKey`** / **`migrateCollection`** — idempotent keyed upserts for any
+  collection (`key` field + tenant; `extraWhere` for multi-key like Staff group).
+- Images: external/asset URLs seed via the `imageUrl`/`coverImageUrl` escape-hatch
+  on image blocks + collections (mapper prefers an upload, else the URL); next/image
+  optimizes remote hosts (allow-listed in `next.config`), local `/media/*` serve
+  same-origin. Swap to R2 uploads in the CMS over time.
