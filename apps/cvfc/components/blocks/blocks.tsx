@@ -174,7 +174,7 @@ const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
   faqSection: (block, key) => <FaqSection key={key} {...faqFromBlock(block)} />,
 };
 
-export function Blocks({
+export function BlockList({
   layout,
   only,
 }: {

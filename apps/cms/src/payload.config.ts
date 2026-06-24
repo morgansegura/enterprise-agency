@@ -23,6 +23,16 @@ import { Facilities } from './collections/Facilities'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Auth-cookie allowlist (cors + csrf). The CMS admin's own origin must be here
+// or the admin can't save; the FE origins are needed for Live Preview.
+const allowedOrigins = [
+  'http://localhost:4010', // CMS admin (local)
+  'http://localhost:4011', // FE (local)
+  'https://webandfunnel.onrender.com', // CMS admin (prod)
+  process.env.FRONTEND_URL, // FE (prod)
+  process.env.CMS_URL, // CMS (prod override, if set)
+].filter(Boolean) as string[]
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -51,6 +61,12 @@ export default buildConfig({
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
+  // Origins allowed to use the auth cookie. MUST include the CMS admin's own
+  // origin (else the admin can't save — CSRF rejects its own requests) AND the
+  // front-end origins (for Live Preview's populate fetch). Add each tenant's prod
+  // FE domain as sites launch.
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

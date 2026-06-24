@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { draftMode } from "next/headers";
 
 import { Header, Footer } from "@/components/layout";
-import { LivePreviewListener } from "@/components/live-preview";
 import { JsonLd } from "@/components/seo";
 import {
   ConsentDefaults,
@@ -72,9 +70,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Inside the CMS Live Preview iframe, draft mode is on — mount the listener
-  // that refreshes the route as the editor saves/autosaves.
-  const { isEnabled: isPreview } = await draftMode();
   // Chrome content from the CMS (falls back to lib/menu when empty/offline).
   const settings = await getSiteSettings();
   const headerItems = toMenuItems(settings?.headerMenu);
@@ -92,7 +87,6 @@ export default async function RootLayout({
         <ConsentDefaults />
       </head>
       <body>
-        {isPreview ? <LivePreviewListener /> : null}
         <GoogleTagManagerNoscript />
         <GoogleTagManager />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />

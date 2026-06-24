@@ -20,7 +20,7 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
     <>
       <main className={className}>
         {page?.layout?.length ? (
-          <Blocks layout={page.layout} />
+          <Blocks page={page} />
         ) : (
           <>
             <PageHero

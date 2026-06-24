@@ -1,14 +1,8 @@
 import type { HeroSlide } from "@/components/feature/hero-carousel";
 import type { Testimonial } from "@/components/feature/testimonials";
 import type { FaqEntry } from "@/data/faq";
-import {
-  blockOf,
-  mediaAlt,
-  mediaUrl,
-  type MediaValue,
-  type Page,
-  type PageBlock,
-} from "@/lib/cms";
+import { blockOf, mediaAlt, mediaUrl, type MediaValue } from "@/lib/media";
+import type { Page, PageBlock } from "@/lib/cms";
 
 /**
  * Maps CMS layout blocks → the props each bespoke FE feature expects. Every

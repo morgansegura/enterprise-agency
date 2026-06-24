@@ -38,7 +38,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
     <>
       <main className={cn("landing-screen", className)}>
         {hasCmsMediaSplits ? (
-          <Blocks layout={page?.layout} />
+          <Blocks page={page} />
         ) : (
           <>
             <HeroCarousel slides={heroSlides} />
@@ -104,7 +104,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
             />
 
             {hasCmsMediaSplits ? (
-              <Blocks layout={page?.layout} only={["mediaSplit"]} />
+              <Blocks page={page} only={["mediaSplit"]} />
             ) : (
               <>
                 <MediaSplit

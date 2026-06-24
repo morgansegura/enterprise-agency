@@ -18,7 +18,7 @@ export async function FoundationsScreen() {
     <>
       <main>
         {page?.layout?.length ? (
-          <Blocks layout={page.layout} />
+          <Blocks page={page} />
         ) : (
           <>
             <PageHero

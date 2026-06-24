@@ -84,7 +84,7 @@ export async function AboutScreen() {
       />
       <main>
         {page?.layout?.length ? (
-          <Blocks layout={page.layout} />
+          <Blocks page={page} />
         ) : (
           <>
             <PageHero

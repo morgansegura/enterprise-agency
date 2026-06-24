@@ -74,8 +74,6 @@ async function previewUrl(doc: PageDoc | undefined, req: PayloadRequest): Promis
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
-  // autosave drives Live Preview — edits persist to the draft as you type, which
-  // the FE's RefreshRouteOnSave listener picks up. Publishing stays explicit.
   versions: {
     drafts: { schedulePublish: true, autosave: { interval: 800 } },
     maxPerDoc: 100,
