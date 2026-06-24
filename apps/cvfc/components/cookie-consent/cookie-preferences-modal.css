@@ -1,7 +1,7 @@
 @reference "tailwindcss";
 
 .cookie-prefs {
-  @apply flex flex-col gap-5;
+  @apply flex flex-col gap-5 p-6;
 }
 
 .cookie-prefs-header {
