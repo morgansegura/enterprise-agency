@@ -15,19 +15,23 @@
 ## Commands
 
 ```bash
-pnpm dev              # All services
-pnpm dev:api          # API only
-pnpm dev:builder      # Builder only
-pnpm dev:client       # Client only
-pnpm db:push          # Push Prisma schema
-pnpm db:seed          # Seed database
-pnpm db:studio        # Prisma Studio
-pnpm verify           # format + lint + typecheck + test
-pnpm format           # Prettier
-pnpm typecheck        # tsc across workspaces
+bun run dev           # All services
+bun run dev:api       # API only
+bun run dev:builder   # Builder only
+bun run dev:client    # Client only
+bun run db:push       # Push Prisma schema
+bun run db:seed       # Seed database
+bun run db:studio     # Prisma Studio
+bun run verify        # format + lint + typecheck + test
+bun run format        # Prettier
+bun run typecheck     # tsc across workspaces
 ```
 
-**Requires:** Node >=22 <23, pnpm 10.20.0, PostgreSQL on port 5433 (via docker-compose)
+**Package manager: bun** (lockfile `bun.lock`; `render.yaml` runs `bun install`).
+Add deps with `bun add`, run scripts with `bun run …` — never pnpm (a stray
+`pnpm-lock.yaml` breaks the deploy).
+
+**Requires:** Node >=22 <23, bun, PostgreSQL on port 5433 (via docker-compose)
 
 ## Architecture
 
