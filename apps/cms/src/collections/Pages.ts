@@ -84,6 +84,13 @@ export const Pages: CollectionConfig = {
     preview: (doc, { req }) => previewUrl(doc as PageDoc, req),
     livePreview: {
       url: ({ data, req }) => previewUrl(data as PageDoc, req),
+      // Device presets for the preview toolbar (adds Mobile/Tablet/Desktop next to
+      // the freeform "Responsive" mode). One click instead of typing dimensions.
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
     },
   },
   access: { read: () => true },
