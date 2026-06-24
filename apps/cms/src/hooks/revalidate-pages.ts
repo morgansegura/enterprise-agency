@@ -20,6 +20,14 @@ function safeRevalidate(path: string) {
  * handler), so revalidatePath is valid here.
  */
 export const revalidatePages: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
+  // Only the published (live) site is cached. Draft autosaves must NOT revalidate
+  // it — otherwise unpublished edits would replace the live page on the next
+  // request. Revalidate only when this change touches the published state
+  // (publish, unpublish, or editing an already-published doc).
+  const isPublished = doc?._status === 'published'
+  const wasPublished = previousDoc?._status === 'published'
+  if (!isPublished && !wasPublished) return doc
+
   if (doc?.slug) safeRevalidate(`/${doc.slug}`)
   if (previousDoc?.slug && previousDoc.slug !== doc?.slug) {
     safeRevalidate(`/${previousDoc.slug}`)

@@ -88,10 +88,14 @@ export type Page = {
  */
 export const getPage = cache(async (slug: string): Promise<Page | null> => {
   const { isEnabled: draft } = await draftMode();
-  const draftParam = draft ? "&draft=true" : "";
+  // Preview (draft mode) → latest draft. Everyone else → ONLY published, so
+  // autosaved drafts never leak to the live site until "Publish changes".
+  const statusParam = draft
+    ? "&draft=true"
+    : "&where[_status][equals]=published";
   const pages = await cmsFind<Page>(
     "pages",
-    `where[slug][equals]=${encodeURIComponent(slug)}&depth=2&limit=1${draftParam}`,
+    `where[slug][equals]=${encodeURIComponent(slug)}&depth=2&limit=1${statusParam}`,
     draft,
   );
   return pages[0] ?? null;
