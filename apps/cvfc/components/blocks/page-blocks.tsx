@@ -1,9 +1,16 @@
 import { draftMode } from "next/headers";
+import dynamic from "next/dynamic";
 
 import type { Page, PageBlock } from "@/lib/cms";
 
 import { BlockList } from "./blocks";
-import { LiveBlocks } from "./live-blocks";
+
+// Lazy-loaded so the live-preview library is code-split into its own chunk and
+// only fetched inside the preview iframe — it never ships in the published
+// page's JS (keeps the 100/99 PageSpeed for real visitors).
+const LiveBlocks = dynamic(() =>
+  import("./live-blocks").then((m) => m.LiveBlocks),
+);
 
 /**
  * Renders a page's blocks. Inside the CMS Live Preview iframe (draft mode on),
