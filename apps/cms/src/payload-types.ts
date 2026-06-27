@@ -656,7 +656,7 @@ export interface Post {
   tenant?: (number | null) | Tenant;
   title: string;
   /**
-   * URL slug → /blog/<slug>
+   * URL slug → /news/<slug>
    */
   slug: string;
   excerpt?: string | null;
