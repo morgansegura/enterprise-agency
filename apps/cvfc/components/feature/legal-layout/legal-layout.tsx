@@ -35,7 +35,7 @@ export function LegalLayout({
     <main className={cn("legal-layout", className)}>
       <Section
         bg="white"
-        size="default"
+        size="hero"
         className="border-b border-(--color-gold-bright)/40"
       >
         <Heading

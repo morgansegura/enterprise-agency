@@ -3,7 +3,13 @@ import { cn } from "@/lib/utils";
 import "./section.css";
 
 export type SectionBg = "bone" | "white" | "midnight" | "ink" | "transparent";
-export type SectionSize = "compact" | "default" | "loose" | "flush" | "intro";
+export type SectionSize =
+  | "compact"
+  | "default"
+  | "loose"
+  | "flush"
+  | "intro"
+  | "hero";
 
 type SectionProps = {
   children?: React.ReactNode;

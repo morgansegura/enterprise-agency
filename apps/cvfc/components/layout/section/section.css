@@ -41,3 +41,9 @@
 .section[data-size="intro"] {
   @apply pt-16 md:pt-20 pb-0;
 }
+
+/** First section under the fixed header — clears the header height plus
+    breathing room so the hero isn't tucked against the nav. */
+.section[data-size="hero"] {
+  @apply pt-[calc(var(--header-height)+6rem)] pb-16 md:pb-24;
+}
