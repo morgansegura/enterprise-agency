@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { importImageUrls } from '../hooks/import-image-urls'
+
 const opt = (v: string, label?: string) => ({ value: v, label: label ?? v })
 
 /** Testimonials (parents, players, alumni, coaches) — tenant-scoped, rendered by
@@ -12,6 +14,9 @@ export const Testimonials: CollectionConfig = {
     group: 'Content',
   },
   access: { read: () => true },
+  hooks: {
+    beforeChange: [importImageUrls([{ image: 'photo', url: 'imageUrl', alt: 'author' }])],
+  },
   defaultSort: 'order',
   fields: [
     { name: 'quote', type: 'textarea', required: true },

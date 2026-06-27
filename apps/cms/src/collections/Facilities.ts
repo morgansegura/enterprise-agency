@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { importImageUrls } from '../hooks/import-image-urls'
+
 const opt = (v: string, label?: string) => ({ value: v, label: label ?? v })
 
 /** Facilities (training grounds + community parks) — tenant-scoped, rendered by
@@ -12,6 +14,9 @@ export const Facilities: CollectionConfig = {
     group: 'Content',
   },
   access: { read: () => true },
+  hooks: {
+    beforeChange: [importImageUrls([{ image: 'photo', url: 'imageUrl', alt: 'name' }])],
+  },
   defaultSort: 'order',
   fields: [
     { name: 'name', type: 'text', required: true },

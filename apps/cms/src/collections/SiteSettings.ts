@@ -1,14 +1,24 @@
 import type { CollectionConfig } from 'payload'
 
+import { importImageUrls } from '../hooks/import-image-urls'
+
 /** One per tenant (multi-tenant isGlobal): site-wide header/footer chrome. */
 export const SiteSettings: CollectionConfig = {
   slug: 'siteSettings',
   labels: { singular: 'Site Settings', plural: 'Site Settings' },
   admin: { useAsTitle: 'siteName' },
   access: { read: () => true },
+  hooks: {
+    beforeChange: [importImageUrls([{ image: 'logo', url: 'logoUrl' }])],
+  },
   fields: [
     { name: 'siteName', type: 'text' },
     { name: 'logo', type: 'upload', relationTo: 'media' },
+    {
+      name: 'logoUrl',
+      type: 'text',
+      admin: { description: 'Or a logo URL — imported into Media on save.' },
+    },
     {
       name: 'headerMenu',
       type: 'relationship',

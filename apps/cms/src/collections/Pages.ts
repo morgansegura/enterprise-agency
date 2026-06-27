@@ -17,7 +17,7 @@ import { CallToAction } from '../blocks/CallToAction'
 import { Features } from '../blocks/Features'
 import { ImageBlock } from '../blocks/Image'
 import { revalidatePages, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
-import { importBlockImageUrls } from '../hooks/import-image-urls'
+import { importImageUrls } from '../hooks/import-image-urls'
 
 type PageDoc = {
   slug?: string
@@ -96,7 +96,8 @@ export const Pages: CollectionConfig = {
   },
   access: { read: () => true },
   hooks: {
-    beforeChange: [importBlockImageUrls],
+    // Recursively imports any block/slide/person `imageUrl` into Media on save.
+    beforeChange: [importImageUrls([{ image: 'image', url: 'imageUrl' }])],
     afterChange: [revalidatePages],
     afterDelete: [revalidatePagesAfterDelete],
   },

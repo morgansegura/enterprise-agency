@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { revalidatePosts, revalidatePostsAfterDelete } from '../hooks/revalidate-posts'
+import { importImageUrls } from '../hooks/import-image-urls'
 
 /** Blog posts → /blog and /blog/[slug] (Article schema + RSS). */
 export const Posts: CollectionConfig = {
@@ -13,6 +14,12 @@ export const Posts: CollectionConfig = {
   access: { read: () => true },
   indexes: [{ fields: ['tenant', 'slug'], unique: true }],
   hooks: {
+    beforeChange: [
+      importImageUrls([
+        { image: 'coverImage', url: 'coverImageUrl', alt: 'title' },
+        { image: 'image', url: 'imageUrl', alt: 'title' },
+      ]),
+    ],
     afterChange: [revalidatePosts],
     afterDelete: [revalidatePostsAfterDelete],
   },
@@ -67,6 +74,13 @@ export const Posts: CollectionConfig = {
           relationTo: 'media',
           admin: {
             description: 'Social share image (1200×630). Falls back to cover.',
+          },
+        },
+        {
+          name: 'imageUrl',
+          type: 'text',
+          admin: {
+            description: 'Or an image URL — imported into Media on save.',
           },
         },
         {

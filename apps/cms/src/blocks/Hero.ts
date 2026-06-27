@@ -27,9 +27,15 @@ export const Hero: Block = {
           name: 'image',
           type: 'upload',
           relationTo: 'media',
-          required: true,
           admin: {
             description: 'Slide background image — served from the media CDN.',
+          },
+        },
+        {
+          name: 'imageUrl',
+          type: 'text',
+          admin: {
+            description: 'Or an image URL — imported into Media on save (used if no upload).',
           },
         },
         {

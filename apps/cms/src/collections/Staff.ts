@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { importImageUrls } from '../hooks/import-image-urls'
+
 const opt = (v: string, label?: string) => ({ value: v, label: label ?? v })
 
 /**
@@ -17,6 +19,9 @@ export const Staff: CollectionConfig = {
     group: 'Content',
   },
   access: { read: () => true },
+  hooks: {
+    beforeChange: [importImageUrls([{ image: 'photo', url: 'imageUrl', alt: 'name' }])],
+  },
   defaultSort: 'order',
   fields: [
     { name: 'name', type: 'text', required: true },
