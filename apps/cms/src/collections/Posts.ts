@@ -2,6 +2,12 @@ import type { CollectionConfig } from 'payload'
 
 import { revalidatePosts, revalidatePostsAfterDelete } from '../hooks/revalidate-posts'
 import { importImageUrls } from '../hooks/import-image-urls'
+import { buildPreviewUrl } from '../lib/preview'
+
+type PostPreviewDoc = {
+  slug?: string
+  tenant?: number | string | { id: number | string; domain?: string | null }
+}
 
 /** Blog posts → /blog and /blog/[slug] (Article schema + RSS). */
 export const Posts: CollectionConfig = {
@@ -10,6 +16,26 @@ export const Posts: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'publishedAt'],
+    // Preview + Live Preview, like Pages — points at the blog route /news/<slug>.
+    preview: (doc, { req }) =>
+      buildPreviewUrl(
+        `/news/${(doc as PostPreviewDoc).slug ?? ''}`,
+        (doc as PostPreviewDoc).tenant,
+        req,
+      ),
+    livePreview: {
+      url: ({ data, req }) =>
+        buildPreviewUrl(
+          `/news/${(data as PostPreviewDoc).slug ?? ''}`,
+          (data as PostPreviewDoc).tenant,
+          req,
+        ),
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
+    },
   },
   access: { read: () => true },
   indexes: [{ fields: ['tenant', 'slug'], unique: true }],
@@ -30,7 +56,7 @@ export const Posts: CollectionConfig = {
       type: 'text',
       required: true,
       index: true,
-      admin: { description: 'URL slug → /blog/<slug>' },
+      admin: { description: 'URL slug → /news/<slug>' },
     },
     { name: 'excerpt', type: 'textarea' },
     { name: 'coverImage', type: 'upload', relationTo: 'media' },
