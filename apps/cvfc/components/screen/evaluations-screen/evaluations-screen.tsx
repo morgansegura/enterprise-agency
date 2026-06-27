@@ -4,6 +4,8 @@ import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { FaqSection } from "@/components/feature/faq-section";
 import { PageHero } from "@/components/feature/page-hero";
 import { RegistrationForm } from "@/components/feature/registration-form";
+import { FAQ_ENTRIES } from "@/data/faq";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
@@ -90,18 +92,85 @@ export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
     rows: ageRows(GENDER_LABEL[t.id]),
   }));
 
-  const aboutPageSchema = {
+  // Tryout-specific FAQ — drives both the on-page section and the FAQPage schema.
+  const tryoutFaqs = FAQ_ENTRIES.filter(
+    (e) => e.category === "Tryouts & Evaluations",
+  );
+
+  const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "@id": `${siteConfig.url}/evaluations#webpage`,
     url: `${siteConfig.url}/evaluations`,
     name: "Tryouts & Evaluations — Chula Vista FC",
     description:
-      "Chula Vista FC accepts player evaluations year-round and runs seasonal tryouts each spring. Find your fit by track and birth year.",
+      "Chula Vista FC accepts player evaluations year-round and runs seasonal tryouts each spring. Find your fit by pathway and birth year.",
     inLanguage: "en-US",
     isPartOf: { "@id": `${siteConfig.url}#website` },
     about: { "@id": `${siteConfig.url}#organization` },
+    // Voice-assistant answer targets (AEO).
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".evaluations-programs-description"],
+    },
   };
+
+  // Service: the free, year-round tryout/evaluation offering (GEO/local SEO).
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${siteConfig.url}/evaluations#service`,
+    serviceType: "Youth soccer tryout and player evaluation",
+    name: "Youth Soccer Tryouts & Evaluations",
+    description:
+      "Free, year-round youth soccer tryouts and player evaluations for boys and girls (U6–U19) across MLS NEXT, Elite Academy, ECNL, DPL, NPL, and SoCal Flight pathways in South Bay San Diego.",
+    provider: { "@id": `${siteConfig.url}#organization` },
+    areaServed: [
+      { "@type": "City", name: "Chula Vista" },
+      { "@type": "AdministrativeArea", name: "South Bay San Diego" },
+      { "@type": "AdministrativeArea", name: "San Diego County" },
+    ],
+    audience: {
+      "@type": "PeopleAudience",
+      suggestedMinAge: 5,
+      suggestedMaxAge: 19,
+    },
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      url: `${siteConfig.url}/evaluations#register`,
+    },
+  };
+
+  // HowTo: the three registration steps (AEO rich result).
+  const howToSchema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "How to request a Chula Vista FC tryout or evaluation",
+    description:
+      "Three steps to request a youth soccer evaluation at Chula Vista FC — a coach responds within 48 hours.",
+    totalTime: "PT5M",
+    step: STEPS.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.title,
+      text: s.body,
+      url: `${siteConfig.url}/evaluations#register`,
+    })),
+  };
+
+  const schemas = [
+    webPageSchema,
+    breadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Tryouts & Evaluations", path: "/evaluations" },
+    ]),
+    serviceSchema,
+    howToSchema,
+    ...(tryoutFaqs.length ? [faqPageSchema(tryoutFaqs)] : []),
+  ];
 
   return (
     <>
@@ -129,7 +198,7 @@ export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
           // }
         />
 
-        <section className="evaluations-register">
+        <section className="evaluations-register" id="register">
           <div className="contain">
             <RegistrationForm variant="page" />
           </div>
@@ -250,6 +319,7 @@ export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
         <FaqSection
           heading="Tryout & Evaluation Questions."
           description="The most common questions parents ask before signing their player up — answered."
+          entries={tryoutFaqs.length ? tryoutFaqs : undefined}
           ctaLabel="See all FAQs"
         />
 
@@ -269,7 +339,7 @@ export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
           }
         />
       </main>
-      <JsonLd data={aboutPageSchema} />
+      <JsonLd data={schemas} />
     </>
   );
 }
