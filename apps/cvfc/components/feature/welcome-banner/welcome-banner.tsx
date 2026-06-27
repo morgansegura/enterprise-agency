@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { CmsImage as Image } from "@/components/ui/cms-image";
 
 import { LogoIcon } from "@/components/layout";
 import { useReveal } from "@/lib/hooks/use-reveal";

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
+import { CmsImage as Image } from "@/components/ui/cms-image";
 import Link from "next/link";
 
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";

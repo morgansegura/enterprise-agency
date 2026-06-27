@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { CmsImage as Image } from "@/components/ui/cms-image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui";
