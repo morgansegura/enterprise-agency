@@ -13,6 +13,8 @@ export type LegalSection = {
 
 type LegalLayoutProps = {
   className?: string;
+  /** Hero eyebrow — CMS-overridable; defaults to "Legal". */
+  eyebrow?: string;
   title: string;
   /** ISO date or display string like "April 2026". */
   lastUpdated: string;
@@ -23,6 +25,7 @@ type LegalLayoutProps = {
 
 export function LegalLayout({
   className,
+  eyebrow = "Legal",
   title,
   lastUpdated,
   intro,
@@ -36,7 +39,7 @@ export function LegalLayout({
         className="border-b border-(--color-gold-bright)/40"
       >
         <Heading
-          eyebrow="Legal"
+          eyebrow={eyebrow}
           heading={title}
           headingAs="h1"
           headingSize="display"

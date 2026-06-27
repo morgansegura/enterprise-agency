@@ -329,6 +329,12 @@ type RawHeroAction = {
   iconToken?: string;
 };
 
+/** The page's `pageHero` block resolved to PageHero props, or null. */
+export function pageHeroFromPage(page: { layout?: PageBlock[] } | null) {
+  const b = page?.layout?.find((x) => x.blockType === "pageHero");
+  return b ? pageHeroFromBlock(b) : null;
+}
+
 /** A single CMS `pageHero` block → PageHero props (used by the renderer). */
 export function pageHeroFromBlock(b: PageBlock) {
   const actions = (
