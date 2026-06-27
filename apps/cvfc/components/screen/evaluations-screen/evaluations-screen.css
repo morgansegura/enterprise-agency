@@ -118,7 +118,7 @@
 }
 
 .evaluations-program-row-meta {
-  @apply text-[11px] uppercase tracking-(--tracking-eyebrow) text-(--color-midnight)/60;
+  @apply text-[11px] uppercase tracking-wide text-(--color-midnight-light)/90;
 }
 
 .evaluations-program-row-link {
@@ -179,4 +179,8 @@
 
 .evaluations-step-body {
   @apply text-sm leading-relaxed text-white/75;
+}
+
+.evaluations-register {
+  @apply py-14 md:py-20;
 }

@@ -1,13 +1,9 @@
-import Link from "next/link";
-
-import { Button } from "@/components/ui";
-import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Callout } from "@/components/feature/callout";
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { FaqSection } from "@/components/feature/faq-section";
 import { PageHero } from "@/components/feature/page-hero";
-import { EVALUATION_PROGRAMS } from "@/lib/evaluations";
+import { RegistrationForm } from "@/components/feature/registration-form";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
@@ -16,25 +12,6 @@ import "./evaluations-screen.css";
 type EvaluationsScreenProps = {
   className?: string;
 };
-
-const TRACKS = [
-  {
-    id: "boys",
-    label: "Boys Pathway",
-    blurb: "MLS NEXT, MLS NEXT 2, Elite Academy (EA), EA 2, and SoCal Flight.",
-  },
-  {
-    id: "girls",
-    label: "Girls Pathway",
-    blurb: "NPL, DPL, GA, GA Aspire (coming), and SoCal Flight.",
-  },
-  {
-    id: "goalkeeper",
-    label: "Goalkeeper Pathway",
-    blurb:
-      "Specialized goalkeeper training at every age — from first touch to college and professional play.",
-  },
-] as const;
 
 const STEPS = [
   {
@@ -54,10 +31,63 @@ const STEPS = [
   },
 ] as const;
 
+const TRACKS = [
+  {
+    id: "boys",
+    label: "Boys Pathway",
+    blurb: "MLS NEXT, MLS NEXT 2, Elite Academy (EA), EA 2, and SoCal Flight.",
+  },
+  {
+    id: "girls",
+    label: "Girls Pathway",
+    blurb: "GA, GA Aspire, DPL, NPL, and SoCal Flight.",
+  },
+  {
+    id: "goalkeeper",
+    label: "Goalkeeper Pathway",
+    blurb:
+      "Specialized goalkeeper training at every age — from first touch to college and professional play.",
+  },
+] as const;
+
+const GENDER_LABEL: Record<string, string> = {
+  boys: "Boys",
+  girls: "Girls",
+  goalkeeper: "Boys/Girls",
+};
+
+// Birth year for a U-band = the season's END year − U (US Soccer "seasonal
+// year"). Registration runs for the UPCOMING season, so from June we roll to the
+// next one — this auto-updates each year (computed at build; a yearly redeploy
+// refreshes it). Bump ROLLOVER_MONTH if registration opens earlier/later.
+const ROLLOVER_MONTH = 5; // June (0-based)
+const seasonEndYear = () => {
+  const now = new Date();
+  return now.getMonth() >= ROLLOVER_MONTH
+    ? now.getFullYear() + 1
+    : now.getFullYear();
+};
+const by = (u: number) => seasonEndYear() - u;
+
+// `years` = school-year birth years (Aug–Jul). `hg` = MLS NEXT Homegrown birth
+// years (Jan–Dec, boys only); shown only on the Boys card. They match except U19
+// (Homegrown groups the older single year). Both auto-roll via by().
+function ageRows(gender: string) {
+  return [
+    { id: "u06-07", label: `U06, U07 ${gender}`, years: [by(6), by(7)], hg: [by(6), by(7)] }, // prettier-ignore
+    { id: "u08-09", label: `U08, U09 ${gender}`, years: [by(8), by(9)], hg: [by(8), by(9)] }, // prettier-ignore
+    { id: "u10-11", label: `U10, U11 ${gender} Competitive`, years: [by(10), by(11)], hg: [by(10), by(11)] }, // prettier-ignore
+    { id: "u12-13", label: `U12, U13 ${gender} Competitive`, years: [by(12), by(13)], hg: [by(12), by(13)] }, // prettier-ignore
+    { id: "u14-15", label: `U14, U15 ${gender} Competitive`, years: [by(14), by(15)], hg: [by(14), by(15)] }, // prettier-ignore
+    { id: "u16-17", label: `U16, U17 ${gender} Competitive`, years: [by(16), by(17)], hg: [by(16), by(17)] }, // prettier-ignore
+    { id: "u19", label: `U19 ${gender} Competitive`, years: [by(18), by(19)], hg: [by(18)] }, // prettier-ignore
+  ];
+}
+
 export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
   const programsByTrack = TRACKS.map((t) => ({
     ...t,
-    programs: EVALUATION_PROGRAMS.filter((p) => p.track === t.id),
+    rows: ageRows(GENDER_LABEL[t.id]),
   }));
 
   const aboutPageSchema = {
@@ -79,18 +109,55 @@ export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
         <PageHero
           eyebrow="Tryouts & Evaluations"
           heading="Find your fit at Chula Vista FC."
-          description="Whether tryouts are open or you missed the window, every player gets a path. Choose a track and birth year to be routed to the right registration — and a coach reaches out within 48 hours."
-          actions={
+          description={
             <>
-              <EvaluationCTA variant="default" label="Start Your Evaluation" />
-              <Button variant="outline" render={<Link href="/programs" />}>
-                <Icon token="ri:soccer-ball" aria-hidden="true" />
-                <span>Explore the Pathway</span>
-                <Icon token="ri:arrow-right" aria-hidden="true" />
-              </Button>
+              Whether tryouts are open or you missed the window, every player
+              gets a path. Choose a track and birth year to be routed to the
+              right registration. <br />
+              <strong>Your coach will reach out within 48 hours</strong>!
             </>
           }
+          // actions={
+          //   <>
+          //     <EvaluationCTA variant="default" label="Start Your Evaluation" />
+          //     <Button variant="outline" render={<Link href="/programs" />}>
+          //       <Icon token="ri:soccer-ball" aria-hidden="true" />
+          //       <span>Explore the Pathway</span>
+          //       <Icon token="ri:arrow-right" aria-hidden="true" />
+          //     </Button>
+          //   </>
+          // }
         />
+
+        <section className="evaluations-register">
+          <div className="contain">
+            <RegistrationForm variant="page" />
+          </div>
+        </section>
+
+        <section className="evaluations-steps">
+          <div className="evaluations-steps-inner contain">
+            <header className="evaluations-steps-header">
+              <p className="eyebrow-full">
+                <span>How it works</span>
+              </p>
+              <h2 className="evaluations-steps-heading">
+                How a player joins Chula Vista FC.
+              </h2>
+            </header>
+            <ol className="evaluations-steps-list">
+              {STEPS.map((step) => (
+                <li key={step.n} className="evaluations-step">
+                  <span className="evaluations-step-number" aria-hidden="true">
+                    {step.n}
+                  </span>
+                  <h3 className="evaluations-step-title">{step.title}</h3>
+                  <p className="evaluations-step-body">{step.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
 
         <section className="evaluations-explainer">
           <div className="evaluations-explainer-inner contain">
@@ -131,12 +198,16 @@ export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
                 <span>Open Programs</span>
               </p>
               <h2 className="evaluations-programs-heading">
-                Choose your track and birth year.
+                Players are grouped by age.
               </h2>
               <p className="evaluations-programs-description">
-                Every program below routes to its own registration form.
-                Don&rsquo;t see your player&rsquo;s age band? Start an
-                individual evaluation — coaches review every request.
+                Beginning in the 2026 - 2027 season, all age groups are shifting
+                from birth year to school year, with exception to MLS Next
+                (Homegrown).{" "}
+                <strong>
+                  Players born between August 1 of a given year and July 31 of
+                  the next year are grouped together.
+                </strong>
               </p>
             </header>
 
@@ -151,76 +222,33 @@ export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
                       {track.blurb}
                     </p>
                   </header>
-                  {track.id === "goalkeeper" ? (
-                    <div className="evaluations-track-card-empty">
-                      <p>
-                        To request a goalkeeper tryout, start an individual
-                        evaluation and a coach will reach out directly.
-                      </p>
-                      <EvaluationCTA
-                        variant="secondary"
-                        label="Request a GK Evaluation"
-                      />
-                    </div>
-                  ) : (
-                    <ul className="evaluations-track-card-list">
-                      {track.programs.map((program) => (
-                        <li key={program.id}>
-                          <a
-                            href={program.signupUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="evaluations-program-row"
-                          >
-                            <div className="evaluations-program-row-text">
-                              <p className="evaluations-program-row-label">
-                                {program.label}
-                              </p>
-                              <p className="evaluations-program-row-meta">
-                                Birth years: {program.birthYears.join(" · ")}
-                              </p>
-                            </div>
-                            <span className="evaluations-program-row-link">
-                              <span>Register</span>
-                              <Icon token="ri:arrow-right" aria-hidden="true" />
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                  <ul className="evaluations-track-card-list">
+                    {track.rows.map((row) => (
+                      <li key={row.id}>
+                        <div className="evaluations-program-row">
+                          <div className="evaluations-program-row-text">
+                            <p className="evaluations-program-row-label">
+                              {row.label}
+                            </p>
+                            <p className="evaluations-program-row-meta">
+                              Year: {row.years.join(", ")}
+                              {track.id === "boys"
+                                ? ` (Homegrown: ${row.hg.join(", ")})`
+                                : ""}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="evaluations-steps">
-          <div className="evaluations-steps-inner contain">
-            <header className="evaluations-steps-header">
-              <p className="eyebrow-full">
-                <span>How it works</span>
-              </p>
-              <h2 className="evaluations-steps-heading">
-                How a player joins Chula Vista FC.
-              </h2>
-            </header>
-            <ol className="evaluations-steps-list">
-              {STEPS.map((step) => (
-                <li key={step.n} className="evaluations-step">
-                  <span className="evaluations-step-number" aria-hidden="true">
-                    {step.n}
-                  </span>
-                  <h3 className="evaluations-step-title">{step.title}</h3>
-                  <p className="evaluations-step-body">{step.body}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
         <FaqSection
-          heading="Tryout & evaluation questions."
+          heading="Tryout & Evaluation Questions."
           description="The most common questions parents ask before signing their player up — answered."
           ctaLabel="See all FAQs"
         />

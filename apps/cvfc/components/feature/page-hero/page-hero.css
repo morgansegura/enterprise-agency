@@ -12,6 +12,14 @@
   @apply bg-(--color-bone);
 }
 
+.page-hero[data-bg="navy"] {
+  @apply bg-(--color-midnight)/90;
+  .page-hero-title,
+  .page-hero-description {
+    @apply text-white;
+  }
+}
+
 .page-hero:before {
   content: "";
   @apply pointer-events-none absolute inset-x-0 bottom-0 h-px bg-(--color-midnight)/10;

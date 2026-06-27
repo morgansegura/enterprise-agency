@@ -4,17 +4,19 @@ import "./page-hero.css";
 
 type PageHeroProps = {
   className?: string;
-  eyebrow: string;
-  heading: string;
+  eyebrow?: string;
+  heading?: string;
   description?: React.ReactNode;
   actions?: React.ReactNode;
-  background?: "white" | "bone";
+  children?: React.ReactNode;
+  background?: "white" | "bone" | "navy";
 };
 
 export function PageHero({
   className,
   eyebrow,
   heading,
+  children,
   description,
   actions,
   background = "white",
@@ -30,6 +32,7 @@ export function PageHero({
           <p className="page-hero-description">{description}</p>
         ) : null}
         {actions ? <div className="page-hero-actions">{actions}</div> : null}
+        {children}
       </div>
     </section>
   );
