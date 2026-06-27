@@ -1,18 +1,24 @@
 @reference "tailwindcss";
 
-.image {
-  @apply relative block h-full w-full overflow-hidden;
-}
+/* Base styles live in @layer components so a consumer's sizing className
+   (e.g. w-28, aspect-square) always wins over the default w-full/h-full fill,
+   regardless of CSS import order. Without this, the primitive's w-full/h-full
+   can override per-usage sizes and balloon the image. */
+@layer components {
+  .image {
+    @apply relative block h-full w-full overflow-hidden;
+  }
 
-.image-img {
-  @apply absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out;
-}
+  .image-img {
+    @apply absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out;
+  }
 
-.image[data-state="loading"] .image-img,
-.image[data-state="error"] .image-img {
-  @apply opacity-0;
-}
+  .image[data-state="loading"] .image-img,
+  .image[data-state="error"] .image-img {
+    @apply opacity-0;
+  }
 
-.image-fallback {
-  @apply pointer-events-none absolute inset-0 flex items-center justify-center;
+  .image-fallback {
+    @apply pointer-events-none absolute inset-0 flex items-center justify-center;
+  }
 }

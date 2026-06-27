@@ -42,11 +42,7 @@ export async function AdministratorsScreen() {
   return (
     <>
       <main>
-        <Section
-          bg="white"
-          size="default"
-          className="pt-[calc(var(--header-height)+6rem)]"
-        >
+        <Section bg="white" size="hero">
           <Heading
             eyebrow="Want to talk to the club?"
             heading="Reach the front office."
