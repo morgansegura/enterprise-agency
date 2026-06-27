@@ -22,7 +22,7 @@ export const siteConfig = {
   foundingDate: "1982",
   /** Federal Tax ID — public via IRS Pub 78, ProPublica, Candid. Surfaced on /support for donor verification. */
   ein: "20-3786129",
-  ogImage: "/og-image.jpg",
+  ogImage: "/og-image.png",
   geo: {
     region: "US-CA",
     placename: "Chula Vista",

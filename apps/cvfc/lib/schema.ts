@@ -199,7 +199,7 @@ export function newsArticleSchema(post: NewsArticleInput) {
   const url = `${siteConfig.url}/news/${post.slug}`;
   const imageUrl = post.image
     ? `${siteConfig.url}${post.image.src}`
-    : `${siteConfig.url}/og-image.jpg`;
+    : `${siteConfig.url}${siteConfig.ogImage}`;
 
   return {
     "@context": "https://schema.org",
