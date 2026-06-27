@@ -170,7 +170,11 @@ export interface Page {
                   /**
                    * Slide background image — served from the media CDN.
                    */
-                  image: number | Media;
+                  image?: (number | null) | Media;
+                  /**
+                   * Or an image URL — imported into Media on save (used if no upload).
+                   */
+                  imageUrl?: string | null;
                   /**
                    * Optional alt override. Defaults to the media item's own alt text.
                    */
@@ -636,6 +640,10 @@ export interface Product {
   price?: number | null;
   description?: string | null;
   image?: (number | null) | Media;
+  /**
+   * Or an image URL — imported into Media on save.
+   */
+  imageUrl?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -687,6 +695,10 @@ export interface Post {
      * Social share image (1200×630). Falls back to cover.
      */
     image?: (number | null) | Media;
+    /**
+     * Or an image URL — imported into Media on save.
+     */
+    imageUrl?: string | null;
     /**
      * When on, this post sends a noindex robots tag and is dropped from the sitemap.
      */
@@ -856,6 +868,10 @@ export interface SiteSetting {
   tenant?: (number | null) | Tenant;
   siteName?: string | null;
   logo?: (number | null) | Media;
+  /**
+   * Or a logo URL — imported into Media on save.
+   */
+  logoUrl?: string | null;
   /**
    * Menu shown in the header nav.
    */
@@ -1420,6 +1436,7 @@ export interface PagesSelect<T extends boolean = true> {
                 | T
                 | {
                     image?: T;
+                    imageUrl?: T;
                     alt?: T;
                     eyebrow?: T;
                     heading?: T;
@@ -1733,6 +1750,7 @@ export interface ProductsSelect<T extends boolean = true> {
   price?: T;
   description?: T;
   image?: T;
+  imageUrl?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1756,6 +1774,7 @@ export interface PostsSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
+        imageUrl?: T;
         noindex?: T;
       };
   updatedAt?: T;
@@ -1880,6 +1899,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   tenant?: T;
   siteName?: T;
   logo?: T;
+  logoUrl?: T;
   headerMenu?: T;
   footerText?: T;
   footerMenu?: T;
