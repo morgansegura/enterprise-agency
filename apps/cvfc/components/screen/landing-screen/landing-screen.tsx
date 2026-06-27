@@ -11,44 +11,67 @@ import { Testimonials } from "@/components/feature/testimonials";
 import { FaqSection } from "@/components/feature/faq-section";
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { getFeaturedCoaches } from "@/data/coaches";
-import { Blocks } from "@/components/blocks";
 import { getPage } from "@/lib/cms";
+import { blockFor, cmsOverlay } from "@/lib/media";
 import {
   heroSlidesFromPage,
   welcomeBannerFromPage,
   faqSectionFromPage,
   testimonialsFromPage,
+  iconCardsFromBlock,
+  calloutFromBlock,
+  mediaSplitFromBlock,
+  statBandFromBlock,
+  portraitGridFromBlock,
 } from "@/lib/cms-blocks";
 
 type LandingScreenProps = {
   className?: string;
 };
 
+/**
+ * Every section renders from the hardcoded mock by default and is overlaid by
+ * the CMS when the editor fills it in. Repeated sections (the media-splits) are
+ * matched by the block's "Block name" — `blockFor(page, "<name>")` — so each
+ * one is independently editable. Blank CMS fields fall back to the mock, so a
+ * section is never empty.
+ */
 export async function LandingScreen({ className }: LandingScreenProps) {
   const featuredCoaches = getFeaturedCoaches();
   const page = await getPage("home");
+
+  // Sections already wired (CMS override + component/back-up defaults).
   const heroSlides = heroSlidesFromPage(page);
   const welcome = welcomeBannerFromPage(page);
   const faq = faqSectionFromPage(page);
   const testimonials = testimonialsFromPage(page);
-  const hasCmsMediaSplits =
-    page?.layout?.some((b) => b.blockType === "mediaSplit") ?? false;
+
+  // Per-section CMS blocks, matched by Block name (see resolvers below).
+  const valuesBlock = blockFor(page, "values");
+  const dykBlock = blockFor(page, "did-you-know");
+  const pathwaysBlock = blockFor(page, "pathways");
+  const foundationsBlock = blockFor(page, "foundations");
+  const goalkeeperBlock = blockFor(page, "goalkeeper");
+  const girlsBlock = blockFor(page, "girls");
+  const boysBlock = blockFor(page, "boys");
+  const statsBlock = blockFor(page, "stats", "statBand");
+  const coachesBlock = blockFor(page, "coaches", "portraitGrid");
+  const ctaBlock = blockFor(page, "cta");
 
   return (
     <>
       <main className={cn("landing-screen", className)}>
-        {hasCmsMediaSplits ? (
-          <Blocks page={page} />
-        ) : (
-          <>
-            <HeroCarousel slides={heroSlides} />
-            <WelcomeBanner headingAs="h2" {...welcome} />
+        <HeroCarousel slides={heroSlides} />
+        <WelcomeBanner headingAs="h2" {...welcome} />
 
-            <IconCards
-              eyebrow="Our Values"
-              heading="Passion. Unity. Respect. Attitude."
-              description="Creating champions on the field and leaders in life. P.U.R.A."
-              cards={[
+        <IconCards
+          {...cmsOverlay(
+            {
+              eyebrow: "Our Values",
+              heading: "Passion. Unity. Respect. Attitude.",
+              description:
+                "Creating champions on the field and leaders in life. P.U.R.A.",
+              cards: [
                 {
                   id: "passion",
                   title: "Passion",
@@ -73,14 +96,19 @@ export async function LandingScreen({ className }: LandingScreenProps) {
                   description:
                     "Show up ready to learn, ready to work, and ready to grow — every practice, every match, every moment.",
                 },
-              ]}
-              background="white"
-            />
+              ],
+              background: "white" as const,
+            },
+            valuesBlock ? iconCardsFromBlock(valuesBlock) : undefined,
+          )}
+        />
 
-            <Callout
-              eyebrow="Open Year-Round"
-              heading="Did you know?"
-              body={
+        <Callout
+          {...cmsOverlay(
+            {
+              eyebrow: "Open Year-Round",
+              heading: "Did you know?",
+              body: (
                 <>
                   Even if our tryouts have ended, players can still be evaluated
                   on an individual basis. Chula Vista FC offers{" "}
@@ -91,170 +119,186 @@ export async function LandingScreen({ className }: LandingScreenProps) {
                   helping every athlete reach their full potential both on and
                   off the field.
                 </>
-              }
-            />
+              ),
+            },
+            dykBlock ? calloutFromBlock(dykBlock) : undefined,
+          )}
+        />
 
-            <IconCards
-              cta={{
+        <IconCards
+          {...cmsOverlay(
+            {
+              cta: {
                 label: "CVFC Development Pathways",
                 href: "/programs",
-                variant: "secondary",
+                variant: "secondary" as const,
                 iconToken: "ri:soccer-ball",
-              }}
-            />
+              },
+            },
+            pathwaysBlock ? iconCardsFromBlock(pathwaysBlock) : undefined,
+          )}
+        />
 
-            {hasCmsMediaSplits ? (
-              <Blocks page={page} only={["mediaSplit"]} />
-            ) : (
-              <>
-                <MediaSplit
-                  eyebrow="Player Development"
-                  heading="Foundations of the Game"
-                  body="From our Mini Maestros to CVFC Youth teams, Chula Vista FC builds a strong foundation for future success. Our youngest players learn the game through fun, engaging, and skill-focused sessions, while developing the confidence, discipline, and technique needed to thrive as they progress through our development pathway."
-                  image={{
-                    src: "https://chulavistafc.com/wp-content/uploads/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg",
-                    alt: "Mini Maestros training",
-                  }}
-                  tags={["Mini Maestros", "CVFC Youth", "Ages 4–9"]}
-                  buttons={[
-                    {
-                      label: "More about Foundations",
-                      href: "/programs/foundations",
-                      variant: "secondary",
-                      iconToken: "ri:soccer-ball",
-                    },
-                  ]}
-                />
+        <MediaSplit
+          {...cmsOverlay(
+            {
+              eyebrow: "Player Development",
+              heading: "Foundations of the Game",
+              body: "From our Mini Maestros to CVFC Youth teams, Chula Vista FC builds a strong foundation for future success. Our youngest players learn the game through fun, engaging, and skill-focused sessions, while developing the confidence, discipline, and technique needed to thrive as they progress through our development pathway.",
+              image: {
+                src: "https://chulavistafc.com/wp-content/uploads/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg",
+                alt: "Mini Maestros training",
+              },
+              tags: ["Mini Maestros", "CVFC Youth", "Ages 4–9"],
+              buttons: [
+                {
+                  label: "More about Foundations",
+                  href: "/programs/foundations",
+                  variant: "secondary" as const,
+                  iconToken: "ri:soccer-ball",
+                },
+              ],
+            },
+            foundationsBlock
+              ? mediaSplitFromBlock(foundationsBlock)
+              : undefined,
+          )}
+        />
 
-                <MediaSplit
-                  eyebrow="Goalkeeper Pathway"
-                  heading="Goalkeeper Pathway"
-                  background="white"
-                  reverse
-                  body="From the youngest age groups to elite competition, our goalkeeper pathway provides specialized training at every stage. Players develop technical skills, tactical awareness, and mental resilience under expert guidance. The goal is clear — prepare keepers to excel at the highest levels of club, college, and professional play."
-                  image={{
-                    src: "https://chulavistafc.com/wp-content/uploads/2023/11/Goalkeepers-pic.jpg",
-                    alt: "CVFC goalkeepers in training",
-                  }}
-                  tags={[
-                    "Specialty Training",
-                    "All Ages",
-                    "College/Pro Pathway",
-                  ]}
-                  buttons={[
-                    {
-                      label: "Request an Evaluation",
-                      href: "/evaluations#register",
-                      variant: "outline",
-                      iconToken: "ri:badge",
-                    },
-                    {
-                      label: "Goalkeepers",
-                      href: "/programs/goalkeeper-pathway",
-                      variant: "secondary",
-                      iconToken: "ri:soccer-ball",
-                    },
-                  ]}
-                />
+        <MediaSplit
+          {...cmsOverlay(
+            {
+              eyebrow: "Goalkeeper Pathway",
+              heading: "Goalkeeper Pathway",
+              background: "white" as const,
+              reverse: true,
+              body: "From the youngest age groups to elite competition, our goalkeeper pathway provides specialized training at every stage. Players develop technical skills, tactical awareness, and mental resilience under expert guidance. The goal is clear — prepare keepers to excel at the highest levels of club, college, and professional play.",
+              image: {
+                src: "https://chulavistafc.com/wp-content/uploads/2023/11/Goalkeepers-pic.jpg",
+                alt: "CVFC goalkeepers in training",
+              },
+              tags: ["Specialty Training", "All Ages", "College/Pro Pathway"],
+              buttons: [
+                {
+                  label: "Request an Evaluation",
+                  href: "/evaluations#register",
+                  variant: "outline" as const,
+                  iconToken: "ri:badge",
+                },
+                {
+                  label: "Goalkeepers",
+                  href: "/programs/goalkeeper-pathway",
+                  variant: "secondary" as const,
+                  iconToken: "ri:soccer-ball",
+                },
+              ],
+            },
+            goalkeeperBlock ? mediaSplitFromBlock(goalkeeperBlock) : undefined,
+          )}
+        />
 
-                <MediaSplit
-                  eyebrow="Girls Competitive Pathway"
-                  heading="Girls Competitive Pathway"
-                  body={
-                    <>
-                      Chula Vista FC is proud to offer elite opportunities for
-                      our female athletes, including <strong>NPL</strong> and{" "}
-                      <strong>DPL</strong> competition, with{" "}
-                      <strong>Girl&rsquo;s Academy (GA)</strong> and{" "}
-                      <strong>GA Aspire</strong> coming soon. We also compete in
-                      the <strong>SoCal League Flight system</strong>, giving
-                      players the perfect level of competition to match their
-                      development. These top-tier leagues and pathways ensure
-                      our players receive the highest level of training,
-                      competition, and exposure — helping them reach their full
-                      potential on and off the field.
-                    </>
-                  }
-                  image={{
-                    src: "https://chulavistafc.com/wp-content/uploads/2024/02/IMG_6349.jpg",
-                    alt: "CVFC girls competitive player",
-                  }}
-                  tags={["SoCal Flight", "NPL", "DPL", "GA Aspire", "GA"]}
-                  buttons={[
-                    {
-                      label: "Request an Evaluation",
-                      href: "/evaluations#register",
-                      variant: "outline",
-                      iconToken: "ri:badge",
-                    },
-                    {
-                      label: "Girl's Pathway",
-                      href: "/programs/girls-competitive-pathway",
-                      variant: "secondary",
-                      iconToken: "ri:soccer-ball",
-                    },
-                  ]}
-                />
+        <MediaSplit
+          {...cmsOverlay(
+            {
+              eyebrow: "Girls Competitive Pathway",
+              heading: "Girls Competitive Pathway",
+              body: (
+                <>
+                  Chula Vista FC is proud to offer elite opportunities for our
+                  female athletes, including <strong>NPL</strong> and{" "}
+                  <strong>DPL</strong> competition, with{" "}
+                  <strong>Girl&rsquo;s Academy (GA)</strong> and{" "}
+                  <strong>GA Aspire</strong> coming soon. We also compete in the{" "}
+                  <strong>SoCal League Flight system</strong>, giving players
+                  the perfect level of competition to match their development.
+                  These top-tier leagues and pathways ensure our players receive
+                  the highest level of training, competition, and exposure —
+                  helping them reach their full potential on and off the field.
+                </>
+              ),
+              image: {
+                src: "https://chulavistafc.com/wp-content/uploads/2024/02/IMG_6349.jpg",
+                alt: "CVFC girls competitive player",
+              },
+              tags: ["SoCal Flight", "NPL", "DPL", "GA Aspire", "GA"],
+              buttons: [
+                {
+                  label: "Request an Evaluation",
+                  href: "/evaluations#register",
+                  variant: "outline" as const,
+                  iconToken: "ri:badge",
+                },
+                {
+                  label: "Girl's Pathway",
+                  href: "/programs/girls-competitive-pathway",
+                  variant: "secondary" as const,
+                  iconToken: "ri:soccer-ball",
+                },
+              ],
+            },
+            girlsBlock ? mediaSplitFromBlock(girlsBlock) : undefined,
+          )}
+        />
 
-                <MediaSplit
-                  eyebrow="Boys Competitive Pathway"
-                  heading="Boys Competitive Pathway"
-                  background="white"
-                  reverse
-                  body={
-                    <>
-                      Chula Vista FC offers one of the strongest competitive
-                      pathways for boys in Southern California, featuring{" "}
-                      <strong>MLS NEXT</strong> and <strong>MLS NEXT 2</strong>,
-                      along with <strong>Elite Academy (EA)</strong> and{" "}
-                      <strong>EA 2</strong>. We also compete in the{" "}
-                      <strong>SoCal League Flight system</strong>, providing the
-                      right level of competition for every stage of development.
-                      These platforms give our players elite training, top-level
-                      competition, and national exposure — preparing them to
-                      excel at the highest levels of the game.
-                    </>
-                  }
-                  image={{
-                    src: "https://chulavistafc.com/wp-content/uploads/2024/05/IMG_0867.jpg",
-                    alt: "CVFC boys competitive team",
-                  }}
-                  tags={[
-                    "SoCal Flight",
-                    "EA 2",
-                    "EA",
-                    "MLS NEXT 2",
-                    "MLS NEXT",
-                  ]}
-                  buttons={[
-                    {
-                      label: "Request an Evaluation",
-                      href: "/evaluations#register",
-                      variant: "outline",
-                      iconToken: "ri:badge",
-                    },
-                    {
-                      label: "Boy's Pathway",
-                      href: "/programs/boys-competitive-pathway",
-                      variant: "secondary",
-                      iconToken: "ri:soccer-ball",
-                    },
-                  ]}
-                />
-              </>
-            )}
+        <MediaSplit
+          {...cmsOverlay(
+            {
+              eyebrow: "Boys Competitive Pathway",
+              heading: "Boys Competitive Pathway",
+              background: "white" as const,
+              reverse: true,
+              body: (
+                <>
+                  Chula Vista FC offers one of the strongest competitive
+                  pathways for boys in Southern California, featuring{" "}
+                  <strong>MLS NEXT</strong> and <strong>MLS NEXT 2</strong>,
+                  along with <strong>Elite Academy (EA)</strong> and{" "}
+                  <strong>EA 2</strong>. We also compete in the{" "}
+                  <strong>SoCal League Flight system</strong>, providing the
+                  right level of competition for every stage of development.
+                  These platforms give our players elite training, top-level
+                  competition, and national exposure — preparing them to excel
+                  at the highest levels of the game.
+                </>
+              ),
+              image: {
+                src: "https://chulavistafc.com/wp-content/uploads/2024/05/IMG_0867.jpg",
+                alt: "CVFC boys competitive team",
+              },
+              tags: ["SoCal Flight", "EA 2", "EA", "MLS NEXT 2", "MLS NEXT"],
+              buttons: [
+                {
+                  label: "Request an Evaluation",
+                  href: "/evaluations#register",
+                  variant: "outline" as const,
+                  iconToken: "ri:badge",
+                },
+                {
+                  label: "Boy's Pathway",
+                  href: "/programs/boys-competitive-pathway",
+                  variant: "secondary" as const,
+                  iconToken: "ri:soccer-ball",
+                },
+              ],
+            },
+            boysBlock ? mediaSplitFromBlock(boysBlock) : undefined,
+          )}
+        />
 
-            <StatBand
-              eyebrow="By the Numbers"
-              heading="Built to compete. Trained to win."
-              description="The pathway delivers — measured by championships earned, professional contracts signed, and the families who&rsquo;ve trusted Chula Vista FC since 1982."
-              stats={[
+        <StatBand
+          {...cmsOverlay(
+            {
+              eyebrow: "By the Numbers",
+              heading: "Built to compete. Trained to win.",
+              description:
+                "The pathway delivers — measured by championships earned, professional contracts signed, and the families who’ve trusted Chula Vista FC since 1982.",
+              stats: [
                 { id: "years", value: "40+", label: "Years of Development" },
                 { id: "pro", value: "7+", label: "Recent Pro Signings" },
                 { id: "titles", value: "5+", label: "Recent Championships" },
                 { id: "coaches", value: "30+", label: "Coaches on Staff" },
-              ]}
-              highlights={[
+              ],
+              highlights: [
                 {
                   id: "tuilla-state-cup",
                   tag: "Champions",
@@ -291,8 +335,8 @@ export async function LandingScreen({ className }: LandingScreenProps) {
                   title: "Hannah Gomez — 4.0 GPA & All-Star",
                   body: "G2009 Academy multi-sport athlete: top NPL play, all-star field hockey honors, and a 4.0 in the classroom.",
                 },
-              ]}
-              footnote={
+              ],
+              footnote: (
                 <>
                   CVFC alumni have signed with{" "}
                   <strong>MLS Colorado Rapids</strong>,{" "}
@@ -304,37 +348,48 @@ export async function LandingScreen({ className }: LandingScreenProps) {
                   <strong>Southwest Premier League</strong>, and the{" "}
                   <strong>Lamar Hunt US Open Cup</strong>.
                 </>
-              }
-            />
+              ),
+            },
+            statsBlock ? statBandFromBlock(statsBlock) : undefined,
+          )}
+        />
 
-            <PortraitGrid
-              eyebrow="Coaching Staff"
-              heading="Coached by people who've been there."
-              description="From former pro players to lifelong CVFC alumni, our staff brings real experience to every training session — and a deep commitment to developing the whole player."
-              people={featuredCoaches.map((c) => ({
+        <PortraitGrid
+          {...cmsOverlay(
+            {
+              eyebrow: "Coaching Staff",
+              heading: "Coached by people who've been there.",
+              description:
+                "From former pro players to lifelong CVFC alumni, our staff brings real experience to every training session — and a deep commitment to developing the whole player.",
+              people: featuredCoaches.map((c) => ({
                 id: c.id,
                 name: c.name,
                 role: c.title,
                 credential: c.credentials?.join(" · "),
                 image: c.image,
-              }))}
-              cta={{
+              })),
+              cta: {
                 label: "Meet the Full Coaching Staff",
                 href: "/about/coaching-staff",
-                variant: "secondary",
+                variant: "secondary" as const,
                 iconToken: "ri:soccer-ball",
-              }}
-              background="white"
-            />
+              },
+              background: "white" as const,
+            },
+            coachesBlock ? portraitGridFromBlock(coachesBlock) : undefined,
+          )}
+        />
 
-            <Testimonials {...testimonials} />
-            <FaqSection {...faq} />
+        <Testimonials {...testimonials} />
+        <FaqSection {...faq} />
 
-            <Callout
-              eyebrow="Take the First Step"
-              heading="Ready to play for Chula Vista?"
-              variant="bone"
-              body={
+        <Callout
+          {...cmsOverlay(
+            {
+              eyebrow: "Take the First Step",
+              heading: "Ready to play for Chula Vista?",
+              variant: "bone" as const,
+              body: (
                 <>
                   Whether you&rsquo;re new to the area, switching from another
                   club, or ready to level up — we&rsquo;d love to meet your
@@ -343,16 +398,14 @@ export async function LandingScreen({ className }: LandingScreenProps) {
                   Request an evaluation and a coach will follow up within 48
                   hours.
                 </>
-              }
-              ctaSlot={
-                <EvaluationCTA
-                  label="Request an Evaluation"
-                  variant="default"
-                />
-              }
-            />
-          </>
-        )}
+              ),
+            },
+            ctaBlock ? calloutFromBlock(ctaBlock) : undefined,
+          )}
+          ctaSlot={
+            <EvaluationCTA label="Request an Evaluation" variant="default" />
+          }
+        />
       </main>
     </>
   );
