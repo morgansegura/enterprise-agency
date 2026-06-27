@@ -40,7 +40,10 @@ export function heroSlidesFromPage(page: Page | null): HeroSlide[] | undefined {
       return {
         id: str(s.id) ?? `cms-hero-${i}`,
         image: {
-          src: mediaUrl(s.image) ?? "",
+          src:
+            mediaUrl(s.image) ??
+            str((s as { imageUrl?: unknown }).imageUrl) ??
+            "",
           alt: str(s.alt) ?? mediaAlt(s.image) ?? "",
         },
         eyebrow: str(s.eyebrow),
@@ -76,7 +79,7 @@ export function welcomeBannerFromPage(
 ): WelcomeBannerOverrides | undefined {
   const b = blockOf(page, "welcomeBanner");
   if (!b) return undefined;
-  const src = mediaUrl(b.image as MediaValue);
+  const src = mediaUrl(b.image as MediaValue) ?? str(b.imageUrl);
   return {
     eyebrow: str(b.eyebrow),
     heading: str(b.heading),
@@ -408,7 +411,10 @@ export function heroFromBlock(b: PageBlock) {
       return {
         id: str(s.id) ?? `cms-hero-${i}`,
         image: {
-          src: mediaUrl(s.image) ?? "",
+          src:
+            mediaUrl(s.image) ??
+            str((s as { imageUrl?: unknown }).imageUrl) ??
+            "",
           alt: str(s.alt) ?? mediaAlt(s.image) ?? "",
         },
         eyebrow: str(s.eyebrow),
