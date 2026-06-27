@@ -71,10 +71,11 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
-    // Auto-push schema only in local dev. In production the headless server
-    // must never block on an interactive schema prompt — the schema is applied
-    // ahead of time (locally / via migrations), so prod just connects and serves.
-    push: process.env.NODE_ENV !== 'production',
+    // Schema is MIGRATION-managed (never auto-pushed) so a code deploy can't
+    // half-change the shared multi-tenant DB and take every client down. Change
+    // a field → `bun run payload migrate:create <name>` → commit the migration;
+    // the Render deploy runs `payload migrate` before serving (atomic).
+    push: false,
     pool: {
       connectionString: process.env.DATABASE_URI || '',
       ssl: { rejectUnauthorized: false },

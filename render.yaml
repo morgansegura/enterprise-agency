@@ -9,6 +9,10 @@ services:
     plan: standard
     rootDir: apps/cms
     buildCommand: bun install && bun run build
+    # Apply pending DB migrations after build, before traffic switches — schema
+    # and code ship atomically, so a deploy can't half-change the shared
+    # multi-tenant DB and take every client down.
+    preDeployCommand: bun run migrate
     startCommand: bun run start
     healthCheckPath: /admin
     envVars:
