@@ -16,6 +16,7 @@ import {
   FaFacebook,
   FaInstagram,
   FaClipboardList,
+  FaArrowLeftLong,
 } from "react-icons/fa6";
 import { PiSoccerBallFill } from "react-icons/pi";
 import { MdOutlineBadge } from "react-icons/md";
@@ -32,6 +33,7 @@ export type LucideIconName = keyof typeof LUCIDE_ICONS;
 
 export const REACT_ICONS = {
   "arrow-right": FaArrowRightLong,
+  "arrow-left": FaArrowLeftLong,
   "soccer-ball": PiSoccerBallFill,
   "angle-down": FaAngleDown,
   "clipboard-list": FaClipboardList,

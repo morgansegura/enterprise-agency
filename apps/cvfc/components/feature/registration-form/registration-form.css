@@ -1,0 +1,223 @@
+@reference "tailwindcss";
+
+.registration-form {
+  @apply flex flex-col gap-6 p-6 md:p-8;
+}
+
+/* On the page (not in the modal chrome) it stands as a bordered card. */
+.registration-form[data-variant="page"] {
+  @apply mx-auto w-full max-w-xl rounded-2xl border border-(--color-midnight)/10 bg-white shadow-[0_24px_60px_-30px_rgba(6,28,72,0.35)];
+}
+
+.registration-form-header {
+  @apply flex flex-col gap-1 border-b pb-4;
+}
+
+.registration-form-eyebrow {
+  @apply mb-1.5 flex items-center gap-3 text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.registration-form-eyebrow-rule {
+  @apply inline-block h-px w-8 bg-(--color-gold);
+}
+
+.registration-form-title {
+  @apply font-(family-name:--font-heading) text-2xl font-bold leading-tight;
+}
+
+.registration-form-subtitle {
+  @apply text-sm text-(--color-midnight)/80;
+}
+
+/* Step indicator */
+.registration-form-steps {
+  @apply mt-4 flex items-center gap-2;
+}
+
+.registration-form-step {
+  @apply flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-(--color-midnight)/40;
+}
+
+.registration-form-step:not(:first-child) {
+  @apply before:mr-1 before:h-px before:w-5 before:bg-(--color-midnight)/15 before:content-[''];
+}
+
+.registration-form-step-dot {
+  @apply inline-flex size-6 items-center justify-center rounded-full border border-(--color-midnight)/20 text-[11px];
+}
+
+.registration-form-step[data-state="current"] {
+  @apply text-(--color-gold);
+}
+.registration-form-step[data-state="current"] .registration-form-step-dot {
+  @apply border-(--color-gold) bg-(--color-gold)/10 text-(--color-gold);
+}
+.registration-form-step[data-state="done"] {
+  @apply text-(--color-midnight)/70;
+}
+.registration-form-step[data-state="done"] .registration-form-step-dot {
+  @apply border-(--color-gold) bg-(--color-gold) text-white;
+}
+
+.registration-form-body {
+  @apply flex flex-col gap-4;
+}
+
+.registration-form-row {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+}
+
+.registration-form-field {
+  @apply flex flex-col gap-1.5;
+}
+
+.registration-form-label {
+  @apply text-[11px] font-bold uppercase tracking-wide;
+}
+
+.registration-form-input {
+  @apply h-11 rounded-lg border border-(--color-midnight)/15 bg-white px-3 text-sm text-(--color-midnight) outline-none transition-colors;
+  @apply placeholder:text-(--color-midnight)/40 hover:border-(--color-gold)/50;
+  @apply focus-visible:border-(--color-gold) focus-visible:ring-2 focus-visible:ring-(--color-gold)/30;
+}
+
+.registration-form-tracks {
+  @apply mb-1 flex gap-2;
+
+  button {
+    @apply flex-1;
+  }
+
+  button:nth-child(3) {
+    @apply sm:min-w-[170px];
+  }
+}
+
+.registration-form-select {
+  @apply h-11 cursor-pointer rounded-lg border border-(--color-midnight)/15 bg-white px-3 text-sm text-(--color-midnight) outline-none transition-colors;
+  @apply hover:border-(--color-gold)/50 focus-visible:border-(--color-gold) focus-visible:ring-2 focus-visible:ring-(--color-gold)/30;
+}
+
+.registration-form-actions {
+  @apply flex items-center justify-between gap-3 pt-1;
+}
+
+.registration-form-next {
+  @apply w-full inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-(--color-gold) px-6 py-3 outline-none transition-all;
+  @apply font-(family-name:--font-heading) text-sm font-bold uppercase tracking-wider text-white;
+  @apply shadow-[0_8px_24px_-12px_rgba(160,134,41,0.7)] hover:-translate-y-px hover:brightness-110;
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold)/50 focus-visible:ring-offset-2;
+  @apply disabled:pointer-events-none disabled:opacity-45;
+}
+
+.registration-form-back {
+  @apply inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-xs font-bold uppercase text-(--color-midnight)/60 outline-none transition-colors;
+  @apply hover:bg-(--color-midnight)/5 hover:text-(--color-midnight) focus-visible:ring-2 focus-visible:ring-(--color-midnight)/20;
+}
+
+.registration-form-placeholder {
+  @apply flex flex-col gap-2 rounded-xl border border-dashed border-(--color-midnight)/20 bg-(--color-bone) p-6 text-center;
+}
+
+.registration-form-placeholder-eyebrow {
+  @apply text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.registration-form-placeholder-text {
+  @apply text-sm text-(--color-midnight)/75;
+}
+
+.registration-form-footer {
+  @apply flex justify-end border-t pt-4;
+}
+
+.registration-form-cancel {
+  @apply cursor-pointer self-end rounded-md px-3 py-1.5 text-xs font-bold uppercase text-(--color-midnight)/60 outline-none transition-colors;
+  @apply hover:bg-(--color-midnight)/5 hover:text-(--color-midnight) focus-visible:ring-2 focus-visible:ring-(--color-midnight)/20;
+}
+
+.registration-form-error {
+  @apply rounded-lg border border-(--destructive)/30 bg-(--destructive)/10 px-3 py-2 text-sm text-(--destructive);
+}
+
+.registration-form-positions {
+  @apply grid grid-cols-2 gap-2 sm:grid-cols-4;
+}
+
+.registration-form-field-error {
+  @apply text-xs font-medium text-(--destructive);
+}
+
+.registration-form-optional {
+  @apply font-normal normal-case text-(--color-midnight)/40;
+}
+
+.registration-form-note {
+  @apply rounded-lg border border-(--color-gold)/30 bg-(--color-gold)/10 px-3 py-2 text-sm text-(--color-midnight)/80;
+}
+
+.registration-form-action-group {
+  @apply flex flex-1 flex-wrap items-center justify-end gap-3;
+}
+
+.registration-form-next-inline {
+  @apply w-auto;
+}
+
+.registration-form-secondary {
+  @apply inline-flex cursor-pointer items-center gap-2 rounded-full border border-(--color-gold)/50 px-5 py-3 outline-none transition-all;
+  @apply font-(family-name:--font-heading) text-sm font-bold uppercase tracking-wider text-(--color-gold);
+  @apply hover:-translate-y-px hover:bg-(--color-gold)/10;
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold)/50 focus-visible:ring-offset-2;
+  @apply disabled:pointer-events-none disabled:opacity-45;
+}
+
+.registration-form-success {
+  @apply flex flex-col items-center gap-3 rounded-xl border border-(--color-gold)/30 bg-(--color-bone) p-8 text-center;
+}
+
+.registration-form-success-icon {
+  @apply inline-flex size-12 items-center justify-center rounded-full bg-(--color-gold) text-xl text-white;
+}
+
+.registration-form-success-title {
+  @apply font-(family-name:--font-heading) text-lg font-bold;
+}
+
+.registration-form-success-text {
+  @apply text-sm text-(--color-midnight)/75;
+}
+
+.registration-form-divider {
+  @apply my-1 border-t border-(--color-midnight)/10;
+}
+
+.registration-form-multiselect {
+  @apply flex w-full items-center justify-between gap-2 text-left;
+}
+.registration-form-multiselect[data-empty="true"]
+  .registration-form-multiselect-value {
+  @apply text-(--color-midnight)/40;
+}
+.registration-form-multiselect-value {
+  @apply truncate;
+}
+.registration-form-multiselect-caret {
+  @apply shrink-0 text-xs text-(--color-midnight)/50;
+}
+.registration-form-multiselect-content {
+  @apply flex w-(--radix-popover-trigger-width) min-w-56 flex-col gap-0.5 rounded-lg border border-(--color-midnight)/15 bg-white p-1.5 shadow-[0_16px_40px_-20px_rgba(6,28,72,0.4)];
+}
+.registration-form-check {
+  @apply flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm hover:bg-(--color-midnight)/5;
+}
+
+.registration-form-toggle {
+  @apply flex cursor-pointer items-start gap-3 rounded-lg border border-(--color-midnight)/12 bg-(--color-bone) p-3;
+}
+.registration-form-toggle-text {
+  @apply flex flex-col gap-0.5 text-sm font-medium text-(--color-midnight);
+}
+.registration-form-toggle-hint {
+  @apply text-xs font-normal text-(--color-midnight)/55;
+}
