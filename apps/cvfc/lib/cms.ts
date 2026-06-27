@@ -162,9 +162,15 @@ export const getCmsPosts = cache(async (): Promise<PostDoc[]> => {
 /** A single post by slug (or null). */
 export const getCmsPostBySlug = cache(
   async (slug: string): Promise<PostDoc | null> => {
+    const { isEnabled: draft } = await draftMode();
+    // Preview → latest draft; everyone else → only the published version.
+    const statusParam = draft
+      ? "&draft=true"
+      : "&where[_status][equals]=published";
     const docs = await cmsFind<PostDoc>(
       "posts",
-      `where[slug][equals]=${encodeURIComponent(slug)}&depth=1&limit=1`,
+      `where[slug][equals]=${encodeURIComponent(slug)}&depth=1&limit=1${statusParam}`,
+      draft,
     );
     return docs[0] ?? null;
   },
