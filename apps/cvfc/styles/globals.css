@@ -18,6 +18,9 @@
   }
   html {
     @apply font-sans;
+    /* Offset anchor jumps for the fixed header so section headings (and TOC
+       links) don't land hidden underneath it. */
+    scroll-padding-top: calc(var(--header-height, 4rem) + 1.5rem);
   }
 
   @media (prefers-reduced-motion: no-preference) {
