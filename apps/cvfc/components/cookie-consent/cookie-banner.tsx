@@ -30,13 +30,17 @@ export function CookieBanner({ onCustomize }: { onCustomize: () => void }) {
           </p>
         </div>
         <div className="cookie-banner-actions">
-          <Button variant="ghost" onClick={onCustomize}>
+          <Button variant="ghost" size="xs" onClick={onCustomize}>
             {banner.customize}
           </Button>
-          <Button variant="outline" onClick={() => setConsent(DENY_ALL)}>
+          <Button
+            variant="outline"
+            size="xs"
+            onClick={() => setConsent(DENY_ALL)}
+          >
             {banner.rejectAll}
           </Button>
-          <Button onClick={() => setConsent(GRANT_ALL)}>
+          <Button size="xs" onClick={() => setConsent(GRANT_ALL)}>
             {banner.acceptAll}
           </Button>
         </div>
