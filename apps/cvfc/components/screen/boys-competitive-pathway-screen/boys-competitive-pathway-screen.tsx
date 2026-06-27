@@ -33,7 +33,7 @@ export async function BoysCompetitivePathwayScreen() {
                   />
                   <Button
                     variant="outline"
-                    render={<Link href="/evaluations" />}
+                    render={<Link href="/evaluations#register" />}
                   >
                     <span>Learn About Tryouts</span>
                     <Icon token="ri:arrow-right" aria-hidden="true" />

@@ -144,7 +144,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
                   buttons={[
                     {
                       label: "Request an Evaluation",
-                      href: "/evaluations",
+                      href: "/evaluations#register",
                       variant: "outline",
                       iconToken: "ri:badge",
                     },
@@ -183,7 +183,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
                   buttons={[
                     {
                       label: "Request an Evaluation",
-                      href: "/evaluations",
+                      href: "/evaluations#register",
                       variant: "outline",
                       iconToken: "ri:badge",
                     },
@@ -229,7 +229,7 @@ export async function LandingScreen({ className }: LandingScreenProps) {
                   buttons={[
                     {
                       label: "Request an Evaluation",
-                      href: "/evaluations",
+                      href: "/evaluations#register",
                       variant: "outline",
                       iconToken: "ri:badge",
                     },

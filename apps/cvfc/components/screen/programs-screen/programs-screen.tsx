@@ -35,7 +35,7 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
                   />
                   <Button
                     variant="outline"
-                    render={<Link href="/evaluations" />}
+                    render={<Link href="/evaluations#register" />}
                   >
                     <Icon token="ri:badge" aria-hidden="true" />
                     <span>Learn About Tryouts</span>
