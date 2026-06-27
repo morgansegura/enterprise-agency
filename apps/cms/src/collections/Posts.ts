@@ -12,7 +12,11 @@ type PostPreviewDoc = {
 /** Blog posts → /blog and /blog/[slug] (Article schema + RSS). */
 export const Posts: CollectionConfig = {
   slug: 'posts',
-  versions: { drafts: { schedulePublish: true }, maxPerDoc: 50 },
+  versions: {
+    // autosave drives the instant Live Preview update-as-you-type (like Pages).
+    drafts: { schedulePublish: true, autosave: { interval: 800 } },
+    maxPerDoc: 50,
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'publishedAt'],

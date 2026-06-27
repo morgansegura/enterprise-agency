@@ -1099,7 +1099,86 @@ const PAGE_META: Record<string, { title: string; description: string }> = {
     description:
       "CVFC's girls pathway from U10 to U19 — DPL, NPL, and SoCal Flight, with GA and GA Aspire applications submitted. Built for college visibility.",
   },
+  evaluations: {
+    title: 'Evaluations & Tryouts — Chula Vista FC',
+    description:
+      'Open tryouts and free evaluations across every CVFC pathway — Foundations to MLS NEXT, boys and girls. Find your fit; a coach follows up within 48 hours.',
+  },
+  faq: {
+    title: 'FAQ — Chula Vista FC',
+    description:
+      'Answers for South Bay families — costs, tryouts, leagues, scholarships, and outcomes at Chula Vista FC. The questions parents ask before joining a club.',
+  },
+  partnerships: {
+    title: 'Partnerships — Chula Vista FC',
+    description:
+      'League affiliations, academy partners, community organizations, and field hosts behind 44 years of Chula Vista FC. Join the network behind the pathway.',
+  },
+  sponsor: {
+    title: 'Become a Sponsor — Chula Vista FC',
+    description:
+      'Sponsor Chula Vista FC — jersey logos, banner placement, and match-day recognition that fund player scholarships. Every sponsorship goes back to the kids.',
+  },
+  support: {
+    title: 'Donate & Support — Chula Vista FC',
+    description:
+      'Every gift to Chula Vista FC, a 501(c)(3) nonprofit, stays with our players — keeping fields lit, kits clean, and the door open to South Bay families.',
+  },
+  'programs/coaching-opportunities': {
+    title: 'Coaching Opportunities — Chula Vista FC',
+    description:
+      'Chula Vista FC is hiring coaches across the pathway — Mini Maestros to MLS NEXT, boys and girls, plus goalkeeper. Join a hometown club with deep roots.',
+  },
+  'about/coaching-staff': {
+    title: 'Coaching Staff — Chula Vista FC',
+    description:
+      'USSF A and UEFA-licensed coaches developing players across MLS NEXT, Elite Academy, NPL, and DPL — college, elite, and professional experience in the South Bay.',
+  },
+  'about/administrators': {
+    title: 'Administrators & Leadership — Chula Vista FC',
+    description:
+      'The directors and staff running Chula Vista FC day-to-day — registration, operations, and the work that keeps the South Bay pathway moving.',
+  },
+  'about/facilities': {
+    title: 'Facilities — Chula Vista FC',
+    description:
+      'Where CVFC trains and plays — Victory Christian Academy, Hoover High School, the Indoor Training Center, and community parks across the South Bay.',
+  },
+  'about/testimonials': {
+    title: 'Testimonials — Chula Vista FC',
+    description:
+      'Parents, players, alumni, and coaches in their own words — what Chula Vista FC means on a Tuesday training session and a Saturday match.',
+  },
+  'privacy-policy': {
+    title: 'Privacy Policy — Chula Vista FC',
+    description: 'How Chula Vista FC collects, uses, and protects your information.',
+  },
+  'terms-of-service': {
+    title: 'Terms of Service — Chula Vista FC',
+    description: 'The terms governing your use of the Chula Vista FC website.',
+  },
+  'cookie-policy': {
+    title: 'Cookie Policy — Chula Vista FC',
+    description: 'How Chula Vista FC uses cookies and similar technologies on this site.',
+  },
+  'link-policy': {
+    title: 'Link Policy — Chula Vista FC',
+    description: "Chula Vista FC's policy on linking to and from this website.",
+  },
 }
+
+/** Starter single-PageHero layout for routes whose deeper sections fall back to
+ *  the hard-coded mock until wired section-by-section on the front end. */
+const heroLayout = (eyebrow: string, heading: string, description: string) => [
+  {
+    blockType: 'pageHero',
+    eyebrow,
+    heading,
+    description,
+    background: 'white',
+    actions: [],
+  },
+]
 
 async function seed() {
   const payload = await getPayload({ config })
@@ -1218,6 +1297,150 @@ async function seed() {
     'Girls Competitive Pathway',
     GIRLS_LAYOUT,
     PAGE_META['programs/girls-competitive-pathway'],
+  )
+
+  // --- remaining routes: create the page doc for every route so it's editable
+  // in the CMS. Hero is seeded from the live screen; deeper sections fall back
+  // to the hard-coded mock until each screen is wired section-by-section. ---
+  await upsertPage(
+    'evaluations',
+    'Evaluations & Tryouts',
+    heroLayout(
+      'Tryouts & Evaluations',
+      'Find your fit at Chula Vista FC.',
+      "Open tryouts and free evaluations across every CVFC pathway — Foundations to MLS NEXT, boys and girls. Find your player's fit, and a coach will follow up within 48 hours.",
+    ),
+    PAGE_META.evaluations,
+  )
+  await upsertPage(
+    'faq',
+    'Frequently Asked Questions',
+    heroLayout(
+      'Frequently Asked Questions',
+      'Real answers for South Bay families.',
+      'Everything parents ask before joining a club — costs, tryouts, leagues, scholarships, comparisons, and outcomes. If we missed your question, request an evaluation and a coach will follow up within 48 hours.',
+    ),
+    PAGE_META.faq,
+  )
+  await upsertPage(
+    'partnerships',
+    'Partnerships',
+    heroLayout(
+      'Partnerships',
+      'The relationships behind 44 years of CVFC.',
+      "Chula Vista FC is more than one club — it's a network. League affiliations, academy partners, community organizations, and field hosts all make the CVFC pathway possible. If your organization wants to join the work, we want to talk.",
+    ),
+    PAGE_META.partnerships,
+  )
+  await upsertPage(
+    'sponsor',
+    'Become a Sponsor',
+    heroLayout(
+      'Become a Sponsor',
+      'Stand with the club, stand with the kids.',
+      'Local businesses and community partners help keep CVFC strong. Jersey logos, banner placement, match-day recognition, and gifts that fund player scholarships — every sponsorship goes back into the work, and the kids feel it on Tuesday practice.',
+    ),
+    PAGE_META.sponsor,
+  )
+  await upsertPage(
+    'support',
+    'Donate to Chula Vista FC',
+    heroLayout(
+      'Donate to Chula Vista FC',
+      'Help us show up for the next kid.',
+      "Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this.",
+    ),
+    PAGE_META.support,
+  )
+  await upsertPage(
+    'programs/coaching-opportunities',
+    'Coaching Opportunities',
+    heroLayout(
+      'Coaching Opportunities',
+      'Coach with us.',
+      "Chula Vista FC is hiring across the pathway — Mini Maestros through MLS NEXT, on the boys side and the girls side, plus our goalkeeper specialty. If you love developing young players and want to be part of a hometown club with deep South Bay roots, we'd love to hear from you.",
+    ),
+    PAGE_META['programs/coaching-opportunities'],
+  )
+  await upsertPage(
+    'about/coaching-staff',
+    'Coaching Staff',
+    heroLayout(
+      'Coaching Staff',
+      "Coached by people who've been there.",
+      'Meet the USSF A and UEFA-licensed coaches developing players across MLS NEXT, Elite Academy, NPL, and DPL at Chula Vista FC — college, elite, and professional playing experience brought to youth soccer in the South Bay.',
+    ),
+    PAGE_META['about/coaching-staff'],
+  )
+  await upsertPage(
+    'about/administrators',
+    'Administrators',
+    heroLayout(
+      'Leadership',
+      'Meet the Directors.',
+      'The directors and staff running Chula Vista FC day-to-day — registration, operations, and the work that keeps the South Bay pathway moving.',
+    ),
+    PAGE_META['about/administrators'],
+  )
+  await upsertPage(
+    'about/facilities',
+    'Facilities',
+    heroLayout(
+      'Facilities',
+      'Where CVFC trains and plays.',
+      'Victory Christian Academy, Hoover High School, the Indoor Training Center, and community parks across the South Bay — the grounds where Chula Vista FC trains and competes.',
+    ),
+    PAGE_META['about/facilities'],
+  )
+  await upsertPage(
+    'about/testimonials',
+    'Testimonials',
+    heroLayout(
+      'Voices',
+      'Our community, in their own words.',
+      'Parents, players, alumni, and coaches — the families and the staff who shape what Chula Vista FC means on a Tuesday training session and on a Saturday match. Below are their voices.',
+    ),
+    PAGE_META['about/testimonials'],
+  )
+  await upsertPage(
+    'privacy-policy',
+    'Privacy Policy',
+    heroLayout(
+      'Legal',
+      'Privacy Policy',
+      'How Chula Vista FC collects, uses, and protects your information.',
+    ),
+    PAGE_META['privacy-policy'],
+  )
+  await upsertPage(
+    'terms-of-service',
+    'Terms of Service',
+    heroLayout(
+      'Legal',
+      'Terms of Service',
+      'The terms governing your use of the Chula Vista FC website.',
+    ),
+    PAGE_META['terms-of-service'],
+  )
+  await upsertPage(
+    'cookie-policy',
+    'Cookie Policy',
+    heroLayout(
+      'Legal',
+      'Cookie Policy',
+      'How Chula Vista FC uses cookies and similar technologies on this site.',
+    ),
+    PAGE_META['cookie-policy'],
+  )
+  await upsertPage(
+    'link-policy',
+    'Link Policy',
+    heroLayout(
+      'Legal',
+      'Link Policy',
+      "Chula Vista FC's policy on linking to and from this website.",
+    ),
+    PAGE_META['link-policy'],
   )
 
   // --- blog: migrate cvfc news into the Posts collection (verbatim) ---
