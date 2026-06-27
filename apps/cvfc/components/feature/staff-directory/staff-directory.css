@@ -160,11 +160,11 @@
 }
 
 .staff-directory-card-photo {
-  @apply aspect-square w-24 shrink-0 rounded-xl border border-(--color-gold-bright)/20;
+  @apply size-24 shrink-0 self-center rounded-xl border border-(--color-gold-bright)/20;
 }
 
 .staff-directory-card-content {
-  @apply flex min-w-0 flex-1 flex-col justify-center gap-0.5;
+  @apply flex flex-1 flex-col justify-center gap-0.5;
 }
 
 .staff-directory-card-name {

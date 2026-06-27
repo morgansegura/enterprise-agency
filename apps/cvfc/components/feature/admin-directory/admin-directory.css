@@ -112,7 +112,7 @@
 }
 
 .admin-directory-card-photo {
-  @apply aspect-square w-28 shrink-0 rounded-xl border border-(--color-gold-bright)/20;
+  @apply size-24 shrink-0 self-center rounded-xl border border-(--color-gold-bright)/20;
 }
 
 .admin-directory-card-content {
