@@ -17,7 +17,8 @@ export const SiteSettings: CollectionConfig = {
     {
       name: 'logoUrl',
       type: 'text',
-      admin: { description: 'Or a logo URL — imported into Media on save.' },
+      // Legacy/seed fallback; hidden so editors just use the Logo upload.
+      admin: { hidden: true },
     },
     {
       name: 'headerMenu',

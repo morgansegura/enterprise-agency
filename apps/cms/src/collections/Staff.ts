@@ -81,7 +81,8 @@ export const Staff: CollectionConfig = {
     {
       name: 'imageUrl',
       type: 'text',
-      admin: { description: 'External image URL — used when no upload is set (migration/seed).' },
+      // Legacy/seed fallback; hidden so editors just use the Photo upload.
+      admin: { hidden: true },
     },
     { name: 'email', type: 'text' },
     { name: 'phone', type: 'text' },

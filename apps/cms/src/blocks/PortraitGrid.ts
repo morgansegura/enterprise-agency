@@ -29,7 +29,8 @@ export const PortraitGridBlock: Block = {
         {
           name: 'imageUrl',
           type: 'text',
-          admin: { description: 'External image URL — used when no upload is set.' },
+          // Legacy/seed fallback; hidden so editors just use the Image upload.
+          admin: { hidden: true },
         },
       ],
     },

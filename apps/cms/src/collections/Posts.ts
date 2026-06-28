@@ -67,7 +67,8 @@ export const Posts: CollectionConfig = {
     {
       name: 'coverImageUrl',
       type: 'text',
-      admin: { description: 'External/asset image URL — used when no upload is set.' },
+      // Legacy/seed fallback; hidden so editors just use the Cover Image upload.
+      admin: { hidden: true },
     },
     { name: 'publishedAt', type: 'date' },
     { name: 'author', type: 'text' },
@@ -109,9 +110,8 @@ export const Posts: CollectionConfig = {
         {
           name: 'imageUrl',
           type: 'text',
-          admin: {
-            description: 'Or an image URL — imported into Media on save.',
-          },
+          // Legacy/seed fallback; hidden so editors just use the Image upload.
+          admin: { hidden: true },
         },
         {
           name: 'noindex',

@@ -21,10 +21,8 @@ export const MediaSplit: Block = {
     {
       name: 'imageUrl',
       type: 'text',
-      admin: {
-        description:
-          'External image URL — used when no upload is set (migration/seed). Prefer an upload for new content.',
-      },
+      // Legacy/seed fallback; hidden so editors just use the Image upload.
+      admin: { hidden: true },
     },
     { name: 'imageAlt', type: 'text' },
     {

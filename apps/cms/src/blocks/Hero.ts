@@ -34,9 +34,8 @@ export const Hero: Block = {
         {
           name: 'imageUrl',
           type: 'text',
-          admin: {
-            description: 'Or an image URL — imported into Media on save (used if no upload).',
-          },
+          // Legacy/seed fallback; hidden so editors just use the Image upload.
+          admin: { hidden: true },
         },
         {
           name: 'alt',

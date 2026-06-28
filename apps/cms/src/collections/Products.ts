@@ -27,7 +27,8 @@ export const Products: CollectionConfig = {
     {
       name: 'imageUrl',
       type: 'text',
-      admin: { description: 'Or an image URL — imported into Media on save.' },
+      // Legacy/seed fallback; hidden so editors just use the Image upload.
+      admin: { hidden: true },
     },
   ],
 }

@@ -38,7 +38,8 @@ export const Testimonials: CollectionConfig = {
     {
       name: 'imageUrl',
       type: 'text',
-      admin: { description: 'External image URL — used when no upload.' },
+      // Legacy/seed fallback; hidden so editors just use the Photo upload.
+      admin: { hidden: true },
     },
     {
       name: 'status',
