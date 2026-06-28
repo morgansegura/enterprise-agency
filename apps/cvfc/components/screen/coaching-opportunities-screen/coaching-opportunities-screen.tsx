@@ -8,6 +8,8 @@ import { Heading } from "@/components/feature/heading";
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
+import { getPage } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { breadcrumbSchema } from "@/lib/schema";
 
 const ROLE_CARDS: IconCardEntry[] = [
@@ -65,7 +67,10 @@ const WHY_CARDS: IconCardEntry[] = [
   },
 ];
 
-export function CoachingOpportunitiesScreen() {
+export async function CoachingOpportunitiesScreen() {
+  const hero = pageHeroFromPage(
+    await getPage("programs/coaching-opportunities"),
+  );
   return (
     <>
       <JsonLd
@@ -82,9 +87,12 @@ export function CoachingOpportunitiesScreen() {
       />
       <main>
         <PageHero
-          eyebrow="Coaching Opportunities"
-          heading="Coach with us."
-          description="Chula Vista FC is hiring across the pathway — Mini Maestros through MLS NEXT, on the boys side and the girls side, plus our goalkeeper specialty. If you love developing young players and want to be part of a hometown club with deep South Bay roots, we'd love to hear from you."
+          eyebrow={hero?.eyebrow || "Coaching Opportunities"}
+          heading={hero?.heading || "Coach with us."}
+          description={
+            hero?.description ||
+            "Chula Vista FC is hiring across the pathway — Mini Maestros through MLS NEXT, on the boys side and the girls side, plus our goalkeeper specialty. If you love developing young players and want to be part of a hometown club with deep South Bay roots, we'd love to hear from you."
+          }
           actions={
             <Button
               variant="default"

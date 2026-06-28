@@ -15,7 +15,8 @@ import {
   getParkFacilities,
   type Facility,
 } from "@/data/facilities";
-import { getFacilities } from "@/lib/cms";
+import { getFacilities, getPage } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { cmsToFacility } from "@/lib/cms-content";
 
 function formatAddressLine(facility: Facility) {
@@ -98,6 +99,7 @@ function FeaturedFacilityRow({
 }
 
 export async function FacilitiesScreen() {
+  const hero = pageHeroFromPage(await getPage("about/facilities"));
   const cms = (await getFacilities()).map(cmsToFacility).filter((f) => f.name);
   const source = cms.length ? cms : FACILITIES;
   const featured = getFeaturedFacilities(source);
@@ -107,9 +109,12 @@ export async function FacilitiesScreen() {
     <>
       <main>
         <PageHero
-          eyebrow="Facilities"
-          heading="Where we train, play, and compete."
-          description="Chula Vista FC trains across Chula Vista and South San Diego — full-size pitches, lit fields for evening sessions, and match-day venues that feel like real game days. Below are the venues that make up the CVFC week."
+          eyebrow={hero?.eyebrow || "Facilities"}
+          heading={hero?.heading || "Where we train, play, and compete."}
+          description={
+            hero?.description ||
+            "Chula Vista FC trains across Chula Vista and South San Diego — full-size pitches, lit fields for evening sessions, and match-day venues that feel like real game days. Below are the venues that make up the CVFC week."
+          }
           actions={
             <>
               <EvaluationCTA variant="default" label="Request an Evaluation" />

@@ -8,6 +8,8 @@ import { Heading } from "@/components/feature/heading";
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
+import { getPage } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { breadcrumbSchema } from "@/lib/schema";
 
 import "./support-screen.css";
@@ -99,7 +101,8 @@ const IMPACT_CARDS: IconCardEntry[] = [
   },
 ];
 
-export function SupportScreen() {
+export async function SupportScreen() {
+  const hero = pageHeroFromPage(await getPage("support"));
   return (
     <>
       <JsonLd
@@ -112,9 +115,12 @@ export function SupportScreen() {
       />
       <main>
         <PageHero
-          eyebrow="Donate to Chula Vista FC"
-          heading="Help us show up for the next kid."
-          description="Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this."
+          eyebrow={hero?.eyebrow || "Donate to Chula Vista FC"}
+          heading={hero?.heading || "Help us show up for the next kid."}
+          description={
+            hero?.description ||
+            "Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this."
+          }
           actions={
             <Button variant="default" render={<Link href="#donate" />}>
               <Icon token="ri:badge" aria-hidden="true" />

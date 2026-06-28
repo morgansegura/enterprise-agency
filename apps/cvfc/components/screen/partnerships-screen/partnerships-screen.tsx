@@ -8,6 +8,8 @@ import { Heading } from "@/components/feature/heading";
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
+import { getPage } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { breadcrumbSchema } from "@/lib/schema";
 
 const PARTNERSHIP_KINDS: IconCardEntry[] = [
@@ -65,7 +67,8 @@ const HOW_WE_PARTNER: IconCardEntry[] = [
   },
 ];
 
-export function PartnershipsScreen() {
+export async function PartnershipsScreen() {
+  const hero = pageHeroFromPage(await getPage("partnerships"));
   return (
     <>
       <JsonLd
@@ -79,9 +82,14 @@ export function PartnershipsScreen() {
       />
       <main>
         <PageHero
-          eyebrow="Partnerships"
-          heading="The relationships behind 44 years of CVFC."
-          description="Chula Vista FC is more than one club — it's a network. League affiliations, academy partners, community organizations, and field hosts all make the CVFC pathway possible. If your organization wants to join the work, we want to talk."
+          eyebrow={hero?.eyebrow || "Partnerships"}
+          heading={
+            hero?.heading || "The relationships behind 44 years of CVFC."
+          }
+          description={
+            hero?.description ||
+            "Chula Vista FC is more than one club — it's a network. League affiliations, academy partners, community organizations, and field hosts all make the CVFC pathway possible. If your organization wants to join the work, we want to talk."
+          }
           actions={
             <Button
               variant="default"

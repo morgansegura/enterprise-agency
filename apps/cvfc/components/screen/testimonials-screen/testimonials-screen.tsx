@@ -9,7 +9,8 @@ import {
   getActiveTestimonials,
   getFeaturedTestimonials,
 } from "@/data/testimonials";
-import { getTestimonials } from "@/lib/cms";
+import { getPage, getTestimonials } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { cmsToTestimonial } from "@/lib/cms-content";
 
 import "./testimonials-screen.css";
@@ -22,6 +23,7 @@ const ROLE_TAG = {
 } as const;
 
 export async function TestimonialsScreen() {
+  const hero = pageHeroFromPage(await getPage("about/testimonials"));
   const cms = (await getTestimonials())
     .map(cmsToTestimonial)
     .filter((t) => t.quote);
@@ -34,9 +36,12 @@ export async function TestimonialsScreen() {
     <>
       <main>
         <PageHero
-          eyebrow="Voices"
-          heading="Our community, in their own words."
-          description="Parents, players, alumni, and coaches — the families and the staff who shape what Chula Vista FC means on a Tuesday training session and on a Saturday match. Below are their voices."
+          eyebrow={hero?.eyebrow || "Voices"}
+          heading={hero?.heading || "Our community, in their own words."}
+          description={
+            hero?.description ||
+            "Parents, players, alumni, and coaches — the families and the staff who shape what Chula Vista FC means on a Tuesday training session and on a Saturday match. Below are their voices."
+          }
           actions={
             <EvaluationCTA variant="default" label="Request an Evaluation" />
           }

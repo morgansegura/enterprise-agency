@@ -8,6 +8,8 @@ import { Heading } from "@/components/feature/heading";
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
+import { getPage } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { breadcrumbSchema } from "@/lib/schema";
 
 import "./sponsor-screen.css";
@@ -95,7 +97,8 @@ const REASONS: IconCardEntry[] = [
   },
 ];
 
-export function SponsorScreen() {
+export async function SponsorScreen() {
+  const hero = pageHeroFromPage(await getPage("sponsor"));
   return (
     <>
       <JsonLd
@@ -109,9 +112,12 @@ export function SponsorScreen() {
       />
       <main>
         <PageHero
-          eyebrow="Become a Sponsor"
-          heading="Stand with the club, stand with the kids."
-          description="Local businesses and community partners help keep CVFC strong. Jersey logos, banner placement, match-day recognition, and gifts that fund player scholarships — every sponsorship goes back into the work, and the kids feel it on Tuesday practice."
+          eyebrow={hero?.eyebrow || "Become a Sponsor"}
+          heading={hero?.heading || "Stand with the club, stand with the kids."}
+          description={
+            hero?.description ||
+            "Local businesses and community partners help keep CVFC strong. Jersey logos, banner placement, match-day recognition, and gifts that fund player scholarships — every sponsorship goes back into the work, and the kids feel it on Tuesday practice."
+          }
           actions={
             <Button
               variant="default"

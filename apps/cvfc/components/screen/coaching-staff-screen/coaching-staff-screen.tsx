@@ -8,7 +8,8 @@ import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { PageHero } from "@/components/feature/page-hero";
 import { StaffDirectory } from "@/components/feature/staff-directory";
 import { COACHES, getActiveCoaches } from "@/data/coaches";
-import { getStaff } from "@/lib/cms";
+import { getPage, getStaff } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { staffToCoach } from "@/lib/cms-staff";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,7 @@ export async function CoachingStaffScreen({
 }: CoachingStaffScreenProps) {
   // Use the CMS Staff collection once it actually serves the rich fields
   // (title present); otherwise fall back to the static roster.
+  const hero = pageHeroFromPage(await getPage("about/coaching-staff"));
   const cms = (await getStaff("Coaching Staff"))
     .map(staffToCoach)
     .filter((c) => c.title);
@@ -52,9 +54,12 @@ export async function CoachingStaffScreen({
     <>
       <main className={cn("coaching-staff-screen", className)}>
         <PageHero
-          eyebrow="Coaching Staff"
-          heading="Coached by people who've been there."
-          description="Meet the USSF A and UEFA-licensed coaches developing players across MLS NEXT, Elite Academy, NPL, and DPL at Chula Vista FC. Our South Bay staff brings college, elite, and professional playing experience — including alumni of Liga MX Pachuca, CHIVAS, the US Youth National Team, and Club Tijuana — to youth soccer in Chula Vista, San Diego, and the South Bay."
+          eyebrow={hero?.eyebrow || "Coaching Staff"}
+          heading={hero?.heading || "Coached by people who've been there."}
+          description={
+            hero?.description ||
+            "Meet the USSF A and UEFA-licensed coaches developing players across MLS NEXT, Elite Academy, NPL, and DPL at Chula Vista FC. Our South Bay staff brings college, elite, and professional playing experience — including alumni of Liga MX Pachuca, CHIVAS, the US Youth National Team, and Club Tijuana — to youth soccer in Chula Vista, San Diego, and the South Bay."
+          }
           actions={
             <>
               <EvaluationCTA variant="default" label="Request an Evaluation" />

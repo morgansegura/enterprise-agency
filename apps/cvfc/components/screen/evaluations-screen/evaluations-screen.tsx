@@ -5,6 +5,8 @@ import { FaqSection } from "@/components/feature/faq-section";
 import { PageHero } from "@/components/feature/page-hero";
 import { RegistrationForm } from "@/components/feature/registration-form";
 import { FAQ_ENTRIES } from "@/data/faq";
+import { getPage } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
@@ -86,7 +88,8 @@ function ageRows(gender: string) {
   ];
 }
 
-export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
+export async function EvaluationsScreen({ className }: EvaluationsScreenProps) {
+  const hero = pageHeroFromPage(await getPage("evaluations"));
   const programsByTrack = TRACKS.map((t) => ({
     ...t,
     rows: ageRows(GENDER_LABEL[t.id]),
@@ -176,15 +179,17 @@ export function EvaluationsScreen({ className }: EvaluationsScreenProps) {
     <>
       <main className={cn("evaluations-screen", className)}>
         <PageHero
-          eyebrow="Tryouts & Evaluations"
-          heading="Find your fit at Chula Vista FC."
+          eyebrow={hero?.eyebrow || "Tryouts & Evaluations"}
+          heading={hero?.heading || "Find your fit at Chula Vista FC."}
           description={
-            <>
-              Whether tryouts are open or you missed the window, every player
-              gets a path. Choose a track and birth year to be routed to the
-              right registration. <br />
-              <strong>Your coach will reach out within 48 hours</strong>!
-            </>
+            hero?.description || (
+              <>
+                Whether tryouts are open or you missed the window, every player
+                gets a path. Choose a track and birth year to be routed to the
+                right registration. <br />
+                <strong>Your coach will reach out within 48 hours</strong>!
+              </>
+            )
           }
           // actions={
           //   <>

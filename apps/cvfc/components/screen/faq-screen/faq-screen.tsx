@@ -11,6 +11,8 @@ import { Heading } from "@/components/feature/heading";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { FAQ_ENTRIES, type FaqCategory, type FaqEntry } from "@/data/faq";
+import { getPage } from "@/lib/cms";
+import { pageHeroFromPage } from "@/lib/cms-blocks";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 
 import "./faq-screen.css";
@@ -55,7 +57,8 @@ function categoryHeadline(category: FaqCategory): string {
   }
 }
 
-export function FaqScreen() {
+export async function FaqScreen() {
+  const hero = pageHeroFromPage(await getPage("faq"));
   const groups = groupByCategory(FAQ_ENTRIES);
 
   return (
@@ -76,9 +79,12 @@ export function FaqScreen() {
       />
       <main>
         <PageHero
-          eyebrow="Frequently Asked Questions"
-          heading="Real answers for South Bay families."
-          description="Everything parents ask before joining a club — costs, tryouts, leagues, scholarships, comparisons, and outcomes. If we missed your question, request an evaluation and a coach will follow up within 48 hours."
+          eyebrow={hero?.eyebrow || "Frequently Asked Questions"}
+          heading={hero?.heading || "Real answers for South Bay families."}
+          description={
+            hero?.description ||
+            "Everything parents ask before joining a club — costs, tryouts, leagues, scholarships, comparisons, and outcomes. If we missed your question, request an evaluation and a coach will follow up within 48 hours."
+          }
           actions={
             <EvaluationCTA variant="default" label="Request an Evaluation" />
           }
