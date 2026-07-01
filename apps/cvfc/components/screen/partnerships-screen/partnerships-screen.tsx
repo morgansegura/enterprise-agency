@@ -9,7 +9,12 @@ import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { getPage } from "@/lib/cms";
-import { pageHeroFromPage } from "@/lib/cms-blocks";
+import { blockFor, cmsOverlay } from "@/lib/media";
+import {
+  pageHeroFromPage,
+  iconCardsFromBlock,
+  calloutFromBlock,
+} from "@/lib/cms-blocks";
 import { breadcrumbSchema } from "@/lib/schema";
 
 const PARTNERSHIP_KINDS: IconCardEntry[] = [
@@ -68,7 +73,11 @@ const HOW_WE_PARTNER: IconCardEntry[] = [
 ];
 
 export async function PartnershipsScreen() {
-  const hero = pageHeroFromPage(await getPage("partnerships"));
+  const page = await getPage("partnerships");
+  const hero = pageHeroFromPage(page);
+  const kindsBlock = blockFor(page, "partnership-types", "iconCards");
+  const howBlock = blockFor(page, "how-we-partner", "iconCards");
+  const calloutBlock = blockFor(page, "other-ways", "callout");
   return (
     <>
       <JsonLd
@@ -104,20 +113,32 @@ export async function PartnershipsScreen() {
         />
 
         <IconCards
-          eyebrow="Partnership Types"
-          heading="Four kinds of partners. One mission."
-          description="Every partnership is unique — here are the broad categories."
-          cards={PARTNERSHIP_KINDS}
-          background="white"
+          {...cmsOverlay(
+            {
+              eyebrow: "Partnership Types",
+              heading: "Four kinds of partners. One mission.",
+              description:
+                "Every partnership is unique — here are the broad categories.",
+              cards: PARTNERSHIP_KINDS,
+              background: "white" as const,
+            },
+            kindsBlock ? iconCardsFromBlock(kindsBlock) : undefined,
+          )}
         />
 
         <IconCards
-          eyebrow="How We Work Together"
-          heading="What partnership looks like in practice."
-          description="The shape of CVFC partnerships, in three categories."
-          cards={HOW_WE_PARTNER}
-          cols={3}
-          background="bone"
+          {...cmsOverlay(
+            {
+              eyebrow: "How We Work Together",
+              heading: "What partnership looks like in practice.",
+              description:
+                "The shape of CVFC partnerships, in three categories.",
+              cards: HOW_WE_PARTNER,
+              cols: 3 as const,
+              background: "bone" as const,
+            },
+            howBlock ? iconCardsFromBlock(howBlock) : undefined,
+          )}
         />
 
         <Section bg="white" size="default">
@@ -167,16 +188,21 @@ export async function PartnershipsScreen() {
         </Section>
 
         <Callout
-          eyebrow="Other Ways to Engage"
-          heading="Donate or sponsor."
-          variant="bone"
-          body={
-            <>
-              If your organization or family is closer to a sponsorship or a
-              direct donation than a strategic partnership, both pages below
-              walk through what we offer.
-            </>
-          }
+          {...cmsOverlay(
+            {
+              eyebrow: "Other Ways to Engage",
+              heading: "Donate or sponsor.",
+              variant: "bone" as const,
+              body: (
+                <>
+                  If your organization or family is closer to a sponsorship or a
+                  direct donation than a strategic partnership, both pages below
+                  walk through what we offer.
+                </>
+              ),
+            },
+            calloutBlock ? calloutFromBlock(calloutBlock) : undefined,
+          )}
           ctaSlot={
             <>
               <Button variant="default" render={<Link href="/sponsor" />}>

@@ -1180,6 +1180,90 @@ const heroLayout = (eyebrow: string, heading: string, description: string) => [
   },
 ]
 
+// Full /partnerships layout: hero + two iconCards + a callout. blockName matches
+// the FE `blockFor(page, "<name>")` lookups so each section is editable.
+const PARTNERSHIPS_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Partnerships',
+    heading: 'The relationships behind 44 years of CVFC.',
+    description:
+      "Chula Vista FC is more than one club — it's a network. League affiliations, academy partners, community organizations, and field hosts all make the CVFC pathway possible. If your organization wants to join the work, we want to talk.",
+    background: 'white',
+    actions: [],
+  },
+  {
+    blockType: 'iconCards',
+    blockName: 'partnership-types',
+    eyebrow: 'Partnership Types',
+    heading: 'Four kinds of partners. One mission.',
+    description: 'Every partnership is unique — here are the broad categories.',
+    background: 'white',
+    cards: [
+      {
+        iconToken: 'custom:soccer-field',
+        title: 'League & Federation Partners',
+        description:
+          'MLS NEXT, Elite Academy League, Development Player League, National Premier League, SoCal Soccer League, Southwest Premier League — the competitions that shape the CVFC pathway.',
+      },
+      {
+        iconToken: 'custom:trophy',
+        title: 'Pro & Academy Partners',
+        description:
+          'Victory Christian Academy as primary training home, San Diego FC partnership, and academy-level relationships across MLS and Liga MX (Atlas, Club Tijuana, Rayados).',
+      },
+      {
+        iconToken: 'custom:medal',
+        title: 'Community Partners',
+        description:
+          'Local schools, parks, and South Bay organizations that share fields, host tournaments, and help CVFC stay rooted in Chula Vista.',
+      },
+      {
+        iconToken: 'custom:soccer-desk',
+        title: 'Facility Partners',
+        description:
+          'Hoover High School (match days), Indoor Training Center (indoor specialty), and the network of community parks across the South Bay where CVFC trains every week.',
+      },
+    ],
+  },
+  {
+    blockType: 'iconCards',
+    blockName: 'how-we-partner',
+    eyebrow: 'How We Work Together',
+    heading: 'What partnership looks like in practice.',
+    description: 'The shape of CVFC partnerships, in three categories.',
+    background: 'bone',
+    cards: [
+      {
+        iconToken: 'custom:torch',
+        title: 'Co-Built Programs',
+        description:
+          'Joint clinics, ID camps, scholarship initiatives, and pathway-specific programming with partner clubs and federations.',
+      },
+      {
+        iconToken: 'custom:soccer-ball',
+        title: 'Shared Fields & Tournaments',
+        description:
+          'Reciprocal field use, joint tournaments, and shared event hosting across South Bay venues.',
+      },
+      {
+        iconToken: 'custom:target',
+        title: 'Scouting & Talent Pipelines',
+        description:
+          'Direct relationships between CVFC coaches and college, MLS academy, and Liga MX scouts — players see the right eyes at the right time.',
+      },
+    ],
+  },
+  {
+    blockType: 'callout',
+    blockName: 'other-ways',
+    eyebrow: 'Other Ways to Engage',
+    heading: 'Donate or sponsor.',
+    variant: 'bone',
+    body: 'If your organization or family is closer to a sponsorship or a direct donation than a strategic partnership, both pages below walk through what we offer.',
+  },
+]
+
 async function seed() {
   const payload = await getPayload({ config })
 
@@ -1243,15 +1327,20 @@ async function seed() {
       depth: 0,
       overrideAccess: true,
     })
+    const existing = found.docs[0] as { id: number | string; layout?: unknown[] } | undefined
+    // Fill, never clobber: if the page already has a built-out layout (>1
+    // block), the client may have edited it — keep their layout and only
+    // refresh SEO meta. Only (re)seed the layout for empty/hero-only pages.
+    const customized = (existing?.layout?.length ?? 0) > 1
     const data = {
-      layout: layout as never,
+      ...(customized ? {} : { layout: layout as never }),
       _status: 'published' as const,
       ...(meta ? { meta } : {}),
     }
-    if (found.docs[0]) {
+    if (existing) {
       await payload.update({
         collection: 'pages',
-        id: found.docs[0].id,
+        id: existing.id,
         data,
         depth: 0,
         overrideAccess: true,
@@ -1322,16 +1411,7 @@ async function seed() {
     ),
     PAGE_META.faq,
   )
-  await upsertPage(
-    'partnerships',
-    'Partnerships',
-    heroLayout(
-      'Partnerships',
-      'The relationships behind 44 years of CVFC.',
-      "Chula Vista FC is more than one club — it's a network. League affiliations, academy partners, community organizations, and field hosts all make the CVFC pathway possible. If your organization wants to join the work, we want to talk.",
-    ),
-    PAGE_META.partnerships,
-  )
+  await upsertPage('partnerships', 'Partnerships', PARTNERSHIPS_LAYOUT, PAGE_META.partnerships)
   await upsertPage(
     'sponsor',
     'Become a Sponsor',
