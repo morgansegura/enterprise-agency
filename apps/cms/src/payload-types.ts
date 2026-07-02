@@ -171,9 +171,6 @@ export interface Page {
                    * Slide background image — served from the media CDN.
                    */
                   image?: (number | null) | Media;
-                  /**
-                   * Or an image URL — imported into Media on save (used if no upload).
-                   */
                   imageUrl?: string | null;
                   /**
                    * Optional alt override. Defaults to the media item's own alt text.
@@ -255,9 +252,6 @@ export interface Page {
              * Framed image. Falls back to the default when empty.
              */
             image?: (number | null) | Media;
-            /**
-             * External image URL — used when no upload is set.
-             */
             imageUrl?: string | null;
             id?: string | null;
             blockName?: string | null;
@@ -310,9 +304,6 @@ export interface Page {
              * Served from the media CDN. Takes priority over Image URL.
              */
             image?: (number | null) | Media;
-            /**
-             * External image URL — used when no upload is set (migration/seed). Prefer an upload for new content.
-             */
             imageUrl?: string | null;
             imageAlt?: string | null;
             tags?:
@@ -415,9 +406,6 @@ export interface Page {
                   role?: string | null;
                   credential?: string | null;
                   image?: (number | null) | Media;
-                  /**
-                   * External image URL — used when no upload is set.
-                   */
                   imageUrl?: string | null;
                   id?: string | null;
                 }[]
@@ -640,9 +628,6 @@ export interface Product {
   price?: number | null;
   description?: string | null;
   image?: (number | null) | Media;
-  /**
-   * Or an image URL — imported into Media on save.
-   */
   imageUrl?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -661,9 +646,6 @@ export interface Post {
   slug: string;
   excerpt?: string | null;
   coverImage?: (number | null) | Media;
-  /**
-   * External/asset image URL — used when no upload is set.
-   */
   coverImageUrl?: string | null;
   publishedAt?: string | null;
   author?: string | null;
@@ -695,9 +677,6 @@ export interface Post {
      * Social share image (1200×630). Falls back to cover.
      */
     image?: (number | null) | Media;
-    /**
-     * Or an image URL — imported into Media on save.
-     */
     imageUrl?: string | null;
     /**
      * When on, this post sends a noindex robots tag and is dropped from the sitemap.
@@ -752,9 +731,6 @@ export interface Staff {
   achievements?: string[] | null;
   bio?: string | null;
   photo?: (number | null) | Media;
-  /**
-   * External image URL — used when no upload is set (migration/seed).
-   */
   imageUrl?: string | null;
   email?: string | null;
   phone?: string | null;
@@ -802,9 +778,6 @@ export interface Testimonial {
   longform?: string | null;
   featured?: boolean | null;
   photo?: (number | null) | Media;
-  /**
-   * External image URL — used when no upload.
-   */
   imageUrl?: string | null;
   status?: ('active' | 'archived') | null;
   order?: number | null;
@@ -845,9 +818,6 @@ export interface Facility {
   uses?: string[] | null;
   features?: string[] | null;
   photo?: (number | null) | Media;
-  /**
-   * External image URL — used when no upload.
-   */
   imageUrl?: string | null;
   mapsUrl?: string | null;
   status?: ('active' | 'archived') | null;
@@ -868,9 +838,6 @@ export interface SiteSetting {
   tenant?: (number | null) | Tenant;
   siteName?: string | null;
   logo?: (number | null) | Media;
-  /**
-   * Or a logo URL — imported into Media on save.
-   */
   logoUrl?: string | null;
   /**
    * Menu shown in the header nav.
