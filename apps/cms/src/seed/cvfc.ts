@@ -1264,6 +1264,237 @@ const PARTNERSHIPS_LAYOUT = [
   },
 ]
 
+// /sponsor: hero + "why sponsor" iconCards + "or donate" callout. (The tier
+// grid is bespoke and stays in the screen; not a CMS block.)
+const SPONSOR_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Become a Sponsor',
+    heading: 'Stand with the club, stand with the kids.',
+    description:
+      'Local businesses and community partners help keep CVFC strong. Jersey logos, banner placement, match-day recognition, and gifts that fund player scholarships — every sponsorship goes back into the work, and the kids feel it on Tuesday practice.',
+    background: 'white',
+    actions: [],
+  },
+  {
+    blockType: 'iconCards',
+    blockName: 'why-sponsor',
+    eyebrow: 'Why Sponsor CVFC',
+    heading: 'A relationship with the South Bay.',
+    description: 'A few reasons businesses choose to support CVFC year after year.',
+    background: 'white',
+    cards: [
+      {
+        iconToken: 'custom:medal',
+        title: 'Reach South Bay Families',
+        description:
+          'Hundreds of families pass through CVFC each year — from Mini Maestros parents to MLS NEXT alumni. A genuine community of families who shop, work, and live in the South Bay.',
+      },
+      {
+        iconToken: 'custom:torch',
+        title: 'Stand With a 44-Year Club',
+        description:
+          'CVFC has been in Chula Vista since 1982. Your sponsorship sits alongside four decades of South Bay soccer — a relationship, not a transaction.',
+      },
+      {
+        iconToken: 'custom:tickets',
+        title: 'Direct Impact, Tax-Deductible',
+        description:
+          'CVFC is a 501(c)(3) nonprofit. Your sponsorship is tax-deductible to the extent allowed by law, and it funds player scholarships, fields, and coaching — the work that keeps the club going.',
+      },
+    ],
+  },
+  {
+    blockType: 'callout',
+    blockName: 'or-donate',
+    eyebrow: 'Or Donate Directly',
+    heading: 'Not every gift fits a tier.',
+    variant: 'bone',
+    body: 'Individual donors, small businesses giving below sponsorship levels, and one-time gifts are equally important. Visit the donate page to give directly.',
+  },
+]
+
+// /support: hero + "where your gift goes" iconCards + "other ways to help"
+// callout. (The one-time/monthly tier grids + donate form are bespoke.)
+const SUPPORT_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Donate to Chula Vista FC',
+    heading: 'Help us show up for the next kid.',
+    description:
+      "Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this.",
+    background: 'white',
+    actions: [],
+  },
+  {
+    blockType: 'iconCards',
+    blockName: 'where-gift-goes',
+    eyebrow: 'Where Your Gift Goes',
+    heading: 'To the kids on the field.',
+    description:
+      'CVFC is volunteer-led at the board level, so your gift moves directly into the day-to-day work — coaching the players, training on the fields, and keeping the door open.',
+    background: 'white',
+    cards: [
+      {
+        iconToken: 'custom:medal',
+        title: 'Player Scholarships',
+        description:
+          "We never want a South Bay kid to miss out because their family can't afford the season. Need-based financial assistance helps players join CVFC and stay through the pathway.",
+      },
+      {
+        iconToken: 'custom:soccer-field',
+        title: 'Fields & Equipment',
+        description:
+          'Lit evening fields, indoor sessions at the Indoor Training Center, and the gear players need. Your gift keeps the space ready and welcoming for every team.',
+      },
+      {
+        iconToken: 'custom:whistle',
+        title: 'Coaching & Development',
+        description:
+          "Coaches who care about each player and have the licenses to back it up. Your gift keeps the pathway — including our goalkeeper specialty — staffed by people who know what they're doing.",
+      },
+    ],
+  },
+  {
+    blockType: 'callout',
+    blockName: 'other-ways-help',
+    eyebrow: 'Other Ways to Help',
+    heading: 'Sponsorships and partnerships.',
+    variant: 'midnight',
+    body: 'Local businesses and community partners help keep CVFC strong — through jersey logos, tournament sponsorships, and gifts directed to specific programs (the Goalkeeper Pathway, Mini Maestros, the Girls Pathway, the Facilities Campaign). Browse the tiers or reach out and we’ll find a fit together.',
+  },
+]
+
+// /programs/coaching-opportunities: hero + "open roles" iconCards + "why coach"
+// iconCards + "apply today" callout. (Requirements list + "more from CVFC" are
+// bespoke.)
+const COACHING_OPPS_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Coaching Opportunities',
+    heading: 'Coach with us.',
+    description:
+      "Chula Vista FC is hiring across the pathway — Mini Maestros through MLS NEXT, on the boys side and the girls side, plus our goalkeeper specialty. If you love developing young players and want to be part of a hometown club with deep South Bay roots, we'd love to hear from you.",
+    background: 'white',
+    actions: [],
+  },
+  {
+    blockType: 'iconCards',
+    blockName: 'open-roles',
+    eyebrow: 'Open Roles',
+    heading: "Where we're hiring.",
+    description:
+      "Specific openings vary by season — reach out with your background and we'll match you to the right team and pathway.",
+    background: 'white',
+    cards: [
+      {
+        iconToken: 'custom:whistle',
+        title: 'Head Coach — Competitive Pathway',
+        description:
+          'Lead a team across MLS NEXT, MLS NEXT Academy, Elite Academy, EA II, DPL, NPL, or SoCal Flight. USSF C+ or UEFA equivalent preferred.',
+      },
+      {
+        iconToken: 'custom:soccer-desk',
+        title: 'Assistant Coach',
+        description:
+          'Support a head coach across training and match days. Strong technical knowledge, clear communication, and a player-first approach.',
+      },
+      {
+        iconToken: 'custom:target',
+        title: 'Goalkeeper Coach',
+        description:
+          'Run age-banded goalkeeper sessions across the CVFC pathway. Specialty GK certification or playing experience at college/pro level.',
+      },
+      {
+        iconToken: 'custom:soccer-ball',
+        title: 'Foundations Coach',
+        description:
+          'Coach Mini Maestros and CVFC Youth (ages 4–9). Build technical foundations, fall in love with the game, and set the tone for everything that comes next.',
+      },
+    ],
+  },
+  {
+    blockType: 'iconCards',
+    blockName: 'why-coach',
+    eyebrow: 'Why Coach at CVFC',
+    heading: 'The kind of club that earns long tenures.',
+    description: "Coaches who join CVFC tend to stay. Here's why.",
+    background: 'bone',
+    cards: [
+      {
+        iconToken: 'custom:torch',
+        title: '44 Years of Player Development',
+        description:
+          'CVFC has been a Chula Vista club since 1982. Recent alumni have gone on to MLS Colorado Rapids, FC Dallas, Atlas FC, Club Tijuana Xolos, and Rayados de Monterrey — and many more to college and to the rest of their lives.',
+      },
+      {
+        iconToken: 'custom:mountain-peak',
+        title: 'A Full Development Pathway',
+        description:
+          'Coach across MLS NEXT, MLS NEXT Academy, Elite Academy, EA II, DPL, NPL, GA Aspire, and SoCal Flight — a complete pathway from Mini Maestros to U19, all under one club.',
+      },
+      {
+        iconToken: 'custom:medal',
+        title: 'A Hometown Community',
+        description:
+          '501(c)(3) nonprofit. Coaches who stay across years. Bilingual program in English and Spanish. The kind of place where families know each other and players grow up together.',
+      },
+    ],
+  },
+  {
+    blockType: 'callout',
+    blockName: 'apply-today',
+    eyebrow: 'Apply Today',
+    heading: 'Send us your story.',
+    variant: 'midnight',
+    body: 'Email contact@chulavistafc.com with your coaching résumé, current certifications, languages spoken, and the age groups you’d most like to work with. We respond within a week and follow up with the relevant Director of Coaching.',
+  },
+]
+
+// /faq: hero + "still have questions" callout. (The category Q&A accordion is a
+// large editorial dataset that stays in data/faq.ts — see roadmap.)
+const FAQ_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Frequently Asked Questions',
+    heading: 'Real answers for South Bay families.',
+    description:
+      'Everything parents ask before joining a club — costs, tryouts, leagues, scholarships, comparisons, and outcomes. If we missed your question, request an evaluation and a coach will follow up within 48 hours.',
+    background: 'white',
+    actions: [],
+  },
+  {
+    blockType: 'callout',
+    blockName: 'still-questions',
+    eyebrow: 'Still Have Questions?',
+    heading: 'Talk to a coach this week.',
+    variant: 'bone',
+    body: 'Every family is different. Submit an evaluation request with your player’s pathway and birth year, and a coach will follow up within 48 hours — in English or Spanish, whichever works for your family.',
+  },
+]
+
+// /evaluations: hero + "take the first step" callout. (The registration form,
+// step cards, program tables, and tryout FAQ are functional/data-driven.)
+const EVALUATIONS_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Tryouts & Evaluations',
+    heading: 'Find your fit at Chula Vista FC.',
+    description:
+      'Whether tryouts are open or you missed the window, every player gets a path. Choose a track and birth year to be routed to the right registration. Your coach will reach out within 48 hours!',
+    background: 'white',
+    actions: [],
+  },
+  {
+    blockType: 'callout',
+    blockName: 'take-first-step',
+    eyebrow: 'Take the First Step',
+    heading: 'Ready to play for Chula Vista?',
+    variant: 'bone',
+    body: 'Choose your player’s date of birth and gender, complete the registration, and a CVFC coach will be in touch with your tryout invitation.',
+  },
+]
+
 async function seed() {
   const payload = await getPayload({ config })
 
@@ -1394,52 +1625,17 @@ async function seed() {
   await upsertPage(
     'evaluations',
     'Evaluations & Tryouts',
-    heroLayout(
-      'Tryouts & Evaluations',
-      'Find your fit at Chula Vista FC.',
-      "Open tryouts and free evaluations across every CVFC pathway — Foundations to MLS NEXT, boys and girls. Find your player's fit, and a coach will follow up within 48 hours.",
-    ),
+    EVALUATIONS_LAYOUT,
     PAGE_META.evaluations,
   )
-  await upsertPage(
-    'faq',
-    'Frequently Asked Questions',
-    heroLayout(
-      'Frequently Asked Questions',
-      'Real answers for South Bay families.',
-      'Everything parents ask before joining a club — costs, tryouts, leagues, scholarships, comparisons, and outcomes. If we missed your question, request an evaluation and a coach will follow up within 48 hours.',
-    ),
-    PAGE_META.faq,
-  )
+  await upsertPage('faq', 'Frequently Asked Questions', FAQ_LAYOUT, PAGE_META.faq)
   await upsertPage('partnerships', 'Partnerships', PARTNERSHIPS_LAYOUT, PAGE_META.partnerships)
-  await upsertPage(
-    'sponsor',
-    'Become a Sponsor',
-    heroLayout(
-      'Become a Sponsor',
-      'Stand with the club, stand with the kids.',
-      'Local businesses and community partners help keep CVFC strong. Jersey logos, banner placement, match-day recognition, and gifts that fund player scholarships — every sponsorship goes back into the work, and the kids feel it on Tuesday practice.',
-    ),
-    PAGE_META.sponsor,
-  )
-  await upsertPage(
-    'support',
-    'Donate to Chula Vista FC',
-    heroLayout(
-      'Donate to Chula Vista FC',
-      'Help us show up for the next kid.',
-      "Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this.",
-    ),
-    PAGE_META.support,
-  )
+  await upsertPage('sponsor', 'Become a Sponsor', SPONSOR_LAYOUT, PAGE_META.sponsor)
+  await upsertPage('support', 'Donate to Chula Vista FC', SUPPORT_LAYOUT, PAGE_META.support)
   await upsertPage(
     'programs/coaching-opportunities',
     'Coaching Opportunities',
-    heroLayout(
-      'Coaching Opportunities',
-      'Coach with us.',
-      "Chula Vista FC is hiring across the pathway — Mini Maestros through MLS NEXT, on the boys side and the girls side, plus our goalkeeper specialty. If you love developing young players and want to be part of a hometown club with deep South Bay roots, we'd love to hear from you.",
-    ),
+    COACHING_OPPS_LAYOUT,
     PAGE_META['programs/coaching-opportunities'],
   )
   await upsertPage(

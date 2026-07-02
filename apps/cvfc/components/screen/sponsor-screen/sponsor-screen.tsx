@@ -9,7 +9,12 @@ import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { getPage } from "@/lib/cms";
-import { pageHeroFromPage } from "@/lib/cms-blocks";
+import { blockFor, cmsOverlay } from "@/lib/media";
+import {
+  pageHeroFromPage,
+  iconCardsFromBlock,
+  calloutFromBlock,
+} from "@/lib/cms-blocks";
 import { breadcrumbSchema } from "@/lib/schema";
 
 import "./sponsor-screen.css";
@@ -98,7 +103,10 @@ const REASONS: IconCardEntry[] = [
 ];
 
 export async function SponsorScreen() {
-  const hero = pageHeroFromPage(await getPage("sponsor"));
+  const page = await getPage("sponsor");
+  const hero = pageHeroFromPage(page);
+  const reasonsBlock = blockFor(page, "why-sponsor", "iconCards");
+  const donateBlock = blockFor(page, "or-donate", "callout");
   return (
     <>
       <JsonLd
@@ -132,12 +140,18 @@ export async function SponsorScreen() {
         />
 
         <IconCards
-          eyebrow="Why Sponsor CVFC"
-          heading="A relationship with the South Bay."
-          description="A few reasons businesses choose to support CVFC year after year."
-          cards={REASONS}
-          cols={3}
-          background="white"
+          {...cmsOverlay(
+            {
+              eyebrow: "Why Sponsor CVFC",
+              heading: "A relationship with the South Bay.",
+              description:
+                "A few reasons businesses choose to support CVFC year after year.",
+              cards: REASONS,
+              cols: 3 as const,
+              background: "white" as const,
+            },
+            reasonsBlock ? iconCardsFromBlock(reasonsBlock) : undefined,
+          )}
         />
 
         <Section bg="bone" size="default">
@@ -195,16 +209,21 @@ export async function SponsorScreen() {
         </Section>
 
         <Callout
-          eyebrow="Or Donate Directly"
-          heading="Not every gift fits a tier."
-          variant="bone"
-          body={
-            <>
-              Individual donors, small businesses giving below sponsorship
-              levels, and one-time gifts are equally important. Visit the donate
-              page to give directly.
-            </>
-          }
+          {...cmsOverlay(
+            {
+              eyebrow: "Or Donate Directly",
+              heading: "Not every gift fits a tier.",
+              variant: "bone" as const,
+              body: (
+                <>
+                  Individual donors, small businesses giving below sponsorship
+                  levels, and one-time gifts are equally important. Visit the
+                  donate page to give directly.
+                </>
+              ),
+            },
+            donateBlock ? calloutFromBlock(donateBlock) : undefined,
+          )}
           ctaSlot={
             <Button variant="default" render={<Link href="/support" />}>
               <span>Donate to CVFC</span>

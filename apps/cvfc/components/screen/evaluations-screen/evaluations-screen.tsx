@@ -6,7 +6,8 @@ import { PageHero } from "@/components/feature/page-hero";
 import { RegistrationForm } from "@/components/feature/registration-form";
 import { FAQ_ENTRIES } from "@/data/faq";
 import { getPage } from "@/lib/cms";
-import { pageHeroFromPage } from "@/lib/cms-blocks";
+import { blockFor, cmsOverlay } from "@/lib/media";
+import { pageHeroFromPage, calloutFromBlock } from "@/lib/cms-blocks";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
@@ -89,7 +90,9 @@ function ageRows(gender: string) {
 }
 
 export async function EvaluationsScreen({ className }: EvaluationsScreenProps) {
-  const hero = pageHeroFromPage(await getPage("evaluations"));
+  const page = await getPage("evaluations");
+  const hero = pageHeroFromPage(page);
+  const ctaBlock = blockFor(page, "take-first-step", "callout");
   const programsByTrack = TRACKS.map((t) => ({
     ...t,
     rows: ageRows(GENDER_LABEL[t.id]),
@@ -329,16 +332,21 @@ export async function EvaluationsScreen({ className }: EvaluationsScreenProps) {
         />
 
         <Callout
-          eyebrow="Take the First Step"
-          heading="Ready to play for Chula Vista?"
-          variant="bone"
-          body={
-            <>
-              Choose your player&rsquo;s date of birth and gender, complete the
-              registration, and a CVFC coach will be in touch with your tryout
-              invitation.
-            </>
-          }
+          {...cmsOverlay(
+            {
+              eyebrow: "Take the First Step",
+              heading: "Ready to play for Chula Vista?",
+              variant: "bone" as const,
+              body: (
+                <>
+                  Choose your player&rsquo;s date of birth and gender, complete
+                  the registration, and a CVFC coach will be in touch with your
+                  tryout invitation.
+                </>
+              ),
+            },
+            ctaBlock ? calloutFromBlock(ctaBlock) : undefined,
+          )}
           ctaSlot={
             <EvaluationCTA label="Request an Evaluation" variant="default" />
           }

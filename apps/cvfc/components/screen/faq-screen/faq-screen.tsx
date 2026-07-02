@@ -12,7 +12,8 @@ import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { FAQ_ENTRIES, type FaqCategory, type FaqEntry } from "@/data/faq";
 import { getPage } from "@/lib/cms";
-import { pageHeroFromPage } from "@/lib/cms-blocks";
+import { blockFor, cmsOverlay } from "@/lib/media";
+import { pageHeroFromPage, calloutFromBlock } from "@/lib/cms-blocks";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 
 import "./faq-screen.css";
@@ -58,7 +59,9 @@ function categoryHeadline(category: FaqCategory): string {
 }
 
 export async function FaqScreen() {
-  const hero = pageHeroFromPage(await getPage("faq"));
+  const page = await getPage("faq");
+  const hero = pageHeroFromPage(page);
+  const stillBlock = blockFor(page, "still-questions", "callout");
   const groups = groupByCategory(FAQ_ENTRIES);
 
   return (
@@ -120,17 +123,22 @@ export async function FaqScreen() {
         })}
 
         <Callout
-          eyebrow="Still Have Questions?"
-          heading="Talk to a coach this week."
-          variant="bone"
-          body={
-            <>
-              Every family is different. Submit an evaluation request with your
-              player&rsquo;s pathway and birth year, and a coach will follow up
-              within 48 hours — in English or Spanish, whichever works for your
-              family.
-            </>
-          }
+          {...cmsOverlay(
+            {
+              eyebrow: "Still Have Questions?",
+              heading: "Talk to a coach this week.",
+              variant: "bone" as const,
+              body: (
+                <>
+                  Every family is different. Submit an evaluation request with
+                  your player&rsquo;s pathway and birth year, and a coach will
+                  follow up within 48 hours — in English or Spanish, whichever
+                  works for your family.
+                </>
+              ),
+            },
+            stillBlock ? calloutFromBlock(stillBlock) : undefined,
+          )}
           ctaSlot={
             <EvaluationCTA label="Request an Evaluation" variant="default" />
           }

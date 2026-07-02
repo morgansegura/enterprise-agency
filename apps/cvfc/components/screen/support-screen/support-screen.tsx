@@ -9,7 +9,12 @@ import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { getPage } from "@/lib/cms";
-import { pageHeroFromPage } from "@/lib/cms-blocks";
+import { blockFor, cmsOverlay } from "@/lib/media";
+import {
+  pageHeroFromPage,
+  iconCardsFromBlock,
+  calloutFromBlock,
+} from "@/lib/cms-blocks";
 import { breadcrumbSchema } from "@/lib/schema";
 
 import "./support-screen.css";
@@ -102,7 +107,10 @@ const IMPACT_CARDS: IconCardEntry[] = [
 ];
 
 export async function SupportScreen() {
-  const hero = pageHeroFromPage(await getPage("support"));
+  const page = await getPage("support");
+  const hero = pageHeroFromPage(page);
+  const impactBlock = blockFor(page, "where-gift-goes", "iconCards");
+  const otherBlock = blockFor(page, "other-ways-help", "callout");
   return (
     <>
       <JsonLd
@@ -130,11 +138,17 @@ export async function SupportScreen() {
         />
 
         <IconCards
-          eyebrow="Where Your Gift Goes"
-          heading="To the kids on the field."
-          description="CVFC is volunteer-led at the board level, so your gift moves directly into the day-to-day work — coaching the players, training on the fields, and keeping the door open."
-          cards={IMPACT_CARDS}
-          background="white"
+          {...cmsOverlay(
+            {
+              eyebrow: "Where Your Gift Goes",
+              heading: "To the kids on the field.",
+              description:
+                "CVFC is volunteer-led at the board level, so your gift moves directly into the day-to-day work — coaching the players, training on the fields, and keeping the door open.",
+              cards: IMPACT_CARDS,
+              background: "white" as const,
+            },
+            impactBlock ? iconCardsFromBlock(impactBlock) : undefined,
+          )}
         />
 
         <Section bg="bone" size="default" id="donate">
@@ -243,27 +257,32 @@ export async function SupportScreen() {
 
         <Callout
           id="partnerships"
-          eyebrow="Other Ways to Help"
-          heading="Sponsorships and partnerships."
-          variant="midnight"
-          body={
-            <>
-              Local businesses and community{" "}
-              <Link href="/partnerships" className="underline">
-                partners
-              </Link>{" "}
-              help keep CVFC strong — through jersey logos, tournament
-              sponsorships, and gifts directed to specific programs (the
-              Goalkeeper Pathway, Mini Maestros, the Girls Pathway, the
-              Facilities Campaign). Browse the tiers or reach out and
-              we&rsquo;ll find a fit together.
-            </>
-          }
           cta={{
             label: "View sponsorship tiers",
             href: "/sponsor",
             variant: "default",
           }}
+          {...cmsOverlay(
+            {
+              eyebrow: "Other Ways to Help",
+              heading: "Sponsorships and partnerships.",
+              variant: "midnight" as const,
+              body: (
+                <>
+                  Local businesses and community{" "}
+                  <Link href="/partnerships" className="underline">
+                    partners
+                  </Link>{" "}
+                  help keep CVFC strong — through jersey logos, tournament
+                  sponsorships, and gifts directed to specific programs (the
+                  Goalkeeper Pathway, Mini Maestros, the Girls Pathway, the
+                  Facilities Campaign). Browse the tiers or reach out and
+                  we&rsquo;ll find a fit together.
+                </>
+              ),
+            },
+            otherBlock ? calloutFromBlock(otherBlock) : undefined,
+          )}
         />
       </main>
     </>

@@ -9,7 +9,12 @@ import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { getPage } from "@/lib/cms";
-import { pageHeroFromPage } from "@/lib/cms-blocks";
+import { blockFor, cmsOverlay } from "@/lib/media";
+import {
+  pageHeroFromPage,
+  iconCardsFromBlock,
+  calloutFromBlock,
+} from "@/lib/cms-blocks";
 import { breadcrumbSchema } from "@/lib/schema";
 
 const ROLE_CARDS: IconCardEntry[] = [
@@ -68,9 +73,11 @@ const WHY_CARDS: IconCardEntry[] = [
 ];
 
 export async function CoachingOpportunitiesScreen() {
-  const hero = pageHeroFromPage(
-    await getPage("programs/coaching-opportunities"),
-  );
+  const page = await getPage("programs/coaching-opportunities");
+  const hero = pageHeroFromPage(page);
+  const rolesBlock = blockFor(page, "open-roles", "iconCards");
+  const whyBlock = blockFor(page, "why-coach", "iconCards");
+  const applyBlock = blockFor(page, "apply-today", "callout");
   return (
     <>
       <JsonLd
@@ -107,20 +114,31 @@ export async function CoachingOpportunitiesScreen() {
         />
 
         <IconCards
-          eyebrow="Open Roles"
-          heading="Where we're hiring."
-          description="Specific openings vary by season — reach out with your background and we'll match you to the right team and pathway."
-          cards={ROLE_CARDS}
-          background="white"
+          {...cmsOverlay(
+            {
+              eyebrow: "Open Roles",
+              heading: "Where we're hiring.",
+              description:
+                "Specific openings vary by season — reach out with your background and we'll match you to the right team and pathway.",
+              cards: ROLE_CARDS,
+              background: "white" as const,
+            },
+            rolesBlock ? iconCardsFromBlock(rolesBlock) : undefined,
+          )}
         />
 
         <IconCards
-          eyebrow="Why Coach at CVFC"
-          heading="The kind of club that earns long tenures."
-          description="Coaches who join CVFC tend to stay. Here's why."
-          cards={WHY_CARDS}
-          cols={3}
-          background="bone"
+          {...cmsOverlay(
+            {
+              eyebrow: "Why Coach at CVFC",
+              heading: "The kind of club that earns long tenures.",
+              description: "Coaches who join CVFC tend to stay. Here's why.",
+              cards: WHY_CARDS,
+              cols: 3 as const,
+              background: "bone" as const,
+            },
+            whyBlock ? iconCardsFromBlock(whyBlock) : undefined,
+          )}
         />
 
         <Section bg="white" size="default">
@@ -160,17 +178,23 @@ export async function CoachingOpportunitiesScreen() {
         </Section>
 
         <Callout
-          eyebrow="Apply Today"
-          heading="Send us your story."
-          variant="midnight"
-          body={
-            <>
-              Email <strong>contact@chulavistafc.com</strong> with your coaching
-              résumé, current certifications, languages spoken, and the age
-              groups you&rsquo;d most like to work with. We respond within a
-              week and follow up with the relevant Director of Coaching.
-            </>
-          }
+          {...cmsOverlay(
+            {
+              eyebrow: "Apply Today",
+              heading: "Send us your story.",
+              variant: "midnight" as const,
+              body: (
+                <>
+                  Email <strong>contact@chulavistafc.com</strong> with your
+                  coaching résumé, current certifications, languages spoken, and
+                  the age groups you&rsquo;d most like to work with. We respond
+                  within a week and follow up with the relevant Director of
+                  Coaching.
+                </>
+              ),
+            },
+            applyBlock ? calloutFromBlock(applyBlock) : undefined,
+          )}
           ctaSlot={
             <Button
               variant="outline"
