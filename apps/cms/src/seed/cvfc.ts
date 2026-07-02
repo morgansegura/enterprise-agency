@@ -1451,8 +1451,16 @@ const COACHING_OPPS_LAYOUT = [
   },
 ]
 
-// /faq: hero + "still have questions" callout. (The category Q&A accordion is a
-// large editorial dataset that stays in data/faq.ts — see roadmap.)
+// Map the static FAQ dataset → faqSection block entries (question/answer/category).
+const faqBlockEntries = (filter?: (e: (typeof FAQ_ENTRIES)[number]) => boolean) =>
+  FAQ_ENTRIES.filter(filter ?? (() => true)).map((e) => ({
+    category: e.category,
+    question: e.question,
+    answer: e.answer,
+  }))
+
+// /faq: hero + full FAQ (faqSection block, all Q&As, editable) + "still have
+// questions" callout.
 const FAQ_LAYOUT = [
   {
     blockType: 'pageHero',
@@ -1464,6 +1472,12 @@ const FAQ_LAYOUT = [
     actions: [],
   },
   {
+    blockType: 'faqSection',
+    blockName: 'faqs',
+    heading: 'Frequently Asked Questions',
+    entries: faqBlockEntries(),
+  },
+  {
     blockType: 'callout',
     blockName: 'still-questions',
     eyebrow: 'Still Have Questions?',
@@ -1473,8 +1487,8 @@ const FAQ_LAYOUT = [
   },
 ]
 
-// /evaluations: hero + "take the first step" callout. (The registration form,
-// step cards, program tables, and tryout FAQ are functional/data-driven.)
+// /evaluations: hero + tryout FAQ (faqSection block, editable) + "take the first
+// step" callout. (Registration form, step cards, program tables are functional.)
 const EVALUATIONS_LAYOUT = [
   {
     blockType: 'pageHero',
@@ -1484,6 +1498,15 @@ const EVALUATIONS_LAYOUT = [
       'Whether tryouts are open or you missed the window, every player gets a path. Choose a track and birth year to be routed to the right registration. Your coach will reach out within 48 hours!',
     background: 'white',
     actions: [],
+  },
+  {
+    blockType: 'faqSection',
+    blockName: 'tryout-faqs',
+    heading: 'Tryout & Evaluation Questions.',
+    description: 'The most common questions parents ask before signing their player up — answered.',
+    entries: faqBlockEntries((e) => e.category === 'Tryouts & Evaluations'),
+    ctaLabel: 'See all FAQs',
+    ctaHref: '/faq',
   },
   {
     blockType: 'callout',

@@ -13,7 +13,11 @@ import { JsonLd } from "@/components/seo";
 import { FAQ_ENTRIES, type FaqCategory, type FaqEntry } from "@/data/faq";
 import { getPage } from "@/lib/cms";
 import { blockFor, cmsOverlay } from "@/lib/media";
-import { pageHeroFromPage, calloutFromBlock } from "@/lib/cms-blocks";
+import {
+  pageHeroFromPage,
+  calloutFromBlock,
+  faqFromBlock,
+} from "@/lib/cms-blocks";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 
 import "./faq-screen.css";
@@ -62,14 +66,18 @@ export async function FaqScreen() {
   const page = await getPage("faq");
   const hero = pageHeroFromPage(page);
   const stillBlock = blockFor(page, "still-questions", "callout");
-  const groups = groupByCategory(FAQ_ENTRIES);
+  // FAQ Q&As come from the CMS faqSection block (editable), mock as fallback.
+  const faqsBlock = blockFor(page, "faqs", "faqSection");
+  const entries =
+    (faqsBlock ? faqFromBlock(faqsBlock).entries : undefined) ?? FAQ_ENTRIES;
+  const groups = groupByCategory(entries);
 
   return (
     <>
       <JsonLd
         data={[
           faqPageSchema(
-            FAQ_ENTRIES.map((e) => ({
+            entries.map((e) => ({
               question: e.question,
               answer: e.answer,
             })),

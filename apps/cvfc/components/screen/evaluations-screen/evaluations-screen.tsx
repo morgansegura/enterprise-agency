@@ -7,7 +7,11 @@ import { RegistrationForm } from "@/components/feature/registration-form";
 import { FAQ_ENTRIES } from "@/data/faq";
 import { getPage } from "@/lib/cms";
 import { blockFor, cmsOverlay } from "@/lib/media";
-import { pageHeroFromPage, calloutFromBlock } from "@/lib/cms-blocks";
+import {
+  pageHeroFromPage,
+  calloutFromBlock,
+  faqFromBlock,
+} from "@/lib/cms-blocks";
 import { breadcrumbSchema, faqPageSchema } from "@/lib/schema";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
@@ -93,6 +97,7 @@ export async function EvaluationsScreen({ className }: EvaluationsScreenProps) {
   const page = await getPage("evaluations");
   const hero = pageHeroFromPage(page);
   const ctaBlock = blockFor(page, "take-first-step", "callout");
+  const tryoutFaqBlock = blockFor(page, "tryout-faqs", "faqSection");
   const programsByTrack = TRACKS.map((t) => ({
     ...t,
     rows: ageRows(GENDER_LABEL[t.id]),
@@ -325,10 +330,16 @@ export async function EvaluationsScreen({ className }: EvaluationsScreenProps) {
         </section>
 
         <FaqSection
-          heading="Tryout & Evaluation Questions."
-          description="The most common questions parents ask before signing their player up — answered."
-          entries={tryoutFaqs.length ? tryoutFaqs : undefined}
-          ctaLabel="See all FAQs"
+          {...cmsOverlay(
+            {
+              heading: "Tryout & Evaluation Questions.",
+              description:
+                "The most common questions parents ask before signing their player up — answered.",
+              entries: tryoutFaqs.length ? tryoutFaqs : undefined,
+              ctaLabel: "See all FAQs",
+            },
+            tryoutFaqBlock ? faqFromBlock(tryoutFaqBlock) : undefined,
+          )}
         />
 
         <Callout
