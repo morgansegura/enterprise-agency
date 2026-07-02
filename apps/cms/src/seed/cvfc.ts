@@ -1518,6 +1518,27 @@ const EVALUATIONS_LAYOUT = [
   },
 ]
 
+// /about/administrators: hero (contact CTA) + "Meet the Directors" heading. The
+// directors grid renders from the Staff collection.
+const ADMINISTRATORS_LAYOUT = [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Want to talk to the club?',
+    heading: 'Reach the front office.',
+    description:
+      'For general questions about programs, registration, or the club, email contact@chulavistafc.com or call +1 (619) 764-6505.',
+    background: 'white',
+    actions: [],
+  },
+  {
+    blockType: 'headingSection',
+    blockName: 'leadership',
+    eyebrow: 'Leadership',
+    heading: 'Meet the Directors.',
+    body: 'Four Directors lead Chula Vista FC across academy, technical, operations, and coaching.',
+  },
+]
+
 // Header + footer nav → Menus collection (mirrors FE HEADER_NAV / FOOTER_NAV).
 // Top-level items with `children` = header dropdowns; `heading` = footer columns.
 const HEADER_MENU_ITEMS = [
@@ -1749,11 +1770,7 @@ async function seed() {
   await upsertPage(
     'about/administrators',
     'Administrators',
-    heroLayout(
-      'Leadership',
-      'Meet the Directors.',
-      'The directors and staff running Chula Vista FC day-to-day — registration, operations, and the work that keeps the South Bay pathway moving.',
-    ),
+    ADMINISTRATORS_LAYOUT,
     PAGE_META['about/administrators'],
   )
   await upsertPage(

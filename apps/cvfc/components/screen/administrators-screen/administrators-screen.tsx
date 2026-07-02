@@ -7,13 +7,21 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { AdminDirectory } from "@/components/feature/admin-directory";
 import { Heading } from "@/components/feature/heading";
 import { ADMINISTRATORS, getActiveAdministrators } from "@/data/administrators";
-import { getStaff } from "@/lib/cms";
+import { getPage, getStaff } from "@/lib/cms";
+import { blockFor } from "@/lib/media";
+import { pageHeroFromPage, headingSectionFromBlock } from "@/lib/cms-blocks";
 import { staffToAdmin } from "@/lib/cms-staff";
 import { siteConfig } from "@/lib/site-config";
 
 export async function AdministratorsScreen() {
   // Use the CMS Staff collection once it serves the rich fields (title present);
   // otherwise fall back to the static roster.
+  const page = await getPage("about/administrators");
+  const hero = pageHeroFromPage(page);
+  const leadershipBlock = blockFor(page, "leadership", "headingSection");
+  const leadership = leadershipBlock
+    ? headingSectionFromBlock(leadershipBlock)
+    : undefined;
   const cms = (await getStaff("Administrators"))
     .map(staffToAdmin)
     .filter((a) => a.title);
@@ -44,28 +52,32 @@ export async function AdministratorsScreen() {
       <main>
         <Section bg="white" size="hero">
           <Heading
-            eyebrow="Want to talk to the club?"
-            heading="Reach the front office."
+            eyebrow={hero?.eyebrow || "Want to talk to the club?"}
+            heading={hero?.heading || "Reach the front office."}
             headingSize="section"
             description={
-              <p>
-                For general questions about programs, registration, or the club,
-                email{" "}
-                <a
-                  href={`mailto:${siteConfig.contact.email}`}
-                  className="font-bold text-(--color-gold) underline-offset-4 hover:underline"
-                >
-                  {siteConfig.contact.email}
-                </a>{" "}
-                or call{" "}
-                <a
-                  href={`tel:${siteConfig.contact.phone}`}
-                  className="font-bold text-(--color-gold) underline-offset-4 hover:underline"
-                >
-                  {siteConfig.contact.phone}
-                </a>
-                .
-              </p>
+              hero?.description ? (
+                <p>{hero.description}</p>
+              ) : (
+                <p>
+                  For general questions about programs, registration, or the
+                  club, email{" "}
+                  <a
+                    href={`mailto:${siteConfig.contact.email}`}
+                    className="font-bold text-(--color-gold) underline-offset-4 hover:underline"
+                  >
+                    {siteConfig.contact.email}
+                  </a>{" "}
+                  or call{" "}
+                  <a
+                    href={`tel:${siteConfig.contact.phone}`}
+                    className="font-bold text-(--color-gold) underline-offset-4 hover:underline"
+                  >
+                    {siteConfig.contact.phone}
+                  </a>
+                  .
+                </p>
+              )
             }
           />
           <div className="mt-8 flex justify-center">
@@ -81,14 +93,18 @@ export async function AdministratorsScreen() {
 
         <Section bg="bone" size="intro">
           <Heading
-            eyebrow="Leadership"
-            heading="Meet the Directors."
+            eyebrow={leadership?.eyebrow || "Leadership"}
+            heading={leadership?.heading || "Meet the Directors."}
             headingSize="section"
             description={
-              <p>
-                Four Directors lead Chula Vista FC across academy, technical,
-                operations, and coaching.
-              </p>
+              leadership?.paragraphs?.length ? (
+                leadership.paragraphs.map((p, i) => <p key={i}>{p}</p>)
+              ) : (
+                <p>
+                  Four Directors lead Chula Vista FC across academy, technical,
+                  operations, and coaching.
+                </p>
+              )
             }
           />
         </Section>
