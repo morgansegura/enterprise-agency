@@ -1518,6 +1518,81 @@ const EVALUATIONS_LAYOUT = [
   },
 ]
 
+// Header + footer nav → Menus collection (mirrors FE HEADER_NAV / FOOTER_NAV).
+// Top-level items with `children` = header dropdowns; `heading` = footer columns.
+const HEADER_MENU_ITEMS = [
+  {
+    label: 'About',
+    href: '#',
+    children: [
+      { label: 'Who we are', href: '/about/who-we-are' },
+      { label: 'Coaching Staff', href: '/about/coaching-staff' },
+      { label: 'Administrators', href: '/about/administrators' },
+      { label: 'Facilities', href: '/about/facilities' },
+      { label: 'Testimonials', href: '/about/testimonials' },
+    ],
+  },
+  {
+    label: 'Programs',
+    href: '/programs',
+    children: [
+      { label: 'Programs', href: '/programs' },
+      { label: 'Foundations', href: '/programs/foundations' },
+      { label: 'Boys Competitive Pathway', href: '/programs/boys-competitive-pathway' },
+      { label: 'Girls Competitive Pathway', href: '/programs/girls-competitive-pathway' },
+      { label: 'Goalkeeper Pathway', href: '/programs/goalkeeper-pathway' },
+    ],
+  },
+  { label: 'News', href: '/news' },
+  {
+    label: 'Support',
+    href: '#',
+    children: [
+      { label: 'Donate', href: '/support#make-a-donation' },
+      { label: 'Become a Sponsor', href: '/support#become-a-sponsor' },
+      { label: 'Partnerships', href: '/support#partnerships' },
+    ],
+  },
+]
+
+const FOOTER_MENU_ITEMS = [
+  {
+    heading: 'Website',
+    children: [
+      { label: 'Who we are', href: '/about/who-we-are' },
+      { label: 'Programs', href: '/programs' },
+      { label: 'Tryouts/Evaluations', href: '/evaluations' },
+      { label: 'Coaching Opportunities', href: '/programs/coaching-opportunities' },
+      { label: 'Donate', href: '/support#make-a-donation' },
+    ],
+  },
+  {
+    heading: 'Contact Info',
+    children: [
+      {
+        label: '925 Hake Pl, #A3 Chula Vista, CA 91914',
+        href: 'https://www.google.com/maps/place/925+Hale+Pl,+Chula+Vista,+CA+91914',
+        target: '_blank',
+      },
+      { label: '+1 (619) 764-6505', href: 'tel:+16197646505', target: '_blank' },
+      {
+        label: 'contact@chulavistafc.com',
+        href: 'mailto:contact@chulavistafc.com',
+        target: '_blank',
+      },
+    ],
+  },
+  {
+    heading: 'Legal',
+    children: [
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms of Service', href: '/terms-of-service' },
+      { label: 'Cookie Policy', href: '/cookie-policy' },
+      { label: 'Link Policy', href: '/link-policy' },
+    ],
+  },
+]
+
 async function seed() {
   const payload = await getPayload({ config })
 
@@ -1913,9 +1988,72 @@ async function seed() {
     })
   }
 
+  // --- header/footer menus → Menus collection + linked on SiteSettings ---
+  // Find-or-create (never clobber a client's edited menu); SiteSettings links
+  // them only if unset. FE falls back to HEADER_NAV/FOOTER_NAV when unlinked.
+  const upsertMenu = async (name: string, items: unknown[]) => {
+    const found = await payload.find({
+      collection: 'menus',
+      where: {
+        and: [{ name: { equals: name } }, { tenant: { equals: tenant.id } }],
+      },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+    if (found.docs[0]) return found.docs[0].id
+    const doc = await payload.create({
+      collection: 'menus',
+      data: { name, items, tenant: tenant.id } as never,
+      depth: 0,
+      overrideAccess: true,
+    })
+    return doc.id
+  }
+  const headerMenuId = await upsertMenu('Header', HEADER_MENU_ITEMS)
+  const footerMenuId = await upsertMenu('Footer', FOOTER_MENU_ITEMS)
+
+  const ss = await payload.find({
+    collection: 'siteSettings',
+    where: { tenant: { equals: tenant.id } },
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  })
+  const ssDoc = ss.docs[0] as
+    | { id: number | string; headerMenu?: unknown; footerMenu?: unknown }
+    | undefined
+  if (ssDoc) {
+    const patch: Record<string, unknown> = {}
+    if (!ssDoc.headerMenu) patch.headerMenu = headerMenuId
+    if (!ssDoc.footerMenu) patch.footerMenu = footerMenuId
+    if (Object.keys(patch).length) {
+      await payload.update({
+        collection: 'siteSettings',
+        id: ssDoc.id,
+        data: patch as never,
+        depth: 0,
+        overrideAccess: true,
+      })
+    }
+  } else {
+    await payload.create({
+      collection: 'siteSettings',
+      data: {
+        siteName: 'Chula Vista FC',
+        headerMenu: headerMenuId,
+        footerMenu: footerMenuId,
+        tenant: tenant.id,
+      } as never,
+      depth: 0,
+      overrideAccess: true,
+    })
+  }
+
   console.log(
     `✓ Seeded cvfc home — full landing (${homeLayout.length} blocks${hero ? ', hero preserved' : ''}).`,
   )
+  console.log('✓ Seeded header + footer menus (linked on SiteSettings).')
   console.log(
     '✓ Seeded cvfc pages: /programs, /about, /about/who-we-are, /programs/{foundations,goalkeeper-pathway,boys-competitive-pathway,girls-competitive-pathway} (with SEO meta).',
   )
