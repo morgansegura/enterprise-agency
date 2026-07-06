@@ -1,5 +1,6 @@
 import * as migration_20260627_195924_initial_schema from './20260627_195924_initial_schema'
 import * as migration_20260628_163059_posts_autosave from './20260628_163059_posts_autosave'
+import * as migration_20260702_194345_legal_section from './20260702_194345_legal_section'
 
 export const migrations = [
   {
@@ -11,5 +12,10 @@ export const migrations = [
     up: migration_20260628_163059_posts_autosave.up,
     down: migration_20260628_163059_posts_autosave.down,
     name: '20260628_163059_posts_autosave',
+  },
+  {
+    up: migration_20260702_194345_legal_section.up,
+    down: migration_20260702_194345_legal_section.down,
+    name: '20260702_194345_legal_section',
   },
 ]

@@ -13,6 +13,7 @@ import { StatBandBlock } from '../blocks/StatBand'
 import { PortraitGridBlock } from '../blocks/PortraitGrid'
 import { Content } from '../blocks/Content'
 import { RichTextBlock } from '../blocks/RichText'
+import { LegalSectionBlock } from '../blocks/LegalSection'
 import { CallToAction } from '../blocks/CallToAction'
 import { Features } from '../blocks/Features'
 import { ImageBlock } from '../blocks/Image'
@@ -129,6 +130,7 @@ export const Pages: CollectionConfig = {
         PortraitGridBlock,
         Content,
         RichTextBlock,
+        LegalSectionBlock,
         CallToAction,
         Features,
         ImageBlock,

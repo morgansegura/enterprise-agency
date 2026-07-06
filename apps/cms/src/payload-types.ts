@@ -451,6 +451,27 @@ export interface Page {
           }
         | {
             heading: string;
+            content?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'legalSection';
+          }
+        | {
+            heading: string;
             body?: string | null;
             buttonLabel?: string | null;
             buttonHref?: string | null;
@@ -1651,6 +1672,14 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               content?: T;
               align?: T;
+              id?: T;
+              blockName?: T;
+            };
+        legalSection?:
+          | T
+          | {
+              heading?: T;
+              content?: T;
               id?: T;
               blockName?: T;
             };

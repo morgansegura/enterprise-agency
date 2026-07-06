@@ -22,6 +22,7 @@ import { ADMINISTRATORS, getActiveAdministrators } from '../../../cvfc/data/admi
 import { NEWS_POSTS, getActiveNews } from '../../../cvfc/data/news'
 import { FACILITIES } from '../../../cvfc/data/facilities'
 import { htmlToLexical } from './html-to-lexical'
+import legalContent from './legal-content.json'
 
 const WELCOME_BODY =
   "Since 1982, Chula Vista FC has been dedicated and driven by a passion for developing players as athletes and as people. We're committed to providing the highest level of training, mentorship, and opportunity so every player can reach their full potential in the game and in life. Our passion lies in helping athletes grow, fostering a love for playing beautiful football, and creating opportunities for every player to reach their highest potential."
@@ -1539,6 +1540,24 @@ const ADMINISTRATORS_LAYOUT = [
   },
 ]
 
+// Legal page layout: hero + one legalSection (rich text) per section, converted
+// from the rendered legal HTML (scripts/export-legal-html.ts → legal-content.json).
+const legalLayout = (slug: keyof typeof legalContent, title: string) => [
+  {
+    blockType: 'pageHero',
+    eyebrow: 'Legal',
+    heading: title,
+    background: 'white',
+    actions: [],
+  },
+  ...legalContent[slug].map((s) => ({
+    blockType: 'legalSection',
+    blockName: s.id,
+    heading: s.heading,
+    content: htmlToLexical(s.html),
+  })),
+]
+
 // Header + footer nav → Menus collection (mirrors FE HEADER_NAV / FOOTER_NAV).
 // Top-level items with `children` = header dropdowns; `heading` = footer columns.
 const HEADER_MENU_ITEMS = [
@@ -1796,41 +1815,25 @@ async function seed() {
   await upsertPage(
     'privacy-policy',
     'Privacy Policy',
-    heroLayout(
-      'Legal',
-      'Privacy Policy',
-      'How Chula Vista FC collects, uses, and protects your information.',
-    ),
+    legalLayout('privacy-policy', 'Privacy Policy'),
     PAGE_META['privacy-policy'],
   )
   await upsertPage(
     'terms-of-service',
     'Terms of Service',
-    heroLayout(
-      'Legal',
-      'Terms of Service',
-      'The terms governing your use of the Chula Vista FC website.',
-    ),
+    legalLayout('terms-of-service', 'Terms of Service'),
     PAGE_META['terms-of-service'],
   )
   await upsertPage(
     'cookie-policy',
     'Cookie Policy',
-    heroLayout(
-      'Legal',
-      'Cookie Policy',
-      'How Chula Vista FC uses cookies and similar technologies on this site.',
-    ),
+    legalLayout('cookie-policy', 'Cookie Policy'),
     PAGE_META['cookie-policy'],
   )
   await upsertPage(
     'link-policy',
     'Link Policy',
-    heroLayout(
-      'Legal',
-      'Link Policy',
-      "Chula Vista FC's policy on linking to and from this website.",
-    ),
+    legalLayout('link-policy', 'Link Policy'),
     PAGE_META['link-policy'],
   )
 
