@@ -1,0 +1,20 @@
+@reference "tailwindcss";
+
+.text {
+  @apply leading-relaxed;
+}
+.text-size-sm {
+  @apply text-sm;
+}
+.text-size-base {
+  @apply text-base;
+}
+.text-size-lg {
+  @apply text-lg;
+}
+.text-tone-default {
+  @apply text-(--foreground);
+}
+.text-tone-muted {
+  @apply text-(--muted-foreground);
+}
