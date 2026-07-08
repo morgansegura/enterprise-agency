@@ -106,6 +106,7 @@
         "@types/react-dom": "19.2.3",
         "eslint": "^9.16.0",
         "eslint-config-next": "16.2.6",
+        "prettier": "^3.3.2",
         "tailwindcss": "^4",
         "typescript": "^5.7.3",
       },
