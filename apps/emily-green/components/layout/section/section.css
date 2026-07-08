@@ -1,0 +1,35 @@
+@reference "tailwindcss";
+
+.section {
+  @apply relative;
+}
+
+.section[data-bg="primary"] {
+  @apply bg-(--primary) text-(--primary-foreground);
+}
+.section[data-bg="secondary"] {
+  @apply bg-(--secondary) text-(--secondary-foreground);
+}
+.section[data-bg="muted"] {
+  @apply bg-(--muted) text-(--muted-foreground);
+}
+.section[data-bg="card"] {
+  @apply bg-(--card) text-(--card-foreground);
+}
+
+.section[data-size="compact"] {
+  @apply py-12 md:py-16;
+}
+.section[data-size="default"] {
+  @apply py-16 md:py-24;
+}
+.section[data-size="loose"] {
+  @apply py-24 md:py-32;
+}
+.section[data-size="flush"] {
+  @apply py-0;
+}
+/* First section under the fixed header — clears the header height. */
+.section[data-size="hero"] {
+  @apply pt-[calc(var(--header-height,4rem)+4rem)] pb-16 md:pb-24;
+}

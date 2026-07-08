@@ -1,0 +1,48 @@
+@reference "tailwindcss";
+
+.mobile-nav {
+  @apply lg:hidden;
+}
+
+.mobile-nav-trigger {
+  @apply inline-flex size-10 items-center justify-center rounded-md text-(--foreground);
+  @apply transition-colors hover:bg-(--muted);
+}
+
+.mobile-nav-trigger-icon {
+  @apply size-6;
+}
+
+.mobile-nav-head {
+  @apply flex justify-end;
+}
+
+.mobile-nav-close {
+  @apply inline-flex size-10 items-center justify-center rounded-md text-(--foreground);
+  @apply transition-colors hover:bg-(--muted);
+}
+
+.mobile-nav-accordion {
+  @apply mt-2 flex flex-col;
+}
+
+.mobile-nav-link {
+  @apply flex items-center py-3 text-base font-medium text-(--foreground);
+  @apply border-b border-(--border) transition-colors hover:text-(--primary);
+}
+
+.mobile-nav-sub {
+  @apply flex flex-col gap-1 pb-2 pl-3;
+}
+
+.mobile-nav-sub-link {
+  @apply block py-2 text-sm text-(--muted-foreground) transition-colors hover:text-(--primary);
+}
+
+.mobile-nav-foot {
+  @apply mt-6;
+}
+
+.mobile-nav-cta {
+  @apply w-full;
+}

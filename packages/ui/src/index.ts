@@ -1,5 +1,7 @@
 // @wf/ui — minimal shared UI primitives (a per-site starting point).
 export { cn } from "./lib/cn";
+export { useHeaderVisibility } from "./hooks/use-header-visibility";
+export type { TMenuItem } from "./nav/types";
 export { Button, buttonVariants } from "./button";
 export {
   Accordion,

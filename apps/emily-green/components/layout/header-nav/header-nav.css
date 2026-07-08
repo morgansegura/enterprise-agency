@@ -1,0 +1,48 @@
+@reference "tailwindcss";
+
+.header-nav {
+  @apply hidden items-center gap-1 lg:flex;
+}
+
+.header-nav-item {
+  @apply relative;
+}
+
+.header-nav-label {
+  @apply inline-flex cursor-pointer items-center gap-1 rounded-md px-3 py-2;
+  @apply text-sm font-medium text-(--foreground)/80 transition-colors;
+  @apply hover:text-(--primary);
+}
+
+.header-nav-caret {
+  @apply size-4 transition-transform;
+}
+
+.header-nav-item:hover .header-nav-caret {
+  @apply rotate-180;
+}
+
+/* Dropdown — shown on hover/focus-within of the item. */
+.header-nav-dropdown {
+  @apply invisible absolute left-0 top-full z-50 mt-1 w-64 opacity-0;
+  @apply flex flex-col gap-1 rounded-xl border border-(--border) bg-(--popover) p-2 shadow-lg;
+  @apply transition-[opacity,transform] translate-y-1;
+}
+
+.header-nav-item:hover .header-nav-dropdown,
+.header-nav-item:focus-within .header-nav-dropdown {
+  @apply visible translate-y-0 opacity-100;
+}
+
+.header-nav-dropdown-link {
+  @apply flex flex-col gap-0.5 rounded-lg px-3 py-2 transition-colors;
+  @apply hover:bg-(--muted);
+}
+
+.header-nav-dropdown-label {
+  @apply text-sm font-medium text-(--foreground);
+}
+
+.header-nav-dropdown-description {
+  @apply text-xs text-(--muted-foreground);
+}

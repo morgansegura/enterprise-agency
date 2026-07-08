@@ -1,0 +1,26 @@
+@reference "tailwindcss";
+
+.footer-nav {
+  @apply grid grid-cols-2 gap-8 sm:grid-cols-2 lg:flex lg:gap-24;
+}
+
+.footer-nav-heading {
+  @apply mb-4 text-sm font-semibold text-(--primary-foreground);
+}
+
+.footer-nav-list {
+  @apply flex flex-col gap-3;
+}
+
+.footer-nav-link {
+  @apply text-sm text-(--primary-foreground)/75 transition-colors hover:text-(--primary-foreground);
+}
+
+.footer-nav-social {
+  @apply inline-flex items-center gap-2 text-sm text-(--primary-foreground)/75 transition-colors;
+  @apply hover:text-(--primary-foreground);
+}
+
+.footer-nav-social-icon {
+  @apply size-4;
+}

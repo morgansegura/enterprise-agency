@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { Footer, Header } from "@/components/layout";
 import { fontBase } from "@/fonts";
 import { site } from "@/site.config";
 import "@/styles/globals.css";
@@ -16,7 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={fontBase.variable}>
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
