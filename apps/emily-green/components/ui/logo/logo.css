@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+.logo {
+  @apply relative;
+
+  .color-1 {
+    @apply fill-white;
+  }
+
+  .color-2 {
+    @apply fill-[#142030];
+  }
+}

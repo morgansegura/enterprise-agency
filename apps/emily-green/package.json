@@ -9,7 +9,7 @@
     "start": "next start -p 4012",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "generate": "node scripts/generate.js"
+    "generate": "node scripts/generate.cjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.3",
