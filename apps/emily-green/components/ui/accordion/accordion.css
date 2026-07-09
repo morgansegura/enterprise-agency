@@ -17,10 +17,10 @@
   @apply text-(--muted-foreground) transition-transform duration-200;
 }
 .accordion-trigger[data-state="open"] .accordion-chevron {
-  @apply rotate-180;
+  @apply -rotate-90;
 }
 .accordion-content {
-  @apply overflow-hidden text-sm;
+  @apply overflow-hidden;
 }
 .accordion-content-inner {
   @apply pt-0 pb-4;

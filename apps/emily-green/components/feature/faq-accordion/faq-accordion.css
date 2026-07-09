@@ -1,0 +1,24 @@
+@reference "tailwindcss";
+
+.faq-accordion {
+  @apply relative;
+}
+
+.faq-accordion-item {
+  @apply border-b border-(--color-rust)/50;
+  @apply last:border-b;
+}
+
+.faq-accordion-trigger {
+  @apply px-3 text-base font-semibold text-(--foreground) font-sans hover:no-underline;
+  @apply hover:bg-(--color-rust)/5;
+}
+
+/* Tint the primitive's chevron with the brand accent. */
+.faq-accordion .accordion-chevron {
+  @apply text-(--accent);
+}
+
+.faq-accordion-content {
+  @apply leading-relaxed text-(--muted-foreground) px-3;
+}

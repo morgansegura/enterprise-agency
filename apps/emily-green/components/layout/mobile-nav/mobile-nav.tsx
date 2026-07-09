@@ -16,7 +16,7 @@ import {
   type TMenuItem,
 } from "@wf/ui";
 
-import { HEADER_CTA, HEADER_NAV } from "@/lib/menu";
+import { HEADER_ACTIONS, HEADER_NAV } from "@/lib/menu";
 import { cn } from "@/lib/utils";
 
 import "./mobile-nav.css";
@@ -99,17 +99,23 @@ export function MobileNav({ className, items = HEADER_NAV }: MobileNavProps) {
           </Accordion>
 
           <div className="mobile-nav-foot">
-            <DrawerClose
-              nativeButton={false}
-              render={
-                <Button
-                  className="mobile-nav-cta"
-                  render={<Link href={HEADER_CTA.href} />}
-                >
-                  {HEADER_CTA.label}
-                </Button>
-              }
-            />
+            {HEADER_ACTIONS.map((action) => (
+              <DrawerClose
+                key={action.label}
+                nativeButton={false}
+                render={
+                  <Button
+                    variant={
+                      action.variant === "outline" ? "outline" : "default"
+                    }
+                    className="mobile-nav-cta"
+                    render={<Link href={action.href} />}
+                  >
+                    {action.label}
+                  </Button>
+                }
+              />
+            ))}
           </div>
         </DrawerContent>
       </Drawer>

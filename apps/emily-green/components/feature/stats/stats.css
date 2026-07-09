@@ -1,0 +1,43 @@
+@reference "tailwindcss";
+
+.stats {
+  @apply flex flex-wrap gap-12;
+}
+
+.stats-item {
+  @apply flex flex-col;
+}
+
+.stats-value {
+  @apply text-6xl font-normal leading-none text-(--muted-foreground);
+}
+
+.stats-suffix {
+  @apply align-top text-3xl text-(--accent);
+}
+
+.stats-label {
+  @apply mt-2  text-(--muted-foreground);
+}
+
+/* ---- divider: a top rule per stat (image-text) ---- */
+.stats[data-variant="divider"] {
+  @apply grid w-full max-w-lg grid-cols-2 gap-10;
+}
+.stats[data-variant="divider"] .stats-item {
+  @apply border-t border-(--accent)/40 pt-4;
+}
+.stats[data-variant="divider"] .stats-label {
+  @apply mt-3;
+}
+
+/* ---- ghost: large, low-contrast on a dark ground (hero) ---- */
+.stats[data-variant="ghost"] .stats-value {
+  @apply text-(--primary-foreground)/30;
+}
+.stats[data-variant="ghost"] .stats-suffix {
+  @apply text-(--primary-foreground)/30;
+}
+.stats[data-variant="ghost"] .stats-label {
+  @apply text-(--primary-foreground)/70;
+}

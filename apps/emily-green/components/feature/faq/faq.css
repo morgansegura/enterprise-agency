@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.faq {
+  @apply relative;
+}
+
+.faq-head {
+  @apply mx-auto max-w-2xl text-center;
+}
+
+.faq-eyebrow {
+  @apply text-(--foreground);
+}
+
+.faq-heading {
+  @apply mt-3 text-(--primary) font-normal;
+}
+
+.faq-subtitle {
+  @apply mt-4 max-w-md mx-auto;
+}
+
+.faq-list {
+  @apply mx-auto mt-16 max-w-2xl;
+}

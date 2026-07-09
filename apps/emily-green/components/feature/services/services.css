@@ -1,0 +1,50 @@
+@reference "tailwindcss";
+
+.services {
+  @apply relative;
+}
+
+.services-eyebrow {
+  @apply text-(--color-pattens);
+}
+
+.services-heading {
+  @apply mt-5 max-w-4xl text-(--primary-foreground) font-normal;
+}
+
+.services-cards {
+  @apply mt-16 grid grid-cols-2 gap-4 lg:grid-cols-4;
+}
+
+.services-card {
+  @apply flex;
+}
+
+/* text card (sand) */
+.services-card-text {
+  @apply flex h-full flex-col rounded-2xl bg-(--color-pearl) p-6;
+}
+.services-card-heading {
+  @apply text-lg leading-tight font-bold tracking-wide text-(--primary) font-(family-name:--font-heading);
+}
+.services-card-body {
+  @apply mt-4 flex-1  leading-relaxed text-(--primary);
+}
+.services .services-card-cta {
+  @apply mt-6 self-start border border-(--color-rust) bg-(--color-rust) font-sans;
+  @apply hover:bg-(--color-rust)/90;
+}
+
+/* image card */
+.services-card-figure {
+  @apply flex w-full flex-col;
+}
+.services-card-media {
+  @apply relative aspect-4/5 w-full overflow-hidden rounded-2xl;
+}
+.services-card-image {
+  @apply object-cover;
+}
+.services-card-label {
+  @apply mt-4 text-center text-lg text-(--primary-foreground);
+}

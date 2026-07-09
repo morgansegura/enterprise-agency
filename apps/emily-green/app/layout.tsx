@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 
 import { Footer, Header } from "@/components/layout";
-import { fontBase } from "@/fonts";
+import { fontBase, fontHeading } from "@/fonts";
+import { cn } from "@/lib/utils";
 import { site } from "@/site.config";
 import "@/styles/globals.css";
 
@@ -16,11 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={fontBase.variable}>
+    <html lang="en" className={cn(fontBase.variable, fontHeading.variable)}>
       <body>
         <Header />
         {children}
         <Footer />
+        <Toaster position="bottom-right" richColors />
       </body>
     </html>
   );

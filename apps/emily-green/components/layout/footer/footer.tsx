@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { Button } from "@wf/ui";
 
-import { FOOTER_REFERRAL, LEGAL_LINKS } from "@/lib/menu";
+import { FOOTER_LICENSING, FOOTER_REFERRAL, LEGAL_LINKS } from "@/lib/menu";
 import { site } from "@/site.config";
 import { cn } from "@/lib/utils";
 
 import { FooterNav } from "../footer-nav";
+import { NewsletterForm } from "../newsletter-form";
 
 import "./footer.css";
 
@@ -21,7 +21,7 @@ type FooterProps = {
 export function Footer({
   className,
   referral = FOOTER_REFERRAL,
-  licensing,
+  licensing = FOOTER_LICENSING,
   year = new Date().getFullYear(),
 }: FooterProps) {
   return (
@@ -30,13 +30,7 @@ export function Footer({
         <div className="footer-top">
           <div className="footer-intro">
             <p className="footer-referral">{referral}</p>
-            <Button
-              variant="secondary"
-              className="footer-refer"
-              render={<Link href="#refer" />}
-            >
-              Refer a Friend
-            </Button>
+            <NewsletterForm className="footer-newsletter" />
             {licensing ? <p className="footer-licensing">{licensing}</p> : null}
           </div>
 

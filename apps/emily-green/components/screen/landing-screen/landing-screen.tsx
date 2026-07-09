@@ -1,33 +1,33 @@
-import { Button, Eyebrow, Heading, Text } from "@/components/ui";
-import { getTenant } from "@/lib/cms";
-import { site } from "@/site.config";
+import { Contact } from "@/components/feature/contact";
+import { Faq } from "@/components/feature/faq";
+import { Hero } from "@/components/feature/hero";
+import { ImageText } from "@/components/feature/image-text";
+import { Intro } from "@/components/feature/intro";
+import { LogoCarousel } from "@/components/feature/logo-carousel";
+import { Separator } from "@/components/feature/separator";
+import { Services } from "@/components/feature/services";
+import { StatsImage } from "@/components/feature/stats-image";
+import { Testimonials } from "@/components/feature/testimonials";
+import { Title } from "@/components/feature/title";
 import { cn } from "@/lib/utils";
 
 import "./landing-screen.css";
 
-export async function LandingScreen({ className }: { className?: string }) {
-  const tenant = await getTenant();
-
+/** Landing screen — composes the page's blocks in order. */
+export function LandingScreen({ className }: { className?: string }) {
   return (
     <main className={cn("landing-screen", className)}>
-      <section className="landing-screen-hero contain">
-        <Eyebrow>
-          {tenant
-            ? `Connected to CMS · ${tenant.name}`
-            : "CMS offline — start apps/cms"}
-        </Eyebrow>
-        <Heading as="h1" size="xl">
-          {site.name}
-        </Heading>
-        <Text size="lg" tone="muted" className="landing-screen-sub">
-          Scaffolded with the new-site process and wired to the central CMS.
-          Build this site&rsquo;s screens here.
-        </Text>
-        <div className="landing-screen-actions">
-          <Button>Get started</Button>
-          <Button variant="outline">Learn more</Button>
-        </div>
-      </section>
+      <Hero />
+      <LogoCarousel />
+      <Intro />
+      <ImageText />
+      <Testimonials />
+      <Title />
+      <Separator />
+      <StatsImage />
+      <Services />
+      <Faq />
+      <Contact />
     </main>
   );
 }

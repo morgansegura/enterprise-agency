@@ -1,12 +1,19 @@
 @reference "tailwindcss";
 
 .header {
-  @apply fixed inset-x-0 top-0 z-40 h-(--header-height,4rem) bg-(--background)/90 backdrop-blur;
-  @apply border-b border-(--border) transition-transform duration-300;
+  @apply fixed inset-x-0 top-0 z-40 h-(--header-height,4rem) bg-transparent;
+  @apply transition-transform duration-300;
 }
 
-.header[data-visible="false"] {
-  @apply -translate-y-full;
+/* Visible + transparent over the (dark) hero at the top. */
+.header[data-scrolled="false"] {
+  @apply translate-y-0 bg-transparent;
+}
+
+/* Scrolled: desktop scrolls the header away (and it stays hidden until the user
+   returns to the top); mobile keeps it — solid — so the menu stays reachable. */
+.header[data-scrolled="true"] {
+  @apply lg:-translate-y-full;
 }
 
 .header-inner {
@@ -22,9 +29,42 @@
 }
 
 .header-actions {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-6;
 }
 
-.header-cta {
-  @apply hidden lg:inline-flex;
+/* ---- nav link colors flip with the header state ---- */
+.header[data-scrolled="false"] .header-nav-label {
+  @apply text-(--primary-foreground)/85 hover:text-(--primary-foreground);
+}
+.header[data-scrolled="true"] .header-nav-label {
+  @apply text-(--foreground)/80 hover:text-(--primary);
+}
+
+/* ---- action buttons (Start Application = outline, Login = solid) ---- */
+.header-buttons {
+  @apply hidden items-center gap-3 lg:flex;
+}
+
+.header-button {
+  @apply inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors;
+}
+
+.header[data-scrolled="false"] .header-button-outline {
+  @apply border border-(--primary-foreground)/40 text-(--primary-foreground);
+  @apply hover:bg-(--primary-foreground)/10;
+}
+.header[data-scrolled="true"] .header-button-outline {
+  @apply border border-(--border) text-(--foreground) hover:bg-(--muted);
+}
+
+.header[data-scrolled="false"] .header-button-solid {
+  @apply bg-(--primary-foreground) text-(--primary) hover:bg-(--primary-foreground)/90;
+}
+.header[data-scrolled="true"] .header-button-solid {
+  @apply bg-(--primary) text-(--primary-foreground) hover:bg-(--primary)/90;
+}
+
+/* ---- mobile hamburger tint flips with the state ---- */
+.header[data-scrolled="false"] .mobile-nav-trigger {
+  @apply text-(--primary-foreground);
 }

@@ -1,0 +1,55 @@
+@reference "tailwindcss";
+
+.image-text {
+  @apply relative;
+}
+
+.image-text-grid {
+  @apply grid items-center gap-10 lg:grid-cols-2 lg:gap-16;
+}
+
+/* Swap sides on desktop (mobile always stacks image-first). */
+.image-text-grid[data-image="right"] .image-text-media {
+  @apply lg:order-2;
+}
+.image-text-grid[data-image="right"] .image-text-copy {
+  @apply lg:order-1;
+}
+
+/* ---- media ---- */
+.image-text-media {
+  @apply relative aspect-4/5 w-full overflow-hidden rounded-2xl;
+}
+.image-text-image {
+  @apply object-cover;
+}
+
+/* ---- copy ---- */
+.image-text-copy {
+  @apply flex flex-col items-start;
+}
+
+.image-text-eyebrow {
+  @apply text-(--primary);
+}
+
+.image-text-heading {
+  @apply mt-3 text-(--primary) font-normal;
+}
+
+.image-text-body {
+  @apply mt-6 flex max-w-md flex-col gap-4;
+}
+
+.image-text-paragraph {
+  @apply text-sm leading-relaxed text-(--foreground)/80;
+}
+
+.image-text .image-text-cta {
+  @apply mt-8 bg-(--accent) text-(--accent-foreground) hover:bg-(--accent)/90 font-sans;
+}
+
+/* ---- stats (shared <Stats variant="divider">; only spacing here) ---- */
+.image-text-stats {
+  @apply mt-14;
+}

@@ -1,0 +1,42 @@
+@reference "tailwindcss";
+
+.stats-image {
+  @apply relative;
+}
+
+.stats-image-top {
+  @apply grid gap-10 lg:gap-40 lg:grid-cols-2;
+}
+
+.stats-image-text {
+  @apply flex max-w-md flex-col;
+}
+
+.stats-image-body {
+  @apply flex flex-col gap-4;
+}
+
+.stats-image-stats {
+  @apply lg:self-end lg:justify-self-end;
+}
+
+.stats-image-paragraph {
+  @apply leading-relaxed text-(--foreground)/80;
+}
+
+.stats-image-cta {
+  @apply mt-6 inline-flex items-center gap-2 font-semibold text-(--foreground) transition-colors;
+  @apply hover:text-(--accent);
+}
+
+.stats-image-cta-icon {
+  @apply size-4 text-(--accent);
+}
+
+.stats-image-media {
+  @apply relative mt-14 aspect-[21/7] w-full overflow-hidden rounded-2xl;
+}
+
+.stats-image-image {
+  @apply object-cover;
+}

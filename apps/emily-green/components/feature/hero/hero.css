@@ -1,0 +1,70 @@
+@reference "tailwindcss";
+
+.hero {
+  @apply relative;
+}
+
+.hero-grid {
+  @apply grid items-center gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16;
+}
+
+/* ---- copy (left) ---- */
+.hero-copy {
+  @apply flex flex-col;
+}
+
+.hero-eyebrow {
+  @apply text-lg font-semibold text-(--color-pearl);
+}
+
+.hero-role {
+  @apply mt-1 text-sm text-(--color-pearl);
+}
+
+.hero-heading {
+  @apply mt-8 text-(--primary-foreground) font-normal;
+}
+
+.hero-body {
+  @apply mt-6 flex max-w-md flex-col gap-4;
+}
+
+.hero-paragraph {
+  @apply text-sm leading-relaxed text-(--primary-foreground);
+}
+
+.hero .hero-cta {
+  @apply mt-8 w-fit bg-(--color-pearl) text-(--foreground) font-sans;
+  @apply hover:bg-(--color-pearl)/90;
+}
+
+/* ---- stats (below the CTA, no overlap) ---- */
+.hero-stats {
+  @apply mt-12 flex justify-center gap-14 border border-(--color-pearl)/25 p-4 rounded-xl w-auto max-w-2xs;
+}
+
+.hero-stat {
+  @apply flex flex-col;
+}
+
+.hero-stat-value {
+  @apply text-5xl leading-none;
+  @apply text-(--primary-foreground)/30;
+
+  .hero-stat:last-child & {
+    @apply text-white;
+  }
+}
+
+.hero-stat-label {
+  @apply mt-3 text-xs text-(--primary-foreground) tracking-wide font-medium;
+}
+
+/* ---- portrait (right) ---- */
+.hero-media {
+  @apply relative aspect-4/5 w-full overflow-hidden rounded-2xl;
+}
+
+.hero-image {
+  @apply object-cover;
+}

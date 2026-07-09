@@ -1,0 +1,61 @@
+@reference "tailwindcss";
+
+.logo-carousel {
+  @apply relative bg-(--primary)/50;
+}
+
+.logo-carousel-heading {
+  @apply mb-8 text-center text-sm font-medium uppercase tracking-wide text-(--color-pattens);
+}
+
+.logo-carousel-viewport {
+  @apply relative overflow-hidden;
+  /* Fade the edges so logos slide in/out softly. */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+.logo-carousel-marquee {
+  @apply flex w-max;
+  animation: logo-carousel-scroll 40s linear infinite;
+}
+
+.logo-carousel-marquee:hover {
+  animation-play-state: paused;
+}
+
+.logo-carousel-track {
+  @apply flex shrink-0 items-center gap-16 pr-16;
+}
+
+.logo-carousel-item {
+  @apply flex items-center;
+}
+
+.logo-carousel-image {
+  @apply h-10 w-auto object-contain opacity-70 transition-opacity;
+}
+.logo-carousel-item:hover .logo-carousel-image {
+  @apply opacity-100;
+}
+
+.logo-carousel-name {
+  @apply whitespace-nowrap text-lg font-semibold uppercase tracking-wide text-(--color-pattens);
+}
+
+@keyframes logo-carousel-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-carousel-marquee {
+    animation: none;
+  }
+}

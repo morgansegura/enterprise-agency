@@ -1,0 +1,17 @@
+@reference "tailwindcss";
+
+.title {
+  @apply flex flex-col items-center relative;
+}
+
+.title-inner {
+  @apply max-w-3xl mx-auto;
+}
+
+.title-heading {
+  @apply text-(--primary) font-normal;
+}
+
+.title-subtitle {
+  @apply mt-4;
+}

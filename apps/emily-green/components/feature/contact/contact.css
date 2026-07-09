@@ -1,0 +1,29 @@
+@reference "tailwindcss";
+
+.contact {
+  @apply relative bg-(--color-pearl);
+}
+
+.contact-grid {
+  @apply grid items-center gap-12 lg:grid-cols-2 lg:gap-16;
+}
+
+.contact-intro {
+  @apply flex flex-col;
+}
+
+.contact-heading {
+  @apply text-(--primary) font-normal;
+}
+
+.contact-body {
+  @apply mt-6 flex max-w-md flex-col gap-4;
+}
+
+.contact-paragraph {
+  @apply leading-relaxed text-(--foreground)/80;
+}
+
+.contact-logo {
+  @apply mt-12 h-auto w-full max-w-md;
+}

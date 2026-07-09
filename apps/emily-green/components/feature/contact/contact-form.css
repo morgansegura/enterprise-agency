@@ -1,0 +1,51 @@
+@reference "tailwindcss";
+
+.contact-form {
+  @apply flex flex-col gap-8 rounded-3xl bg-(--background) p-8 shadow-lg md:p-10;
+}
+
+/* Honeypot — visually hidden, off the tab order. */
+.contact-form-hp {
+  @apply absolute h-px w-px overflow-hidden opacity-0;
+  left: -9999px;
+}
+
+.contact-form-name {
+  @apply flex flex-col gap-6 border-0 p-0;
+}
+
+.contact-form-legend {
+  @apply font-semibold;
+}
+
+.contact-form-row {
+  @apply grid gap-6 sm:grid-cols-2;
+}
+
+/* ---- underline fields ---- */
+.contact-field {
+  @apply flex flex-col;
+}
+
+.contact-field-label {
+  @apply text-sm text-(--foreground);
+}
+
+.contact-field-input {
+  @apply mt-3 border-0 border-b border-(--accent) bg-transparent pb-2 text-sm outline-none;
+  @apply focus:border-(--primary);
+}
+
+/* ---- checkbox row ---- */
+.contact-form-check {
+  @apply flex items-center gap-3 text-sm text-(--foreground) -mt-6;
+}
+
+.contact-form-checkbox {
+  @apply size-4 accent-(--accent);
+}
+
+/* ---- submit ---- */
+.contact-form .contact-form-submit {
+  @apply w-full bg-(--accent) text-(--accent-foreground) hover:bg-(--accent)/90 font-sans py-5;
+}

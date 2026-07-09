@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+.separator {
+  @apply relative;
+}
+
+.separator-rule {
+  @apply border-0 border-t border-(--border);
+}

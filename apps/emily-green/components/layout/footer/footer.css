@@ -20,8 +20,8 @@
   @apply text-lg leading-relaxed text-(--primary-foreground)/90;
 }
 
-.footer-refer {
-  @apply mt-6;
+.footer-newsletter {
+  @apply mt-8;
 }
 
 .footer-licensing {
@@ -33,12 +33,12 @@
 }
 
 .footer-bottom {
-  @apply mt-16 flex flex-col gap-4 border-t border-(--primary-foreground)/15 pt-6;
+  @apply mt-16 flex flex-col gap-4 border-t border-(--accent) pt-10;
   @apply sm:flex-row sm:items-center sm:justify-between;
 }
 
 .footer-copyright {
-  @apply text-sm text-(--primary-foreground)/70;
+  @apply text-sm text-(--primary-foreground);
 }
 
 .footer-legal {
@@ -46,6 +46,6 @@
 }
 
 .footer-legal-link {
-  @apply text-sm text-(--primary-foreground)/70 underline-offset-4 transition-colors;
+  @apply text-sm text-(--primary-foreground) underline-offset-4 transition-colors;
   @apply hover:text-(--primary-foreground) hover:underline;
 }

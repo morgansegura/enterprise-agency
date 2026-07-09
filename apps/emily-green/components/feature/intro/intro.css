@@ -1,0 +1,39 @@
+@reference "tailwindcss";
+
+.intro {
+  @apply relative bg-(--color-pearl)/25;
+}
+
+/* Everything stacks — eyebrow → heading → body → CTA → (optional image). */
+.intro-inner {
+  @apply flex max-w-3xl flex-col items-start mx-auto;
+}
+
+.intro-eyebrow {
+  @apply text-(--primary);
+}
+
+.intro-heading {
+  @apply mt-4 text-(--primary) font-normal;
+}
+
+.intro-body {
+  @apply mt-6 flex flex-col gap-4;
+}
+
+.intro-paragraph {
+  @apply leading-relaxed text-(--foreground)/80;
+}
+
+.intro .intro-cta {
+  @apply mt-8 bg-(--accent) text-(--accent-foreground) font-sans;
+  @apply hover:bg-(--accent)/90;
+}
+
+.intro-media {
+  @apply relative mt-10 aspect-video w-full overflow-hidden rounded-2xl;
+}
+
+.intro-image {
+  @apply object-cover;
+}

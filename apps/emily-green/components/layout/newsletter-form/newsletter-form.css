@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+.newsletter-form-row {
+  @apply flex flex-col items-stretch gap-4 sm:flex-row sm:items-end;
+}
+
+.newsletter-form-input {
+  @apply flex-1 border-0 border-b border-(--primary-foreground)/40 bg-transparent pb-2 text-sm text-(--primary-foreground) outline-none;
+  @apply placeholder:text-(--primary-foreground)/50 focus:border-(--primary-foreground);
+}
+
+.newsletter-form .newsletter-form-submit {
+  @apply bg-(--accent) text-(--accent-foreground) hover:bg-(--accent)/90 font-sans;
+}
+
+.newsletter-form-hp {
+  @apply absolute h-px w-px overflow-hidden opacity-0;
+  left: -9999px;
+}
