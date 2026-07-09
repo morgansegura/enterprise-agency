@@ -47,7 +47,7 @@ export const SOCIAL_LINKS = [
   { platform: "LinkedIn", href: "https://www.linkedin.com/in/emilyshomeloans" },
   {
     platform: "Google",
-    href: "google.com/maps/place/Emily+Green+-+Churchill+Mortgage,+NMLS+1429849/data=!4m2!3m1!1s0x0:0xb28f5959918d838f?sa=X&ved=1t:2428&ictx=111",
+    href: "https://www.google.com/maps/place/Emily+Green+-+Churchill+Mortgage,+NMLS+1429849/data=!4m2!3m1!1s0x0:0xb28f5959918d838f?sa=X&ved=1t:2428&ictx=111",
   },
   { platform: "Youtube", href: "https://www.youtube.com/@savingyougreen" },
 ] as const;

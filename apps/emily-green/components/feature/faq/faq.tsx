@@ -1,4 +1,5 @@
 import { Section } from "@/components/layout";
+import { FaqSchema } from "@/components/seo";
 import { Heading, Text } from "@/components/ui";
 import { FaqAccordion } from "@/components/feature/faq-accordion";
 import {
@@ -16,6 +17,12 @@ type FaqProps = {
 export function Faq({ content = landingScreenMock.faq }: FaqProps) {
   return (
     <Section ariaLabel={content.heading} className="faq">
+      <FaqSchema
+        items={content.items.map((item) => ({
+          question: item.title,
+          answer: item.content,
+        }))}
+      />
       <div className="faq-head">
         {content.eyebrow ? (
           <p className="faq-eyebrow">{content.eyebrow}</p>

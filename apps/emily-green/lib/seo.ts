@@ -10,6 +10,7 @@ type PageMetaInput = {
   title: string;
   description?: string;
   path: string;
+  /** Explicit OG image. Omit to inherit the dynamic `opengraph-image` route. */
   ogImage?: string;
   type?: "website" | "article";
 };
@@ -19,15 +20,21 @@ export function pageMetadata({
   title,
   description = "",
   path,
-  ogImage = "/og-image.png",
+  ogImage,
   type = "website",
 }: PageMetaInput): Metadata {
   const url = absoluteUrl(path);
-  const image = ogImage.startsWith("http") ? ogImage : absoluteUrl(ogImage);
-  const fullTitle = path === "/" ? site.name : `${title} — ${site.name}`;
+  const fullTitle =
+    path === "/" ? `${site.name} — ${site.tagline}` : `${title} — ${site.name}`;
+  const image = ogImage
+    ? ogImage.startsWith("http")
+      ? ogImage
+      : absoluteUrl(ogImage)
+    : undefined;
 
   return {
-    title: fullTitle,
+    // absolute: fullTitle already includes the site name — skip the layout template.
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical: url },
     openGraph: {
@@ -36,13 +43,16 @@ export function pageMetadata({
       url,
       siteName: site.name,
       type,
-      images: [{ url: image, width: 1200, height: 630, alt: fullTitle }],
+      // When image is undefined, Next auto-fills from app/opengraph-image.
+      ...(image
+        ? { images: [{ url: image, width: 1200, height: 630, alt: fullTitle }] }
+        : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description,
-      images: [image],
+      ...(image ? { images: [image] } : {}),
     },
   };
 }
