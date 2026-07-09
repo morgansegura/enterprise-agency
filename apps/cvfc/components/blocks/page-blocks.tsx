@@ -1,7 +1,8 @@
-import { draftMode } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 import dynamic from "next/dynamic";
 
 import type { Page, PageBlock } from "@/lib/cms";
+import { CMS_ORIGIN_COOKIE } from "@/lib/preview";
 
 import { BlockList } from "./blocks";
 
@@ -29,7 +30,12 @@ export async function Blocks({
   const { isEnabled: isPreview } = await draftMode();
   if (isPreview) {
     const initialData = (page ?? { layout: layout ?? [] }) as Page;
-    return <LiveBlocks initialData={initialData} only={only} />;
+    // The CMS origin captured by /api/preview — the exact window Live Preview
+    // messages come from. Deterministic, so the handshake works cross-browser.
+    const cmsOrigin = (await cookies()).get(CMS_ORIGIN_COOKIE)?.value;
+    return (
+      <LiveBlocks initialData={initialData} only={only} serverURL={cmsOrigin} />
+    );
   }
   return <BlockList layout={layout ?? page?.layout} only={only} />;
 }

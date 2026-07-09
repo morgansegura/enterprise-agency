@@ -19,59 +19,17 @@ import { Features } from '../blocks/Features'
 import { ImageBlock } from '../blocks/Image'
 import { revalidatePages, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 import { importImageUrls } from '../hooks/import-image-urls'
+import { buildPreviewUrl } from '../lib/preview'
 
 type PageDoc = {
   slug?: string
   tenant?: number | string | { id: number | string; domain?: string | null }
 }
 
-/**
- * A real public host (not localhost / loopback), or null if the value is a
- * dev-only host like `cvfc.localhost`. Lets the live CMS ignore a dev domain
- * stored on the tenant and fall back to FRONTEND_URL instead.
- */
-function publicHost(domain?: string | null): string | null {
-  if (!domain) return null
-  const host = domain.replace(/^https?:\/\//, '').replace(/\/+$/, '')
-  if (
-    !host ||
-    host === 'localhost' ||
-    host.endsWith('.localhost') ||
-    host.startsWith('127.') ||
-    host.startsWith('0.0.0.0')
-  ) {
-    return null
-  }
-  return host
-}
-
-/**
- * Front-end preview URL for a page — resolved PER TENANT (one CMS, many sites).
- * Prod uses the tenant's public `domain`; if that's a dev host (e.g.
- * `cvfc.localhost`) it falls back to `FRONTEND_URL` so a single Render env var
- * can point live preview at the live FE. Dev uses `FRONTEND_URL` or localhost.
- * Hits the FE's `/api/preview` with a shared secret token.
- */
-async function previewUrl(doc: PageDoc | undefined, req: PayloadRequest): Promise<string> {
-  const secret = process.env.PREVIEW_SECRET || 'preview-dev'
+/** Front-end preview URL for a page — home maps to `/`, others to `/slug`. */
+function previewUrl(doc: PageDoc | undefined, req: PayloadRequest): Promise<string> {
   const path = doc?.slug && doc.slug !== 'home' ? `/${doc.slug}` : '/'
-  const envBase = process.env.FRONTEND_URL?.replace(/\/+$/, '')
-
-  let base = envBase || 'http://localhost:4011'
-  if (process.env.NODE_ENV === 'production') {
-    let domain: string | null | undefined
-    const t = doc?.tenant
-    if (t && typeof t === 'object') domain = t.domain
-    else if (t != null) {
-      const tenant = await req.payload.findByID({ collection: 'tenants', id: t })
-      domain = (tenant as { domain?: string | null })?.domain
-    }
-    const host = publicHost(domain)
-    if (host) base = `https://${host}`
-    else if (envBase) base = envBase
-  }
-
-  return `${base}/api/preview?secret=${encodeURIComponent(secret)}&path=${encodeURIComponent(path)}`
+  return buildPreviewUrl(path, doc?.tenant, req)
 }
 
 export const Pages: CollectionConfig = {

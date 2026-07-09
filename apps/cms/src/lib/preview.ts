@@ -8,6 +8,24 @@ type TenantRef =
   | undefined
 
 /**
+ * The CMS admin's own origin — where Live Preview `postMessage`s originate. The
+ * FE must target THIS exact origin in its `ready` handshake and message filter,
+ * so we pass it through the preview link rather than let the FE guess it
+ * (ancestorOrigins/referrer are browser-dependent and fail in prod iframes).
+ */
+function cmsOrigin(req: PayloadRequest): string {
+  const fromOrigin = req.headers.get('origin')
+  if (fromOrigin) return fromOrigin.replace(/\/+$/, '')
+  const host = req.headers.get('host')
+  if (host) {
+    const proto =
+      req.headers.get('x-forwarded-proto') ?? (host.includes('localhost') ? 'http' : 'https')
+    return `${proto}://${host}`
+  }
+  return (process.env.CMS_URL || 'http://localhost:4010').replace(/\/+$/, '')
+}
+
+/**
  * A real public host (not localhost / loopback), or null for a dev-only host
  * like `cvfc.localhost` — lets the live CMS ignore a dev domain on the tenant
  * and fall back to FRONTEND_URL.
@@ -54,5 +72,6 @@ export async function buildPreviewUrl(
     else if (envBase) base = envBase
   }
 
-  return `${base}/api/preview?secret=${encodeURIComponent(secret)}&path=${encodeURIComponent(path)}`
+  const origin = encodeURIComponent(cmsOrigin(req))
+  return `${base}/api/preview?secret=${encodeURIComponent(secret)}&path=${encodeURIComponent(path)}&origin=${origin}`
 }

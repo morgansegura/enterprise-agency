@@ -1,12 +1,27 @@
-import { draftMode } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
+
+import { CMS_ORIGIN_COOKIE } from "@/lib/preview";
 
 const PREVIEW_SECRET = process.env.PREVIEW_SECRET || "preview-dev";
 
+/** Accept only a bare `scheme://host[:port]` origin (no path), else ignore it. */
+function safeOrigin(value: string | null): string | null {
+  if (!value) return null;
+  try {
+    const u = new URL(value);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return null;
+    return u.origin;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Enables Next draft mode for the CMS editor preview, then redirects to the
- * requested path. The CMS links here with `?secret=…&path=…`; the secret gates
- * access so the public can't force draft rendering.
+ * requested path. The CMS links here with `?secret=…&path=…&origin=…`; the
+ * secret gates access, and the CMS origin is stored so Live Preview's
+ * postMessage handshake targets the right window.
  */
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -15,6 +30,20 @@ export async function GET(req: NextRequest) {
   }
 
   (await draftMode()).enable();
+
+  // Persist the CMS origin (fall back to the request's referer origin) so the
+  // live-preview iframe can address messages back to the admin window.
+  const origin =
+    safeOrigin(searchParams.get("origin")) ||
+    safeOrigin(req.headers.get("referer"));
+  if (origin) {
+    (await cookies()).set(CMS_ORIGIN_COOKIE, origin, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      path: "/",
+    });
+  }
 
   const path = searchParams.get("path") || "/";
   // Only allow internal paths (no open redirect).

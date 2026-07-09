@@ -109,13 +109,16 @@ function returnIncoming(args: {
 export function LiveBlocks({
   initialData,
   only,
+  serverURL,
 }: {
   initialData: Page;
   only?: string[];
+  /** Exact CMS origin from /api/preview; deterministic beats origin-guessing. */
+  serverURL?: string;
 }) {
   const { data } = useLivePreview<Page>({
     initialData,
-    serverURL: resolveCmsOrigin(),
+    serverURL: serverURL || resolveCmsOrigin(),
     depth: 0,
     requestHandler: returnIncoming,
   });
