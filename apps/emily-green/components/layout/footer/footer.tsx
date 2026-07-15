@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CookiePreferencesTrigger } from "@/components/cookie-consent";
 import { FOOTER_LICENSING, FOOTER_REFERRAL, LEGAL_LINKS } from "@/lib/menu";
 import { site } from "@/site.config";
-import { cn } from "@/lib/utils";
+import { cn, safeRel } from "@/lib/utils";
 
 import { FooterNav } from "../footer-nav";
 import { NewsletterForm } from "../newsletter-form";
@@ -47,6 +47,8 @@ export function Footer({
               <Link
                 key={link.label}
                 href={link.href ?? "#"}
+                target={link.target}
+                rel={safeRel(link.target, link.rel)}
                 className="footer-legal-link"
               >
                 {link.label}

@@ -9,19 +9,33 @@ export const HEADER_NAV: TMenuItem[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "#about" },
   { label: "Locations", href: "#locations" },
-  { label: "Praise", href: "#praise" },
+  { label: "Praise", href: "#testimonials" },
 ];
 
 /** Header action buttons (right of the nav). `variant` maps to the button skin. */
 export type HeaderAction = {
   label: string;
   href: string;
+  rel?: string;
+  target?: string;
   variant: "outline" | "solid";
 };
 
 export const HEADER_ACTIONS: HeaderAction[] = [
-  { label: "Start Application", href: "#apply", variant: "outline" },
-  { label: "Login", href: "#login", variant: "solid" },
+  {
+    label: "Start Application",
+    href: "https://emily-green.mychurchill.com/create-account",
+    target: "_blank",
+    rel: "nofollow",
+    variant: "outline",
+  },
+  {
+    label: "Login",
+    target: "_blank",
+    rel: "nofollow",
+    href: "https://emily-green.mychurchill.com/sign-in",
+    variant: "solid",
+  },
 ];
 
 /** Footer link columns. */
@@ -29,9 +43,24 @@ export const FOOTER_NAV: TMenuItem[] = [
   {
     heading: "Features",
     items: [
-      { label: "Mortgage Calculator", href: "#mortgage-calculator" },
-      { label: "Check List", href: "#document-checklist" },
-      { label: "Resources", href: "#resources" },
+      {
+        label: "Mortgage Calculator",
+        href: "#mortgage-calculator",
+        target: "_blank",
+        rel: "nofollow",
+      },
+      {
+        label: "Check List",
+        href: "#document-checklist",
+        target: "_blank",
+        rel: "nofollow",
+      },
+      {
+        label: "Resources",
+        href: "#resources",
+        target: "_blank",
+        rel: "nofollow",
+      },
       { label: "Frequently Asked Questions", href: "#faq" },
     ],
   },
@@ -39,24 +68,58 @@ export const FOOTER_NAV: TMenuItem[] = [
 
 /** Social links — platform maps to a lucide icon in the footer. */
 export const SOCIAL_LINKS = [
-  { platform: "Facebook", href: "https://www.facebook.com/emily.green.44788" },
+  {
+    platform: "Facebook",
+    href: "https://www.facebook.com/emily.green.44788",
+    target: "_blank",
+    rel: "nofollow",
+  },
   {
     platform: "Instagram",
     href: "https://www.instagram.com/savingyougreen.themortgagemama",
+    target: "_blank",
+    rel: "nofollow",
   },
-  { platform: "LinkedIn", href: "https://www.linkedin.com/in/emilyshomeloans" },
+  {
+    platform: "LinkedIn",
+    href: "https://www.linkedin.com/in/emilyshomeloans",
+    target: "_blank",
+    rel: "nofollow",
+  },
   {
     platform: "Google",
     href: "https://www.google.com/maps/place/Emily+Green+-+Churchill+Mortgage,+NMLS+1429849/data=!4m2!3m1!1s0x0:0xb28f5959918d838f?sa=X&ved=1t:2428&ictx=111",
+    target: "_blank",
+    rel: "nofollow",
   },
-  { platform: "Youtube", href: "https://www.youtube.com/@savingyougreen" },
+  {
+    platform: "Youtube",
+    href: "https://www.youtube.com/@savingyougreen",
+    target: "_blank",
+    rel: "nofollow",
+  },
 ] as const;
 
 /** Bottom-bar legal links. */
 export const LEGAL_LINKS: TMenuItem[] = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms of Service", href: "/terms-of-service" },
-  { label: "Cookies Settings", href: "/cookie-policy" },
+  {
+    label: "Privacy Policy",
+    href: "https://www.churchillmortgage.com/privacy",
+    target: "_blank",
+    rel: "nofollow",
+  },
+  {
+    label: "Terms of Service",
+    href: "https://www.churchillmortgage.com/support/terms-of-use",
+    target: "_blank",
+    rel: "nofollow",
+  },
+  {
+    label: "Cookies Settings",
+    href: "/cookie-policy",
+    target: "_blank",
+    rel: "nofollow",
+  },
 ];
 
 /** Referral blurb shown in the footer. */

@@ -9,7 +9,7 @@ import {
 import type { TMenuItem } from "@wf/ui";
 
 import { FOOTER_NAV, SOCIAL_LINKS } from "@/lib/menu";
-import { cn } from "@/lib/utils";
+import { cn, safeRel } from "@/lib/utils";
 
 import "./footer-nav.css";
 
@@ -23,7 +23,12 @@ const SOCIAL_ICON: Record<string, LucideIcon> = {
 type FooterNavProps = {
   className?: string;
   items?: TMenuItem[];
-  social?: ReadonlyArray<{ platform: string; href: string }>;
+  social?: ReadonlyArray<{
+    platform: string;
+    href: string;
+    target?: string;
+    rel?: string;
+  }>;
 };
 
 /** Footer link columns + a Follow (social) column. */
@@ -44,7 +49,12 @@ export function FooterNav({
           <ul className="footer-nav-list">
             {col.items?.map((link) => (
               <li key={link.label}>
-                <Link href={link.href ?? "#"} className="footer-nav-link">
+                <Link
+                  href={link.href ?? "#"}
+                  target={link.target}
+                  rel={safeRel(link.target, link.rel)}
+                  className="footer-nav-link"
+                >
                   {link.label}
                 </Link>
               </li>
@@ -56,14 +66,14 @@ export function FooterNav({
       <nav className="footer-nav-col" aria-label="Follow">
         <p className="footer-nav-heading">Follow</p>
         <ul className="footer-nav-list">
-          {social.map(({ platform, href }) => {
+          {social.map(({ platform, href, target = "_blank", rel }) => {
             const Icon = SOCIAL_ICON[platform];
             return (
               <li key={platform}>
                 <Link
                   href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={target}
+                  rel={safeRel(target, rel)}
                   className="footer-nav-social"
                   aria-label={platform}
                 >

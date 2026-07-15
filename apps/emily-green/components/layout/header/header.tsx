@@ -5,7 +5,7 @@ import { useScrolled, type TMenuItem } from "@wf/ui";
 
 import { Logo } from "@/components/ui/logo";
 import { HEADER_ACTIONS } from "@/lib/menu";
-import { cn } from "@/lib/utils";
+import { cn, safeRel } from "@/lib/utils";
 
 import { HeaderNav } from "../header-nav";
 import { MobileNav } from "../mobile-nav";
@@ -39,6 +39,8 @@ export function Header({ className, items }: HeaderProps) {
               <Link
                 key={action.label}
                 href={action.href}
+                target={action.target}
+                rel={safeRel(action.target, action.rel)}
                 className={cn(
                   "header-button",
                   `header-button-${action.variant}`,
