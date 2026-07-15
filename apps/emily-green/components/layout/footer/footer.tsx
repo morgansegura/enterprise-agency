@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CookiePreferencesTrigger } from "@/components/cookie-consent";
 import { FOOTER_LICENSING, FOOTER_REFERRAL, LEGAL_LINKS } from "@/lib/menu";
 import { site } from "@/site.config";
 import { cn } from "@/lib/utils";
@@ -51,6 +52,7 @@ export function Footer({
                 {link.label}
               </Link>
             ))}
+            <CookiePreferencesTrigger className="footer-legal-link" />
           </nav>
         </div>
       </div>

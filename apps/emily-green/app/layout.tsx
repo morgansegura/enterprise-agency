@@ -1,6 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 
+import {
+  ConsentDefaults,
+  GoogleTagManager,
+  GoogleTagManagerNoscript,
+} from "@/components/analytics";
+import { CookieConsentProvider } from "@/components/cookie-consent";
 import { Footer, Header } from "@/components/layout";
 import { OrganizationSchema, WebsiteSchema } from "@/components/seo";
 import { fontBase, fontHeading } from "@/fonts";
@@ -48,12 +54,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cn(fontBase.variable, fontHeading.variable)}>
+      <head>
+        <ConsentDefaults />
+      </head>
       <body>
+        <GoogleTagManagerNoscript />
+        <GoogleTagManager />
         <OrganizationSchema />
         <WebsiteSchema />
-        <Header />
-        {children}
-        <Footer />
+        <CookieConsentProvider>
+          <Header />
+          {children}
+          <Footer />
+        </CookieConsentProvider>
         <Toaster position="bottom-right" richColors />
       </body>
     </html>
