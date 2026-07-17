@@ -1,4 +1,4 @@
-import { cookies, draftMode } from "next/headers";
+import { draftMode } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { CMS_ORIGIN_COOKIE } from "@/lib/preview";
@@ -31,13 +31,19 @@ export async function GET(req: NextRequest) {
 
   (await draftMode()).enable();
 
+  const path = searchParams.get("path") || "/";
+  // Only allow internal paths (no open redirect).
+  const safePath = path.startsWith("/") ? path : "/";
+  const res = NextResponse.redirect(new URL(safePath, req.url));
+
   // Persist the CMS origin (fall back to the request's referer origin) so the
-  // live-preview iframe can address messages back to the admin window.
+  // live-preview iframe can address messages back to the admin window. Set on
+  // the redirect response directly so it can't be dropped by the cookies() API.
   const origin =
     safeOrigin(searchParams.get("origin")) ||
     safeOrigin(req.headers.get("referer"));
   if (origin) {
-    (await cookies()).set(CMS_ORIGIN_COOKIE, origin, {
+    res.cookies.set(CMS_ORIGIN_COOKIE, origin, {
       httpOnly: true,
       sameSite: "none",
       secure: true,
@@ -45,8 +51,5 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  const path = searchParams.get("path") || "/";
-  // Only allow internal paths (no open redirect).
-  const safePath = path.startsWith("/") ? path : "/";
-  return NextResponse.redirect(new URL(safePath, req.url));
+  return res;
 }
