@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { superAdminAccess } from '../access/roles'
+
 /** A theme color field rendered with the admin color picker. */
 const color = (name: string, label: string) => ({
   name,
@@ -15,7 +17,14 @@ const color = (name: string, label: string) => ({
 export const Tenants: CollectionConfig = {
   slug: 'tenants',
   admin: { useAsTitle: 'name' },
-  access: { read: () => true },
+  // Public read (the FE resolves tenant theme). Only a super-admin can create,
+  // edit, or delete tenants — editors can never mint or alter a client site.
+  access: {
+    read: () => true,
+    create: superAdminAccess,
+    update: superAdminAccess,
+    delete: superAdminAccess,
+  },
   fields: [
     { name: 'name', type: 'text', required: true },
     {

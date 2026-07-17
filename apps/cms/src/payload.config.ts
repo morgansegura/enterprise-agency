@@ -19,6 +19,7 @@ import { Posts } from './collections/Posts'
 import { Staff } from './collections/Staff'
 import { Testimonials } from './collections/Testimonials'
 import { Facilities } from './collections/Facilities'
+import { isSuperAdmin, superAdminFieldAccess, SUPER_ADMIN_EMAILS } from './access/roles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -115,8 +116,24 @@ export default buildConfig({
         menus: {},
         forms: {},
       },
-      // Single agency admin manages all client tenants (super-admin).
-      userHasAccessToAllTenants: () => true,
+      // Super-admins (SUPER_ADMIN_EMAILS) see every tenant; everyone else is
+      // scoped to their assigned tenant(s). SAFETY: until SUPER_ADMIN_EMAILS is
+      // set, keep open access so a deploy can't lock the admin out — isolation
+      // switches on the moment the env var is configured.
+      userHasAccessToAllTenants: (user) =>
+        SUPER_ADMIN_EMAILS.length === 0 ? true : isSuperAdmin(user),
+      // Only a super-admin may assign/change a user's tenants (no self-escalation).
+      tenantsArrayField: {
+        includeDefaultField: true,
+        arrayFieldAccess: {
+          create: superAdminFieldAccess,
+          update: superAdminFieldAccess,
+        },
+        tenantFieldAccess: {
+          create: superAdminFieldAccess,
+          update: superAdminFieldAccess,
+        },
+      },
       // Show the tenant field in the admin while we build.
       debug: true,
     }),
