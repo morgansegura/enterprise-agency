@@ -140,5 +140,74 @@ export function LiveBlocks({
     [data, mediaIndex],
   );
 
-  return <BlockList layout={layout} only={only} />;
+  return (
+    <>
+      <BlockList layout={layout} only={only} />
+      <PreviewDebug serverURL={serverURL} />
+    </>
+  );
+}
+
+/**
+ * TEMPORARY on-screen diagnostic for Live Preview. Renders only inside the
+ * preview iframe (LiveBlocks only mounts in draft mode). Its presence confirms
+ * the deploy took; the counter shows whether Payload is streaming keystrokes.
+ * Remove once live preview is confirmed working.
+ */
+function PreviewDebug({ serverURL }: { serverURL?: string }) {
+  const [count, setCount] = React.useState(0);
+  const [last, setLast] = React.useState("(none yet — type in a field)");
+
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const ancestor =
+    typeof window !== "undefined" && window.location.ancestorOrigins?.length
+      ? window.location.ancestorOrigins[0]
+      : "(none)";
+
+  React.useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      const d: unknown = e.data;
+      let shape: string;
+      if (typeof d === "string") {
+        shape = `string "${d.slice(0, 48)}"`;
+      } else if (d && typeof d === "object") {
+        const t = (d as { type?: unknown }).type;
+        shape = `obj keys=[${Object.keys(d).join(",")}] type=${String(t)}`;
+      } else {
+        shape = `${typeof d}`;
+      }
+      setCount((c) => c + 1);
+      setLast(`${e.origin}\n     ${shape}`);
+    };
+    window.addEventListener("message", onMsg);
+    return () => window.removeEventListener("message", onMsg);
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: 8,
+        left: 8,
+        zIndex: 99999,
+        background: "#000",
+        color: "#0f0",
+        font: "11px/1.4 monospace",
+        padding: "6px 8px",
+        borderRadius: 4,
+        maxWidth: 460,
+        opacity: 0.92,
+        pointerEvents: "none",
+        whiteSpace: "pre-wrap",
+      }}
+      suppressHydrationWarning
+    >
+      {`live-preview debug
+iframe origin: ${origin}
+serverURL:     ${serverURL ?? "(cookie missing → fallback)"}
+ancestor[0]:   ${ancestor}
+msgs received: ${count}
+last msg:      ${last}`}
+    </div>
+  );
 }
