@@ -1,4 +1,4 @@
-import { draftMode } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { CMS_ORIGIN_COOKIE } from "@/lib/preview";
@@ -30,15 +30,33 @@ export async function GET(req: NextRequest) {
   }
 
   (await draftMode()).enable();
+  // Read the token draftMode() just generated so we can re-issue the cookie
+  // ourselves — see below.
+  const bypass = (await cookies()).get("__prerender_bypass")?.value;
 
   const path = searchParams.get("path") || "/";
   // Only allow internal paths (no open redirect).
   const safePath = path.startsWith("/") ? path : "/";
   const res = NextResponse.redirect(new URL(safePath, req.url));
 
+  // draftMode().enable() writes `__prerender_bypass` via the cookie store — which
+  // (a) may not attach to a manually-returned redirect and (b) defaults to
+  // SameSite=Lax, which browsers DROP inside the cross-site admin↔FE preview
+  // iframe (admin on one domain, FE on another). Without it, draft mode never
+  // turns on in the iframe, so Live Preview never mounts. Re-issue it on THIS
+  // response as SameSite=None; Secure so draft mode both attaches and survives.
+  if (bypass) {
+    res.cookies.set("__prerender_bypass", bypass, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      path: "/",
+    });
+  }
+
   // Persist the CMS origin (fall back to the request's referer origin) so the
-  // live-preview iframe can address messages back to the admin window. Set on
-  // the redirect response directly so it can't be dropped by the cookies() API.
+  // live-preview iframe can address messages back to the admin window. Same
+  // SameSite=None so it survives the cross-site iframe too.
   const origin =
     safeOrigin(searchParams.get("origin")) ||
     safeOrigin(req.headers.get("referer"));
