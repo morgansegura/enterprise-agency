@@ -11,12 +11,8 @@ import { IconCardsBlock } from '../blocks/IconCards'
 import { CalloutBlock } from '../blocks/Callout'
 import { StatBandBlock } from '../blocks/StatBand'
 import { PortraitGridBlock } from '../blocks/PortraitGrid'
-import { Content } from '../blocks/Content'
 import { RichTextBlock } from '../blocks/RichText'
 import { LegalSectionBlock } from '../blocks/LegalSection'
-import { CallToAction } from '../blocks/CallToAction'
-import { Features } from '../blocks/Features'
-import { ImageBlock } from '../blocks/Image'
 import { revalidatePages, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 import { importImageUrls } from '../hooks/import-image-urls'
 import { buildPreviewUrl } from '../lib/preview'
@@ -86,12 +82,8 @@ export const Pages: CollectionConfig = {
         CalloutBlock,
         StatBandBlock,
         PortraitGridBlock,
-        Content,
         RichTextBlock,
         LegalSectionBlock,
-        CallToAction,
-        Features,
-        ImageBlock,
       ],
     },
     {
