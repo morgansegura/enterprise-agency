@@ -50,6 +50,7 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       sameSite: "none",
       secure: true,
+      partitioned: true,
       path: "/",
     });
   }
@@ -65,6 +66,7 @@ export async function GET(req: NextRequest) {
       httpOnly: true,
       sameSite: "none",
       secure: true,
+      partitioned: true,
       path: "/",
     });
   }
