@@ -22,8 +22,15 @@ export function isSuperAdmin(user: MaybeUser): boolean {
   return email !== '' && SUPER_ADMIN_EMAILS.includes(email)
 }
 
-/** Collection access: super-admin only. */
-export const superAdminAccess: Access = ({ req: { user } }) => isSuperAdmin(user)
+/**
+ * Collection access: super-admin only — but OPEN until super-admins are
+ * configured, matching `userHasAccessToAllTenants`. Without this fallback these
+ * guards would deny everyone (locking editing) whenever SUPER_ADMIN_EMAILS is
+ * unset. Isolation + these locks activate together the moment it's configured.
+ */
+export const superAdminAccess: Access = ({ req: { user } }) =>
+  SUPER_ADMIN_EMAILS.length === 0 || isSuperAdmin(user)
 
-/** Field access: super-admin only (e.g. tenant assignment, roles). */
-export const superAdminFieldAccess: FieldAccess = ({ req: { user } }) => isSuperAdmin(user)
+/** Field access: super-admin only (open until super-admins are configured). */
+export const superAdminFieldAccess: FieldAccess = ({ req: { user } }) =>
+  SUPER_ADMIN_EMAILS.length === 0 || isSuperAdmin(user)
