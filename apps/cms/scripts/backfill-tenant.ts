@@ -41,8 +41,10 @@ async function run() {
   for (const collection of COLLECTIONS) {
     const res = await payload.update({
       collection,
-      where: { tenant: { exists: false } },
-      data: { tenant: tenantId },
+      // `tenant` is added by the multi-tenant plugin at runtime; payload-types.ts
+      // won't include it until `generate:types` runs post-migration — cast here.
+      where: { tenant: { exists: false } } as never,
+      data: { tenant: tenantId } as never,
       depth: 0,
       overrideAccess: true,
     })
