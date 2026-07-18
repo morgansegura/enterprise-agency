@@ -20,6 +20,7 @@ import { Staff } from './collections/Staff'
 import { Testimonials } from './collections/Testimonials'
 import { Facilities } from './collections/Facilities'
 import { isSuperAdmin, superAdminFieldAccess, SUPER_ADMIN_EMAILS } from './access/roles'
+import { stampSubmissionTenant } from './hooks/stamp-submission-tenant'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -103,6 +104,11 @@ export default buildConfig({
         number: true,
         message: true,
       },
+      // Stamp each public submission with the tenant of the form it belongs to,
+      // so multi-tenant scoping below keeps one client's leads out of another's.
+      formSubmissionOverrides: {
+        hooks: { beforeValidate: [stampSubmissionTenant] },
+      },
     }),
     multiTenantPlugin({
       collections: {
@@ -115,6 +121,11 @@ export default buildConfig({
         siteSettings: { isGlobal: true },
         menus: {},
         forms: {},
+        // Scope the shared media library + form leads per client. Media read
+        // stays public (served from the R2 CDN); the tenant field only gates the
+        // admin library + create/update/delete for scoped editors.
+        media: {},
+        'form-submissions': {},
       },
       // Super-admins (SUPER_ADMIN_EMAILS) see every tenant; everyone else is
       // scoped to their assigned tenant(s). SAFETY: until SUPER_ADMIN_EMAILS is
