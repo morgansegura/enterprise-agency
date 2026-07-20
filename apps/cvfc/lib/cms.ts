@@ -101,6 +101,23 @@ export const getPage = cache(async (slug: string): Promise<Page | null> => {
   return pages[0] ?? null;
 });
 
+/**
+ * Latest DRAFT of a page by slug — for the secret-gated `/preview` route. The
+ * preview iframe is cross-site (admin vs FE), where browsers block the draft
+ * cookie, so cookie-free Live Preview carries state in the URL and fetches the
+ * draft explicitly here (never used on the public site).
+ */
+export const getPageDraft = cache(
+  async (slug: string): Promise<Page | null> => {
+    const pages = await cmsFind<Page>(
+      "pages",
+      `where[slug][equals]=${encodeURIComponent(slug)}&depth=2&limit=1&draft=true`,
+      true,
+    );
+    return pages[0] ?? null;
+  },
+);
+
 // Client-safe helpers live in lib/media (kept out of this server-only module so
 // the block renderer can run in the Live Preview client path). Re-exported here
 // for back-compat so server consumers can keep importing from "@/lib/cms".

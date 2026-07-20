@@ -25,7 +25,7 @@ type PageDoc = {
 /** Front-end preview URL for a page — home maps to `/`, others to `/slug`. */
 function previewUrl(doc: PageDoc | undefined, req: PayloadRequest): Promise<string> {
   const path = doc?.slug && doc.slug !== 'home' ? `/${doc.slug}` : '/'
-  return buildPreviewUrl(path, doc?.tenant, req)
+  return buildPreviewUrl(path, doc?.tenant, req, '/preview')
 }
 
 export const Pages: CollectionConfig = {

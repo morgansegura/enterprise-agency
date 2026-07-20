@@ -55,6 +55,10 @@ export async function buildPreviewUrl(
   path: string,
   tenant: TenantRef,
   req: PayloadRequest,
+  // `/preview` = cookie-free live preview (works cross-site). `/api/preview` is
+  // the legacy draft-cookie route, still used by surfaces not yet migrated
+  // (Posts). Pages opt into `/preview`.
+  endpoint: '/preview' | '/api/preview' = '/api/preview',
 ): Promise<string> {
   const secret = process.env.PREVIEW_SECRET || 'preview-dev'
   const envBase = process.env.FRONTEND_URL?.replace(/\/+$/, '')
@@ -73,5 +77,5 @@ export async function buildPreviewUrl(
   }
 
   const origin = encodeURIComponent(cmsOrigin(req))
-  return `${base}/api/preview?secret=${encodeURIComponent(secret)}&path=${encodeURIComponent(path)}&origin=${origin}`
+  return `${base}${endpoint}?secret=${encodeURIComponent(secret)}&path=${encodeURIComponent(path)}&origin=${origin}`
 }
