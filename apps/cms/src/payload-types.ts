@@ -421,14 +421,6 @@ export interface Page {
             blockType: 'portraitGrid';
           }
         | {
-            heading?: string | null;
-            body?: string | null;
-            align?: ('left' | 'center') | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'content';
-          }
-        | {
             content?: {
               root: {
                 type: string;
@@ -469,42 +461,6 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'legalSection';
-          }
-        | {
-            heading: string;
-            body?: string | null;
-            buttonLabel?: string | null;
-            buttonHref?: string | null;
-            background?: ('none' | 'muted' | 'brand') | null;
-            align?: ('left' | 'center') | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'cta';
-          }
-        | {
-            heading?: string | null;
-            intro?: string | null;
-            columns?: ('2' | '3') | null;
-            items?:
-              | {
-                  title: string;
-                  description?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
-            align?: ('left' | 'center') | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'features';
-          }
-        | {
-            image: number | Media;
-            caption?: string | null;
-            width?: ('container' | 'full') | null;
-            align?: ('left' | 'center') | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'image';
           }
       )[]
     | null;
@@ -587,6 +543,7 @@ export interface Tenant {
  */
 export interface Media {
   id: number;
+  tenant?: (number | null) | Tenant;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -1185,6 +1142,7 @@ export interface Form {
  */
 export interface FormSubmission {
   id: number;
+  tenant?: (number | null) | Tenant;
   form: number | Form;
   submissionData?:
     | {
@@ -1658,15 +1616,6 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
-        content?:
-          | T
-          | {
-              heading?: T;
-              body?: T;
-              align?: T;
-              id?: T;
-              blockName?: T;
-            };
         richText?:
           | T
           | {
@@ -1680,45 +1629,6 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               content?: T;
-              id?: T;
-              blockName?: T;
-            };
-        cta?:
-          | T
-          | {
-              heading?: T;
-              body?: T;
-              buttonLabel?: T;
-              buttonHref?: T;
-              background?: T;
-              align?: T;
-              id?: T;
-              blockName?: T;
-            };
-        features?:
-          | T
-          | {
-              heading?: T;
-              intro?: T;
-              columns?: T;
-              items?:
-                | T
-                | {
-                    title?: T;
-                    description?: T;
-                    id?: T;
-                  };
-              align?: T;
-              id?: T;
-              blockName?: T;
-            };
-        image?:
-          | T
-          | {
-              image?: T;
-              caption?: T;
-              width?: T;
-              align?: T;
               id?: T;
               blockName?: T;
             };
@@ -2002,6 +1912,7 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  tenant?: T;
   alt?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2198,6 +2109,7 @@ export interface FormsSelect<T extends boolean = true> {
  * via the `definition` "form-submissions_select".
  */
 export interface FormSubmissionsSelect<T extends boolean = true> {
+  tenant?: T;
   form?: T;
   submissionData?:
     | T
