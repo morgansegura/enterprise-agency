@@ -16,6 +16,7 @@ import { LegalSectionBlock } from '../blocks/LegalSection'
 import { revalidatePages, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 import { importImageUrls } from '../hooks/import-image-urls'
 import { buildPreviewUrl } from '../lib/preview'
+import { publicOrPreviewRead } from '../access/roles'
 
 type PageDoc = {
   slug?: string
@@ -49,7 +50,9 @@ export const Pages: CollectionConfig = {
       ],
     },
   },
-  access: { read: () => true },
+  // Published content is public (FE reads it unauth); drafts require auth or the
+  // preview secret, so one tenant's unpublished pages can't leak via the API.
+  access: { read: publicOrPreviewRead },
   hooks: {
     // Recursively imports any block/slide/person `imageUrl` into Media on save.
     beforeChange: [importImageUrls([{ image: 'image', url: 'imageUrl' }])],

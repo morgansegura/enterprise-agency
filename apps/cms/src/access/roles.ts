@@ -34,3 +34,20 @@ export const superAdminAccess: Access = ({ req: { user } }) =>
 /** Field access: super-admin only (open until super-admins are configured). */
 export const superAdminFieldAccess: FieldAccess = ({ req: { user } }) =>
   SUPER_ADMIN_EMAILS.length === 0 || isSuperAdmin(user)
+
+/**
+ * Public read that never exposes drafts. Authenticated users (the plugin then
+ * scopes them to their tenant) and preview requests carrying the shared
+ * `x-preview-secret` header see everything; everyone else — the public FE,
+ * scrapers, other tenants — is limited to PUBLISHED docs via a where-constraint.
+ * Keeps published content public for the front-ends while preventing one
+ * tenant's unpublished drafts from leaking through the shared API.
+ */
+export const publicOrPreviewRead: Access = ({ req }) => {
+  if (req.user) return true
+  const secret = req.headers?.get?.('x-preview-secret')
+  if (secret && secret === (process.env.PREVIEW_SECRET || 'preview-dev')) {
+    return true
+  }
+  return { _status: { equals: 'published' } }
+}
