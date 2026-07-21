@@ -154,7 +154,7 @@ export async function SponsorScreen() {
           )}
         />
 
-        <Section bg="bone" size="default">
+        {/* <Section bg="bone" size="default">
           <Heading
             eyebrow="Sponsorship Tiers"
             heading="Pick the level that fits your business."
@@ -206,7 +206,7 @@ export async function SponsorScreen() {
               </li>
             ))}
           </ul>
-        </Section>
+        </Section> */}
 
         <Callout
           {...cmsOverlay(

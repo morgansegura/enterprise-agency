@@ -130,7 +130,12 @@ export async function SupportScreen() {
             "Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this."
           }
           actions={
-            <Button variant="default" render={<Link href="#donate" />}>
+            <Button
+              variant="default"
+              render={
+                <Link href="mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC" />
+              }
+            >
               <Icon token="ri:badge" aria-hidden="true" />
               <span>Donate now</span>
             </Button>
@@ -151,7 +156,7 @@ export async function SupportScreen() {
           )}
         />
 
-        <Section bg="bone" size="default" id="donate">
+        {/* <Section bg="bone" size="default" id="donate">
           <Heading
             eyebrow="One-Time Gift"
             heading="Give what feels right."
@@ -184,9 +189,9 @@ export async function SupportScreen() {
               </li>
             ))}
           </ul>
-        </Section>
+        </Section> */}
 
-        <Section bg="white" size="default">
+        {/* <Section bg="white" size="default">
           <Heading
             eyebrow="Recurring Support"
             heading="Become a monthly donor."
@@ -220,7 +225,7 @@ export async function SupportScreen() {
               </li>
             ))}
           </ul>
-        </Section>
+        </Section> */}
 
         <Section bg="bone" size="default" id="donate-form">
           <div className="support-form-block">
