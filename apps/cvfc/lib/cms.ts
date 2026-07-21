@@ -266,7 +266,20 @@ export type SiteSettings = {
     copyrightName?: string | null;
     social?: Array<{ platform?: string | null; url?: string | null }> | null;
   } | null;
+  /** Comma/newline-separated club-admin emails notified on each new signup. */
+  signupNotifyEmails?: string | null;
 };
+
+/** Parsed club-admin notification emails from Site Settings (deduped). */
+export const getSignupNotifyEmails = cache(async (): Promise<string[]> => {
+  const settings = await getSiteSettings();
+  const raw = settings?.signupNotifyEmails ?? "";
+  const emails = raw
+    .split(/[\s,;]+/)
+    .map((e) => e.trim().toLowerCase())
+    .filter((e) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e));
+  return [...new Set(emails)];
+});
 
 /** This tenant's SiteSettings, with header/footer menus populated (depth=2). */
 export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {

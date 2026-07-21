@@ -103,6 +103,15 @@ export const SiteSettings: CollectionConfig = {
       ],
     },
     {
+      name: 'signupNotifyEmails',
+      type: 'textarea',
+      label: 'Signup notification emails',
+      admin: {
+        description:
+          'Club administrators who get notified when a parent joins — one email per line or comma-separated. They receive the same new-signup notification as the matched coach (so they know which coach was matched, and catch signups where no coach matched).',
+      },
+    },
+    {
       name: 'analytics',
       type: 'group',
       label: 'Analytics',

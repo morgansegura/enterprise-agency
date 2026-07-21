@@ -2,6 +2,7 @@ import * as migration_20260627_195924_initial_schema from './20260627_195924_ini
 import * as migration_20260628_163059_posts_autosave from './20260628_163059_posts_autosave'
 import * as migration_20260702_194345_legal_section from './20260702_194345_legal_section'
 import * as migration_20260720_120000_tenant_scope_media_forms from './20260720_120000_tenant_scope_media_forms'
+import * as migration_20260721_120000_signup_notify_emails from './20260721_120000_signup_notify_emails'
 
 export const migrations = [
   {
@@ -23,5 +24,10 @@ export const migrations = [
     up: migration_20260720_120000_tenant_scope_media_forms.up,
     down: migration_20260720_120000_tenant_scope_media_forms.down,
     name: '20260720_120000_tenant_scope_media_forms',
+  },
+  {
+    up: migration_20260721_120000_signup_notify_emails.up,
+    down: migration_20260721_120000_signup_notify_emails.down,
+    name: '20260721_120000_signup_notify_emails',
   },
 ]

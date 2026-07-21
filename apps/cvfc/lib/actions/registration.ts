@@ -9,6 +9,7 @@ import {
   type ExperienceInput,
 } from "@/lib/monday";
 import { sendParentThankYou, sendCoachNotification } from "@/lib/email/send";
+import { getSignupNotifyEmails } from "@/lib/cms";
 
 const MONTHS = [
   "January",
@@ -54,20 +55,33 @@ export async function saveSignup(
           parentName,
           playerFirstName: player.firstName,
         });
-        if (coach) {
-          const [year, month] = player.dob.split("-");
-          await sendCoachNotification(coach.email, {
-            coachName: coach.name,
-            playerName: `${player.firstName} ${player.lastName}`.trim(),
-            birthYear: year,
-            birthMonth: MONTHS[Number(month) - 1],
-            gender: player.gender === "boys" ? "Boys" : "Girls",
-            priorLeagueLevel: player.priorLeagueLevel,
-            parentName,
-            parentEmail: parent.email,
-            parentPhone: parent.phone,
-          });
-        }
+
+        const [year, month] = player.dob.split("-");
+        const notifyData = {
+          coachName: coach?.name,
+          playerName: `${player.firstName} ${player.lastName}`.trim(),
+          birthYear: year,
+          birthMonth: MONTHS[Number(month) - 1],
+          gender: player.gender === "boys" ? "Boys" : "Girls",
+          priorLeagueLevel: player.priorLeagueLevel,
+          parentName,
+          parentEmail: parent.email,
+          parentPhone: parent.phone,
+        };
+
+        // Notify the club-admin list (they alert the proper coaches). The email
+        // includes the auto-matched coach as a suggestion. Fall back to emailing
+        // the matched coach directly only if no admins are configured yet, so
+        // signups are never silently unnotified. Best-effort, deduped.
+        const admins = await getSignupNotifyEmails();
+        const recipients = admins.length
+          ? admins
+          : coach
+            ? [coach.email.toLowerCase()]
+            : [];
+        await Promise.allSettled(
+          recipients.map((email) => sendCoachNotification(email, notifyData)),
+        );
       } catch (emailErr) {
         console.error("signup email failed:", emailErr);
       }
