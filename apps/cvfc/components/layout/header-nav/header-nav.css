@@ -9,6 +9,7 @@
 
   .menu-item-label {
     @apply flex gap-1 items-center uppercase text-sm tracking-wide font-bold px-2 transition-colors ease-out duration-300 h-14;
+    @apply cursor-pointer border-0 bg-transparent;
 
     svg {
       @apply w-2.5 transition-transform duration-300 ease-out;
@@ -16,12 +17,11 @@
   }
 
   .menu-item:hover .menu-item-label,
-  .menu-item:focus-within .menu-item-label {
+  .menu-item[data-open="true"] .menu-item-label {
     @apply text-(--color-gold);
   }
 
-  .menu-item:hover .menu-item-label svg,
-  .menu-item:focus-within .menu-item-label svg {
+  .menu-item[data-open="true"] .menu-item-label svg {
     @apply rotate-180;
   }
 
@@ -31,8 +31,7 @@
     @apply translate-y-12 opacity-0 pointer-events-none;
   }
 
-  .menu-item:hover .item-card,
-  .menu-item:focus-within .item-card {
+  .menu-item[data-open="true"] .item-card {
     @apply translate-y-0 opacity-100 pointer-events-auto;
   }
 
