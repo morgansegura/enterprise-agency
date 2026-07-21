@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { tenantScopedRead } from '../access/tenant-read'
 
 import { importImageUrls } from '../hooks/import-image-urls'
 
@@ -18,7 +19,7 @@ export const Staff: CollectionConfig = {
     defaultColumns: ['name', 'title', 'group', 'order'],
     group: 'Content',
   },
-  access: { read: () => true },
+  access: { read: tenantScopedRead() },
   hooks: {
     beforeChange: [importImageUrls([{ image: 'photo', url: 'imageUrl', alt: 'name' }])],
   },

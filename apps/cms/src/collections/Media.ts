@@ -1,9 +1,10 @@
 import type { CollectionConfig } from 'payload'
+import { tenantScopedRead } from '../access/tenant-read'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    read: () => true,
+    read: tenantScopedRead(),
   },
   fields: [
     {

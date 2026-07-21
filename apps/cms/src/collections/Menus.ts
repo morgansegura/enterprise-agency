@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { tenantScopedRead } from '../access/tenant-read'
 
 const target = {
   name: 'target',
@@ -19,7 +20,7 @@ const target = {
 export const Menus: CollectionConfig = {
   slug: 'menus',
   admin: { useAsTitle: 'name' },
-  access: { read: () => true },
+  access: { read: tenantScopedRead() },
   fields: [
     {
       name: 'name',

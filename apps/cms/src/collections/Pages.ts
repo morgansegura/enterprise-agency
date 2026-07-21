@@ -16,7 +16,7 @@ import { LegalSectionBlock } from '../blocks/LegalSection'
 import { revalidatePages, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 import { importImageUrls } from '../hooks/import-image-urls'
 import { buildPreviewUrl } from '../lib/preview'
-import { publicOrPreviewRead } from '../access/roles'
+import { tenantScopedRead } from '../access/tenant-read'
 
 type PageDoc = {
   slug?: string
@@ -52,7 +52,7 @@ export const Pages: CollectionConfig = {
   },
   // Published content is public (FE reads it unauth); drafts require auth or the
   // preview secret, so one tenant's unpublished pages can't leak via the API.
-  access: { read: publicOrPreviewRead },
+  access: { read: tenantScopedRead({ versioned: true }) },
   hooks: {
     // Recursively imports any block/slide/person `imageUrl` into Media on save.
     beforeChange: [importImageUrls([{ image: 'image', url: 'imageUrl' }])],

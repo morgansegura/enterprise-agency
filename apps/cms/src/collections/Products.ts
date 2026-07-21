@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { tenantScopedRead } from '../access/tenant-read'
 
 import { importImageUrls } from '../hooks/import-image-urls'
 
@@ -6,7 +7,7 @@ import { importImageUrls } from '../hooks/import-image-urls'
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: { useAsTitle: 'name' },
-  access: { read: () => true },
+  access: { read: tenantScopedRead() },
   hooks: {
     beforeChange: [importImageUrls([{ image: 'image', url: 'imageUrl', alt: 'name' }])],
   },

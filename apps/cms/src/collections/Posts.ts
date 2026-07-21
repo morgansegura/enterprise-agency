@@ -3,7 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { revalidatePosts, revalidatePostsAfterDelete } from '../hooks/revalidate-posts'
 import { importImageUrls } from '../hooks/import-image-urls'
 import { buildPreviewUrl } from '../lib/preview'
-import { publicOrPreviewRead } from '../access/roles'
+import { tenantScopedRead } from '../access/tenant-read'
 
 type PostPreviewDoc = {
   slug?: string
@@ -43,7 +43,7 @@ export const Posts: CollectionConfig = {
     },
   },
   // Published posts are public; drafts require auth or the preview secret.
-  access: { read: publicOrPreviewRead },
+  access: { read: tenantScopedRead({ versioned: true }) },
   indexes: [{ fields: ['tenant', 'slug'], unique: true }],
   hooks: {
     beforeChange: [

@@ -15,17 +15,20 @@ const cmsStr = (v: unknown): string | undefined =>
  */
 async function cmsFetch<T>(path: string, draft = false): Promise<T | null> {
   try {
-    const previewSecret = process.env.PREVIEW_SECRET;
+    // This site's per-tenant read key scopes public reads to our tenant; the
+    // preview secret additionally unlocks drafts. Server-side only.
+    const headers: Record<string, string> = {};
+    if (process.env.CMS_TENANT_KEY)
+      headers["X-Tenant-Key"] = process.env.CMS_TENANT_KEY;
+    if (draft && process.env.PREVIEW_SECRET)
+      headers["X-Preview-Secret"] = process.env.PREVIEW_SECRET;
+
     const res = await fetch(`${site.cmsUrl}/api${path}`, {
       // Draft/preview reads must always be fresh; published reads cache 60s.
       ...(draft
         ? { cache: "no-store" as const }
         : { next: { revalidate: 60 } }),
-      // Draft reads authenticate with the shared preview secret — the CMS only
-      // serves unpublished docs to callers that present it (server-side only).
-      ...(draft && previewSecret
-        ? { headers: { "X-Preview-Secret": previewSecret } }
-        : {}),
+      ...(Object.keys(headers).length ? { headers } : {}),
       // Fail fast: if the CMS is slow or wedged, abort and let callers fall
       // back rather than hanging on undici's multi-minute default timeout.
       signal: AbortSignal.timeout(3000),
