@@ -16,6 +16,12 @@
   @apply h-full w-full object-cover;
 }
 
+/* Force the <img> to fill — beats Preflight's `img{height:auto}` (see note in
+   news-post-screen.css) so wide images cover the container. */
+.news-featured-image-wrap img {
+  @apply absolute inset-0 h-full w-full object-cover;
+}
+
 .news-featured-body {
   @apply flex flex-col gap-5 lg:col-span-5 lg:px-2;
 }

@@ -25,6 +25,13 @@
   @apply h-full w-full object-cover;
 }
 
+/* Force the actual <img> to fill — beats Tailwind Preflight's `img{height:auto}`,
+   which can otherwise win over the @wf/ui base across the package boundary and
+   leave wide images short of the container height. */
+.news-post-image-wrap img {
+  @apply absolute inset-0 h-full w-full object-cover;
+}
+
 /* ==================== BODY (HTML PROSE) ==================== */
 
 .news-post-body {

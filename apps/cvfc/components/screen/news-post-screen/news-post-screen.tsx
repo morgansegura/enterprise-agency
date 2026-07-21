@@ -44,7 +44,7 @@ export async function NewsPostScreen({ slug }: NewsPostScreenProps) {
       />
       <main>
         <article className="news-post">
-          <Section bg="white" size="intro" className="max-md:pt-10">
+          <Section bg="white" size="hero" className="!pb-0">
             <header className="news-post-header">
               <p className="news-post-eyebrow">
                 <span className="eyebrow-rule" aria-hidden="true" />
