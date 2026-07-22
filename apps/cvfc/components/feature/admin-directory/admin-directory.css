@@ -77,6 +77,18 @@
   @apply rounded-full border border-(--color-gold) px-3 py-1 text-[11px] font-bold uppercase tracking-[0.125em] text-(--color-gold);
 }
 
+.admin-directory-detail-achievements {
+  @apply flex flex-col gap-1.5;
+}
+
+.admin-directory-detail-achievements li {
+  @apply flex items-start gap-2 text-sm leading-snug text-(--color-midnight)/85;
+}
+
+.admin-directory-detail-achievements li svg {
+  @apply mt-0.5 size-4 shrink-0 text-(--color-gold);
+}
+
 .admin-directory-detail-bio {
   @apply mt-2 text-sm leading-relaxed text-(--color-midnight)/85;
 }

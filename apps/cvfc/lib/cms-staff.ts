@@ -48,6 +48,7 @@ export function staffToAdmin(d: StaffDoc): AdminMember {
     title: str(d.title) ?? "",
     department: str(d.department),
     credentials: arr(d.credentials),
+    achievements: arr(d.achievements),
     bio: str(d.bio),
     image: image(d),
     contact: { email: str(d.email), phone: str(d.phone) },

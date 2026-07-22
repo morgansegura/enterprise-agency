@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { Image } from "@/components/ui";
+import { Icon } from "@/components/icon";
 import { type AdminMember } from "@/data/administrators";
 import { cn } from "@/lib/utils";
 
@@ -69,6 +70,22 @@ export function AdminDirectory({
                   <ul className="admin-directory-detail-credentials">
                     {selected.credentials.map((c) => (
                       <li key={c}>{c}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              {selected.achievements?.length ? (
+                <div className="admin-directory-detail-section">
+                  <p className="admin-directory-detail-section-label">
+                    Achievements
+                  </p>
+                  <ul className="admin-directory-detail-achievements">
+                    {selected.achievements.map((a) => (
+                      <li key={a}>
+                        <Icon token="ri:badge" aria-hidden="true" />
+                        <span>{a}</span>
+                      </li>
                     ))}
                   </ul>
                 </div>

@@ -24,6 +24,7 @@ export type AdminMember = {
   /** Free-form department grouping (optional). e.g. "Executive", "Operations". */
   department?: string;
   credentials?: string[];
+  achievements?: string[];
   bio?: string;
   image?: { src: string; alt: string };
   contact?: { email?: string; phone?: string };
