@@ -266,20 +266,35 @@ export type SiteSettings = {
     copyrightName?: string | null;
     social?: Array<{ platform?: string | null; url?: string | null }> | null;
   } | null;
-  /** Comma/newline-separated club-admin emails notified on each new signup. */
-  signupNotifyEmails?: string | null;
+  /** Club-admin notification lists (comma/newline-separated) by pathway. */
+  signupNotify?: {
+    all?: string | null;
+    boys?: string | null;
+    girls?: string | null;
+  } | null;
 };
 
-/** Parsed club-admin notification emails from Site Settings (deduped). */
-export const getSignupNotifyEmails = cache(async (): Promise<string[]> => {
-  const settings = await getSiteSettings();
-  const raw = settings?.signupNotifyEmails ?? "";
-  const emails = raw
+function parseEmails(raw?: string | null): string[] {
+  return (raw ?? "")
     .split(/[\s,;]+/)
     .map((e) => e.trim().toLowerCase())
     .filter((e) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e));
-  return [...new Set(emails)];
-});
+}
+
+/**
+ * Club-admin signup-notification recipients for a pathway: the "All" list plus
+ * the boys- or girls-specific list (deduped). Configured in Site Settings.
+ */
+export const getSignupNotifyRecipients = cache(
+  async (gender: "boys" | "girls"): Promise<string[]> => {
+    const notify = (await getSiteSettings())?.signupNotify;
+    const emails = [
+      ...parseEmails(notify?.all),
+      ...parseEmails(gender === "boys" ? notify?.boys : notify?.girls),
+    ];
+    return [...new Set(emails)];
+  },
+);
 
 /** This tenant's SiteSettings, with header/footer menus populated (depth=2). */
 export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {

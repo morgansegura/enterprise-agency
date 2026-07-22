@@ -9,7 +9,7 @@ import {
   type ExperienceInput,
 } from "@/lib/monday";
 import { sendParentThankYou, sendCoachNotification } from "@/lib/email/send";
-import { getSignupNotifyEmails } from "@/lib/cms";
+import { getSignupNotifyRecipients } from "@/lib/cms";
 
 const MONTHS = [
   "January",
@@ -69,11 +69,12 @@ export async function saveSignup(
           parentPhone: parent.phone,
         };
 
-        // Notify the club-admin list (they alert the proper coaches). The email
-        // includes the auto-matched coach as a suggestion. Fall back to emailing
-        // the matched coach directly only if no admins are configured yet, so
-        // signups are never silently unnotified. Best-effort, deduped.
-        const admins = await getSignupNotifyEmails();
+        // Notify the club-admin list for this pathway (All + Boys/Girls). They
+        // alert the proper coaches; the email includes the auto-matched coach as
+        // a suggestion. Fall back to emailing the matched coach directly only if
+        // no admins are configured yet, so signups are never silently
+        // unnotified. Best-effort, deduped.
+        const admins = await getSignupNotifyRecipients(player.gender);
         const recipients = admins.length
           ? admins
           : coach

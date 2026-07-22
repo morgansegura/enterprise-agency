@@ -103,13 +103,30 @@ export const SiteSettings: CollectionConfig = {
       ],
     },
     {
-      name: 'signupNotifyEmails',
-      type: 'textarea',
+      name: 'signupNotify',
+      type: 'group',
       label: 'Signup notification emails',
       admin: {
         description:
-          'Club administrators who get notified when a parent joins — one email per line or comma-separated. They receive the same new-signup notification as the matched coach (so they know which coach was matched, and catch signups where no coach matched).',
+          'Club admins notified when a parent joins (one per line or comma-separated). "All" is notified on every signup; "Boys"/"Girls" are added for that pathway. They get the same new-signup email as the matched coach.',
       },
+      fields: [
+        {
+          name: 'all',
+          type: 'textarea',
+          label: 'All — every signup',
+        },
+        {
+          name: 'boys',
+          type: 'textarea',
+          label: 'Boys pathway',
+        },
+        {
+          name: 'girls',
+          type: 'textarea',
+          label: 'Girls pathway',
+        },
+      ],
     },
     {
       name: 'analytics',
