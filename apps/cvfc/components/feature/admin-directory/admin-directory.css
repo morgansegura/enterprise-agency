@@ -90,7 +90,7 @@
 }
 
 .admin-directory-detail-bio {
-  @apply mt-2 text-sm leading-relaxed text-(--color-midnight)/85;
+  @apply mt-2 whitespace-pre-line text-sm leading-relaxed text-(--color-midnight)/85;
 }
 
 .admin-directory-detail-contact {
