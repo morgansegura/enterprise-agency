@@ -1,23 +1,25 @@
-import { revalidatePath } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
-/** Best-effort: no-ops outside a Next request context (e.g. the seed script). */
-function safeRevalidate(path: string) {
-  try {
-    revalidatePath(path)
-  } catch {
-    // Not in a Next request (seed/CLI) — no page cache to revalidate.
-  }
-}
+import { revalidateFrontend } from '../lib/preview'
 
-export const revalidatePosts: CollectionAfterChangeHook = ({ doc }) => {
-  safeRevalidate('/blog')
-  if (doc?.slug) safeRevalidate(`/blog/${doc.slug}`)
+/**
+ * On publish, refresh the news index + the post's page on the tenant's FE (a
+ * separate deployment — the CMS's own revalidatePath can't reach it). Skip draft
+ * autosaves so unpublished edits don't hit the live site.
+ */
+export const revalidatePosts: CollectionAfterChangeHook = async ({ doc, previousDoc, req }) => {
+  const isPublished = doc?._status === 'published'
+  const wasPublished = previousDoc?._status === 'published'
+  if (!isPublished && !wasPublished) return doc
+
+  const tenant = doc?.tenant ?? previousDoc?.tenant
+  await revalidateFrontend('/news', tenant, req)
+  if (doc?.slug) await revalidateFrontend(`/news/${doc.slug}`, tenant, req)
   return doc
 }
 
-export const revalidatePostsAfterDelete: CollectionAfterDeleteHook = ({ doc }) => {
-  safeRevalidate('/blog')
-  if (doc?.slug) safeRevalidate(`/blog/${doc.slug}`)
+export const revalidatePostsAfterDelete: CollectionAfterDeleteHook = async ({ doc, req }) => {
+  await revalidateFrontend('/news', doc?.tenant, req)
+  if (doc?.slug) await revalidateFrontend(`/news/${doc.slug}`, doc?.tenant, req)
   return doc
 }

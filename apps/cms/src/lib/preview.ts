@@ -51,18 +51,13 @@ function publicHost(domain?: string | null): string | null {
  * hosts); dev uses FRONTEND_URL or localhost. Hits the FE `/api/preview` with
  * the shared secret. Shared by Pages and Posts so both preview the same way.
  */
-export async function buildPreviewUrl(
-  path: string,
-  tenant: TenantRef,
-  req: PayloadRequest,
-  // `/preview` = cookie-free live preview (works cross-site). `/api/preview` is
-  // the legacy draft-cookie route, still used by surfaces not yet migrated
-  // (Posts). Pages opt into `/preview`.
-  endpoint: '/preview' | '/api/preview' = '/api/preview',
-): Promise<string> {
-  const secret = process.env.PREVIEW_SECRET || 'preview-dev'
+/**
+ * The tenant's front-end base URL, resolved PER TENANT (one CMS, many sites).
+ * Prod uses the tenant's public `domain` (falling back to FRONTEND_URL for dev
+ * hosts); dev uses FRONTEND_URL or localhost. Shared by preview + revalidation.
+ */
+export async function frontendBaseUrl(tenant: TenantRef, req: PayloadRequest): Promise<string> {
   const envBase = process.env.FRONTEND_URL?.replace(/\/+$/, '')
-
   let base = envBase || 'http://localhost:4011'
   if (process.env.NODE_ENV === 'production') {
     let domain: string | null | undefined
@@ -75,7 +70,49 @@ export async function buildPreviewUrl(
     if (host) base = `https://${host}`
     else if (envBase) base = envBase
   }
+  return base
+}
 
+const revalidateSecret = () =>
+  process.env.REVALIDATE_SECRET || process.env.PREVIEW_SECRET || 'preview-dev'
+
+/**
+ * Ask the tenant's FRONT-END (a separate deployment) to revalidate a path on
+ * publish. The CMS's own `revalidatePath` can't clear the FE's cache — only the
+ * FE can — so we call its `/api/revalidate`. Best-effort: on failure the FE
+ * still refreshes on its ISR timer.
+ */
+export async function revalidateFrontend(
+  path: string,
+  tenant: TenantRef,
+  req: PayloadRequest,
+): Promise<void> {
+  try {
+    const base = await frontendBaseUrl(tenant, req)
+    await fetch(
+      `${base}/api/revalidate?secret=${encodeURIComponent(
+        revalidateSecret(),
+      )}&path=${encodeURIComponent(path)}`,
+      { method: 'POST' },
+    )
+  } catch {
+    // Best-effort — the FE's ISR timer will still refresh eventually.
+  }
+}
+
+/**
+ * Front-end preview URL for `path`. `/preview` = cookie-free live preview (works
+ * cross-site); `/api/preview` is the legacy draft-cookie route (Posts). Hits the
+ * FE with the shared secret + CMS origin.
+ */
+export async function buildPreviewUrl(
+  path: string,
+  tenant: TenantRef,
+  req: PayloadRequest,
+  endpoint: '/preview' | '/api/preview' = '/api/preview',
+): Promise<string> {
+  const secret = process.env.PREVIEW_SECRET || 'preview-dev'
+  const base = await frontendBaseUrl(tenant, req)
   const origin = encodeURIComponent(cmsOrigin(req))
   return `${base}${endpoint}?secret=${encodeURIComponent(secret)}&path=${encodeURIComponent(path)}&origin=${origin}`
 }

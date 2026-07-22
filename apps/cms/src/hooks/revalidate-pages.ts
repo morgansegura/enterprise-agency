@@ -1,41 +1,31 @@
-import { revalidatePath } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
-/**
- * Best-effort `revalidatePath`. Inside the Next server (Payload's route handler)
- * it triggers on-demand ISR; run from a standalone script (e.g. the seed) there
- * is no static-generation store, so it throws — swallow that, nothing to ISR.
- */
-function safeRevalidate(path: string) {
-  try {
-    revalidatePath(path)
-  } catch {
-    // Not in a Next request context (seed/CLI) — no page cache to revalidate.
-  }
-}
+import { revalidateFrontend } from '../lib/preview'
+
+/** Route path for a page slug ("home" → "/"). */
+const pathForSlug = (slug: string) => (slug && slug !== 'home' ? `/${slug}` : '/')
 
 /**
- * On publish: regenerate the page's static HTML on the next request
- * (on-demand ISR). Runs inside the Next server request (Payload's route
- * handler), so revalidatePath is valid here.
+ * On publish (or editing an already-published doc), refresh the live page. Draft
+ * autosaves must NOT revalidate, or unpublished edits would replace the live
+ * page.
  */
-export const revalidatePages: CollectionAfterChangeHook = ({ doc, previousDoc }) => {
-  // Only the published (live) site is cached. Draft autosaves must NOT revalidate
-  // it — otherwise unpublished edits would replace the live page on the next
-  // request. Revalidate only when this change touches the published state
-  // (publish, unpublish, or editing an already-published doc).
+export const revalidatePages: CollectionAfterChangeHook = async ({ doc, previousDoc, req }) => {
   const isPublished = doc?._status === 'published'
   const wasPublished = previousDoc?._status === 'published'
   if (!isPublished && !wasPublished) return doc
 
-  if (doc?.slug) safeRevalidate(`/${doc.slug}`)
+  const tenant = doc?.tenant ?? previousDoc?.tenant
+  if (doc?.slug) await revalidateFrontend(pathForSlug(doc.slug), tenant, req)
   if (previousDoc?.slug && previousDoc.slug !== doc?.slug) {
-    safeRevalidate(`/${previousDoc.slug}`)
+    await revalidateFrontend(pathForSlug(previousDoc.slug), tenant, req)
   }
   return doc
 }
 
-export const revalidatePagesAfterDelete: CollectionAfterDeleteHook = ({ doc }) => {
-  if (doc?.slug) safeRevalidate(`/${doc.slug}`)
+export const revalidatePagesAfterDelete: CollectionAfterDeleteHook = async ({ doc, req }) => {
+  if (doc?.slug) {
+    await revalidateFrontend(pathForSlug(doc.slug), doc?.tenant, req)
+  }
   return doc
 }
