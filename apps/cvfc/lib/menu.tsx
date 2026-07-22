@@ -89,6 +89,11 @@ export const HEADER_NAV: TMenuItem[] = [
     ],
   },
   {
+    label: "Champions",
+    title: "Championships and signings",
+    href: "/champions",
+  },
+  {
     label: "News",
     title: "Stories from the club",
     href: "/news",
