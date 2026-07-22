@@ -80,9 +80,22 @@ export async function saveSignup(
           : coach
             ? [coach.email.toLowerCase()]
             : [];
-        await Promise.allSettled(
+        console.log(
+          `[signup] notify (${player.gender}) → recipients=${JSON.stringify(recipients)} adminCount=${admins.length} from=${process.env.RESEND_FROM ?? "(unset → onboarding@resend.dev, owner-only)"}`,
+        );
+        const results = await Promise.allSettled(
           recipients.map((email) => sendCoachNotification(email, notifyData)),
         );
+        results.forEach((r, i) => {
+          if (r.status === "rejected") {
+            console.error(
+              `[signup] notify FAILED → ${recipients[i]}:`,
+              r.reason,
+            );
+          } else {
+            console.log(`[signup] notify sent → ${recipients[i]}`);
+          }
+        });
       } catch (emailErr) {
         console.error("signup email failed:", emailErr);
       }
