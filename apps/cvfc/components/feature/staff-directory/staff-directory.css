@@ -48,7 +48,17 @@
 }
 
 .staff-directory-detail-photo {
-  @apply aspect-[4/5] w-full rounded-2xl border border-(--color-gold-bright)/20;
+  @apply aspect-[4/5] w-full overflow-hidden rounded-2xl border border-(--color-gold-bright)/20;
+  /* Fill the column on desktop so a long bio never leaves dead space below the
+     photo. Portrait aspect stays on mobile (stacked). */
+  @apply md:aspect-auto md:h-full md:min-h-[24rem] md:self-stretch;
+}
+
+/* Force the actual <img> to fill — beats Tailwind Preflight's `img{height:auto}`,
+   which leaks across the @wf/ui package boundary and otherwise leaves the photo
+   short of the box. Crop to the top so faces stay in frame. */
+.staff-directory-detail-photo img {
+  @apply absolute inset-0 h-full w-full object-cover object-top;
 }
 
 .staff-directory-detail-body {
