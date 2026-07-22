@@ -15,6 +15,8 @@ export type MediaValue = {
 export type CtaLink = {
   label: string;
   href: string;
+  rel?: string;
+  target?: string;
 };
 
 export type HeroStat = {
@@ -110,6 +112,8 @@ export type ServicesBlock = {
   eyebrow?: string;
   heading: string;
   cards: ServiceCard[];
+  resourceTitle?: string;
+  resourceLinks?: CtaLink[];
 };
 
 export type FaqBlock = {
@@ -177,7 +181,10 @@ export const landingScreenMock: LandingScreenMock = {
     body: [
       "Emily Green is a joyful and seasoned Mortgage Consultant with 10 years of experience helping clients secure financing for home purchases and refinances. As a Mortgage Consultant, understanding borrowers’ financial plans and goals is key. Emily provides tailored mortgage solutions to fit each client’s needs. She is dedicated to creating the smoothest, most efficient, informative, and FUN home buying process possible. Emily has two boys and an adoring husband. Outside of work, she enjoys camping, fishing, and making the mundane moments magical for her family. She is always up for taking on new challenges! Emily is fluent in Spanish.",
     ],
-    cta: { label: "Free Consultation", href: "#contact" },
+    cta: {
+      label: "Free Consultation",
+      href: "mailto:emily.green@churchillmortgage.com",
+    },
   },
   serving: {
     eyebrow: "Proudly Serving",
@@ -255,11 +262,37 @@ export const landingScreenMock: LandingScreenMock = {
     eyebrow: "Services",
     heading:
       "Churchill Mortgage is dedicated to give more power, clarity and peace to our clients. Our goal is to provide a loan that fits your financial goals.",
+    resourceTitle: "Resources",
+    resourceLinks: [
+      {
+        label: "Home Buyer Starter Kit",
+        href: "https://www.churchillmortgage.com/ebooks/homebuyer-starter-kit?mlo=1429849",
+        rel: "nofollow",
+        target: "_blank",
+      },
+      {
+        label: "6 hidden Traps",
+        href: "https://www.churchillmortgage.com/ebooks/6-hidden-traps?mlo=1429849",
+        rel: "nofollow",
+        target: "_blank",
+      },
+      {
+        label: "5 Steps to Buying a Home in 2025",
+        href: "https://www.churchillmortgage.com/ebooks/5-steps-to-buying-a-home-in-2025?mlo=1429849",
+        rel: "nofollow",
+        target: "_blank",
+      },
+    ],
     cards: [
       {
         heading: "Local Experts Servicing All Loan Types",
         body: "Providing personalized home financing solutions including conventional, FHA, VA, and jumbo loans, along with refinancing and homebuyer guidance designed to help clients achieve long-term financial stability and confident homeownership.",
-        cta: { label: "Resources", href: "#resources" },
+        cta: {
+          label: "Resources",
+          href: "https://www.churchillmortgage.com/loan-officers/emily-green",
+          rel: "nofollow",
+          target: "_blank",
+        },
       },
       {
         image: {

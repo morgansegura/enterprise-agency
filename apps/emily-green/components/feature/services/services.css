@@ -12,6 +12,21 @@
   @apply mt-5 max-w-4xl text-(--primary-foreground) font-normal;
 }
 
+.services-resource-links {
+  @apply pt-10 placeholder-stone-100 flex flex-col gap-y-2;
+
+  .services-resource-links-title {
+    @apply text-lg font-semibold;
+  }
+
+  .services-resource-link {
+    @apply flex;
+  }
+  a {
+    @apply text-base border p-2 rounded hover:border-white/40 transition-colors duration-300 ease-out;
+  }
+}
+
 .services-cards {
   @apply mt-16 grid grid-cols-2 gap-4 lg:grid-cols-4;
 }

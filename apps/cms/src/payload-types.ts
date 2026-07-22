@@ -421,6 +421,30 @@ export interface Page {
             blockType: 'portraitGrid';
           }
         | {
+            eyebrow?: string | null;
+            heading?: string | null;
+            intro?: string | null;
+            /**
+             * Ordered oldest → newest. Drag to reorder.
+             */
+            entries?:
+              | {
+                  /**
+                   * Year or range label, e.g. "1982", "2013–14", "Today".
+                   */
+                  year: string;
+                  title: string;
+                  body?: string | null;
+                  image?: (number | null) | Media;
+                  imageUrl?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'storyTimeline';
+          }
+        | {
             content?: {
               root: {
                 type: string;
@@ -871,6 +895,14 @@ export interface SiteSetting {
           id?: string | null;
         }[]
       | null;
+  };
+  /**
+   * Club admins notified when a parent joins (one per line or comma-separated). "All" is notified on every signup; "Boys"/"Girls" are added for that pathway. They get the same new-signup email as the matched coach.
+   */
+  signupNotify?: {
+    all?: string | null;
+    boys?: string | null;
+    girls?: string | null;
   };
   analytics?: {
     /**
@@ -1616,6 +1648,25 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        storyTimeline?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              intro?: T;
+              entries?:
+                | T
+                | {
+                    year?: T;
+                    title?: T;
+                    body?: T;
+                    image?: T;
+                    imageUrl?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         richText?:
           | T
           | {
@@ -1840,6 +1891,13 @@ export interface SiteSettingsSelect<T extends boolean = true> {
               url?: T;
               id?: T;
             };
+      };
+  signupNotify?:
+    | T
+    | {
+        all?: T;
+        boys?: T;
+        girls?: T;
       };
   analytics?:
     | T

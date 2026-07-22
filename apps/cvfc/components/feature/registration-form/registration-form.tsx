@@ -335,7 +335,7 @@ export function RegistrationForm({
           <div className="registration-form-row">
             <div className="registration-form-field">
               <label htmlFor="rf-email" className="registration-form-label">
-                Email*
+                Parent Email*
               </label>
               <input
                 id="rf-email"
@@ -349,7 +349,7 @@ export function RegistrationForm({
             </div>
             <div className="registration-form-field">
               <label htmlFor="rf-phone" className="registration-form-label">
-                Phone*
+                Parent Phone*
               </label>
               <input
                 id="rf-phone"

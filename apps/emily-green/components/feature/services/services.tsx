@@ -69,6 +69,19 @@ export function Services({
         {content.heading}
       </Heading>
 
+      <div className="services-resource-links">
+        <h3 className="services-resource-links-title">
+          {content?.resourceTitle}
+        </h3>
+        {content?.resourceLinks?.map((link, index) => (
+          <div className="services-resource-link" key={index}>
+            <Link href={link?.href} target={link?.target} rel={link?.rel}>
+              {link?.label}
+            </Link>
+          </div>
+        ))}
+      </div>
+
       <ul className="services-cards">
         {content.cards.map((card, i) => (
           <li key={i} className="services-card">

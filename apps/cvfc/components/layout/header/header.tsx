@@ -11,6 +11,7 @@ import { useHeaderVisibility } from "@/lib/hooks/use-header-visibility";
 import type { TMenuItem } from "@/lib/menu";
 
 import "./header.css";
+import { LogoNike } from "../logo-icon/logo-icon";
 
 type HeaderProps = {
   className?: string;
@@ -29,6 +30,7 @@ export function Header({ className, items }: HeaderProps) {
         <Link href="/" className="header-logo" aria-label="Chula Vista FC home">
           <LogoIcon />
           <span>Chula Vista FC</span>
+          <LogoNike className="w-10 ml-1" />
         </Link>
 
         <div className="header-actions">

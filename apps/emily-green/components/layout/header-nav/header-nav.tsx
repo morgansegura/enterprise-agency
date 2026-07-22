@@ -16,7 +16,7 @@ type HeaderNavProps = {
 export function HeaderNav({ className, items = HEADER_NAV }: HeaderNavProps) {
   return (
     <nav className={cn("header-nav", className)} aria-label="Primary">
-      {items.map(({ label, title, href, items: subItems }) => {
+      {items.map(({ label, title, href, items: subItems, rel, target }) => {
         const hasDropdown = !!subItems?.length;
         return (
           <div key={label} className="header-nav-item" aria-label={title}>
@@ -26,7 +26,12 @@ export function HeaderNav({ className, items = HEADER_NAV }: HeaderNavProps) {
                 <ChevronDown className="header-nav-caret" aria-hidden="true" />
               </span>
             ) : (
-              <Link href={href ?? "#"} className="header-nav-label">
+              <Link
+                href={href ?? "#"}
+                className="header-nav-label"
+                rel={rel}
+                target={target}
+              >
                 {label}
               </Link>
             )}
@@ -37,6 +42,8 @@ export function HeaderNav({ className, items = HEADER_NAV }: HeaderNavProps) {
                   <Link
                     key={sub.label}
                     href={sub.href ?? "#"}
+                    rel={sub?.rel}
+                    target={sub?.target}
                     className="header-nav-dropdown-link"
                   >
                     <span className="header-nav-dropdown-label">

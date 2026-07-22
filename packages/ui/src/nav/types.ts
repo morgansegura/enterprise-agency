@@ -13,6 +13,7 @@ export type TMenuItem = {
   description?: string;
   href?: string;
   target?: string;
+  rel?: string;
   icon?: ReactNode;
   items?: TMenuItem[];
 };
