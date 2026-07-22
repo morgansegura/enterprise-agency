@@ -28,10 +28,9 @@
 }
 
 .admin-directory-detail-photo {
-  @apply aspect-[4/5] w-full overflow-hidden rounded-2xl border border-(--color-gold-bright)/20;
-  /* Fill the column on desktop so a long bio never leaves dead space below the
-     photo. Portrait aspect stays on mobile (stacked). */
-  @apply md:aspect-auto md:h-full md:min-h-[24rem] md:self-stretch;
+  /* Fixed portrait, pinned to the top of its column so photo size stays
+     consistent across cards; the text column grows independently below it. */
+  @apply aspect-[4/5] w-full self-start overflow-hidden rounded-2xl border border-(--color-gold-bright)/20;
 }
 
 /* Force the actual <img> to fill — beats Tailwind Preflight's `img{height:auto}`,
