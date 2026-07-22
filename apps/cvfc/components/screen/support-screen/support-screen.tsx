@@ -27,60 +27,60 @@ type Tier = {
   cta?: string;
 };
 
-const ONE_TIME_TIERS: Tier[] = [
-  {
-    amount: "$50",
-    label: "Player Gear",
-    body: "A pair of cleats or essential gear for a player. A small gift that helps a kid show up ready.",
-  },
-  {
-    amount: "$150",
-    label: "Game-Day Costs",
-    body: "Tournament entry, referee fees, travel — the costs alongside game-day. Your gift covers them so kids can focus on playing.",
-  },
-  {
-    amount: "$500",
-    label: "Uniform Kit",
-    body: "A full home and away uniform for a player. Putting on the crest matters, and your gift makes that moment possible.",
-  },
-  {
-    amount: "$2,500",
-    label: "Team Field Time",
-    body: "An evening of lit-field training for a whole team across a season — the kind of gift that shows up in every Tuesday practice.",
-  },
-  {
-    amount: "Any amount",
-    label: "Custom",
-    body: "Give whatever feels right for your family. Every gift, large or small, finds its way to a kid on a CVFC field. Thank you.",
-    custom: true,
-    cta: "Give a custom amount",
-  },
-];
+// const ONE_TIME_TIERS: Tier[] = [
+//   {
+//     amount: "$50",
+//     label: "Player Gear",
+//     body: "A pair of cleats or essential gear for a player. A small gift that helps a kid show up ready.",
+//   },
+//   {
+//     amount: "$150",
+//     label: "Game-Day Costs",
+//     body: "Tournament entry, referee fees, travel — the costs alongside game-day. Your gift covers them so kids can focus on playing.",
+//   },
+//   {
+//     amount: "$500",
+//     label: "Uniform Kit",
+//     body: "A full home and away uniform for a player. Putting on the crest matters, and your gift makes that moment possible.",
+//   },
+//   {
+//     amount: "$2,500",
+//     label: "Team Field Time",
+//     body: "An evening of lit-field training for a whole team across a season — the kind of gift that shows up in every Tuesday practice.",
+//   },
+//   {
+//     amount: "Any amount",
+//     label: "Custom",
+//     body: "Give whatever feels right for your family. Every gift, large or small, finds its way to a kid on a CVFC field. Thank you.",
+//     custom: true,
+//     cta: "Give a custom amount",
+//   },
+// ];
 
-const MONTHLY_TIERS: Tier[] = [
-  {
-    amount: "$25/mo",
-    label: "Friend of CVFC",
-    body: "Steady support that keeps the fields lit and the gear ready. Small monthly gifts add up across a season.",
-  },
-  {
-    amount: "$100/mo",
-    label: "Pathway Patron",
-    body: "Helps a player on financial assistance stay with the club through the year. A real difference for a real kid.",
-  },
-  {
-    amount: "$250/mo",
-    label: "Champion",
-    body: "Supports coaching and the long, patient development that follows. The kind of giving that shapes a season — and a player.",
-  },
-  {
-    amount: "Any amount",
-    label: "Custom Monthly",
-    body: "Choose any monthly amount. Even small recurring gifts compound into something meaningful by year-end. Thank you.",
-    custom: true,
-    cta: "Start custom monthly",
-  },
-];
+// const MONTHLY_TIERS: Tier[] = [
+//   {
+//     amount: "$25/mo",
+//     label: "Friend of CVFC",
+//     body: "Steady support that keeps the fields lit and the gear ready. Small monthly gifts add up across a season.",
+//   },
+//   {
+//     amount: "$100/mo",
+//     label: "Pathway Patron",
+//     body: "Helps a player on financial assistance stay with the club through the year. A real difference for a real kid.",
+//   },
+//   {
+//     amount: "$250/mo",
+//     label: "Champion",
+//     body: "Supports coaching and the long, patient development that follows. The kind of giving that shapes a season — and a player.",
+//   },
+//   {
+//     amount: "Any amount",
+//     label: "Custom Monthly",
+//     body: "Choose any monthly amount. Even small recurring gifts compound into something meaningful by year-end. Thank you.",
+//     custom: true,
+//     cta: "Start custom monthly",
+//   },
+// ];
 
 const IMPACT_CARDS: IconCardEntry[] = [
   {

@@ -1,10 +1,9 @@
 import Link from "next/link";
 
-import { Section } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
-import { Heading } from "@/components/feature/heading";
+
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
@@ -27,56 +26,56 @@ type SponsorTier = {
   highlight?: boolean;
 };
 
-const SPONSOR_TIERS: SponsorTier[] = [
-  {
-    amount: "$1,500/yr",
-    label: "Bronze",
-    body: "Local-business visibility across one full season.",
-    deliverables: [
-      "Logo on team banner at home matches",
-      "Recognition on /support page",
-      "Social media thank-you",
-      "Quarterly newsletter mention",
-    ],
-  },
-  {
-    amount: "$3,500/yr",
-    label: "Silver",
-    body: "Mid-tier package with stronger placement and a season-long story.",
-    deliverables: [
-      "Everything in Bronze",
-      "Logo on training kit (one team)",
-      "Featured on /sponsor page with link",
-      "Match-day announcement at home games",
-      "Two social media features per season",
-    ],
-  },
-  {
-    amount: "$7,500/yr",
-    label: "Gold",
-    body: "Premier tier — front-of-jersey-class visibility.",
-    highlight: true,
-    deliverables: [
-      "Everything in Silver",
-      "Front-of-jersey logo (one age group)",
-      "Field signage at Victory Christian Academy home venue",
-      "Featured story on /news with full piece",
-      "Hosted hospitality at home tournaments",
-      "Sponsor a player scholarship in your business name",
-    ],
-  },
-  {
-    amount: "Custom",
-    label: "Title / Capital",
-    body: "Naming rights, capital projects, or multi-year commitments — let's design it together.",
-    deliverables: [
-      "Naming rights for a CVFC team, program, or facility",
-      "Custom multi-year package",
-      "Direct relationship with the Director of Coaching",
-      "Recognized donor wall + 990 transparency",
-    ],
-  },
-];
+// const SPONSOR_TIERS: SponsorTier[] = [
+//   {
+//     amount: "$1,500/yr",
+//     label: "Bronze",
+//     body: "Local-business visibility across one full season.",
+//     deliverables: [
+//       "Logo on team banner at home matches",
+//       "Recognition on /support page",
+//       "Social media thank-you",
+//       "Quarterly newsletter mention",
+//     ],
+//   },
+//   {
+//     amount: "$3,500/yr",
+//     label: "Silver",
+//     body: "Mid-tier package with stronger placement and a season-long story.",
+//     deliverables: [
+//       "Everything in Bronze",
+//       "Logo on training kit (one team)",
+//       "Featured on /sponsor page with link",
+//       "Match-day announcement at home games",
+//       "Two social media features per season",
+//     ],
+//   },
+//   {
+//     amount: "$7,500/yr",
+//     label: "Gold",
+//     body: "Premier tier — front-of-jersey-class visibility.",
+//     highlight: true,
+//     deliverables: [
+//       "Everything in Silver",
+//       "Front-of-jersey logo (one age group)",
+//       "Field signage at Victory Christian Academy home venue",
+//       "Featured story on /news with full piece",
+//       "Hosted hospitality at home tournaments",
+//       "Sponsor a player scholarship in your business name",
+//     ],
+//   },
+//   {
+//     amount: "Custom",
+//     label: "Title / Capital",
+//     body: "Naming rights, capital projects, or multi-year commitments — let's design it together.",
+//     deliverables: [
+//       "Naming rights for a CVFC team, program, or facility",
+//       "Custom multi-year package",
+//       "Direct relationship with the Director of Coaching",
+//       "Recognized donor wall + 990 transparency",
+//     ],
+//   },
+// ];
 
 const REASONS: IconCardEntry[] = [
   {
