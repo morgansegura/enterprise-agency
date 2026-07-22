@@ -1,0 +1,92 @@
+@reference "tailwindcss";
+
+.story-timeline-head {
+  @apply mx-auto mb-14 max-w-3xl text-center md:mb-20;
+}
+
+.story-timeline-eyebrow {
+  @apply mb-4 flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-widest text-(--color-gold);
+}
+
+.story-timeline-heading {
+  @apply font-(family-name:--font-heading) text-[clamp(1.75rem,4vw,2.75rem)] font-semibold leading-tight tracking-tight text-(--color-ink);
+  text-wrap: balance;
+}
+
+.story-timeline-intro {
+  @apply mx-auto mt-4 max-w-2xl text-base leading-relaxed text-(--color-midnight)/80;
+}
+
+/* ==================== TIMELINE ==================== */
+
+.story-timeline-list {
+  @apply relative mx-auto flex max-w-4xl flex-col gap-10 md:gap-0;
+}
+
+/* The spine — left rail on mobile, centered on desktop. */
+.story-timeline-list::before {
+  content: "";
+  @apply absolute bottom-0 top-1 w-px bg-(--color-gold)/25;
+  @apply left-[7px] md:left-1/2 md:-translate-x-1/2;
+}
+
+.story-timeline-entry {
+  @apply relative pl-10 md:w-1/2 md:pl-0;
+}
+.story-timeline-entry[data-side="left"] {
+  @apply md:self-start md:pr-12 md:text-right;
+}
+.story-timeline-entry[data-side="right"] {
+  @apply md:self-end md:pl-12;
+}
+
+.story-timeline-node {
+  @apply absolute left-0 top-1.5 size-3.5 rounded-full bg-(--color-gold) ring-4 ring-white md:top-2;
+}
+.story-timeline-entry[data-side="left"] .story-timeline-node {
+  @apply md:-right-[7px] md:left-auto;
+}
+.story-timeline-entry[data-side="right"] .story-timeline-node {
+  @apply md:-left-[7px];
+}
+
+.story-timeline-card {
+  @apply md:pb-16;
+}
+
+.story-timeline-year {
+  @apply font-(family-name:--font-heading) text-2xl font-bold text-(--color-gold);
+}
+.story-timeline-title {
+  @apply mt-1 text-lg font-semibold text-(--color-ink);
+}
+.story-timeline-body {
+  @apply mt-2 text-sm leading-relaxed text-(--color-midnight)/80;
+}
+.story-timeline-media {
+  @apply relative mt-4 aspect-video overflow-hidden rounded-xl border border-(--color-gold)/20;
+}
+.story-timeline-media img {
+  @apply absolute inset-0 h-full w-full object-cover;
+}
+
+/* Scroll-reveal — only when the browser supports scroll-driven animations, so
+   unsupported browsers simply show every entry (no invisible content). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .story-timeline-entry {
+      opacity: 0;
+      transform: translateY(2rem);
+      animation: story-timeline-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}
+
+@keyframes story-timeline-reveal {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

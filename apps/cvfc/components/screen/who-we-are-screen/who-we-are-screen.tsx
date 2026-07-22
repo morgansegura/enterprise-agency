@@ -10,6 +10,7 @@ import { IconCards } from "@/components/feature/icon-cards";
 import { MediaSplit } from "@/components/feature/media-split";
 import { PageHero } from "@/components/feature/page-hero";
 import { StatBand } from "@/components/feature/stat-band";
+import { StoryTimeline } from "@/components/feature/story-timeline";
 import { WelcomeBanner } from "@/components/feature/welcome-banner";
 import { Blocks } from "@/components/blocks";
 import { getPage } from "@/lib/cms";
@@ -64,6 +65,8 @@ export async function WhoWeAreScreen() {
                 </>
               }
             />
+
+            <StoryTimeline />
 
             <IconCards
               eyebrow="Our Values"

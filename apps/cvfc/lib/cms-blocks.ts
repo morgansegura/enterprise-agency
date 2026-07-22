@@ -1,6 +1,7 @@
 import type { HeroSlide } from "@/components/feature/hero-carousel";
 import type { Testimonial } from "@/components/feature/testimonials";
 import type { FaqEntry } from "@/data/faq";
+import type { StoryTimelineContent } from "@/data/story-timeline";
 import { blockOf, mediaAlt, mediaUrl, type MediaValue } from "@/lib/media";
 import type { Page, PageBlock } from "@/lib/cms";
 
@@ -525,6 +526,36 @@ export function statBandFromBlock(b: PageBlock) {
     stats,
     highlights: highlights.length ? highlights : undefined,
     footnote: str(b.footnote),
+  };
+}
+
+export function storyTimelineFromBlock(b: PageBlock): StoryTimelineContent {
+  const entries = (
+    Array.isArray(b.entries)
+      ? (b.entries as {
+          year?: string;
+          title?: string;
+          body?: string;
+          image?: MediaValue;
+          imageUrl?: string;
+        }[])
+      : []
+  ).map((e) => {
+    const src = mediaUrl(e.image) ?? str(e.imageUrl);
+    return {
+      year: str(e.year) ?? "",
+      title: str(e.title) ?? "",
+      body: str(e.body),
+      image: src
+        ? { src, alt: mediaAlt(e.image) ?? str(e.title) ?? "" }
+        : undefined,
+    };
+  });
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading),
+    intro: str(b.intro),
+    entries,
   };
 }
 

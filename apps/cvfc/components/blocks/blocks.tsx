@@ -8,6 +8,7 @@ import { Callout } from "@/components/feature/callout";
 import { MediaSplit } from "@/components/feature/media-split";
 import { StatBand } from "@/components/feature/stat-band";
 import { PortraitGrid } from "@/components/feature/portrait-grid";
+import { StoryTimeline } from "@/components/feature/story-timeline";
 import { Testimonials } from "@/components/feature/testimonials";
 import { FaqSection } from "@/components/feature/faq-section";
 import { PageHero } from "@/components/feature/page-hero";
@@ -24,6 +25,7 @@ import {
   mediaSplitFromBlock,
   statBandFromBlock,
   portraitGridFromBlock,
+  storyTimelineFromBlock,
   testimonialsFromBlock,
   faqFromBlock,
   pageHeroFromBlock,
@@ -167,6 +169,9 @@ const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
   },
   portraitGrid: (block, key) => (
     <PortraitGrid key={key} {...portraitGridFromBlock(block)} />
+  ),
+  storyTimeline: (block, key) => (
+    <StoryTimeline key={key} content={storyTimelineFromBlock(block)} />
   ),
   testimonialsSection: (block, key) => (
     <Testimonials key={key} {...testimonialsFromBlock(block)} />
