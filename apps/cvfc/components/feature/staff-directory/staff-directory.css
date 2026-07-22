@@ -50,7 +50,7 @@
 .staff-directory-detail-photo {
   /* Fixed portrait, pinned to the top of its column so photo size stays
      consistent across cards; the text column grows independently below it. */
-  @apply aspect-[4/5] w-full self-start overflow-hidden rounded-2xl border border-(--color-gold-bright)/20;
+  @apply aspect-[4/5] w-full h-auto self-start overflow-hidden rounded-2xl border border-(--color-gold-bright)/20;
 }
 
 /* Force the actual <img> to fill — beats Tailwind Preflight's `img{height:auto}`,
