@@ -19,13 +19,13 @@ import { breadcrumbSchema } from "@/lib/schema";
 
 import "./support-screen.css";
 
-type Tier = {
-  amount: string;
-  label: string;
-  body: string;
-  custom?: boolean;
-  cta?: string;
-};
+// type Tier = {
+//   amount: string;
+//   label: string;
+//   body: string;
+//   custom?: boolean;
+//   cta?: string;
+// };
 
 // const ONE_TIME_TIERS: Tier[] = [
 //   {

@@ -18,13 +18,13 @@ import { breadcrumbSchema } from "@/lib/schema";
 
 import "./sponsor-screen.css";
 
-type SponsorTier = {
-  amount: string;
-  label: string;
-  body: string;
-  deliverables: string[];
-  highlight?: boolean;
-};
+// type SponsorTier = {
+//   amount: string;
+//   label: string;
+//   body: string;
+//   deliverables: string[];
+//   highlight?: boolean;
+// };
 
 // const SPONSOR_TIERS: SponsorTier[] = [
 //   {
