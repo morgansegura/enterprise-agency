@@ -29,7 +29,10 @@ export function Header({ className, items }: HeaderProps) {
       <div className="header-container contain">
         <Link href="/" className="header-logo" aria-label="Chula Vista FC home">
           <LogoIcon />
-          <span>Chula Vista FC</span>
+          <span className="hidden sm:flex md:hidden lg:flex">
+            Chula Vista FC
+          </span>
+          <span className="flex sm:hidden md:flex lg:hidden">CVFC</span>
           <LogoNike className="w-10 ml-1" />
         </Link>
 

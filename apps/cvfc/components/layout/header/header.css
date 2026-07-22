@@ -19,7 +19,7 @@
   @apply flex items-center outline-none;
 
   span {
-    @apply font-(family-name:--font-heading) font-semibold uppercase pl-2 tracking-wide text-(--color-midnight) text-sm sm:text-base;
+    @apply font-(family-name:--font-heading) font-semibold uppercase pl-2 tracking-wide text-(--color-midnight) text-base;
   }
 
   svg {
