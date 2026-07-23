@@ -8,9 +8,9 @@ import { AREAS } from "@/data/areas";
 export function AreasScreen() {
   const cards = AREAS.map((a) => ({
     id: a.slug,
-    iconToken: "custom:soccer-field",
+    iconToken: a.iconToken,
     title: a.name,
-    description: `Competitive youth soccer for ${a.name} families — programs, fields, and tryouts close to home.`,
+    description: a.blurb,
     href: `/areas/${a.slug}`,
   }));
 

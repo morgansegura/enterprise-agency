@@ -16,9 +16,13 @@ export type Area = {
   name: string;
   /** Broader region, used for schema areaServed. */
   region: string;
+  /** Icon for this area's card on the /areas hub (distinct per area). */
+  iconToken: string;
   eyebrow: string;
   heading: string;
   intro: string;
+  /** Short, distinct one-liner for this area's card on the /areas hub. */
+  blurb: string;
   programs: IconCardEntry[];
   faqs: FaqEntry[];
   meta: { title: string; description: string };
@@ -61,7 +65,10 @@ const BONITA: Area = {
   slug: "bonita",
   name: "Bonita",
   region: "South Bay, San Diego",
+  iconToken: "custom:soccer-field2",
   eyebrow: "Youth Soccer in Bonita",
+  blurb:
+    "Elite soccer minutes from Bonita, with training at Bonita Long Canyon Park.",
   heading: "Competitive youth soccer for Bonita families — minutes from home.",
   intro:
     "Chula Vista FC has been the South Bay’s homegrown club since 1982. Bonita families train at Bonita Long Canyon Park and nearby CVFC fields just minutes away — an elite MLS NEXT and Elite Academy pathway at a genuinely affordable, community price. Boys and girls, ages 4 to 19, in one club that has moved players on to college programs, professional academies, and Liga MX.",
@@ -103,7 +110,10 @@ const EASTLAKE: Area = {
   slug: "eastlake",
   name: "Eastlake",
   region: "Chula Vista, South Bay",
+  iconToken: "custom:location-marker",
   eyebrow: "Youth Soccer in Eastlake",
+  blurb:
+    "Right in Eastlake — Explorer Park and our Hake Place indoor training center.",
   heading:
     "Competitive youth soccer for Eastlake families — right in your neighborhood.",
   intro:
@@ -146,7 +156,9 @@ const OTAY_RANCH: Area = {
   slug: "otay-ranch",
   name: "Otay Ranch",
   region: "Chula Vista, South Bay",
+  iconToken: "custom:soccer-ball",
   eyebrow: "Youth Soccer in Otay Ranch",
+  blurb: "In the heart of Otay Ranch, at Veterans Park on East Palomar Street.",
   heading:
     "Competitive youth soccer for Otay Ranch families — minutes from home.",
   intro:
@@ -185,7 +197,52 @@ const OTAY_RANCH: Area = {
   },
 };
 
-export const AREAS: Area[] = [BONITA, EASTLAKE, OTAY_RANCH];
+const CHULA_VISTA: Area = {
+  slug: "chula-vista",
+  name: "Chula Vista",
+  region: "South Bay, San Diego",
+  iconToken: "custom:soccer-field",
+  eyebrow: "Youth Soccer in Chula Vista",
+  blurb:
+    "Our home city since 1982 — players train across Chula Vista, from Victory Christian Academy to Castle Park High.",
+  heading: "Chula Vista’s homegrown club since 1982.",
+  intro:
+    "Chula Vista FC was founded in Chula Vista in 1982 and has been the city’s homegrown club ever since. Our players train across Chula Vista — with Victory Christian Academy anchoring the week, plus Castle Park High School, Lauderbach Park, and our Indoor Training Center — on an elite MLS NEXT and Elite Academy pathway at a genuinely affordable, community price. Boys and girls, ages 4 to 19, with a track record of moving players on to college programs, professional academies, and Liga MX.",
+  programs: PATHWAY_CARDS,
+  faqs: [
+    {
+      id: "chula-vista-where",
+      question: "Where do Chula Vista players train?",
+      answer:
+        "Across Chula Vista — Victory Christian Academy anchors our week, alongside Castle Park High School, Lauderbach Park, and our Indoor Training Center on Hake Place.",
+    },
+    {
+      id: "chula-vista-cost",
+      question: "How does the cost compare to other San Diego clubs?",
+      answer:
+        "CVFC delivers a top competitive pathway at a fraction of what premium clubs charge — quality and affordability are the reasons the club was founded right here in Chula Vista.",
+    },
+    {
+      id: "chula-vista-tryouts",
+      question: "When are tryouts for Chula Vista families?",
+      answer:
+        "Tryouts and personal evaluations are open now for the upcoming season. Request an evaluation and a CVFC coach will be in touch directly.",
+    },
+    {
+      id: "chula-vista-girls",
+      question: "Do you have girls teams?",
+      answer:
+        "Yes — a full girls pathway from grassroots through DPL and NPL, with a clear route to the college recruiting stage.",
+    },
+  ],
+  meta: {
+    title: "Youth Soccer in Chula Vista — Fields & Programs",
+    description:
+      "Chula Vista’s homegrown soccer club since 1982. CVFC trains across the city — Victory Christian, Castle Park HS, Lauderbach Park — with an elite, affordable pathway for boys & girls ages 4–19.",
+  },
+};
+
+export const AREAS: Area[] = [CHULA_VISTA, BONITA, EASTLAKE, OTAY_RANCH];
 
 export const getArea = (slug: string): Area | undefined =>
   AREAS.find((a) => a.slug === slug);
