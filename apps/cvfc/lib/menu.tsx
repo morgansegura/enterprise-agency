@@ -130,6 +130,7 @@ export const FOOTER_NAV: TMenuItem[] = [
     items: [
       { target: "", label: "Who we are", href: "/about/who-we-are" },
       { target: "", label: "Programs", href: "/programs" },
+      { target: "", label: "Areas We Serve", href: "/areas" },
       { target: "", label: "Tryouts/Evaluations", href: "/evaluations" },
       {
         target: "",

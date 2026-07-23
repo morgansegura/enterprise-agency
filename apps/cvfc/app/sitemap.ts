@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { AREAS } from "@/data/areas";
 import { NEWS_POSTS, getActiveNews } from "@/data/news";
 import { siteConfig } from "@/lib/site-config";
 
@@ -49,6 +50,7 @@ const ROUTES: Array<{ path: string; priority: number; changeFrequency: Freq }> =
       priority: 0.6,
       changeFrequency: "monthly",
     },
+    { path: "/areas", priority: 0.6, changeFrequency: "monthly" },
     { path: "/evaluations", priority: 0.9, changeFrequency: "monthly" },
     { path: "/news", priority: 0.7, changeFrequency: "weekly" },
     { path: "/support", priority: 0.7, changeFrequency: "monthly" },
@@ -75,6 +77,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: r.priority,
   }));
 
+  const areaEntries: MetadataRoute.Sitemap = AREAS.map((a) => ({
+    url: `${base}/areas/${a.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
   const newsEntries: MetadataRoute.Sitemap = getActiveNews(NEWS_POSTS).map(
     (p) => ({
       url: `${base}/news/${p.slug}`,
@@ -84,5 +92,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  return [...staticEntries, ...newsEntries];
+  return [...staticEntries, ...areaEntries, ...newsEntries];
 }
