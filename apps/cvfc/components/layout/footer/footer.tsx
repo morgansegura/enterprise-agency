@@ -106,10 +106,16 @@ export function Footer({
       </div>
 
       <div className="contain copyright">
-        <p>
-          Copyright &copy; {year} {copyrightName ?? DEFAULT_COPYRIGHT}
-        </p>
-        <CookiePreferencesTrigger />
+        <div className="copyright-flex">
+          <p className="copyright-name">
+            Copyright &copy; {year} &nbsp;
+            <span className="flex md:hidden">CVFC</span>
+            <span className="hidden md:flex">
+              {copyrightName ?? DEFAULT_COPYRIGHT}
+            </span>
+          </p>
+          <CookiePreferencesTrigger />
+        </div>
         <div className="social-links">{socialMediaList()}</div>
       </div>
     </footer>

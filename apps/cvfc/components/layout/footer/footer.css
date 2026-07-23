@@ -66,5 +66,13 @@
     .divider {
       @apply bg-slate-800;
     }
+
+    .copyright-flex {
+      @apply flex-col flex gap-1 sm:flex-row sm:gap-4;
+    }
+
+    .copyright-name {
+      @apply flex;
+    }
   }
 }

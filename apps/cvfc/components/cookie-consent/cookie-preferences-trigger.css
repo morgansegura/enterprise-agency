@@ -1,5 +1,5 @@
 @reference "tailwindcss";
 
 .cookie-prefs-trigger {
-  @apply cursor-pointer text-sm text-(--foreground)/70 underline underline-offset-2 transition-colors hover:text-(--primary);
+  @apply text-left cursor-pointer text-sm text-white transition-colors hover:text-(--primary);
 }
