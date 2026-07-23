@@ -22,6 +22,69 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "localhost" },
     ],
   },
+  // Permanent (301/308) redirects from the legacy WordPress URLs to their new
+  // homes. Preserves the SEO equity of pages already indexed by Google and stops
+  // old search results / backlinks from landing on 404s during the reindex. Add
+  // any stragglers from GSC → Indexing → Pages here.
+  async redirects() {
+    return [
+      {
+        source: "/join-our-club",
+        destination: "/evaluations",
+        permanent: true,
+      },
+      { source: "/tryouts", destination: "/evaluations", permanent: true },
+      {
+        source: "/mls-next",
+        destination: "/programs/boys-competitive-pathway",
+        permanent: true,
+      },
+      {
+        source: "/about-us",
+        destination: "/about/who-we-are",
+        permanent: true,
+      },
+      {
+        source: "/our-story",
+        destination: "/about/who-we-are",
+        permanent: true,
+      },
+      {
+        source: "/coaches",
+        destination: "/about/coaching-staff",
+        permanent: true,
+      },
+      {
+        source: "/coaching-staff",
+        destination: "/about/coaching-staff",
+        permanent: true,
+      },
+      {
+        source: "/administrators",
+        destination: "/about/administrators",
+        permanent: true,
+      },
+      {
+        source: "/facilities",
+        destination: "/about/facilities",
+        permanent: true,
+      },
+      {
+        source: "/testimonials",
+        destination: "/about/testimonials",
+        permanent: true,
+      },
+      {
+        source: "/donate",
+        destination: "/support#make-a-donation",
+        permanent: true,
+      },
+      { source: "/contact", destination: "/support", permanent: true },
+      { source: "/contact-us", destination: "/support", permanent: true },
+      { source: "/events", destination: "/news", permanent: true },
+      { source: "/upcoming-events", destination: "/news", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
