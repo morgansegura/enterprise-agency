@@ -242,7 +242,104 @@ const CHULA_VISTA: Area = {
   },
 };
 
-export const AREAS: Area[] = [CHULA_VISTA, BONITA, EASTLAKE, OTAY_RANCH];
+const CITY_HEIGHTS: Area = {
+  slug: "city-heights",
+  name: "City Heights",
+  region: "San Diego",
+  iconToken: "custom:soccer-ball2",
+  eyebrow: "Youth Soccer in City Heights",
+  blurb:
+    "Inside the City of San Diego — CVFC match days at Hoover High School in City Heights.",
+  heading: "Competitive youth soccer in City Heights, San Diego.",
+  intro:
+    "Chula Vista FC brings its pathway into the City of San Diego, competing at Hoover High School in City Heights. Families here get access to an elite MLS NEXT and Elite Academy pathway at a genuinely affordable, community price — the same homegrown club that has developed players since 1982. Boys and girls, ages 4 to 19, with a track record of moving players on to college programs, professional academies, and Liga MX.",
+  programs: PATHWAY_CARDS,
+  faqs: [
+    {
+      id: "city-heights-where",
+      question: "Where do City Heights players play?",
+      answer:
+        "CVFC competes at Hoover High School on El Cajon Boulevard in City Heights, with training across our South Bay and San Diego fields.",
+    },
+    {
+      id: "city-heights-cost",
+      question: "How does the cost compare to other San Diego clubs?",
+      answer:
+        "CVFC delivers a top competitive pathway at a fraction of what premium clubs charge — quality and affordability are the reasons the club was founded.",
+    },
+    {
+      id: "city-heights-tryouts",
+      question: "When are tryouts?",
+      answer:
+        "Tryouts and personal evaluations are open now for the upcoming season. Request an evaluation and a CVFC coach will be in touch directly.",
+    },
+    {
+      id: "city-heights-girls",
+      question: "Do you have girls teams?",
+      answer:
+        "Yes — a full girls pathway from grassroots through DPL and NPL, with a clear route to the college recruiting stage.",
+    },
+  ],
+  meta: {
+    title: "Youth Soccer in City Heights, San Diego",
+    description:
+      "Competitive youth soccer in City Heights — CVFC competes at Hoover High School, bringing an elite, affordable pathway into the City of San Diego. Boys & girls, ages 4–19.",
+  },
+};
+
+const SOUTHEAST_SAN_DIEGO: Area = {
+  slug: "southeast-san-diego",
+  name: "Southeast San Diego",
+  region: "San Diego",
+  iconToken: "custom:cleats",
+  eyebrow: "Youth Soccer in Southeast San Diego",
+  blurb:
+    "Rooted in Southeast San Diego — training at O'Farrell Charter School in Skyline.",
+  heading: "Competitive youth soccer in Southeast San Diego.",
+  intro:
+    "Chula Vista FC extends into Southeast San Diego — training at O'Farrell Charter School in the Skyline and Encanto communities. Families here get an elite MLS NEXT and Elite Academy pathway close to home, at a genuinely affordable, community price. The South Bay’s homegrown club since 1982 — boys and girls, ages 4 to 19, with a track record of moving players on to college programs, professional academies, and Liga MX.",
+  programs: PATHWAY_CARDS,
+  faqs: [
+    {
+      id: "southeast-san-diego-where",
+      question: "Where do Southeast San Diego players train?",
+      answer:
+        "At O'Farrell Charter School on Skyline Drive, in the heart of Southeast San Diego, plus additional CVFC fields nearby.",
+    },
+    {
+      id: "southeast-san-diego-cost",
+      question: "How does the cost compare to other San Diego clubs?",
+      answer:
+        "CVFC delivers a top competitive pathway at a fraction of what premium clubs charge — quality and affordability are the reasons the club was founded.",
+    },
+    {
+      id: "southeast-san-diego-tryouts",
+      question: "When are tryouts?",
+      answer:
+        "Tryouts and personal evaluations are open now for the upcoming season. Request an evaluation and a CVFC coach will be in touch directly.",
+    },
+    {
+      id: "southeast-san-diego-girls",
+      question: "Do you have girls teams?",
+      answer:
+        "Yes — a full girls pathway from grassroots through DPL and NPL, with a clear route to the college recruiting stage.",
+    },
+  ],
+  meta: {
+    title: "Youth Soccer in Southeast San Diego (Skyline / Encanto)",
+    description:
+      "Competitive youth soccer in Southeast San Diego — CVFC trains at O'Farrell Charter School in Skyline/Encanto. An elite, affordable pathway for boys & girls, ages 4–19.",
+  },
+};
+
+export const AREAS: Area[] = [
+  CHULA_VISTA,
+  BONITA,
+  EASTLAKE,
+  OTAY_RANCH,
+  CITY_HEIGHTS,
+  SOUTHEAST_SAN_DIEGO,
+];
 
 export const getArea = (slug: string): Area | undefined =>
   AREAS.find((a) => a.slug === slug);
