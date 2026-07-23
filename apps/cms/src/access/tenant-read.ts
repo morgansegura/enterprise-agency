@@ -1,5 +1,7 @@
 import type { Access, PayloadRequest, Where } from 'payload'
 
+import { isSuperAdmin, SUPER_ADMIN_EMAILS } from './roles'
+
 /**
  * Per-tenant read keys, env-managed (no schema/migration). `TENANT_KEYS` on the
  * CMS is `slug:key,slug:key`; each front-end sends its key as `x-tenant-key`.
@@ -77,4 +79,39 @@ export const tenantScopedRead =
     if (and.length === 0) return true
     if (and.length === 1) return and[0]
     return { and }
+  }
+
+/** The tenant ids a user is assigned to (multi-tenant plugin's `tenants` array;
+ *  each row is `{ tenant: id | doc }`). */
+function assignedTenantIds(user: unknown): (number | string)[] {
+  const rows = (user as { tenants?: unknown })?.tenants
+  if (!Array.isArray(rows)) return []
+  return rows
+    .map((row) => {
+      const t = (row as { tenant?: unknown })?.tenant ?? row
+      return typeof t === 'object' && t !== null ? (t as { id?: unknown }).id : t
+    })
+    .filter((v): v is number | string => v != null)
+}
+
+/**
+ * Read access for the **Tenants collection itself** (not tenant-scoped content).
+ * The multi-tenant plugin does NOT scope this registry, so a plain `req.user →
+ * true` lets any editor read — and see in the tenant picker — every client's
+ * site. Instead: super-admins see all; other authenticated users see only the
+ * tenant(s) they're assigned to; unauthenticated FE reads fall back to the
+ * public `x-tenant-key` scoping. Stays open only while SUPER_ADMIN_EMAILS is
+ * unset (matching the rest of the isolation switch, so a deploy can't lock out).
+ */
+export const tenantsCollectionRead =
+  (opts: Opts = { scopeField: 'id' }): Access =>
+  async (args) => {
+    const { req } = args
+    if (req.user) {
+      if (SUPER_ADMIN_EMAILS.length === 0 || isSuperAdmin(req.user)) return true
+      const ids = assignedTenantIds(req.user)
+      if (ids.length === 0) return false
+      return { id: { in: ids } }
+    }
+    return tenantScopedRead(opts)(args)
   }

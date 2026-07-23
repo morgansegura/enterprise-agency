@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { tenantScopedRead } from '../access/tenant-read'
+import { tenantsCollectionRead } from '../access/tenant-read'
 
 import { superAdminAccess } from '../access/roles'
 
@@ -21,7 +21,7 @@ export const Tenants: CollectionConfig = {
   // Public read (the FE resolves tenant theme). Only a super-admin can create,
   // edit, or delete tenants — editors can never mint or alter a client site.
   access: {
-    read: tenantScopedRead({ scopeField: 'id' }),
+    read: tenantsCollectionRead({ scopeField: 'id' }),
     create: superAdminAccess,
     update: superAdminAccess,
     delete: superAdminAccess,
