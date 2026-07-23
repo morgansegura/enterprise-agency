@@ -1,6 +1,11 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import dynamic from "next/dynamic";
 
 import { useConsent } from "@/lib/cookie-consent";
@@ -13,6 +18,18 @@ const CookiePreferencesModal = dynamic(
     import("./cookie-preferences-modal").then((m) => m.CookiePreferencesModal),
   { ssr: false },
 );
+
+// Hydration flag via useSyncExternalStore (no setState-in-effect): false on the
+// server + first client paint, true once hydrated — so the banner never renders
+// during the paint where the consent snapshot is still null.
+const noopSubscribe = () => () => {};
+function useHydrated(): boolean {
+  return useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+}
 
 type CookieConsentContextValue = { openPreferences: () => void };
 
@@ -40,6 +57,10 @@ export function CookieConsentProvider({
   const [prefsOpen, setPrefsOpen] = useState(false);
   // Mount the (lazy) modal only after it's first requested.
   const [prefsMounted, setPrefsMounted] = useState(false);
+  // Gate the banner on hydration so it never renders during SSR / the first
+  // paint (when the store snapshot is still null). Returning visitors who
+  // already consented never see a flash; new visitors get a smooth entrance.
+  const hydrated = useHydrated();
   const decided = consent !== null;
 
   const open = () => {
@@ -50,7 +71,7 @@ export function CookieConsentProvider({
   return (
     <CookieConsentContext.Provider value={{ openPreferences: open }}>
       {children}
-      {!decided ? <CookieBanner onCustomize={open} /> : null}
+      {hydrated && !decided ? <CookieBanner onCustomize={open} /> : null}
       {prefsMounted ? (
         <CookiePreferencesModal open={prefsOpen} onOpenChange={setPrefsOpen} />
       ) : null}
