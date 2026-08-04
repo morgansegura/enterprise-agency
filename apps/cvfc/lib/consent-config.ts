@@ -52,7 +52,7 @@ export const consentConfig = {
       id: "analytics",
       label: "Analytics",
       description:
-        "Help us understand how visitors use the site so we can improve it. No personal profiles.",
+        "Help us understand how visitors use the site so we can improve it — including anonymized heatmaps and session replay (Google Analytics, Microsoft Clarity). Form entries are masked; no personal profiles.",
     },
     {
       id: "marketing",

@@ -7,7 +7,7 @@ export const PRIVACY_POLICY: {
   sections: LegalSection[];
 } = {
   title: "Privacy Policy",
-  lastUpdated: "April 2026",
+  lastUpdated: "August 2026",
   intro: (
     <>
       <p>
@@ -47,6 +47,14 @@ export const PRIVACY_POLICY: {
               when you visit our website — including IP address, browser type,
               device information, pages viewed, and referring site.
             </li>
+            <li>
+              <strong>Website interaction data</strong>, if you allow analytics
+              cookies — how visits move through the site, including pages
+              viewed, clicks, scrolling, and mouse movement. This is collected
+              through Google Analytics and Microsoft Clarity and is used to find
+              and fix usability problems. See{" "}
+              <a href="#analytics">Analytics and session replay</a> below.
+            </li>
           </ul>
         </>
       ),
@@ -85,6 +93,12 @@ export const PRIVACY_POLICY: {
               perform their services on our behalf.
             </li>
             <li>
+              <strong>Analytics providers</strong> — Google (Google Analytics
+              and Google Tag Manager) and Microsoft (Clarity) process website
+              interaction data on our behalf so we can measure and improve the
+              site. These run only if you allow analytics cookies.
+            </li>
+            <li>
               <strong>League and governing bodies</strong> (MLS NEXT, US Soccer,
               CalSouth, etc.) where required for player registration or
               competition eligibility.
@@ -115,6 +129,13 @@ export const PRIVACY_POLICY: {
             their child&rsquo;s information at any time by contacting us using
             the details below.
           </p>
+          <p>
+            Our website analytics and session replay tools are used to measure
+            and improve the website itself — not to build profiles of children.
+            Text entered into forms is masked before it leaves the browser, so a
+            child&rsquo;s personal information is not captured in analytics or
+            recordings. We do not use these tools to advertise to children.
+          </p>
         </>
       ),
     },
@@ -126,7 +147,69 @@ export const PRIVACY_POLICY: {
           <p>
             Our website uses cookies and similar technologies to operate the
             site, remember your preferences, and analyze how the site is used.
-            For details, see our <a href="/cookie-policy">Cookie Policy</a>.
+            We ask for your choices the first time you visit, and you can change
+            them at any time using the <strong>Cookie preferences</strong> link
+            in the footer. For details, see our{" "}
+            <a href="/cookie-policy">Cookie Policy</a>.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: "analytics",
+      heading: "Analytics and session replay",
+      body: (
+        <>
+          <p>
+            If you allow analytics cookies, we use two tools to understand how
+            the website is performing:
+          </p>
+          <ul>
+            <li>
+              <strong>Google Analytics</strong> — aggregated statistics such as
+              how many people visited a page and how they found it.
+            </li>
+            <li>
+              <strong>Microsoft Clarity</strong> — heatmaps and{" "}
+              <strong>session replay</strong>, which records how a visit moved
+              through the site (pages viewed, clicks, scrolling, and mouse
+              movement) and plays it back as an anonymized recording.
+            </li>
+          </ul>
+          <p>
+            We use session replay for one reason: to find places where the
+            website is confusing or broken — for example, a registration step
+            where families consistently drop off — and fix them.
+          </p>
+          <p>
+            <strong>What is not recorded.</strong> Text entered into forms on
+            this site is masked before it leaves your browser, so information
+            such as a player&rsquo;s name, date of birth, address, or contact
+            details does not appear in a recording. Recordings are pseudonymous
+            — they are not linked to your name or to a player record — and we do
+            not use them to identify or track an individual visitor. Content
+            inside embedded third-party tools (such as PlayMetrics or JotForm
+            registration windows) is not captured by our session replay.
+          </p>
+          <p>
+            Neither tool runs if you decline analytics cookies. You can also opt
+            out of Microsoft Clarity across all sites via Microsoft&rsquo;s{" "}
+            <a
+              href="https://privacy.microsoft.com/privacystatement"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              privacy controls
+            </a>{" "}
+            and out of Google Analytics with the{" "}
+            <a
+              href="https://tools.google.com/dlpage/gaoptout"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google Analytics opt-out browser add-on
+            </a>
+            .
           </p>
         </>
       ),

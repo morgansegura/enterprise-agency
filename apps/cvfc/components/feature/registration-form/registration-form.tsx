@@ -269,7 +269,11 @@ export function RegistrationForm({
   const currentStep = Math.min(step, STEPS.length - 1);
 
   return (
-    <div className="registration-form" data-variant={variant}>
+    <div
+      className="registration-form"
+      data-variant={variant}
+      data-clarity-mask="true"
+    >
       <header className="registration-form-header">
         <p className="registration-form-eyebrow">
           <span className="registration-form-eyebrow-rule" aria-hidden="true" />
