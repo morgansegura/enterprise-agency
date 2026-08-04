@@ -163,6 +163,9 @@ export const FOOTER_NAV: TMenuItem[] = [
   {
     heading: "Legal",
     items: [
+      { target: "", label: "Financial Transparency", href: "/transparency" },
+      { target: "", label: "Youth Safeguarding", href: "/safeguarding" },
+      { target: "", label: "Donor Privacy", href: "/donor-privacy" },
       { target: "", label: "Privacy Policy", href: "/privacy-policy" },
       { target: "", label: "Terms of Service", href: "/terms-of-service" },
       { target: "", label: "Cookie Policy", href: "/cookie-policy" },
