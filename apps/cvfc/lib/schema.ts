@@ -11,7 +11,9 @@ export function organizationSchema() {
     "@type": "SportsOrganization",
     "@id": `${siteConfig.url}#organization`,
     name: siteConfig.legalName,
-    alternateName: siteConfig.shortName,
+    // IRS-registered name — lets Google reconcile the site with the charity record.
+    legalName: siteConfig.registeredName,
+    alternateName: [siteConfig.shortName, siteConfig.name],
     url: siteConfig.url,
     logo: `${siteConfig.url}/icon.png`,
     description: siteConfig.description,

@@ -32,10 +32,13 @@ export const TRANSPARENCY: {
         <>
           <ul>
             <li>
-              <strong>Legal name:</strong> {siteConfig.legalName}
+              <strong>Registered name:</strong> {siteConfig.registeredName} —
+              the name on file with the IRS.
             </li>
             <li>
-              <strong>Known as:</strong> {siteConfig.shortName}
+              <strong>Operating name:</strong> {siteConfig.legalName} (
+              {siteConfig.shortName}) — the name the club has competed and
+              operated under.
             </li>
             <li>
               <strong>Tax status:</strong> Nonprofit organization under Section
