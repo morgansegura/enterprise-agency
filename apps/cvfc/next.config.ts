@@ -79,6 +79,13 @@ const nextConfig: NextConfig = {
         destination: "/support#make-a-donation",
         permanent: true,
       },
+      // Legacy WordPress donate form. Still indexed, and its cached copy carries
+      // another charity's name and EIN (a copied template). Redirect, don't 404.
+      {
+        source: "/donate-form",
+        destination: "/support#make-a-donation",
+        permanent: true,
+      },
       { source: "/contact", destination: "/support", permanent: true },
       { source: "/contact-us", destination: "/support", permanent: true },
       { source: "/events", destination: "/news", permanent: true },

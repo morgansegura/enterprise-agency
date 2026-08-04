@@ -10,6 +10,8 @@ import { site } from "@/site.config";
 export const siteConfig = {
   name: "Chula Vista FC",
   legalName: "Chula Vista Fútbol Club",
+  /** IRS-registered name (EIN 95-3683491). The club operates publicly as "Chula Vista Fútbol Club". */
+  registeredName: "Chula Vista Youth Soccer League",
   shortName: "CVFC",
   tagline: "Shaping Players. Inspiring Futures.",
   motto: "Passion. Unity. Respect. Attitude.",
@@ -21,7 +23,7 @@ export const siteConfig = {
   locale: "en_US",
   foundingDate: "1982",
   /** Federal Tax ID — public via IRS Pub 78, ProPublica, Candid. Surfaced on /support for donor verification. */
-  ein: "20-3786129",
+  ein: "95-3683491",
   ogImage: "/og-image.png",
   geo: {
     region: "US-CA",

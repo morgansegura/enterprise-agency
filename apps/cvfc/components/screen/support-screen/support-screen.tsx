@@ -9,6 +9,7 @@ import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { getPage } from "@/lib/cms";
+import { siteConfig } from "@/lib/site-config";
 import { blockFor, cmsOverlay } from "@/lib/media";
 import {
   pageHeroFromPage,
@@ -253,9 +254,10 @@ export async function SupportScreen() {
               </Button>
             </div>
             <p className="support-tax-note">
-              Chula Vista Fútbol Club is a 501(c)(3) nonprofit organization.
-              Donations are tax-deductible to the extent allowed by law. Federal
-              Tax ID (EIN): <strong>20-3786129</strong>.
+              Chula Vista Fútbol Club is a 501(c)(3) nonprofit organization,
+              registered with the IRS as {siteConfig.registeredName}. Donations
+              are tax-deductible to the extent allowed by law. Federal Tax ID
+              (EIN): <strong>{siteConfig.ein}</strong>.
             </p>
           </div>
         </Section>
