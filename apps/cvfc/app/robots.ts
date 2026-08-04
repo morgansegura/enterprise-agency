@@ -34,6 +34,13 @@ const SEARCH_BOTS = [
   "Bingbot",
 ];
 
+/**
+ * Google Ads landing-page crawlers. They deliberately ignore the wildcard
+ * `User-agent: *` rule, so Ad Grants landing pages need an explicit allow or
+ * ad quality/eligibility checks can fail.
+ */
+const ADS_BOTS = ["AdsBot-Google", "AdsBot-Google-Mobile"];
+
 const isProd = process.env.VERCEL_ENV
   ? process.env.VERCEL_ENV === "production"
   : process.env.NODE_ENV === "production";
@@ -47,6 +54,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       { userAgent: "*", allow: "/", disallow: ["/api/"] },
       ...SEARCH_BOTS.map((userAgent) => ({ userAgent, allow: "/" })),
+      ...ADS_BOTS.map((userAgent) => ({ userAgent, allow: "/" })),
       ...TRAINING_BOTS.map((userAgent) => ({ userAgent, disallow: "/" })),
     ],
     sitemap: `${siteConfig.url}/sitemap.xml`,

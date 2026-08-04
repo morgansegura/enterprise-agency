@@ -74,5 +74,9 @@
     .copyright-name {
       @apply flex;
     }
+
+    .copyright-nonprofit {
+      @apply flex;
+    }
   }
 }

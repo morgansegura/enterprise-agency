@@ -5,6 +5,7 @@ import { Icon } from "@/components/icon";
 import { LogoIcon } from "@/components/layout";
 import { CookiePreferencesTrigger } from "@/components/cookie-consent";
 import { FOOTER_NAV, SOCIAL_MEDIA, type TMenuItem } from "@/lib/menu";
+import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 import "./footer.css";
@@ -113,6 +114,9 @@ export function Footer({
             <span className="hidden md:flex">
               {copyrightName ?? DEFAULT_COPYRIGHT}
             </span>
+          </p>
+          <p className="copyright-nonprofit">
+            501(c)(3) nonprofit &middot; EIN {siteConfig.ein}
           </p>
           <CookiePreferencesTrigger />
         </div>
