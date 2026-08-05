@@ -90,7 +90,6 @@ export const Pages: CollectionConfig = {
         StoryTimelineBlock,
         RichTextBlock,
         LegalSectionBlock,
-        ,
         SeasonalProgram,
       ],
     },
