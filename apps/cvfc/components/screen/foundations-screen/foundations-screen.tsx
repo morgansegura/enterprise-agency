@@ -9,21 +9,11 @@ import { Heading } from "@/components/feature/heading";
 import { IconCards } from "@/components/feature/icon-cards";
 import { MediaSplit } from "@/components/feature/media-split";
 import { PageHero } from "@/components/feature/page-hero";
-import { SeasonDetails } from "@/components/feature/season-details";
 import { Blocks } from "@/components/blocks";
 import { getPage } from "@/lib/cms";
-import {
-  MINI_MAESTROS,
-  formatEarlyBirdDeadline,
-  formatSeasonRange,
-  isEarlyBirdOpen,
-  isMiniMaestrosSeasonOpen,
-} from "@/data/mini-maestros";
 
 export async function FoundationsScreen() {
   const page = await getPage("programs/foundations");
-  const seasonOpen = isMiniMaestrosSeasonOpen();
-  const earlyBird = isEarlyBirdOpen();
   return (
     <>
       <main>
@@ -36,120 +26,21 @@ export async function FoundationsScreen() {
               heading="Soccer starts here."
               description="Foundations is where every CVFC pathway begins — Mini Maestros and CVFC Youth for ages 4 through 9. Technique first, fun first. The skills that carry a player through MLS NEXT, college, and the rest of life all start in this tier."
               actions={
-                <Button
-                  variant="outline"
-                  render={
-                    <a
-                      href={MINI_MAESTROS.registerUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
-                  }
-                >
-                  <span>Register Now for Mini Maestros</span>
-                  <Icon token="ri:arrow-right" aria-hidden="true" />
-                </Button>
-              }
-            />
-
-            {seasonOpen ? (
-              <Section size="default" id="mini-maestros">
-                <Heading
-                  eyebrow={`Mini Maestros · ${MINI_MAESTROS.season}`}
-                  heading="A six-week season, built for first-timers."
-                  headingSize="section"
-                  description={
-                    <p>
-                      Our short-season entry point — six weeks of technique,
-                      small-sided matches, and a shirt of their own. No
-                      experience needed, and no year-long commitment.
-                    </p>
-                  }
-                />
-                <SeasonDetails
-                  className="mt-10"
-                  dateline={formatSeasonRange()}
-                  datelineNote={MINI_MAESTROS.breakNote}
-                  facts={[
-                    {
-                      id: "weeks",
-                      value: `${MINI_MAESTROS.weeks} weeks`,
-                      label: "Season length",
-                    },
-                    {
-                      id: "ages",
-                      value: "Ages 4–9",
-                      label: "Three divisions",
-                    },
-                    earlyBird
-                      ? {
-                          id: "price",
-                          value: MINI_MAESTROS.earlyBirdPrice,
-                          label: `Early bird — ends ${formatEarlyBirdDeadline()}`,
-                        }
-                      : {
-                          id: "matches",
-                          value: "Saturdays",
-                          label: "Match day",
-                        },
-                  ]}
-                  divisions={[...MINI_MAESTROS.divisions]}
-                  columns={[
-                    {
-                      id: "schedule",
-                      label: "Practice & game schedule",
-                      items: [
-                        "Matches Saturday mornings.",
-                        "One weekday training, Monday through Friday.",
-                        "Training times work around parent schedules where we can.",
-                      ],
-                    },
-                    {
-                      id: "venues",
-                      label: "Venues",
-                      items: [
-                        "Terra Nova Park — games.",
-                        "Victory Christian Academy — training.",
-                        "Futbol Training Center — training.",
-                      ],
-                    },
-                    {
-                      id: "included",
-                      label: "Included",
-                      items: [...MINI_MAESTROS.includes],
-                    },
-                    {
-                      id: "register",
-                      label: "How to register",
-                      items: [
-                        "Registration runs through PlayMetrics — a couple of minutes.",
-                        "A CVFC coach follows up with first-session details.",
-                      ],
-                    },
-                  ]}
-                  footnote={
-                    earlyBird
-                      ? undefined
-                      : "Early bird pricing has closed — contact the club for current pricing and availability."
-                  }
-                />
-                <div className="mt-12 flex justify-center">
+                <>
+                  <EvaluationCTA
+                    variant="default"
+                    label="Request an Evaluation"
+                  />
                   <Button
                     variant="outline"
-                    render={
-                      <a
-                        href={MINI_MAESTROS.registerUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      />
-                    }
+                    render={<Link href="/evaluations#register" />}
                   >
-                    <span>Register Now for Mini Maestros</span>
+                    <span>Learn About Tryouts</span>
                     <Icon token="ri:arrow-right" aria-hidden="true" />
                   </Button>
-                </div>
-              </Section>
-            ) : null}
+                </>
+              }
+            />
 
             <MediaSplit
               eyebrow="Player Development"

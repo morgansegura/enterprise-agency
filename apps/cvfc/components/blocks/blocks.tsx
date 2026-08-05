@@ -12,6 +12,7 @@ import { StoryTimeline } from "@/components/feature/story-timeline";
 import { Testimonials } from "@/components/feature/testimonials";
 import { FaqSection } from "@/components/feature/faq-section";
 import { PageHero } from "@/components/feature/page-hero";
+import { SeasonDetails } from "@/components/feature/season-details";
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 import { Heading } from "@/components/feature/heading";
 import { Section } from "@/components/layout";
@@ -31,6 +32,7 @@ import {
   pageHeroFromBlock,
   headingSectionFromBlock,
   type PageHeroAction,
+  seasonalProgramFromBlock,
 } from "@/lib/cms-blocks";
 import type { PageBlock } from "@/lib/cms";
 
@@ -83,6 +85,50 @@ function richBody(text?: string): ReactNode {
  * maps a block to its bespoke FE feature. Unknown block types are skipped.
  */
 const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
+  seasonalProgram: (block, key) => {
+    const s = seasonalProgramFromBlock(block);
+    if (!s) return null;
+    return (
+      <Section key={key} size="default" id="seasonal-program">
+        <Heading
+          eyebrow={s.eyebrow}
+          heading={s.heading}
+          headingSize="section"
+          description={s.description ? <p>{s.description}</p> : undefined}
+        />
+        <SeasonDetails
+          className="mt-10"
+          dateline={s.dateline}
+          datelineNote={s.datelineNote}
+          facts={s.facts}
+          divisions={s.divisions}
+          columns={s.columns}
+          footnote={s.footnote}
+        />
+        {s.cta ? (
+          <div className="mt-12 flex justify-center">
+            <Button
+              variant={s.cta.variant}
+              render={
+                s.ctaNewTab ? (
+                  <a
+                    href={s.cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                ) : (
+                  <Link href={s.cta.href} />
+                )
+              }
+            >
+              <span>{s.cta.label}</span>
+              <Icon token="ri:arrow-right" aria-hidden="true" />
+            </Button>
+          </div>
+        ) : null}
+      </Section>
+    );
+  },
   hero: (block, key) => <HeroCarousel key={key} {...heroFromBlock(block)} />,
   pageHero: (block, key) => {
     const { actions, ...rest } = pageHeroFromBlock(block);

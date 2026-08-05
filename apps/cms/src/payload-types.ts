@@ -486,6 +486,73 @@ export interface Page {
             blockName?: string | null;
             blockType: 'legalSection';
           }
+        | {
+            /**
+             * Small label above the heading, e.g. "Mini Maestros · Fall 2026".
+             */
+            eyebrow?: string | null;
+            heading: string;
+            description?: string | null;
+            startDate: string;
+            /**
+             * After this date the block stops rendering on the site.
+             */
+            endDate: string;
+            /**
+             * Small gold line above the dates, e.g. "Labor Day weekend break".
+             */
+            datelineNote?: string | null;
+            /**
+             * Keep values SHORT — they render at display size. e.g. "6 weeks", "Ages 4–9".
+             */
+            facts?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * e.g. "$95". Shown as an extra fact while early bird is open.
+             */
+            earlyBirdPrice?: string | null;
+            earlyBirdDeadline?: string | null;
+            divisions?:
+              | {
+                  title: string;
+                  /**
+                   * e.g. "Born 2021–2022".
+                   */
+                  birthYears: string;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Schedule, venues, what is included, how to register…
+             */
+            columns?:
+              | {
+                  label: string;
+                  items?:
+                    | {
+                        text: string;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            footnote?: string | null;
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+              newTab?: boolean | null;
+              variant?: ('default' | 'secondary' | 'outline') | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'seasonalProgram';
+          }
       )[]
     | null;
   meta?: {
@@ -1680,6 +1747,55 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               content?: T;
+              id?: T;
+              blockName?: T;
+            };
+        seasonalProgram?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              description?: T;
+              startDate?: T;
+              endDate?: T;
+              datelineNote?: T;
+              facts?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              earlyBirdPrice?: T;
+              earlyBirdDeadline?: T;
+              divisions?:
+                | T
+                | {
+                    title?: T;
+                    birthYears?: T;
+                    id?: T;
+                  };
+              columns?:
+                | T
+                | {
+                    label?: T;
+                    items?:
+                      | T
+                      | {
+                          text?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              footnote?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    newTab?: T;
+                    variant?: T;
+                  };
               id?: T;
               blockName?: T;
             };

@@ -14,6 +14,7 @@ import { PortraitGridBlock } from '../blocks/PortraitGrid'
 import { RichTextBlock } from '../blocks/RichText'
 import { LegalSectionBlock } from '../blocks/LegalSection'
 import { StoryTimelineBlock } from '../blocks/StoryTimeline'
+import { SeasonalProgram } from '../blocks/SeasonalProgram'
 import { revalidatePages, revalidatePagesAfterDelete } from '../hooks/revalidate-pages'
 import { importImageUrls } from '../hooks/import-image-urls'
 import { buildPreviewUrl } from '../lib/preview'
@@ -89,6 +90,8 @@ export const Pages: CollectionConfig = {
         StoryTimelineBlock,
         RichTextBlock,
         LegalSectionBlock,
+        ,
+        SeasonalProgram,
       ],
     },
     {

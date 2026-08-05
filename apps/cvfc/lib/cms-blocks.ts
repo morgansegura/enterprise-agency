@@ -591,3 +591,90 @@ export function portraitGridFromBlock(b: PageBlock) {
     cta: ctaFromGroup(b.cta),
   };
 }
+
+/** End-of-day in club-local time, so a season stays up through its last date. */
+const endOfDayPT = (iso: string) =>
+  new Date(`${iso.slice(0, 10)}T23:59:59-07:00`).getTime();
+
+const fmtDay = (iso: string, withYear = false) =>
+  new Date(`${iso.slice(0, 10)}T12:00:00-07:00`).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    ...(withYear ? { year: "numeric" } : {}),
+    timeZone: "America/Los_Angeles",
+  });
+
+/**
+ * Maps a `seasonalProgram` block. Returns `undefined` when the block is absent
+ * *or* the season has already ended, so an expired season simply stops
+ * rendering — pages revalidate every 60s, so no deploy is needed.
+ */
+export function seasonalProgramFromPage(page: Page | null, now = Date.now()) {
+  const b = blockOf(page, "seasonalProgram");
+  return b ? seasonalProgramFromBlock(b, now) : undefined;
+}
+
+export function seasonalProgramFromBlock(b: PageBlock, now = Date.now()) {
+  const start = str(b.startDate);
+  const end = str(b.endDate);
+  if (!start || !end || now > endOfDayPT(end)) return undefined;
+
+  const rows = <T>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
+
+  const facts = rows<{ id?: string; label?: string; value?: string }>(
+    b.facts,
+  ).flatMap((f, i) =>
+    f.label && f.value
+      ? [{ id: f.id ?? `fact-${i}`, label: f.label, value: f.value }]
+      : [],
+  );
+
+  const earlyPrice = str(b.earlyBirdPrice);
+  const earlyDeadline = str(b.earlyBirdDeadline);
+  const earlyOpen = !!earlyDeadline && now <= endOfDayPT(earlyDeadline);
+  if (earlyPrice && earlyOpen && facts.length < 3) {
+    facts.push({
+      id: "early-bird",
+      label: `Early bird — ends ${fmtDay(earlyDeadline!)}`,
+      value: earlyPrice,
+    });
+  }
+
+  return {
+    eyebrow: str(b.eyebrow),
+    heading: str(b.heading) ?? "",
+    description: str(b.description),
+    dateline: `${fmtDay(start)} – ${fmtDay(end, true)}`,
+    datelineNote: str(b.datelineNote),
+    facts,
+    divisions: rows<{ id?: string; title?: string; birthYears?: string }>(
+      b.divisions,
+    ).flatMap((d, i) =>
+      d.title && d.birthYears
+        ? [
+            {
+              id: d.id ?? `division-${i}`,
+              title: d.title,
+              birthYears: d.birthYears,
+            },
+          ]
+        : [],
+    ),
+    columns: rows<{ id?: string; label?: string; items?: unknown }>(
+      b.columns,
+    ).flatMap((c, i) => {
+      const items = rows<{ text?: string }>(c.items).flatMap((it) =>
+        it.text ? [it.text] : [],
+      );
+      return c.label && items.length
+        ? [{ id: c.id ?? `column-${i}`, label: c.label, items }]
+        : [];
+    }),
+    footnote: str(b.footnote),
+    cta: ctaFromGroup(b.cta),
+    ctaNewTab:
+      b.cta && typeof b.cta === "object" && "newTab" in b.cta
+        ? (b.cta as { newTab?: boolean }).newTab !== false
+        : true,
+  };
+}
