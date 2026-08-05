@@ -66,7 +66,7 @@ export async function GoalkeeperPathwayScreen() {
                 </>
               }
               image={{
-                src: "https://chulavistafc.com/wp-content/uploads/2023/11/Goalkeepers-pic.jpg",
+                src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/Goalkeepers-pic.jpg",
                 alt: "CVFC goalkeepers in training",
               }}
               tags={["All Ages", "MLS NEXT GK Coach", "College Pathway"]}

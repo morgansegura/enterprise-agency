@@ -43,7 +43,7 @@ export const TESTIMONIALS: Testimonial[] = [
     longform:
       "We've been at this for more than four decades because we believe the game teaches more than the game. Players who come through CVFC leave with the technical foundation to compete, the tactical sense to read a match, and the character to lead a team — whether they go on to MLS NEXT, college soccer, or never play another organized minute. That's the standard, and we hold ourselves to it every session.",
     image: {
-      src: "https://chulavistafc.com/wp-content/uploads/2023/12/JHD_Headshot21.png",
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/JHD_Headshot21.png",
       alt: "J. Hector Diaz, Academy Director",
     },
   },
@@ -65,7 +65,7 @@ export const TESTIMONIALS: Testimonial[] = [
     author: "Luis Guzman",
     role: "Coach",
     image: {
-      src: "https://chulavistafc.com/wp-content/uploads/2025/07/53517d04ec70095bbacb153e985a82ce.avif",
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-luis-guzman.png",
       alt: "Luis Guzman, CVFC Coach",
     },
   },

@@ -33,7 +33,7 @@ const DEFAULT_SLIDES: HeroSlide[] = [
   {
     id: "shaping-players",
     image: {
-      src: "https://chulavistafc.com/wp-content/uploads/2025/05/image6.jpeg",
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/BU12-Academy.jpg",
       alt: "Chula Vista FC players in training",
     },
     eyebrow: "Chula Vista Fútbol Club · Since 1982",
@@ -45,7 +45,7 @@ const DEFAULT_SLIDES: HeroSlide[] = [
   {
     id: "state-cup",
     image: {
-      src: "https://chulavistafc.com/wp-content/uploads/2023/02/SEB01049-scaled.jpg",
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/cvfc-bu13-mls-next-cup-finalists-2027.jpeg",
       alt: "Chula Vista FC players celebrating a State Cup win",
     },
     eyebrow: "State Cup Champions",
@@ -57,7 +57,7 @@ const DEFAULT_SLIDES: HeroSlide[] = [
   {
     id: "pathway",
     image: {
-      src: "https://chulavistafc.com/wp-content/uploads/2023/11/Goalkeepers-pic.jpg",
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/Goalkeepers-pic.jpg",
       alt: "CVFC goalkeepers training",
     },
     eyebrow: "MLS NEXT · DPL · NPL · College Pathway",

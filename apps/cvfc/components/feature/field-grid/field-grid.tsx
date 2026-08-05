@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import "./field-grid.css";
 
 const FIELD_PLACEHOLDER_IMAGE =
-  "https://chulavistafc.com/wp-content/uploads/2024/02/IMG_6349.jpg";
+  "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/IMG_6349.jpg";
 
 type FieldGridProps = {
   className?: string;

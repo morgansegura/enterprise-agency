@@ -12,7 +12,7 @@ const DEFAULT_BODY =
   "Since 1982, Chula Vista FC has been dedicated and driven by a passion for developing players as athletes and as people. We're committed to providing the highest level of training, mentorship, and opportunity so every player can reach their full potential in the game and in life. Our passion lies in helping athletes grow, fostering a love for playing beautiful football, and creating opportunities for every player to reach their highest potential.";
 
 const DEFAULT_IMAGE = {
-  src: "https://chulavistafc.com/wp-content/uploads/2023/02/SEB01049-scaled.jpg",
+  src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/cvfc-bu13-mls-next-cup-finalists-2027.jpeg",
   alt: "Chula Vista FC players celebrating",
 };
 

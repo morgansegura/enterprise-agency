@@ -53,7 +53,7 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
               background="white"
               body="From our Mini Maestros to CVFC Youth teams, Chula Vista FC builds a strong foundation for future success. Our youngest players learn the game through fun, engaging, and skill-focused sessions, while developing the confidence, discipline, and technique needed to thrive as they progress through our development pathway."
               image={{
-                src: "https://chulavistafc.com/wp-content/uploads/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg",
+                src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/TurnerMedia-5199-scaled-e1707609763493.jpg",
                 alt: "Mini Maestros training",
               }}
               tags={["Mini Maestros", "CVFC Youth", "Ages 4–9"]}
@@ -83,7 +83,7 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
                 </>
               }
               image={{
-                src: "https://chulavistafc.com/wp-content/uploads/2024/05/IMG_0867.jpg",
+                src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/IMG_0867.jpg",
                 alt: "CVFC boys competitive team",
               }}
               tags={["SoCal Flight", "EA 2", "EA", "MLS NEXT 2", "MLS NEXT"]}
@@ -113,7 +113,7 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
                 </>
               }
               image={{
-                src: "https://chulavistafc.com/wp-content/uploads/2024/02/IMG_6349.jpg",
+                src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/IMG_6349.jpg",
                 alt: "CVFC girls competitive player",
               }}
               tags={["SoCal Flight", "NPL", "DPL", "GA Aspire", "GA"]}
@@ -133,7 +133,7 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
               reverse
               body="From the youngest age groups to elite competition, our goalkeeper pathway provides specialized training at every stage. Players develop technical skills, tactical awareness, and mental resilience under expert guidance. The goal is clear — prepare keepers to excel at the highest levels of club, college, and professional play."
               image={{
-                src: "https://chulavistafc.com/wp-content/uploads/2023/11/Goalkeepers-pic.jpg",
+                src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/Goalkeepers-pic.jpg",
                 alt: "CVFC goalkeepers in training",
               }}
               tags={["Specialty Training", "All Ages", "College/Pro Pathway"]}

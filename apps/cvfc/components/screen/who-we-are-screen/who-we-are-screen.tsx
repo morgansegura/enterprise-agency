@@ -126,7 +126,7 @@ export async function WhoWeAreScreen() {
                 </>
               }
               image={{
-                src: "https://chulavistafc.com/wp-content/uploads/2024/05/IMG_0867.jpg",
+                src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/IMG_0867.jpg",
                 alt: "Chula Vista FC players in competition",
               }}
               tags={[

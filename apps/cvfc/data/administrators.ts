@@ -13,8 +13,6 @@
  * ============================================================
  */
 
-const PHOTO_BASE = "https://chulavistafc.com/wp-content/uploads";
-
 export type AdminStatus = "active" | "on-leave" | "departed";
 
 export type AdminMember = {
@@ -41,7 +39,7 @@ export const ADMINISTRATORS: AdminMember[] = [
     credentials: ["UEFA C License"],
     bio: "J. Hector Diaz began his coaching career at 15 years old as an assistant coach for Aztecs FC. He went on to lead Chula Vista FC's player development across every age group, earning his UEFA C License in Scotland.",
     image: {
-      src: `${PHOTO_BASE}/2023/12/JHD_Headshot.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-j-hector-diaz-2.png",
       alt: "J. Hector Diaz",
     },
   },
@@ -53,7 +51,7 @@ export const ADMINISTRATORS: AdminMember[] = [
     credentials: ["Real Madrid Youth Academy", "FC Barcelona Youth Academy"],
     bio: "Diego began his football journey in the elite youth academies of Real Madrid and FC Barcelona, where he developed as a player. He brings that European technical foundation to CVFC's player development model.",
     image: {
-      src: `${PHOTO_BASE}/2025/07/Diego-Gomez-pic-scaled.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/Diego-Gomez-pic-scaled.jpg",
       alt: "Diego Gomez",
     },
   },
@@ -68,7 +66,7 @@ export const ADMINISTRATORS: AdminMember[] = [
     ],
     bio: "Javier holds a Bachelor's in Sports Medicine from Point Loma Nazarene and a Master's in Sports Performance and Injury Prevention from Cal U. A CVFC alumnus from the Chula Vista Pumas era (1999–2008), he now leads day-to-day club operations.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Javi_Castorena.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-javier-castorena.png",
       alt: "Javier Castorena",
     },
   },
@@ -80,7 +78,7 @@ export const ADMINISTRATORS: AdminMember[] = [
     credentials: ["International Instructor (24+ countries)"],
     bio: "Ruben Cano's reputation as both a recognized and respected instructor has allowed him to share his coaching seminars with fellow coaches in over 24 countries. He oversees the CVFC coaching curriculum and the development of coaches across every program.",
     image: {
-      src: `${PHOTO_BASE}/2024/01/Ruben_Cano_2-scaled.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/Ruben_Cano_2-scaled.jpg",
       alt: "Ruben Cano",
     },
   },

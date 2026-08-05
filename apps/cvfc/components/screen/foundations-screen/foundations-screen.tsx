@@ -63,7 +63,7 @@ export async function FoundationsScreen() {
                 </>
               }
               image={{
-                src: "https://chulavistafc.com/wp-content/uploads/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg",
+                src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/TurnerMedia-5199-scaled-e1707609763493.jpg",
                 alt: "Mini Maestros training",
               }}
               tags={["Ages 4–9", "Mini Maestros", "CVFC Youth"]}

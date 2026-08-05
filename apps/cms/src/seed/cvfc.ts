@@ -221,7 +221,7 @@ const PATHWAY_CARDS = [
   },
 ]
 
-const PHOTO = 'https://chulavistafc.com/wp-content/uploads'
+const PHOTO = 'https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev'
 
 /**
  * The full landing layout (everything EXCEPT the hero, which is preserved from
@@ -292,7 +292,7 @@ const LANDING_BLOCKS = [
     eyebrow: 'Player Development',
     heading: 'Foundations of the Game',
     body: 'From our Mini Maestros to CVFC Youth teams, Chula Vista FC builds a strong foundation for future success. Our youngest players learn the game through fun, engaging, and skill-focused sessions, while developing the confidence, discipline, and technique needed to thrive as they progress through our development pathway.',
-    imageUrl: `${PHOTO}/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg`,
+    imageUrl: `${PHOTO}/TurnerMedia-5199-scaled-e1707609763493.jpg`,
     imageAlt: 'Mini Maestros training',
     tags: [{ label: 'Mini Maestros' }, { label: 'CVFC Youth' }, { label: 'Ages 4–9' }],
     buttons: [
@@ -311,7 +311,7 @@ const LANDING_BLOCKS = [
     background: 'white',
     reverse: true,
     body: 'From the youngest age groups to elite competition, our goalkeeper pathway provides specialized training at every stage. Players develop technical skills, tactical awareness, and mental resilience under expert guidance. The goal is clear — prepare keepers to excel at the highest levels of club, college, and professional play.',
-    imageUrl: `${PHOTO}/2023/11/Goalkeepers-pic.jpg`,
+    imageUrl: `${PHOTO}/Goalkeepers-pic.jpg`,
     imageAlt: 'CVFC goalkeepers in training',
     tags: [
       { label: 'Specialty Training' },
@@ -338,7 +338,7 @@ const LANDING_BLOCKS = [
     eyebrow: 'Girls Competitive Pathway',
     heading: 'Girls Competitive Pathway',
     body: "Chula Vista FC is proud to offer elite opportunities for our female athletes, including NPL and DPL competition, with Girl's Academy (GA) and GA Aspire coming soon. We also compete in the SoCal League Flight system, giving players the perfect level of competition to match their development. These top-tier leagues and pathways ensure our players receive the highest level of training, competition, and exposure — helping them reach their full potential on and off the field.",
-    imageUrl: `${PHOTO}/2024/02/IMG_6349.jpg`,
+    imageUrl: `${PHOTO}/IMG_6349.jpg`,
     imageAlt: 'CVFC girls competitive player',
     tags: [
       { label: 'SoCal Flight' },
@@ -369,7 +369,7 @@ const LANDING_BLOCKS = [
     background: 'white',
     reverse: true,
     body: 'Chula Vista FC offers one of the strongest competitive pathways for boys in Southern California, featuring MLS NEXT and MLS NEXT 2, along with Elite Academy (EA) and EA 2. We also compete in the SoCal League Flight system, providing the right level of competition for every stage of development. These platforms give our players elite training, top-level competition, and national exposure — preparing them to excel at the highest levels of the game.',
-    imageUrl: `${PHOTO}/2024/05/IMG_0867.jpg`,
+    imageUrl: `${PHOTO}/IMG_0867.jpg`,
     imageAlt: 'CVFC boys competitive team',
     tags: [
       { label: 'SoCal Flight' },
@@ -545,7 +545,7 @@ const WHO_WE_ARE_LAYOUT = [
     eyebrow: 'The Mission',
     heading: 'The work is the same for every player who walks in.',
     body: "That's the work — and it has been since 1982. Chula Vista FC was founded in the South Bay and we're still rooted here, but the gate has always been open. Families come to us from across San Diego County, the Imperial Valley, the border region, and beyond. We measure players by what they're willing to do, not where they're coming from.\n\nRecent partnerships extend that reach: in 2025, San Diego FC partnered with Chula Vista FC to help grow the beautiful game across the region. In 2024, CVFC joined a campaign to improve soccer fields throughout Chula Vista — investing in the infrastructure the next generation of players will share.",
-    imageUrl: `${PHOTO}/2024/05/IMG_0867.jpg`,
+    imageUrl: `${PHOTO}/IMG_0867.jpg`,
     imageAlt: 'Chula Vista FC players in competition',
     tags: [
       { label: 'Boys & Girls' },
@@ -678,7 +678,7 @@ const FOUNDATIONS_LAYOUT = [
     eyebrow: 'Player Development',
     heading: 'Technique is #1.',
     body: "Foundations players come to us as four-year-olds and leave at nine ready for competitive tryouts. The job in those years isn't winning — it's ball mastery, dribbling, shooting, and 1v1 attacking and defending. Build the skills first, and confidence follows.\n\nOur Foundations program is COED, runs Monday through Wednesday with matches on Saturdays, and rotates new technical content every week. New families are welcome year-round.",
-    imageUrl: `${PHOTO}/2024/02/TurnerMedia-5199-scaled-e1707609763493.jpg`,
+    imageUrl: `${PHOTO}/TurnerMedia-5199-scaled-e1707609763493.jpg`,
     imageAlt: 'Mini Maestros training',
     tags: [{ label: 'Ages 4–9' }, { label: 'Mini Maestros' }, { label: 'CVFC Youth' }],
   },
@@ -755,7 +755,7 @@ const GOALKEEPER_LAYOUT = [
     eyebrow: 'Why a Specialty Pathway',
     heading: 'The position demands its own curriculum.',
     body: "A keeper's development happens differently than an outfield player's. Footwork, handling, distribution, shot-stopping technique, decision-making in the box, and the mental game all need their own time on the training ground — not just whatever's left over at the end of a team session.\n\nOur goalkeepers train alongside their pathway team (Foundations, Boys, Girls, MLS NEXT, DPL, etc.) but get dedicated GK sessions led by goalkeeping specialists. That's how a CVFC keeper develops the technical foundation, tactical awareness, and mental resilience to excel at club, college, and professional levels.",
-    imageUrl: `${PHOTO}/2023/11/Goalkeepers-pic.jpg`,
+    imageUrl: `${PHOTO}/Goalkeepers-pic.jpg`,
     imageAlt: 'CVFC goalkeepers in training',
     tags: [{ label: 'All Ages' }, { label: 'MLS NEXT GK Coach' }, { label: 'College Pathway' }],
   },
@@ -833,7 +833,7 @@ const BOYS_LAYOUT = [
     eyebrow: 'The Top of the Ladder',
     heading: 'Inside MLS NEXT.',
     body: 'Chula Vista FC is a proud member of the MLS NEXT League, where our top-flight boys’ teams are provided with a purpose-driven path to professional play and college athletics. MLS NEXT clubs combined have produced more than 90 percent of the U.S. Youth National Team players in 2019 — establishing it as the top destination for the best young players in North America.\n\nPlayers are scouted through the MLS NEXT Showcases held throughout the season and challenged by the best teams in the country. Coaches commit to a high-intensity regimen that focuses on player identification, environment, personal growth, and community.',
-    imageUrl: `${PHOTO}/2024/05/IMG_0867.jpg`,
+    imageUrl: `${PHOTO}/IMG_0867.jpg`,
     imageAlt: 'CVFC boys MLS NEXT player',
     tags: [
       { label: 'MLS NEXT' },
@@ -963,7 +963,7 @@ const GIRLS_LAYOUT = [
     heading: 'The Development Player League.',
     reverse: true,
     body: "The Development Player League is a prestigious club-vs-club platform specifically designed to elevate girls' soccer. CVFC was accepted into the DPL in April 2025 — a standards-driven national league that gives players a structured, reputable environment for long-term growth.\n\nDPL emphasizes both athletic and personal growth. It extends beyond soccer skills to life lessons, community, and collegiate opportunities — and it pits CVFC players against the elite clubs of Southern California, who are among the nation's best.",
-    imageUrl: `${PHOTO}/2024/02/IMG_6349.jpg`,
+    imageUrl: `${PHOTO}/IMG_6349.jpg`,
     imageAlt: 'CVFC girls competitive player',
     tags: [{ label: 'DPL' }, { label: 'NPL' }, { label: 'Birth Years 2007–2013' }],
   },

@@ -64,7 +64,7 @@ export async function GirlsCompetitivePathwayScreen() {
                 </>
               }
               image={{
-                src: "https://chulavistafc.com/wp-content/uploads/2024/02/IMG_6349.jpg",
+                src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/IMG_6349.jpg",
                 alt: "CVFC girls competitive player",
               }}
               tags={["DPL", "NPL", "Birth Years 2007–2013"]}

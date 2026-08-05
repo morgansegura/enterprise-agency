@@ -37,7 +37,7 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
     author: "J. Hector Diaz",
     role: "Club Director",
     image: {
-      src: "https://chulavistafc.com/wp-content/uploads/2023/12/JHD_Headshot21.png",
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/JHD_Headshot21.png",
       alt: "J. Hector Diaz headshot",
     },
   },
@@ -54,7 +54,7 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
     author: "Luis Guzman",
     role: "Coach",
     image: {
-      src: "https://chulavistafc.com/wp-content/uploads/2025/07/53517d04ec70095bbacb153e985a82ce.avif",
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-luis-guzman.png",
       alt: "Luis Guzman",
     },
   },
@@ -79,7 +79,7 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
     author: "Jason Wright",
     role: "Parent",
     image: {
-      src: "https://chulavistafc.com/wp-content/uploads/2023/12/JHD_Headshot21.png",
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/JHD_Headshot21.png",
       alt: "Jason Wright",
     },
   },

@@ -23,8 +23,6 @@
  * ============================================================
  */
 
-const PHOTO_BASE = "https://chulavistafc.com/wp-content/uploads";
-
 export type CoachPathway = "boys" | "girls" | "goalkeeper" | "foundations";
 
 export type CoachProgram =
@@ -76,7 +74,7 @@ export const COACHES: Coach[] = [
     team: "B2010 MLS NEXT",
     credentials: ["UEFA C License", "Academy Director"],
     image: {
-      src: `${PHOTO_BASE}/2023/12/JHD_Headshot.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-j-hector-diaz-2.png",
       alt: "J. Hector Diaz",
     },
     isFeatured: true,
@@ -96,7 +94,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "Proud CVFC alumnus and former player of the club from 2000 to 2010. Pursuing an MBA in Sports Management.",
     image: {
-      src: `${PHOTO_BASE}/2023/06/Fernando_Mares-e1688029752768-1568x1986.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-fernando-mares.png",
       alt: "Fernando Mares",
     },
     isFeatured: true,
@@ -116,7 +114,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "6+ years of coaching experience including MLS Next, Elite Academy, and SoCal. Two-time NSCAA Conference Champion and team captain at Mt. San Antonio College. BA in Sociology, AA in Kinesiology.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Isaac_Valencia_smile-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-isaac-valencia.png",
       alt: "Isaac Valencia",
     },
     isFeatured: true,
@@ -130,7 +128,7 @@ export const COACHES: Coach[] = [
     programs: ["mls-next"],
     team: "B2007 MLS NEXT · B2012 MLS NEXT",
     image: {
-      src: `${PHOTO_BASE}/2025/07/2ec7f52e-a795-4272-b960-2c7c47dfbcb9.jpeg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-khadim-seye.png",
       alt: "Khadim Seye",
     },
   },
@@ -145,7 +143,7 @@ export const COACHES: Coach[] = [
     credentials: ["USSF B License"],
     bio: "Committing over 15+ years to serving the South Bay — born and raised in San Diego. Vocation is to inspire a growth mindset.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Antonio_Govea-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-jose-antonio-govea-1.png",
       alt: "Jose Antonio Govea",
     },
     isFeatured: true,
@@ -164,7 +162,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "Played professionally for 7 years for Mexican Club Pachuca. Started coaching in Tecate, BC, Mexico (2010–12).",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Marcos_Valadez-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-marcos-valdez-1.png",
       alt: "Marcos Valadez",
     },
     joinedYear: 2017,
@@ -185,7 +183,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "11 years coaching. Played NCAA Division 2 at Point Loma Nazarene and at Chula Vista Pumas (now CVFC) from 1999 to 2008.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Javi_Castorena.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-javier-castorena.png",
       alt: "Javier Castorena",
     },
   },
@@ -204,7 +202,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "16 years coaching with diverse youth experience.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Hector_Romo-e1700232407410.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-hector-romo.png",
       alt: "Hector Romo",
     },
   },
@@ -222,7 +220,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "Born in Tijuana; played for Club Tijuana's 3rd division team. Coaching since 2017.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Ricardo_DelCastillo.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-ricardo-del-castillo.png",
       alt: "Ricardo Del Castillo",
     },
   },
@@ -236,7 +234,7 @@ export const COACHES: Coach[] = [
     team: "B2012 MLS NEXT Academy",
     bio: "Passionate about teaching the game of fútbol. An active player.",
     image: {
-      src: `${PHOTO_BASE}/2022/12/Hernan_Maldonado-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-hernan-maldonado.png",
       alt: "Hernan Maldonado",
     },
   },
@@ -256,7 +254,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "Former United States Youth National Team player. Coaching success includes players developed for MLS Youth Academies.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/U-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-alberto-diaz-1.png",
       alt: "Alberto Diaz",
     },
     isFeatured: true,
@@ -271,7 +269,7 @@ export const COACHES: Coach[] = [
     team: "B2009 EA 2",
     bio: "Started coaching in 2013. Previously assisted with teams in Las Vegas.",
     image: {
-      src: `${PHOTO_BASE}/2025/07/53517d04ec70095bbacb153e985a82ce.avif`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-luis-guzman.png",
       alt: "Luis Guzman",
     },
     joinedYear: 2020,
@@ -287,7 +285,7 @@ export const COACHES: Coach[] = [
     credentials: ["US Soccer D License", "BS International Business"],
     bio: "Born in Los Angeles, raised in Tijuana and Chula Vista. 10 years coaching.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Oscar_Briseno-e1700232341716.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-oscar-briseno.png",
       alt: "Oscar Briseno",
     },
   },
@@ -300,7 +298,7 @@ export const COACHES: Coach[] = [
     programs: ["ea-2", "socal-flight"],
     team: "B2011 EA 2 · BU07 Guaje",
     image: {
-      src: `${PHOTO_BASE}/2024/06/Martin-Sanchez.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-martin-sanchez.png",
       alt: "Martin Sanchez",
     },
   },
@@ -314,7 +312,7 @@ export const COACHES: Coach[] = [
     team: "G2007 DPL · GU10 Villa",
     bio: '"The important thing is not only to develop good soccer players but, more importantly, to shape excellent human beings."',
     image: {
-      src: `${PHOTO_BASE}/2023/07/Antonio_Lizaola-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-jose-antonio-lizaola.png",
       alt: "Jose Antonio Lizaola",
     },
   },
@@ -328,7 +326,7 @@ export const COACHES: Coach[] = [
     team: "G2009 DPL",
     bio: "Born and raised in San Diego. Played competitive youth soccer throughout the area, competed at San Diego City College. Began coaching journey with DV7 Soccer Academy in 2018.",
     image: {
-      src: `${PHOTO_BASE}/2025/04/IMG_4096.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-james-hendrix.png",
       alt: "James Hendrix",
     },
   },
@@ -347,7 +345,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "Played pro soccer for 12 years starting at CHIVAS. Goalkeeper who played in the U-17 World Cup in Japan '93 and the Libertadores Cup.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Alfredo_Toxqui-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-alfredo-toxqui-1.png",
       alt: "Alfredo Toxqui",
     },
     isFeatured: true,
@@ -362,7 +360,7 @@ export const COACHES: Coach[] = [
     team: "G2011 DPL",
     bio: "13 years coaching, ignited by both his daughter's involvement in the sport and his profound passion.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/David_Ochoa-e1700231687634.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-david-ochoa.png",
       alt: "David Ochoa",
     },
   },
@@ -377,7 +375,7 @@ export const COACHES: Coach[] = [
     credentials: ["US National C License", "BS Computer Engineering"],
     bio: "Originally from San Diego; spent two decades in Chile. 16+ years of coaching experience.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Alejandro_Medel-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-alejandro-medel.png",
       alt: "Alejandro Medel",
     },
     joinedYear: 2009,
@@ -392,7 +390,7 @@ export const COACHES: Coach[] = [
     team: "G2007",
     bio: "Born and raised in San Diego. 20+ years playing soccer; 5 years coaching high school.",
     image: {
-      src: `${PHOTO_BASE}/2024/06/IMG_2660.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-freddy-aparicio.png",
       alt: "Freddy Aparicio",
     },
   },
@@ -407,7 +405,7 @@ export const COACHES: Coach[] = [
     credentials: ["MS Sport Psychology (in progress)", "CMPC candidate"],
     bio: "Born and raised in Chula Vista, played for the club for many years. Career-ending injury at the collegiate level. Pursuing Master's in Sport Psychology.",
     image: {
-      src: `${PHOTO_BASE}/2025/03/Jenny.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-jenny-rodriguez.png",
       alt: "Jenny Rodriguez",
     },
   },
@@ -421,7 +419,7 @@ export const COACHES: Coach[] = [
     team: "GU08 Villa · BU13 Villa",
     bio: "Born in San Diego. 14+ years coaching, started at Atlante San Diego FC.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Eddie_Romo-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-eduardo-romo.png",
       alt: "Eduardo Romo",
     },
     joinedYear: 2020,
@@ -436,7 +434,7 @@ export const COACHES: Coach[] = [
     team: "GU07 Villa",
     bio: "Started playing soccer at age six. Coaching career began at CVFC.",
     image: {
-      src: `${PHOTO_BASE}/2025/04/IMG_8411-1568x1950.jpeg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-amanda-howard.png",
       alt: "Amanda Howard",
     },
   },
@@ -450,7 +448,7 @@ export const COACHES: Coach[] = [
     team: "BU11 Villa · BU12 Villa",
     bio: "Has both his sons playing for CVFC: B2012 EA and B2008 MLS NEXT.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Diego_Mosqueda.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-diego-mosqueda.png",
       alt: "Diego Mosqueda",
     },
     joinedYear: 2017,
@@ -466,7 +464,7 @@ export const COACHES: Coach[] = [
     credentials: ["USSF D License", "Hoover HS Boys & Girls Varsity"],
     bio: "Born in Los Angeles, raised in San Diego. Part of the San Diego soccer community for 20+ years as a player and 10 years as a coach.",
     image: {
-      src: `${PHOTO_BASE}/2024/05/IMG_4260.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-jose-de-los-santos.png",
       alt: "Jose De Los Santos",
     },
   },
@@ -479,7 +477,7 @@ export const COACHES: Coach[] = [
     programs: ["socal-flight"],
     team: "B2010 Villa",
     image: {
-      src: `${PHOTO_BASE}/2025/07/Luis-Ochoa-Coach.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-luis-ochoa.png",
       alt: "Luis Ochoa",
     },
   },
@@ -493,7 +491,7 @@ export const COACHES: Coach[] = [
     team: "B2011 Villa",
     bio: '"Coaching at CVFC has been a pleasure. Guiding talented youth has made me better."',
     image: {
-      src: `${PHOTO_BASE}/2022/12/Francisco_Ramirez-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-francisco-ramirez.png",
       alt: "Francisco Ramirez",
     },
   },
@@ -507,7 +505,7 @@ export const COACHES: Coach[] = [
     team: "BU09 Tuilla · BU11 Guaje · BU14 Villa",
     bio: "Came from Spain two years ago. Grew up watching and playing soccer.",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Daniel_Vergara.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-daniel-vergara.png",
       alt: "Daniel Vergara",
     },
   },
@@ -521,7 +519,7 @@ export const COACHES: Coach[] = [
     team: "BU15 Villa · BU13 Guaje",
     bio: 'Soccer coach with 15+ years of experience. "Discipline and work are the tools to develop talent."',
     image: {
-      src: `${PHOTO_BASE}/2024/11/IMG_3402-1.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-paulo-gustavo-serrano.png",
       alt: "Paulo Gustavo Serrano",
     },
   },
@@ -536,7 +534,7 @@ export const COACHES: Coach[] = [
     credentials: ["US Soccer D License (in progress)"],
     bio: "Born and raised in Chula Vista. College-level player who also played in the US Army against military teams. 4 years coaching competitive soccer.",
     image: {
-      src: `${PHOTO_BASE}/2024/05/Huerta-pic.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-aldo-huerta.png",
       alt: "Aldo Huerta",
     },
   },
@@ -549,7 +547,7 @@ export const COACHES: Coach[] = [
     programs: ["socal-flight"],
     team: "BU12 Guaje",
     image: {
-      src: `${PHOTO_BASE}/2025/07/Attachment-1.jpeg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-paul-abe.png",
       alt: "Paul Abe",
     },
   },
@@ -568,7 +566,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "Played for the US National Youth Soccer Team and San Diego State Men's Soccer. SDSU Team's MVP (2010), Pac-12 All-Academic (2011), Best Newcomer (2009).",
     image: {
-      src: `${PHOTO_BASE}/2023/07/Altamirano.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-jose-altamirano.png",
       alt: "Jose Altamirano",
     },
   },
@@ -581,7 +579,7 @@ export const COACHES: Coach[] = [
     programs: ["socal-flight"],
     team: "B2010 Tuilla · BU12 Tuilla",
     image: {
-      src: `${PHOTO_BASE}/2025/10/Juan-Meza.jpeg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-juan-meza.png",
       alt: "Juan Meza",
     },
   },
@@ -599,7 +597,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "Born in Chile, moved to USA at age six, played his entire life with CVFC. SDSU graduate (Journalism). Started coaching at 18.",
     image: {
-      src: `${PHOTO_BASE}/2025/04/IMG_9214-1568x2010.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-mathias-medel-1.png",
       alt: "Mathias Medel",
     },
     isFeatured: true,
@@ -614,7 +612,7 @@ export const COACHES: Coach[] = [
     team: "BU10 Villa",
     bio: "Started playing at a young age. Played in Chula Vista since 2012.",
     image: {
-      src: `${PHOTO_BASE}/2022/12/Jesse_Lopez-1568x1045.png`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-jesse-lopez.png",
       alt: "Jesse Lopez",
     },
   },
@@ -627,7 +625,7 @@ export const COACHES: Coach[] = [
     programs: ["socal-flight"],
     team: "BU08 Guaje",
     image: {
-      src: `${PHOTO_BASE}/2026/03/Jesse-Marquez.jpeg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-jesse-marquez.png",
       alt: "Jesse Marquez",
     },
   },
@@ -642,7 +640,7 @@ export const COACHES: Coach[] = [
     credentials: ["3rd Division Mexico · Necaxa"],
     bio: "Played for almost 15 years; achieved the goal of playing third division football in Mexico City for Necaxa.",
     image: {
-      src: `${PHOTO_BASE}/2025/04/IMG_0761-1568x1711.jpeg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-armando-valencia.png",
       alt: "Armando Valencia",
     },
   },
@@ -659,7 +657,7 @@ export const COACHES: Coach[] = [
     credentials: ["3rd Division Mexico · Alebrijes de Oaxaca"],
     bio: "Started as an assistant high school coach in 2018. Took an opportunity to play with the third division of Alebrijes de Oaxaca in Mexico City.",
     image: {
-      src: `${PHOTO_BASE}/2024/06/image0-20-1-e1707607182961.jpeg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-ricardo-villalva.png",
       alt: "Ricardo Villalva",
     },
   },
@@ -680,7 +678,7 @@ export const COACHES: Coach[] = [
     ],
     bio: "Played goalkeeper for Xolos U15 and Mexico's Third Division. Earned a full scholarship to Cal Poly San Luis Obispo, coached by former US National Team head coach Steve Sampson.",
     image: {
-      src: `${PHOTO_BASE}/2024/06/f93b1145-b81a-4685-8979-0bc4fd3d8f0c-238x300-1.jpg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-victor-duran.png",
       alt: "Carlos Arce",
     },
     programs: [],
@@ -692,7 +690,7 @@ export const COACHES: Coach[] = [
     role: "specialist",
     pathway: ["goalkeeper"],
     image: {
-      src: `${PHOTO_BASE}/2024/06/Victor-Duran.jpeg`,
+      src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/staff-victor-duran.png",
       alt: "Victor Duran",
     },
     programs: [],
