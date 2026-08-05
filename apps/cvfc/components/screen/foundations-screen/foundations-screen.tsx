@@ -55,14 +55,14 @@ export async function FoundationsScreen() {
             {seasonOpen ? (
               <Section size="default" id="mini-maestros">
                 <Heading
-                  eyebrow={`Mini Maestros \u00b7 ${MINI_MAESTROS.season}`}
+                  eyebrow={`Mini Maestros · ${MINI_MAESTROS.season}`}
                   heading="A six-week season, built for first-timers."
                   headingSize="section"
                   description={
                     <p>
-                      Our short-season entry point \u2014 six weeks of
-                      technique, small-sided matches, and a shirt of their own.
-                      No experience needed, and no year-long commitment.
+                      Our short-season entry point — six weeks of technique,
+                      small-sided matches, and a shirt of their own. No
+                      experience needed, and no year-long commitment.
                     </p>
                   }
                 />
@@ -78,14 +78,14 @@ export async function FoundationsScreen() {
                     },
                     {
                       id: "ages",
-                      value: "Ages 4\u20139",
+                      value: "Ages 4–9",
                       label: "Three divisions",
                     },
                     earlyBird
                       ? {
                           id: "price",
                           value: MINI_MAESTROS.earlyBirdPrice,
-                          label: `Early bird \u2014 ends ${formatEarlyBirdDeadline()}`,
+                          label: `Early bird — ends ${formatEarlyBirdDeadline()}`,
                         }
                       : {
                           id: "matches",
@@ -108,9 +108,9 @@ export async function FoundationsScreen() {
                       id: "venues",
                       label: "Venues",
                       items: [
-                        "Terra Nova Park \u2014 games.",
-                        "Victory Christian Academy \u2014 training.",
-                        "Futbol Training Center \u2014 training.",
+                        "Terra Nova Park — games.",
+                        "Victory Christian Academy — training.",
+                        "Futbol Training Center — training.",
                       ],
                     },
                     {
@@ -122,7 +122,7 @@ export async function FoundationsScreen() {
                       id: "register",
                       label: "How to register",
                       items: [
-                        "Registration runs through PlayMetrics \u2014 a couple of minutes.",
+                        "Registration runs through PlayMetrics — a couple of minutes.",
                         "A CVFC coach follows up with first-session details.",
                       ],
                     },
@@ -130,7 +130,7 @@ export async function FoundationsScreen() {
                   footnote={
                     earlyBird
                       ? undefined
-                      : "Early bird pricing has closed \u2014 contact the club for current pricing and availability."
+                      : "Early bird pricing has closed — contact the club for current pricing and availability."
                   }
                 />
                 <div className="mt-12 flex justify-center">

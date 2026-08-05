@@ -26,10 +26,10 @@ export const MINI_MAESTROS = {
     {
       id: "super-juniors",
       title: "Super Juniors",
-      birthYears: "born 2021\u20132022",
+      birthYears: "Born 2021–2022",
     },
-    { id: "juniors", title: "Juniors", birthYears: "born 2019\u20132020" },
-    { id: "maestros", title: "Maestros", birthYears: "born 2017\u20132018" },
+    { id: "juniors", title: "Juniors", birthYears: "Born 2019–2020" },
+    { id: "maestros", title: "Maestros", birthYears: "Born 2017–2018" },
   ],
 } as const;
 
@@ -56,7 +56,7 @@ export function formatEarlyBirdDeadline(): string {
   });
 }
 
-/** "August 17 \u2013 October 3, 2026" */
+/** "August 17 – October 3, 2026" */
 export function formatSeasonRange(): string {
   const fmt = (iso: string, withYear = false) =>
     new Date(`${iso}T12:00:00-07:00`).toLocaleDateString("en-US", {
