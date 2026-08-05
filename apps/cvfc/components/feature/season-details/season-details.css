@@ -1,0 +1,71 @@
+@reference "tailwindcss";
+
+/* --- dateline: the long date lives here, never in a display stat --- */
+
+.season-dateline {
+  @apply mx-auto flex max-w-3xl flex-col items-center gap-1 text-center;
+}
+
+.season-dateline-dates {
+  @apply font-(family-name:--font-heading) text-xl font-medium tracking-tight text-(--color-midnight) sm:text-2xl;
+}
+
+.season-dateline-note {
+  @apply text-sm uppercase tracking-[0.18em] text-(--color-gold);
+}
+
+/* --- facts: short values only, big and confident --- */
+
+/* One joined group: every cell shares the outer border, hairline dividers
+   come from the 1px grid gap showing the container background through. */
+.season-grid {
+  @apply mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-(--color-midnight)/10 bg-(--color-midnight)/10 sm:grid-cols-3;
+}
+
+.season-cell {
+  @apply flex flex-col items-center justify-center gap-2 bg-white px-6 py-7 text-center;
+}
+
+.season-fact-label {
+  @apply text-xs uppercase tracking-[0.16em] text-(--color-gold);
+}
+
+.season-fact-value {
+  @apply m-0 font-(family-name:--font-heading) text-4xl font-medium leading-none tracking-tight text-(--color-midnight);
+}
+
+/* --- divisions: clean type row, no cards, no icons --- */
+
+.season-division-title {
+  @apply font-(family-name:--font-heading) text-lg font-medium tracking-tight text-(--color-midnight);
+}
+
+.season-division-years {
+  @apply m-0 text-sm text-(--color-midnight)/65;
+}
+
+/* --- two-column detail lists --- */
+
+.season-columns {
+  @apply mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-x-12 gap-y-8 text-left sm:grid-cols-2;
+}
+
+.season-column-label {
+  @apply mb-3 font-(family-name:--font-heading) text-xs font-semibold uppercase tracking-[0.18em] text-(--color-gold);
+}
+
+.season-column-list {
+  @apply flex list-none flex-col gap-2 p-0;
+}
+
+.season-column-item {
+  @apply relative pl-4 text-base leading-relaxed text-(--color-midnight)/85;
+
+  &:before {
+    @apply absolute left-0 top-[0.7em] h-1 w-1 rounded-full bg-(--color-gold) content-[''];
+  }
+}
+
+.season-footnote {
+  @apply mx-auto mt-10 max-w-3xl text-center text-sm text-(--color-midnight)/60;
+}
