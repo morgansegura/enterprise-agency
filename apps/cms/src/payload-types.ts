@@ -547,7 +547,6 @@ export interface Page {
               label?: string | null;
               href?: string | null;
               newTab?: boolean | null;
-              variant?: ('default' | 'secondary' | 'outline') | null;
             };
             id?: string | null;
             blockName?: string | null;
@@ -1794,7 +1793,6 @@ export interface PagesSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                     newTab?: T;
-                    variant?: T;
                   };
               id?: T;
               blockName?: T;

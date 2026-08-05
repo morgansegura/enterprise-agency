@@ -108,7 +108,7 @@ const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
         {s.cta ? (
           <div className="mt-12 flex justify-center">
             <Button
-              variant={s.cta.variant}
+              variant="outline"
               render={
                 s.ctaNewTab ? (
                   <a

@@ -110,16 +110,6 @@ export const SeasonalProgram: Block = {
         { name: 'label', type: 'text' },
         { name: 'href', type: 'text' },
         { name: 'newTab', type: 'checkbox', defaultValue: true },
-        {
-          name: 'variant',
-          type: 'select',
-          defaultValue: 'outline',
-          options: [
-            { label: 'Default', value: 'default' },
-            { label: 'Secondary', value: 'secondary' },
-            { label: 'Outline', value: 'outline' },
-          ],
-        },
       ],
     },
   ],
