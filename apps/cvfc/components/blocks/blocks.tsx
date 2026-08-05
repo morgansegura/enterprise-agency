@@ -228,15 +228,18 @@ const REGISTRY: Record<string, (block: PageBlock, key: string) => ReactNode> = {
 export function BlockList({
   layout,
   only,
+  exclude,
 }: {
   layout?: PageBlock[] | null;
   only?: string[];
+  exclude?: string[];
 }) {
   const blocks = (layout ?? []).filter(
     (b) =>
       b.blockType &&
       REGISTRY[b.blockType] &&
-      (!only || only.includes(b.blockType)),
+      (!only || only.includes(b.blockType)) &&
+      (!exclude || !exclude.includes(b.blockType)),
   );
   if (!blocks.length) return null;
   return (

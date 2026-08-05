@@ -22,10 +22,12 @@ export async function Blocks({
   page,
   layout,
   only,
+  exclude,
 }: {
   page?: Page | null;
   layout?: PageBlock[] | null;
   only?: string[];
+  exclude?: string[];
 }) {
   const { isEnabled: isPreview } = await draftMode();
   if (isPreview) {
@@ -37,5 +39,7 @@ export async function Blocks({
       <LiveBlocks initialData={initialData} only={only} serverURL={cmsOrigin} />
     );
   }
-  return <BlockList layout={layout ?? page?.layout} only={only} />;
+  return (
+    <BlockList layout={layout ?? page?.layout} only={only} exclude={exclude} />
+  );
 }

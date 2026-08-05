@@ -27,100 +27,107 @@ export async function FoundationsScreen() {
   return (
     <>
       <main>
-        {/* Seasonal promo — rendered for BOTH the CMS and fallback paths so it
-            shows regardless of whether this page has CMS blocks. Self-expires. */}
-        {seasonOpen ? (
-          <Section size="default" id="mini-maestros">
-            <Heading
-              eyebrow={`Mini Maestros · ${MINI_MAESTROS.season}`}
-              heading="A six-week season, built for first-timers."
-              headingSize="section"
-              description={
-                <p>
-                  Our short-season entry point — six weeks of technique,
-                  small-sided matches, and a shirt of their own. No experience
-                  needed, and no year-long commitment.
-                </p>
-              }
-            />
-            <SeasonDetails
-              className="mt-10"
-              dateline={formatSeasonRange()}
-              datelineNote={MINI_MAESTROS.breakNote}
-              facts={[
-                {
-                  id: "weeks",
-                  value: `${MINI_MAESTROS.weeks} weeks`,
-                  label: "Season length",
-                },
-                { id: "ages", value: "Ages 4–9", label: "Three divisions" },
-                earlyBird
-                  ? {
-                      id: "price",
-                      value: MINI_MAESTROS.earlyBirdPrice,
-                      label: `Early bird — ends ${formatEarlyBirdDeadline()}`,
-                    }
-                  : { id: "matches", value: "Saturdays", label: "Match day" },
-              ]}
-              divisions={[...MINI_MAESTROS.divisions]}
-              columns={[
-                {
-                  id: "schedule",
-                  label: "Practice & game schedule",
-                  items: [
-                    "Matches Saturday mornings.",
-                    "One weekday training, Monday through Friday.",
-                    "Training times work around parent schedules where we can.",
-                  ],
-                },
-                {
-                  id: "venues",
-                  label: "Venues",
-                  items: [
-                    "Terra Nova Park — games.",
-                    "Victory Christian Academy — training.",
-                    "Futbol Training Center — training.",
-                  ],
-                },
-                {
-                  id: "included",
-                  label: "Included",
-                  items: [...MINI_MAESTROS.includes],
-                },
-                {
-                  id: "register",
-                  label: "How to register",
-                  items: [
-                    "Registration runs through PlayMetrics — a couple of minutes.",
-                    "A CVFC coach follows up with first-session details.",
-                  ],
-                },
-              ]}
-              footnote={
-                earlyBird
-                  ? undefined
-                  : "Early bird pricing has closed — contact the club for current pricing and availability."
-              }
-            />
-            <div className="mt-12 flex justify-center">
-              <Button
-                variant="outline"
-                render={
-                  <a
-                    href={MINI_MAESTROS.registerUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  />
-                }
-              >
-                <span>Register Now for Mini Maestros</span>
-                <Icon token="ri:arrow-right" aria-hidden="true" />
-              </Button>
-            </div>
-          </Section>
-        ) : null}
         {page?.layout?.length ? (
-          <Blocks page={page} />
+          <>
+            <Blocks page={page} only={["pageHero", "hero"]} />
+            {/* Seasonal promo — rendered for BOTH the CMS and fallback paths so it
+            shows regardless of whether this page has CMS blocks. Self-expires. */}
+            {seasonOpen ? (
+              <Section size="default" id="mini-maestros">
+                <Heading
+                  eyebrow={`Mini Maestros · ${MINI_MAESTROS.season}`}
+                  heading="A six-week season, built for first-timers."
+                  headingSize="section"
+                  description={
+                    <p>
+                      Our short-season entry point — six weeks of technique,
+                      small-sided matches, and a shirt of their own. No
+                      experience needed, and no year-long commitment.
+                    </p>
+                  }
+                />
+                <SeasonDetails
+                  className="mt-10"
+                  dateline={formatSeasonRange()}
+                  datelineNote={MINI_MAESTROS.breakNote}
+                  facts={[
+                    {
+                      id: "weeks",
+                      value: `${MINI_MAESTROS.weeks} weeks`,
+                      label: "Season length",
+                    },
+                    { id: "ages", value: "Ages 4–9", label: "Three divisions" },
+                    earlyBird
+                      ? {
+                          id: "price",
+                          value: MINI_MAESTROS.earlyBirdPrice,
+                          label: `Early bird — ends ${formatEarlyBirdDeadline()}`,
+                        }
+                      : {
+                          id: "matches",
+                          value: "Saturdays",
+                          label: "Match day",
+                        },
+                  ]}
+                  divisions={[...MINI_MAESTROS.divisions]}
+                  columns={[
+                    {
+                      id: "schedule",
+                      label: "Practice & game schedule",
+                      items: [
+                        "Matches Saturday mornings.",
+                        "One weekday training, Monday through Friday.",
+                        "Training times work around parent schedules where we can.",
+                      ],
+                    },
+                    {
+                      id: "venues",
+                      label: "Venues",
+                      items: [
+                        "Terra Nova Park — games.",
+                        "Victory Christian Academy — training.",
+                        "Futbol Training Center — training.",
+                      ],
+                    },
+                    {
+                      id: "included",
+                      label: "Included",
+                      items: [...MINI_MAESTROS.includes],
+                    },
+                    {
+                      id: "register",
+                      label: "How to register",
+                      items: [
+                        "Registration runs through PlayMetrics — a couple of minutes.",
+                        "A CVFC coach follows up with first-session details.",
+                      ],
+                    },
+                  ]}
+                  footnote={
+                    earlyBird
+                      ? undefined
+                      : "Early bird pricing has closed — contact the club for current pricing and availability."
+                  }
+                />
+                <div className="mt-12 flex justify-center">
+                  <Button
+                    variant="outline"
+                    render={
+                      <a
+                        href={MINI_MAESTROS.registerUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      />
+                    }
+                  >
+                    <span>Register Now for Mini Maestros</span>
+                    <Icon token="ri:arrow-right" aria-hidden="true" />
+                  </Button>
+                </div>
+              </Section>
+            ) : null}
+            <Blocks page={page} exclude={["pageHero", "hero"]} />
+          </>
         ) : (
           <>
             <PageHero
@@ -143,6 +150,103 @@ export async function FoundationsScreen() {
                 </>
               }
             />
+
+            {/* Seasonal promo — rendered for BOTH the CMS and fallback paths so it
+            shows regardless of whether this page has CMS blocks. Self-expires. */}
+            {seasonOpen ? (
+              <Section size="default" id="mini-maestros">
+                <Heading
+                  eyebrow={`Mini Maestros · ${MINI_MAESTROS.season}`}
+                  heading="A six-week season, built for first-timers."
+                  headingSize="section"
+                  description={
+                    <p>
+                      Our short-season entry point — six weeks of technique,
+                      small-sided matches, and a shirt of their own. No
+                      experience needed, and no year-long commitment.
+                    </p>
+                  }
+                />
+                <SeasonDetails
+                  className="mt-10"
+                  dateline={formatSeasonRange()}
+                  datelineNote={MINI_MAESTROS.breakNote}
+                  facts={[
+                    {
+                      id: "weeks",
+                      value: `${MINI_MAESTROS.weeks} weeks`,
+                      label: "Season length",
+                    },
+                    { id: "ages", value: "Ages 4–9", label: "Three divisions" },
+                    earlyBird
+                      ? {
+                          id: "price",
+                          value: MINI_MAESTROS.earlyBirdPrice,
+                          label: `Early bird — ends ${formatEarlyBirdDeadline()}`,
+                        }
+                      : {
+                          id: "matches",
+                          value: "Saturdays",
+                          label: "Match day",
+                        },
+                  ]}
+                  divisions={[...MINI_MAESTROS.divisions]}
+                  columns={[
+                    {
+                      id: "schedule",
+                      label: "Practice & game schedule",
+                      items: [
+                        "Matches Saturday mornings.",
+                        "One weekday training, Monday through Friday.",
+                        "Training times work around parent schedules where we can.",
+                      ],
+                    },
+                    {
+                      id: "venues",
+                      label: "Venues",
+                      items: [
+                        "Terra Nova Park — games.",
+                        "Victory Christian Academy — training.",
+                        "Futbol Training Center — training.",
+                      ],
+                    },
+                    {
+                      id: "included",
+                      label: "Included",
+                      items: [...MINI_MAESTROS.includes],
+                    },
+                    {
+                      id: "register",
+                      label: "How to register",
+                      items: [
+                        "Registration runs through PlayMetrics — a couple of minutes.",
+                        "A CVFC coach follows up with first-session details.",
+                      ],
+                    },
+                  ]}
+                  footnote={
+                    earlyBird
+                      ? undefined
+                      : "Early bird pricing has closed — contact the club for current pricing and availability."
+                  }
+                />
+                <div className="mt-12 flex justify-center">
+                  <Button
+                    variant="outline"
+                    render={
+                      <a
+                        href={MINI_MAESTROS.registerUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      />
+                    }
+                  >
+                    <span>Register Now for Mini Maestros</span>
+                    <Icon token="ri:arrow-right" aria-hidden="true" />
+                  </Button>
+                </div>
+              </Section>
+            ) : null}
 
             <MediaSplit
               eyebrow="Player Development"
