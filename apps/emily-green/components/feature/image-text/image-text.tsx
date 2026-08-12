@@ -8,22 +8,27 @@ import {
   landingScreenMock,
   type ImageTextBlock,
 } from "@/data/mocks/landing-screen.mock";
+import { safeRel } from "@/lib/utils";
 
 import "./image-text.css";
 
 type ImageTextProps = {
   content?: ImageTextBlock;
+  /** Anchor target for in-page nav links. */
+  id?: string;
 };
 
 /** Image + text, two columns. `imagePosition` swaps the sides (desktop). Text
  *  side: eyebrow → heading → body → CTA → optional stats. Mock-driven. */
 export function ImageText({
   content = landingScreenMock.serving,
+  id,
 }: ImageTextProps) {
   const position = content.imagePosition ?? "left";
 
   return (
     <Section
+      id={id}
       ariaLabel={content.eyebrow ?? content.heading}
       className="image-text"
     >
@@ -59,7 +64,13 @@ export function ImageText({
 
           {content.cta ? (
             <Button asChild className="image-text-cta">
-              <Link href={content.cta.href}>{content.cta.label}</Link>
+              <Link
+                href={content.cta.href}
+                target={content.cta.target}
+                rel={safeRel(content.cta.target, content.cta.rel)}
+              >
+                {content.cta.label}
+              </Link>
             </Button>
           ) : null}
 

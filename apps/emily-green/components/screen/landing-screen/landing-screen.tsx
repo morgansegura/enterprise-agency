@@ -19,14 +19,14 @@ export function LandingScreen({ className }: { className?: string }) {
     <main className={cn("landing-screen", className)}>
       <Hero />
       <LogoCarousel />
-      <Intro />
-      <ImageText />
-      <Testimonials />
+      <Intro id="about" />
+      <ImageText id="locations" />
+      <Testimonials id="testimonials" />
       <Title />
       <Separator />
       <StatsImage />
       <Services />
-      <Faq />
+      <Faq id="faq" />
       <Contact />
     </main>
   );

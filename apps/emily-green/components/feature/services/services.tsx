@@ -8,6 +8,7 @@ import {
   type ServiceCard,
   type ServicesBlock,
 } from "@/data/mocks/landing-screen.mock";
+import { safeRel } from "@/lib/utils";
 
 import "./services.css";
 
@@ -17,7 +18,7 @@ type ServicesProps = {
 
 function Card({ card }: { card: ServiceCard }) {
   if (card.image) {
-    return (
+    const figure = (
       <figure className="services-card-figure">
         <div className="services-card-media">
           <Image
@@ -32,6 +33,20 @@ function Card({ card }: { card: ServiceCard }) {
           <figcaption className="services-card-label">{card.label}</figcaption>
         ) : null}
       </figure>
+    );
+
+    if (!card.cta) return figure;
+
+    return (
+      <Link
+        href={card.cta.href}
+        target={card.cta.target}
+        rel={safeRel(card.cta.target, card.cta.rel)}
+        aria-label={card.cta.label}
+        className="services-card-link"
+      >
+        {figure}
+      </Link>
     );
   }
 
@@ -75,8 +90,12 @@ export function Services({
         </h3>
         {content?.resourceLinks?.map((link, index) => (
           <div className="services-resource-link" key={index}>
-            <Link href={link?.href} target={link?.target} rel={link?.rel}>
-              {link?.label}
+            <Link
+              href={link.href}
+              target={link.target}
+              rel={safeRel(link.target, link.rel)}
+            >
+              {link.label}
             </Link>
           </div>
         ))}

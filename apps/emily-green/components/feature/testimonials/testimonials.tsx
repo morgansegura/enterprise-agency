@@ -8,22 +8,27 @@ import {
   landingScreenMock,
   type TestimonialsBlock,
 } from "@/data/mocks/landing-screen.mock";
+import { safeRel } from "@/lib/utils";
 
 import "./testimonials.css";
 
 type TestimonialsProps = {
   content?: TestimonialsBlock;
+  /** Anchor target for in-page nav links. */
+  id?: string;
 };
 
 /** Testimonials — eyebrow + heading + reviews link, an accordion of quotes, and
  *  an image. `imagePosition` swaps sides. Mock-driven. */
 export function Testimonials({
   content = landingScreenMock.testimonials,
+  id,
 }: TestimonialsProps) {
   const position = content.imagePosition ?? "right";
 
   return (
     <Section
+      id={id}
       ariaLabel={content.eyebrow ?? "Testimonials"}
       className="testimonials"
     >
@@ -41,7 +46,12 @@ export function Testimonials({
 
           {content.link ? (
             <p className="testimonials-link">
-              <Link href={content.link.href} className="testimonials-link-cta">
+              <Link
+                href={content.link.href}
+                target={content.link.target}
+                rel={safeRel(content.link.target, content.link.rel)}
+                className="testimonials-link-cta"
+              >
                 {content.link.label}
               </Link>
               {content.note ? (

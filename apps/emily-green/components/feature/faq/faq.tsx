@@ -11,12 +11,14 @@ import "./faq.css";
 
 type FaqProps = {
   content?: FaqBlock;
+  /** Anchor target for in-page nav links. */
+  id?: string;
 };
 
 /** FAQ — centered header + an accordion of Q&A (reuses FaqAccordion). Mock-driven. */
-export function Faq({ content = landingScreenMock.faq }: FaqProps) {
+export function Faq({ content = landingScreenMock.faq, id }: FaqProps) {
   return (
-    <Section ariaLabel={content.heading} className="faq">
+    <Section id={id} ariaLabel={content.heading} className="faq">
       <FaqSchema
         items={content.items.map((item) => ({
           question: item.title,

@@ -51,6 +51,10 @@
 }
 
 /* image card */
+.services-card-link {
+  @apply block w-full rounded-2xl outline-offset-4 transition-opacity duration-300 ease-out;
+  @apply hover:opacity-90 focus-visible:outline-2 focus-visible:outline-(--primary-foreground);
+}
 .services-card-figure {
   @apply flex w-full flex-col;
 }

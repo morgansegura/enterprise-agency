@@ -1,5 +1,39 @@
 import type { TMenuItem } from "@wf/ui";
 
+/** Applied to every outbound link — see `safeRel` for the noopener handling. */
+const EXTERNAL = { target: "_blank", rel: "nofollow" } as const;
+
+/**
+ * Churchill Mortgage destinations — the single source of truth for every
+ * outbound link on this site.
+ *
+ * CMC website policy: mortgage payment, loan information, available programs,
+ * loan applications and rate information must all resolve to the Churchill
+ * Mortgage site. Never point these at a local page or an on-page anchor.
+ */
+export const CMC = {
+  rates: "https://www.churchillmortgage.com/interest-rates",
+  loanPrograms: "https://www.churchillmortgage.com/loan-programs",
+  calculator:
+    "https://www.churchillmortgage.com/calculators/monthly-payment-calculator",
+  /** Payments/servicing are handled through the Loan Servicing Center. */
+  servicing: "https://www.churchillmortgage.com/loan-servicing-center",
+  resources: "https://www.churchillmortgage.com/resources",
+  /** CMC has no standalone document-checklist page — the starter kit is the
+   *  closest approved equivalent. Confirm the target with marketing. */
+  documentChecklist:
+    "https://www.churchillmortgage.com/ebooks/homebuyer-starter-kit?mlo=1429849",
+  loanOfficer: "https://www.churchillmortgage.com/loan-officers/emily-green",
+  apply: "https://emily-green.mychurchill.com/create-account",
+  login: "https://emily-green.mychurchill.com/sign-in",
+  privacy: "https://www.churchillmortgage.com/privacy",
+  terms: "https://www.churchillmortgage.com/support/terms-of-use",
+} as const;
+
+/** Google Business profile — the source of the Birdeye/Google review count. */
+export const GOOGLE_BUSINESS_URL =
+  "https://www.google.com/maps/place/Emily+Green+-+Churchill+Mortgage,+NMLS+1429849/data=!4m2!3m1!1s0x0:0xb28f5959918d838f?sa=X&ved=1t:2428&ictx=111";
+
 /**
  * Mock navigation for Emily Green. Mock-first: the chrome renders from these
  * until the CMS provides menus. Single-page site → header links anchor to
@@ -24,43 +58,35 @@ export type HeaderAction = {
 export const HEADER_ACTIONS: HeaderAction[] = [
   {
     label: "Start Application",
-    href: "https://emily-green.mychurchill.com/create-account",
-    target: "_blank",
-    rel: "nofollow",
+    href: CMC.apply,
+    ...EXTERNAL,
     variant: "outline",
   },
   {
     label: "Login",
-    target: "_blank",
-    rel: "nofollow",
-    href: "https://emily-green.mychurchill.com/sign-in",
+    href: CMC.login,
+    ...EXTERNAL,
     variant: "solid",
   },
 ];
 
-/** Footer link columns. */
+/** Footer link columns. Every loan/rate/payment link goes to CMC per policy. */
 export const FOOTER_NAV: TMenuItem[] = [
+  {
+    heading: "Loans",
+    items: [
+      { label: "Current Rates", href: CMC.rates, ...EXTERNAL },
+      { label: "Loan Programs", href: CMC.loanPrograms, ...EXTERNAL },
+      { label: "Start Application", href: CMC.apply, ...EXTERNAL },
+      { label: "Make a Payment", href: CMC.servicing, ...EXTERNAL },
+    ],
+  },
   {
     heading: "Features",
     items: [
-      {
-        label: "Mortgage Calculator",
-        href: "#mortgage-calculator",
-        target: "_blank",
-        rel: "nofollow",
-      },
-      {
-        label: "Check List",
-        href: "#document-checklist",
-        target: "_blank",
-        rel: "nofollow",
-      },
-      {
-        label: "Resources",
-        href: "#resources",
-        target: "_blank",
-        rel: "nofollow",
-      },
+      { label: "Mortgage Calculator", href: CMC.calculator, ...EXTERNAL },
+      { label: "Check List", href: CMC.documentChecklist, ...EXTERNAL },
+      { label: "Resources", href: CMC.resources, ...EXTERNAL },
       { label: "Frequently Asked Questions", href: "#faq" },
     ],
   },
@@ -88,7 +114,7 @@ export const SOCIAL_LINKS = [
   },
   {
     platform: "Google",
-    href: "https://www.google.com/maps/place/Emily+Green+-+Churchill+Mortgage,+NMLS+1429849/data=!4m2!3m1!1s0x0:0xb28f5959918d838f?sa=X&ved=1t:2428&ictx=111",
+    href: GOOGLE_BUSINESS_URL,
     target: "_blank",
     rel: "nofollow",
   },
@@ -100,26 +126,12 @@ export const SOCIAL_LINKS = [
   },
 ] as const;
 
-/** Bottom-bar legal links. */
+/** Bottom-bar legal links. The company privacy disclaimer links back to CMC per
+ *  policy. Cookie settings are handled by `CookiePreferencesTrigger`, which the
+ *  footer renders alongside these — there is no local cookie-policy route. */
 export const LEGAL_LINKS: TMenuItem[] = [
-  {
-    label: "Privacy Policy",
-    href: "https://www.churchillmortgage.com/privacy",
-    target: "_blank",
-    rel: "nofollow",
-  },
-  {
-    label: "Terms of Service",
-    href: "https://www.churchillmortgage.com/support/terms-of-use",
-    target: "_blank",
-    rel: "nofollow",
-  },
-  {
-    label: "Cookies Settings",
-    href: "/cookie-policy",
-    target: "_blank",
-    rel: "nofollow",
-  },
+  { label: "Privacy Policy", href: CMC.privacy, ...EXTERNAL },
+  { label: "Terms of Service", href: CMC.terms, ...EXTERNAL },
 ];
 
 /** Referral blurb shown in the footer. */

@@ -12,13 +12,15 @@ import "./intro.css";
 
 type IntroProps = {
   content?: IntroBlock;
+  /** Anchor target for in-page nav links. */
+  id?: string;
 };
 
 /** Intro / about block — eyebrow → heading → body → CTA, stacked (optional image
  *  stacks below). Mock-driven; a CMS block overrides it (same shape). */
-export function Intro({ content = landingScreenMock.intro }: IntroProps) {
+export function Intro({ content = landingScreenMock.intro, id }: IntroProps) {
   return (
-    <Section ariaLabel={content.eyebrow ?? "About"} className="intro">
+    <Section id={id} ariaLabel={content.eyebrow ?? "About"} className="intro">
       <div className="intro-inner">
         {content.eyebrow ? (
           <Eyebrow className="intro-eyebrow">{content.eyebrow}</Eyebrow>

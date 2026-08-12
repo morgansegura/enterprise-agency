@@ -5,7 +5,12 @@
  *   - images use `{ url, alt }` (a populated Payload upload's shape)
  *   - options (variants) are flat fields on the block
  * Wiring the CMS later = `cmsOverlay(mock.<block>, <block>FromPage(page))`.
+ *
+ * Outbound loan/rate/program links come from `CMC` in `lib/menu.ts` — CMC policy
+ * requires them to resolve to the Churchill Mortgage site.
  */
+
+import { CMC, GOOGLE_BUSINESS_URL } from "@/lib/menu";
 
 export type MediaValue = {
   url: string;
@@ -100,9 +105,11 @@ export type StatsImageBlock = {
 };
 
 export type ServiceCard = {
-  /** Text card: heading + body + cta. Image card: image + label. */
+  /** Text card: heading + body + cta. Image card: image + label + cta. */
   heading?: string;
   body?: string;
+  /** On an image card the whole card becomes this link, and `cta.label` is the
+   *  accessible name (the visible caption stays `label`). */
   cta?: CtaLink;
   image?: MediaValue;
   label?: string;
@@ -146,7 +153,7 @@ export const landingScreenMock: LandingScreenMock = {
   hero: {
     eyebrow: "Emily Green",
     role: "Home Loan Expert & Branch Manager",
-    heading: "Honest Advise. Happy Homeowners.",
+    heading: "Honest Advice. Happy Homeowners.",
     body: [
       "I'm here to help you build a clear mortgage plan so you can win in any market with the right strategy.",
       "I've built my business on simple truths: treating people right and helping my customers buy or refinance with confidence. My reviews from past customers tell the story of families who felt taken care of, and I'd love for you to feel that way too.",
@@ -193,7 +200,12 @@ export const landingScreenMock: LandingScreenMock = {
     body: [
       "Proudly serving the Boise Treasure Valley. Providing local expertise and personalized mortgage solutions tailored to the unique needs of homebuyers and homeowners throughout Boise, Meridian, Eagle, Nampa, and the surrounding communities.",
     ],
-    cta: { label: "Google Maps", href: "#locations" },
+    cta: {
+      label: "Google Maps",
+      href: GOOGLE_BUSINESS_URL,
+      rel: "nofollow",
+      target: "_blank",
+    },
     stats: [
       { value: "1,150", suffix: "+", label: "Happy Clients" },
       { value: "300", suffix: "+", label: "Mortgages Closed Annually" },
@@ -207,7 +219,12 @@ export const landingScreenMock: LandingScreenMock = {
   testimonials: {
     eyebrow: "Testimonials",
     heading: "Real Stories from the People We’ve Had the Honor to Serve",
-    link: { label: "Show More Reviews", href: "#reviews" },
+    link: {
+      label: "Show More Reviews",
+      href: GOOGLE_BUSINESS_URL,
+      rel: "nofollow",
+      target: "_blank",
+    },
     note: "Powered By Birdeye",
     items: [
       {
@@ -288,8 +305,8 @@ export const landingScreenMock: LandingScreenMock = {
         heading: "Local Experts Servicing All Loan Types",
         body: "Providing personalized home financing solutions including conventional, FHA, VA, and jumbo loans, along with refinancing and homebuyer guidance designed to help clients achieve long-term financial stability and confident homeownership.",
         cta: {
-          label: "Resources",
-          href: "https://www.churchillmortgage.com/loan-officers/emily-green",
+          label: "Loan Programs",
+          href: CMC.loanPrograms,
           rel: "nofollow",
           target: "_blank",
         },
@@ -300,6 +317,12 @@ export const landingScreenMock: LandingScreenMock = {
           alt: "Calculator on a desk",
         },
         label: "Mortgage Calculator",
+        cta: {
+          label: "Open the Churchill Mortgage payment calculator",
+          href: CMC.calculator,
+          rel: "nofollow",
+          target: "_blank",
+        },
       },
       {
         image: {
@@ -307,6 +330,12 @@ export const landingScreenMock: LandingScreenMock = {
           alt: "Checklist with checkmarks",
         },
         label: "Document Checklist",
+        cta: {
+          label: "Get the Churchill Mortgage document checklist",
+          href: CMC.documentChecklist,
+          rel: "nofollow",
+          target: "_blank",
+        },
       },
       {
         image: {
@@ -314,6 +343,12 @@ export const landingScreenMock: LandingScreenMock = {
           alt: "Model house on mortgage paperwork",
         },
         label: "Download Resources",
+        cta: {
+          label: "Browse Churchill Mortgage resources",
+          href: CMC.resources,
+          rel: "nofollow",
+          target: "_blank",
+        },
       },
     ],
   },
