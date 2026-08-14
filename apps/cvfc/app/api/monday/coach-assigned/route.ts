@@ -153,6 +153,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, notified: to });
   } catch (err) {
     log.error("coach notification failed", { signupId, coach: to, err });
-    return NextResponse.json({ ok: false, error: "send failed" });
+    // Echo the reason: this route is behind the shared secret, and a silent
+    // "send failed" is what made this hard to diagnose the first time.
+    return NextResponse.json({
+      ok: false,
+      error: err instanceof Error ? err.message : "send failed",
+    });
   }
 }

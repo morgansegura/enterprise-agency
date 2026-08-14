@@ -47,7 +47,11 @@ async function sendEmail({
 
   const body = (await res.json()) as { id?: string; message?: string };
   if (!res.ok) {
-    throw new Error(`Resend error ${res.status}: ${body.message ?? "unknown"}`);
+    // Name the sender: a rejection is almost always the FROM domain, and the
+    // configured value is the one thing the logs otherwise can't tell you.
+    throw new Error(
+      `Resend error ${res.status} sending from "${FROM}": ${body.message ?? "unknown"}`,
+    );
   }
   return { id: body.id ?? "" };
 }
