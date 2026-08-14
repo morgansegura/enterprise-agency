@@ -196,32 +196,9 @@ async function getCoaches(): Promise<Coach[]> {
   }));
 }
 
-/** Match a player to a coach by gender + birth year (+ Field/GK when known).
- *  Prefers exact gender, exact position, and the tightest birth-year coverage. */
-export async function matchCoach(
-  genderLabel: "Boys" | "Girls",
-  birthYear: number,
-  isGoalkeeper: boolean,
-): Promise<CoachMatch | null> {
-  const coaches = await getCoaches();
-  const candidates = coaches.filter(
-    (c) =>
-      c.status === "Active" &&
-      c.email &&
-      (c.gender === genderLabel || c.gender === "Both") &&
-      birthYear >= c.from &&
-      birthYear <= c.to &&
-      (isGoalkeeper
-        ? c.position === "Goalkeeper" || c.position === "Any"
-        : c.position === "Field" || c.position === "Any"),
-  );
-  if (candidates.length === 0) return null;
-  const score = (c: Coach) =>
-    (c.gender === genderLabel ? 2 : 0) +
-    (c.position !== "Any" ? 1 : 0) +
-    1 / (c.to - c.from + 1);
-  candidates.sort((a, b) => score(b) - score(a));
-  return { name: candidates[0].name, email: candidates[0].email };
+/** Coach names carry stray whitespace on the board (e.g. "Eduardo\tRomo"). */
+function normalizeName(value: string): string {
+  return value.replace(/\s+/g, " ").trim().toLowerCase();
 }
 
 // ── Signups (one flat row per player) ─────────────────────────────────────
@@ -234,16 +211,21 @@ async function findSignupByToken(token: string): Promise<string | null> {
   return null;
 }
 
-/** Step 1: create-or-update the player's Signups row (deduped by token) with
- *  parent + player core + the matched coach. Returns whether it was newly
- *  created (so callers email only once). */
+/**
+ * Step 1: create-or-update the player's Signups row (deduped by token) with
+ * parent + player core. Returns whether it was newly created.
+ *
+ * The row is deliberately created with no coach: "Coach" is a board_relation
+ * and "Coach Email" is a read-only mirror, and a coach is chosen by hand on the
+ * board. Assigning there is what triggers the coach's email, via
+ * `app/api/monday/coach-assigned`.
+ */
 export async function upsertSignup(args: {
   token: string;
   parent: ParentInput;
   player: PlayerCore;
-  coach: CoachMatch | null;
 }): Promise<{ signupId: string; created: boolean }> {
-  const { token, parent, player, coach } = args;
+  const { token, parent, player } = args;
   const cols = await columnMap(SIGNUPS_BOARD);
   const playerName = `${player.firstName} ${player.lastName}`.trim();
   const [year, month] = player.dob.split("-"); // YYYY-MM-DD
@@ -256,8 +238,6 @@ export async function upsertSignup(args: {
     "Player Birth Year": Number(year),
     "Player Birth Month": MONTHS[Number(month) - 1],
     "Prior League / Level": player.priorLeagueLevel,
-    Coach: coach?.name,
-    "Coach Email": coach?.email,
     "Submission Token": token,
     Status: "New",
   };
@@ -293,43 +273,103 @@ export async function signupColumnId(title: string): Promise<string | null> {
   return cols[title]?.id ?? null;
 }
 
-/** One Signups row as {columnTitle: text}, for building the coach email. */
-export async function getSignupRow(
-  itemId: string,
-): Promise<Record<string, string> | null> {
+export type SignupRow = {
+  /** Every column as display text, keyed by column title. */
+  values: Record<string, string>;
+  /** The linked coach on the Coaches board, when one is assigned. */
+  coachItemId: string | null;
+  coachName: string;
+  /** From the "Coach Email" mirror — may be empty; fall back to a lookup. */
+  coachEmail: string;
+};
+
+/**
+ * One Signups row, flattened to display text.
+ *
+ * "Coach" is a board_relation and "Coach Email" is a mirror — both return
+ * `text: null` from the API, so they need inline fragments (`linked_items` and
+ * `display_value`). Reading `text` alone silently yields empty values.
+ */
+export async function getSignupRow(itemId: string): Promise<SignupRow | null> {
   const data = await mondayGql<{
     boards: { columns: { id: string; title: string }[] }[];
     items: {
       id: string;
       name: string;
-      column_values: { id: string; text: string | null }[];
+      column_values: {
+        id: string;
+        text: string | null;
+        display_value?: string | null;
+        linked_item_ids?: string[] | null;
+        linked_items?: { id: string; name: string }[] | null;
+      }[];
     }[];
   }>(
     `query ($b: [ID!], $i: [ID!]) {
       boards(ids: $b) { columns { id title } }
-      items(ids: $i) { id name column_values { id text } }
+      items(ids: $i) {
+        id
+        name
+        column_values {
+          id
+          text
+          ... on MirrorValue { display_value }
+          ... on BoardRelationValue { linked_item_ids linked_items { id name } }
+        }
+      }
     }`,
     { b: [SIGNUPS_BOARD], i: [itemId] },
   );
+
   const item = data.items?.[0];
   if (!item) return null;
+
   const titleById: Record<string, string> = {};
   for (const c of data.boards[0]?.columns ?? []) titleById[c.id] = c.title;
-  const v: Record<string, string> = { Player: item.name };
-  for (const cv of item.column_values) v[titleById[cv.id]] = cv.text ?? "";
-  return v;
+
+  const values: Record<string, string> = { Player: item.name };
+  let coachItemId: string | null = null;
+
+  for (const cv of item.column_values) {
+    const title = titleById[cv.id];
+    if (!title) continue;
+    const linked = cv.linked_items ?? [];
+    if (linked.length) {
+      values[title] = linked.map((l) => l.name.replace(/\s+/g, " ")).join(", ");
+      if (title === COACH_COLUMN) coachItemId = linked[0].id;
+      continue;
+    }
+    values[title] = cv.display_value ?? cv.text ?? "";
+  }
+
+  return {
+    values,
+    coachItemId,
+    coachName: values[COACH_COLUMN] ?? "",
+    coachEmail: (values[COACH_EMAIL_COLUMN] ?? "").trim(),
+  };
 }
 
-/** Look a coach up on the Coaches board by name — the fallback when a manual
- *  assignment leaves "Coach Email" empty. */
+/** Read one coach straight off the Coaches board by item id. */
+export async function getCoachByItemId(
+  itemId: string,
+): Promise<CoachMatch | null> {
+  const rows = await boardRows(COACHES_BOARD);
+  const hit = rows.find((r) => r.id === itemId);
+  const email = hit?.v["Email"] ?? "";
+  return email ? { name: (hit?.v["Name"] ?? "").trim(), email } : null;
+}
+
+/** Look a coach up on the Coaches board by name — the last-resort fallback
+ *  when the mirror is empty and the relation gave us no item id. */
 export async function findCoachByName(
   name: string,
 ): Promise<CoachMatch | null> {
-  const wanted = name.trim().toLowerCase();
+  const wanted = normalizeName(name);
   if (!wanted) return null;
   const coaches = await getCoaches();
-  const hit = coaches.find((c) => c.name.trim().toLowerCase() === wanted);
-  return hit?.email ? { name: hit.name, email: hit.email } : null;
+  const hit = coaches.find((c) => normalizeName(c.name) === wanted);
+  return hit?.email ? { name: hit.name.trim(), email: hit.email } : null;
 }
 
 /** Stamp the guard column after a coach has been emailed. No-ops when the

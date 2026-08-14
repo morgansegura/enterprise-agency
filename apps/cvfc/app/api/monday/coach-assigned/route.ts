@@ -4,10 +4,10 @@ import { sendCoachNotification } from "@/lib/email/send";
 import { createLogger } from "@/lib/logger";
 import {
   COACH_COLUMN,
-  COACH_EMAIL_COLUMN,
   COACH_NOTIFIED_COLUMN,
   SIGNUPS_BOARD,
   findCoachByName,
+  getCoachByItemId,
   getSignupRow,
   markCoachNotified,
   signupColumnId,
@@ -15,13 +15,13 @@ import {
 
 /**
  * Monday webhook — fires when the Coach column changes on the CVFC Signups
- * board, i.e. when Isella assigns (or reassigns) a coach by hand. Auto-matched
- * coaches are emailed at signup by `saveSignup`; this covers every assignment
- * made on the board afterwards.
+ * board. This is the ONLY thing that emails a coach: signup itself creates the
+ * row with no coach and only thanks the parent, so a coach hears from us
+ * exactly when someone assigns them the player.
  *
  * The `Coach Notified` column holds the address we last emailed for a player,
- * so the signup-time send and this webhook can't double-notify, while a genuine
- * reassignment still reaches the new coach.
+ * so repeated edits can't double-notify while a genuine reassignment still
+ * reaches the new coach.
  *
  * Register in Monday (Integrations → Webhooks), event "when a column changes":
  *   POST https://<host>/api/monday/coach-assigned?secret=$MONDAY_WEBHOOK_SECRET
@@ -51,25 +51,9 @@ type MondayEvent = {
   boardId?: number | string;
   pulseId?: number | string;
   columnId?: string;
-  value?: unknown;
 };
 
 type MondayPayload = { challenge?: string; event?: MondayEvent };
-
-/** Monday nests the chosen label differently per column type. */
-function coachNameFrom(value: unknown, fallback: string): string {
-  if (typeof value === "string") return value;
-  if (value && typeof value === "object") {
-    const v = value as Record<string, unknown>;
-    const label = v.label ?? v.text ?? v.value;
-    if (typeof label === "string") return label;
-    if (label && typeof label === "object") {
-      const inner = (label as Record<string, unknown>).text;
-      if (typeof inner === "string") return inner;
-    }
-  }
-  return fallback;
-}
 
 export async function POST(req: NextRequest) {
   let payload: MondayPayload;
@@ -109,40 +93,49 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, skipped: "item not found" });
   }
 
-  const coachName = coachNameFrom(event.value, row[COACH_COLUMN] ?? "").trim();
-  if (!coachName) {
-    return NextResponse.json({ ok: true, skipped: "coach cleared" });
+  const coachName = row.coachName.trim();
+  if (!coachName && !row.coachItemId) {
+    return NextResponse.json({ ok: true, skipped: "no coach assigned" });
   }
 
-  // Prefer the row's Coach Email; fall back to the Coaches board by name.
-  let coachEmail = (row[COACH_EMAIL_COLUMN] ?? "").trim();
-  if (!coachEmail) {
+  // The "Coach Email" mirror is the fast path; fall back to reading the linked
+  // coach off the Coaches board, then to a name lookup.
+  let coachEmail = row.coachEmail;
+  if (!coachEmail && row.coachItemId) {
+    coachEmail = (await getCoachByItemId(row.coachItemId))?.email ?? "";
+  }
+  if (!coachEmail && coachName) {
     coachEmail = (await findCoachByName(coachName))?.email ?? "";
   }
   if (!coachEmail) {
-    log.error("no email for assigned coach", { signupId, coachName });
+    log.error("no email for assigned coach", {
+      signupId,
+      coachName,
+      coachItemId: row.coachItemId,
+    });
     return NextResponse.json({ ok: false, error: "coach email not found" });
   }
 
   const to = coachEmail.toLowerCase();
-  if ((row[COACH_NOTIFIED_COLUMN] ?? "").trim().toLowerCase() === to) {
+  const v = row.values;
+  if ((v[COACH_NOTIFIED_COLUMN] ?? "").trim().toLowerCase() === to) {
     return NextResponse.json({ ok: true, skipped: "already notified" });
   }
 
-  const [year, month] = (row["Date of Birth"] ?? "").split("-");
+  const [year, month] = (v["Date of Birth"] ?? "").split("-");
 
   try {
     await sendCoachNotification(to, {
       coachName,
-      playerName: row.Player ?? "",
-      birthYear: row["Player Birth Year"] || year || "",
-      birthMonth: row["Player Birth Month"] || MONTHS[Number(month) - 1],
-      gender: row.Gender ?? "",
-      goalkeeper: row.Position === "Goalkeeper",
-      priorLeagueLevel: row["Prior League / Level"],
-      parentName: row["Parent Name"] ?? "",
-      parentEmail: row["Parent Email"] ?? "",
-      parentPhone: row["Parent Phone"],
+      playerName: v.Player ?? "",
+      birthYear: v["Player Birth Year"] || year || "",
+      birthMonth: v["Player Birth Month"] || MONTHS[Number(month) - 1],
+      gender: v.Gender ?? "",
+      goalkeeper: v.Position === "Goalkeeper",
+      priorLeagueLevel: v["Prior League / Level"],
+      parentName: v["Parent Name"] ?? "",
+      parentEmail: v["Parent Email"] ?? "",
+      parentPhone: v["Parent Phone"],
     });
     await markCoachNotified(signupId, to);
     log.info("coach notified", { signupId, coach: to, coachName });

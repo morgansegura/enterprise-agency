@@ -3,37 +3,23 @@
 import {
   upsertSignup,
   updateExperience,
-  matchCoach,
-  markCoachNotified,
   type ParentInput,
   type PlayerCore,
   type ExperienceInput,
 } from "@/lib/monday";
-import { sendParentThankYou, sendCoachNotification } from "@/lib/email/send";
+import { sendParentThankYou } from "@/lib/email/send";
 import { createLogger } from "@/lib/logger";
 
 const log = createLogger("signup");
 
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 /**
  * Step 1 (Save & continue): create-or-update the player's Signups row (one flat
- * row per player, deduped by token), match a coach by gender + age, and email
- * the parent and the matched coach — but only on the FIRST create, so Back→Save
- * never re-sends. Returns the row id for step 2.
+ * row per player, deduped by token) and thank the parent — only on the FIRST
+ * create, so Back→Save never re-sends. Returns the row id for step 2.
+ *
+ * No coach is emailed here. The row lands with an empty Coach column; a coach
+ * is picked by hand on the board, and that assignment triggers their email via
+ * `app/api/monday/coach-assigned`.
  */
 export async function saveSignup(
   token: string,
@@ -41,71 +27,28 @@ export async function saveSignup(
   player: PlayerCore,
 ) {
   try {
-    const genderLabel = player.gender === "boys" ? "Boys" : "Girls";
-    const birthYear = Number(player.dob.slice(0, 4));
-    const coach = await matchCoach(genderLabel, birthYear, false);
     const { signupId, created } = await upsertSignup({
       token,
       parent,
       player,
-      coach,
     });
 
     if (created) {
       try {
-        const parentName = `${parent.firstName} ${parent.lastName}`.trim();
         await sendParentThankYou(parent.email, {
-          parentName,
+          parentName: `${parent.firstName} ${parent.lastName}`.trim(),
           playerFirstName: player.firstName,
         });
-
-        const [year, month] = player.dob.split("-");
-        const notifyData = {
-          coachName: coach?.name,
-          playerName: `${player.firstName} ${player.lastName}`.trim(),
-          birthYear: year,
-          birthMonth: MONTHS[Number(month) - 1],
-          gender: player.gender === "boys" ? "Boys" : "Girls",
-          priorLeagueLevel: player.priorLeagueLevel,
-          parentName,
-          parentEmail: parent.email,
-          parentPhone: parent.phone,
-        };
-
-        // Notify the coach this player was matched to. When no coach matches,
-        // the row lands on the board with an empty Coach column and Isella
-        // assigns one by hand — the Monday webhook
-        // (app/api/monday/coach-assigned) sends the same email at that point.
-        if (coach?.email) {
-          const to = coach.email.toLowerCase();
-          try {
-            await sendCoachNotification(to, notifyData);
-            await markCoachNotified(signupId, to);
-            log.info("coach notified", {
-              signupId,
-              coach: to,
-              gender: player.gender,
-            });
-          } catch (err) {
-            log.error("coach notification failed", {
-              signupId,
-              coach: to,
-              err,
-            });
-          }
-        } else {
-          log.info("no coach matched, awaiting manual assignment", {
-            signupId,
-            gender: player.gender,
-            birthYear: year,
-          });
-        }
+        log.info("parent thanked, awaiting coach assignment", {
+          signupId,
+          gender: player.gender,
+        });
       } catch (emailErr) {
-        log.error("signup email failed", { signupId, err: emailErr });
+        log.error("parent thank-you failed", { signupId, err: emailErr });
       }
     }
 
-    return { ok: true as const, signupId, coachMatched: Boolean(coach) };
+    return { ok: true as const, signupId };
   } catch (e) {
     log.error("saveSignup failed", { err: e });
     return {
