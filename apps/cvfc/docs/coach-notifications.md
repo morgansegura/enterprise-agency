@@ -58,24 +58,19 @@ On CVFC Signups, add a **Text** column named exactly `Coach Notified`. Nobody
 fills it in by hand — the site maintains it. Hide it from the default view if
 it's noisy.
 
-### 2. Set the environment variables
+### 2. Environment variables — nothing new to add
 
-In the cvfc project on Vercel:
-
-| Variable                | What it's for                                                                                                                                      |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MONDAY_WEBHOOK_SECRET` | Any long random string. Monday sends it back so the site knows the request is genuine.                                                             |
-| `MONDAY_API_KEY`        | Already set — reads the boards and writes `Coach Notified`.                                                                                        |
-| `RESEND_API_KEY`        | Already set — sends the email.                                                                                                                     |
-| `RESEND_FROM`           | Sender address. Until chulavistafc.com is verified in Resend this falls back to a Resend test address that **only delivers to the account owner**. |
-
-Redeploy after adding `MONDAY_WEBHOOK_SECRET` so the running app picks it up.
+The webhook authenticates with `PREVIEW_SECRET`, which is already set (the same
+variable `app/api/revalidate` uses). `MONDAY_API_KEY` and `RESEND_API_KEY` are
+already set too. Set `MONDAY_WEBHOOK_SECRET` only if you ever want this webhook
+on its own secret — it takes precedence when present.
 
 ### 3. Register the webhook in Monday
 
 On the **CVFC Signups** board: Integrate → Webhooks → Add webhook.
 
-- **URL:** `https://<the live site>/api/monday/coach-assigned?secret=<MONDAY_WEBHOOK_SECRET>`
+- **URL:** `https://www.chulavistafc.com/api/monday/coach-assigned?secret=<PREVIEW_SECRET>`
+  (use the `www` host — the bare apex 308-redirects and Monday won't follow it)
 - **Event:** _When a column value changes_
 - **Column:** Coach
 
@@ -102,7 +97,7 @@ Everything logs to the Vercel runtime logs as structured JSON. Filter on
 | ------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `parent thanked, awaiting coach assignment` | Normal. The row is on the board waiting for someone to assign a coach.                    |
 | `no email for assigned coach`               | The assigned coach's row on CVFC — Coaches has no Email.                                  |
-| `rejected unauthenticated webhook`          | The secret in the Monday webhook URL doesn't match `MONDAY_WEBHOOK_SECRET`.               |
+| `rejected unauthenticated webhook`          | The `secret=` in the Monday webhook URL doesn't match `PREVIEW_SECRET`.                   |
 | `skipped: already notified`                 | The guard worked — that coach had already been emailed for this player.                   |
 | `skipped: no coach assigned`                | The Coach column was cleared rather than set.                                             |
 | `coach notification failed`                 | Resend rejected the send. Check `RESEND_FROM` is a verified domain.                       |

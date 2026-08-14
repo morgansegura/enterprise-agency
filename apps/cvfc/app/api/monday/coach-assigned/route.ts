@@ -24,13 +24,15 @@ import {
  * reaches the new coach.
  *
  * Register in Monday (Integrations → Webhooks), event "when a column changes":
- *   POST https://<host>/api/monday/coach-assigned?secret=$MONDAY_WEBHOOK_SECRET
+ *   POST https://<host>/api/monday/coach-assigned?secret=$PREVIEW_SECRET
  * Monday verifies the URL first by POSTing a `challenge`, echoed back below.
  */
 
 const log = createLogger("coach-assigned");
 
-const SECRET = process.env.MONDAY_WEBHOOK_SECRET;
+// Same pattern as app/api/revalidate — reuse PREVIEW_SECRET, which is already
+// set, unless a dedicated MONDAY_WEBHOOK_SECRET is provided.
+const SECRET = process.env.MONDAY_WEBHOOK_SECRET || process.env.PREVIEW_SECRET;
 
 const MONTHS = [
   "January",
