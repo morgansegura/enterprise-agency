@@ -1,0 +1,34 @@
+@reference "tailwindcss";
+
+.donation-tiers {
+  @apply mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.donation-tiers-item {
+  @apply flex;
+}
+
+.donation-tiers-card {
+  @apply flex h-full w-full flex-col rounded-2xl border border-(--color-midnight)/10 bg-white p-6;
+  @apply transition-shadow duration-200 ease-out hover:shadow-lg;
+}
+
+.donation-tiers-card[data-custom="true"] {
+  @apply border-dashed border-(--color-gold)/50;
+}
+
+.donation-tiers-amount {
+  @apply text-3xl font-bold text-(--color-midnight);
+}
+
+.donation-tiers-label {
+  @apply mt-1 text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.donation-tiers-body {
+  @apply mt-3 flex-1 text-sm leading-relaxed text-(--color-ink)/75;
+}
+
+.donation-tiers-button {
+  @apply mt-6 self-start;
+}

@@ -1,0 +1,47 @@
+@reference "tailwindcss";
+
+.thank-you-screen-body {
+  @apply mx-auto max-w-2xl;
+}
+
+.thank-you-screen-eyebrow {
+  @apply text-[11px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.thank-you-screen-heading {
+  @apply mt-3 text-4xl font-bold text-(--color-midnight) md:text-5xl;
+}
+
+.thank-you-screen-lead {
+  @apply mt-5 text-lg leading-relaxed text-(--color-ink)/80;
+}
+
+.thank-you-screen-section {
+  @apply mt-10;
+
+  p {
+    @apply mt-2 leading-relaxed text-(--color-ink)/75;
+  }
+
+  a {
+    @apply text-(--color-gold) underline underline-offset-4;
+  }
+}
+
+.thank-you-screen-subheading {
+  @apply text-lg font-bold text-(--color-midnight);
+}
+
+.thank-you-screen-back {
+  @apply mt-12;
+
+  a {
+    @apply text-(--color-gold) underline underline-offset-4;
+  }
+}
+
+/* Rendered inside the Zeffy embed: drop the page chrome so the donor sees a
+   clean confirmation, not a second copy of the site. */
+[data-embed="true"] .thank-you-screen-back {
+  @apply hidden;
+}

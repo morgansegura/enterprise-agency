@@ -1,0 +1,10 @@
+@reference "tailwindcss";
+
+.donate-embed {
+  @apply scroll-mt-24;
+}
+
+.donate-embed-frame {
+  @apply block w-full max-w-2xl mx-auto border-0 rounded-2xl overflow-hidden;
+  @apply transition-[height] duration-200 ease-out;
+}

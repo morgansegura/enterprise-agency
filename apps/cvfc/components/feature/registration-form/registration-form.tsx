@@ -21,6 +21,7 @@ import {
   type PlayerGender,
 } from "@/lib/registration-options";
 import { saveSignup, saveExperience } from "@/lib/actions/registration";
+import { trackEvent } from "@/lib/analytics";
 
 import "./registration-form.css";
 
@@ -231,6 +232,13 @@ export function RegistrationForm({
       setError(res.error);
       return;
     }
+    // The club's primary conversion: a family asked for an evaluation. Fires on
+    // the first step, since that's the point the club has a usable lead.
+    trackEvent("signup_submitted", {
+      player_gender: draft.gender,
+      player_birth_year: draft.dob.slice(0, 4),
+      referral_source: draft.referral || undefined,
+    });
     setSignupId(res.signupId);
     setStep(1);
   }
@@ -256,6 +264,9 @@ export function RegistrationForm({
       setError(res.error);
       return;
     }
+    trackEvent("signup_completed", {
+      additional_players: draft.additionalPlayers ? "yes" : "no",
+    });
     setStep(2);
   }
 

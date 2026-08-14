@@ -4,11 +4,19 @@ import { Section } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
+import { DonateEmbed } from "@/components/feature/donate-embed";
+import { DonationTiers } from "@/components/feature/donation-tiers";
 import { Heading } from "@/components/feature/heading";
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { getPage } from "@/lib/cms";
+import {
+  DONATE_ANCHOR,
+  MONTHLY_TIERS,
+  ONE_TIME_TIERS,
+  donationsEnabled,
+} from "@/lib/donate";
 import { siteConfig } from "@/lib/site-config";
 import { blockFor, cmsOverlay } from "@/lib/media";
 import {
@@ -19,69 +27,6 @@ import {
 import { breadcrumbSchema } from "@/lib/schema";
 
 import "./support-screen.css";
-
-// type Tier = {
-//   amount: string;
-//   label: string;
-//   body: string;
-//   custom?: boolean;
-//   cta?: string;
-// };
-
-// const ONE_TIME_TIERS: Tier[] = [
-//   {
-//     amount: "$50",
-//     label: "Player Gear",
-//     body: "A pair of cleats or essential gear for a player. A small gift that helps a kid show up ready.",
-//   },
-//   {
-//     amount: "$150",
-//     label: "Game-Day Costs",
-//     body: "Tournament entry, referee fees, travel — the costs alongside game-day. Your gift covers them so kids can focus on playing.",
-//   },
-//   {
-//     amount: "$500",
-//     label: "Uniform Kit",
-//     body: "A full home and away uniform for a player. Putting on the crest matters, and your gift makes that moment possible.",
-//   },
-//   {
-//     amount: "$2,500",
-//     label: "Team Field Time",
-//     body: "An evening of lit-field training for a whole team across a season — the kind of gift that shows up in every Tuesday practice.",
-//   },
-//   {
-//     amount: "Any amount",
-//     label: "Custom",
-//     body: "Give whatever feels right for your family. Every gift, large or small, finds its way to a kid on a CVFC field. Thank you.",
-//     custom: true,
-//     cta: "Give a custom amount",
-//   },
-// ];
-
-// const MONTHLY_TIERS: Tier[] = [
-//   {
-//     amount: "$25/mo",
-//     label: "Friend of CVFC",
-//     body: "Steady support that keeps the fields lit and the gear ready. Small monthly gifts add up across a season.",
-//   },
-//   {
-//     amount: "$100/mo",
-//     label: "Pathway Patron",
-//     body: "Helps a player on financial assistance stay with the club through the year. A real difference for a real kid.",
-//   },
-//   {
-//     amount: "$250/mo",
-//     label: "Champion",
-//     body: "Supports coaching and the long, patient development that follows. The kind of giving that shapes a season — and a player.",
-//   },
-//   {
-//     amount: "Any amount",
-//     label: "Custom Monthly",
-//     body: "Choose any monthly amount. Even small recurring gifts compound into something meaningful by year-end. Thank you.",
-//     custom: true,
-//     cta: "Start custom monthly",
-//   },
-// ];
 
 const IMPACT_CARDS: IconCardEntry[] = [
   {
@@ -134,7 +79,13 @@ export async function SupportScreen() {
             <Button
               variant="default"
               render={
-                <Link href="mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC" />
+                <Link
+                  href={
+                    donationsEnabled
+                      ? `#${DONATE_ANCHOR}`
+                      : "mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC"
+                  }
+                />
               }
             >
               <Icon token="ri:badge" aria-hidden="true" />
@@ -157,102 +108,77 @@ export async function SupportScreen() {
           )}
         />
 
-        {/* <Section bg="bone" size="default" id="donate">
-          <Heading
-            eyebrow="One-Time Gift"
-            heading="Give what feels right."
-            headingSize="section"
-            description={
-              <p>
-                Pick an amount, or set your own. Every gift — every size — lands
-                with a player on a CVFC field.
-              </p>
-            }
-          />
-          <ul className="support-tier-grid">
-            {ONE_TIME_TIERS.map((tier) => (
-              <li key={tier.label} className="support-tier-item">
-                <article
-                  className="support-tier-card"
-                  data-custom={tier.custom ? "true" : "false"}
-                >
-                  <p className="support-tier-amount">{tier.amount}</p>
-                  <h3 className="support-tier-label">{tier.label}</h3>
-                  <p className="support-tier-body">{tier.body}</p>
-                  <Button
-                    variant={tier.custom ? "default" : "outline"}
-                    className="support-tier-button"
-                    render={<Link href="#donate-form" />}
-                  >
-                    <span>{tier.cta ?? `Give ${tier.amount}`}</span>
-                  </Button>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </Section> */}
+        {donationsEnabled ? (
+          <>
+            <Section bg="bone" size="default">
+              <Heading
+                eyebrow="Recurring Support"
+                heading="Become a monthly donor."
+                headingSize="section"
+                description={
+                  <p>
+                    Steady, monthly gifts mean the club can plan ahead with
+                    confidence — coach hiring, scholarship offers, and the
+                    long-haul work that shapes a season.
+                  </p>
+                }
+              />
+              <DonationTiers tiers={MONTHLY_TIERS} cadence="monthly" />
+            </Section>
 
-        {/* <Section bg="white" size="default">
-          <Heading
-            eyebrow="Recurring Support"
-            heading="Become a monthly donor."
-            headingSize="section"
-            description={
-              <p>
-                Steady, monthly gifts mean the club can plan ahead with
-                confidence — coach hiring, scholarship offers, and the long-haul
-                work that shapes a season.
-              </p>
-            }
-          />
-          <ul className="support-tier-grid">
-            {MONTHLY_TIERS.map((tier) => (
-              <li key={tier.label} className="support-tier-item">
-                <article
-                  className="support-tier-card support-tier-card-recurring"
-                  data-custom={tier.custom ? "true" : "false"}
-                >
-                  <p className="support-tier-amount">{tier.amount}</p>
-                  <h3 className="support-tier-label">{tier.label}</h3>
-                  <p className="support-tier-body">{tier.body}</p>
+            <Section bg="white" size="default">
+              <Heading
+                eyebrow="One-Time Gift"
+                heading="Give what feels right."
+                headingSize="section"
+                description={
+                  <p>
+                    Pick an amount, or set your own. Every gift — every size —
+                    lands with a player on a CVFC field.
+                  </p>
+                }
+              />
+              <DonationTiers tiers={ONE_TIME_TIERS} cadence="one-time" />
+            </Section>
+
+            <DonateEmbed />
+          </>
+        ) : null}
+
+        <Section
+          bg="bone"
+          size="default"
+          id={donationsEnabled ? undefined : DONATE_ANCHOR}
+        >
+          <div className="support-form-block">
+            {donationsEnabled ? null : (
+              <>
+                <Heading
+                  eyebrow="Make Your Gift"
+                  heading="Ready to give?"
+                  headingSize="section"
+                  description={
+                    <p>
+                      We&rsquo;re finalizing our donation processing partner.
+                      Until then, please email the club directly and a board
+                      member will follow up to make your gift easy. Thank you
+                      for being here.
+                    </p>
+                  }
+                />
+                <div className="support-form-cta">
                   <Button
                     variant="default"
-                    className="support-tier-button"
-                    render={<Link href="#donate-form" />}
+                    render={
+                      <a href="mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC" />
+                    }
                   >
-                    <span>{tier.cta ?? `Start ${tier.amount}`}</span>
+                    <Icon token="ri:badge" aria-hidden="true" />
+                    <span>Contact the club to donate</span>
                   </Button>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </Section> */}
-
-        <Section bg="bone" size="default" id="donate-form">
-          <div className="support-form-block">
-            <Heading
-              eyebrow="Make Your Gift"
-              heading="Ready to give?"
-              headingSize="section"
-              description={
-                <p>
-                  We&rsquo;re finalizing our donation processing partner. Until
-                  then, please email the club directly and a board member will
-                  follow up to make your gift easy. Thank you for being here.
-                </p>
-              }
-            />
-            <div className="support-form-cta">
-              <Button
-                variant="default"
-                render={
-                  <a href="mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC" />
-                }
-              >
-                <Icon token="ri:badge" aria-hidden="true" />
-                <span>Contact the club to donate</span>
-              </Button>
-            </div>
+                </div>
+              </>
+            )}
             <p className="support-tax-note">
               Chula Vista Fútbol Club is a 501(c)(3) nonprofit organization,
               registered with the IRS as {siteConfig.registeredName}. Donations
