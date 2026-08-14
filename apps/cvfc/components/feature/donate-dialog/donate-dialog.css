@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+.donate-dialog {
+  @apply overflow-hidden p-0 transition-[height] duration-200 ease-out;
+}
+
+.donate-dialog-frame {
+  @apply block h-full w-full border-0;
+}
+
+.donate-dialog-close {
+  @apply absolute top-3 right-3 z-10 inline-flex items-center justify-center;
+  @apply size-9 rounded-full bg-white/95 text-(--color-midnight);
+  @apply shadow-[0_4px_12px_-4px_color-mix(in_oklch,var(--color-ink)_30%,transparent)];
+  @apply transition-colors duration-150 outline-none hover:bg-white;
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold)/40;
+}
+
+.donate-dialog-close-icon {
+  @apply size-5;
+}

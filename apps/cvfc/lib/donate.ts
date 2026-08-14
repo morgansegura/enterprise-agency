@@ -17,8 +17,12 @@ export const ZEFFY_FORM_URL = process.env.NEXT_PUBLIC_ZEFFY_FORM_URL ?? "";
 /** Whether the donation flow is configured and should render. */
 export const donationsEnabled = Boolean(ZEFFY_FORM_URL);
 
-/** Anchor the tier buttons scroll to — the embed lives here on /support. */
-export const DONATE_ANCHOR = "donate-form";
+/**
+ * Anchor the tier buttons scroll to — the embed lives here on /support.
+ * Matches the `/support#make-a-donation` links already in the header and
+ * footer nav, which had no matching id and so scrolled nowhere.
+ */
+export const DONATE_ANCHOR = "make-a-donation";
 
 export type DonationTier = {
   /** Display amount. */

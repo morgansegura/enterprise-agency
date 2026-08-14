@@ -73,7 +73,7 @@ export function DonateEmbed({
 
   return (
     <Section
-      bg="white"
+      bg="bone"
       size="default"
       id={DONATE_ANCHOR}
       className={cn("donate-embed", className)}
