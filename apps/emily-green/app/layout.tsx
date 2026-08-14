@@ -10,6 +10,7 @@ import { CookieConsentProvider } from "@/components/cookie-consent";
 import { Footer, Header } from "@/components/layout";
 import { OrganizationSchema, WebsiteSchema } from "@/components/seo";
 import { fontBase, fontHeading } from "@/fonts";
+import { isPubliclyIndexable } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { site } from "@/site.config";
 import "@/styles/globals.css";
@@ -36,11 +37,17 @@ export const metadata: Metadata = {
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large" },
-  },
+  robots: isPubliclyIndexable()
+    ? {
+        index: true,
+        follow: true,
+        googleBot: { index: true, follow: true, "max-image-preview": "large" },
+      }
+    : {
+        index: false,
+        follow: false,
+        googleBot: { index: false, follow: false },
+      },
 };
 
 export const viewport: Viewport = {

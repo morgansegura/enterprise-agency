@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { isPubliclyIndexable } from "@/lib/seo";
 import { site } from "@/site.config";
 
 // AI-crawler discrimination: block training corpora, allow search bots that cite back.
@@ -19,9 +20,7 @@ const BLOCK_TRAINING = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
-  const isProd = process.env.VERCEL_ENV === "production";
-
-  if (!isProd) {
+  if (!isPubliclyIndexable()) {
     return { rules: [{ userAgent: "*", disallow: "/" }] };
   }
 

@@ -6,6 +6,21 @@ export function absoluteUrl(path: string): string {
   return new URL(path, site.url).toString();
 }
 
+/**
+ * Whether search engines may index this deployment.
+ *
+ * Churchill Mortgage requires marketing-compliance approval before an LO site
+ * goes live, so production alone is not enough — `CMC_APPROVED` must also be
+ * set. A `*.vercel.app` URL gets crawled whether or not a domain points at it,
+ * so this gates `robots.ts` and the layout's robots meta together.
+ */
+export function isPubliclyIndexable(): boolean {
+  return (
+    process.env.VERCEL_ENV === "production" &&
+    process.env.CMC_APPROVED === "true"
+  );
+}
+
 type PageMetaInput = {
   title: string;
   description?: string;
