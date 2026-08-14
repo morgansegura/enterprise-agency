@@ -3,7 +3,9 @@ import "server-only";
 /**
  * Structured logger. One JSON object per line in production so Vercel's log
  * drains stay queryable/filterable; readable key-value output in development.
- * Server-only — client components should surface problems in the UI, not log.
+ * Writes to stderr at every level — logs are diagnostics, stdout is reserved
+ * for program output. Server-only: client components surface problems in the
+ * UI, they don't log.
  */
 
 export type LogLevel = "debug" | "info" | "warn" | "error";
@@ -39,16 +41,15 @@ function emit(level: LogLevel, scope: string, msg: string, fields?: Fields) {
     if (value !== undefined) payload[key] = serialize(value);
   }
 
-  // The console is this logger's transport; everywhere else no-console applies.
-  const write = console[level === "debug" ? "log" : level].bind(console);
-
+  // Every level goes to stderr: logs are diagnostics, stdout is for program
+  // output. console.error is the portable way to reach it from any runtime.
   if (PRETTY) {
     const tail = Object.keys(payload).length ? payload : "";
-    write(`${level.toUpperCase()} [${scope}] ${msg}`, tail);
+    console.error(`${level.toUpperCase()} [${scope}] ${msg}`, tail);
     return;
   }
 
-  write(
+  console.error(
     JSON.stringify({
       level,
       scope,

@@ -51,6 +51,7 @@ type MondayEvent = {
   boardId?: number | string;
   pulseId?: number | string;
   columnId?: string;
+  columnTitle?: string;
 };
 
 type MondayPayload = { challenge?: string; event?: MondayEvent };
@@ -81,9 +82,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, skipped: "other board" });
   }
 
-  const coachColumnId = await signupColumnId(COACH_COLUMN);
-  if (coachColumnId && event.columnId && event.columnId !== coachColumnId) {
-    return NextResponse.json({ ok: true, skipped: "other column" });
+  // Monday usually sends columnTitle, which saves a round trip; fall back to
+  // resolving the id when it doesn't.
+  if (event.columnTitle) {
+    if (event.columnTitle !== COACH_COLUMN) {
+      return NextResponse.json({ ok: true, skipped: "other column" });
+    }
+  } else if (event.columnId) {
+    const coachColumnId = await signupColumnId(COACH_COLUMN);
+    if (coachColumnId && event.columnId !== coachColumnId) {
+      return NextResponse.json({ ok: true, skipped: "other column" });
+    }
   }
 
   const signupId = String(event.pulseId);

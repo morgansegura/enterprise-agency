@@ -2,8 +2,9 @@ import "server-only";
 
 /**
  * Monday client for CVFC Signups. ONE flat row per player (item name = the
- * child's name); parent contact, player profile, experience, and the matched
- * coach all live on that row. A per-session Submission Token dedupes Back→Save.
+ * child's name); parent contact, player profile and experience live on that
+ * row. A per-session Submission Token dedupes Back→Save. The coach is assigned
+ * by hand on the board, not written from here.
  * Server-only — uses the non-public MONDAY_API_KEY.
  */
 
@@ -64,17 +65,38 @@ async function mondayGql<T>(
   return json.data as T;
 }
 
+/** Board columns change rarely; cache per process so a request that needs the
+ *  map more than once doesn't pay for it twice. Monday retries webhooks that
+ *  take too long, and a retry can mean a duplicate email. */
+const colMapCache = new Map<string, Promise<ColMap>>();
+
 async function columnMap(boardId: string): Promise<ColMap> {
-  const data = await mondayGql<{
-    boards: { columns: { id: string; title: string; type: string }[] }[];
-  }>(`query ($id: [ID!]) { boards(ids: $id) { columns { id title type } } }`, {
-    id: [boardId],
-  });
-  const map: ColMap = {};
-  for (const c of data.boards[0]?.columns ?? []) {
-    map[c.title] = { id: c.id, type: c.type };
+  const cached = colMapCache.get(boardId);
+  if (cached) return cached;
+
+  const pending = (async () => {
+    const data = await mondayGql<{
+      boards: { columns: { id: string; title: string; type: string }[] }[];
+    }>(
+      `query ($id: [ID!]) { boards(ids: $id) { columns { id title type } } }`,
+      {
+        id: [boardId],
+      },
+    );
+    const map: ColMap = {};
+    for (const c of data.boards[0]?.columns ?? []) {
+      map[c.title] = { id: c.id, type: c.type };
+    }
+    return map;
+  })();
+
+  colMapCache.set(boardId, pending);
+  try {
+    return await pending;
+  } catch (err) {
+    colMapCache.delete(boardId); // don't cache a failure
+    throw err;
   }
-  return map;
 }
 
 // Fetch every item on a board as a {columnTitle: text} record (+ id).
@@ -155,7 +177,7 @@ export type ParentInput = {
   phone: string;
 };
 
-// What we know at step 1 (drives the row + coach match + emails).
+// What we know at step 1 (drives the row + the parent thank-you).
 export type PlayerCore = {
   firstName: string;
   lastName: string;
