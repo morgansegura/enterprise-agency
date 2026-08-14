@@ -56,3 +56,9 @@
 .support-tax-note {
   @apply mt-4 max-w-xl text-xs leading-relaxed text-(--color-midnight)/65;
 }
+
+/* The Zeffy form in the hero. `.page-hero-actions` is a centered flex row, so
+   the iframe needs an explicit basis or it collapses to its content width. */
+.support-hero-donate {
+  @apply mx-auto flex w-full max-w-xl flex-col items-center;
+}

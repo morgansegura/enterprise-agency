@@ -5,18 +5,12 @@ import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
 import { DonateEmbed } from "@/components/feature/donate-embed";
-import { DonationTiers } from "@/components/feature/donation-tiers";
 import { Heading } from "@/components/feature/heading";
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
 import { PageHero } from "@/components/feature/page-hero";
 import { JsonLd } from "@/components/seo";
 import { getPage } from "@/lib/cms";
-import {
-  DONATE_ANCHOR,
-  MONTHLY_TIERS,
-  ONE_TIME_TIERS,
-  donationsEnabled,
-} from "@/lib/donate";
+import { DONATE_ANCHOR, donationsEnabled } from "@/lib/donate";
 import { siteConfig } from "@/lib/site-config";
 import { blockFor, cmsOverlay } from "@/lib/media";
 import {
@@ -76,21 +70,31 @@ export async function SupportScreen() {
             "Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this."
           }
           actions={
-            <Button
-              variant="default"
-              render={
-                <Link
-                  href={
-                    donationsEnabled
-                      ? `#${DONATE_ANCHOR}`
-                      : "mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC"
-                  }
-                />
-              }
-            >
-              <Icon token="ri:badge" aria-hidden="true" />
-              <span>Donate now</span>
-            </Button>
+            donationsEnabled ? (
+              // The form itself is the call to action — a button in front of it
+              // would just be a step between the donor and the thing they came
+              // for. The tax note sits directly under it, where a donor is
+              // deciding whether to trust the form.
+              <div className="support-hero-donate">
+                <DonateEmbed bare />
+                <p className="support-tax-note">
+                  Chula Vista Fútbol Club is a 501(c)(3) nonprofit organization,
+                  registered with the IRS as {siteConfig.registeredName}.
+                  Donations are tax-deductible to the extent allowed by law.
+                  Federal Tax ID (EIN): <strong>{siteConfig.ein}</strong>.
+                </p>
+              </div>
+            ) : (
+              <Button
+                variant="default"
+                render={
+                  <Link href="mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC" />
+                }
+              >
+                <Icon token="ri:badge" aria-hidden="true" />
+                <span>Donate now</span>
+              </Button>
+            )
           }
         />
 
@@ -108,85 +112,42 @@ export async function SupportScreen() {
           )}
         />
 
-        {donationsEnabled ? (
-          <>
-            <Section bg="bone" size="default">
+        {donationsEnabled ? null : (
+          <Section bg="bone" size="default" id={DONATE_ANCHOR}>
+            <div className="support-form-block">
               <Heading
-                eyebrow="Recurring Support"
-                heading="Become a monthly donor."
+                eyebrow="Make Your Gift"
+                heading="Ready to give?"
                 headingSize="section"
                 description={
                   <p>
-                    Steady, monthly gifts mean the club can plan ahead with
-                    confidence — coach hiring, scholarship offers, and the
-                    long-haul work that shapes a season.
+                    We&rsquo;re finalizing our donation processing partner.
+                    Until then, please email the club directly and a board
+                    member will follow up to make your gift easy. Thank you for
+                    being here.
                   </p>
                 }
               />
-              <DonationTiers tiers={MONTHLY_TIERS} cadence="monthly" />
-            </Section>
-
-            <Section bg="white" size="default">
-              <Heading
-                eyebrow="One-Time Gift"
-                heading="Give what feels right."
-                headingSize="section"
-                description={
-                  <p>
-                    Pick an amount, or set your own. Every gift — every size —
-                    lands with a player on a CVFC field.
-                  </p>
-                }
-              />
-              <DonationTiers tiers={ONE_TIME_TIERS} cadence="one-time" />
-            </Section>
-
-            <DonateEmbed />
-          </>
-        ) : null}
-
-        <Section
-          bg="bone"
-          size="default"
-          id={donationsEnabled ? undefined : DONATE_ANCHOR}
-        >
-          <div className="support-form-block">
-            {donationsEnabled ? null : (
-              <>
-                <Heading
-                  eyebrow="Make Your Gift"
-                  heading="Ready to give?"
-                  headingSize="section"
-                  description={
-                    <p>
-                      We&rsquo;re finalizing our donation processing partner.
-                      Until then, please email the club directly and a board
-                      member will follow up to make your gift easy. Thank you
-                      for being here.
-                    </p>
+              <div className="support-form-cta">
+                <Button
+                  variant="default"
+                  render={
+                    <a href="mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC" />
                   }
-                />
-                <div className="support-form-cta">
-                  <Button
-                    variant="default"
-                    render={
-                      <a href="mailto:contact@chulavistafc.com?subject=Donation%20to%20Chula%20Vista%20FC" />
-                    }
-                  >
-                    <Icon token="ri:badge" aria-hidden="true" />
-                    <span>Contact the club to donate</span>
-                  </Button>
-                </div>
-              </>
-            )}
-            <p className="support-tax-note">
-              Chula Vista Fútbol Club is a 501(c)(3) nonprofit organization,
-              registered with the IRS as {siteConfig.registeredName}. Donations
-              are tax-deductible to the extent allowed by law. Federal Tax ID
-              (EIN): <strong>{siteConfig.ein}</strong>.
-            </p>
-          </div>
-        </Section>
+                >
+                  <Icon token="ri:badge" aria-hidden="true" />
+                  <span>Contact the club to donate</span>
+                </Button>
+              </div>
+              <p className="support-tax-note">
+                Chula Vista Fútbol Club is a 501(c)(3) nonprofit organization,
+                registered with the IRS as {siteConfig.registeredName}.
+                Donations are tax-deductible to the extent allowed by law.
+                Federal Tax ID (EIN): <strong>{siteConfig.ein}</strong>.
+              </p>
+            </div>
+          </Section>
+        )}
 
         <Callout
           id="partnerships"

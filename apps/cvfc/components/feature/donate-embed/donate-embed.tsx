@@ -8,7 +8,11 @@ import { cn } from "@/lib/utils";
 
 import "./donate-embed.css";
 
-const FALLBACK_HEIGHT = 720;
+// Zeffy's own embed script is what normally posts height back to the parent,
+// and we deliberately don't load it — so this fallback is what most donors see.
+// Sized to the amount-selection step, the tallest thing rendered before a
+// donor commits.
+const FALLBACK_HEIGHT = 620;
 const MIN_HEIGHT = 420;
 const MAX_HEIGHT = 1400;
 
@@ -42,6 +46,8 @@ function extractHeight(data: unknown): number | null {
 type DonateEmbedProps = {
   className?: string;
   formUrl?: string;
+  /** Render just the iframe, no Section wrapper — for slotting into a hero. */
+  bare?: boolean;
 };
 
 /**
@@ -52,6 +58,7 @@ type DonateEmbedProps = {
 export function DonateEmbed({
   className,
   formUrl = ZEFFY_FORM_URL,
+  bare = false,
 }: DonateEmbedProps) {
   const [measuredHeight, setMeasuredHeight] = React.useState<number | null>(
     null,
@@ -71,6 +78,24 @@ export function DonateEmbed({
 
   if (!donationsEnabled || !formUrl) return null;
 
+  const frame = (
+    <iframe
+      src={formUrl}
+      title="Donate to Chula Vista FC"
+      className="donate-embed-frame"
+      style={{ height: `${measuredHeight ?? FALLBACK_HEIGHT}px` }}
+      allow="payment *"
+    />
+  );
+
+  if (bare) {
+    return (
+      <div id={DONATE_ANCHOR} className={cn("donate-embed-bare", className)}>
+        {frame}
+      </div>
+    );
+  }
+
   return (
     <Section
       bg="bone"
@@ -78,13 +103,7 @@ export function DonateEmbed({
       id={DONATE_ANCHOR}
       className={cn("donate-embed", className)}
     >
-      <iframe
-        src={formUrl}
-        title="Donate to Chula Vista FC"
-        className="donate-embed-frame"
-        style={{ height: `${measuredHeight ?? FALLBACK_HEIGHT}px` }}
-        allow="payment *"
-      />
+      {frame}
     </Section>
   );
 }
