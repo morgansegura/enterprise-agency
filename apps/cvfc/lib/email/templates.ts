@@ -82,7 +82,7 @@ export function coachNotificationEmail(data: CoachEmailData): RenderedEmail {
   const body = `
         ${heading("New evaluation request")}
         ${p(`Hi ${esc(data.coachName || "Coach")},`)}
-        ${p(`A new player just requested an evaluation through the website and may be in your group. Here are their details:`)}
+        ${p(`A new player requested an evaluation through the website and has been assigned to you. Here are their details:`)}
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 20px;">
           ${infoRow("Player", String(data.playerName))}
           ${infoRow("Birth year", String(data.birthYear))}

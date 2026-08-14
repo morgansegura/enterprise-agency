@@ -266,35 +266,15 @@ export type SiteSettings = {
     copyrightName?: string | null;
     social?: Array<{ platform?: string | null; url?: string | null }> | null;
   } | null;
-  /** Club-admin notification lists (comma/newline-separated) by pathway. */
+  /** Legacy club-admin notification lists. No longer used: signup emails now go
+   *  to the coach assigned on the Monday Signups board. The CMS field is still
+   *  defined in SiteSettings — remove it there when convenient. */
   signupNotify?: {
     all?: string | null;
     boys?: string | null;
     girls?: string | null;
   } | null;
 };
-
-function parseEmails(raw?: string | null): string[] {
-  return (raw ?? "")
-    .split(/[\s,;]+/)
-    .map((e) => e.trim().toLowerCase())
-    .filter((e) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e));
-}
-
-/**
- * Club-admin signup-notification recipients for a pathway: the "All" list plus
- * the boys- or girls-specific list (deduped). Configured in Site Settings.
- */
-export const getSignupNotifyRecipients = cache(
-  async (gender: "boys" | "girls"): Promise<string[]> => {
-    const notify = (await getSiteSettings())?.signupNotify;
-    const emails = [
-      ...parseEmails(notify?.all),
-      ...parseEmails(gender === "boys" ? notify?.boys : notify?.girls),
-    ];
-    return [...new Set(emails)];
-  },
-);
 
 /** This tenant's SiteSettings, with header/footer menus populated (depth=2). */
 export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {

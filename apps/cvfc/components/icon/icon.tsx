@@ -35,6 +35,8 @@ export function Icon({ token, className, ...props }: IconProps) {
 
   if (!Component) {
     if (process.env.NODE_ENV !== "production") {
+      // Renders on the client, so the server-only logger isn't available here.
+      // eslint-disable-next-line no-console
       console.warn(`[Icon] unknown token: "${token}"`);
     }
     return null;

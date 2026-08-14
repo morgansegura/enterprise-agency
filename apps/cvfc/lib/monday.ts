@@ -8,8 +8,18 @@ import "server-only";
  */
 
 const API = "https://api.monday.com/v2";
-const SIGNUPS_BOARD = process.env.MONDAY_SIGNUPS_BOARD_ID ?? "18414196382";
+export const SIGNUPS_BOARD =
+  process.env.MONDAY_SIGNUPS_BOARD_ID ?? "18414196382";
 const COACHES_BOARD = process.env.MONDAY_COACHES_BOARD_ID ?? "18419262953";
+
+/** Signups column titles the coach-notification flow depends on. */
+export const COACH_COLUMN = "Coach";
+export const COACH_EMAIL_COLUMN = "Coach Email";
+/** Guard column: the coach address we last emailed for this player. Keeps the
+ *  signup-time send and the Monday webhook from double-notifying, and lets a
+ *  reassignment notify the new coach. Optional — absent column just disables
+ *  the guard. */
+export const COACH_NOTIFIED_COLUMN = "Coach Notified";
 
 const MONTHS = [
   "January",
@@ -273,6 +283,70 @@ export async function upsertSignup(args: {
     { b: SIGNUPS_BOARD, n: playerName, cv: values },
   );
   return { signupId: item.create_item.id, created: true };
+}
+
+// ── Coach notification (signup-time + Monday webhook) ─────────────────────
+
+/** Resolve a Signups column id by title (null when the column doesn't exist). */
+export async function signupColumnId(title: string): Promise<string | null> {
+  const cols = await columnMap(SIGNUPS_BOARD);
+  return cols[title]?.id ?? null;
+}
+
+/** One Signups row as {columnTitle: text}, for building the coach email. */
+export async function getSignupRow(
+  itemId: string,
+): Promise<Record<string, string> | null> {
+  const data = await mondayGql<{
+    boards: { columns: { id: string; title: string }[] }[];
+    items: {
+      id: string;
+      name: string;
+      column_values: { id: string; text: string | null }[];
+    }[];
+  }>(
+    `query ($b: [ID!], $i: [ID!]) {
+      boards(ids: $b) { columns { id title } }
+      items(ids: $i) { id name column_values { id text } }
+    }`,
+    { b: [SIGNUPS_BOARD], i: [itemId] },
+  );
+  const item = data.items?.[0];
+  if (!item) return null;
+  const titleById: Record<string, string> = {};
+  for (const c of data.boards[0]?.columns ?? []) titleById[c.id] = c.title;
+  const v: Record<string, string> = { Player: item.name };
+  for (const cv of item.column_values) v[titleById[cv.id]] = cv.text ?? "";
+  return v;
+}
+
+/** Look a coach up on the Coaches board by name — the fallback when a manual
+ *  assignment leaves "Coach Email" empty. */
+export async function findCoachByName(
+  name: string,
+): Promise<CoachMatch | null> {
+  const wanted = name.trim().toLowerCase();
+  if (!wanted) return null;
+  const coaches = await getCoaches();
+  const hit = coaches.find((c) => c.name.trim().toLowerCase() === wanted);
+  return hit?.email ? { name: hit.name, email: hit.email } : null;
+}
+
+/** Stamp the guard column after a coach has been emailed. No-ops when the
+ *  column isn't on the board. */
+export async function markCoachNotified(
+  itemId: string,
+  email: string,
+): Promise<void> {
+  const cols = await columnMap(SIGNUPS_BOARD);
+  if (!cols[COACH_NOTIFIED_COLUMN]) return;
+  const values = buildValues(cols, { [COACH_NOTIFIED_COLUMN]: email });
+  await mondayGql(
+    `mutation ($b: ID!, $i: ID!, $cv: JSON!) {
+      change_multiple_column_values(board_id: $b, item_id: $i, column_values: $cv) { id }
+    }`,
+    { b: SIGNUPS_BOARD, i: itemId, cv: values },
+  );
 }
 
 /** Step 2: fill the experience columns onto the same row. */

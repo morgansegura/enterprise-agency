@@ -4,12 +4,15 @@ import {
   upsertSignup,
   updateExperience,
   matchCoach,
+  markCoachNotified,
   type ParentInput,
   type PlayerCore,
   type ExperienceInput,
 } from "@/lib/monday";
 import { sendParentThankYou, sendCoachNotification } from "@/lib/email/send";
-import { getSignupNotifyRecipients } from "@/lib/cms";
+import { createLogger } from "@/lib/logger";
+
+const log = createLogger("signup");
 
 const MONTHS = [
   "January",
@@ -69,41 +72,42 @@ export async function saveSignup(
           parentPhone: parent.phone,
         };
 
-        // Notify the club-admin list for this pathway (All + Boys/Girls). They
-        // alert the proper coaches; the email includes the auto-matched coach as
-        // a suggestion. Fall back to emailing the matched coach directly only if
-        // no admins are configured yet, so signups are never silently
-        // unnotified. Best-effort, deduped.
-        const admins = await getSignupNotifyRecipients(player.gender);
-        const recipients = admins.length
-          ? admins
-          : coach
-            ? [coach.email.toLowerCase()]
-            : [];
-        console.log(
-          `[signup] notify (${player.gender}) → recipients=${JSON.stringify(recipients)} adminCount=${admins.length} from=${process.env.RESEND_FROM ?? "(unset → onboarding@resend.dev, owner-only)"}`,
-        );
-        const results = await Promise.allSettled(
-          recipients.map((email) => sendCoachNotification(email, notifyData)),
-        );
-        results.forEach((r, i) => {
-          if (r.status === "rejected") {
-            console.error(
-              `[signup] notify FAILED → ${recipients[i]}:`,
-              r.reason,
-            );
-          } else {
-            console.log(`[signup] notify sent → ${recipients[i]}`);
+        // Notify the coach this player was matched to. When no coach matches,
+        // the row lands on the board with an empty Coach column and Isella
+        // assigns one by hand — the Monday webhook
+        // (app/api/monday/coach-assigned) sends the same email at that point.
+        if (coach?.email) {
+          const to = coach.email.toLowerCase();
+          try {
+            await sendCoachNotification(to, notifyData);
+            await markCoachNotified(signupId, to);
+            log.info("coach notified", {
+              signupId,
+              coach: to,
+              gender: player.gender,
+            });
+          } catch (err) {
+            log.error("coach notification failed", {
+              signupId,
+              coach: to,
+              err,
+            });
           }
-        });
+        } else {
+          log.info("no coach matched, awaiting manual assignment", {
+            signupId,
+            gender: player.gender,
+            birthYear: year,
+          });
+        }
       } catch (emailErr) {
-        console.error("signup email failed:", emailErr);
+        log.error("signup email failed", { signupId, err: emailErr });
       }
     }
 
     return { ok: true as const, signupId, coachMatched: Boolean(coach) };
   } catch (e) {
-    console.error("saveSignup failed:", e);
+    log.error("saveSignup failed", { err: e });
     return {
       ok: false as const,
       error: e instanceof Error ? e.message : "Submission failed",
@@ -121,7 +125,7 @@ export async function saveExperience(
     await updateExperience(signupId, experience, additionalPlayers);
     return { ok: true as const };
   } catch (e) {
-    console.error("saveExperience failed:", e);
+    log.error("saveExperience failed", { signupId, err: e });
     return {
       ok: false as const,
       error: e instanceof Error ? e.message : "Submission failed",
