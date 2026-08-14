@@ -15,11 +15,14 @@ const COACHES_BOARD = process.env.MONDAY_COACHES_BOARD_ID ?? "18419262953";
 /** Signups column titles the coach-notification flow depends on. */
 export const COACH_COLUMN = "Coach";
 export const COACH_EMAIL_COLUMN = "Coach Email";
-/** Guard column: the coach address we last emailed for this player. Keeps the
- *  signup-time send and the Monday webhook from double-notifying, and lets a
- *  reassignment notify the new coach. Optional — absent column just disables
- *  the guard. */
+/** Guard column: the coach address we last emailed for this player. Stops
+ *  repeated edits to the Coach column from re-notifying, while a genuine
+ *  reassignment still reaches the new coach. Optional — an absent column just
+ *  disables the guard. */
 export const COACH_NOTIFIED_COLUMN = "Coach Notified";
+/** The email column on the CVFC — Coaches board. Note the apostrophe: it is
+ *  NOT "Email", and reading the wrong title silently yields no address. */
+const COACHES_EMAIL_COLUMN = "Coaches' Email";
 
 const MONTHS = [
   "January",
@@ -172,27 +175,15 @@ export type ExperienceInput = {
 
 export type CoachMatch = { name: string; email: string };
 
-// ── Coach matching ────────────────────────────────────────────────────────
-type Coach = {
-  name: string;
-  email: string;
-  gender: string; // Boys | Girls | Both
-  from: number;
-  to: number;
-  position: string; // Field | Goalkeeper | Any
-  status: string; // Active | Inactive
-};
+// ── Coach lookup ──────────────────────────────────────────────────────────
+type Coach = { id: string; name: string; email: string };
 
 async function getCoaches(): Promise<Coach[]> {
   const rows = await boardRows(COACHES_BOARD);
-  return rows.map(({ v }) => ({
+  return rows.map(({ id, v }) => ({
+    id,
     name: v["Name"] ?? "",
-    email: v["Email"] ?? "",
-    gender: v["Gender Coached"] ?? "",
-    from: Number(v["Coaches Birth Years (From)"]) || 0,
-    to: Number(v["Coaches Birth Years (To)"]) || 0,
-    position: v["Position Coached"] ?? "",
-    status: v["Status"] ?? "",
+    email: v[COACHES_EMAIL_COLUMN] ?? "",
   }));
 }
 
@@ -354,10 +345,8 @@ export async function getSignupRow(itemId: string): Promise<SignupRow | null> {
 export async function getCoachByItemId(
   itemId: string,
 ): Promise<CoachMatch | null> {
-  const rows = await boardRows(COACHES_BOARD);
-  const hit = rows.find((r) => r.id === itemId);
-  const email = hit?.v["Email"] ?? "";
-  return email ? { name: (hit?.v["Name"] ?? "").trim(), email } : null;
+  const hit = (await getCoaches()).find((c) => c.id === itemId);
+  return hit?.email ? { name: hit.name.trim(), email: hit.email } : null;
 }
 
 /** Look a coach up on the Coaches board by name — the last-resort fallback
