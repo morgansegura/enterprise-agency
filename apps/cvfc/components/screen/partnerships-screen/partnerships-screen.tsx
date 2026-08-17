@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Section } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
+import { ContactButton } from "@/components/analytics";
 import { Callout } from "@/components/feature/callout";
 import { Heading } from "@/components/feature/heading";
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
@@ -100,15 +101,14 @@ export async function PartnershipsScreen() {
             "Chula Vista FC is more than one club — it's a network. League affiliations, academy partners, community organizations, and field hosts all make the CVFC pathway possible. If your organization wants to join the work, we want to talk."
           }
           actions={
-            <Button
+            <ContactButton
               variant="default"
-              render={
-                <a href="mailto:contact@chulavistafc.com?subject=CVFC%20Partnership%20Inquiry" />
-              }
+              topic="partnership"
+              subject="CVFC Partnership Inquiry"
             >
               <Icon token="ri:badge" aria-hidden="true" />
               <span>Inquire about partnerships</span>
-            </Button>
+            </ContactButton>
           }
         />
 

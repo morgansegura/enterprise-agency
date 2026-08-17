@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Section } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
+import { ContactButton } from "@/components/analytics";
 import { Callout } from "@/components/feature/callout";
 import { Heading } from "@/components/feature/heading";
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
@@ -101,15 +102,15 @@ export async function CoachingOpportunitiesScreen() {
             "Chula Vista FC is hiring across the pathway — Mini Maestros through MLS NEXT, on the boys side and the girls side, plus our goalkeeper specialty. If you love developing young players and want to be part of a hometown club with deep South Bay roots, we'd love to hear from you."
           }
           actions={
-            <Button
+            <ContactButton
               variant="default"
-              render={
-                <a href="mailto:contact@chulavistafc.com?subject=CVFC%20Coaching%20Inquiry" />
-              }
+              topic="coaching"
+              detail="hero"
+              subject="CVFC Coaching Inquiry"
             >
               <Icon token="ri:badge" aria-hidden="true" />
               <span>Apply via email</span>
-            </Button>
+            </ContactButton>
           }
         />
 
@@ -196,15 +197,15 @@ export async function CoachingOpportunitiesScreen() {
             applyBlock ? calloutFromBlock(applyBlock) : undefined,
           )}
           ctaSlot={
-            <Button
+            <ContactButton
               variant="outline"
-              render={
-                <a href="mailto:contact@chulavistafc.com?subject=CVFC%20Coaching%20Inquiry" />
-              }
+              topic="coaching"
+              detail="apply_callout"
+              subject="CVFC Coaching Inquiry"
             >
               <span>Apply via email</span>
               <Icon token="ri:arrow-right" aria-hidden="true" />
-            </Button>
+            </ContactButton>
           }
         />
 

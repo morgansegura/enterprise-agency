@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
+import { ContactButton } from "@/components/analytics";
 import { Callout } from "@/components/feature/callout";
 
 import { IconCards, type IconCardEntry } from "@/components/feature/icon-cards";
@@ -126,15 +127,14 @@ export async function SponsorScreen() {
             "Local businesses and community partners help keep CVFC strong. Jersey logos, banner placement, match-day recognition, and gifts that fund player scholarships — every sponsorship goes back into the work, and the kids feel it on Tuesday practice."
           }
           actions={
-            <Button
+            <ContactButton
               variant="default"
-              render={
-                <a href="mailto:contact@chulavistafc.com?subject=CVFC%20Sponsorship%20Inquiry" />
-              }
+              topic="sponsorship"
+              subject="CVFC Sponsorship Inquiry"
             >
               <Icon token="ri:badge" aria-hidden="true" />
               <span>Inquire about sponsorship</span>
-            </Button>
+            </ContactButton>
           }
         />
 
@@ -190,17 +190,15 @@ export async function SponsorScreen() {
                       </li>
                     ))}
                   </ul>
-                  <Button
+                  <ContactButton
                     variant={tier.highlight ? "default" : "outline"}
                     className="sponsor-tier-button"
-                    render={
-                      <a
-                        href={`mailto:contact@chulavistafc.com?subject=CVFC%20${encodeURIComponent(tier.label)}%20Sponsorship%20Inquiry`}
-                      />
-                    }
+                    topic="sponsorship_tier"
+                    detail={tier.label}
+                    subject={`CVFC ${tier.label} Sponsorship Inquiry`}
                   >
                     <span>Inquire about {tier.label}</span>
-                  </Button>
+                  </ContactButton>
                 </article>
               </li>
             ))}
