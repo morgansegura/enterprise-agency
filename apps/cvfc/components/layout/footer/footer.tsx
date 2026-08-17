@@ -115,8 +115,12 @@ export function Footer({
               {copyrightName ?? DEFAULT_COPYRIGHT}
             </span>
           </p>
+          {/* The registered name is here, not just the brand, so anyone
+              verifying the org — grant reviewers, donors, Google Ad Grants —
+              can connect "Chula Vista FC" to the registered 501(c)(3). */}
           <p className="copyright-nonprofit">
-            501(c)(3) nonprofit &middot; EIN {siteConfig.ein}
+            {siteConfig.registeredName} &middot; 501(c)(3) nonprofit &middot;
+            EIN {siteConfig.ein}
           </p>
           <CookiePreferencesTrigger />
         </div>

@@ -79,6 +79,14 @@ export function WelcomeBanner({
             {heading}
           </HeadingComponent>
 
+          {/* Deliberately not CMS-overridable: the club's charitable status
+              has to be visible near the top of the homepage for donors and
+              grant reviewers, and it shouldn't be editable away by accident. */}
+          <p className="welcome-banner-nonprofit">
+            A registered 501(c)(3) nonprofit serving South Bay families since
+            1982.
+          </p>
+
           <div className="welcome-banner-body">{body}</div>
 
           <dl className="welcome-banner-stats">

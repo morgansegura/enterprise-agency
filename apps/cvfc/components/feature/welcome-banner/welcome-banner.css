@@ -73,6 +73,10 @@
   @apply text-[clamp(2.25rem,4.5vw,3.75rem)] text-balance;
 }
 
+.welcome-banner-nonprofit {
+  @apply mt-3 text-sm font-semibold tracking-wide text-(--color-gold);
+}
+
 .welcome-banner-body {
   @apply flex flex-col gap-3 mt-4 max-w-[60ch] text-(--color-midnight)/90;
   @apply text-base md:text-[1.0625rem] leading-[1.78];

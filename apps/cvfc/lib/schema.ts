@@ -8,7 +8,10 @@ import { siteConfig } from "@/lib/site-config";
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": "SportsOrganization",
+    // NGO alongside SportsOrganization: the club is a registered charity, not
+    // just a sports body, and that distinction is what grant reviewers and
+    // charity aggregators look for.
+    "@type": ["SportsOrganization", "NGO"],
     "@id": `${siteConfig.url}#organization`,
     name: siteConfig.legalName,
     // IRS-registered name — lets Google reconcile the site with the charity record.
