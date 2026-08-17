@@ -61,22 +61,40 @@
   }
 
   .copyright {
-    @apply font-sans flex items-center justify-between py-3 text-sm text-(--color-gold-bright) text-right border-t border-slate-700;
+    /* Stacked and centered on mobile — as a row the text and the social icons
+       compete for the same line and the copy gets crushed into a column. */
+    @apply font-sans flex flex-col items-center gap-3 py-4 text-sm text-center text-(--color-gold-bright) border-t border-slate-700;
+    @apply sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-3 sm:text-left;
 
     .divider {
       @apply bg-slate-800;
     }
 
+    /* items-center so the cookie button doesn't stretch full width and
+       left-align its label against the centered text above it. */
     .copyright-flex {
-      @apply flex-col flex gap-1 sm:flex-row sm:gap-4;
+      @apply flex flex-col items-center gap-1 sm:flex-row sm:gap-4;
     }
 
+    /* Block, not flex. As flex containers each text run became its own item,
+       so the spaces around the separators collapsed and the text wrapped
+       mid-name instead of flowing. */
     .copyright-name {
-      @apply flex;
+      @apply block;
     }
 
     .copyright-nonprofit {
-      @apply flex;
+      @apply block text-pretty;
+    }
+
+    /* Keep the EIN from splitting across lines. */
+    .copyright-part {
+      @apply whitespace-nowrap;
+    }
+
+    /* "Cookie preferences" is a label, not prose — don't wrap it. */
+    .cookie-prefs-trigger {
+      @apply whitespace-nowrap;
     }
   }
 }

@@ -109,18 +109,23 @@ export function Footer({
       <div className="contain copyright">
         <div className="copyright-flex">
           <p className="copyright-name">
-            Copyright &copy; {year} &nbsp;
-            <span className="flex md:hidden">CVFC</span>
-            <span className="hidden md:flex">
+            Copyright &copy; {year}{" "}
+            <span className="inline md:hidden">CVFC</span>
+            <span className="hidden md:inline">
               {copyrightName ?? DEFAULT_COPYRIGHT}
             </span>
           </p>
           {/* The registered name is here, not just the brand, so anyone
               verifying the org — grant reviewers, donors, Google Ad Grants —
-              can connect "Chula Vista FC" to the registered 501(c)(3). */}
+              can connect "Chula Vista FC" to the registered 501(c)(3).
+              Each part is nowrap so a narrow screen breaks between them
+              rather than mid-name or mid-EIN. */}
+          {/* Non-breaking spaces bind each separator to the word before it, so
+              a wrap never leaves a "·" stranded at the start of a line. */}
           <p className="copyright-nonprofit">
-            {siteConfig.registeredName} &middot; 501(c)(3) nonprofit &middot;
-            EIN {siteConfig.ein}
+            {siteConfig.registeredName}&nbsp;&middot; 501(c)(3)
+            nonprofit&nbsp;&middot;{" "}
+            <span className="copyright-part">EIN {siteConfig.ein}</span>
           </p>
           <CookiePreferencesTrigger />
         </div>
