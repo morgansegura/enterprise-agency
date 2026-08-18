@@ -77,6 +77,14 @@
   @apply mt-3 text-sm font-semibold tracking-wide text-(--color-gold);
 }
 
+.welcome-banner-mission {
+  @apply mt-3 max-w-[60ch] text-base leading-[1.7] text-(--color-midnight)/90;
+}
+
+.welcome-banner-mission-label {
+  @apply font-semibold text-(--color-midnight);
+}
+
 .welcome-banner-body {
   @apply flex flex-col gap-3 mt-4 max-w-[60ch] text-(--color-midnight)/90;
   @apply text-base md:text-[1.0625rem] leading-[1.78];

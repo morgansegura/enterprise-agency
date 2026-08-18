@@ -4,6 +4,7 @@ import { CmsImage as Image } from "@/components/ui/cms-image";
 
 import { LogoIcon } from "@/components/layout";
 import { useReveal } from "@/lib/hooks/use-reveal";
+import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 import "./welcome-banner.css";
@@ -80,11 +81,22 @@ export function WelcomeBanner({
           </HeadingComponent>
 
           {/* Deliberately not CMS-overridable: the club's charitable status
-              has to be visible near the top of the homepage for donors and
-              grant reviewers, and it shouldn't be editable away by accident. */}
+              and mission have to be visible near the top of the homepage for
+              donors, grant reviewers, and the Google Ad Grants website review,
+              and they shouldn't be editable away by accident. Naming the
+              registered entity matters — the Ad Grants application is filed as
+              "{siteConfig.registeredName}", not the DBA the site brands under. */}
           <p className="welcome-banner-nonprofit">
-            A registered 501(c)(3) nonprofit serving South Bay families since
-            1982.
+            Chula Vista FC is the DBA of {siteConfig.registeredName}, a
+            registered 501(c)(3) nonprofit — EIN {siteConfig.ein}.
+          </p>
+
+          <p className="welcome-banner-mission">
+            <span className="welcome-banner-mission-label">Our mission:</span>{" "}
+            to make elite, character-first soccer development accessible to
+            every South Bay family regardless of income — through year-round
+            competitive programs, coaching, and college and professional
+            pathways for boys and girls ages 4 to 19.
           </p>
 
           <div className="welcome-banner-body">{body}</div>
