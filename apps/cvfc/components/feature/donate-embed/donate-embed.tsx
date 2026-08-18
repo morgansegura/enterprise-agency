@@ -63,6 +63,12 @@ export function DonateEmbed({
   const [measuredHeight, setMeasuredHeight] = React.useState<number | null>(
     null,
   );
+  // The form pulls ~3.5MB of third-party JS (Zeffy, Stripe, hCaptcha, Google
+  // Pay, reCAPTCHA). Mounting it with the page put that on the critical path
+  // and took /support to a 19.5s LCP. Deferring to idle keeps the donor's
+  // no-click path intact — the form still appears on its own, just after the
+  // page has painted.
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
     const handler = (event: MessageEvent) => {
@@ -76,16 +82,56 @@ export function DonateEmbed({
     return () => window.removeEventListener("message", handler);
   }, []);
 
+  React.useEffect(() => {
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+
+    const schedule = () => {
+      const ric = window.requestIdleCallback;
+      if (ric) idleId = ric(() => setMounted(true), { timeout: 2500 });
+      else timeoutId = window.setTimeout(() => setMounted(true), 800);
+    };
+
+    if (document.readyState === "complete") {
+      schedule();
+      return () => {
+        if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
+        if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      };
+    }
+
+    window.addEventListener("load", schedule, { once: true });
+    return () => {
+      window.removeEventListener("load", schedule);
+      if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+    };
+  }, []);
+
   if (!donationsEnabled || !formUrl) return null;
 
-  const frame = (
+  const height = measuredHeight ?? FALLBACK_HEIGHT;
+
+  // Reserve the frame's box either way so the deferred mount costs no CLS.
+  const frame = mounted ? (
     <iframe
       src={formUrl}
       title="Donate to Chula Vista FC"
       className="donate-embed-frame"
-      style={{ height: `${measuredHeight ?? FALLBACK_HEIGHT}px` }}
+      style={{ height: `${height}px` }}
       allow="payment *"
     />
+  ) : (
+    <div
+      className="donate-embed-placeholder"
+      style={{ height: `${height}px` }}
+      role="status"
+      aria-live="polite"
+    >
+      <span className="donate-embed-placeholder-label">
+        Loading the donation form…
+      </span>
+    </div>
   );
 
   if (bare) {
