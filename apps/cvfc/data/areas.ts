@@ -113,18 +113,18 @@ const EASTLAKE: Area = {
   iconToken: "custom:location-marker",
   eyebrow: "Youth Soccer in Eastlake",
   blurb:
-    "Right in Eastlake — Explorer Park and our Hake Place indoor training center.",
+    "Right in Eastlake — Explorer Park and our Hale Place indoor training center.",
   heading:
     "Competitive youth soccer for Eastlake families — right in your neighborhood.",
   intro:
-    "Chula Vista FC trains in the heart of Eastlake — at Explorer Park and our Indoor Training Center on Hake Place. Eastlake families get an elite MLS NEXT and Elite Academy pathway without leaving the neighborhood, at a genuinely affordable, community price. Boys and girls, ages 4 to 19, in the South Bay’s homegrown club since 1982.",
+    "Chula Vista FC trains in the heart of Eastlake — at Explorer Park and our Indoor Training Center on Hale Place. Eastlake families get an elite MLS NEXT and Elite Academy pathway without leaving the neighborhood, at a genuinely affordable, community price. Boys and girls, ages 4 to 19, in the South Bay’s homegrown club since 1982.",
   programs: PATHWAY_CARDS,
   faqs: [
     {
       id: "eastlake-where",
       question: "Where do Eastlake players train?",
       answer:
-        "Right in Eastlake — at Explorer Park and our Indoor Training Center on Hake Place, plus additional CVFC fields across east Chula Vista.",
+        "Right in Eastlake — at Explorer Park and our Indoor Training Center on Hale Place, plus additional CVFC fields across east Chula Vista.",
     },
     {
       id: "eastlake-cost",
@@ -148,7 +148,7 @@ const EASTLAKE: Area = {
   meta: {
     title: "Youth Soccer in Eastlake, Chula Vista",
     description:
-      "Competitive youth soccer for Eastlake families — boys & girls, ages 4–19. CVFC trains at Explorer Park and the Hake Pl indoor center, right in your neighborhood.",
+      "Competitive youth soccer for Eastlake families — boys & girls, ages 4–19. CVFC trains at Explorer Park and the Hale Pl indoor center, right in your neighborhood.",
   },
 };
 
@@ -214,7 +214,7 @@ const CHULA_VISTA: Area = {
       id: "chula-vista-where",
       question: "Where do Chula Vista players train?",
       answer:
-        "Across Chula Vista — Victory Christian Academy anchors our week, alongside Castle Park High School, Lauderbach Park, and our Indoor Training Center on Hake Place.",
+        "Across Chula Vista — Victory Christian Academy anchors our week, alongside Castle Park High School, Lauderbach Park, and our Indoor Training Center on Hale Place.",
     },
     {
       id: "chula-vista-cost",

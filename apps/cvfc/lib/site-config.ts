@@ -34,7 +34,7 @@ export const siteConfig = {
     longitude: -116.9668,
   },
   address: {
-    streetAddress: "925 Hake Pl, #A3",
+    streetAddress: "925 Hale Pl, #A3",
     addressLocality: "Chula Vista",
     addressRegion: "CA",
     postalCode: "91914",

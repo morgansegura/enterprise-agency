@@ -118,7 +118,7 @@ export const FACILITIES: Facility[] = [
     role: "specialty",
     roleLabel: "Indoor Training Facility",
     address: {
-      street: "925 Hake Pl, #A3",
+      street: "925 Hale Pl, #A3",
       city: "Chula Vista",
       state: "CA",
       zip: "91914",

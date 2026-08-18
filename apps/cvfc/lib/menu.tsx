@@ -144,7 +144,7 @@ export const FOOTER_NAV: TMenuItem[] = [
     heading: "Contact Info",
     items: [
       {
-        label: "925 Hake Pl, #A3 Chula Vista, CA 91914",
+        label: "925 Hale Pl, #A3 Chula Vista, CA 91914",
         target: "_blank",
         href: "https://www.google.com/maps/place/925+Hale+Pl,+Chula+Vista,+CA+91914/@32.6510202,-116.9652353,1295m/data=!3m2!1e3!4b1!4m6!3m5!1s0x80d9456b5884a3d5:0x6a231afd80080baa!8m2!3d32.6510157!4d-116.962655!16s%2Fg%2F11pw0l108w?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D",
       },
