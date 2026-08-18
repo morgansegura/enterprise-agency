@@ -41,7 +41,7 @@ export const siteConfig = {
     addressCountry: "US",
   },
   contact: {
-    phone: "+1-619-764-6505",
+    phone: "+1-619-500-3620",
     email: "contact@chulavistafc.com",
   },
   social: {
