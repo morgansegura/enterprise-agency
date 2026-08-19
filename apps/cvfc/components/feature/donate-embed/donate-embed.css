@@ -14,13 +14,18 @@
   @apply transition-[height] duration-200 ease-out;
 }
 
-/* Holds the frame's box while the deferred mount is pending — same width and
-   height as the iframe, so swapping it in shifts nothing. */
-.donate-embed-placeholder {
-  @apply flex w-full max-w-2xl mx-auto items-center justify-center;
-  @apply rounded-2xl bg-(--color-bone) text-(--color-midnight)/60;
+/* Shown until the donor asks for the form. Deliberately compact — the ~3.5MB
+   Zeffy/Stripe/hCaptcha bundle only loads on intent, and the hero isn't
+   holding open an empty 620px box waiting for it. */
+.donate-embed-prompt {
+  @apply flex w-full max-w-2xl mx-auto flex-col items-center gap-3;
 }
 
-.donate-embed-placeholder-label {
-  @apply text-sm font-medium;
+.donate-embed-prompt-button {
+  @apply w-full sm:w-auto;
+}
+
+/* Matches .support-tax-note directly beneath it — the hero is light. */
+.donate-embed-prompt-note {
+  @apply text-sm leading-relaxed text-(--color-midnight)/65;
 }

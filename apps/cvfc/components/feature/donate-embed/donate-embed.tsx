@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { Section } from "@/components/layout";
+import { Button } from "@/components/ui";
 import { DONATE_ANCHOR, ZEFFY_FORM_URL, donationsEnabled } from "@/lib/donate";
 import { cn } from "@/lib/utils";
 
@@ -64,10 +65,11 @@ export function DonateEmbed({
     null,
   );
   // The form pulls ~3.5MB of third-party JS (Zeffy, Stripe, hCaptcha, Google
-  // Pay, reCAPTCHA). Mounting it with the page put that on the critical path
-  // and took /support to a 19.5s LCP. Deferring to idle keeps the donor's
-  // no-click path intact — the form still appears on its own, just after the
-  // page has painted.
+  // Pay, reCAPTCHA). Mounting it with the page cost /support a 19.5s LCP and
+  // 3.6s of blocking time; deferring to idle fixed the LCP but left the
+  // blocking, because idle still runs inside page load. So it now waits for
+  // donor intent — a click here, or the #make-a-donation hash that the tier
+  // buttons and the header/footer nav link to (that path stays one click).
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -82,55 +84,42 @@ export function DonateEmbed({
     return () => window.removeEventListener("message", handler);
   }, []);
 
+  // A tier button, or any /support#make-a-donation link, means the donor has
+  // already chosen to give — open the form for them rather than making them
+  // click twice. Covers deep links too, where the hash is set on arrival.
   React.useEffect(() => {
-    let idleId: number | undefined;
-    let timeoutId: number | undefined;
-
-    const schedule = () => {
-      const ric = window.requestIdleCallback;
-      if (ric) idleId = ric(() => setMounted(true), { timeout: 2500 });
-      else timeoutId = window.setTimeout(() => setMounted(true), 800);
+    const openOnAnchor = () => {
+      if (window.location.hash === `#${DONATE_ANCHOR}`) setMounted(true);
     };
-
-    if (document.readyState === "complete") {
-      schedule();
-      return () => {
-        if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
-        if (timeoutId !== undefined) window.clearTimeout(timeoutId);
-      };
-    }
-
-    window.addEventListener("load", schedule, { once: true });
-    return () => {
-      window.removeEventListener("load", schedule);
-      if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
-      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
-    };
+    openOnAnchor();
+    window.addEventListener("hashchange", openOnAnchor);
+    return () => window.removeEventListener("hashchange", openOnAnchor);
   }, []);
 
   if (!donationsEnabled || !formUrl) return null;
 
-  const height = measuredHeight ?? FALLBACK_HEIGHT;
-
-  // Reserve the frame's box either way so the deferred mount costs no CLS.
   const frame = mounted ? (
     <iframe
       src={formUrl}
       title="Donate to Chula Vista FC"
       className="donate-embed-frame"
-      style={{ height: `${height}px` }}
+      style={{ height: `${measuredHeight ?? FALLBACK_HEIGHT}px` }}
       allow="payment *"
     />
   ) : (
-    <div
-      className="donate-embed-placeholder"
-      style={{ height: `${height}px` }}
-      role="status"
-      aria-live="polite"
-    >
-      <span className="donate-embed-placeholder-label">
-        Loading the donation form…
-      </span>
+    <div className="donate-embed-prompt">
+      <Button
+        variant="default"
+        size="lg"
+        className="donate-embed-prompt-button"
+        onClick={() => setMounted(true)}
+      >
+        <span>Donate now</span>
+      </Button>
+      <p className="donate-embed-prompt-note">
+        The secure donation form opens right here — you won&rsquo;t leave the
+        page.
+      </p>
     </div>
   );
 
