@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { CoachingOpportunitiesScreen } from "@/components/screen/coaching-opportunities-screen";
 
 export const metadata: Metadata = {
-  title: "Youth Soccer Coaching Jobs in San Diego — Apply at Chula Vista FC",
+  title: "Youth Soccer Coaching Jobs in San Diego",
   description:
     "Coach at South Bay's longest-running competitive soccer club. Open roles across MLS NEXT, Elite Academy, DPL, NPL, Goalkeeper specialty, and Mini Maestros foundations. USSF / UEFA licensed coaches preferred. English + Spanish.",
   alternates: { canonical: "/programs/coaching-opportunities" },

@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import { PartnershipsScreen } from "@/components/screen/partnerships-screen";
 
 export const metadata: Metadata = {
-  title:
-    "Partnerships — CVFC's League, Academy & Community Network · Chula Vista FC",
+  title: "Partnerships & League Affiliations",
   description:
     "MLS NEXT, Elite Academy League, DPL, NPL, San Diego FC, Liga MX academies (Atlas, Xolos, Rayados), Hoover High School, and the South Bay community partners that power Chula Vista FC.",
   alternates: { canonical: "/partnerships" },

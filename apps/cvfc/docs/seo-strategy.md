@@ -127,3 +127,68 @@ Google Search Console + Bing · rank tracking (Tier 1–3) · **Share of Answer*
 5. **Coach bios + alumni/outcomes pages** (E-E-A-T).
 6. **Review / Event / Person schema.**
 7. **Ongoing:** fresh outcomes content + monthly Share-of-Answer check.
+
+---
+
+## The top 25 queries parents actually type (Aug 2026)
+
+Ordered by commercial intent, not volume. **Target page** is where that query
+should land; **gap** is what stops it ranking today.
+
+> **Read the intent column first.** Three of these families need completely
+> different work: `near me` is won in the **Google Business Profile**, `best/top`
+> is won with **reviews + authority**, and the informational cluster is won with
+> **content that does not exist yet**.
+
+| #   | Query                                     | Intent            | Target page                           | Gap today                                                         |
+| --- | ----------------------------------------- | ----------------- | ------------------------------------- | ----------------------------------------------------------------- |
+| 1   | soccer clubs near me                      | local pack        | GBP + `/`                             | GBP is a shell — 0 reviews, no photos, no description             |
+| 2   | youth soccer near me                      | local pack        | GBP + `/areas`                        | same                                                              |
+| 3   | soccer tryouts near me                    | local pack        | GBP + `/evaluations`                  | no GBP Posts, no Event schema                                     |
+| 4   | youth soccer club san diego               | head              | `/`                                   | homepage title/H1 carried no category or geo (fixed)              |
+| 5   | competitive soccer club san diego         | head              | `/`                                   | thin on-page proof; no reviews                                    |
+| 6   | best youth soccer club san diego          | head, comparative | `/about/who-we-are`                   | no Review/AggregateRating, no outcomes page                       |
+| 7   | club soccer chula vista                   | head, local       | `/areas/chula-vista`                  | exists; needs depth + internal links                              |
+| 8   | youth soccer chula vista                  | head, local       | `/areas/chula-vista`                  | same                                                              |
+| 9   | soccer clubs in san diego                 | head              | `/`                                   | competing against multi-site clubs with far more links            |
+| 10  | youth soccer tryouts san diego            | action            | `/evaluations`                        | ranks; needs Event schema + dates                                 |
+| 11  | soccer tryouts chula vista                | action, local     | `/evaluations`                        | no city-specific tryout section                                   |
+| 12  | mls next club san diego                   | league            | `/programs/boys-competitive-pathway`  | no "what is MLS NEXT" explainer to capture the informational half |
+| 13  | girls soccer club san diego               | audience          | `/programs/girls-competitive-pathway` | title/H1 not geo-targeted                                         |
+| 14  | boys soccer club san diego                | audience          | `/programs/boys-competitive-pathway`  | same                                                              |
+| 15  | elite academy soccer san diego            | league            | `/programs/boys-competitive-pathway`  | no EA explainer                                                   |
+| 16  | dpl / girls academy soccer san diego      | league            | `/programs/girls-competitive-pathway` | no league explainer                                               |
+| 17  | goalkeeper training san diego             | specialty         | `/programs/goalkeeper-pathway`        | exists; thin                                                      |
+| 18  | soccer for 4 / 5 / 6 year olds near me    | age entry         | `/programs/foundations`               | age phrasing absent from copy                                     |
+| 19  | how much does club soccer cost            | informational     | `/faq`                                | answered in FAQ; **no dedicated page**                            |
+| 20  | club soccer vs recreational soccer        | informational     | —                                     | **does not exist**                                                |
+| 21  | how to choose a youth soccer club         | informational     | —                                     | **does not exist**                                                |
+| 22  | ecnl vs mls next                          | informational     | —                                     | **does not exist**                                                |
+| 23  | youth soccer financial aid / scholarships | informational     | `/support`                            | scholarship story not a page                                      |
+| 24  | college soccer recruiting from a club     | informational     | —                                     | **does not exist**                                                |
+| 25  | club de fútbol para niños cerca de mí     | Spanish, local    | —                                     | **no Spanish content at all**                                     |
+
+### The three findings that matter
+
+1. **`near me` is not an on-page problem.** Those results are the local pack and
+   prominence-ranked organic. The clubs in that SERP (Albion, Surf, Rebels,
+   Sporting SD, Legends) are multi-site organizations with hundreds of reviews
+   and years of links. CVFC's Business Profile has **zero reviews**. Until that
+   changes, no amount of page copy moves `near me`.
+2. **The informational cluster is wide open** — six of the top 25 have no page at
+   all. That is the cheapest authority CVFC can buy, and it is what answer
+   engines quote.
+3. **Nobody is targeting Spanish.** In the South Bay that is not a nice-to-have;
+   it is an uncontested lane and a genuine club differentiator.
+
+### Order of work
+
+1. **GBP first** — description, categories, 20+ photos, weekly Posts, Q&A seeded,
+   and a review engine (ask every family post-evaluation). Unblocks 1–3, 6, 9.
+2. **Fix on-page targeting** — title/H1 per money page carrying category + geo.
+3. **Build the informational cluster** — one page each for 19–24, FAQ-shaped,
+   lead-with-the-answer, cited. Internally linked to the matching program page.
+4. **Deepen the area pages** — real content per city, not a template.
+5. **Spanish** — start with the highest-intent pages (evaluations, costs, home).
+6. **Outcomes/proof** — alumni page (Arriola, Corona, Farfan are in Wikipedia and
+   appear nowhere on the site) + Review schema once reviews exist.

@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import { FaqScreen } from "@/components/screen/faq-screen";
 
 export const metadata: Metadata = {
-  title:
-    "Youth Soccer FAQ — Costs, Tryouts, Leagues & Pathways · Chula Vista FC",
+  title: "Youth Soccer FAQ — Costs & Tryouts",
   description:
     "Real answers for South Bay families: how much youth soccer costs at Chula Vista FC ($800–$2,000), tryout windows, MLS NEXT and Elite Academy pathways, scholarships, bilingual coaching, and what makes CVFC different.",
   alternates: { canonical: "/faq" },

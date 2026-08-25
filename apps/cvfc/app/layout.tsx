@@ -21,7 +21,9 @@ const isProd = process.env.VERCEL_ENV
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    // The homepage title has to say what the club is and where — the tagline
+    // alone matched no query a parent types.
+    default: `${siteConfig.name} — Competitive Youth Soccer Club in San Diego`,
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,

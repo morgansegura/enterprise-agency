@@ -189,6 +189,7 @@ type SlideProps = {
 
 function Slide({ slide, index, selectedIndex, shouldLoad }: SlideProps) {
   const isActive = index === selectedIndex;
+  const HeadingTag = index === 0 ? "h1" : "h2";
   const lines = slide.heading.split("\n");
 
   return (
@@ -229,13 +230,15 @@ function Slide({ slide, index, selectedIndex, shouldLoad }: SlideProps) {
           </p>
         ) : null}
 
-        <h1 className="hero-carousel-slide-heading">
+        {/* One h1 per page: the first slide carries it, the rest are h2s.
+            Every slide is in the DOM, so an h1 each gave the homepage three. */}
+        <HeadingTag className="hero-carousel-slide-heading">
           {lines.map((line, i) => (
             <span key={i} className="hero-carousel-slide-heading-line">
               {line}
             </span>
           ))}
-        </h1>
+        </HeadingTag>
 
         {slide.tagline ? (
           <p className="hero-carousel-slide-tagline">{slide.tagline}</p>

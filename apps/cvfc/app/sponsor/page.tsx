@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import { SponsorScreen } from "@/components/screen/sponsor-screen";
 
 export const metadata: Metadata = {
-  title:
-    "Become a Sponsor — Youth Soccer Sponsorship in San Diego · Chula Vista FC",
+  title: "Sponsor Youth Soccer in San Diego",
   description:
     "Sponsor Chula Vista FC — Bronze, Silver, Gold, or custom packages. Jersey logos, banner placement, match-day recognition, scholarship funding. 501(c)(3) nonprofit, tax-deductible. Founded 1982.",
   alternates: { canonical: "/sponsor" },
