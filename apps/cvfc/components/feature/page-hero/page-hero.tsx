@@ -24,9 +24,11 @@ export function PageHero({
   return (
     <section data-bg={background} className={cn("page-hero", className)}>
       <div className="page-hero-inner contain">
-        <p className="eyebrow-full">
-          <span>{eyebrow}</span>
-        </p>
+        {eyebrow ? (
+          <p className="eyebrow-full">
+            <span>{eyebrow}</span>
+          </p>
+        ) : null}
         <h1 className="page-hero-title">{heading}</h1>
         {description ? (
           <p className="page-hero-description">{description}</p>

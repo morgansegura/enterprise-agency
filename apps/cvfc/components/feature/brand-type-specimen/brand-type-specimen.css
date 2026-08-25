@@ -1,0 +1,54 @@
+@reference "tailwindcss";
+
+.brand-type-specimen {
+  @apply grid gap-x-8 gap-y-12 lg:grid-cols-2;
+}
+
+.brand-type {
+  @apply flex flex-col;
+}
+
+.brand-type-panel {
+  /* Sits on the bone section, so the panel itself is white with a hairline. */
+  @apply flex aspect-16/10 flex-col justify-between gap-6 rounded-2xl bg-white p-10;
+  @apply ring-1 ring-(--color-midnight)/8 ring-inset;
+}
+
+.brand-type-panel[data-family="heading"] {
+  @apply font-(family-name:--font-heading) font-semibold;
+}
+
+.brand-type-panel[data-family="base"] {
+  @apply font-(family-name:--font-base) font-normal;
+}
+
+.brand-type-letters {
+  @apply text-[clamp(3.5rem,8vw,6rem)] leading-none tracking-tight text-(--color-midnight);
+}
+
+.brand-type-sample {
+  @apply text-[clamp(1.125rem,2vw,1.5rem)] leading-snug text-(--color-midnight)/80;
+  text-wrap: balance;
+}
+
+.brand-type-body {
+  @apply mt-6 flex flex-col gap-2;
+}
+
+.brand-type-name {
+  @apply font-(family-name:--font-heading) text-xl font-semibold leading-tight text-(--color-midnight);
+}
+
+.brand-type-role {
+  @apply text-base leading-relaxed text-(--color-midnight)/70;
+}
+
+.brand-type-meta {
+  @apply font-mono text-sm text-(--color-midnight)/65;
+}
+
+.brand-type-link {
+  @apply self-start text-base font-medium text-(--color-midnight) underline decoration-(--color-gold) decoration-2 underline-offset-4;
+  @apply transition-colors duration-300 ease-out;
+  @apply hover:text-(--color-gold) focus-visible:text-(--color-gold) focus-visible:outline-none;
+}

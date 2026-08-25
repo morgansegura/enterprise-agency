@@ -138,6 +138,7 @@ export const FOOTER_NAV: TMenuItem[] = [
         href: "/programs/coaching-opportunities",
       },
       { target: "", label: "Donate", href: "/support#make-a-donation" },
+      { target: "", label: "Brand & Logos", href: "/brand" },
     ],
   },
   {

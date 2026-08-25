@@ -1,0 +1,27 @@
+@reference "tailwindcss";
+
+/* Editorial rows: a quiet label, the answer set large, the caveat underneath.
+   Hairline dividers only — no cards, no chips, no uppercase micro-labels. */
+.brand-spec-list {
+  @apply border-t border-(--color-midnight)/12;
+}
+
+.brand-spec {
+  @apply grid gap-x-12 gap-y-2 border-b border-(--color-midnight)/12 py-8 md:grid-cols-[15rem_1fr];
+}
+
+.brand-spec-label {
+  @apply text-base leading-relaxed text-(--color-midnight)/70;
+}
+
+.brand-spec-body {
+  @apply flex flex-col gap-2;
+}
+
+.brand-spec-value {
+  @apply font-(family-name:--font-heading) text-xl font-semibold leading-snug text-(--color-midnight) md:text-2xl;
+}
+
+.brand-spec-note {
+  @apply max-w-2xl text-base leading-relaxed text-(--color-midnight)/70;
+}

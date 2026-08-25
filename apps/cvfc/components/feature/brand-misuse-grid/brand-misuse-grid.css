@@ -1,0 +1,50 @@
+@reference "tailwindcss";
+
+.brand-misuse-grid {
+  @apply grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.brand-misuse {
+  @apply flex flex-col;
+}
+
+.brand-misuse-panel {
+  @apply relative flex aspect-16/10 items-center justify-center overflow-hidden rounded-2xl bg-(--color-bone) p-10;
+}
+
+.brand-misuse-crest {
+  @apply h-full w-auto max-w-full object-contain;
+}
+
+/* The violation, applied to the crest so it can be seen rather than described. */
+.brand-misuse-panel[data-variant="recolor"] .brand-misuse-crest {
+  @apply hue-rotate-90 saturate-150;
+}
+
+.brand-misuse-panel[data-variant="stretch"] .brand-misuse-crest {
+  @apply scale-x-125 scale-y-75;
+}
+
+.brand-misuse-panel[data-variant="rotate"] .brand-misuse-crest {
+  @apply rotate-12;
+}
+
+.brand-misuse-panel[data-variant="effects"] .brand-misuse-crest {
+  @apply drop-shadow-2xl drop-shadow-(--color-gold);
+}
+
+.brand-misuse-panel[data-variant="crop"] .brand-misuse-crest {
+  @apply scale-[1.6];
+}
+
+.brand-misuse-panel[data-variant="low-contrast"] {
+  @apply bg-(--color-gold);
+}
+
+.brand-misuse-slash {
+  @apply pointer-events-none absolute top-1/2 left-1/2 h-px w-[150%] -translate-x-1/2 -translate-y-1/2 -rotate-[38deg] bg-red-500/60;
+}
+
+.brand-misuse-caption {
+  @apply mt-5 text-base leading-relaxed text-(--color-midnight)/70;
+}

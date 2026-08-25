@@ -1,0 +1,44 @@
+@reference "tailwindcss";
+
+.brand-screen-block {
+  @apply mt-14;
+}
+
+.brand-screen-block + .brand-screen-block {
+  @apply mt-10;
+}
+
+.brand-screen-split {
+  @apply mt-14 grid items-start gap-x-12 gap-y-10 lg:grid-cols-[minmax(0,22rem)_1fr];
+}
+
+.brand-screen-diagram {
+  @apply flex flex-col;
+}
+
+.brand-screen-diagram-frame {
+  @apply flex aspect-square items-center justify-center rounded-2xl border border-dashed border-(--color-gold)/60 bg-white p-[25%];
+}
+
+.brand-screen-diagram-crest {
+  @apply h-full w-auto max-w-full object-contain;
+}
+
+.brand-screen-caption {
+  @apply mt-5 text-base leading-relaxed text-(--color-midnight)/70;
+}
+
+.brand-screen-aside {
+  @apply mt-10 max-w-3xl text-base leading-relaxed text-(--color-midnight)/70;
+
+  a {
+    @apply font-medium text-(--color-midnight) underline decoration-(--color-gold) decoration-2 underline-offset-4;
+    @apply transition-colors duration-300 ease-out hover:text-(--color-gold);
+  }
+}
+
+.brand-screen-link {
+  @apply text-base font-medium text-(--color-midnight) underline decoration-(--color-gold) decoration-2 underline-offset-4;
+  @apply transition-colors duration-300 ease-out;
+  @apply hover:text-(--color-gold) focus-visible:text-(--color-gold) focus-visible:outline-none;
+}

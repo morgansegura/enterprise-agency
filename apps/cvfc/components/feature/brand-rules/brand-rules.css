@@ -1,0 +1,54 @@
+@reference "tailwindcss";
+
+.brand-rules {
+  @apply grid gap-6 lg:grid-cols-2;
+}
+
+.brand-rules-column {
+  @apply flex flex-col gap-5 rounded-2xl border p-8;
+}
+
+.brand-rules-column[data-kind="do"] {
+  @apply border-(--color-gold-bright)/40 bg-white;
+}
+
+.brand-rules-column[data-kind="dont"] {
+  @apply border-(--color-midnight)/15 bg-(--color-bone);
+}
+
+.brand-rules-title {
+  @apply font-(family-name:--font-heading) text-xl font-semibold leading-tight;
+}
+
+.brand-rules-column[data-kind="do"] .brand-rules-title {
+  @apply text-(--color-midnight);
+}
+
+.brand-rules-column[data-kind="dont"] .brand-rules-title {
+  @apply text-(--color-midnight)/70;
+}
+
+.brand-rules-list {
+  @apply flex flex-col;
+}
+
+.brand-rules-item {
+  @apply flex gap-4 border-t border-(--color-midnight)/10 py-4 text-base leading-relaxed text-(--color-midnight)/80;
+
+  &:first-child {
+    @apply border-t-0 pt-0;
+  }
+
+  /* The mark sits in a filled disc so it reads as a badge, not a stray glyph. */
+  svg {
+    @apply mt-0.5 size-5 shrink-0 rounded-full p-1 fill-white;
+  }
+}
+
+.brand-rules-column[data-kind="do"] .brand-rules-item svg {
+  @apply bg-(--color-gold);
+}
+
+.brand-rules-column[data-kind="dont"] .brand-rules-item svg {
+  @apply bg-(--color-midnight)/70;
+}

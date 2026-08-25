@@ -17,6 +17,9 @@ import {
   FaInstagram,
   FaClipboardList,
   FaArrowLeftLong,
+  FaDownload,
+  FaCheck,
+  FaXmark,
 } from "react-icons/fa6";
 import { PiSoccerBallFill } from "react-icons/pi";
 import { MdOutlineBadge } from "react-icons/md";
@@ -41,5 +44,8 @@ export const REACT_ICONS = {
   facebook: FaFacebook,
   bars: FaBars,
   badge: MdOutlineBadge,
+  download: FaDownload,
+  check: FaCheck,
+  xmark: FaXmark,
 } as const satisfies Record<string, IconComponent>;
 export type ReactIconName = keyof typeof REACT_ICONS;

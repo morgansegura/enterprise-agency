@@ -57,6 +57,7 @@ const ROUTES: Array<{ path: string; priority: number; changeFrequency: Freq }> =
     { path: "/sponsor", priority: 0.6, changeFrequency: "monthly" },
     { path: "/partnerships", priority: 0.6, changeFrequency: "monthly" },
     { path: "/faq", priority: 0.7, changeFrequency: "monthly" },
+    { path: "/brand", priority: 0.5, changeFrequency: "yearly" },
     { path: "/transparency", priority: 0.5, changeFrequency: "yearly" },
     { path: "/safeguarding", priority: 0.5, changeFrequency: "yearly" },
     { path: "/donor-privacy", priority: 0.4, changeFrequency: "yearly" },

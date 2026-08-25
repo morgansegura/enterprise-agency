@@ -16,7 +16,8 @@
     "gen:screen": "node scripts/generate.js screen",
     "gen:page": "node scripts/generate.js page",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "gen:brand-assets": "node scripts/generate-brand-assets.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
@@ -47,8 +48,9 @@
     "@types/react-dom": "19.2.3",
     "eslint": "^9.16.0",
     "eslint-config-next": "16.2.6",
+    "prettier": "^3.3.2",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4",
-    "typescript": "^5.7.3",
-    "prettier": "^3.3.2"
+    "typescript": "^5.7.3"
   }
 }

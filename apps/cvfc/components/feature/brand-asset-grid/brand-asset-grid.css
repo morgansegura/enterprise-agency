@@ -1,0 +1,52 @@
+@reference "tailwindcss";
+
+.brand-asset-grid {
+  @apply grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.brand-asset {
+  @apply flex flex-col;
+}
+
+/* The panel is the surface the crest is being shown against — no nested tiles. */
+.brand-asset-panel {
+  @apply flex aspect-16/10 items-center justify-center rounded-2xl p-10;
+}
+
+.brand-asset-panel[data-surface="light"] {
+  @apply bg-(--color-bone);
+}
+
+.brand-asset-panel[data-surface="dark"] {
+  @apply bg-(--color-midnight);
+}
+
+.brand-asset-panel[data-surface="neutral"] {
+  @apply bg-(--color-midnight)/5;
+}
+
+.brand-asset-image {
+  @apply h-full w-auto max-w-full object-contain;
+}
+
+.brand-asset-body {
+  @apply mt-6 flex flex-1 flex-col gap-3;
+}
+
+.brand-asset-name {
+  @apply font-(family-name:--font-heading) text-xl font-semibold leading-tight text-(--color-midnight);
+}
+
+.brand-asset-description {
+  @apply flex-1 text-base leading-relaxed text-(--color-midnight)/70;
+}
+
+.brand-asset-downloads {
+  @apply flex flex-wrap gap-x-5 gap-y-2;
+}
+
+.brand-asset-download {
+  @apply text-base font-medium text-(--color-midnight) underline decoration-(--color-gold) decoration-2 underline-offset-4;
+  @apply transition-colors duration-300 ease-out;
+  @apply hover:text-(--color-gold) focus-visible:text-(--color-gold) focus-visible:outline-none;
+}
