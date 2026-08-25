@@ -7,7 +7,7 @@ export function generateMetadata(): Promise<Metadata> {
   return metadataForPage({
     slug: "brand",
     path: "/brand",
-    title: "Brand Guidelines & Logo Downloads — Chula Vista FC",
+    title: "Brand Guidelines & Logo Downloads",
     description:
       "Official Chula Vista FC crest downloads (SVG and PNG), club colors, typography, naming, and the rules partners, sponsors, and media follow when they use them.",
   });
