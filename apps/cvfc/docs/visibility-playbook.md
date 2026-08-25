@@ -220,3 +220,45 @@ pulling trained players off other rosters.
 **Measure it separately:** girls registered by age group, girls' share of
 Foundations, teams fielded per season, and distance to the GA threshold. Ranking
 is not the goal here — roster count is.
+
+---
+
+## Reddit starter kit
+
+Reddit is cited directly in Google's AI Overview for club queries, which makes it
+worth real effort — and makes fake effort dangerous, because it is public and
+permanent. Everything here assumes **one real, named account** that also
+participates in ordinary San Diego threads, not a brand account created to post
+about the club.
+
+**Where:** r/sandiego, r/chulavista, r/SanDiegan, r/youthsoccer, plus local
+parent groups on Facebook. Read each sub's rules first — several ban promotion
+outright, and a mod message asking permission is usually granted for genuinely
+informational posts.
+
+**Order of operations**
+
+1. **Weeks 1–4: only comment.** Search "youth soccer", "club soccer", "soccer
+   club" in the local subs. Answer the questions already there — including old
+   threads, which is where Google found the 2017 one it currently cites.
+2. **After that: one original post** that is useful on its own (see the cost
+   post below). No link unless someone asks; the club name in the disclosure is
+   enough.
+3. **Ongoing: one or two helpful comments a week.** That is the whole commitment.
+
+**Rules that keep it working**
+
+- Disclose in the first line, every time: "I help run Chula Vista FC."
+- Answer the question that was asked before mentioning the club — and sometimes
+  don't mention it at all.
+- Recommend honestly, including when another club is the better fit for that
+  family's budget, commute, or level.
+- Never post the same text twice, never link in every comment, never create a
+  second account, never have staff or parents post as neutral strangers.
+- Quote real numbers only. If a figure isn't confirmed by the club, don't use it.
+
+**The one post worth writing:** an itemized, honest breakdown of what a season of
+club soccer costs in San Diego — fees, uniforms, travel, tournaments — including
+the parts clubs usually leave out. Transparency is the club's actual position,
+nobody else publishes it, and it is exactly the kind of thread that gets quoted
+for years.
