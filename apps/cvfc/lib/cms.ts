@@ -195,7 +195,10 @@ export const getCmsPostBySlug = cache(
       : "&where[_status][equals]=published";
     const docs = await cmsFind<PostDoc>(
       "posts",
-      `where[slug][equals]=${encodeURIComponent(slug)}&depth=1&limit=1${statusParam}`,
+      // `depth=2`, not 1: an upload inside richText is a relation on the doc,
+      // and its own sizes/URL are a level below that. At depth 1 the body's
+      // images came back as bare ids with no URL to render.
+      `where[slug][equals]=${encodeURIComponent(slug)}&depth=2&limit=1${statusParam}`,
       draft,
     );
     return docs[0] ?? null;

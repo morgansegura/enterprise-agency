@@ -1,10 +1,17 @@
 /**
  * Minimal Lexical (Payload richText) → HTML serializer for rendering CMS post
- * bodies through the existing `prose` markup. Covers the node types the news
- * migration produces (headings, paragraphs, lists, bold/italic/link). Unknown
- * nodes are skipped. For full fidelity later, swap to
- * `@payloadcms/richtext-lexical/react`'s RichText.
+ * bodies through the existing `prose` markup. Covers the node types the editor
+ * produces: headings, paragraphs, lists, quotes, rules, uploads, and
+ * bold/italic/link inline. Unknown nodes are skipped. For full fidelity later,
+ * swap to `@payloadcms/richtext-lexical/react`'s RichText.
+ *
+ * Anything not handled here is dropped silently, which is how images went
+ * missing: the editor inserted `upload` nodes, this had no case for them, and
+ * `default: return ""` swallowed each one. A node type added in the admin has
+ * to be added here too, or it simply will not appear on the site.
  */
+
+import { mediaAlt, mediaUrl, type MediaValue } from "@/lib/media";
 
 type LexNode = {
   type?: string;
@@ -13,12 +20,23 @@ type LexNode = {
   format?: number;
   listType?: string;
   url?: string;
-  fields?: { url?: string };
+  fields?: { url?: string; caption?: string };
+  /** `upload` nodes: the media doc when populated, its id when not. */
+  value?: MediaValue;
+  relationTo?: string;
   children?: LexNode[];
 };
 
 function esc(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return (
+    s
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      // Attributes are quoted below, so a quote in alt text would otherwise end
+      // the attribute and inject markup.
+      .replace(/"/g, "&quot;")
+  );
 }
 
 function inline(children?: LexNode[]): string {
@@ -59,6 +77,23 @@ export function lexicalToHtml(data: unknown): string {
         }
         case "quote":
           return `<blockquote>${inline(node.children)}</blockquote>`;
+        case "horizontalrule":
+          return "<hr/>";
+        case "upload": {
+          // Populated by Payload at depth >= 1. When the relation has not been
+          // populated `value` is an id, and there is no URL to render — so the
+          // node is skipped rather than emitting a broken image.
+          const src = mediaUrl(node.value);
+          if (!src) return "";
+
+          const alt = mediaAlt(node.value) ?? "";
+          const caption = node.fields?.caption;
+          const img = `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async"/>`;
+
+          return caption
+            ? `<figure>${img}<figcaption>${esc(caption)}</figcaption></figure>`
+            : `<figure>${img}</figure>`;
+        }
         case "list": {
           const tag =
             node.tag === "ol" || node.listType === "number" ? "ol" : "ul";
