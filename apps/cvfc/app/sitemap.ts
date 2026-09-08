@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 
 import { AREAS } from "@/data/areas";
 import { NEWS_POSTS, getActiveNews } from "@/data/news";
+import { getCmsPosts } from "@/lib/cms";
 import { siteConfig } from "@/lib/site-config";
 
 type Freq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
@@ -72,7 +73,7 @@ function parseDate(value: string): Date | undefined {
   return Number.isNaN(d.getTime()) ? undefined : d;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
 
   const staticEntries: MetadataRoute.Sitemap = ROUTES.map((r) => ({
@@ -87,14 +88,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const newsEntries: MetadataRoute.Sitemap = getActiveNews(NEWS_POSTS).map(
-    (p) => ({
+  // CMS posts, then the hardcoded ones. Only the static list was here, so every
+  // post published through the CMS was missing from the sitemap entirely.
+  const cmsPosts = await getCmsPosts();
+  const cmsEntries: MetadataRoute.Sitemap = cmsPosts
+    // The editor's "hide from search engines" switch drops it, as the field's
+    // own help text promises.
+    .filter((p) => p.slug && !p.meta?.noindex)
+    .map((p) => ({
+      url: `${base}/news/${p.slug}`,
+      lastModified: p.publishedAt ? new Date(p.publishedAt) : undefined,
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+    }));
+
+  const cmsSlugs = new Set(cmsPosts.map((p) => p.slug));
+  const newsEntries: MetadataRoute.Sitemap = getActiveNews(NEWS_POSTS)
+    // A story migrated into the CMS keeps its slug; listing both would be a
+    // duplicate URL.
+    .filter((p) => !cmsSlugs.has(p.slug))
+    .map((p) => ({
       url: `${base}/news/${p.slug}`,
       lastModified: parseDate(p.date),
-      changeFrequency: "yearly",
+      changeFrequency: "yearly" as const,
       priority: 0.5,
-    }),
-  );
+    }));
 
-  return [...staticEntries, ...areaEntries, ...newsEntries];
+  return [...staticEntries, ...areaEntries, ...cmsEntries, ...newsEntries];
 }

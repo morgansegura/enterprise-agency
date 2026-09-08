@@ -178,6 +178,8 @@ export type PostDoc = {
   publishedAt?: string | null;
   author?: string | null;
   content?: unknown;
+  /** Editor-set SEO overrides. Same shape as a page's. */
+  meta?: PageMeta | null;
 };
 
 /** All published posts for this tenant, newest first. */
