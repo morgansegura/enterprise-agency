@@ -56,6 +56,11 @@ export function organizationSchema() {
       { "@type": "AdministrativeArea", name: "South County, San Diego" },
       { "@type": "AdministrativeArea", name: "Eastlake, Chula Vista" },
       { "@type": "AdministrativeArea", name: "Otay Ranch, Chula Vista" },
+      // The county is the entity a "San Diego" search resolves to. Chula Vista
+      // sits inside it, so this is the accurate way to be served for the metro
+      // without touching the address.
+      { "@type": "AdministrativeArea", name: "San Diego County" },
+      { "@type": "AdministrativeArea", name: "Greater San Diego" },
     ],
     memberOf: [
       { "@type": "SportsOrganization", name: "MLS NEXT" },

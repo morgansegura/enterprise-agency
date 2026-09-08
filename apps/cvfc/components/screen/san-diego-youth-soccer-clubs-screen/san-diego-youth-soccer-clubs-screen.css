@@ -1,0 +1,46 @@
+@reference "tailwindcss";
+
+/* A reading page, so everything is capped to a measure and ranged left. */
+.sd-guide-prose {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-4 text-lg leading-relaxed;
+}
+
+.sd-guide-leagues {
+  @apply mx-auto grid w-full max-w-4xl list-none grid-cols-1 gap-6 p-0 md:grid-cols-2;
+}
+
+.sd-guide-league {
+  @apply border-(--border) flex flex-col gap-2 rounded-xl border p-6;
+}
+
+.sd-guide-league-name {
+  @apply text-(--foreground) text-xl font-bold tracking-tight;
+}
+
+.sd-guide-league-who {
+  @apply text-(--foreground) font-medium;
+}
+
+.sd-guide-league-what {
+  @apply text-(--muted-foreground) leading-relaxed;
+}
+
+.sd-guide-questions {
+  @apply mx-auto flex w-full max-w-3xl list-decimal flex-col gap-4 pl-6 text-lg leading-relaxed;
+}
+
+.sd-guide-faq {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-6;
+}
+
+.sd-guide-faq-item {
+  @apply border-(--border) flex flex-col gap-2 border-t pt-6 first:border-t-0 first:pt-0;
+}
+
+.sd-guide-faq-question {
+  @apply text-(--foreground) text-lg font-bold;
+}
+
+.sd-guide-faq-answer {
+  @apply text-(--muted-foreground) m-0 leading-relaxed;
+}
