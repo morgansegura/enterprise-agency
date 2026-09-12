@@ -42,20 +42,29 @@ For a coach to be reachable, their row on **CVFC — Coaches** must have an
 Two columns answer "when did this happen", and they are filled by different
 things.
 
-**Submitted** is a **Creation Log** column. Monday maintains it — nothing in the
-site writes to it — and it backfilled every row that already existed when it was
-added. Note it records when the _row_ was created, and rows are deduped by
-Submission Token, so a parent who goes Back and resubmits keeps their original
-time.
+**Parent Submitted** is a **Creation Log** column. Monday maintains it — nothing
+in the site writes to it — and it backfilled every row that already existed when
+it was added. Note it records when the _row_ was created, and rows are deduped
+by Submission Token, so a parent who goes Back and resubmits keeps their
+original time.
+
+> Monday attributes a Creation Log entry to whoever created the item, and the
+> site creates every row with the API token. So every signup shows the token
+> owner's avatar. That is a property of the column type, not something the site
+> chooses; the only way to change the face is a dedicated service-account token,
+> and it would not rewrite rows that already exist.
 
 **Coach Assigned** is a **Date** column with time shown. The site writes it at
 the same moment it emails the coach, so it means "assigned and the coach was
-told", not merely "the Coach column was edited". Rows assigned before the column
-existed stay blank, because that assignment already happened.
+told", not merely "the Coach column was edited". It was backfilled once from the
+board's own activity log — the first change that _set_ the Coach relation on
+each row — so the history reaches back before the column existed.
 
 > Monday stores a date column's time in **UTC** and renders it in each viewer's
 > timezone. The site stamps UTC for that reason; sending Pacific wall-clock puts
 > the value seven hours early on the board.
+
+Read together, the gap between the two is time-to-assignment, sortable per row.
 
 Neither is required. `markCoachNotified` skips whichever column is missing, so
 removing one from the board degrades that stamp and nothing else.
