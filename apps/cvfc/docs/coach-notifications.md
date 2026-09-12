@@ -37,6 +37,29 @@ For a coach to be reachable, their row on **CVFC — Coaches** must have an
 > can be written to them by the site. Any future automation has to assign the
 > _relation_ (by coach item id), not write a name or an address as text.
 
+## Timestamps on the board
+
+Two columns answer "when did this happen", and they are filled by different
+things.
+
+**Submitted** is a **Creation Log** column. Monday maintains it — nothing in the
+site writes to it — and it backfilled every row that already existed when it was
+added. Note it records when the _row_ was created, and rows are deduped by
+Submission Token, so a parent who goes Back and resubmits keeps their original
+time.
+
+**Coach Assigned** is a **Date** column with time shown. The site writes it at
+the same moment it emails the coach, so it means "assigned and the coach was
+told", not merely "the Coach column was edited". Rows assigned before the column
+existed stay blank, because that assignment already happened.
+
+> Monday stores a date column's time in **UTC** and renders it in each viewer's
+> timezone. The site stamps UTC for that reason; sending Pacific wall-clock puts
+> the value seven hours early on the board.
+
+Neither is required. `markCoachNotified` skips whichever column is missing, so
+removing one from the board degrades that stamp and nothing else.
+
 ## What stops duplicate emails
 
 The Signups board needs a plain **text column named `Coach Notified`**. The site
@@ -107,7 +130,8 @@ Everything logs to the Vercel runtime logs as structured JSON. Filter on
 
 - Adding a coach to **CVFC — Coaches** sends nothing. That board is the roster
   the assignment picks from.
-- Clearing the Coach column sends nothing.
+- Clearing the Coach column sends nothing, and leaves the previous
+  `Coach Assigned` stamp in place.
 - The previous coach isn't told when a player is reassigned away from them.
 - Reassigning a player back to a coach who was already notified emails them
   again, because the guard only remembers the most recent recipient.

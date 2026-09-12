@@ -21,6 +21,10 @@ export const COACH_EMAIL_COLUMN = "Coach Email";
  *  reassignment still reaches the new coach. Optional — an absent column just
  *  disables the guard. */
 export const COACH_NOTIFIED_COLUMN = "Coach Notified";
+/** When the coach was assigned, stamped as the notification goes out. Optional
+ *  in the same way as the guard: no column on the board, no write. Monday's own
+ *  `updated_at` moves on any edit, so it cannot answer this question. */
+export const COACH_ASSIGNED_COLUMN = "Coach Assigned";
 /** The email column on the CVFC — Coaches board. Note the apostrophe: it is
  *  NOT "Email", and reading the wrong title silently yields no address. */
 const COACHES_EMAIL_COLUMN = "Coaches' Email";
@@ -161,7 +165,13 @@ function buildValues(
         out[col.id] = { label: v };
         break;
       case "date":
-        out[col.id] = { date: v }; // expects YYYY-MM-DD
+        // "YYYY-MM-DD" or "YYYY-MM-DD HH:MM:SS" — Monday takes the time as a
+        // separate key, and only when the column is configured to show one.
+        // Date of Birth keeps passing a bare date and is unaffected.
+        {
+          const [date, time] = v.split(" ");
+          out[col.id] = time ? { date, time } : { date };
+        }
         break;
       default: // text, long_text, numbers, name
         out[col.id] = v;
@@ -383,15 +393,28 @@ export async function findCoachByName(
   return hit?.email ? { name: hit.name.trim(), email: hit.email } : null;
 }
 
-/** Stamp the guard column after a coach has been emailed. No-ops when the
- *  column isn't on the board. */
+/** "YYYY-MM-DD HH:MM:SS" in UTC, for a Monday date column.
+ *
+ *  UTC because that is what Monday stores: it renders the value in each
+ *  viewer's timezone. Sending Pacific wall-clock puts the stamp seven hours
+ *  early on the board.
+ */
+function stamp(now = new Date()): string {
+  return now.toISOString().slice(0, 19).replace("T", " ");
+}
+
+/** Stamp the guard column, and the assignment time, after a coach has been
+ *  emailed. Each no-ops independently when its column isn't on the board. */
 export async function markCoachNotified(
   itemId: string,
   email: string,
 ): Promise<void> {
   const cols = await columnMap(SIGNUPS_BOARD);
-  if (!cols[COACH_NOTIFIED_COLUMN]) return;
-  const values = buildValues(cols, { [COACH_NOTIFIED_COLUMN]: email });
+  if (!cols[COACH_NOTIFIED_COLUMN] && !cols[COACH_ASSIGNED_COLUMN]) return;
+  const values = buildValues(cols, {
+    [COACH_NOTIFIED_COLUMN]: email,
+    [COACH_ASSIGNED_COLUMN]: stamp(),
+  });
   await mondayGql(
     `mutation ($b: ID!, $i: ID!, $cv: JSON!) {
       change_multiple_column_values(board_id: $b, item_id: $i, column_values: $cv) { id }
