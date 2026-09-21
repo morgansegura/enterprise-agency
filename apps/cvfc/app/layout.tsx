@@ -6,6 +6,7 @@ import {
   ConsentDefaults,
   GoogleTagManager,
   GoogleTagManagerNoscript,
+  LinkClickTracking,
 } from "@/components/analytics";
 import { CookieConsentProvider } from "@/components/cookie-consent";
 import { getSiteSettings, toMenuItems } from "@/lib/cms";
@@ -100,6 +101,7 @@ export default async function RootLayout({
       <body>
         <GoogleTagManagerNoscript />
         <GoogleTagManager />
+        <LinkClickTracking />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <CookieConsentProvider>
           <Header items={headerItems} />

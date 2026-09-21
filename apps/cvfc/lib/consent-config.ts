@@ -64,3 +64,7 @@ export const consentConfig = {
 } as const;
 
 export type ConsentConfig = typeof consentConfig;
+
+/** Stored consent schema version; bump to re-ask every visitor. */
+export const CONSENT_VERSION = 1;
+export const CONSENT_STORAGE_KEY = `${consentConfig.storagePrefix}-cookie-consent-v${CONSENT_VERSION}`;

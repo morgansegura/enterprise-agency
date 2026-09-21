@@ -34,7 +34,7 @@ export function ContactButton({
   return (
     <Button
       {...props}
-      render={<a href={href} />}
+      render={<a href={href} data-tracked="" />}
       onClick={() =>
         trackEvent("contact_click", {
           contact_topic: topic,

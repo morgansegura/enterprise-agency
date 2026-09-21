@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 
-import { consentConfig } from "@/lib/consent-config";
+import { CONSENT_STORAGE_KEY, CONSENT_VERSION } from "@/lib/consent-config";
 
 /**
  * Cookie-consent state — versioned localStorage + Google Consent Mode v2 wiring.
@@ -29,8 +29,8 @@ declare global {
   }
 }
 
-const VERSION = 1;
-const KEY = `${consentConfig.storagePrefix}-cookie-consent-v${VERSION}`;
+const VERSION = CONSENT_VERSION;
+const KEY = CONSENT_STORAGE_KEY;
 
 export const GRANT_ALL: ConsentChoices = {
   necessary: true,
