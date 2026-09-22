@@ -35,5 +35,9 @@
   @apply inline-flex text-xs rounded-sm;
 
   @apply font-(family-name:--font-heading) font-semibold;
-  @apply px-1.5 h-7 text-xs md:px-3 md:h-9;
+  @apply px-1.5 h-7 text-xs md:px-3 md:h-9 lg:h-11 lg:flex-col lg:gap-0;
+}
+
+.header-cta-reason {
+  @apply hidden lg:block text-[10px] font-medium normal-case tracking-normal italic opacity-90;
 }

@@ -3,8 +3,14 @@
 import * as React from "react";
 
 import { Section } from "@/components/layout";
-import { Button } from "@/components/ui";
-import { DONATE_ANCHOR, ZEFFY_FORM_URL, donationsEnabled } from "@/lib/donate";
+import { trackEvent } from "@/lib/analytics";
+import {
+  DONATE_ANCHOR,
+  ZEFFY_FORM_URL,
+  ZEFFY_MONTHLY_FORM_URL,
+  donationsEnabled,
+  type DonateCadence,
+} from "@/lib/donate";
 import { cn } from "@/lib/utils";
 
 import "./donate-embed.css";
@@ -47,9 +53,24 @@ function extractHeight(data: unknown): number | null {
 type DonateEmbedProps = {
   className?: string;
   formUrl?: string;
+  monthlyFormUrl?: string;
   /** Render just the iframe, no Section wrapper — for slotting into a hero. */
   bare?: boolean;
 };
+
+// Monthly leads: recurring donors give far more over a year than one-time ones.
+const CHOICES: { cadence: DonateCadence; label: string; reason: string }[] = [
+  {
+    cadence: "monthly",
+    label: "Give monthly",
+    reason: "Keep a player on the field all season long.",
+  },
+  {
+    cadence: "one-time",
+    label: "Give once",
+    reason: "Cover gear, match fees, or field time today.",
+  },
+];
 
 /**
  * The Zeffy donation form, inline on the page — the donor never leaves the
@@ -59,6 +80,7 @@ type DonateEmbedProps = {
 export function DonateEmbed({
   className,
   formUrl = ZEFFY_FORM_URL,
+  monthlyFormUrl = ZEFFY_MONTHLY_FORM_URL,
   bare = false,
 }: DonateEmbedProps) {
   const [measuredHeight, setMeasuredHeight] = React.useState<number | null>(
@@ -70,7 +92,7 @@ export function DonateEmbed({
   // blocking, because idle still runs inside page load. So it now waits for
   // donor intent — a click here, or the #make-a-donation hash that the tier
   // buttons and the header/footer nav link to (that path stays one click).
-  const [mounted, setMounted] = React.useState(false);
+  const [cadence, setCadence] = React.useState<DonateCadence | null>(null);
 
   React.useEffect(() => {
     const handler = (event: MessageEvent) => {
@@ -89,7 +111,12 @@ export function DonateEmbed({
   // click twice. Covers deep links too, where the hash is set on arrival.
   React.useEffect(() => {
     const openOnAnchor = () => {
-      if (window.location.hash === `#${DONATE_ANCHOR}`) setMounted(true);
+      if (window.location.hash === `#${DONATE_ANCHOR}`) {
+        const monthly =
+          new URLSearchParams(window.location.search).get("cadence") ===
+          "monthly";
+        setCadence((current) => current ?? (monthly ? "monthly" : "one-time"));
+      }
     };
     openOnAnchor();
     window.addEventListener("hashchange", openOnAnchor);
@@ -98,9 +125,17 @@ export function DonateEmbed({
 
   if (!donationsEnabled || !formUrl) return null;
 
-  const frame = mounted ? (
+  const choose = (next: DonateCadence) => {
+    trackEvent("donate_click", {
+      donate_cadence: next,
+      donate_source: "support_hero",
+    });
+    setCadence(next);
+  };
+
+  const frame = cadence ? (
     <iframe
-      src={formUrl}
+      src={cadence === "monthly" ? monthlyFormUrl || formUrl : formUrl}
       title="Donate to Chula Vista FC"
       className="donate-embed-frame"
       style={{ height: `${measuredHeight ?? FALLBACK_HEIGHT}px` }}
@@ -108,14 +143,20 @@ export function DonateEmbed({
     />
   ) : (
     <div className="donate-embed-prompt">
-      <Button
-        variant="default"
-        size="lg"
-        className="donate-embed-prompt-button"
-        onClick={() => setMounted(true)}
-      >
-        <span>Donate now</span>
-      </Button>
+      <div className="donate-embed-choices">
+        {CHOICES.map((choice) => (
+          <button
+            key={choice.cadence}
+            type="button"
+            className="donate-embed-choice"
+            data-cadence={choice.cadence}
+            onClick={() => choose(choice.cadence)}
+          >
+            <span className="donate-embed-choice-label">{choice.label}</span>
+            <span className="donate-embed-choice-reason">{choice.reason}</span>
+          </button>
+        ))}
+      </div>
       <p className="donate-embed-prompt-note">
         The secure donation form opens right here — you won&rsquo;t leave the
         page.

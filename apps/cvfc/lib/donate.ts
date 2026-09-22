@@ -14,6 +14,12 @@
 
 export const ZEFFY_FORM_URL = process.env.NEXT_PUBLIC_ZEFFY_FORM_URL ?? "";
 
+/** Optional Zeffy form that defaults to monthly; falls back to the main form. */
+export const ZEFFY_MONTHLY_FORM_URL =
+  process.env.NEXT_PUBLIC_ZEFFY_MONTHLY_FORM_URL || ZEFFY_FORM_URL;
+
+export type DonateCadence = "monthly" | "one-time";
+
 /** Whether the donation flow is configured and should render. */
 export const donationsEnabled = Boolean(ZEFFY_FORM_URL);
 
@@ -23,6 +29,9 @@ export const donationsEnabled = Boolean(ZEFFY_FORM_URL);
  * footer nav, which had no matching id and so scrolled nowhere.
  */
 export const DONATE_ANCHOR = "make-a-donation";
+
+/** Opens the embed straight to the monthly form. */
+export const GIVE_MONTHLY_HREF = `/support?cadence=monthly#${DONATE_ANCHOR}`;
 
 export type DonationTier = {
   /** Display amount. */

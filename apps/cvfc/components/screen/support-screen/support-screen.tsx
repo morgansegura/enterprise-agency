@@ -63,11 +63,13 @@ export async function SupportScreen() {
       />
       <main>
         <PageHero
-          eyebrow={hero?.eyebrow || "Donate to Chula Vista FC"}
-          heading={hero?.heading || "Help us show up for the next kid."}
+          eyebrow={hero?.eyebrow || "Give to players in need"}
+          heading={
+            hero?.heading || "Join us in helping a kid play this season."
+          }
           description={
             hero?.description ||
-            "Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this."
+            "Every season, families across the South Bay sign their kids up for club soccer, and some need a little help with the cost. Your gift covers fees, gear, and field time, so every kid who wants to play gets to be part of a team. A monthly gift keeps a player in the game all year, and Chula Vista FC has been making that possible for South Bay families since 1982."
           }
           actions={
             donationsEnabled ? (

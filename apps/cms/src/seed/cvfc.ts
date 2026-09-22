@@ -1320,10 +1320,10 @@ const SPONSOR_LAYOUT = [
 const SUPPORT_LAYOUT = [
   {
     blockType: 'pageHero',
-    eyebrow: 'Donate to Chula Vista FC',
-    heading: 'Help us show up for the next kid.',
+    eyebrow: 'Give to players in need',
+    heading: 'Join us in helping a kid play this season.',
     description:
-      "Every gift to Chula Vista FC stays with our players. As a 501(c)(3) nonprofit, your support keeps the fields lit, the kits clean, and the door open to South Bay families who'd otherwise stay home. Thank you for being part of this.",
+      'Every season, families across the South Bay sign their kids up for club soccer, and some need a little help with the cost. Your gift covers fees, gear, and field time, so every kid who wants to play gets to be part of a team. A monthly gift keeps a player in the game all year, and Chula Vista FC has been making that possible for South Bay families since 1982.',
     background: 'white',
     actions: [],
   },
@@ -1584,15 +1584,6 @@ const HEADER_MENU_ITEMS = [
     ],
   },
   { label: 'News', href: '/news' },
-  {
-    label: 'Support',
-    href: '#',
-    children: [
-      { label: 'Donate', href: '/support#make-a-donation' },
-      { label: 'Become a Sponsor', href: '/support#become-a-sponsor' },
-      { label: 'Partnerships', href: '/support#partnerships' },
-    ],
-  },
 ]
 
 const FOOTER_MENU_ITEMS = [
@@ -1604,6 +1595,7 @@ const FOOTER_MENU_ITEMS = [
       { label: 'Tryouts/Evaluations', href: '/evaluations' },
       { label: 'Coaching Opportunities', href: '/programs/coaching-opportunities' },
       { label: 'Donate', href: '/support#make-a-donation' },
+      { label: 'Become a Sponsor', href: '/sponsor' },
     ],
   },
   {

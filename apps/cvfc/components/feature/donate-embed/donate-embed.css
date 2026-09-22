@@ -21,8 +21,32 @@
   @apply flex w-full max-w-2xl mx-auto flex-col items-center gap-3;
 }
 
-.donate-embed-prompt-button {
-  @apply w-full sm:w-auto;
+.donate-embed-choices {
+  @apply grid w-full grid-cols-1 gap-3 sm:grid-cols-2;
+}
+
+.donate-embed-choice {
+  @apply flex cursor-pointer flex-col items-center gap-1 rounded-2xl border-2 px-5 py-4 text-center outline-none;
+  @apply transition-colors duration-300 ease-out;
+  @apply focus-visible:ring-2 focus-visible:ring-(--color-gold-bright)/60 focus-visible:ring-offset-2;
+}
+
+.donate-embed-choice[data-cadence="monthly"] {
+  @apply border-(--color-gold) bg-(--color-gold) text-white;
+  @apply hover:border-(--color-gold-bright) hover:bg-(--color-gold-bright);
+}
+
+.donate-embed-choice[data-cadence="one-time"] {
+  @apply border-(--color-midnight) bg-white text-(--color-midnight);
+  @apply hover:bg-(--color-bone);
+}
+
+.donate-embed-choice-label {
+  @apply font-(family-name:--font-heading) text-xl font-bold uppercase tracking-wide md:text-2xl;
+}
+
+.donate-embed-choice-reason {
+  @apply text-sm leading-snug opacity-90;
 }
 
 /* Matches .support-tax-note directly beneath it — the hero is light. */

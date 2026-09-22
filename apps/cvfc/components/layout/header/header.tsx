@@ -7,6 +7,7 @@ import { EvaluationCTA } from "@/components/feature/evaluation-cta";
 
 import { HeaderNav, LogoIcon, MobileNav } from "@/components/layout";
 
+import { GIVE_MONTHLY_HREF } from "@/lib/donate";
 import { useHeaderVisibility } from "@/lib/hooks/use-header-visibility";
 import type { TMenuItem } from "@/lib/menu";
 
@@ -39,6 +40,16 @@ export function Header({ className, items }: HeaderProps) {
         <div className="header-actions">
           <HeaderNav items={items} />
           <EvaluationCTA className="header-cta" label="Evaluations" />
+          <EvaluationCTA
+            className="header-cta"
+            href={GIVE_MONTHLY_HREF}
+            variant="secondary"
+          >
+            <span>Give Monthly</span>
+            <span className="header-cta-reason">
+              Join us in helping a kid play this season
+            </span>
+          </EvaluationCTA>
           <MobileNav items={items} />
         </div>
       </div>

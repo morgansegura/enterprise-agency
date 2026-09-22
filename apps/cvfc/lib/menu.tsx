@@ -98,30 +98,6 @@ export const HEADER_NAV: TMenuItem[] = [
     title: "Stories from the club",
     href: "/news",
   },
-  {
-    label: "Support",
-    title: "Learn how you can help",
-    href: "#",
-    items: [
-      {
-        label: "Donate",
-        description:
-          "Every dollar helps a young player succeed — contribute now.",
-        href: "/support#make-a-donation",
-      },
-      {
-        label: "Become a Sponsor",
-        description:
-          "Partner with CVFC and build community while supporting youth soccer.",
-        href: "/support#become-a-sponsor",
-      },
-      {
-        label: "Partnerships",
-        description: "Join forces with us for programs, events, and impact.",
-        href: "/support#partnerships",
-      },
-    ],
-  },
 ];
 
 export const FOOTER_NAV: TMenuItem[] = [
@@ -138,6 +114,7 @@ export const FOOTER_NAV: TMenuItem[] = [
         href: "/programs/coaching-opportunities",
       },
       { target: "", label: "Donate", href: "/support#make-a-donation" },
+      { target: "", label: "Become a Sponsor", href: "/sponsor" },
       { target: "", label: "Brand & Logos", href: "/brand" },
     ],
   },
