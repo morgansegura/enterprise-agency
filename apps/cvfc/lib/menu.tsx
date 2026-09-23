@@ -95,6 +95,31 @@ export const HEADER_NAV: TMenuItem[] = [
     ],
   },
   {
+    label: "Guides",
+    title: "Straight answers for soccer families",
+    href: "/guides",
+    items: [
+      {
+        label: "MLS NEXT in San Diego",
+        description:
+          "What the top tier of boys youth soccer asks of a family, and how a player gets in.",
+        href: "/guides/mls-next-san-diego",
+      },
+      {
+        label: "Youth soccer leagues, explained",
+        description:
+          "MLS NEXT, ECNL, Elite Academy, DPL, NPL and SoCal Flight — what each one means.",
+        href: "/guides/youth-soccer-leagues",
+      },
+      {
+        label: "How to choose a club",
+        description:
+          "What separates clubs at the same level, and the questions worth asking on a visit.",
+        href: "/guides/san-diego-youth-soccer-clubs",
+      },
+    ],
+  },
+  {
     label: "Champions",
     title: "Championships and signings",
     href: "/champions",

@@ -1,0 +1,25 @@
+@reference "tailwindcss";
+
+.guides-list {
+  @apply mx-auto flex w-full max-w-3xl list-none flex-col gap-8 p-0;
+}
+
+.guides-item {
+  @apply border-(--border) flex flex-col gap-2 border-t pt-6 first:border-t-0 first:pt-0;
+}
+
+.guides-item-title {
+  @apply text-(--foreground) text-2xl font-bold tracking-tight;
+}
+
+.guides-item-title a {
+  @apply hover:text-(--primary) transition-colors;
+}
+
+.guides-item-summary {
+  @apply text-(--muted-foreground) leading-relaxed;
+}
+
+.guides-actions {
+  @apply mt-12 flex justify-center;
+}

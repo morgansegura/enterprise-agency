@@ -1,0 +1,50 @@
+@reference "tailwindcss";
+
+.mls-prose {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-4 text-lg leading-relaxed;
+}
+
+.mls-prose a {
+  @apply text-(--primary) underline underline-offset-4;
+}
+
+/* The lead answer: the 40–60 word paragraph an answer engine lifts. */
+.mls-answer {
+  @apply border-(--primary) text-(--foreground) border-l-2 pl-5 text-xl font-medium;
+}
+
+.mls-commitment {
+  @apply mx-auto grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2;
+}
+
+.mls-commitment-item {
+  @apply border-(--border) flex flex-col gap-2 border-t pt-4;
+}
+
+.mls-commitment-term {
+  @apply text-(--foreground) text-lg font-bold;
+}
+
+.mls-commitment-detail {
+  @apply text-(--muted-foreground) m-0 leading-relaxed;
+}
+
+.mls-actions {
+  @apply mt-10 flex justify-center;
+}
+
+.mls-faq {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-6;
+}
+
+.mls-faq-item {
+  @apply border-(--border) flex flex-col gap-2 border-t pt-6 first:border-t-0 first:pt-0;
+}
+
+.mls-faq-question {
+  @apply text-(--foreground) text-lg font-bold;
+}
+
+.mls-faq-answer {
+  @apply text-(--muted-foreground) m-0 leading-relaxed;
+}

@@ -1,0 +1,78 @@
+@reference "tailwindcss";
+
+.leagues-prose {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-4 text-lg leading-relaxed;
+}
+
+.leagues-prose a {
+  @apply text-(--primary) underline underline-offset-4;
+}
+
+.leagues-answer {
+  @apply border-(--primary) text-(--foreground) border-l-2 pl-5 text-xl font-medium;
+}
+
+.leagues-list {
+  @apply grid w-full list-none grid-cols-1 gap-6 p-0 md:grid-cols-2;
+}
+
+.leagues-item {
+  @apply border-(--border) bg-(--background) flex flex-col gap-2 rounded-xl border p-6;
+}
+
+.leagues-item-head {
+  @apply flex flex-wrap items-baseline justify-between gap-2;
+}
+
+.leagues-item-name {
+  @apply text-(--foreground) text-xl font-bold tracking-tight;
+}
+
+.leagues-item-full {
+  @apply text-(--muted-foreground) text-base font-normal;
+}
+
+.leagues-item-side {
+  @apply text-(--muted-foreground) text-xs font-semibold tracking-widest uppercase;
+}
+
+.leagues-item-definition {
+  @apply text-(--foreground) leading-relaxed;
+}
+
+.leagues-item-detail {
+  @apply text-(--muted-foreground) leading-relaxed;
+}
+
+/* Says plainly whether CVFC plays in this league — green for yes, muted for no. */
+.leagues-item-cvfc {
+  @apply mt-auto pt-2 text-sm font-semibold;
+}
+
+.leagues-item-cvfc[data-plays="yes"] {
+  @apply text-(--primary);
+}
+
+.leagues-item-cvfc[data-plays="no"] {
+  @apply text-(--muted-foreground);
+}
+
+.leagues-actions {
+  @apply mt-10 flex justify-center;
+}
+
+.leagues-faq {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-6;
+}
+
+.leagues-faq-item {
+  @apply border-(--border) flex flex-col gap-2 border-t pt-6 first:border-t-0 first:pt-0;
+}
+
+.leagues-faq-question {
+  @apply text-(--foreground) text-lg font-bold;
+}
+
+.leagues-faq-answer {
+  @apply text-(--muted-foreground) m-0 leading-relaxed;
+}

@@ -59,6 +59,17 @@ const ROUTES: Array<{ path: string; priority: number; changeFrequency: Freq }> =
     { path: "/areas", priority: 0.6, changeFrequency: "monthly" },
     { path: "/evaluations", priority: 0.9, changeFrequency: "monthly" },
     { path: "/news", priority: 0.7, changeFrequency: "weekly" },
+    { path: "/guides", priority: 0.7, changeFrequency: "monthly" },
+    {
+      path: "/guides/mls-next-san-diego",
+      priority: 0.8,
+      changeFrequency: "monthly",
+    },
+    {
+      path: "/guides/youth-soccer-leagues",
+      priority: 0.8,
+      changeFrequency: "monthly",
+    },
     {
       path: "/guides/san-diego-youth-soccer-clubs",
       priority: 0.8,

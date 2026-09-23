@@ -297,3 +297,31 @@ export function serviceSchema(service: ServiceInput) {
       : {}),
   };
 }
+
+type DefinedTerm = { name: string; description: string };
+
+/**
+ * `DefinedTermSet` for a glossary page. Answer engines lift definitions close to
+ * verbatim, so publishing the league vocabulary as terms — rather than prose a
+ * model has to infer structure from — is what gets CVFC quoted when a parent
+ * asks an assistant what ECNL or DPL means.
+ */
+export function definedTermSetSchema(
+  setName: string,
+  path: string,
+  terms: DefinedTerm[],
+) {
+  const url = `${siteConfig.url}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    name: setName,
+    url,
+    hasDefinedTerm: terms.map((term) => ({
+      "@type": "DefinedTerm",
+      name: term.name,
+      description: term.description,
+      inDefinedTermSet: url,
+    })),
+  };
+}
