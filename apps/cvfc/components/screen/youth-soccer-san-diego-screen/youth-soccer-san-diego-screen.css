@@ -1,0 +1,101 @@
+@reference "tailwindcss";
+
+.ysd-lead {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-4 text-lg leading-relaxed;
+}
+
+.ysd-lead a {
+  @apply text-(--primary) underline underline-offset-4;
+}
+
+.ysd-pathways {
+  @apply grid w-full list-none grid-cols-1 gap-6 p-0 md:grid-cols-2;
+}
+
+.ysd-pathway {
+  @apply border-(--border) bg-(--background) flex flex-col gap-2 rounded-xl border p-6;
+}
+
+.ysd-pathway-label {
+  @apply text-(--muted-foreground) text-xs font-semibold tracking-widest uppercase;
+}
+
+.ysd-pathway-name {
+  @apply text-(--foreground) text-xl font-bold tracking-tight;
+}
+
+.ysd-pathway-name a {
+  @apply hover:text-(--primary) transition-colors;
+}
+
+.ysd-pathway-body {
+  @apply text-(--muted-foreground) leading-relaxed;
+}
+
+.ysd-steps {
+  @apply grid w-full list-none grid-cols-1 gap-6 p-0 md:grid-cols-3;
+}
+
+.ysd-step {
+  @apply flex flex-col gap-2;
+}
+
+.ysd-step-number {
+  @apply bg-(--primary) text-(--primary-foreground) flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold;
+}
+
+.ysd-step-title {
+  @apply text-(--foreground) text-lg font-bold;
+}
+
+.ysd-step-body {
+  @apply text-(--muted-foreground) leading-relaxed;
+}
+
+.ysd-actions {
+  @apply mt-10 flex justify-center;
+}
+
+.ysd-venues {
+  @apply grid w-full list-none grid-cols-1 gap-6 p-0 md:grid-cols-3;
+}
+
+.ysd-venue {
+  @apply border-(--border) flex flex-col gap-1 border-t pt-4;
+}
+
+.ysd-venue-name {
+  @apply text-(--foreground) text-lg font-bold;
+}
+
+.ysd-venue-address {
+  @apply text-(--muted-foreground) text-sm;
+}
+
+.ysd-venue-role {
+  @apply text-(--muted-foreground) text-xs font-semibold tracking-widest uppercase;
+}
+
+.ysd-venues-note {
+  @apply text-(--muted-foreground) mt-8 text-sm leading-relaxed;
+}
+
+.ysd-venues-note a {
+  @apply text-(--primary) underline underline-offset-4;
+}
+
+.ysd-faq {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-6;
+}
+
+.ysd-faq-item {
+  @apply border-(--border) flex flex-col gap-2 border-t pt-6 first:border-t-0 first:pt-0;
+}
+
+.ysd-faq-question {
+  @apply text-(--foreground) text-lg font-bold;
+}
+
+.ysd-faq-answer {
+  @apply text-(--muted-foreground) m-0 leading-relaxed;
+}

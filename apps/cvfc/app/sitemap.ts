@@ -25,6 +25,11 @@ const ROUTES: Array<{ path: string; priority: number; changeFrequency: Freq }> =
     },
     { path: "/about/facilities", priority: 0.6, changeFrequency: "monthly" },
     { path: "/about/testimonials", priority: 0.6, changeFrequency: "monthly" },
+    {
+      path: "/youth-soccer-san-diego",
+      priority: 0.9,
+      changeFrequency: "monthly",
+    },
     { path: "/programs", priority: 0.9, changeFrequency: "monthly" },
     {
       path: "/programs/foundations",

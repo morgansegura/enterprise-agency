@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Section } from "@/components/layout";
+import { JsonLd } from "@/components/seo";
+import { breadcrumbSchema, serviceSchema } from "@/lib/schema";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
@@ -16,6 +18,25 @@ export async function GirlsCompetitivePathwayScreen() {
   const page = await getPage("programs/girls-competitive-pathway");
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Programs", path: "/programs" },
+          {
+            name: "Girls Competitive Pathway",
+            path: "/programs/girls-competitive-pathway",
+          },
+        ])}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: "Girls Competitive Pathway",
+          description:
+            "Competitive girls soccer from U10 to U19 — Development Player League (DPL), National Premier League (NPL), Girls Academy Aspire and SoCal Flight, in San Diego County.",
+          path: "/programs/girls-competitive-pathway",
+          audienceAge: "10-19",
+        })}
+      />
       <main>
         {page?.layout?.length ? (
           <Blocks page={page} />

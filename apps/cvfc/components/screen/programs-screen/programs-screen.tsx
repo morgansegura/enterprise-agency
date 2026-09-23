@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { JsonLd } from "@/components/seo";
+import { breadcrumbSchema } from "@/lib/schema";
 
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
@@ -18,6 +20,12 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
   const page = await getPage("programs");
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Programs", path: "/programs" },
+        ])}
+      />
       <main className={className}>
         {page?.layout?.length ? (
           <Blocks page={page} />

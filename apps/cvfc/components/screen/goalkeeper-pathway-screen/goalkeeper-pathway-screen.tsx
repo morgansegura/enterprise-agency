@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Section } from "@/components/layout";
+import { JsonLd } from "@/components/seo";
+import { breadcrumbSchema, serviceSchema } from "@/lib/schema";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
@@ -16,6 +18,22 @@ export async function GoalkeeperPathwayScreen() {
   const page = await getPage("programs/goalkeeper-pathway");
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Programs", path: "/programs" },
+          { name: "Goalkeeper Pathway", path: "/programs/goalkeeper-pathway" },
+        ])}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: "Goalkeeper Pathway",
+          description:
+            "Dedicated goalkeeper training in San Diego County for ages 4 to 19, year-round, led by goalkeeper coaches alongside every age group and level.",
+          path: "/programs/goalkeeper-pathway",
+          audienceAge: "4-19",
+        })}
+      />
       <main>
         {page?.layout?.length ? (
           <Blocks page={page} />

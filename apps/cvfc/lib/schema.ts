@@ -254,3 +254,46 @@ export function faqPageSchema(items: FaqItem[]) {
     })),
   };
 }
+
+type ServiceInput = {
+  name: string;
+  description: string;
+  path: string;
+  /** Age band the program serves, e.g. "4-9" or "10-19". */
+  audienceAge?: string;
+};
+
+/**
+ * `Service` for a program page — what the club offers, who it is for, and where.
+ * Program pages are what an answer engine reads to say what CVFC actually runs,
+ * so each one declares itself rather than relying on the site-wide Organization.
+ */
+export function serviceSchema(service: ServiceInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.name,
+    description: service.description,
+    url: `${siteConfig.url}${service.path}`,
+    serviceType: "Youth soccer program",
+    provider: {
+      "@type": "SportsOrganization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "San Diego County, California",
+    },
+    ...(service.audienceAge
+      ? {
+          audience: {
+            "@type": "PeopleAudience",
+            audienceType: "Youth soccer players and their families",
+            suggestedMinAge: Number(service.audienceAge.split("-")[0]),
+            suggestedMaxAge: Number(service.audienceAge.split("-")[1]),
+          },
+        }
+      : {}),
+  };
+}

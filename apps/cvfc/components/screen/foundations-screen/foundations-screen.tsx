@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Section } from "@/components/layout";
+import { JsonLd } from "@/components/seo";
+import { breadcrumbSchema, serviceSchema } from "@/lib/schema";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
@@ -26,6 +28,22 @@ export async function FoundationsScreen() {
   const earlyBird = isEarlyBirdOpen();
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Programs", path: "/programs" },
+          { name: "Foundations", path: "/programs/foundations" },
+        ])}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: "Foundations: Mini Maestros and CVFC Youth",
+          description:
+            "Foundational youth soccer for ages 4 to 9 in Chula Vista and across San Diego County — first touches, small-sided games, and a technical base before competitive play.",
+          path: "/programs/foundations",
+          audienceAge: "4-9",
+        })}
+      />
       <main>
         {page?.layout?.length ? (
           <>

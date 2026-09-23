@@ -63,6 +63,12 @@ export const HEADER_NAV: TMenuItem[] = [
         href: "/programs",
       },
       {
+        label: "Youth Soccer in San Diego",
+        description:
+          "New to the club? Start here — pathways, fields, cost, and how evaluations work.",
+        href: "/youth-soccer-san-diego",
+      },
+      {
         label: "Foundations",
         description:
           "Mini Maestros and CVFC Youth — foundational training for athletes ages 4–9.",
@@ -106,6 +112,11 @@ export const FOOTER_NAV: TMenuItem[] = [
     items: [
       { target: "", label: "Who we are", href: "/about/who-we-are" },
       { target: "", label: "Programs", href: "/programs" },
+      {
+        target: "",
+        label: "Youth Soccer in San Diego",
+        href: "/youth-soccer-san-diego",
+      },
       { target: "", label: "Areas We Serve", href: "/areas" },
       { target: "", label: "Tryouts/Evaluations", href: "/evaluations" },
       {

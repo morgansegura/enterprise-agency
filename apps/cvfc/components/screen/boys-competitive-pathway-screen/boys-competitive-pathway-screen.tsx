@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Section } from "@/components/layout";
+import { JsonLd } from "@/components/seo";
+import { breadcrumbSchema, serviceSchema } from "@/lib/schema";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
@@ -16,6 +18,25 @@ export async function BoysCompetitivePathwayScreen() {
   const page = await getPage("programs/boys-competitive-pathway");
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Programs", path: "/programs" },
+          {
+            name: "Boys Competitive Pathway",
+            path: "/programs/boys-competitive-pathway",
+          },
+        ])}
+      />
+      <JsonLd
+        data={serviceSchema({
+          name: "Boys Competitive Pathway",
+          description:
+            "Competitive boys soccer from U10 to U19 — MLS NEXT, MLS NEXT Academy, Elite Academy, EA II and the SoCal Soccer League Flight system, at one club in San Diego County.",
+          path: "/programs/boys-competitive-pathway",
+          audienceAge: "10-19",
+        })}
+      />
       <main>
         {page?.layout?.length ? (
           <Blocks page={page} />
