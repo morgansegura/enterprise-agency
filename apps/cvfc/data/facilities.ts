@@ -112,6 +112,25 @@ export const FACILITIES: Facility[] = [
     mapsUrl: "https://www.google.com/maps/search/Hoover+High+School+San+Diego",
   },
   {
+    id: "ofarrell-charter",
+    name: "O'Farrell Charter School",
+    tier: "featured",
+    role: "match-day",
+    roleLabel: "Match-Day Venue",
+    address: {
+      street: "6130 Skyline Dr",
+      city: "San Diego",
+      state: "CA",
+      zip: "92114",
+    },
+    description:
+      "CVFC's match-day venue in southeastern San Diego, on Skyline Drive between Encanto and Skyline. It puts the club's game days a short drive from the central and eastern neighborhoods rather than asking every family to come to the South Bay.",
+    uses: ["Match Day", "Southeastern San Diego"],
+    features: ["Regulation pitch", "Spectator access", "Central San Diego"],
+    mapsUrl:
+      "https://www.google.com/maps/search/O%27Farrell+Charter+School,+6130+Skyline+Dr,+San+Diego,+CA+92114",
+  },
+  {
     id: "indoor-training-center",
     name: "Indoor Training Center",
     tier: "featured",

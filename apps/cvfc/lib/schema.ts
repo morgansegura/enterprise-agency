@@ -324,3 +324,45 @@ export function definedTermSetSchema(
     })),
   };
 }
+
+type VenueInput = {
+  name: string;
+  description: string;
+  path: string;
+  address: { street: string; city: string; state: string; zip: string };
+  mapsUrl?: string;
+};
+
+/**
+ * `SportsActivityLocation` for a venue page. The club trains and plays at real
+ * places across San Diego County, and saying so in machine-readable form is the
+ * honest way to be present in those neighborhoods' results — as opposed to
+ * creating Business Profile listings at fields the club doesn't staff.
+ */
+export function venueSchema(venue: VenueInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SportsActivityLocation",
+    name: venue.name,
+    description: venue.description,
+    url: `${siteConfig.url}${venue.path}`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: venue.address.street,
+      addressLocality: venue.address.city,
+      addressRegion: venue.address.state,
+      postalCode: venue.address.zip,
+      addressCountry: "US",
+    },
+    ...(venue.mapsUrl ? { hasMap: venue.mapsUrl } : {}),
+    containedInPlace: {
+      "@type": "AdministrativeArea",
+      name: "San Diego County, California",
+    },
+    subOrganization: {
+      "@type": "SportsOrganization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+  };
+}

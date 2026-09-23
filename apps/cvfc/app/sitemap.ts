@@ -30,6 +30,18 @@ const ROUTES: Array<{ path: string; priority: number; changeFrequency: Freq }> =
       priority: 0.9,
       changeFrequency: "monthly",
     },
+    { path: "/fields/vca", priority: 0.6, changeFrequency: "monthly" },
+    { path: "/fields/hoover-hs", priority: 0.6, changeFrequency: "monthly" },
+    {
+      path: "/fields/ofarrell-charter",
+      priority: 0.6,
+      changeFrequency: "monthly",
+    },
+    {
+      path: "/fields/indoor-training-center",
+      priority: 0.6,
+      changeFrequency: "monthly",
+    },
     { path: "/programs", priority: 0.9, changeFrequency: "monthly" },
     {
       path: "/programs/foundations",

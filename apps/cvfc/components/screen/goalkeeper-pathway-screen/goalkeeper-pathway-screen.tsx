@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Section } from "@/components/layout";
 import { JsonLd } from "@/components/seo";
-import { breadcrumbSchema, serviceSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, serviceSchema } from "@/lib/schema";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
@@ -13,6 +13,36 @@ import { MediaSplit } from "@/components/feature/media-split";
 import { PageHero } from "@/components/feature/page-hero";
 import { Blocks } from "@/components/blocks";
 import { getPage } from "@/lib/cms";
+
+/** The goalkeeper cluster is ~1,350 searches/mo across 36 keywords and almost
+ *  no club publishes a page for it — see docs/keyword-demand-2026-09.md. */
+const GK_FAQS = [
+  {
+    question: "Where can my child get goalkeeper training in San Diego?",
+    answer:
+      "Chula Vista FC runs a dedicated goalkeeper pathway year-round for ages 4 through U19, with goalkeeper-specific sessions led by goalkeeping coaches rather than an outfield coach taking the keepers for ten minutes. Training is based in Chula Vista, with indoor sessions at the club's Indoor Training Center, and keepers come from across San Diego County.",
+  },
+  {
+    question: "What age should a goalkeeper start specialist training?",
+    answer:
+      "Young players are better served by playing everywhere first — the footwork, positioning and decision-making carry over. Most keepers begin specialist work around U9 to U11, once they have chosen the position. Chula Vista FC runs goalkeeper sessions alongside every age group, so a player can start when they are ready rather than at a fixed age.",
+  },
+  {
+    question: "Does goalkeeper training cost extra?",
+    answer:
+      "No. Goalkeeper sessions are part of the program at Chula Vista FC, not a separate add-on, and keepers are evaluated alongside their pathway team. The club is a 501(c)(3) nonprofit and need-based financial assistance is available.",
+  },
+  {
+    question: "Who coaches the goalkeepers?",
+    answer:
+      "Specialist goalkeeping staff, including a former Mexican Third Division goalkeeper, a Cal Poly San Luis Obispo scholarship alumnus, and an MLS NEXT goalkeeping coach. Sessions run at every level from Foundations through the competitive pathways.",
+  },
+  {
+    question: "Can a goalkeeper join mid-season?",
+    answer:
+      "Yes. Evaluations run year-round, so a keeper new to the area or moving between clubs is assessed and placed when they arrive. Submit a request and a coach responds within 48 hours.",
+  },
+];
 
 export async function GoalkeeperPathwayScreen() {
   const page = await getPage("programs/goalkeeper-pathway");
@@ -25,6 +55,7 @@ export async function GoalkeeperPathwayScreen() {
           { name: "Goalkeeper Pathway", path: "/programs/goalkeeper-pathway" },
         ])}
       />
+      <JsonLd data={faqPageSchema(GK_FAQS)} />
       <JsonLd
         data={serviceSchema({
           name: "Goalkeeper Pathway",
@@ -53,7 +84,7 @@ export async function GoalkeeperPathwayScreen() {
                     variant="outline"
                     render={<Link href="/evaluations#register" />}
                   >
-                    <span>Learn About Tryouts</span>
+                    <span>How Evaluations Work</span>
                     <Icon token="ri:arrow-right" aria-hidden="true" />
                   </Button>
                 </>
@@ -168,15 +199,31 @@ export async function GoalkeeperPathwayScreen() {
               </div>
             </Section>
 
+            <Section>
+              <Heading
+                heading="Goalkeeper questions parents ask"
+                headingSize="section"
+                align="left"
+              />
+              <dl className="gk-faq">
+                {GK_FAQS.map((faq) => (
+                  <div key={faq.question} className="gk-faq-item">
+                    <dt className="gk-faq-question">{faq.question}</dt>
+                    <dd className="gk-faq-answer">{faq.answer}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Section>
+
             <Callout
               eyebrow="Get Started"
               heading="Bring your keeper out for a session."
               variant="bone"
               body={
                 <>
-                  Goalkeepers tryout alongside their pathway team. Choose your
-                  player&rsquo;s pathway and birth year, and our goalkeeping
-                  staff will be in touch.
+                  Goalkeepers are evaluated alongside their pathway team. Choose
+                  your player&rsquo;s pathway and birth year, and our
+                  goalkeeping staff will be in touch.
                 </>
               }
               ctaSlot={

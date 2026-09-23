@@ -1,0 +1,33 @@
+@reference "tailwindcss";
+
+.field-facts {
+  @apply mx-auto grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3;
+}
+
+.field-fact {
+  @apply border-(--border) flex flex-col gap-1 border-t pt-4;
+}
+
+.field-fact dt {
+  @apply text-(--muted-foreground) text-xs font-semibold tracking-widest uppercase;
+}
+
+.field-fact dd {
+  @apply text-(--foreground) m-0 leading-relaxed;
+}
+
+.field-fact a {
+  @apply text-(--primary) underline underline-offset-4;
+}
+
+.field-prose {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-4 text-lg leading-relaxed;
+}
+
+.field-prose a {
+  @apply text-(--primary) underline underline-offset-4;
+}
+
+.field-actions {
+  @apply mt-10 flex justify-center;
+}
