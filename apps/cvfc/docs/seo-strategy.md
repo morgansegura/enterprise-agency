@@ -1,5 +1,14 @@
 # CVFC SEO / AEO / GEO Strategy — Own "Top Competitive Youth Soccer Club"
 
+> **Updated Sep 2026 against real search volume.** Keyword Planner data from the
+> Ad Grant account (`docs/keyword-demand-2026-09.md`) revised three things in
+> this plan: per-area landing pages are **not** worth building beyond the six
+> that exist (`youth soccer chula vista` is ~50/mo; the smaller neighborhoods
+> are unmeasurable), the "near me" cluster is the largest and is won in the
+> **Google Business Profile**, not on the site, and the league names
+> (`mls next`, `socal soccer league`, ecnl/npl/dpl) are the biggest winnable
+> terms. Tier 3 below is retained for context but deprioritized.
+
 **Goal — enrollment.** The business is getting kids in the door. Rank #1 for the
 searches South Bay families use when **looking for a club for their player**, and
 be the club ChatGPT / Perplexity / Google AI Overviews name first. The club wins
@@ -43,12 +52,14 @@ These become the recurring proof points across every page — exactly what a
 
 ## Target query map (priority tiers)
 
-| Tier                       | Queries                                                                                                                              | Owned by           |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------ |
-| **1 — head/high-intent**   | best/top youth soccer club san diego · competitive/club soccer chula vista · MLS NEXT san diego · youth soccer tryouts chula vista   | Pillar pages + GBP |
-| **2 — program/level**      | girls competitive soccer san diego (DPL/NPL/GA) · boys MLS NEXT/EA · goalkeeper training san diego · youth soccer ages 4–9           | Program pages      |
-| **3 — location long-tail** | youth soccer eastlake / bonita / otay ranch / national city / imperial beach / san ysidro                                            | Per-area pages     |
-| **4 — informational/AEO**  | how to choose a youth soccer club · what is MLS NEXT · ECNL vs MLS NEXT · college recruiting · youth soccer cost · pathway explained | Guide cluster      |
+| Tier                       | Queries                                                                                                                                              | Owned by                  |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| **1 — head/high-intent**   | best/top youth soccer club san diego · competitive/club soccer chula vista · MLS NEXT san diego · youth soccer tryouts chula vista                   | Pillar pages + GBP        |
+| **2 — program/level**      | girls competitive soccer san diego (DPL/NPL/GA) · boys MLS NEXT/EA · goalkeeper training san diego · youth soccer ages 4–9                           | Program pages             |
+| **3 — location long-tail** | youth soccer eastlake / bonita / otay ranch / national city / imperial beach / san ysidro — _low volume; keep the six existing pages, build no more_ | Per-area pages            |
+| **1b — county-wide (new)** | youth soccer san diego · soccer club san diego · soccer academy san diego (~500/mo each, low competition)                                            | `/youth-soccer-san-diego` |
+| **2b — leagues (new)**     | mls next (5,000/mo) · socal soccer league (5,000) · ecnl · npl · dpl · elite academy                                                                 | `/guides/*`               |
+| **4 — informational/AEO**  | how to choose a youth soccer club · what is MLS NEXT · ECNL vs MLS NEXT · college recruiting · youth soccer cost · pathway explained                 | Guide cluster             |
 
 ---
 
@@ -83,7 +94,8 @@ These become the recurring proof points across every page — exactly what a
 
 - **Google Business Profile:** claim/verify, "Soccer club" category, full NAP, hours, photos, weekly posts, Q&A, services = programs.
 - **NAP consistency** everywhere; `LocalBusiness`/`SportsClub` schema (done).
-- **Per-area landing pages** (Tier 3).
+- ~~Per-area landing pages (Tier 3)~~ — the six that exist are enough; the demand isn't there (Sep 2026 data).
+- **Reviews are the top unblocked lever.** The profile carries almost none; rivals carry hundreds. See the club playbook.
 - **Reviews engine:** request post-evaluation + season-end → genuine `Review`/`AggregateRating` schema.
 - Local citations / directories (sports, nonprofit, local business).
 
@@ -192,3 +204,25 @@ should land; **gap** is what stops it ranking today.
 5. **Spanish** — start with the highest-intent pages (evaluations, costs, home).
 6. **Outcomes/proof** — alumni page (Arriola, Corona, Farfan are in Wikipedia and
    appear nowhere on the site) + Review schema once reviews exist.
+
+---
+
+## Shipped, September 2026
+
+Built from the demand data, all live:
+
+- `/youth-soccer-san-diego` — the county-wide pillar, for the "san diego" head terms.
+- `/guides/mls-next-san-diego` — `mls next`, the largest single term CVFC can honestly claim.
+- `/guides/youth-soccer-leagues` — the league glossary, published as a `DefinedTermSet`, stating plainly which leagues CVFC does and does not field teams in.
+- `/guides` — the index that the existing guide's breadcrumb had been pointing at since launch (it 404'd).
+- `/fields/*` — venue pages for Victory Christian Academy, Hoover High (City Heights), O'Farrell Charter (Skyline) and the Indoor Training Center, each with `SportsActivityLocation` schema. The honest route into central San Diego results.
+- `Service` + `BreadcrumbList` schema on all four program pages, which previously rendered none.
+- `FAQPage` on the goalkeeper page (~1,350/mo cluster) and on Foundations, with per-age questions.
+
+### Still open
+
+1. **Reviews** — the club playbook covers it; nothing on the site substitutes for it.
+2. **Alumni page with `Person` schema** — Arriola, Corona and Farfan are named in the club's Wikipedia article and appear nowhere in the repo. The strongest unused GEO asset.
+3. **Coach bios** — the "bio coming soon" placeholders still block `Person` schema.
+4. **Camps and seasonal leagues** — real search volume (`soccer camps san diego`, ~500/mo), but only publish if the club actually runs them.
+5. **Spanish** — re-run Keyword Planner with Spanish seeds before building Spanish pages; the first pass suggests local families largely search in English.

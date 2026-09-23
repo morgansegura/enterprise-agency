@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Section } from "@/components/layout";
 import { JsonLd } from "@/components/seo";
-import { breadcrumbSchema, serviceSchema } from "@/lib/schema";
+import { breadcrumbSchema, faqPageSchema, serviceSchema } from "@/lib/schema";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { Callout } from "@/components/feature/callout";
@@ -22,6 +22,37 @@ import {
   isMiniMaestrosSeasonOpen,
 } from "@/data/mini-maestros";
 
+/** Each age is its own search ("soccer for 5 year olds near me") and the
+ *  division names alone match none of them — docs/keyword-demand-2026-09.md. */
+const AGE_FAQS = [
+  {
+    question: "Is there soccer for 4 and 5 year olds in Chula Vista?",
+    answer:
+      "Yes. Super Juniors is Chula Vista FC's program for ages 4 to 5 — first touches on the ball, coordination and small-sided games, in short sessions built for how long a four-year-old actually concentrates. No experience needed.",
+  },
+  {
+    question: "What soccer programs are there for 6 and 7 year olds?",
+    answer:
+      "Juniors covers age 6 and U8 Mini Maestros covers ages 7 to 8 at Chula Vista FC. Both focus on ball mastery and 1v1 confidence, with Saturday matches that start to feel like real soccer while keeping the emphasis on technique rather than results.",
+  },
+  {
+    question:
+      "Where can an 8 or 9 year old play competitive soccer in San Diego?",
+    answer:
+      "U8 Mini Maestros runs through age 8, and CVFC Youth covers age 9 as the bridge into competitive play. At U10 players move into the boys, girls or goalkeeper pathways. Chula Vista FC evaluates year-round, so a player can join at any point rather than waiting for a season to start.",
+  },
+  {
+    question: "Does my child need experience to start?",
+    answer:
+      "No. Foundations is built for first-timers, and most players in Super Juniors have never played on a team. Players who already play elsewhere are welcome too — request an evaluation and a coach will place them by ability rather than by age alone.",
+  },
+  {
+    question: "How much does Foundations cost?",
+    answer:
+      "Foundations runs as a short season rather than a full-year competitive commitment, so it costs considerably less than the competitive pathways. Chula Vista FC is a 501(c)(3) nonprofit and need-based financial assistance is available — ask when you request an evaluation.",
+  },
+];
+
 export async function FoundationsScreen() {
   const page = await getPage("programs/foundations");
   const seasonOpen = isMiniMaestrosSeasonOpen();
@@ -35,6 +66,7 @@ export async function FoundationsScreen() {
           { name: "Foundations", path: "/programs/foundations" },
         ])}
       />
+      <JsonLd data={faqPageSchema(AGE_FAQS)} />
       <JsonLd
         data={serviceSchema({
           name: "Foundations: Mini Maestros and CVFC Youth",
@@ -302,33 +334,49 @@ export async function FoundationsScreen() {
                 {
                   id: "super-juniors",
                   iconToken: "custom:soccer-ball",
-                  title: "Super Juniors",
+                  title: "Super Juniors — ages 4 and 5",
                   description:
                     "Ages 4–5 (born 2021–2022). First introduction to the ball, coordination, and the joy of the game.",
                 },
                 {
                   id: "juniors",
                   iconToken: "custom:cleats",
-                  title: "Juniors",
+                  title: "Juniors — age 6",
                   description:
                     "Age 6 (born 2020). Ball mastery and 1v1 confidence. Saturday matches start to feel like real soccer.",
                 },
                 {
                   id: "u8",
                   iconToken: "custom:soccer-field",
-                  title: "U8 Mini Maestros",
+                  title: "U8 Mini Maestros — ages 7 and 8",
                   description:
                     "Ages 7–8 (born 2018–2019). Technical content rotates weekly. Players begin learning shape, spacing, and decision-making.",
                 },
                 {
                   id: "cvfc-youth",
                   iconToken: "custom:bullseye",
-                  title: "CVFC Youth (U9)",
+                  title: "CVFC Youth — age 9",
                   description:
                     "Age 9 (born 2017). The bridge into competitive play. Ready to try out for boys, girls, or goalkeeper pathways at U10.",
                 },
               ]}
             />
+
+            <Section>
+              <Heading
+                heading="Questions about starting young"
+                headingSize="section"
+                align="left"
+              />
+              <dl className="foundations-faq">
+                {AGE_FAQS.map((faq) => (
+                  <div key={faq.question} className="foundations-faq-item">
+                    <dt className="foundations-faq-question">{faq.question}</dt>
+                    <dd className="foundations-faq-answer">{faq.answer}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Section>
 
             <Section bg="bone" size="default">
               <Heading
