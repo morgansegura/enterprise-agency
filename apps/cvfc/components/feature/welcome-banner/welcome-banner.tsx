@@ -4,7 +4,6 @@ import { CmsImage as Image } from "@/components/ui/cms-image";
 
 import { LogoIcon } from "@/components/layout";
 import { useReveal } from "@/lib/hooks/use-reveal";
-import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 import "./welcome-banner.css";
@@ -83,12 +82,11 @@ export function WelcomeBanner({
           {/* Deliberately not CMS-overridable: the club's charitable status
               and mission have to be visible near the top of the homepage for
               donors, grant reviewers, and the Google Ad Grants website review,
-              and they shouldn't be editable away by accident. Naming the
-              registered entity matters — the Ad Grants application is filed as
-              "{siteConfig.registeredName}", not the DBA the site brands under. */}
+              and they shouldn't be editable away by accident. The registered
+              name and EIN live on /transparency and in the Organization
+              schema; the homepage keeps the short form. */}
           <p className="welcome-banner-nonprofit">
-            Chula Vista FC is the DBA of {siteConfig.registeredName}, a
-            registered 501(c)(3) nonprofit — EIN {siteConfig.ein}.
+            Chula Vista FC is a registered 501(c)(3) nonprofit.
           </p>
 
           <p className="welcome-banner-mission">
