@@ -29,7 +29,7 @@ const PATHWAYS = [
     href: "/programs/girls-competitive-pathway",
     label: "Girls, U10–U19",
     name: "Girls competitive",
-    body: "DPL, NPL, GA Aspire and SoCal Flight, with the same coaching staff and curriculum as the boys' side.",
+    body: "DPL, NPL and SoCal Flight, with the same coaching staff and curriculum as the boys' side.",
   },
   {
     href: "/programs/goalkeeper-pathway",
@@ -77,7 +77,7 @@ const FAQS = [
   {
     question: "Which leagues does Chula Vista FC play in?",
     answer:
-      "Boys play in MLS NEXT, MLS NEXT Academy, Elite Academy, Elite Academy II and the SoCal Soccer League Flight system. Girls play in the Development Player League (DPL), National Premier League (NPL), Girls Academy Aspire and SoCal Flight. The First Team competes in the Southwest Premier League and US Open Cup qualifying.",
+      "Boys play in MLS NEXT, MLS NEXT Academy, Elite Academy, Elite Academy II and the SoCal Soccer League Flight system. Girls play in the Development Player League (DPL), National Premier League (NPL) and SoCal Flight; the club has applied for Girls Academy Aspire. The First Team competes in the Southwest Premier League and US Open Cup qualifying.",
   },
   {
     question: "What does competitive youth soccer cost at Chula Vista FC?",

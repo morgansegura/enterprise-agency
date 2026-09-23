@@ -49,7 +49,7 @@ const TRACKS = [
   {
     id: "girls",
     label: "Girls Pathway",
-    blurb: "GA, GA Aspire, DPL, NPL, and SoCal Flight.",
+    blurb: "DPL, NPL, and SoCal Flight.",
   },
   {
     id: "goalkeeper",

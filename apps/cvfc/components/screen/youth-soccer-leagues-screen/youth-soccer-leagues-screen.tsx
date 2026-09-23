@@ -62,7 +62,7 @@ const LEAGUES: League[] = [
     definition:
       "The Girls Academy is a national girls youth league with regional conferences and college showcases, comparable in level to ECNL on the girls side.",
     detail:
-      "Chula Vista FC has applied to GA Aspire, the entry tier. Ask where that stands during an evaluation rather than relying on any club's website, this one included.",
+      "Chula Vista FC does not field Girls Academy teams today — the girls program plays DPL, NPL and SoCal Flight. The club has applied for GA Aspire, the entry tier, so ask where that stands during an evaluation.",
     cvfc: false,
   },
   {
@@ -106,7 +106,7 @@ const FAQS = [
   {
     question: "Which leagues does Chula Vista FC play in?",
     answer:
-      "Boys: MLS NEXT, MLS NEXT Academy, Elite Academy, Elite Academy II and the SoCal Soccer League Flight system. Girls: Development Player League (DPL), National Premier League (NPL), Girls Academy Aspire (applied) and SoCal Flight. The club does not field ECNL teams.",
+      "Boys: MLS NEXT, MLS NEXT Academy, Elite Academy, Elite Academy II and the SoCal Soccer League Flight system. Girls: Development Player League (DPL), National Premier League (NPL) and SoCal Flight. The club has applied for Girls Academy Aspire but does not field GA teams today, and does not field ECNL teams.",
   },
   {
     question: "Does a higher league mean better development?",

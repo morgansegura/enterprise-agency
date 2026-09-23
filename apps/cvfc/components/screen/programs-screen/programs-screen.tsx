@@ -124,7 +124,7 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
                 src: "https://pub-3be78ba1e4314c17823ce678a1db7106.r2.dev/IMG_6349.jpg",
                 alt: "CVFC girls competitive player",
               }}
-              tags={["SoCal Flight", "NPL", "DPL", "GA Aspire", "GA"]}
+              tags={["SoCal Flight", "NPL", "DPL"]}
               buttons={[
                 {
                   label: "Girl's Pathway",

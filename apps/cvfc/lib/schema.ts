@@ -69,7 +69,6 @@ export function organizationSchema() {
       { "@type": "SportsOrganization", name: "Elite Academy II" },
       { "@type": "SportsOrganization", name: "Development Player League" },
       { "@type": "SportsOrganization", name: "National Premier League" },
-      { "@type": "SportsOrganization", name: "Girls Academy" },
       { "@type": "SportsOrganization", name: "Southwest Premier League" },
       { "@type": "SportsOrganization", name: "SoCal Soccer League" },
     ],
