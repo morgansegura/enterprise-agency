@@ -45,6 +45,9 @@ export function MediaSplit({
   layout = "side",
   imageStyle = "cover",
 }: MediaSplitProps) {
+  // Where a tap on the image should go: the section's own primary button.
+  const primaryHref = buttons?.find((b) => b.target !== "_blank")?.href;
+
   return (
     <section
       data-bg={background}
@@ -55,6 +58,17 @@ export function MediaSplit({
     >
       <div className="media-split-inner contain">
         <figure className="media-split-figure">
+          {/* Clarity: the photo and the pill tags were the top dead taps on the
+              homepage — they read as interactive. When the section has a
+              button, send taps there instead of nowhere. */}
+          {primaryHref ? (
+            <Link
+              href={primaryHref}
+              aria-label={heading}
+              className="media-split-figure-link"
+              tabIndex={-1}
+            />
+          ) : null}
           <Image
             src={image.src}
             alt={image.alt}

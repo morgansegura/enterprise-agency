@@ -60,6 +60,15 @@ export function PortraitGrid({
         <ul className="portrait-grid-list">
           {people.map((p) => (
             <li key={p.id} className="portrait-card">
+              {/* Clarity: staff photos were being tapped with nowhere to go. */}
+              {cta ? (
+                <Link
+                  href={cta.href}
+                  aria-label={`${p.name} — ${p.role}`}
+                  className="portrait-card-link"
+                  tabIndex={-1}
+                />
+              ) : null}
               <div className="portrait-card-photo">
                 {p.image ? (
                   <Image

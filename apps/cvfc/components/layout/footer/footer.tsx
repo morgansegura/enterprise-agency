@@ -91,7 +91,9 @@ export function Footer({
       <div className="contain">
         <div className="nav-row">
           <div className="logo-block">
-            <LogoIcon className="logo-icon" />
+            <Link href="/" aria-label="Chula Vista FC home">
+              <LogoIcon className="logo-icon" />
+            </Link>
             <div className="values">
               <div>
                 {wordmarks.map((value) => (

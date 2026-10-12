@@ -46,8 +46,11 @@
   @apply object-cover;
 }
 
+.media-split-figure-link {
+  @apply absolute inset-0 z-10;
+}
 .media-split-tags {
-  @apply absolute bottom-4 left-4 flex flex-wrap items-center gap-2 pr-4;
+  @apply pointer-events-none absolute bottom-4 left-4 z-20 flex flex-wrap items-center gap-2 pr-4;
 }
 
 .media-split-tag {
