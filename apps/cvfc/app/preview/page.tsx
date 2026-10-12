@@ -8,6 +8,13 @@ export const dynamic = "force-dynamic";
 
 const PREVIEW_SECRET = process.env.PREVIEW_SECRET || "preview-dev";
 
+// robots.txt only asks crawlers not to fetch; a linked page can still be
+// indexed. This is the instruction that actually keeps it out.
+export const metadata = {
+  title: "Preview",
+  robots: { index: false, follow: false },
+};
+
 /**
  * Cookie-free Live Preview. The admin (Render) and FE (Vercel) are different
  * sites, so the browser blocks the draft-mode cookie inside the preview iframe.

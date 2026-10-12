@@ -43,6 +43,36 @@ Revisit if it stays high after the rest settle.
 **Measure.** Clarity dead clicks, 30 days after deploy, against the 20.3%
 baseline recorded 12 Oct 2026.
 
+### Audit sweep — indexing and headings (Oct 12)
+
+**Evidence.** Ran the CauseVisible audit engine against the live site. The site
+scores well — performance 85, SEO 100, accessibility 97, best practices 100, and
+real visitors are in Google's FAST band (LCP 1.2s, CLS 0.00, FCP 1.1s). Five
+findings; three were real.
+
+**Changed.**
+
+- **`/preview` was publicly crawlable.** robots.ts allowed everything except
+  `/api/`, so the CMS live-preview surface was open to search engines — and it
+  was inheriting the homepage title, which is what surfaced as a duplicate-title
+  warning. It is now disallowed in robots.txt _and_ carries `robots: { index:
+false }`, because robots.txt only asks a crawler not to fetch a page; a linked
+  page can still be indexed without it.
+- **`/about/administrators` had no H1.** The screen used the shared `Heading`
+  component, which defaults to `h2`. Added `headingAs="h1"`.
+
+**Dismissed as false positives.** "Missing Contact page" — CVFC has no contact
+page by design; `/evaluations#register` and per-audience mailto links are the
+contact surface. "GA4 not detected" and "Clarity not detected" — both load
+through the GTM container, which a source scan cannot see.
+
+**Still open.** No accessibility statement (a content page, worth writing).
+Donation platform not detected on `/support` — worth confirming the give flow is
+machine-readable.
+
+**Measure.** Re-run the audit after deploy; expect the duplicate-title and H1
+findings to clear. Confirm `/preview` drops out of Search Console's indexed pages.
+
 ---
 
 ## How to use this for the monthly report

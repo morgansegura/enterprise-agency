@@ -54,6 +54,7 @@ export async function AdministratorsScreen() {
           <Heading
             eyebrow={hero?.eyebrow || "Want to talk to the club?"}
             heading={hero?.heading || "Reach the front office."}
+            headingAs="h1"
             headingSize="section"
             description={
               hero?.description ? (

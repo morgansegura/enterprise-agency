@@ -52,7 +52,8 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: ["/api/"] },
+      // /preview is the CMS live-preview surface, not a page for readers.
+      { userAgent: "*", allow: "/", disallow: ["/api/", "/preview"] },
       ...SEARCH_BOTS.map((userAgent) => ({ userAgent, allow: "/" })),
       ...ADS_BOTS.map((userAgent) => ({ userAgent, allow: "/" })),
       ...TRAINING_BOTS.map((userAgent) => ({ userAgent, disallow: "/" })),
