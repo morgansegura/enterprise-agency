@@ -18,6 +18,7 @@ import { Heading } from "@/components/feature/heading";
 import { Section } from "@/components/layout";
 import { Button } from "@/components/ui";
 import { Icon } from "@/components/icon";
+import { isExternalHref } from "@/lib/utils";
 import {
   heroFromBlock,
   welcomeFromBlock,
@@ -48,7 +49,13 @@ function PageHeroActions({ actions }: { actions: PageHeroAction[] }) {
           <Button
             key={i}
             variant={a.variant}
-            render={<Link href={a.href ?? "#"} />}
+            render={
+              a.href && isExternalHref(a.href) ? (
+                <a href={a.href} target="_blank" rel="noopener noreferrer" />
+              ) : (
+                <Link href={a.href ?? "#"} />
+              )
+            }
           >
             {a.iconToken ? (
               <Icon token={a.iconToken as never} aria-hidden="true" />
