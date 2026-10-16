@@ -28,18 +28,18 @@ const AGE_FAQS = [
   {
     question: "Is there soccer for 4 and 5 year olds in Chula Vista?",
     answer:
-      "Yes. Super Juniors is Chula Vista FC's program for ages 4 to 5 — first touches on the ball, coordination and small-sided games, in short sessions built for how long a four-year-old actually concentrates. No experience needed.",
+      "Yes. Super Juniors is Chula Vista FC's program for ages 3 to 4, and Juniors takes ages 5 to 6 — first touches on the ball, coordination and small-sided games, in short sessions built for how long a young child actually concentrates. No experience needed.",
   },
   {
     question: "What soccer programs are there for 6 and 7 year olds?",
     answer:
-      "Juniors covers age 6 and U8 Mini Maestros covers ages 7 to 8 at Chula Vista FC. Both focus on ball mastery and 1v1 confidence, with Saturday matches that start to feel like real soccer while keeping the emphasis on technique rather than results.",
+      "Juniors covers ages 5 to 6 and the Maestros division covers ages 7 to 8 at Chula Vista FC. Both focus on ball mastery and 1v1 confidence, with Saturday matches that start to feel like real soccer while keeping the emphasis on technique rather than results.",
   },
   {
     question:
       "Where can an 8 or 9 year old play competitive soccer in San Diego?",
     answer:
-      "U8 Mini Maestros runs through age 8, and CVFC Youth covers age 9 as the bridge into competitive play. At U10 players move into the boys, girls or goalkeeper pathways. Chula Vista FC evaluates year-round, so a player can join at any point rather than waiting for a season to start.",
+      "The Maestros division of Mini Maestros runs through age 8, and CVFC Youth covers age 9 as the bridge into competitive play. At U10 players move into the boys, girls or goalkeeper pathways. Chula Vista FC evaluates year-round, so a player can join at any point rather than waiting for a season to start.",
   },
   {
     question: "Does my child need experience to start?",
@@ -53,10 +53,85 @@ const AGE_FAQS = [
   },
 ];
 
+/** The current Mini Maestros season. Content lives in data/mini-maestros.ts. */
+function MiniMaestrosSeason() {
+  const earlyBird = isEarlyBirdOpen();
+  const { contact } = MINI_MAESTROS;
+  return (
+    <Section size="default" id="mini-maestros">
+      <Heading
+        eyebrow={`Mini Maestros · ${MINI_MAESTROS.season}`}
+        heading="A six-week season, built for first-timers."
+        headingSize="section"
+        description={<p>{MINI_MAESTROS.description}</p>}
+      />
+      <SeasonDetails
+        className="mt-10"
+        dateline={formatSeasonRange()}
+        datelineNote={MINI_MAESTROS.breakNote}
+        facts={[
+          {
+            id: "weeks",
+            value: `${MINI_MAESTROS.weeks} weeks`,
+            label: "Season length",
+          },
+          {
+            id: "divisions",
+            value: `${MINI_MAESTROS.divisions.length} divisions`,
+            label: "By birth year",
+          },
+          earlyBird
+            ? {
+                id: "price",
+                value: MINI_MAESTROS.earlyBirdPrice,
+                label: `Register by ${formatEarlyBirdDeadline()}`,
+              }
+            : { id: "matches", value: "Saturdays", label: "Game day" },
+        ]}
+        divisions={[...MINI_MAESTROS.divisions]}
+        columns={MINI_MAESTROS.columns.map((c) => ({
+          ...c,
+          items: [...c.items],
+        }))}
+        footnote={
+          <>
+            {earlyBird
+              ? null
+              : `The ${formatEarlyBirdDeadline()} price has closed. Contact the club for current pricing. `}
+            {MINI_MAESTROS.referral} Questions? Contact our {contact.title},{" "}
+            {contact.name}, at{" "}
+            <a
+              className="season-footnote-link"
+              href={`mailto:${contact.email}`}
+            >
+              {contact.email}
+            </a>
+            .
+          </>
+        }
+      />
+      <div className="mt-12 flex justify-center">
+        <Button
+          variant="outline"
+          render={
+            <a
+              href={MINI_MAESTROS.registerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            />
+          }
+        >
+          <span>Register Now for Mini Maestros</span>
+          <Icon token="ri:arrow-right" aria-hidden="true" />
+        </Button>
+      </div>
+    </Section>
+  );
+}
+
 export async function FoundationsScreen() {
   const page = await getPage("programs/foundations");
   const seasonOpen = isMiniMaestrosSeasonOpen();
-  const earlyBird = isEarlyBirdOpen();
   return (
     <>
       <JsonLd
@@ -82,100 +157,7 @@ export async function FoundationsScreen() {
             <Blocks page={page} only={["pageHero", "hero"]} />
             {/* Seasonal promo — rendered for BOTH the CMS and fallback paths so it
             shows regardless of whether this page has CMS blocks. Self-expires. */}
-            {seasonOpen ? (
-              <Section size="default" id="mini-maestros">
-                <Heading
-                  eyebrow={`Mini Maestros · ${MINI_MAESTROS.season}`}
-                  heading="A six-week season, built for first-timers."
-                  headingSize="section"
-                  description={
-                    <p>
-                      Our short-season entry point — six weeks of technique,
-                      small-sided matches, and a shirt of their own. No
-                      experience needed, and no year-long commitment.
-                    </p>
-                  }
-                />
-                <SeasonDetails
-                  className="mt-10"
-                  dateline={formatSeasonRange()}
-                  datelineNote={MINI_MAESTROS.breakNote}
-                  facts={[
-                    {
-                      id: "weeks",
-                      value: `${MINI_MAESTROS.weeks} weeks`,
-                      label: "Season length",
-                    },
-                    { id: "ages", value: "Ages 4–9", label: "Three divisions" },
-                    earlyBird
-                      ? {
-                          id: "price",
-                          value: MINI_MAESTROS.earlyBirdPrice,
-                          label: `Early bird — ends ${formatEarlyBirdDeadline()}`,
-                        }
-                      : {
-                          id: "matches",
-                          value: "Saturdays",
-                          label: "Match day",
-                        },
-                  ]}
-                  divisions={[...MINI_MAESTROS.divisions]}
-                  columns={[
-                    {
-                      id: "schedule",
-                      label: "Practice & game schedule",
-                      items: [
-                        "Matches Saturday mornings.",
-                        "One weekday training, Monday through Friday.",
-                        "Training times work around parent schedules where we can.",
-                      ],
-                    },
-                    {
-                      id: "venues",
-                      label: "Venues",
-                      items: [
-                        "Terra Nova Park — games.",
-                        "Victory Christian Academy — training.",
-                        "Futbol Training Center — training.",
-                      ],
-                    },
-                    {
-                      id: "included",
-                      label: "Included",
-                      items: [...MINI_MAESTROS.includes],
-                    },
-                    {
-                      id: "register",
-                      label: "How to register",
-                      items: [
-                        "Registration runs through PlayMetrics — a couple of minutes.",
-                        "A CVFC coach follows up with first-session details.",
-                      ],
-                    },
-                  ]}
-                  footnote={
-                    earlyBird
-                      ? undefined
-                      : "Early bird pricing has closed — contact the club for current pricing and availability."
-                  }
-                />
-                <div className="mt-12 flex justify-center">
-                  <Button
-                    variant="outline"
-                    render={
-                      <a
-                        href={MINI_MAESTROS.registerUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      />
-                    }
-                  >
-                    <span>Register Now for Mini Maestros</span>
-                    <Icon token="ri:arrow-right" aria-hidden="true" />
-                  </Button>
-                </div>
-              </Section>
-            ) : null}
+            {seasonOpen ? <MiniMaestrosSeason /> : null}
             <Blocks page={page} exclude={["pageHero", "hero"]} />
           </>
         ) : (
@@ -203,100 +185,7 @@ export async function FoundationsScreen() {
 
             {/* Seasonal promo — rendered for BOTH the CMS and fallback paths so it
             shows regardless of whether this page has CMS blocks. Self-expires. */}
-            {seasonOpen ? (
-              <Section size="default" id="mini-maestros">
-                <Heading
-                  eyebrow={`Mini Maestros · ${MINI_MAESTROS.season}`}
-                  heading="A six-week season, built for first-timers."
-                  headingSize="section"
-                  description={
-                    <p>
-                      Our short-season entry point — six weeks of technique,
-                      small-sided matches, and a shirt of their own. No
-                      experience needed, and no year-long commitment.
-                    </p>
-                  }
-                />
-                <SeasonDetails
-                  className="mt-10"
-                  dateline={formatSeasonRange()}
-                  datelineNote={MINI_MAESTROS.breakNote}
-                  facts={[
-                    {
-                      id: "weeks",
-                      value: `${MINI_MAESTROS.weeks} weeks`,
-                      label: "Season length",
-                    },
-                    { id: "ages", value: "Ages 4–9", label: "Three divisions" },
-                    earlyBird
-                      ? {
-                          id: "price",
-                          value: MINI_MAESTROS.earlyBirdPrice,
-                          label: `Early bird — ends ${formatEarlyBirdDeadline()}`,
-                        }
-                      : {
-                          id: "matches",
-                          value: "Saturdays",
-                          label: "Match day",
-                        },
-                  ]}
-                  divisions={[...MINI_MAESTROS.divisions]}
-                  columns={[
-                    {
-                      id: "schedule",
-                      label: "Practice & game schedule",
-                      items: [
-                        "Matches Saturday mornings.",
-                        "One weekday training, Monday through Friday.",
-                        "Training times work around parent schedules where we can.",
-                      ],
-                    },
-                    {
-                      id: "venues",
-                      label: "Venues",
-                      items: [
-                        "Terra Nova Park — games.",
-                        "Victory Christian Academy — training.",
-                        "Futbol Training Center — training.",
-                      ],
-                    },
-                    {
-                      id: "included",
-                      label: "Included",
-                      items: [...MINI_MAESTROS.includes],
-                    },
-                    {
-                      id: "register",
-                      label: "How to register",
-                      items: [
-                        "Registration runs through PlayMetrics — a couple of minutes.",
-                        "A CVFC coach follows up with first-session details.",
-                      ],
-                    },
-                  ]}
-                  footnote={
-                    earlyBird
-                      ? undefined
-                      : "Early bird pricing has closed — contact the club for current pricing and availability."
-                  }
-                />
-                <div className="mt-12 flex justify-center">
-                  <Button
-                    variant="outline"
-                    render={
-                      <a
-                        href={MINI_MAESTROS.registerUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      />
-                    }
-                  >
-                    <span>Register Now for Mini Maestros</span>
-                    <Icon token="ri:arrow-right" aria-hidden="true" />
-                  </Button>
-                </div>
-              </Section>
-            ) : null}
+            {seasonOpen ? <MiniMaestrosSeason /> : null}
 
             <MediaSplit
               eyebrow="Player Development"

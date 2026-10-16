@@ -69,3 +69,7 @@
 .season-footnote {
   @apply mx-auto mt-10 max-w-3xl text-center text-sm text-(--color-midnight)/60;
 }
+
+.season-footnote-link {
+  @apply font-medium text-(--color-midnight) underline underline-offset-2;
+}
