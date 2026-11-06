@@ -33,8 +33,8 @@ export function Header({ className, items }: HeaderProps) {
           <span className="hidden sm:flex md:hidden lg:flex">
             Chula Vista FC
           </span>
-          <span className="flex sm:hidden md:flex lg:hidden">CVFC</span>
-          <LogoNike className="w-10 ml-1" />
+          <span className="hidden md:flex lg:hidden">CVFC</span>
+          <LogoNike className="w-10 ml-1 hidden min-[375px]:block" />
         </Link>
 
         <div className="header-actions">

@@ -12,7 +12,7 @@
 }
 
 .header-container {
-  @apply mx-auto flex h-full items-center justify-between gap-4 px-3 md:px-4;
+  @apply mx-auto flex h-full items-center justify-between gap-2 px-2 sm:gap-4 sm:px-3 md:px-4;
 }
 
 .header-logo {
@@ -32,10 +32,11 @@
 }
 
 .header-cta.evaluation-cta-trigger {
-  @apply inline-flex text-xs rounded-sm;
+  @apply inline-flex rounded-sm;
 
   @apply font-(family-name:--font-heading) font-semibold;
-  @apply px-1.5 h-7 text-xs md:px-3 md:h-9 lg:h-11 lg:flex-col lg:gap-0;
+  @apply px-1.5 h-7 md:px-3 md:h-9 lg:h-11 lg:flex-col lg:gap-0;
+  @apply shrink-0 whitespace-nowrap text-[11px] tracking-wide sm:text-xs sm:tracking-[0.125em];
 }
 
 .header-cta-reason {
