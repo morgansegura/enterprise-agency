@@ -1,0 +1,200 @@
+{
+  "exportFormatVersion": 2,
+  "containerVersion": {
+    "accountId": "6367347749",
+    "containerId": "259029514",
+    "containerVersionId": "0",
+    "container": {
+      "accountId": "6367347749",
+      "containerId": "259029514",
+      "name": "www.chulavistafc.com",
+      "publicId": "GTM-M79QSDB3",
+      "usageContext": ["WEB"]
+    },
+    "tag": [
+      {
+        "accountId": "6367347749",
+        "containerId": "259029514",
+        "tagId": "808",
+        "name": "GA4 Event - tryout_signup",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "tryout_signup"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "G-DL9RT1ZBT0"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "player_gender"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - player_gender}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "age_group"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - age_group}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "referral_source"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DLV - referral_source}}"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "firingTriggerId": ["908"],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "6367347749",
+        "containerId": "259029514",
+        "triggerId": "908",
+        "name": "CE - tryout_signup",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "tryout_signup"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "6367347749",
+        "containerId": "259029514",
+        "variableId": "950",
+        "name": "DLV - player_gender",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "player_gender"
+          }
+        ]
+      },
+      {
+        "accountId": "6367347749",
+        "containerId": "259029514",
+        "variableId": "952",
+        "name": "DLV - referral_source",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "referral_source"
+          }
+        ]
+      },
+      {
+        "accountId": "6367347749",
+        "containerId": "259029514",
+        "variableId": "966",
+        "name": "DLV - age_group",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "setDefaultValue",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "age_group"
+          }
+        ]
+      }
+    ]
+  }
+}
