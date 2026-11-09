@@ -5,11 +5,9 @@ campaigns. Unlike those, its ads may say "tryout": these tryouts have real
 dates. Run from this folder: python3 build-tryouts-campaign.py
 """
 
-import csv
-import sys
+from campaign_csv import two_ads, write
 
 SITE = "https://www.chulavistafc.com"
-SD = ("San Diego County,California,United States", "9057154")
 NAME = "CVFC - U7-U9 Tryouts Dec 2026"
 BUDGET = 40  # Ad Grants' $329/day is already spoken for: see tryouts-campaign.md
 
@@ -32,11 +30,7 @@ DESC = ["Free tryouts for players born Aug 2018 to Jul 2021. Girls Dec 7, boys D
 
 
 def ads(specific, url, p1, p2):
-    # Two ads per ad group: A leads with the group's own angle, B with the club.
-    a = (specific + COMMON)[:15]
-    b = (COMMON[:5] + specific + COMMON[5:])[:15]
-    return [dict(h=a, d=DESC, url=url, p1=p1, p2=p2),
-            dict(h=b, d=DESC[2:] + DESC[:2], url=url, p1=p1, p2=p2)]
+    return two_ads(specific, COMMON, DESC, url, p1, p2)
 
 
 URL = SITE + "/tryouts"
@@ -62,56 +56,4 @@ GROUPS = [
                  URL + "?player=boys", "Tryouts", "Boys")),
 ]
 
-HCOLS = [f"Headline {i}" for i in range(1, 16)]
-DCOLS = [f"Description {i}" for i in range(1, 5)]
-COLS = ["Campaign", "Campaign Type", "Networks", "Budget", "Budget type", "Bid Strategy Type",
-        "Languages", "EU political ads", "Campaign Status", "Location", "Location ID", "Ad Group",
-        "Ad Group Status", "Keyword", "Criterion Type", "Ad type", "Final URL", "Path 1", "Path 2",
-        *HCOLS, *DCOLS]
-
-rows, errs = [], []
-rows.append({"Campaign": NAME, "Campaign Type": "Search", "Networks": "Google search",
-             "Budget": BUDGET, "Budget type": "Daily", "Bid Strategy Type": "Maximize conversions",
-             "Languages": "en", "EU political ads": "Doesn't have EU political ads",
-             "Campaign Status": "Paused"})
-rows.append({"Campaign": NAME, "Location": SD[0], "Location ID": SD[1]})
-for n in NEG:
-    rows.append({"Campaign": NAME, "Keyword": n, "Criterion Type": "Negative Phrase"})
-for g in GROUPS:
-    rows.append({"Campaign": NAME, "Ad Group": g["name"], "Ad Group Status": "Enabled"})
-    for k in g["kw"]:
-        if len(k.split()) < 2:
-            errs.append(("single-word keyword", k))  # Ad Grants disallows these
-        rows.append({"Campaign": NAME, "Ad Group": g["name"], "Keyword": k, "Criterion Type": "Phrase"})
-    for a in g["ads"]:
-        if len(set(a["h"])) != len(a["h"]):
-            errs.append(("duplicate headline", g["name"]))
-        r = {"Campaign": NAME, "Ad Group": g["name"], "Ad type": "Responsive search ad",
-             "Final URL": a["url"], "Path 1": a["p1"], "Path 2": a["p2"]}
-        for i, h in enumerate(a["h"]):
-            if len(h) > 30:
-                errs.append(("headline over 30", h, len(h)))
-            if "!" in h:
-                errs.append(("policy", h))
-            r[HCOLS[i]] = h
-        for i, d in enumerate(a["d"]):
-            if len(d) > 90:
-                errs.append(("description over 90", d, len(d)))
-            r[DCOLS[i]] = d
-        for p in (a["p1"], a["p2"]):
-            if len(p) > 15:
-                errs.append(("path over 15", p))
-        rows.append(r)
-
-if errs:
-    sys.stderr.write(f"Not written. Fix these first: {errs}\n")
-    sys.exit(1)
-
-with open("cvfc-tryouts-campaign.csv", "w", newline="", encoding="utf-8") as f:
-    w = csv.DictWriter(f, fieldnames=COLS)
-    w.writeheader()
-    w.writerows(rows)
-sys.stdout.write(
-    f"Wrote cvfc-tryouts-campaign.csv: {len(GROUPS)} ad groups, "
-    f"{sum(len(g['ads']) for g in GROUPS)} ads, {sum(len(g['kw']) for g in GROUPS)} keywords, "
-    f"{len(NEG)} negatives, ${BUDGET}/day\n")
+write("cvfc-tryouts-campaign.csv", NAME, BUDGET, NEG, GROUPS)
