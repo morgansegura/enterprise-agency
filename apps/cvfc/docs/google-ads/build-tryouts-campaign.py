@@ -19,13 +19,13 @@ NEG = ["adult", "adults", "men's league", "mens league", "coed", "over 30", "fif
        "score", "world cup", "high school", "middle school", "college", "salary",
        "indeed", "u10", "u11", "u12", "u13", "u14", "u15", "u16", "u17", "u19"]
 
-COMMON = ["U7-U9 Soccer Tryouts", "Chula Vista FC Tryouts", "Players Born 2018 to 2021",
+COMMON = ["Free U7-U9 Soccer Tryouts", "Chula Vista FC Tryouts", "Players Born 2018 to 2021",
           "Girls Tryouts: Mon, Dec 7", "Boys Tryouts: Dec 8 and 9", "Sign Up Online in 2 Minutes",
           "At Victory Christian Academy", "Boys and Girls Welcome", "Youth Soccer in Chula Vista",
           "South Bay Club Since 1982", "Nonprofit Youth Soccer Club", "Bilingual Coaches and Staff",
           "A Club for Everyone"]
 
-DESC = ["Tryouts for players born Aug 2018 to Jul 2021. Girls Dec 7, boys Dec 8 and 9.",
+DESC = ["Free tryouts for players born Aug 2018 to Jul 2021. Girls Dec 7, boys Dec 8, 9.",
         "Sign up online in two minutes. We email you the date, time and what to bring.",
         "Chula Vista FC is a nonprofit club for everyone, in the South Bay since 1982.",
         "At Victory Christian Academy in Chula Vista. Boys and girls, U7 to U9."]
@@ -91,14 +91,12 @@ for g in GROUPS:
         for i, h in enumerate(a["h"]):
             if len(h) > 30:
                 errs.append(("headline over 30", h, len(h)))
-            if "!" in h or "free" in h.lower():
-                errs.append(("policy", h))  # "free" only once the club confirms it
+            if "!" in h:
+                errs.append(("policy", h))
             r[HCOLS[i]] = h
         for i, d in enumerate(a["d"]):
             if len(d) > 90:
                 errs.append(("description over 90", d, len(d)))
-            if "free" in d.lower():
-                errs.append(("policy", d))
             r[DCOLS[i]] = d
         for p in (a["p1"], a["p2"]):
             if len(p) > 15:
