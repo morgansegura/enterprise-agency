@@ -10,6 +10,8 @@ import { IconCards } from "@/components/feature/icon-cards";
 import { MediaSplit } from "@/components/feature/media-split";
 import { PageHero } from "@/components/feature/page-hero";
 import { Blocks } from "@/components/blocks";
+import { TryoutCards } from "@/components/feature/tryout-cards";
+import { tryoutsOpen } from "@/lib/tryouts";
 import { getPage } from "@/lib/cms";
 
 type ProgramsScreenProps = {
@@ -18,6 +20,12 @@ type ProgramsScreenProps = {
 
 export async function ProgramsScreen({ className }: ProgramsScreenProps) {
   const page = await getPage("programs");
+  const tryouts = tryoutsOpen() ? (
+    <TryoutCards
+      heading="Tryouts for our youngest players."
+      background="white"
+    />
+  ) : null;
   return (
     <>
       <JsonLd
@@ -28,7 +36,11 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
       />
       <main className={className}>
         {page?.layout?.length ? (
-          <Blocks page={page} />
+          <>
+            <Blocks page={page} only={["pageHero", "hero"]} />
+            {tryouts}
+            <Blocks page={page} exclude={["pageHero", "hero"]} />
+          </>
         ) : (
           <>
             <PageHero
@@ -52,6 +64,8 @@ export async function ProgramsScreen({ className }: ProgramsScreenProps) {
                 </>
               }
             />
+
+            {tryouts}
 
             <IconCards />
 

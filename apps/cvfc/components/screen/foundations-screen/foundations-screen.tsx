@@ -13,6 +13,8 @@ import { MediaSplit } from "@/components/feature/media-split";
 import { PageHero } from "@/components/feature/page-hero";
 import { SeasonDetails } from "@/components/feature/season-details";
 import { Blocks } from "@/components/blocks";
+import { TryoutCards } from "@/components/feature/tryout-cards";
+import { tryoutsOpen } from "@/lib/tryouts";
 import { getPage } from "@/lib/cms";
 import {
   MINI_MAESTROS,
@@ -132,6 +134,9 @@ function MiniMaestrosSeason() {
 export async function FoundationsScreen() {
   const page = await getPage("programs/foundations");
   const seasonOpen = isMiniMaestrosSeasonOpen();
+  const tryouts = tryoutsOpen() ? (
+    <TryoutCards heading="Ready for a club team? U7–U9 tryouts." />
+  ) : null;
   return (
     <>
       <JsonLd
@@ -157,6 +162,7 @@ export async function FoundationsScreen() {
             <Blocks page={page} only={["pageHero", "hero"]} />
             {/* Seasonal promo — rendered for BOTH the CMS and fallback paths so it
             shows regardless of whether this page has CMS blocks. Self-expires. */}
+            {tryouts}
             {seasonOpen ? <MiniMaestrosSeason /> : null}
             <Blocks page={page} exclude={["pageHero", "hero"]} />
           </>
@@ -185,6 +191,7 @@ export async function FoundationsScreen() {
 
             {/* Seasonal promo — rendered for BOTH the CMS and fallback paths so it
             shows regardless of whether this page has CMS blocks. Self-expires. */}
+            {tryouts}
             {seasonOpen ? <MiniMaestrosSeason /> : null}
 
             <MediaSplit
