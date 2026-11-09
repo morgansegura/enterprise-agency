@@ -37,6 +37,8 @@ export type TryoutSeason = {
   sessions: TryoutSession[];
   /** Youngest first. */
   ageGroups: TryoutAgeGroup[];
+  /** What players bring, listed in the parent's email. */
+  bring: string[];
 };
 
 export const TRYOUT_SEASON: TryoutSeason = {
@@ -68,6 +70,12 @@ export const TRYOUT_SEASON: TryoutSeason = {
     { label: "U7", bornFrom: "2020-08-01", bornTo: "2021-07-31" },
     { label: "U8", bornFrom: "2019-08-01", bornTo: "2020-07-31" },
     { label: "U9", bornFrom: "2018-08-01", bornTo: "2019-07-31" },
+  ],
+  bring: [
+    "A water bottle",
+    "Shin guards",
+    "Soccer cleats, or sneakers if they don't have cleats yet",
+    "Comfortable athletic clothes",
   ],
 };
 

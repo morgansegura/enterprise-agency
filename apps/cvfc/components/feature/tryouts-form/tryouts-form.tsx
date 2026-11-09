@@ -239,8 +239,7 @@ export function TryoutsForm({
               {done} is signed up.
             </p>
             <p className="registration-form-success-text">
-              We&rsquo;ve emailed you the tryout details, and a CVFC coach will
-              be in touch before tryouts.
+              We&rsquo;ve emailed you the tryout details. See you there!
             </p>
           </div>
           <div className="registration-form-actions">

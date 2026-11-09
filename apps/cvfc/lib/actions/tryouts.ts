@@ -61,6 +61,7 @@ export async function saveTryout(token: string, input: TryoutInput) {
           ageGroup: ageGroupFor(input.player.dob)?.label ?? "",
           when: session?.days.map(dayLine) ?? [],
           location: `${TRYOUT_SEASON.location.name}, ${TRYOUT_SEASON.location.address}`,
+          bring: TRYOUT_SEASON.bring,
         });
       } catch (err) {
         log.error("tryout confirmation failed", { rowId, err });

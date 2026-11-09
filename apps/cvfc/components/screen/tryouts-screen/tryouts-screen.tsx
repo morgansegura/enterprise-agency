@@ -93,8 +93,7 @@ export function TryoutsScreen({
                 <Link href={season.location.href} className="tryouts-place">
                   {season.location.name}
                 </Link>{" "}
-                in Chula Vista. Sign up below and a CVFC coach will be in touch
-                before tryouts.
+                in Chula Vista. Sign up below.
               </>
             )
           }

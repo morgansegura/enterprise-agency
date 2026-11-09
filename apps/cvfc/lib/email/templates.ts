@@ -3,7 +3,13 @@
  * values are escaped inside the helpers — pass raw strings.
  */
 
+import { siteConfig } from "@/lib/site-config";
+
 import { BRAND, emailShell, esc, FONT, infoRow } from "./shell";
+
+/** "+1-619-500-3620" as "(619) 500-3620". */
+const phoneText = (e164: string) =>
+  e164.replace(/^\+1-?(\d{3})-?(\d{3})-?(\d{4})$/, "($1) $2-$3");
 
 export type ParentEmailData = {
   parentName: string;
@@ -117,7 +123,18 @@ export type TryoutEmailData = {
   location: string;
 };
 
-export type TryoutParentEmailData = TryoutEmailData & { parentName: string };
+export type TryoutParentEmailData = TryoutEmailData & {
+  parentName: string;
+  /** What to bring: "A water bottle", "Shin guards". */
+  bring: string[];
+};
+
+/** A short list, email-safe: list markup with inline spacing. */
+function list(items: string[]): string {
+  return `<ul style="margin:0 0 16px;padding-left:20px;">${items
+    .map((item) => `<li style="margin:0 0 6px;">${esc(item)}</li>`)
+    .join("")}</ul>`;
+}
 
 export type TryoutCoachEmailData = TryoutEmailData & {
   coachName?: string;
@@ -148,7 +165,12 @@ export function tryoutParentEmail(data: TryoutParentEmailData): RenderedEmail {
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 20px;">
           ${tryoutRows(data)}
         </table>
-        ${p(`A CVFC coach will be in touch before tryouts. If anything changes, just reply to this email.`)}
+        ${
+          data.bring.length
+            ? `${p(`<strong>Please don't forget to bring:</strong>`)}${list(data.bring)}`
+            : ""
+        }
+        ${p(`Questions, or a change of plans?<br/>Email us at <a href="mailto:${esc(siteConfig.contact.email)}" style="color:${BRAND.gold};font-weight:bold;">${esc(siteConfig.contact.email)}</a> or call <a href="tel:${esc(siteConfig.contact.phone)}" style="color:${BRAND.gold};font-weight:bold;">${esc(phoneText(siteConfig.contact.phone))}</a>.`)}
         ${p(`We can't wait to meet ${name},`)}
         ${p(`<strong>J. Hector Diaz</strong><br/>Academy Director, Chula Vista FC`)}`;
 
