@@ -9,6 +9,45 @@ rather than a list of activity.
 
 ---
 
+## November 2026
+
+### U7–U9 tryouts: page, board, ads (Nov 9)
+
+**Evidence.** The director set younger-player tryouts for December 7 (girls)
+and December 8 and 9 (boys). `/tryouts` redirected to `/evaluations`, so there
+was nowhere to send families.
+
+**Changed.**
+
+- `/tryouts` is a real page: dates, a one-step signup, age groups, and a
+  questions section. Girls and Boys cards sit under the hero on the homepage,
+  Programs, Foundations, and each pathway page; they come down by themselves the
+  day of each tryout (`lib/tryouts.ts`, see `docs/tryouts.md`).
+- Signups land on the new **CVFC Tryouts (U7–U9)** Monday board, with a Coach
+  column linked to CVFC — Coaches. The parent is emailed the date, time, place
+  and what to bring.
+- Google Ads: **CVFC - U7-U9 Tryouts Dec 2026** ($40/day, ends Dec 7) and
+  **CVFC - Giving Tuesday and Year-End 2026** ($40/day, Nov 17–Dec 31). Player
+  Evaluations went $155 → $115 and Neighborhoods $80 → $40 to stay at $329.
+- A **Tryout signup** conversion (GTM version 6), a "Free U7-U9 Tryouts"
+  sitelink on every campaign until Dec 7, the crest as business logo, and photos
+  on every campaign.
+- `/tryouts` sent to IndexNow and requested in Search Console.
+- All 11 facility photos restored (they were never copied into this repo).
+
+**Measure.** Tryout signups on the board by Dec 7; Tryout signup conversions in
+Google Ads; donations from the Giving Tuesday campaign by Dec 31.
+
+**Open.**
+
+- Coach webhook on the Tryouts board (same URL as Signups).
+- Hector: do boys come to both days or pick one?
+- Star `tryout_signup` as a key event in GA4 after the first signup.
+- Check Zeffy redirects to `/thank-you` after a donation: the Donation
+  conversion has received nothing since September 21.
+
+---
+
 ## October 2026
 
 ### Dead-click fixes — homepage (Oct 12)
