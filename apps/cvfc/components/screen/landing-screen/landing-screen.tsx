@@ -10,6 +10,8 @@ import { PortraitGrid } from "@/components/feature/portrait-grid";
 import { Testimonials } from "@/components/feature/testimonials";
 import { FaqSection } from "@/components/feature/faq-section";
 import { EvaluationCTA } from "@/components/feature/evaluation-cta";
+import { TryoutCards } from "@/components/feature/tryout-cards";
+import { tryoutsOpen } from "@/lib/tryouts";
 import { getFeaturedCoaches } from "@/data/coaches";
 import { getPage } from "@/lib/cms";
 import { blockFor, cmsOverlay } from "@/lib/media";
@@ -62,6 +64,9 @@ export async function LandingScreen({ className }: LandingScreenProps) {
     <>
       <main className={cn("landing-screen", className)}>
         <HeroCarousel slides={heroSlides} />
+        {tryoutsOpen() ? (
+          <TryoutCards heading="Tryouts for our youngest players." />
+        ) : null}
         <WelcomeBanner headingAs="h2" {...welcome} />
 
         <IconCards

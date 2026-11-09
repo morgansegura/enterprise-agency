@@ -1,7 +1,8 @@
 @reference "tailwindcss";
 
+/* scroll-mt keeps an anchored section clear of the sticky header. */
 .media-split {
-  @apply relative py-16 md:py-20;
+  @apply relative scroll-mt-20 py-16 md:py-20;
 }
 
 .media-split[data-bg="bone"] {

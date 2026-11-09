@@ -18,6 +18,8 @@ export type MediaSplitButton = {
 
 type MediaSplitProps = {
   className?: string;
+  /** An anchor, so a link can open the page at this section. */
+  id?: string;
   eyebrow?: string;
   heading: string;
   body: React.ReactNode;
@@ -34,6 +36,7 @@ type MediaSplitProps = {
 
 export function MediaSplit({
   className,
+  id,
   eyebrow,
   heading,
   body,
@@ -50,6 +53,7 @@ export function MediaSplit({
 
   return (
     <section
+      id={id}
       data-bg={background}
       data-reverse={reverse ? "true" : "false"}
       data-layout={layout}

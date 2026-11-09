@@ -1,0 +1,54 @@
+@reference "tailwindcss";
+
+.tryouts-screen {
+  @apply relative bg-(--color-bone);
+}
+
+/* ==================== FORM ==================== */
+
+.tryouts-register {
+  @apply scroll-mt-24 py-10 md:py-12;
+}
+
+/* ==================== AGE GROUPS ==================== */
+
+.tryouts-groups {
+  @apply pb-20 md:pb-24;
+}
+
+.tryouts-groups-inner {
+  @apply mx-auto flex max-w-xl flex-col gap-3;
+}
+
+.tryouts-groups-heading {
+  @apply font-(family-name:--font-heading) text-2xl font-bold;
+}
+
+.tryouts-groups-description {
+  @apply text-sm text-(--color-midnight)/75;
+}
+
+.tryouts-groups-list {
+  @apply flex flex-col divide-y divide-(--color-midnight)/10 rounded-2xl border border-(--color-midnight)/10 bg-white;
+}
+
+.tryouts-group {
+  @apply flex items-center justify-between gap-4 px-5 py-3.5;
+}
+
+.tryouts-group-label {
+  @apply font-(family-name:--font-heading) text-base font-bold;
+}
+
+.tryouts-group-range {
+  @apply text-sm text-(--color-midnight)/75;
+}
+
+.tryouts-link {
+  @apply font-semibold text-(--color-gold) underline underline-offset-2;
+}
+
+/* The place in the hero, linked to its page. */
+.tryouts-place {
+  @apply font-semibold underline decoration-(--color-gold) underline-offset-4 hover:text-(--color-gold);
+}

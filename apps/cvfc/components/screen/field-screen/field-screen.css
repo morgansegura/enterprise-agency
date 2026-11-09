@@ -20,8 +20,13 @@
   @apply text-(--primary) underline underline-offset-4;
 }
 
+/* The heading and its paragraphs share one column, so their edges line up. */
+.field-body {
+  @apply mx-auto flex w-full max-w-3xl flex-col gap-6;
+}
+
 .field-prose {
-  @apply mx-auto flex w-full max-w-3xl flex-col gap-4 text-lg leading-relaxed;
+  @apply flex flex-col gap-4 text-lg leading-relaxed;
 }
 
 .field-prose a {

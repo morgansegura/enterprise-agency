@@ -1,0 +1,102 @@
+@reference "tailwindcss";
+
+/* Bone, as the Foundations section, so the white cards stand out. */
+.tryout-cards {
+  @apply relative bg-(--color-bone) py-12 md:py-16;
+}
+
+.tryout-cards[data-bg="white"] {
+  @apply bg-white;
+}
+
+/* On /tryouts the form follows straight after, so no space of its own below. */
+.tryout-cards[data-years="false"] {
+  @apply pb-0 md:pb-0;
+}
+
+.tryout-cards-inner {
+  @apply mx-auto flex max-w-3xl flex-col gap-6;
+}
+
+/* Centered items, so the eyebrow's rules sit beside its words. */
+.tryout-cards-header {
+  @apply flex flex-col items-center gap-2 text-center;
+}
+
+.tryout-cards-heading {
+  @apply font-(family-name:--font-heading) text-3xl font-bold leading-tight tracking-tight md:text-4xl;
+}
+
+.tryout-cards-description {
+  @apply text-base text-(--color-midnight)/75;
+}
+
+.tryout-cards-grid {
+  @apply mx-auto grid w-full gap-4 sm:grid-cols-2;
+}
+
+.tryout-cards-grid[data-count="1"] {
+  @apply max-w-md sm:grid-cols-1;
+}
+
+/* The place in the description, linked to its page. */
+.tryout-cards-place {
+  @apply font-semibold text-(--color-midnight) underline decoration-(--color-gold) underline-offset-4 hover:text-(--color-gold);
+}
+
+.tryout-card {
+  @apply relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-(--color-gold-bright)/30 bg-white p-6;
+  @apply before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-(--color-gold) before:content-[''];
+}
+
+.tryout-card:nth-child(2) {
+  @apply before:bg-(--color-midnight);
+}
+
+.tryout-card-tag {
+  @apply self-start rounded-full bg-(--color-gold)/15 px-3 py-1 text-[10px] font-bold uppercase tracking-(--tracking-eyebrow) text-(--color-gold);
+}
+
+.tryout-card-days {
+  @apply flex flex-col gap-1.5;
+}
+
+.tryout-card-day {
+  @apply flex flex-col;
+}
+
+.tryout-card-date {
+  @apply self-start rounded-sm font-(family-name:--font-heading) text-xl font-bold leading-tight outline-none underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-(--color-gold)/40;
+}
+
+.tryout-card-time {
+  @apply text-sm font-semibold text-(--color-midnight)/80;
+}
+
+/* The place, name and address, linked to directions. */
+.tryout-card-place {
+  @apply mt-1 flex flex-col self-start rounded-sm text-sm text-(--color-midnight)/75 outline-none underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:ring-(--color-gold)/40;
+}
+
+.tryout-card-address {
+  @apply text-xs text-(--color-midnight)/60;
+}
+
+.tryout-card-label {
+  @apply mt-2 text-[11px] font-bold uppercase tracking-wide text-(--color-midnight)/60;
+}
+
+/* All four years on one row, sharing the card's width. */
+.tryout-card-years {
+  @apply grid grid-cols-4 gap-1.5;
+}
+
+/* The sign-up button, at the foot of the card so both cards' line up. */
+.tryout-card-action {
+  @apply mt-auto flex pt-4;
+}
+
+.tryout-card-year {
+  @apply inline-flex h-9 w-full items-center justify-center rounded-full border border-(--color-midnight)/15 text-sm font-semibold text-(--color-midnight) outline-none transition-colors;
+  @apply hover:border-(--color-gold) hover:text-(--color-gold) focus-visible:ring-2 focus-visible:ring-(--color-gold)/40;
+}

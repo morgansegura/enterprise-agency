@@ -20,6 +20,7 @@ import {
   FaDownload,
   FaCheck,
   FaXmark,
+  FaPlus,
 } from "react-icons/fa6";
 import { PiSoccerBallFill } from "react-icons/pi";
 import { MdOutlineBadge } from "react-icons/md";
@@ -47,5 +48,6 @@ export const REACT_ICONS = {
   download: FaDownload,
   check: FaCheck,
   xmark: FaXmark,
+  plus: FaPlus,
 } as const satisfies Record<string, IconComponent>;
 export type ReactIconName = keyof typeof REACT_ICONS;

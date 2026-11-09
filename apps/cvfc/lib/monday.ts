@@ -12,6 +12,9 @@ const API = "https://api.monday.com/v2";
 export const SIGNUPS_BOARD =
   process.env.MONDAY_SIGNUPS_BOARD_ID ?? "18414196382";
 const COACHES_BOARD = process.env.MONDAY_COACHES_BOARD_ID ?? "18419262953";
+/** CVFC Tryouts (U7–U9): one board for every season, a group per season. */
+export const TRYOUTS_BOARD =
+  process.env.MONDAY_TRYOUTS_BOARD_ID ?? "18439154198";
 
 /** Signups column titles the coach-notification flow depends on. */
 export const COACH_COLUMN = "Coach";
@@ -29,7 +32,7 @@ export const COACH_ASSIGNED_COLUMN = "Coach Assigned";
  *  NOT "Email", and reading the wrong title silently yields no address. */
 const COACHES_EMAIL_COLUMN = "Coaches' Email";
 
-const MONTHS = [
+export const MONTHS = [
   "January",
   "February",
   "March",
@@ -45,9 +48,9 @@ const MONTHS = [
 ];
 
 type ColInfo = { id: string; type: string };
-type ColMap = Record<string, ColInfo>;
+export type ColMap = Record<string, ColInfo>;
 
-async function mondayGql<T>(
+export async function mondayGql<T>(
   query: string,
   variables?: Record<string, unknown>,
 ): Promise<T> {
@@ -74,7 +77,7 @@ async function mondayGql<T>(
  *  take too long, and a retry can mean a duplicate email. */
 const colMapCache = new Map<string, Promise<ColMap>>();
 
-async function columnMap(boardId: string): Promise<ColMap> {
+export async function columnMap(boardId: string): Promise<ColMap> {
   const cached = colMapCache.get(boardId);
   if (cached) return cached;
 
@@ -104,7 +107,7 @@ async function columnMap(boardId: string): Promise<ColMap> {
 }
 
 // Fetch every item on a board as a {columnTitle: text} record (+ id).
-async function boardRows(
+export async function boardRows(
   boardId: string,
 ): Promise<{ id: string; v: Record<string, string> }[]> {
   const data = await mondayGql<{
@@ -139,7 +142,7 @@ async function boardRows(
 
 // Format a {columnTitle: value} object into Monday's column_values keyed by id.
 // The special "name" column (title "Player") sets the item title.
-function buildValues(
+export function buildValues(
   cols: ColMap,
   fields: Record<string, string | number | string[] | undefined>,
 ): string {
@@ -225,9 +228,12 @@ function normalizeName(value: string): string {
 }
 
 // ── Signups (one flat row per player) ─────────────────────────────────────
-async function findSignupByToken(token: string): Promise<string | null> {
+export async function findRowByToken(
+  token: string,
+  boardId = SIGNUPS_BOARD,
+): Promise<string | null> {
   if (!token) return null;
-  const rows = await boardRows(SIGNUPS_BOARD);
+  const rows = await boardRows(boardId);
   for (const { id, v } of rows) {
     if ((v["Submission Token"] ?? "") === token) return id;
   }
@@ -265,7 +271,7 @@ export async function upsertSignup(args: {
     Status: "New",
   };
 
-  const existing = await findSignupByToken(token);
+  const existing = await findRowByToken(token);
   if (existing) {
     // Include "Player" so an edited child name updates the item title too.
     const values = buildValues(cols, { ...fields, Player: playerName });
@@ -291,8 +297,11 @@ export async function upsertSignup(args: {
 // ── Coach notification (signup-time + Monday webhook) ─────────────────────
 
 /** Resolve a Signups column id by title (null when the column doesn't exist). */
-export async function signupColumnId(title: string): Promise<string | null> {
-  const cols = await columnMap(SIGNUPS_BOARD);
+export async function signupColumnId(
+  title: string,
+  boardId = SIGNUPS_BOARD,
+): Promise<string | null> {
+  const cols = await columnMap(boardId);
   return cols[title]?.id ?? null;
 }
 
@@ -313,7 +322,10 @@ export type SignupRow = {
  * `text: null` from the API, so they need inline fragments (`linked_items` and
  * `display_value`). Reading `text` alone silently yields empty values.
  */
-export async function getSignupRow(itemId: string): Promise<SignupRow | null> {
+export async function getSignupRow(
+  itemId: string,
+  boardId = SIGNUPS_BOARD,
+): Promise<SignupRow | null> {
   const data = await mondayGql<{
     boards: { columns: { id: string; title: string }[] }[];
     items: {
@@ -341,7 +353,7 @@ export async function getSignupRow(itemId: string): Promise<SignupRow | null> {
         }
       }
     }`,
-    { b: [SIGNUPS_BOARD], i: [itemId] },
+    { b: [boardId], i: [itemId] },
   );
 
   const item = data.items?.[0];
@@ -408,8 +420,9 @@ function stamp(now = new Date()): string {
 export async function markCoachNotified(
   itemId: string,
   email: string,
+  boardId = SIGNUPS_BOARD,
 ): Promise<void> {
-  const cols = await columnMap(SIGNUPS_BOARD);
+  const cols = await columnMap(boardId);
   if (!cols[COACH_NOTIFIED_COLUMN] && !cols[COACH_ASSIGNED_COLUMN]) return;
   const values = buildValues(cols, {
     [COACH_NOTIFIED_COLUMN]: email,
@@ -419,7 +432,7 @@ export async function markCoachNotified(
     `mutation ($b: ID!, $i: ID!, $cv: JSON!) {
       change_multiple_column_values(board_id: $b, item_id: $i, column_values: $cv) { id }
     }`,
-    { b: SIGNUPS_BOARD, i: itemId, cv: values },
+    { b: boardId, i: itemId, cv: values },
   );
 }
 

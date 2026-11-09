@@ -82,29 +82,31 @@ export function FieldScreen({
       </Section>
 
       <Section bg="bone">
-        <Heading
-          heading="Playing here with Chula Vista FC"
-          headingSize="section"
-          align="left"
-        />
+        <div className="field-body">
+          <Heading
+            heading="Playing here with Chula Vista FC"
+            headingSize="section"
+            align="left"
+          />
 
-        <div className="field-prose">
-          <p>
-            Chula Vista FC has developed San Diego players since 1982 &mdash;
-            boys and girls, ages 4 through U19, from Mini Maestros to MLS NEXT.
-            Evaluations run year-round, so a player can join between seasons
-            rather than waiting for a tryout window, and a coach replies within
-            48 hours.
-          </p>
-          <p>
-            Training and match days are spread across the county, so which field
-            your player is at depends on their age group and program.{" "}
-            <Link href="/about/facilities">See every CVFC field</Link>, or{" "}
-            <Link href="/youth-soccer-san-diego">
-              start with the pathways and how joining works
-            </Link>
-            .
-          </p>
+          <div className="field-prose">
+            <p>
+              Chula Vista FC has developed San Diego players since 1982 &mdash;
+              boys and girls, ages 4 through U19, from Mini Maestros to MLS
+              NEXT. Evaluations run year-round, so a player can join between
+              seasons rather than waiting for a tryout window, and a coach
+              replies within 48 hours.
+            </p>
+            <p>
+              Training and match days are spread across the county, so which
+              field your player is at depends on their age group and program.{" "}
+              <Link href="/about/facilities">See every CVFC field</Link>, or{" "}
+              <Link href="/youth-soccer-san-diego">
+                start with the pathways and how joining works
+              </Link>
+              .
+            </p>
+          </div>
         </div>
 
         <div className="field-actions">

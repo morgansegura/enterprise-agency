@@ -116,7 +116,7 @@ export const FAQ_ENTRIES: FaqEntry[] = [
     category: "Tryouts & Evaluations",
     question: "How do I sign up?",
     answer:
-      "Request an evaluation at chulavistafc.com/evaluations (also at /tryouts). Choose your player's pathway and birth year, and a coach will follow up within 48 hours to set up the session.",
+      "Request an evaluation at chulavistafc.com/evaluations. Choose your player's pathway and birth year, and a coach will follow up within 48 hours to set up the session. For U7–U9 players, sign up for the younger-player tryouts at chulavistafc.com/tryouts.",
   },
   {
     id: "team-selection",

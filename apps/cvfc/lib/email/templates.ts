@@ -104,3 +104,87 @@ export function coachNotificationEmail(data: CoachEmailData): RenderedEmail {
     }),
   };
 }
+
+export type TryoutEmailData = {
+  playerName: string;
+  playerFirstName: string;
+  /** "Girls" or "Boys". */
+  player: string;
+  ageGroup: string;
+  /** One line per tryout day: "Monday, December 7, 5:30 – 6:30 PM". */
+  when: string[];
+  /** "Victory Christian Academy, 810 Buena Vista Way, …" */
+  location: string;
+};
+
+export type TryoutParentEmailData = TryoutEmailData & { parentName: string };
+
+export type TryoutCoachEmailData = TryoutEmailData & {
+  coachName?: string;
+  birthDate: string;
+  experience?: string;
+  notes?: string;
+  parentName: string;
+  parentEmail: string;
+  parentPhone?: string;
+};
+
+/** The tryout's when and where, shared by the parent and coach emails. */
+function tryoutRows(data: TryoutEmailData): string {
+  return `
+          ${infoRow("Player", data.playerName)}
+          ${infoRow("Tryout", `${data.player} · ${data.ageGroup}`)}
+          ${data.when.map((line, i) => infoRow(i ? "" : "When", line)).join("")}
+          ${infoRow("Where", data.location)}`;
+}
+
+/** Parent confirmation for the younger-player tryouts. */
+export function tryoutParentEmail(data: TryoutParentEmailData): RenderedEmail {
+  const name = esc(data.playerFirstName);
+  const body = `
+        ${heading(`${data.playerFirstName} is signed up for tryouts`)}
+        ${p(`Hi ${esc(data.parentName)},`)}
+        ${p(`Thank you for signing <strong>${name}</strong> up for Chula Vista FC tryouts. Here are the details:`)}
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 20px;">
+          ${tryoutRows(data)}
+        </table>
+        ${p(`A CVFC coach will be in touch before tryouts. If anything changes, just reply to this email.`)}
+        ${p(`We can't wait to meet ${name},`)}
+        ${p(`<strong>J. Hector Diaz</strong><br/>Academy Director, Chula Vista FC`)}`;
+
+  return {
+    subject: `${data.playerFirstName} is signed up for CVFC tryouts`,
+    html: emailShell({
+      previewText: `${data.player} ${data.ageGroup} tryouts. Here are the details.`,
+      bodyHtml: body,
+      reason: "signed up for tryouts",
+    }),
+  };
+}
+
+/** Coach email: sent when a coach is assigned the player on CVFC Tryouts. */
+export function tryoutCoachEmail(data: TryoutCoachEmailData): RenderedEmail {
+  const body = `
+        ${heading("A player for your tryout")}
+        ${p(`Hi ${esc(data.coachName || "Coach")},`)}
+        ${p(`You've been assigned a player for the younger-player tryouts. Here are their details:`)}
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 20px;">
+          ${tryoutRows(data)}
+          ${infoRow("Date of birth", data.birthDate)}
+          ${infoRow("Experience", data.experience || "—")}
+          ${data.notes ? infoRow("From the parent", data.notes) : ""}
+          ${infoRow("Parent / guardian", data.parentName)}
+          ${infoRow("Email", data.parentEmail)}
+          ${infoRow("Phone", data.parentPhone || "—")}
+        </table>
+        ${p(`Please reach out to the family before tryouts.`)}`;
+
+  return {
+    subject: `Tryout player: ${data.playerName} (${data.player} ${data.ageGroup})`,
+    html: emailShell({
+      previewText: `${data.playerName} is in your ${data.player} ${data.ageGroup} tryout.`,
+      bodyHtml: body,
+      reason: "coach",
+    }),
+  };
+}

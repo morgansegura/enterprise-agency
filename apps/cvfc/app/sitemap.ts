@@ -70,6 +70,7 @@ const ROUTES: Array<{ path: string; priority: number; changeFrequency: Freq }> =
     },
     { path: "/areas", priority: 0.6, changeFrequency: "monthly" },
     { path: "/evaluations", priority: 0.9, changeFrequency: "monthly" },
+    { path: "/tryouts", priority: 0.8, changeFrequency: "weekly" },
     { path: "/news", priority: 0.7, changeFrequency: "weekly" },
     { path: "/guides", priority: 0.7, changeFrequency: "monthly" },
     {

@@ -12,10 +12,20 @@ import { IconCards } from "@/components/feature/icon-cards";
 import { MediaSplit } from "@/components/feature/media-split";
 import { PageHero } from "@/components/feature/page-hero";
 import { Blocks } from "@/components/blocks";
+import { TryoutCards } from "@/components/feature/tryout-cards";
+import { tryoutsOpen } from "@/lib/tryouts";
 import { getPage } from "@/lib/cms";
 
 export async function BoysCompetitivePathwayScreen() {
   const page = await getPage("programs/boys-competitive-pathway");
+  const tryouts = tryoutsOpen() ? (
+    <TryoutCards
+      players={["boys"]}
+      heading="Younger-player tryouts, U7–U9."
+      background="white"
+    />
+  ) : null;
+
   return (
     <>
       <JsonLd
@@ -39,7 +49,12 @@ export async function BoysCompetitivePathwayScreen() {
       />
       <main>
         {page?.layout?.length ? (
-          <Blocks page={page} />
+          // The tryout card sits right under the page's hero block.
+          <>
+            <Blocks layout={page.layout.slice(0, 1)} />
+            {tryouts}
+            <Blocks layout={page.layout.slice(1)} />
+          </>
         ) : (
           <>
             <PageHero
@@ -62,6 +77,7 @@ export async function BoysCompetitivePathwayScreen() {
                 </>
               }
             />
+            {tryouts}
 
             <MediaSplit
               eyebrow="The Top of the Ladder"

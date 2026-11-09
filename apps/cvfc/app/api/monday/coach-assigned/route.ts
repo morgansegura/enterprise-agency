@@ -1,11 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { sendCoachNotification } from "@/lib/email/send";
+import {
+  sendCoachNotification,
+  sendTryoutCoachNotification,
+} from "@/lib/email/send";
 import { createLogger } from "@/lib/logger";
+import { TRYOUT_SEASON, dayLine, shortDate } from "@/lib/tryouts";
 import {
   COACH_COLUMN,
   COACH_NOTIFIED_COLUMN,
   SIGNUPS_BOARD,
+  TRYOUTS_BOARD,
   findCoachByName,
   getCoachByItemId,
   getSignupRow,
@@ -14,8 +19,8 @@ import {
 } from "@/lib/monday";
 
 /**
- * Monday webhook — fires when the Coach column changes on the CVFC Signups
- * board. This is the ONLY thing that emails a coach: signup itself creates the
+ * Monday webhook — fires when the Coach column changes on CVFC Signups or on
+ * CVFC Tryouts (register one webhook per board, same URL). This is the ONLY thing that emails a coach: signup itself creates the
  * row with no coach and only thanks the parent, so a coach hears from us
  * exactly when someone assigns them the player.
  *
@@ -80,7 +85,9 @@ export async function POST(req: NextRequest) {
   if (!event?.pulseId) {
     return NextResponse.json({ ok: true, skipped: "no item" });
   }
-  if (String(event.boardId ?? "") !== String(SIGNUPS_BOARD)) {
+  const boardId = String(event.boardId ?? "");
+  const tryouts = boardId === String(TRYOUTS_BOARD);
+  if (boardId !== String(SIGNUPS_BOARD) && !tryouts) {
     return NextResponse.json({ ok: true, skipped: "other board" });
   }
 
@@ -91,14 +98,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, skipped: "other column" });
     }
   } else if (event.columnId) {
-    const coachColumnId = await signupColumnId(COACH_COLUMN);
+    const coachColumnId = await signupColumnId(COACH_COLUMN, boardId);
     if (coachColumnId && event.columnId !== coachColumnId) {
       return NextResponse.json({ ok: true, skipped: "other column" });
     }
   }
 
   const signupId = String(event.pulseId);
-  const row = await getSignupRow(signupId);
+  const row = await getSignupRow(signupId, boardId);
   if (!row) {
     log.warn("item not found", { signupId });
     return NextResponse.json({ ok: true, skipped: "item not found" });
@@ -136,6 +143,33 @@ export async function POST(req: NextRequest) {
   const [year, month] = (v["Date of Birth"] ?? "").split("-");
 
   try {
+    if (tryouts) {
+      // The board stores "Girls · Mon, Dec 7"; the days and times come from
+      // the season, so a later change still reaches coaches.
+      const player = v.Gender ?? "";
+      const session = TRYOUT_SEASON.sessions.find(
+        (s) => s.player === player.toLowerCase(),
+      );
+      await sendTryoutCoachNotification(to, {
+        coachName,
+        playerName: v.Player ?? "",
+        playerFirstName: (v.Player ?? "").split(" ")[0],
+        player,
+        ageGroup: v["Age Group"] ?? "",
+        when: session?.days.map(dayLine) ?? [],
+        location: `${TRYOUT_SEASON.location.name}, ${TRYOUT_SEASON.location.address}`,
+        birthDate: v["Date of Birth"] ? shortDate(v["Date of Birth"]) : "—",
+        experience: v.Experience,
+        notes: v["Parent Notes"],
+        parentName: v["Parent Name"] ?? "",
+        parentEmail: v["Parent Email"] ?? "",
+        parentPhone: v["Parent Phone"],
+      });
+      await markCoachNotified(signupId, to, boardId);
+      log.info("tryout coach notified", { signupId, coach: to, coachName });
+      return NextResponse.json({ ok: true, notified: to });
+    }
+
     await sendCoachNotification(to, {
       coachName,
       playerName: v.Player ?? "",

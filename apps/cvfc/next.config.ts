@@ -33,7 +33,6 @@ const nextConfig: NextConfig = {
         destination: "/evaluations",
         permanent: true,
       },
-      { source: "/tryouts", destination: "/evaluations", permanent: true },
       {
         source: "/mls-next",
         destination: "/programs/boys-competitive-pathway",

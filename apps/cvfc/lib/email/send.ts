@@ -9,8 +9,12 @@ import "server-only";
 import {
   coachNotificationEmail,
   parentThankYouEmail,
+  tryoutCoachEmail,
+  tryoutParentEmail,
   type CoachEmailData,
   type ParentEmailData,
+  type TryoutCoachEmailData,
+  type TryoutParentEmailData,
 } from "./templates";
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
@@ -19,13 +23,16 @@ const FROM =
   process.env.EMAIL_FROM ??
   "Chula Vista FC <onboarding@resend.dev>";
 const REPLY_TO = process.env.RESEND_REPLY_TO ?? process.env.EMAIL_REPLY_TO;
+/** Tryout emails can reply to their own inbox; otherwise the site's. */
+const TRYOUTS_REPLY_TO = process.env.TRYOUTS_REPLY_TO || REPLY_TO;
 
-type SendArgs = { to: string; subject: string; html: string };
+type SendArgs = { to: string; subject: string; html: string; replyTo?: string };
 
 async function sendEmail({
   to,
   subject,
   html,
+  replyTo = REPLY_TO,
 }: SendArgs): Promise<{ id: string }> {
   const key = process.env.RESEND_API_KEY;
   if (!key) throw new Error("RESEND_API_KEY not set");
@@ -41,7 +48,7 @@ async function sendEmail({
       to: [to],
       subject,
       html,
-      ...(REPLY_TO ? { reply_to: REPLY_TO } : {}),
+      ...(replyTo ? { reply_to: replyTo } : {}),
     }),
   });
 
@@ -64,4 +71,20 @@ export function sendParentThankYou(to: string, data: ParentEmailData) {
 export function sendCoachNotification(to: string, data: CoachEmailData) {
   const { subject, html } = coachNotificationEmail(data);
   return sendEmail({ to, subject, html });
+}
+
+export function sendTryoutConfirmation(
+  to: string,
+  data: TryoutParentEmailData,
+) {
+  const { subject, html } = tryoutParentEmail(data);
+  return sendEmail({ to, subject, html, replyTo: TRYOUTS_REPLY_TO });
+}
+
+export function sendTryoutCoachNotification(
+  to: string,
+  data: TryoutCoachEmailData,
+) {
+  const { subject, html } = tryoutCoachEmail(data);
+  return sendEmail({ to, subject, html, replyTo: TRYOUTS_REPLY_TO });
 }

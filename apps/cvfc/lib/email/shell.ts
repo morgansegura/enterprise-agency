@@ -104,9 +104,12 @@ function footerHtml(): string {
 export function emailShell({
   previewText,
   bodyHtml,
+  reason = "requested an evaluation",
 }: {
   previewText: string;
   bodyHtml: string;
+  /** Finishes "You're receiving this email because you …". */
+  reason?: string;
 }): string {
   return `<!doctype html>
 <html lang="en">
@@ -137,7 +140,7 @@ export function emailShell({
             <tr><td style="height:12px;font-size:0;line-height:0;">&nbsp;</td></tr>
             ${footerHtml()}
           </table>
-          <p style="margin:16px 0 0;font-family:${FONT};font-size:11px;color:#9a9a90;">You're receiving this email because you requested an evauation with  ${esc(siteConfig.name)}.</p>
+          <p style="margin:16px 0 0;font-family:${FONT};font-size:11px;color:#9a9a90;">You're receiving this email because you ${esc(reason)} with ${esc(siteConfig.name)}.</p>
         </td>
       </tr>
     </table>

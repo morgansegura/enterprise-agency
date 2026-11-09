@@ -5,6 +5,7 @@ export { TermsOfServiceScreen } from "./terms-of-service-screen";
 export { TestimonialsScreen } from "./testimonials-screen";
 export { LinkPolicyScreen } from "./link-policy-screen";
 export { PrivacyPolicyScreen } from "./privacy-policy-screen";
+export { TryoutsScreen } from "./tryouts-screen";
 export { TransparencyScreen } from "./transparency-screen";
 export { SafeguardingScreen } from "./safeguarding-screen";
 export { DonorPrivacyScreen } from "./donor-privacy-screen";

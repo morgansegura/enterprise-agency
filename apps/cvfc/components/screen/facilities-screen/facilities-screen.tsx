@@ -53,6 +53,7 @@ function FeaturedFacilityRow({
   if (facility.image) {
     return (
       <MediaSplit
+        id={facility.id}
         eyebrow={facility.roleLabel}
         heading={facility.name}
         background={bg}
