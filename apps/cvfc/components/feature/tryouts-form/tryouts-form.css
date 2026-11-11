@@ -22,3 +22,8 @@
   @apply min-h-20 rounded-lg border border-(--color-midnight)/15 bg-white px-3 py-2 text-sm text-(--color-midnight);
   @apply hover:border-(--color-gold)/50 focus-visible:border-(--color-gold) focus-visible:ring-2 focus-visible:ring-(--color-gold)/30;
 }
+
+/* A field only bots fill in: off the page, out of the tab order. */
+.tryouts-form-trap {
+  @apply absolute -left-[9999px] h-px w-px overflow-hidden;
+}

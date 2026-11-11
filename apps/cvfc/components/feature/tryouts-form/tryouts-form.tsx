@@ -110,6 +110,9 @@ export function TryoutsForm({
     notes: "",
   });
   const [token, setToken] = React.useState(newToken);
+  // When the form opened, and a field people never see: how bots are told apart.
+  const [startedAt] = React.useState(() => Date.now());
+  const trapRef = React.useRef<HTMLInputElement>(null);
   const [attempted, setAttempted] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -156,23 +159,30 @@ export function TryoutsForm({
     if (invalid || submitting || !draft.player) return;
     setSubmitting(true);
     setError(null);
-    const res = await saveTryout(token, {
-      parent: {
-        firstName: draft.parentFirstName.trim(),
-        lastName: draft.parentLastName.trim(),
-        email: draft.email.trim(),
-        phone: draft.phone.trim(),
+    const res = await saveTryout(
+      token,
+      {
+        parent: {
+          firstName: draft.parentFirstName.trim(),
+          lastName: draft.parentLastName.trim(),
+          email: draft.email.trim(),
+          phone: draft.phone.trim(),
+        },
+        player: {
+          firstName: draft.playerFirstName.trim(),
+          lastName: draft.playerLastName.trim(),
+          gender: draft.player,
+          dob,
+          experience: draft.experience || undefined,
+        },
+        referral: draft.referral || undefined,
+        notes: draft.notes.trim() || undefined,
       },
-      player: {
-        firstName: draft.playerFirstName.trim(),
-        lastName: draft.playerLastName.trim(),
-        gender: draft.player,
-        dob,
-        experience: draft.experience || undefined,
+      {
+        trap: trapRef.current?.value ?? "",
+        elapsedMs: Date.now() - startedAt,
       },
-      referral: draft.referral || undefined,
-      notes: draft.notes.trim() || undefined,
-    });
+    );
     setSubmitting(false);
     if (!res.ok) {
       setError(res.error);
@@ -255,6 +265,18 @@ export function TryoutsForm({
         </div>
       ) : (
         <form className="registration-form-body" onSubmit={submit} noValidate>
+          {/* Hidden from people and screen readers; bots fill it in. */}
+          <div className="tryouts-form-trap" aria-hidden="true">
+            <label htmlFor="tf-website">Website</label>
+            <input
+              id="tf-website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              ref={trapRef}
+            />
+          </div>
           <div className="registration-form-row">
             <div className="registration-form-field">
               <label htmlFor="tf-player" className="registration-form-label">
